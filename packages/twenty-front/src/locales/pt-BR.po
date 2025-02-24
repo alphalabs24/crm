@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2025-02-20 08:43+0100\n"
+"POT-Creation-Date: 2025-02-24 08:28+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -98,6 +98,14 @@ msgstr "Adicionar Campo"
 #: src/modules/settings/security/components/SettingsSSOIdentitiesProvidersListCard.tsx:60
 msgid "Add SSO Identity Provider"
 msgstr "Adicionar Provedor de Identidade SSO"
+
+#: src/modules/record-edit/components/custom/ImageEditModal.tsx:94
+msgid "Add a description..."
+msgstr ""
+
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx:601
+msgid "Add images of your property that will be visible in the publication."
+msgstr ""
 
 #: src/modules/object-record/record-show/components/nm/publication/CompletionProgress.tsx:75
 msgid "Add more details to improve your listing"
@@ -207,7 +215,7 @@ msgid "Authorize"
 msgstr "Autorizar"
 
 #. placeholder {0}: images.length
-#: src/modules/object-record/record-show/components/nm/AISuite.tsx:482
+#: src/modules/object-record/record-show/components/nm/AISuite.tsx:481
 msgid "Available Assets ({0})"
 msgstr ""
 
@@ -255,6 +263,7 @@ msgstr "Calendários"
 #: src/pages/auth/Authorize.tsx:124
 #: src/modules/ui/layout/modal/components/ConfirmationModal.tsx:152
 #: src/modules/settings/components/SaveAndCancelButtons/CancelButton.tsx:16
+#: src/modules/record-edit/components/custom/ImageEditModal.tsx:76
 #: src/modules/object-record/record-show/components/nm/VideoGenerationModal.tsx:89
 #: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx:551
 msgid "Cancel"
@@ -303,7 +312,7 @@ msgid "Choose your provider"
 msgstr "Escolha seu Provedor"
 
 #. js-lingui-explicit-id
-#: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx:434
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx:437
 msgid "Coming Soon"
 msgstr ""
 
@@ -399,8 +408,8 @@ msgid "Create API key"
 msgstr "Criar Chave API"
 
 #. js-lingui-explicit-id
-#: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx:368
-#: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx:404
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx:371
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx:407
 msgid "Create Draft"
 msgstr ""
 
@@ -466,7 +475,7 @@ msgstr "Data"
 msgid "Date and time"
 msgstr "Data e Hora"
 
-#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx:182
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx:180
 msgid "Days Published"
 msgstr ""
 
@@ -494,6 +503,7 @@ msgstr "Defina o nome e a descrição do seu objeto"
 
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx:347
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx:241
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx:322
 #: src/modules/action-menu/components/__stories__/RightDrawerActionMenuDropdown.stories.tsx:88
 #: src/modules/action-menu/components/__stories__/RecordIndexActionMenuDropdown.stories.tsx:59
 #: src/modules/action-menu/components/__stories__/RecordIndexActionMenuBarEntry.stories.tsx:31
@@ -595,6 +605,16 @@ msgstr "Exibir como data relativa"
 msgid "Domain"
 msgstr "Domínio"
 
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx:518
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx:589
+msgid "Drag & drop images here, or click to select files"
+msgstr ""
+
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx:517
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx:588
+msgid "Drop the files here..."
+msgstr ""
+
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeysNew.tsx:108
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx:223
 msgid "E.g. backoffice integration"
@@ -610,6 +630,14 @@ msgstr "Data mais antiga"
 
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx:150
 msgid "Edit"
+msgstr ""
+
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx:317
+msgid "Edit Description"
+msgstr ""
+
+#: src/modules/record-edit/components/custom/ImageEditModal.tsx:74
+msgid "Edit Image"
 msgstr ""
 
 #: src/pages/settings/SettingsBilling.tsx:158
@@ -808,31 +836,31 @@ msgstr "Funções"
 msgid "General"
 msgstr "Geral"
 
-#: src/modules/object-record/record-show/components/nm/AISuite.tsx:532
+#: src/modules/object-record/record-show/components/nm/AISuite.tsx:531
 msgid "Generate Analysis"
 msgstr ""
 
-#: src/modules/object-record/record-show/components/nm/AISuite.tsx:512
+#: src/modules/object-record/record-show/components/nm/AISuite.tsx:511
 msgid "Generate Insights"
 msgstr ""
 
-#: src/modules/object-record/record-show/components/nm/AISuite.tsx:569
+#: src/modules/object-record/record-show/components/nm/AISuite.tsx:568
 msgid "Generate Video"
 msgstr ""
 
-#: src/modules/object-record/record-show/components/nm/AISuite.tsx:564
+#: src/modules/object-record/record-show/components/nm/AISuite.tsx:563
 msgid "Generate professional videos using AI by using your property images."
 msgstr ""
 
-#: src/modules/object-record/record-show/components/nm/AISuite.tsx:580
+#: src/modules/object-record/record-show/components/nm/AISuite.tsx:579
 msgid "Generated Videos"
 msgstr ""
 
-#: src/modules/object-record/record-show/components/nm/AISuite.tsx:557
+#: src/modules/object-record/record-show/components/nm/AISuite.tsx:556
 msgid "Generating videos..."
 msgstr ""
 
-#: src/modules/object-record/record-show/components/nm/AISuite.tsx:569
+#: src/modules/object-record/record-show/components/nm/AISuite.tsx:568
 msgid "Generating..."
 msgstr ""
 
@@ -840,11 +868,11 @@ msgstr ""
 msgid "German"
 msgstr "Alemão"
 
-#: src/modules/object-record/record-show/components/nm/AISuite.tsx:509
+#: src/modules/object-record/record-show/components/nm/AISuite.tsx:508
 msgid "Get AI-powered insights about potential buyers and personalized engagement strategies"
 msgstr ""
 
-#: src/modules/object-record/record-show/components/nm/AISuite.tsx:529
+#: src/modules/object-record/record-show/components/nm/AISuite.tsx:528
 msgid "Get AI-powered insights about the local market and property positioning"
 msgstr ""
 
@@ -894,7 +922,7 @@ msgstr "Índices"
 msgid "Input must be in camel case and cannot start with a number"
 msgstr "A entrada deve estar em camel case e não pode começar com um número"
 
-#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx:177
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx:175
 msgid "Inquiries"
 msgstr ""
 
@@ -973,7 +1001,7 @@ msgstr "Mais recente"
 msgid "Latest date"
 msgstr "Data mais recente"
 
-#: src/modules/object-record/record-show/components/nm/AISuite.tsx:504
+#: src/modules/object-record/record-show/components/nm/AISuite.tsx:503
 msgid "Lead Insights"
 msgstr ""
 
@@ -981,9 +1009,9 @@ msgstr ""
 msgid "Link copied to clipboard"
 msgstr "Link copiado para a área de transferência"
 
-#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx:158
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx:156
 #: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx:420
-#: src/modules/object-record/record-show/components/nm/AISuite.tsx:472
+#: src/modules/object-record/record-show/components/nm/AISuite.tsx:471
 msgid "Loading..."
 msgstr ""
 
@@ -1020,11 +1048,11 @@ msgstr "Gerenciar sua assinatura"
 msgid "Mark as done"
 msgstr "Marcar como concluído"
 
-#: src/modules/object-record/record-show/components/nm/AISuite.tsx:524
+#: src/modules/object-record/record-show/components/nm/AISuite.tsx:523
 msgid "Market Analysis"
 msgstr ""
 
-#: src/modules/object-record/record-show/components/nm/AISuite.tsx:548
+#: src/modules/object-record/record-show/components/nm/AISuite.tsx:547
 msgid "Marketing Video"
 msgstr ""
 
@@ -1149,7 +1177,11 @@ msgstr "Novo registro"
 msgid "No connected account"
 msgstr "Nenhuma conta conectada"
 
-#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx:223
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx:277
+msgid "No description"
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx:221
 msgid "No inquiries yet"
 msgstr ""
 
@@ -1157,11 +1189,11 @@ msgstr ""
 msgid "No publications yet"
 msgstr ""
 
-#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx:212
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx:210
 msgid "No recent visitors yet"
 msgstr ""
 
-#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx:247
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx:245
 msgid "No similar properties found"
 msgstr ""
 
@@ -1281,11 +1313,11 @@ msgstr ""
 msgid "Preview"
 msgstr "Prévia"
 
-#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx:231
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx:229
 msgid "Price History"
 msgstr ""
 
-#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx:235
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx:233
 msgid "Price history chart coming soon"
 msgstr ""
 
@@ -1299,11 +1331,15 @@ msgstr "Política de privacidade"
 msgid "Profile"
 msgstr "Perfil"
 
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx:599
+msgid "Property Images"
+msgstr ""
+
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx:115
 msgid "Pseudo-English"
 msgstr "Pseudo-inglês"
 
-#: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx:271
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx:274
 msgid "Publication Draft created successfully"
 msgstr ""
 
@@ -1323,11 +1359,11 @@ msgstr "Ler documentação"
 msgid "Receive an email containing password update link"
 msgstr "Receber um e-mail com o link de atualização da senha"
 
-#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx:220
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx:218
 msgid "Recent Inquiries"
 msgstr ""
 
-#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx:209
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx:207
 msgid "Recent Visitors"
 msgstr ""
 
@@ -1396,8 +1432,17 @@ msgstr "Execute um workflow e retorne aqui para visualizar suas execuções"
 msgid "SSO"
 msgstr "SSO"
 
-#: src/modules/record-edit/components/RecordEditContainer.tsx:336
+#: src/modules/record-edit/components/RecordEditContainer.tsx:389
+#: src/modules/record-edit/components/custom/ImageEditModal.tsx:79
 msgid "Save"
+msgstr ""
+
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx:536
+msgid "Scroll left"
+msgstr ""
+
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx:545
+msgid "Scroll right"
 msgstr ""
 
 #: src/modules/sign-in-background-mock/components/SignInAppNavigationDrawerMock.tsx:44
@@ -1510,7 +1555,7 @@ msgstr "Fazer login"
 msgid "Sign up"
 msgstr "Registrar-se"
 
-#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx:243
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx:241
 msgid "Similar Properties"
 msgstr ""
 
@@ -1531,7 +1576,7 @@ msgstr "Classificar"
 msgid "Spanish"
 msgstr "Espanhol"
 
-#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx:187
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx:185
 msgid "Status"
 msgstr ""
 
@@ -1719,11 +1764,11 @@ msgstr "Valores"
 msgid "View billing details"
 msgstr "Ver detalhes de faturamento"
 
-#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx:197
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx:195
 msgid "Visitor Activity"
 msgstr ""
 
-#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx:201
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx:199
 msgid "Visitor activity chart coming soon"
 msgstr ""
 
