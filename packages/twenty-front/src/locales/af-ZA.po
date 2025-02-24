@@ -31,9 +31,17 @@ msgstr "{apiKeyName} API-sleutel"
 msgid "{name}"
 msgstr "{name}"
 
+#: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
+msgid "{overviewLabel} Overview"
+msgstr ""
+
 #: src/pages/settings/roles/components/RoleAssignmentConfirmationModalSubtitle.tsx
 msgid "{workspaceMemberName} will be unassigned from the following role:"
 msgstr "{workspaceMemberName} sal ontkoppel word van die volgende rol:"
+
+#: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
+msgid "<0>Nester</0> will analyze available data and suggest values for empty fields."
+msgstr ""
 
 #: src/pages/onboarding/ChooseYourPlan.tsx
 msgid "1 000 workflow node executions"
@@ -113,9 +121,21 @@ msgstr "Aktiewe API-sleutels geskep deur jou of jou span."
 msgid "Add"
 msgstr "Voeg by"
 
+#: src/modules/record-edit/components/custom/ImageEditModal.tsx
+msgid "Add a description..."
+msgstr ""
+
 #: src/modules/settings/data-model/object-details/components/tabs/ObjectFields.tsx
 msgid "Add Field"
 msgstr "Voeg veld by"
+
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+msgid "Add images of your property that will be visible in the publication."
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/publication/CompletionProgress.tsx
+msgid "Add more details to improve your listing"
+msgstr ""
 
 #: src/pages/settings/data-model/SettingsObjects.tsx
 msgid "Add object"
@@ -286,6 +306,11 @@ msgstr "Magtiging"
 msgid "Authorize"
 msgstr "Otoriseer"
 
+#. placeholder {0}: images.length
+#: src/modules/object-record/record-show/components/nm/AISuite.tsx
+msgid "Available Assets ({0})"
+msgstr ""
+
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationShortLabel.ts
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationLabel.ts
 msgid "Average"
@@ -329,8 +354,10 @@ msgstr "Kalenders"
 
 #: src/pages/auth/Authorize.tsx
 #: src/modules/ui/layout/modal/components/ConfirmationModal.tsx
-#: src/modules/ui/feedback/snack-bar-manager/components/SnackBar.tsx
 #: src/modules/settings/components/SaveAndCancelButtons/CancelButton.tsx
+#: src/modules/record-edit/components/custom/ImageEditModal.tsx
+#: src/modules/object-record/record-show/components/nm/VideoGenerationModal.tsx
+#: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
 msgid "Cancel"
 msgstr "Kanselleer"
 
@@ -385,12 +412,17 @@ msgid "Choose your Trial"
 msgstr "Kies jou Proeflopie"
 
 #: src/modules/ui/feedback/snack-bar-manager/components/SnackBar.tsx
-msgid "Close"
-msgstr "Maak toe"
+#~ msgid "Close"
+#~ msgstr "Maak toe"
 
 #: src/modules/ui/layout/page-header/components/PageHeaderOpenCommandMenuButton.tsx
 msgid "Close command menu"
 msgstr "Sluit opdragkieslys"
+
+#. js-lingui-explicit-id
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
+msgid "Coming Soon"
+msgstr ""
 
 #: src/pages/settings/security/SettingsSecurity.tsx
 msgid "Configure an SSO connection"
@@ -497,6 +529,12 @@ msgstr "Skep 'n werksvloei en kom terug hier om sy weergawes te besigtig"
 msgid "Create API key"
 msgstr "Skep API-sleutel"
 
+#. js-lingui-explicit-id
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
+msgid "Create Draft"
+msgstr ""
+
 #: src/modules/action-menu/actions/record-actions/constants/WorkflowActionsConfig.ts
 #: src/modules/action-menu/actions/record-actions/constants/DefaultActionsConfigV2.ts
 msgid "Create new record"
@@ -513,6 +551,10 @@ msgstr "Skep Rol"
 #: src/pages/settings/developers/SettingsDevelopers.tsx
 msgid "Create Webhook"
 msgstr "Skep Webhaak"
+
+#: src/modules/object-record/record-table/empty-state/utils/getEmptyStateSubTitle.ts
+msgid "Create your first publication from a property"
+msgstr ""
 
 #: src/pages/onboarding/CreateWorkspace.tsx
 msgid "Create your workspace"
@@ -580,6 +622,10 @@ msgstr "Datum"
 msgid "Date and time"
 msgstr "Datum en tyd"
 
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+msgid "Days Published"
+msgstr ""
+
 #: src/pages/settings/data-model/SettingsObjectFieldEdit.tsx
 #: src/modules/workflow/components/RecordShowPageWorkflowHeader.tsx
 #: src/modules/settings/data-model/object-details/components/tabs/ObjectSettings.tsx
@@ -610,6 +656,7 @@ msgstr "Definieer die naam en beskrywing van jou voorwerp"
 
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 #: src/modules/action-menu/components/__stories__/RightDrawerActionMenuDropdown.stories.tsx
 #: src/modules/action-menu/components/__stories__/RecordIndexActionMenuDropdown.stories.tsx
 #: src/modules/action-menu/components/__stories__/RecordIndexActionMenuBarEntry.stories.tsx
@@ -717,6 +764,16 @@ msgstr "Vertoon as relatiewe datum"
 msgid "Domain"
 msgstr "Domein"
 
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+msgid "Drag & drop images here, or click to select files"
+msgstr ""
+
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+msgid "Drop the files here..."
+msgstr ""
+
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 msgid "Dutch"
 msgstr "Nederlands"
@@ -734,9 +791,21 @@ msgstr "Vroegste"
 msgid "Earliest date"
 msgstr "Vroegste datum"
 
+#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+msgid "Edit"
+msgstr ""
+
 #: src/pages/settings/SettingsBilling.tsx
 msgid "Edit billing interval"
 msgstr "Redigeer faktureringsinterval"
+
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+msgid "Edit Description"
+msgstr ""
+
+#: src/modules/record-edit/components/custom/ImageEditModal.tsx
+msgid "Edit Image"
+msgstr ""
 
 #: src/pages/settings/SettingsBilling.tsx
 msgid "Edit payment method, see your invoices and more"
@@ -959,9 +1028,45 @@ msgstr "Funksies"
 msgid "General"
 msgstr "Algemeen"
 
+#: src/modules/object-record/record-show/components/nm/AISuite.tsx
+msgid "Generate Analysis"
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/AISuite.tsx
+msgid "Generate Insights"
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/AISuite.tsx
+msgid "Generate professional videos using AI by using your property images."
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/AISuite.tsx
+msgid "Generate Video"
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/AISuite.tsx
+msgid "Generated Videos"
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/AISuite.tsx
+msgid "Generating videos..."
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/AISuite.tsx
+msgid "Generating..."
+msgstr ""
+
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 msgid "German"
 msgstr "Duits"
+
+#: src/modules/object-record/record-show/components/nm/AISuite.tsx
+msgid "Get AI-powered insights about potential buyers and personalized engagement strategies"
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/AISuite.tsx
+msgid "Get AI-powered insights about the local market and property positioning"
+msgstr ""
 
 #: src/pages/onboarding/InviteTeam.tsx
 msgid "Get the most out of your workspace by inviting your team."
@@ -1029,6 +1134,10 @@ msgstr "Indekse"
 #: src/modules/settings/data-model/fields/forms/components/SettingsDataModelFieldIconLabelForm.tsx
 msgid "Input must be in camel case and cannot start with a number"
 msgstr "Invoer moet in kameelgeval wees en kan nie met 'n nommer begin nie"
+
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+msgid "Inquiries"
+msgstr ""
 
 #: src/pages/settings/data-model/constants/SettingsObjectTableMetadata.ts
 msgid "Instances"
@@ -1117,6 +1226,10 @@ msgstr "Nuutste"
 msgid "Latest date"
 msgstr "Nuutste datum"
 
+#: src/modules/object-record/record-show/components/nm/AISuite.tsx
+msgid "Lead Insights"
+msgstr ""
+
 #: src/pages/settings/profile/appearance/components/SettingsExperience.tsx
 msgid "Light"
 msgstr "Lig"
@@ -1130,6 +1243,12 @@ msgstr "Skakel na knipbord gekopieer"
 msgid "Listings"
 msgstr "Lyste"
 
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+#: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
+#: src/modules/object-record/record-show/components/nm/AISuite.tsx
+msgid "Loading..."
+msgstr ""
+
 #: src/pages/onboarding/ChooseYourPlan.tsx
 msgid "Log out"
 msgstr "Teken uit"
@@ -1137,6 +1256,10 @@ msgstr "Teken uit"
 #: src/modules/settings/components/SettingsNavigationDrawerItems.tsx
 msgid "Logout"
 msgstr "Teken uit"
+
+#: src/modules/object-record/record-show/components/nm/publication/CompletionProgress.tsx
+msgid "Looking good!"
+msgstr ""
 
 #: src/pages/settings/SettingsWorkspaceMembers.tsx
 msgid "Manage Members"
@@ -1158,6 +1281,14 @@ msgstr "Bestuur jou intekening"
 #: src/modules/action-menu/components/__stories__/RecordIndexActionMenuBarEntry.stories.tsx
 msgid "Mark as done"
 msgstr "Merk as voltooi"
+
+#: src/modules/object-record/record-show/components/nm/AISuite.tsx
+msgid "Market Analysis"
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/AISuite.tsx
+msgid "Marketing Video"
+msgstr ""
 
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationShortLabel.ts
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationLabel.ts
@@ -1300,6 +1431,14 @@ msgstr "Nuwe rekord"
 msgid "No connected account"
 msgstr "Geen gekoppelde rekening"
 
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+msgid "No description"
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+msgid "No inquiries yet"
+msgstr ""
+
 #: src/pages/settings/roles/components/RoleAssignment.tsx
 #~ msgid "No members assigned to this role yet"
 #~ msgstr "No members assigned to this role yet"
@@ -1320,6 +1459,18 @@ msgstr "Geen gekoppelde rekening"
 msgid "No more members to assign"
 msgstr "Geen meer lede om toe te wys nie"
 
+#: src/modules/object-record/record-table/empty-state/utils/getEmptyStateTitle.ts
+msgid "No publications yet"
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+msgid "No recent visitors yet"
+msgstr ""
+
+#: src/modules/object-record/record-table/empty-state/components/RecordTableEmptyStateReadOnly.tsx
+msgid "No records found"
+msgstr ""
+
 #: src/pages/settings/roles/components/RoleWorkspaceMemberPickerDropdownContent.tsx
 #~ msgid "No Result"
 #~ msgstr "No Result"
@@ -1327,6 +1478,10 @@ msgstr "Geen meer lede om toe te wys nie"
 #: src/pages/settings/roles/components/RoleWorkspaceMemberPickerDropdownContent.tsx
 msgid "No Results"
 msgstr "Geen Resultate"
+
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+msgid "No similar properties found"
+msgstr ""
 
 #: src/modules/object-record/record-table/empty-state/utils/getEmptyStateTitle.ts
 msgid "No workflow runs yet"
@@ -1364,6 +1519,10 @@ msgstr "\"Van die gebaande pad af\""
 #: src/modules/ui/layout/page-header/components/PageHeaderOpenCommandMenuButton.tsx
 msgid "Open command menu"
 msgstr "Maak opdragkieslys oop"
+
+#: src/modules/object-record/object-options-dropdown/components/ObjectOptionsDropdownViewSettingsOpenInContent.tsx
+msgid "Open in"
+msgstr ""
 
 #: src/modules/object-metadata/components/NavigationDrawerOpenedSection.tsx
 msgid "Opened"
@@ -1475,10 +1634,27 @@ msgstr "Portugees — Portugal"
 #~ msgid "Portuguese (Portugal)"
 #~ msgstr "Portuguese (Portugal)"
 
+#: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
+#: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
+msgid "Prefill"
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
+msgid "Prefill Property"
+msgstr ""
+
 #: src/modules/settings/data-model/objects/forms/components/SettingsDataModelObjectSettingsFormCard.tsx
 #: src/modules/settings/data-model/components/SettingsDataModelPreviewFormCard.tsx
 msgid "Preview"
 msgstr "Voorskou"
+
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+msgid "Price History"
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+msgid "Price history chart coming soon"
+msgstr ""
 
 #: src/modules/auth/sign-in-up/components/FooterNote.tsx
 msgid "Privacy Policy"
@@ -1490,9 +1666,25 @@ msgstr "Privaatheidsbeleid"
 msgid "Profile"
 msgstr "Profiel"
 
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+msgid "Property Images"
+msgstr ""
+
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 msgid "Pseudo-English"
 msgstr "Pseudo-Engels"
+
+#: src/modules/object-record/record-show/components/nm/publication/CompletionProgress.tsx
+msgid "Publication completion -"
+msgstr ""
+
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
+msgid "Publication Draft created successfully"
+msgstr ""
+
+#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+msgid "Publish"
+msgstr ""
 
 #: src/modules/settings/developers/components/SettingsReadDocumentationButton.tsx
 msgid "Read documentation"
@@ -1501,6 +1693,14 @@ msgstr "Lees dokumentasie"
 #: src/modules/settings/profile/components/ChangePassword.tsx
 msgid "Receive an email containing password update link"
 msgstr "Ontvang 'n e-pos met skakel om wagwoord op te dateer"
+
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+msgid "Recent Inquiries"
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+msgid "Recent Visitors"
+msgstr ""
 
 #: src/modules/command-menu/components/CommandMenu.tsx
 msgid "Record Selection"
@@ -1576,6 +1776,19 @@ msgstr "Voer 'n werkstroom uit en keer hier terug om die uitvoerings te sien"
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 msgid "Russian"
 msgstr "Russies"
+
+#: src/modules/record-edit/components/RecordEditContainer.tsx
+#: src/modules/record-edit/components/custom/ImageEditModal.tsx
+msgid "Save"
+msgstr ""
+
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+msgid "Scroll left"
+msgstr ""
+
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+msgid "Scroll right"
+msgstr ""
 
 #: src/modules/sign-in-background-mock/components/SignInAppNavigationDrawerMock.tsx
 #: src/modules/navigation/components/MainNavigationDrawerItems.tsx
@@ -1717,6 +1930,10 @@ msgstr "Teken aan"
 msgid "Sign up"
 msgstr "Registreer"
 
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+msgid "Similar Properties"
+msgstr ""
+
 #: src/modules/auth/sign-in-up/components/SignInUpWithSSO.tsx
 msgid "Single sign-on (SSO)"
 msgstr "Enkelteken-aanmelding (SSO)"
@@ -1737,6 +1954,10 @@ msgstr "Spaans"
 #: src/pages/settings/security/SettingsSecurity.tsx
 msgid "SSO"
 msgstr "EGS"
+
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+msgid "Status"
+msgstr ""
 
 #: src/pages/settings/workspace/SettingsSubdomain.tsx
 msgid "Subdomain"
@@ -1980,6 +2201,14 @@ msgstr "Viëtnamees"
 msgid "View billing details"
 msgstr "Sien faktuurbesonderhede"
 
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+msgid "Visitor Activity"
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+msgid "Visitor activity chart coming soon"
+msgstr ""
+
 #: src/modules/settings/data-model/objects/components/SettingsObjectCoverImage.tsx
 msgid "Visualize"
 msgstr "Visualiseer"
@@ -2065,6 +2294,10 @@ msgstr "Skryf 'n beskrywing"
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
 msgid "yes"
 msgstr "ja"
+
+#: src/modules/object-record/record-table/empty-state/components/RecordTableEmptyStateReadOnly.tsx
+msgid "You are not allowed to create records in this object"
+msgstr ""
 
 #: src/pages/settings/SettingsBilling.tsx
 msgid "You will be charged immediately for the full year."

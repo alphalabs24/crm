@@ -31,9 +31,17 @@ msgstr "API-ключ {apiKeyName}"
 msgid "{name}"
 msgstr "{name}"
 
+#: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
+msgid "{overviewLabel} Overview"
+msgstr ""
+
 #: src/pages/settings/roles/components/RoleAssignmentConfirmationModalSubtitle.tsx
 msgid "{workspaceMemberName} will be unassigned from the following role:"
 msgstr "{workspaceMemberName} буде позбавлений наступної ролі:"
+
+#: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
+msgid "<0>Nester</0> will analyze available data and suggest values for empty fields."
+msgstr ""
 
 #: src/pages/onboarding/ChooseYourPlan.tsx
 msgid "1 000 workflow node executions"
@@ -113,9 +121,21 @@ msgstr "Активні API-ключі, створені вами або вашо
 msgid "Add"
 msgstr "Додати"
 
+#: src/modules/record-edit/components/custom/ImageEditModal.tsx
+msgid "Add a description..."
+msgstr ""
+
 #: src/modules/settings/data-model/object-details/components/tabs/ObjectFields.tsx
 msgid "Add Field"
 msgstr "Додати поле"
+
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+msgid "Add images of your property that will be visible in the publication."
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/publication/CompletionProgress.tsx
+msgid "Add more details to improve your listing"
+msgstr ""
 
 #: src/pages/settings/data-model/SettingsObjects.tsx
 msgid "Add object"
@@ -286,6 +306,11 @@ msgstr "Аутентифікація"
 msgid "Authorize"
 msgstr "Авторизувати"
 
+#. placeholder {0}: images.length
+#: src/modules/object-record/record-show/components/nm/AISuite.tsx
+msgid "Available Assets ({0})"
+msgstr ""
+
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationShortLabel.ts
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationLabel.ts
 msgid "Average"
@@ -329,8 +354,10 @@ msgstr "Календарі"
 
 #: src/pages/auth/Authorize.tsx
 #: src/modules/ui/layout/modal/components/ConfirmationModal.tsx
-#: src/modules/ui/feedback/snack-bar-manager/components/SnackBar.tsx
 #: src/modules/settings/components/SaveAndCancelButtons/CancelButton.tsx
+#: src/modules/record-edit/components/custom/ImageEditModal.tsx
+#: src/modules/object-record/record-show/components/nm/VideoGenerationModal.tsx
+#: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
 msgid "Cancel"
 msgstr "Скасувати"
 
@@ -385,12 +412,17 @@ msgid "Choose your Trial"
 msgstr "Виберіть вашу пробну версію"
 
 #: src/modules/ui/feedback/snack-bar-manager/components/SnackBar.tsx
-msgid "Close"
-msgstr "Закрити"
+#~ msgid "Close"
+#~ msgstr "Закрити"
 
 #: src/modules/ui/layout/page-header/components/PageHeaderOpenCommandMenuButton.tsx
 msgid "Close command menu"
 msgstr "Закрити командне меню"
+
+#. js-lingui-explicit-id
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
+msgid "Coming Soon"
+msgstr ""
 
 #: src/pages/settings/security/SettingsSecurity.tsx
 msgid "Configure an SSO connection"
@@ -497,6 +529,12 @@ msgstr "Створіть процес та поверніться сюди, що
 msgid "Create API key"
 msgstr "Створити ключ API"
 
+#. js-lingui-explicit-id
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
+msgid "Create Draft"
+msgstr ""
+
 #: src/modules/action-menu/actions/record-actions/constants/WorkflowActionsConfig.ts
 #: src/modules/action-menu/actions/record-actions/constants/DefaultActionsConfigV2.ts
 msgid "Create new record"
@@ -513,6 +551,10 @@ msgstr "Створити роль"
 #: src/pages/settings/developers/SettingsDevelopers.tsx
 msgid "Create Webhook"
 msgstr "Створити Webhook"
+
+#: src/modules/object-record/record-table/empty-state/utils/getEmptyStateSubTitle.ts
+msgid "Create your first publication from a property"
+msgstr ""
 
 #: src/pages/onboarding/CreateWorkspace.tsx
 msgid "Create your workspace"
@@ -580,6 +622,10 @@ msgstr "Дата"
 msgid "Date and time"
 msgstr "Дата та час"
 
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+msgid "Days Published"
+msgstr ""
+
 #: src/pages/settings/data-model/SettingsObjectFieldEdit.tsx
 #: src/modules/workflow/components/RecordShowPageWorkflowHeader.tsx
 #: src/modules/settings/data-model/object-details/components/tabs/ObjectSettings.tsx
@@ -610,6 +656,7 @@ msgstr "Визначте назву та опис вашого об'єкта"
 
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 #: src/modules/action-menu/components/__stories__/RightDrawerActionMenuDropdown.stories.tsx
 #: src/modules/action-menu/components/__stories__/RecordIndexActionMenuDropdown.stories.tsx
 #: src/modules/action-menu/components/__stories__/RecordIndexActionMenuBarEntry.stories.tsx
@@ -645,21 +692,24 @@ msgstr "Видалити запис"
 #: src/modules/action-menu/actions/record-actions/constants/DefaultActionsConfigV2.ts
 #: src/modules/action-menu/actions/record-actions/constants/DefaultActionsConfigV1.ts
 msgid "Delete records"
-msgstr "\n"
+msgstr ""
+"\n"
 "              \n"
 "              Видалити записи"
 
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
 msgid "Delete this integration"
-msgstr "\n"
+msgstr ""
+"\n"
 "              \n"
 "              Видалити цю інтеграцію"
 
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx
 msgid "Delete webhook"
-msgstr "\n"
+msgstr ""
+"\n"
 "              \n"
 "              Видалити вебхук"
 
@@ -674,20 +724,23 @@ msgstr "Видалити workflows "
 #: src/modules/settings/profile/components/DeleteWorkspace.tsx
 #: src/modules/settings/profile/components/DeleteWorkspace.tsx
 msgid "Delete workspace"
-msgstr "\n"
+msgstr ""
+"\n"
 "              \n"
 "              Видалити робочу область"
 
 #: src/modules/settings/profile/components/DeleteWorkspace.tsx
 msgid "Delete your whole workspace"
-msgstr "\n"
+msgstr ""
+"\n"
 "              \n"
 "              Видалити всю вашу робочу область"
 
 #: src/modules/object-record/object-sort-dropdown/components/ObjectSortDropdownButton.tsx
 #: src/modules/object-record/object-sort-dropdown/components/ObjectSortDropdownButton.tsx
 msgid "Descending"
-msgstr "\n"
+msgstr ""
+"\n"
 "              \n"
 "              По спадаючій"
 
@@ -695,7 +748,8 @@ msgstr "\n"
 #: src/pages/settings/data-model/SettingsObjectFieldEdit.tsx
 #: src/pages/settings/data-model/SettingsObjectNewField/SettingsObjectNewFieldConfigure.tsx
 msgid "Description"
-msgstr "\n"
+msgstr ""
+"\n"
 "              \n"
 "              Опис"
 
@@ -704,7 +758,8 @@ msgstr "\n"
 #: src/modules/action-menu/actions/record-actions/constants/DefaultActionsConfigV2.ts
 #: src/modules/action-menu/actions/record-actions/constants/DefaultActionsConfigV2.ts
 msgid "Destroy"
-msgstr "\n"
+msgstr ""
+"\n"
 "              \n"
 "              Знищити"
 
@@ -715,7 +770,8 @@ msgstr "\n"
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
 #: src/modules/settings/hooks/useSettingsNavigationItems.tsx
 msgid "Developers"
-msgstr "\n"
+msgstr ""
+"\n"
 "              \n"
 "              Розробники"
 
@@ -723,13 +779,15 @@ msgstr "\n"
 #: src/modules/action-menu/actions/record-actions/constants/WorkflowActionsConfig.ts
 #: src/modules/action-menu/actions/record-actions/constants/WorkflowActionsConfig.ts
 msgid "Discard Draft"
-msgstr "\n"
+msgstr ""
+"\n"
 "              \n"
 "              Відмінити чернетку"
 
 #: src/modules/settings/data-model/fields/forms/date/components/SettingsDataModelFieldDateForm.tsx
 msgid "Display as relative date"
-msgstr "\n"
+msgstr ""
+"\n"
 "              \n"
 "              Показувати як відносну дату"
 
@@ -737,9 +795,20 @@ msgstr "\n"
 #: src/pages/settings/workspace/SettingsDomain.tsx
 #: src/pages/settings/workspace/SettingsDomain.tsx
 msgid "Domain"
-msgstr "\n"
+msgstr ""
+"\n"
 "              \n"
 "              Домен"
+
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+msgid "Drag & drop images here, or click to select files"
+msgstr ""
+
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+msgid "Drop the files here..."
+msgstr ""
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 msgid "Dutch"
@@ -748,27 +817,43 @@ msgstr "Голландська"
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeysNew.tsx
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
 msgid "E.g. backoffice integration"
-msgstr "\n"
+msgstr ""
+"\n"
 "              \n"
 "              Наприклад, інтеграція з бекофісом"
 
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationShortLabel.ts
 msgid "Earliest"
-msgstr "\n"
+msgstr ""
+"\n"
 "              \n"
 "              Найраніше"
 
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationLabel.ts
 msgid "Earliest date"
-msgstr "\n"
+msgstr ""
+"\n"
 "              \n"
 "              Найраніша дата"
 
+#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+msgid "Edit"
+msgstr ""
+
 #: src/pages/settings/SettingsBilling.tsx
 msgid "Edit billing interval"
-msgstr "\n"
+msgstr ""
+"\n"
 "              \n"
 "              Редагувати інтервал білінгу"
+
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+msgid "Edit Description"
+msgstr ""
+
+#: src/modules/record-edit/components/custom/ImageEditModal.tsx
+msgid "Edit Image"
+msgstr ""
 
 #: src/pages/settings/SettingsBilling.tsx
 msgid "Edit payment method, see your invoices and more"
@@ -784,7 +869,8 @@ msgstr "Редагуйте назву вашого субдомену або в�
 #: src/pages/settings/roles/components/RoleAssignmentTableHeader.tsx
 #: src/pages/auth/PasswordReset.tsx
 msgid "Email"
-msgstr "\n"
+msgstr ""
+"\n"
 "              \n"
 "              Електронна адреса"
 
@@ -809,7 +895,8 @@ msgstr "співробітники"
 
 #: src/modules/settings/data-model/fields/forms/components/SettingsDataModelFieldIconLabelForm.tsx
 msgid "Employees"
-msgstr "\n"
+msgstr ""
+"\n"
 "Співробітники"
 
 #: src/modules/object-record/record-inline-cell/components/RecordInlineCellDisplayMode.tsx
@@ -820,7 +907,8 @@ msgstr "Порожньо"
 
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx
 msgid "Endpoint URL"
-msgstr "\n"
+msgstr ""
+"\n"
 "              \n"
 "              URL-адреса ендпоінту"
 
@@ -996,9 +1084,45 @@ msgstr "Функції"
 msgid "General"
 msgstr "Загальні"
 
+#: src/modules/object-record/record-show/components/nm/AISuite.tsx
+msgid "Generate Analysis"
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/AISuite.tsx
+msgid "Generate Insights"
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/AISuite.tsx
+msgid "Generate professional videos using AI by using your property images."
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/AISuite.tsx
+msgid "Generate Video"
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/AISuite.tsx
+msgid "Generated Videos"
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/AISuite.tsx
+msgid "Generating videos..."
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/AISuite.tsx
+msgid "Generating..."
+msgstr ""
+
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 msgid "German"
 msgstr "Німецька"
+
+#: src/modules/object-record/record-show/components/nm/AISuite.tsx
+msgid "Get AI-powered insights about potential buyers and personalized engagement strategies"
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/AISuite.tsx
+msgid "Get AI-powered insights about the local market and property positioning"
+msgstr ""
 
 #: src/pages/onboarding/InviteTeam.tsx
 msgid "Get the most out of your workspace by inviting your team."
@@ -1066,6 +1190,10 @@ msgstr "Індекси"
 #: src/modules/settings/data-model/fields/forms/components/SettingsDataModelFieldIconLabelForm.tsx
 msgid "Input must be in camel case and cannot start with a number"
 msgstr "Вхідні дані мають бути у camelCase та не можуть починатися з цифри"
+
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+msgid "Inquiries"
+msgstr ""
 
 #: src/pages/settings/data-model/constants/SettingsObjectTableMetadata.ts
 msgid "Instances"
@@ -1154,6 +1282,10 @@ msgstr "Останні"
 msgid "Latest date"
 msgstr "Остання дата"
 
+#: src/modules/object-record/record-show/components/nm/AISuite.tsx
+msgid "Lead Insights"
+msgstr ""
+
 #: src/pages/settings/profile/appearance/components/SettingsExperience.tsx
 msgid "Light"
 msgstr "Світла"
@@ -1167,6 +1299,12 @@ msgstr "Посилання скопійовано в буфер обміну"
 msgid "Listings"
 msgstr "Списки"
 
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+#: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
+#: src/modules/object-record/record-show/components/nm/AISuite.tsx
+msgid "Loading..."
+msgstr ""
+
 #: src/pages/onboarding/ChooseYourPlan.tsx
 msgid "Log out"
 msgstr "Вийти"
@@ -1174,6 +1312,10 @@ msgstr "Вийти"
 #: src/modules/settings/components/SettingsNavigationDrawerItems.tsx
 msgid "Logout"
 msgstr "Вийти"
+
+#: src/modules/object-record/record-show/components/nm/publication/CompletionProgress.tsx
+msgid "Looking good!"
+msgstr ""
 
 #: src/pages/settings/SettingsWorkspaceMembers.tsx
 msgid "Manage Members"
@@ -1195,6 +1337,14 @@ msgstr "Управління своєю підпискою"
 #: src/modules/action-menu/components/__stories__/RecordIndexActionMenuBarEntry.stories.tsx
 msgid "Mark as done"
 msgstr "Позначити як виконане"
+
+#: src/modules/object-record/record-show/components/nm/AISuite.tsx
+msgid "Market Analysis"
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/AISuite.tsx
+msgid "Marketing Video"
+msgstr ""
 
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationShortLabel.ts
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationLabel.ts
@@ -1337,6 +1487,14 @@ msgstr "Новий запис"
 msgid "No connected account"
 msgstr "Немає підключеного акаунту"
 
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+msgid "No description"
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+msgid "No inquiries yet"
+msgstr ""
+
 #: src/pages/settings/roles/components/RoleAssignment.tsx
 #~ msgid "No members assigned to this role yet"
 #~ msgstr "No members assigned to this role yet"
@@ -1357,6 +1515,18 @@ msgstr "Немає підключеного акаунту"
 msgid "No more members to assign"
 msgstr "Більше немає учасників для призначення"
 
+#: src/modules/object-record/record-table/empty-state/utils/getEmptyStateTitle.ts
+msgid "No publications yet"
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+msgid "No recent visitors yet"
+msgstr ""
+
+#: src/modules/object-record/record-table/empty-state/components/RecordTableEmptyStateReadOnly.tsx
+msgid "No records found"
+msgstr ""
+
 #: src/pages/settings/roles/components/RoleWorkspaceMemberPickerDropdownContent.tsx
 #~ msgid "No Result"
 #~ msgstr "No Result"
@@ -1364,6 +1534,10 @@ msgstr "Більше немає учасників для призначення
 #: src/pages/settings/roles/components/RoleWorkspaceMemberPickerDropdownContent.tsx
 msgid "No Results"
 msgstr "Немає результатів"
+
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+msgid "No similar properties found"
+msgstr ""
 
 #: src/modules/object-record/record-table/empty-state/utils/getEmptyStateTitle.ts
 msgid "No workflow runs yet"
@@ -1401,6 +1575,10 @@ msgstr "Не по традиційному шляху"
 #: src/modules/ui/layout/page-header/components/PageHeaderOpenCommandMenuButton.tsx
 msgid "Open command menu"
 msgstr "Відкрити командне меню"
+
+#: src/modules/object-record/object-options-dropdown/components/ObjectOptionsDropdownViewSettingsOpenInContent.tsx
+msgid "Open in"
+msgstr ""
 
 #: src/modules/object-metadata/components/NavigationDrawerOpenedSection.tsx
 msgid "Opened"
@@ -1512,10 +1690,27 @@ msgstr "Португальська — Португалія"
 #~ msgid "Portuguese (Portugal)"
 #~ msgstr "Portuguese (Portugal)"
 
+#: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
+#: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
+msgid "Prefill"
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
+msgid "Prefill Property"
+msgstr ""
+
 #: src/modules/settings/data-model/objects/forms/components/SettingsDataModelObjectSettingsFormCard.tsx
 #: src/modules/settings/data-model/components/SettingsDataModelPreviewFormCard.tsx
 msgid "Preview"
 msgstr "Перегляд"
+
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+msgid "Price History"
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+msgid "Price history chart coming soon"
+msgstr ""
 
 #: src/modules/auth/sign-in-up/components/FooterNote.tsx
 msgid "Privacy Policy"
@@ -1527,9 +1722,25 @@ msgstr "Політика конфіденційності"
 msgid "Profile"
 msgstr "Профіль"
 
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+msgid "Property Images"
+msgstr ""
+
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 msgid "Pseudo-English"
 msgstr "Псевдо-англійська"
+
+#: src/modules/object-record/record-show/components/nm/publication/CompletionProgress.tsx
+msgid "Publication completion -"
+msgstr ""
+
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
+msgid "Publication Draft created successfully"
+msgstr ""
+
+#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+msgid "Publish"
+msgstr ""
 
 #: src/modules/settings/developers/components/SettingsReadDocumentationButton.tsx
 msgid "Read documentation"
@@ -1538,6 +1749,14 @@ msgstr "Читати документацію"
 #: src/modules/settings/profile/components/ChangePassword.tsx
 msgid "Receive an email containing password update link"
 msgstr "Отримати лист з посиланням для оновлення пароля"
+
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+msgid "Recent Inquiries"
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+msgid "Recent Visitors"
+msgstr ""
 
 #: src/modules/command-menu/components/CommandMenu.tsx
 msgid "Record Selection"
@@ -1613,6 +1832,19 @@ msgstr "Запустіть workflow і поверніться сюди, щоб �
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 msgid "Russian"
 msgstr "Російська"
+
+#: src/modules/record-edit/components/RecordEditContainer.tsx
+#: src/modules/record-edit/components/custom/ImageEditModal.tsx
+msgid "Save"
+msgstr ""
+
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+msgid "Scroll left"
+msgstr ""
+
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+msgid "Scroll right"
+msgstr ""
 
 #: src/modules/sign-in-background-mock/components/SignInAppNavigationDrawerMock.tsx
 #: src/modules/navigation/components/MainNavigationDrawerItems.tsx
@@ -1754,6 +1986,10 @@ msgstr "Увійти"
 msgid "Sign up"
 msgstr "Зареєструватися"
 
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+msgid "Similar Properties"
+msgstr ""
+
 #: src/modules/auth/sign-in-up/components/SignInUpWithSSO.tsx
 msgid "Single sign-on (SSO)"
 msgstr "Єдиний вхід (SSO)"
@@ -1774,6 +2010,10 @@ msgstr "Іспанська"
 #: src/pages/settings/security/SettingsSecurity.tsx
 msgid "SSO"
 msgstr "Єдиний вхід"
+
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+msgid "Status"
+msgstr ""
 
 #: src/pages/settings/workspace/SettingsSubdomain.tsx
 msgid "Subdomain"
@@ -2017,6 +2257,14 @@ msgstr "В'єтнамська"
 msgid "View billing details"
 msgstr "Переглянути деталі оплати"
 
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+msgid "Visitor Activity"
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+msgid "Visitor activity chart coming soon"
+msgstr ""
+
 #: src/modules/settings/data-model/objects/components/SettingsObjectCoverImage.tsx
 msgid "Visualize"
 msgstr "Візуалізувати"
@@ -2102,6 +2350,10 @@ msgstr "Написати опис"
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
 msgid "yes"
 msgstr "так"
+
+#: src/modules/object-record/record-table/empty-state/components/RecordTableEmptyStateReadOnly.tsx
+msgid "You are not allowed to create records in this object"
+msgstr ""
 
 #: src/pages/settings/SettingsBilling.tsx
 msgid "You will be charged immediately for the full year."

@@ -19,7 +19,6 @@ const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(4)};
-import { Trans } from '@lingui/react/macro';
   margin: ${({ theme }) => theme.spacing(4)};
   height: calc(100vh - ${({ theme }) => theme.spacing(8)});
 `;
@@ -238,170 +237,6 @@ const StyledVideo = styled.video`
   width: 100%;
 `;
 
-const StyledModalHeader = styled(Modal.Header)`
-  border-bottom: 1px solid ${({ theme }) => theme.border.color.light};
-  padding: 0 ${({ theme }) => theme.spacing(4)};
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 50px;
-`;
-
-const StyledModalHeaderButtons = styled.div`
-  display: flex;
-  gap: ${({ theme }) => theme.spacing(2)};
-`;
-
-const StyledModalTitle = styled.div`
-  font-size: ${({ theme }) => theme.font.size.md};
-  font-weight: ${({ theme }) => theme.font.weight.semiBold};
-`;
-
-const StyledModalTitleContainer = styled.div`
-  align-items: center;
-  display: flex;
-  gap: ${({ theme }) => theme.spacing(2)};
-`;
-
-const StyledModalContent = styled(Modal.Content)`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(4)};
-  padding: ${({ theme }) => theme.spacing(4)};
-`;
-
-const StyledInstagramPost = styled.div`
-  background: ${({ theme }) => theme.background.primary};
-  border: 1px solid ${({ theme }) => theme.border.color.light};
-  border-radius: ${({ theme }) => theme.border.radius.sm};
-  max-width: 468px;
-  width: 100%;
-  margin: 0 auto;
-`;
-
-const StyledPostHeader = styled.div`
-  align-items: center;
-  border-bottom: 1px solid ${({ theme }) => theme.border.color.light};
-  display: flex;
-  gap: ${({ theme }) => theme.spacing(2)};
-  padding: ${({ theme }) => theme.spacing(2)};
-`;
-
-const StyledProfileImage = styled.div`
-  align-items: center;
-  background: ${({ theme }) => theme.background.tertiary};
-  border-radius: 50%;
-  display: flex;
-  height: 32px;
-  justify-content: center;
-  width: 32px;
-`;
-
-const StyledProfileName = styled.div`
-  color: ${({ theme }) => theme.font.color.primary};
-  font-weight: ${({ theme }) => theme.font.weight.medium};
-`;
-
-const StyledCarouselContainer = styled.div`
-  aspect-ratio: 1;
-  position: relative;
-  width: 100%;
-  overflow: hidden;
-`;
-
-const StyledCarouselNav = styled.div`
-  box-sizing: border-box;
-  display: flex;
-  justify-content: space-between;
-  padding: 0 ${({ theme }) => theme.spacing(3)};
-  pointer-events: none;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 100%;
-`;
-
-const StyledCarouselButton = styled.button`
-  background: ${({ theme }) => theme.background.transparent.medium};
-  border: none;
-  border-radius: 50%;
-  color: ${({ theme }) => theme.font.color.inverted};
-  cursor: pointer;
-  height: 32px;
-  width: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: auto;
-  flex-shrink: 0;
-
-  &:hover {
-    background: ${({ theme }) => theme.background.transparent.strong};
-  }
-`;
-
-const StyledCarouselDots = styled.div`
-  display: flex;
-  gap: ${({ theme }) => theme.spacing(2)};
-  justify-content: center;
-  padding: ${({ theme }) => theme.spacing(2)} 0 0;
-`;
-
-const StyledVideoThumbnail = styled.video<{ isActive: boolean }>`
-  border: 2px solid
-    ${({ theme, isActive }) => (isActive ? theme.color.blue : 'transparent')};
-  border-radius: ${({ theme }) => theme.border.radius.sm};
-  cursor: pointer;
-  height: 60px;
-  object-fit: cover;
-  width: 60px;
-`;
-
-const StyledPostActions = styled.div`
-  padding: ${({ theme }) => theme.spacing(2)};
-`;
-
-const StyledPostDescription = styled.div`
-  border-bottom: 1px solid ${({ theme }) => theme.border.color.light};
-  padding: ${({ theme }) => theme.spacing(3)};
-`;
-
-const StyledPostText = styled.div`
-  color: ${({ theme }) => theme.font.color.primary};
-  font-size: ${({ theme }) => theme.font.size.sm};
-  line-height: ${({ theme }) => theme.text.lineHeight.lg};
-  white-space: pre-wrap;
-`;
-
-const StyledDescriptionHeader = styled.div`
-  color: ${({ theme }) => theme.font.color.primary};
-  font-weight: ${({ theme }) => theme.font.weight.medium};
-  margin-bottom: ${({ theme }) => theme.spacing(1)};
-`;
-
-const StyledHashtags = styled.span`
-  color: ${({ theme }) => theme.color.blue};
-  cursor: pointer;
-
-  &:hover {
-    text-decoration: underline;
-  }
-`;
-
-const StyledPostTime = styled.div`
-  color: ${({ theme }) => theme.font.color.tertiary};
-  font-size: ${({ theme }) => theme.font.size.xs};
-  margin-top: ${({ theme }) => theme.spacing(2)};
-`;
-
-const StyledVideoActions = styled.div`
-  align-items: center;
-  display: flex;
-  gap: ${({ theme }) => theme.spacing(2)};
-  justify-content: flex-end;
-  margin-bottom: ${({ theme }) => theme.spacing(4)};
-`;
-
 const StyledLoadingContainer = styled.div`
   align-items: center;
   display: flex;
@@ -419,12 +254,11 @@ type AISuiteProps = {
 const DEMO_VIDEOS = ['/videos/1.mp4', '/videos/2.mp4', '/videos/3.mp4'];
 
 export const AISuite = ({ targetableObject }: AISuiteProps) => {
-  const [isGenerating, setIsGenerating] = useState(false);
+  const [isGenerating] = useState(false);
   const [hasGeneratedVideos, setHasGeneratedVideos] = useState(false);
   const [loadedImages, setLoadedImages] = useState<Record<string, boolean>>({});
   const [generationProgress, setGenerationProgress] = useState(0);
-  const [currentSlide, setCurrentSlide] = useState(0);
-  // eslint-disable-next-line @nx/workspace-no-state-useref
+
   const videoModalRef = useRef<ModalRefType>(null);
 
   const { recordFromStore: record } = useRecordShowContainerData({
@@ -434,7 +268,8 @@ export const AISuite = ({ targetableObject }: AISuiteProps) => {
   const { attachments = [] } = useAttachments(targetableObject);
   const { t } = useLingui();
   const images =
-    attachments?.filter((attachment) => attachment.type === 'Image') ?? [];
+    attachments?.filter((attachment) => attachment.type === 'PropertyImage') ??
+    [];
 
   const handleImageLoad = useCallback((imageId: string) => {
     setLoadedImages((prev) => ({

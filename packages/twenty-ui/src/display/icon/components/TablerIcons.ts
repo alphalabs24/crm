@@ -269,6 +269,14 @@ export {
   IconWand,
   IconWorld,
   IconX,
+  IconLayoutGrid,
+  IconEdit,
+  IconLayoutDashboard,
+  IconMessageCircle2,
+  IconChartBar,
+  IconCalendarStats,
+  IconFileDescription,
+  IconBrandInstagram,
 } from '@tabler/icons-react';
 
 export type { TablerIconsProps } from '@tabler/icons-react';

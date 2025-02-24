@@ -31,9 +31,17 @@ msgstr "{apiKeyName} API kulcs"
 msgid "{name}"
 msgstr "{name}"
 
+#: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
+msgid "{overviewLabel} Overview"
+msgstr ""
+
 #: src/pages/settings/roles/components/RoleAssignmentConfirmationModalSubtitle.tsx
 msgid "{workspaceMemberName} will be unassigned from the following role:"
 msgstr "{workspaceMemberName} a következő szerepkörből lesz kivezetve:"
+
+#: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
+msgid "<0>Nester</0> will analyze available data and suggest values for empty fields."
+msgstr ""
 
 #: src/pages/onboarding/ChooseYourPlan.tsx
 msgid "1 000 workflow node executions"
@@ -113,9 +121,21 @@ msgstr "Aktív API kulcsok, amelyeket te vagy a csapatod hoztatok létre."
 msgid "Add"
 msgstr "Hozzáad"
 
+#: src/modules/record-edit/components/custom/ImageEditModal.tsx
+msgid "Add a description..."
+msgstr ""
+
 #: src/modules/settings/data-model/object-details/components/tabs/ObjectFields.tsx
 msgid "Add Field"
 msgstr "Mező hozzáadása"
+
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+msgid "Add images of your property that will be visible in the publication."
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/publication/CompletionProgress.tsx
+msgid "Add more details to improve your listing"
+msgstr ""
 
 #: src/pages/settings/data-model/SettingsObjects.tsx
 msgid "Add object"
@@ -286,6 +306,11 @@ msgstr "Hitelesítés"
 msgid "Authorize"
 msgstr "Engedélyezés"
 
+#. placeholder {0}: images.length
+#: src/modules/object-record/record-show/components/nm/AISuite.tsx
+msgid "Available Assets ({0})"
+msgstr ""
+
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationShortLabel.ts
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationLabel.ts
 msgid "Average"
@@ -329,8 +354,10 @@ msgstr "Naptárak"
 
 #: src/pages/auth/Authorize.tsx
 #: src/modules/ui/layout/modal/components/ConfirmationModal.tsx
-#: src/modules/ui/feedback/snack-bar-manager/components/SnackBar.tsx
 #: src/modules/settings/components/SaveAndCancelButtons/CancelButton.tsx
+#: src/modules/record-edit/components/custom/ImageEditModal.tsx
+#: src/modules/object-record/record-show/components/nm/VideoGenerationModal.tsx
+#: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
 msgid "Cancel"
 msgstr "Mégse"
 
@@ -385,12 +412,17 @@ msgid "Choose your Trial"
 msgstr "Válassza ki a próbaidőt"
 
 #: src/modules/ui/feedback/snack-bar-manager/components/SnackBar.tsx
-msgid "Close"
-msgstr "Bezár"
+#~ msgid "Close"
+#~ msgstr "Bezár"
 
 #: src/modules/ui/layout/page-header/components/PageHeaderOpenCommandMenuButton.tsx
 msgid "Close command menu"
 msgstr "Parancsmenü bezárása"
+
+#. js-lingui-explicit-id
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
+msgid "Coming Soon"
+msgstr ""
 
 #: src/pages/settings/security/SettingsSecurity.tsx
 msgid "Configure an SSO connection"
@@ -497,6 +529,12 @@ msgstr "Hozzon létre egy munkafolyamatot, majd térjen vissza ide a verziók me
 msgid "Create API key"
 msgstr "API kulcs létrehozása"
 
+#. js-lingui-explicit-id
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
+msgid "Create Draft"
+msgstr ""
+
 #: src/modules/action-menu/actions/record-actions/constants/WorkflowActionsConfig.ts
 #: src/modules/action-menu/actions/record-actions/constants/DefaultActionsConfigV2.ts
 msgid "Create new record"
@@ -513,6 +551,10 @@ msgstr "Szerepkör létrehozása"
 #: src/pages/settings/developers/SettingsDevelopers.tsx
 msgid "Create Webhook"
 msgstr "Webhook létrehozása"
+
+#: src/modules/object-record/record-table/empty-state/utils/getEmptyStateSubTitle.ts
+msgid "Create your first publication from a property"
+msgstr ""
 
 #: src/pages/onboarding/CreateWorkspace.tsx
 msgid "Create your workspace"
@@ -580,6 +622,10 @@ msgstr "Dátum"
 msgid "Date and time"
 msgstr "Dátum és idő"
 
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+msgid "Days Published"
+msgstr ""
+
 #: src/pages/settings/data-model/SettingsObjectFieldEdit.tsx
 #: src/modules/workflow/components/RecordShowPageWorkflowHeader.tsx
 #: src/modules/settings/data-model/object-details/components/tabs/ObjectSettings.tsx
@@ -610,6 +656,7 @@ msgstr "Határozza meg objektuma nevét és leírását"
 
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 #: src/modules/action-menu/components/__stories__/RightDrawerActionMenuDropdown.stories.tsx
 #: src/modules/action-menu/components/__stories__/RecordIndexActionMenuDropdown.stories.tsx
 #: src/modules/action-menu/components/__stories__/RecordIndexActionMenuBarEntry.stories.tsx
@@ -717,6 +764,16 @@ msgstr "Megjelen\\u00edt\\u00e9s relat\\u00edv d\\u00e1tumk\\u00e9nt"
 msgid "Domain"
 msgstr "Domain"
 
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+msgid "Drag & drop images here, or click to select files"
+msgstr ""
+
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+msgid "Drop the files here..."
+msgstr ""
+
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 msgid "Dutch"
 msgstr "Holland"
@@ -734,9 +791,21 @@ msgstr "Legkor\\u00e1bbi"
 msgid "Earliest date"
 msgstr "Legkor\\u00e1bbi d\\u00e1tum"
 
+#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+msgid "Edit"
+msgstr ""
+
 #: src/pages/settings/SettingsBilling.tsx
 msgid "Edit billing interval"
 msgstr "S\\u00e1vos id\\u0151szak sz\\u00e9leszt\\u00e9se"
+
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+msgid "Edit Description"
+msgstr ""
+
+#: src/modules/record-edit/components/custom/ImageEditModal.tsx
+msgid "Edit Image"
+msgstr ""
 
 #: src/pages/settings/SettingsBilling.tsx
 msgid "Edit payment method, see your invoices and more"
@@ -959,9 +1028,45 @@ msgstr "Funkciók"
 msgid "General"
 msgstr "Általános"
 
+#: src/modules/object-record/record-show/components/nm/AISuite.tsx
+msgid "Generate Analysis"
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/AISuite.tsx
+msgid "Generate Insights"
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/AISuite.tsx
+msgid "Generate professional videos using AI by using your property images."
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/AISuite.tsx
+msgid "Generate Video"
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/AISuite.tsx
+msgid "Generated Videos"
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/AISuite.tsx
+msgid "Generating videos..."
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/AISuite.tsx
+msgid "Generating..."
+msgstr ""
+
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 msgid "German"
 msgstr "Német"
+
+#: src/modules/object-record/record-show/components/nm/AISuite.tsx
+msgid "Get AI-powered insights about potential buyers and personalized engagement strategies"
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/AISuite.tsx
+msgid "Get AI-powered insights about the local market and property positioning"
+msgstr ""
 
 #: src/pages/onboarding/InviteTeam.tsx
 msgid "Get the most out of your workspace by inviting your team."
@@ -1029,6 +1134,10 @@ msgstr "Indexek"
 #: src/modules/settings/data-model/fields/forms/components/SettingsDataModelFieldIconLabelForm.tsx
 msgid "Input must be in camel case and cannot start with a number"
 msgstr "A bevitelnek camelCase formátumúnak kell lennie és nem kezdődhet számmal"
+
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+msgid "Inquiries"
+msgstr ""
 
 #: src/pages/settings/data-model/constants/SettingsObjectTableMetadata.ts
 msgid "Instances"
@@ -1117,6 +1226,10 @@ msgstr "Legújabb"
 msgid "Latest date"
 msgstr "Legkésőbbi dátum"
 
+#: src/modules/object-record/record-show/components/nm/AISuite.tsx
+msgid "Lead Insights"
+msgstr ""
+
 #: src/pages/settings/profile/appearance/components/SettingsExperience.tsx
 msgid "Light"
 msgstr "Világos"
@@ -1130,6 +1243,12 @@ msgstr "A link vágólapra másolva"
 msgid "Listings"
 msgstr "Listázások"
 
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+#: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
+#: src/modules/object-record/record-show/components/nm/AISuite.tsx
+msgid "Loading..."
+msgstr ""
+
 #: src/pages/onboarding/ChooseYourPlan.tsx
 msgid "Log out"
 msgstr "Kijelentkezés"
@@ -1137,6 +1256,10 @@ msgstr "Kijelentkezés"
 #: src/modules/settings/components/SettingsNavigationDrawerItems.tsx
 msgid "Logout"
 msgstr "Kijelentkezés"
+
+#: src/modules/object-record/record-show/components/nm/publication/CompletionProgress.tsx
+msgid "Looking good!"
+msgstr ""
 
 #: src/pages/settings/SettingsWorkspaceMembers.tsx
 msgid "Manage Members"
@@ -1158,6 +1281,14 @@ msgstr "Előfizetés kezelése"
 #: src/modules/action-menu/components/__stories__/RecordIndexActionMenuBarEntry.stories.tsx
 msgid "Mark as done"
 msgstr "Jelölje meg készként"
+
+#: src/modules/object-record/record-show/components/nm/AISuite.tsx
+msgid "Market Analysis"
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/AISuite.tsx
+msgid "Marketing Video"
+msgstr ""
 
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationShortLabel.ts
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationLabel.ts
@@ -1300,6 +1431,14 @@ msgstr "Új rekord"
 msgid "No connected account"
 msgstr "Nincs csatlakoztatott fiók"
 
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+msgid "No description"
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+msgid "No inquiries yet"
+msgstr ""
+
 #: src/pages/settings/roles/components/RoleAssignment.tsx
 #~ msgid "No members assigned to this role yet"
 #~ msgstr "No members assigned to this role yet"
@@ -1320,6 +1459,18 @@ msgstr "Nincs csatlakoztatott fiók"
 msgid "No more members to assign"
 msgstr "Nincs több hozzárendelhető tag"
 
+#: src/modules/object-record/record-table/empty-state/utils/getEmptyStateTitle.ts
+msgid "No publications yet"
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+msgid "No recent visitors yet"
+msgstr ""
+
+#: src/modules/object-record/record-table/empty-state/components/RecordTableEmptyStateReadOnly.tsx
+msgid "No records found"
+msgstr ""
+
 #: src/pages/settings/roles/components/RoleWorkspaceMemberPickerDropdownContent.tsx
 #~ msgid "No Result"
 #~ msgstr "No Result"
@@ -1327,6 +1478,10 @@ msgstr "Nincs több hozzárendelhető tag"
 #: src/pages/settings/roles/components/RoleWorkspaceMemberPickerDropdownContent.tsx
 msgid "No Results"
 msgstr "Nincs találat"
+
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+msgid "No similar properties found"
+msgstr ""
 
 #: src/modules/object-record/record-table/empty-state/utils/getEmptyStateTitle.ts
 msgid "No workflow runs yet"
@@ -1364,6 +1519,10 @@ msgstr "A járatlan úton"
 #: src/modules/ui/layout/page-header/components/PageHeaderOpenCommandMenuButton.tsx
 msgid "Open command menu"
 msgstr "Parancsmenü megnyitása"
+
+#: src/modules/object-record/object-options-dropdown/components/ObjectOptionsDropdownViewSettingsOpenInContent.tsx
+msgid "Open in"
+msgstr ""
 
 #: src/modules/object-metadata/components/NavigationDrawerOpenedSection.tsx
 msgid "Opened"
@@ -1475,10 +1634,27 @@ msgstr "Portugál — Portugália"
 #~ msgid "Portuguese (Portugal)"
 #~ msgstr "Portuguese (Portugal)"
 
+#: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
+#: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
+msgid "Prefill"
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
+msgid "Prefill Property"
+msgstr ""
+
 #: src/modules/settings/data-model/objects/forms/components/SettingsDataModelObjectSettingsFormCard.tsx
 #: src/modules/settings/data-model/components/SettingsDataModelPreviewFormCard.tsx
 msgid "Preview"
 msgstr "Előnézet"
+
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+msgid "Price History"
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+msgid "Price history chart coming soon"
+msgstr ""
 
 #: src/modules/auth/sign-in-up/components/FooterNote.tsx
 msgid "Privacy Policy"
@@ -1490,9 +1666,25 @@ msgstr "Adatvédelmi irányelvek"
 msgid "Profile"
 msgstr "Profil"
 
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+msgid "Property Images"
+msgstr ""
+
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 msgid "Pseudo-English"
 msgstr "Pszeudo-angol"
+
+#: src/modules/object-record/record-show/components/nm/publication/CompletionProgress.tsx
+msgid "Publication completion -"
+msgstr ""
+
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
+msgid "Publication Draft created successfully"
+msgstr ""
+
+#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+msgid "Publish"
+msgstr ""
 
 #: src/modules/settings/developers/components/SettingsReadDocumentationButton.tsx
 msgid "Read documentation"
@@ -1501,6 +1693,14 @@ msgstr "Dokumentáció olvasása"
 #: src/modules/settings/profile/components/ChangePassword.tsx
 msgid "Receive an email containing password update link"
 msgstr "E-mail küldése a jelszó frissítési linkkel"
+
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+msgid "Recent Inquiries"
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+msgid "Recent Visitors"
+msgstr ""
 
 #: src/modules/command-menu/components/CommandMenu.tsx
 msgid "Record Selection"
@@ -1576,6 +1776,19 @@ msgstr "Futtasson egy munkafolyamatot, és térjen vissza ide a végrehajtások 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 msgid "Russian"
 msgstr "Orosz"
+
+#: src/modules/record-edit/components/RecordEditContainer.tsx
+#: src/modules/record-edit/components/custom/ImageEditModal.tsx
+msgid "Save"
+msgstr ""
+
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+msgid "Scroll left"
+msgstr ""
+
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+msgid "Scroll right"
+msgstr ""
 
 #: src/modules/sign-in-background-mock/components/SignInAppNavigationDrawerMock.tsx
 #: src/modules/navigation/components/MainNavigationDrawerItems.tsx
@@ -1717,6 +1930,10 @@ msgstr "Bejelentkezés"
 msgid "Sign up"
 msgstr "Regisztráció"
 
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+msgid "Similar Properties"
+msgstr ""
+
 #: src/modules/auth/sign-in-up/components/SignInUpWithSSO.tsx
 msgid "Single sign-on (SSO)"
 msgstr "Egyszerű bejelentkezés (SSO)"
@@ -1737,6 +1954,10 @@ msgstr "Spanyol"
 #: src/pages/settings/security/SettingsSecurity.tsx
 msgid "SSO"
 msgstr "SSO"
+
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+msgid "Status"
+msgstr ""
 
 #: src/pages/settings/workspace/SettingsSubdomain.tsx
 msgid "Subdomain"
@@ -1980,6 +2201,14 @@ msgstr "Vietnámi"
 msgid "View billing details"
 msgstr "Számlázási részletek megtekintése"
 
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+msgid "Visitor Activity"
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+msgid "Visitor activity chart coming soon"
+msgstr ""
+
 #: src/modules/settings/data-model/objects/components/SettingsObjectCoverImage.tsx
 msgid "Visualize"
 msgstr "Vizualizál"
@@ -2065,6 +2294,10 @@ msgstr "Írjon leírást"
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
 msgid "yes"
 msgstr "igen"
+
+#: src/modules/object-record/record-table/empty-state/components/RecordTableEmptyStateReadOnly.tsx
+msgid "You are not allowed to create records in this object"
+msgstr ""
 
 #: src/pages/settings/SettingsBilling.tsx
 msgid "You will be charged immediately for the full year."
