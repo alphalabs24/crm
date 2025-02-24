@@ -121,10 +121,11 @@ msgid "Add"
 msgstr "Add"
 
 #: src/modules/record-edit/components/custom/DocumentEditModal.tsx
-msgid "Add a description for this document..."
-msgstr "Add a description for this document..."
+#~ msgid "Add a description for this document..."
+#~ msgstr "Add a description for this document..."
 
 #: src/modules/record-edit/components/custom/ImageEditModal.tsx
+#: src/modules/record-edit/components/custom/DocumentEditModal.tsx
 msgid "Add a description..."
 msgstr "Add a description..."
 
@@ -420,8 +421,8 @@ msgid "Choose your Trial"
 msgstr "Choose your Trial"
 
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
-msgid "Click to select files"
-msgstr "Click to select files"
+#~ msgid "Click to select files"
+#~ msgstr "Click to select files"
 
 #: src/modules/ui/feedback/snack-bar-manager/components/SnackBar.tsx
 #~ msgid "Close"
@@ -772,8 +773,8 @@ msgid "Display as relative date"
 msgstr "Display as relative date"
 
 #: src/modules/record-edit/components/custom/DocumentEditModal.tsx
-msgid "Document Description"
-msgstr "Document Description"
+#~ msgid "Document Description"
+#~ msgstr "Document Description"
 
 #: src/pages/settings/SettingsWorkspace.tsx
 #: src/pages/settings/workspace/SettingsDomain.tsx
@@ -786,18 +787,28 @@ msgid "Download"
 msgstr "Download"
 
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
-msgid "Drag & drop documents here, or click to select files"
-msgstr "Drag & drop documents here, or click to select files"
+#~ msgid "Drag & drop documents here, or click to select files"
+#~ msgstr "Drag & drop documents here, or click to select files"
 
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
-msgid "Drag & drop images here, or click to select files"
-msgstr "Drag & drop images here, or click to select files"
+#~ msgid "Drag & drop images here, or click to select files"
+#~ msgstr "Drag & drop images here, or click to select files"
+
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Drop documents here"
+msgstr "Drop documents here"
+
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+msgid "Drop images here"
+msgstr "Drop images here"
 
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
-msgid "Drop the files here..."
-msgstr "Drop the files here..."
+#~ msgid "Drop the files here..."
+#~ msgstr "Drop the files here..."
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 msgid "Dutch"
@@ -825,9 +836,16 @@ msgid "Edit billing interval"
 msgstr "Edit billing interval"
 
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
-#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Edit Description"
 msgstr "Edit Description"
+
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Edit Details"
+msgstr "Edit Details"
+
+#: src/modules/record-edit/components/custom/DocumentEditModal.tsx
+msgid "Edit Document"
+msgstr "Edit Document"
 
 #: src/modules/record-edit/components/custom/ImageEditModal.tsx
 msgid "Edit Image"
@@ -889,6 +907,10 @@ msgstr "English"
 #: src/pages/onboarding/ChooseYourPlan.tsx
 msgid "Enjoy a {withCreditCardTrialPeriodDuration}-days free trial"
 msgstr "Enjoy a {withCreditCardTrialPeriodDuration}-days free trial"
+
+#: src/modules/record-edit/components/custom/DocumentEditModal.tsx
+msgid "Enter document name"
+msgstr "Enter document name"
 
 #: src/pages/settings/security/SettingsSecurity.tsx
 msgid "Enterprise"
@@ -1548,6 +1570,10 @@ msgstr "Objects"
 msgid "Off the beaten path"
 msgstr "Off the beaten path"
 
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Open"
+msgstr "Open"
+
 #: src/modules/ui/layout/page-header/components/PageHeaderOpenCommandMenuButton.tsx
 msgid "Open command menu"
 msgstr "Open command menu"
@@ -2192,6 +2218,11 @@ msgstr "Unlimited contacts"
 #: src/modules/ui/input/components/ImageInput.tsx
 msgid "Upload"
 msgstr "Upload"
+
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Upload Documents"
+msgstr "Upload Documents"
 
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx
 msgid "URL"

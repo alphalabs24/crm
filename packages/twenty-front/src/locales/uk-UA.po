@@ -126,10 +126,11 @@ msgid "Add"
 msgstr "Додати"
 
 #: src/modules/record-edit/components/custom/DocumentEditModal.tsx
-msgid "Add a description for this document..."
-msgstr ""
+#~ msgid "Add a description for this document..."
+#~ msgstr ""
 
 #: src/modules/record-edit/components/custom/ImageEditModal.tsx
+#: src/modules/record-edit/components/custom/DocumentEditModal.tsx
 msgid "Add a description..."
 msgstr ""
 
@@ -425,8 +426,8 @@ msgid "Choose your Trial"
 msgstr "Виберіть вашу пробну версію"
 
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
-msgid "Click to select files"
-msgstr ""
+#~ msgid "Click to select files"
+#~ msgstr ""
 
 #: src/modules/ui/feedback/snack-bar-manager/components/SnackBar.tsx
 #~ msgid "Close"
@@ -810,8 +811,8 @@ msgstr ""
 "              Показувати як відносну дату"
 
 #: src/modules/record-edit/components/custom/DocumentEditModal.tsx
-msgid "Document Description"
-msgstr ""
+#~ msgid "Document Description"
+#~ msgstr ""
 
 #: src/pages/settings/SettingsWorkspace.tsx
 #: src/pages/settings/workspace/SettingsDomain.tsx
@@ -827,18 +828,28 @@ msgid "Download"
 msgstr ""
 
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
-msgid "Drag & drop documents here, or click to select files"
+#~ msgid "Drag & drop documents here, or click to select files"
+#~ msgstr ""
+
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+#~ msgid "Drag & drop images here, or click to select files"
+#~ msgstr ""
+
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Drop documents here"
 msgstr ""
 
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
-msgid "Drag & drop images here, or click to select files"
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+msgid "Drop images here"
 msgstr ""
 
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
-msgid "Drop the files here..."
-msgstr ""
+#~ msgid "Drop the files here..."
+#~ msgstr ""
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 msgid "Dutch"
@@ -878,8 +889,15 @@ msgstr ""
 "              Редагувати інтервал білінгу"
 
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
-#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Edit Description"
+msgstr ""
+
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Edit Details"
+msgstr ""
+
+#: src/modules/record-edit/components/custom/DocumentEditModal.tsx
+msgid "Edit Document"
 msgstr ""
 
 #: src/modules/record-edit/components/custom/ImageEditModal.tsx
@@ -950,6 +968,10 @@ msgstr "Англійська"
 #: src/pages/onboarding/ChooseYourPlan.tsx
 msgid "Enjoy a {withCreditCardTrialPeriodDuration}-days free trial"
 msgstr "Насолоджуйтеся {withCreditCardTrialPeriodDuration}-денним безкоштовним пробним періодом"
+
+#: src/modules/record-edit/components/custom/DocumentEditModal.tsx
+msgid "Enter document name"
+msgstr ""
 
 #: src/pages/settings/security/SettingsSecurity.tsx
 msgid "Enterprise"
@@ -1609,6 +1631,10 @@ msgstr "Об'єкти"
 msgid "Off the beaten path"
 msgstr "Не по традиційному шляху"
 
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Open"
+msgstr ""
+
 #: src/modules/ui/layout/page-header/components/PageHeaderOpenCommandMenuButton.tsx
 msgid "Open command menu"
 msgstr "Відкрити командне меню"
@@ -2253,6 +2279,11 @@ msgstr "Необмежена кількість контактів"
 #: src/modules/ui/input/components/ImageInput.tsx
 msgid "Upload"
 msgstr "Завантажити"
+
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Upload Documents"
+msgstr ""
 
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx
 msgid "URL"

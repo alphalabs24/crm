@@ -128,10 +128,11 @@ msgid "Add"
 msgstr "추가"
 
 #: src/modules/record-edit/components/custom/DocumentEditModal.tsx
-msgid "Add a description for this document..."
-msgstr ""
+#~ msgid "Add a description for this document..."
+#~ msgstr ""
 
 #: src/modules/record-edit/components/custom/ImageEditModal.tsx
+#: src/modules/record-edit/components/custom/DocumentEditModal.tsx
 msgid "Add a description..."
 msgstr ""
 
@@ -427,8 +428,8 @@ msgid "Choose your Trial"
 msgstr "평가판 선택"
 
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
-msgid "Click to select files"
-msgstr ""
+#~ msgid "Click to select files"
+#~ msgstr ""
 
 #: src/modules/ui/feedback/snack-bar-manager/components/SnackBar.tsx
 #~ msgid "Close"
@@ -779,8 +780,8 @@ msgid "Display as relative date"
 msgstr "상대 날짜로 표시"
 
 #: src/modules/record-edit/components/custom/DocumentEditModal.tsx
-msgid "Document Description"
-msgstr ""
+#~ msgid "Document Description"
+#~ msgstr ""
 
 #: src/pages/settings/SettingsWorkspace.tsx
 #: src/pages/settings/workspace/SettingsDomain.tsx
@@ -793,18 +794,28 @@ msgid "Download"
 msgstr ""
 
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
-msgid "Drag & drop documents here, or click to select files"
+#~ msgid "Drag & drop documents here, or click to select files"
+#~ msgstr ""
+
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+#~ msgid "Drag & drop images here, or click to select files"
+#~ msgstr ""
+
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Drop documents here"
 msgstr ""
 
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
-msgid "Drag & drop images here, or click to select files"
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+msgid "Drop images here"
 msgstr ""
 
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
-msgid "Drop the files here..."
-msgstr ""
+#~ msgid "Drop the files here..."
+#~ msgstr ""
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 msgid "Dutch"
@@ -832,8 +843,15 @@ msgid "Edit billing interval"
 msgstr "청구 주기 편집"
 
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
-#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Edit Description"
+msgstr ""
+
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Edit Details"
+msgstr ""
+
+#: src/modules/record-edit/components/custom/DocumentEditModal.tsx
+msgid "Edit Document"
 msgstr ""
 
 #: src/modules/record-edit/components/custom/ImageEditModal.tsx
@@ -896,6 +914,10 @@ msgstr "영어"
 #: src/pages/onboarding/ChooseYourPlan.tsx
 msgid "Enjoy a {withCreditCardTrialPeriodDuration}-days free trial"
 msgstr "{withCreditCardTrialPeriodDuration}일 무료 체험을 즐기세요"
+
+#: src/modules/record-edit/components/custom/DocumentEditModal.tsx
+msgid "Enter document name"
+msgstr ""
 
 #: src/pages/settings/security/SettingsSecurity.tsx
 msgid "Enterprise"
@@ -1555,6 +1577,10 @@ msgstr "개체"
 msgid "Off the beaten path"
 msgstr "잘 알려지지 않은 길"
 
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Open"
+msgstr ""
+
 #: src/modules/ui/layout/page-header/components/PageHeaderOpenCommandMenuButton.tsx
 msgid "Open command menu"
 msgstr "명령 메뉴 열기"
@@ -2199,6 +2225,11 @@ msgstr "무제한 연락처"
 #: src/modules/ui/input/components/ImageInput.tsx
 msgid "Upload"
 msgstr "업로드"
+
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Upload Documents"
+msgstr ""
 
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx
 msgid "URL"

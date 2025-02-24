@@ -126,10 +126,11 @@ msgid "Add"
 msgstr "Přidat"
 
 #: src/modules/record-edit/components/custom/DocumentEditModal.tsx
-msgid "Add a description for this document..."
-msgstr ""
+#~ msgid "Add a description for this document..."
+#~ msgstr ""
 
 #: src/modules/record-edit/components/custom/ImageEditModal.tsx
+#: src/modules/record-edit/components/custom/DocumentEditModal.tsx
 msgid "Add a description..."
 msgstr ""
 
@@ -425,8 +426,8 @@ msgid "Choose your Trial"
 msgstr "Vyberte si Trial"
 
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
-msgid "Click to select files"
-msgstr ""
+#~ msgid "Click to select files"
+#~ msgstr ""
 
 #: src/modules/ui/feedback/snack-bar-manager/components/SnackBar.tsx
 #~ msgid "Close"
@@ -777,8 +778,8 @@ msgid "Display as relative date"
 msgstr "Zobrazit jako relativní datum"
 
 #: src/modules/record-edit/components/custom/DocumentEditModal.tsx
-msgid "Document Description"
-msgstr ""
+#~ msgid "Document Description"
+#~ msgstr ""
 
 #: src/pages/settings/SettingsWorkspace.tsx
 #: src/pages/settings/workspace/SettingsDomain.tsx
@@ -791,18 +792,28 @@ msgid "Download"
 msgstr ""
 
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
-msgid "Drag & drop documents here, or click to select files"
+#~ msgid "Drag & drop documents here, or click to select files"
+#~ msgstr ""
+
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+#~ msgid "Drag & drop images here, or click to select files"
+#~ msgstr ""
+
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Drop documents here"
 msgstr ""
 
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
-msgid "Drag & drop images here, or click to select files"
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+msgid "Drop images here"
 msgstr ""
 
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
-msgid "Drop the files here..."
-msgstr ""
+#~ msgid "Drop the files here..."
+#~ msgstr ""
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 msgid "Dutch"
@@ -830,8 +841,15 @@ msgid "Edit billing interval"
 msgstr "Upravit fakturační interval"
 
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
-#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Edit Description"
+msgstr ""
+
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Edit Details"
+msgstr ""
+
+#: src/modules/record-edit/components/custom/DocumentEditModal.tsx
+msgid "Edit Document"
 msgstr ""
 
 #: src/modules/record-edit/components/custom/ImageEditModal.tsx
@@ -894,6 +912,10 @@ msgstr "Angličtina"
 #: src/pages/onboarding/ChooseYourPlan.tsx
 msgid "Enjoy a {withCreditCardTrialPeriodDuration}-days free trial"
 msgstr "Užijte si {withCreditCardTrialPeriodDuration}-denní bezplatnou zkušební dobu"
+
+#: src/modules/record-edit/components/custom/DocumentEditModal.tsx
+msgid "Enter document name"
+msgstr ""
 
 #: src/pages/settings/security/SettingsSecurity.tsx
 msgid "Enterprise"
@@ -1555,6 +1577,10 @@ msgstr "Objekty"
 msgid "Off the beaten path"
 msgstr "Mimo ušlapané cesty"
 
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Open"
+msgstr ""
+
 #: src/modules/ui/layout/page-header/components/PageHeaderOpenCommandMenuButton.tsx
 msgid "Open command menu"
 msgstr "Otevřít příkazové menu"
@@ -2199,6 +2225,11 @@ msgstr "Neomezený počet kontaktů"
 #: src/modules/ui/input/components/ImageInput.tsx
 msgid "Upload"
 msgstr "Nahrát"
+
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Upload Documents"
+msgstr ""
 
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx
 msgid "URL"
