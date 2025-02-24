@@ -1,12 +1,7 @@
 import styled from '@emotion/styled';
 
-import { useUploadAttachmentFile } from '@/activities/files/hooks/useUploadAttachmentFile';
-import { Attachment } from '@/activities/files/types/Attachment';
 import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadataItem';
-import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { getLinkToShowPage } from '@/object-metadata/utils/getLinkToShowPage';
-import { useDeleteOneRecord } from '@/object-record/hooks/useDeleteOneRecord';
-import { useUpdateOneRecord } from '@/object-record/hooks/useUpdateOneRecord';
 import { isNewViewableRecordLoadingState } from '@/object-record/record-right-drawer/states/isNewViewableRecordLoading';
 import { useRecordShowPage } from '@/object-record/record-show/hooks/useRecordShowPage';
 import { RecordEditField } from '@/record-edit/components/RecordEditField';
@@ -18,12 +13,10 @@ import { ShowPageImageBanner } from '@/ui/layout/show-page/components/nm/ShowPag
 import { SingleTabProps, TabList } from '@/ui/layout/tab/components/TabList';
 import { useTabList } from '@/ui/layout/tab/hooks/useTabList';
 import { useLingui } from '@lingui/react/macro';
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { isDefined } from 'twenty-shared';
 import { Button, LARGE_DESKTOP_VIEWPORT, MOBILE_VIEWPORT } from 'twenty-ui';
-import { useDestroyOneRecord } from '@/object-record/hooks/useDestroyOneRecord';
 
 export const EDIT_CONTAINER_WIDTH = 1440;
 
@@ -179,6 +172,7 @@ export const RecordEditContainer = ({
         navigate(link);
       }, 100);
     } catch (error) {
+      console.error(error);
       enqueueSnackBar(t`Error saving ${objectNameSingular}`, {
         variant: SnackBarVariant.Error,
       });

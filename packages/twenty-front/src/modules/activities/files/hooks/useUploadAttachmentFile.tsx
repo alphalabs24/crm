@@ -32,6 +32,7 @@ export const useUploadAttachmentFile = () => {
     targetableObject: ActivityTargetableObject,
     fileType?: AttachmentType,
     orderIndex?: number,
+    fileName?: string,
     description?: string,
   ) => {
     const result = await uploadFile({
@@ -53,7 +54,7 @@ export const useUploadAttachmentFile = () => {
 
     const attachmentToCreate = {
       authorId: currentWorkspaceMember?.id,
-      name: file.name,
+      name: fileName ?? file.name,
       fullPath: computePathWithoutToken(attachmentPath),
       type: fileType ?? getFileType(file.name),
       [targetableObjectFieldIdName]: targetableObject.id,

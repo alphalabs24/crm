@@ -20,6 +20,7 @@ import Skeleton from 'react-loading-skeleton';
 import { isDefined } from 'twenty-shared';
 import {
   AppTooltip,
+  Button,
   IconChevronLeft,
   IconChevronRight,
   IconDotsVertical,
@@ -31,11 +32,13 @@ import {
   TooltipDelay,
 } from 'twenty-ui';
 import { ImageEditModal } from './ImageEditModal';
+import { css } from '@emotion/react';
 
 const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(4)};
+  min-height: 120px;
 `;
 
 const StyledTitleContainer = styled.div`
@@ -207,15 +210,74 @@ const StyledScrollButton = styled.button<{ direction: 'left' | 'right' }>`
   }
 `;
 
-const StyledUploadIcon = styled(IconUpload)`
-  color: ${({ theme }) => theme.font.color.light};
-  width: 32px;
-  height: 32px;
+const StyledHeaderContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
 `;
 
-const StyledDropzoneText = styled.span`
-  color: ${({ theme }) => theme.font.color.secondary};
-  font-size: ${({ theme }) => theme.font.size.sm};
+const StyledUploadButton = styled.button`
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing(2)};
+  padding: ${({ theme }) => theme.spacing(2)};
+  border-radius: ${({ theme }) => theme.border.radius.sm};
+  border: 1px solid ${({ theme }) => theme.border.color.medium};
+  background: ${({ theme }) => theme.background.primary};
+  cursor: pointer;
+
+  &:hover {
+    background: ${({ theme }) => theme.background.secondary};
+  }
+`;
+
+const StyledDragOverlay = styled.div<{
+  position?: 'relative' | 'absolute';
+  isDragActive?: boolean;
+}>`
+  position: ${({ position }) =>
+    position === 'relative' ? 'relative' : 'absolute'};
+
+  cursor: ${({ position }) =>
+    position === 'relative' ? 'pointer' : 'default'};
+
+  min-height: 80px;
+
+  ${({ position }) =>
+    position === 'relative' &&
+    css`
+      transition: all 200ms ease-in-out;
+    `}
+
+  transform: ${({ isDragActive }) =>
+    isDragActive ? 'scale(1.01)' : 'scale(1)'};
+
+  &:hover {
+    border-color: ${({ theme }) => theme.border.color.strong};
+    background: ${({ theme }) => theme.background.tertiary};
+  }
+
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 3px dashed ${({ theme }) => theme.border.color.medium};
+
+  background: ${({ theme, position, isDragActive }) =>
+    position === 'relative' && isDragActive
+      ? theme.background.transparent.lighter
+      : theme.background.primary};
+  opacity: 0.95;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: ${({ theme }) => theme.spacing(2)};
+  border-radius: ${({ theme }) => theme.border.radius.md};
+  color: ${({ theme }) => theme.font.color.primary};
+  z-index: 1;
+  pointer-events: ${({ position }) =>
+    position === 'relative' ? 'auto' : 'none'};
 `;
 
 const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
@@ -351,10 +413,6 @@ const DraggableImageItem = ({
   );
 };
 
-const StyledFullHeightDropzone = styled(StyledDropzone)`
-  min-height: 200px;
-`;
-
 export const PropertyImageFormInput = ({ loading }: { loading?: boolean }) => {
   const [hasRefreshed, setHasRefreshed] = useState(false);
   const { t } = useLingui();
@@ -440,6 +498,8 @@ export const PropertyImageFormInput = ({ loading }: { loading?: boolean }) => {
       'image/*': ['.png', '.jpg', '.jpeg', '.gif'],
     },
     onDrop: onAdd,
+    noClick: true,
+    noDragEventsBubbling: true,
   });
 
   const onDragEnd = (result: DropResult) => {
@@ -520,18 +580,25 @@ export const PropertyImageFormInput = ({ loading }: { loading?: boolean }) => {
 
     if (propertyImages.length === 0) {
       return (
-        <StyledFullHeightDropzone
-          {...getRootProps()}
+        <StyledDragOverlay
+          position="relative"
           isDragActive={isDragActive}
+          onClick={(e) => {
+            e.stopPropagation();
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.multiple = true;
+            input.accept = 'image/*';
+            input.onchange = (e) => {
+              const files = (e.target as HTMLInputElement).files;
+              if (files) onAdd(Array.from(files));
+            };
+            input.click();
+          }}
         >
-          <input {...getInputProps()} />
-          <StyledUploadIcon />
-          <StyledDropzoneText>
-            {isDragActive
-              ? t`Drop the files here...`
-              : t`Drag & drop images here, or click to select files`}
-          </StyledDropzoneText>
-        </StyledFullHeightDropzone>
+          <IconUpload size={32} />
+          <span>{t`Drop images here`}</span>
+        </StyledDragOverlay>
       );
     }
 
@@ -593,32 +660,53 @@ export const PropertyImageFormInput = ({ loading }: { loading?: boolean }) => {
             )}
           </Droppable>
         </DragDropContext>
-
-        <StyledDropzone {...getRootProps()} isDragActive={isDragActive}>
-          <input {...getInputProps()} />
-          <StyledUploadIcon />
-          <StyledDropzoneText>
-            {isDragActive
-              ? t`Drop the files here...`
-              : t`Click to select files`}
-          </StyledDropzoneText>
-        </StyledDropzone>
       </>
     );
   };
 
   return (
-    <StyledContainer>
-      <StyledTitleContainer>
-        <StyledTitle>{t`Property Images`}</StyledTitle>
-        <StyledDescription>
-          {t`Add images of your property that will be visible in the publication.`}
-        </StyledDescription>
-      </StyledTitleContainer>
-      {renderContent()}
-    </StyledContainer>
+    <div {...getRootProps()} style={{ position: 'relative' }}>
+      <input {...getInputProps()} />
+      <StyledContainer>
+        <StyledHeaderContainer>
+          <StyledTitleContainer>
+            <StyledTitle>{t`Property Images`}</StyledTitle>
+            <StyledDescription>
+              {t`Add images of your property that will be visible in the publication.`}
+            </StyledDescription>
+          </StyledTitleContainer>
+          <Button
+            onClick={(e) => {
+              e.stopPropagation();
+              const input = document.createElement('input');
+              input.type = 'file';
+              input.multiple = true;
+              input.accept = 'image/*';
+              input.onchange = (e) => {
+                const files = (e.target as HTMLInputElement).files;
+                if (files) onAdd(Array.from(files));
+              };
+              input.click();
+            }}
+            variant="secondary"
+            title={t`Upload Documents`}
+            Icon={IconUpload}
+          />
+        </StyledHeaderContainer>
+
+        {renderContent()}
+      </StyledContainer>
+
+      {isDragActive && propertyImages.length > 0 && (
+        <StyledDragOverlay>
+          <IconUpload size={32} />
+          <span>{t`Drop images here`}</span>
+        </StyledDragOverlay>
+      )}
+    </div>
   );
 };
+
 const StyledDropdownButtonContainer = styled.div`
   position: absolute;
   right: ${({ theme }) => theme.spacing(2)};

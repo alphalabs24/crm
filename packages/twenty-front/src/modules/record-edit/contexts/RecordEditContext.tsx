@@ -3,14 +3,11 @@ import { useUploadAttachmentFile } from '@/activities/files/hooks/useUploadAttac
 import { Attachment } from '@/activities/files/types/Attachment';
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { ObjectMetadataItem } from '@/object-metadata/types/ObjectMetadataItem';
-import { getLinkToShowPage } from '@/object-metadata/utils/getLinkToShowPage';
 import { useDestroyOneRecord } from '@/object-record/hooks/useDestroyOneRecord';
 import { useUpdateOneRecord } from '@/object-record/hooks/useUpdateOneRecord';
 import { FieldDefinition } from '@/object-record/record-field/types/FieldDefinition';
 import { FieldMetadata } from '@/object-record/record-field/types/FieldMetadata';
 import { ObjectRecord } from '@/object-record/types/ObjectRecord';
-import { SnackBarVariant } from '@/ui/feedback/snack-bar-manager/components/SnackBar';
-import { useSnackBar } from '@/ui/feedback/snack-bar-manager/hooks/useSnackBar';
 import {
   createContext,
   PropsWithChildren,
@@ -20,7 +17,7 @@ import {
   useMemo,
   useState,
 } from 'react';
-import { useBlocker, useNavigate, useParams } from 'react-router-dom';
+import { useBlocker, useParams } from 'react-router-dom';
 import { isDefined } from 'twenty-shared';
 
 type FieldUpdate = {
@@ -36,6 +33,17 @@ export type RecordEditPropertyImage = {
   file?: File;
   previewUrl: string;
   description: string;
+};
+
+export type RecordEditPropertyDocument = {
+  id: string;
+  isAttachment: boolean;
+  attachment?: Attachment;
+  file?: File;
+  previewUrl: string;
+  description: string;
+  orderIndex?: number;
+  fileName?: string;
 };
 
 export type RecordEditContextType = {
@@ -57,6 +65,17 @@ export type RecordEditContextType = {
   ) => void;
   loading: boolean;
   saveRecord: () => void;
+  propertyDocuments: RecordEditPropertyDocument[];
+  addPropertyDocument: (document: RecordEditPropertyDocument) => void;
+  removePropertyDocument: (document: RecordEditPropertyDocument) => void;
+  updatePropertyDocumentOrder: (
+    documents: RecordEditPropertyDocument[],
+  ) => void;
+  refreshPropertyDocumentUrls: () => void;
+  updatePropertyDocument: (
+    documentId: string,
+    updates: Partial<RecordEditPropertyDocument>,
+  ) => void;
 };
 
 export const RecordEditContext = createContext<RecordEditContextType | null>(
@@ -120,6 +139,23 @@ export const RecordEditProvider = ({
         }),
         {},
       );
+  }, [attachments]);
+
+  const attachmentDocuments = useMemo(() => {
+    return attachments
+      ?.filter(
+        (attachment: Attachment) => attachment.type === 'PropertyDocument',
+      )
+      .sort((a, b) => a.orderIndex - b.orderIndex)
+      .map((attachment: Attachment) => ({
+        ...attachment,
+        isAttachment: true,
+        attachment,
+        file: undefined,
+        previewUrl: attachment.fullPath,
+        description: attachment.description ?? '',
+        fileName: attachment.name,
+      }));
   }, [attachments]);
 
   const [propertyImages, setPropertyImages] = useState<
@@ -201,6 +237,10 @@ export const RecordEditProvider = ({
     setPropertyImages(Object.values(attachmentImages));
   }, [attachmentImages]);
 
+  const resetDocuments = useCallback(() => {
+    setPropertyDocuments(Object.values(attachmentDocuments));
+  }, [attachmentDocuments]);
+
   const resetFields = useCallback(() => {
     setFieldUpdates({});
     setIsDirty(false);
@@ -224,11 +264,68 @@ export const RecordEditProvider = ({
     return true; // Block navigation
   });
 
+  const [propertyDocuments, setPropertyDocuments] = useState<
+    RecordEditPropertyDocument[]
+  >([]);
+
+  const [documentsToDelete, setDocumentsToDelete] = useState<Attachment[]>([]);
+
+  // Document handling functions
+  const addPropertyDocument = useCallback(
+    (document: RecordEditPropertyDocument) => {
+      setIsDirty(true);
+      setPropertyDocuments((prev) => [...prev, document]);
+    },
+    [],
+  );
+
+  const removePropertyDocument = useCallback(
+    (document: RecordEditPropertyDocument) => {
+      setIsDirty(true);
+      const attachment = document.attachment;
+
+      if (isDefined(attachment)) {
+        setDocumentsToDelete((prev) => [...prev, attachment]);
+      }
+
+      setPropertyDocuments((prev) => prev.filter((d) => d.id !== document.id));
+    },
+    [],
+  );
+
+  const updatePropertyDocumentOrder = useCallback(
+    (orderedDocuments: RecordEditPropertyDocument[]) => {
+      setIsDirty(true);
+      setPropertyDocuments(orderedDocuments);
+    },
+    [],
+  );
+
+  const refreshPropertyDocumentUrls = useCallback(() => {
+    setPropertyDocuments((prev) =>
+      prev.map((doc) => ({
+        ...doc,
+        previewUrl: doc.file ? URL.createObjectURL(doc.file) : doc.previewUrl,
+      })),
+    );
+  }, []);
+
+  const updatePropertyDocument = useCallback(
+    (documentId: string, updates: Partial<RecordEditPropertyDocument>) => {
+      setIsDirty(true);
+      setPropertyDocuments((prev) =>
+        prev.map((doc) =>
+          doc.id === documentId ? { ...doc, ...updates } : doc,
+        ),
+      );
+    },
+    [],
+  );
+
   // This saves the whole record with the updated fields from the form
   const saveRecord = async () => {
     setLoading(true);
 
-    // If no fields are dirty, don't save
     if (isDirty) {
       const updatedFields = getUpdatedFields();
 
@@ -244,8 +341,8 @@ export const RecordEditProvider = ({
         }),
       );
 
-      let orderIndex = 0;
       // Then process remaining/new images
+      let orderIndex = 0;
       for (const image of propertyImages) {
         if (image.isAttachment && isDefined(image.attachment)) {
           await updateOneAttachment({
@@ -255,6 +352,7 @@ export const RecordEditProvider = ({
               description: image.description,
             },
           });
+          console.log('updated image', image.attachment.id);
         } else if (isDefined(image.file)) {
           await uploadAttachmentFile(
             image.file,
@@ -266,6 +364,43 @@ export const RecordEditProvider = ({
             orderIndex,
             image.description,
           );
+          console.log('uploaded image', image.file.name);
+        }
+        orderIndex++;
+      }
+
+      // First delete removed documents
+      await Promise.all(
+        documentsToDelete.map((attachment: Attachment) => {
+          return destroyOneAttachment(attachment.id);
+        }),
+      );
+
+      // Then process remaining/new documents
+      for (const document of propertyDocuments) {
+        if (document.isAttachment && isDefined(document.attachment)) {
+          await updateOneAttachment({
+            idToUpdate: document.attachment.id,
+            updateOneRecordInput: {
+              orderIndex,
+              name: document.fileName,
+              description: document.description,
+            },
+          });
+          console.log('updated document', document.attachment.id);
+        } else if (isDefined(document.file)) {
+          await uploadAttachmentFile(
+            document.file,
+            {
+              id: objectRecordId ?? '',
+              targetObjectNameSingular: objectNameSingular ?? '',
+            },
+            'PropertyDocument',
+            orderIndex,
+            document.fileName,
+            document.description,
+          );
+          console.log('uploaded document', document.file.name);
         }
         orderIndex++;
       }
@@ -276,7 +411,8 @@ export const RecordEditProvider = ({
 
   useEffect(() => {
     resetImages();
-  }, [resetImages]);
+    resetDocuments();
+  }, [resetImages, resetDocuments]);
 
   return (
     <RecordEditContext.Provider
@@ -296,6 +432,12 @@ export const RecordEditProvider = ({
         updatePropertyImage,
         loading,
         saveRecord,
+        propertyDocuments,
+        addPropertyDocument,
+        removePropertyDocument,
+        updatePropertyDocumentOrder,
+        refreshPropertyDocumentUrls,
+        updatePropertyDocument,
       }}
     >
       {children}

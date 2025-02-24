@@ -14,6 +14,7 @@ import { isNull } from '@sniptt/guards';
 import { useMemo } from 'react';
 import { isDefined } from 'twenty-shared';
 import { PropertyImageFormInput } from './custom/PropertyImageFormInput';
+import { PropertyDocumentFormInput } from './custom/PropertyDocumentFormInput';
 
 const StyledFieldContainer = styled.div<{ isHorizontal?: boolean }>`
   display: flex;
@@ -65,6 +66,8 @@ export const RecordEditField = ({
     switch (field.name) {
       case 'pictures':
         return PropertyImageFormInput;
+      case 'documents':
+        return PropertyDocumentFormInput;
       default:
         return null;
     }
