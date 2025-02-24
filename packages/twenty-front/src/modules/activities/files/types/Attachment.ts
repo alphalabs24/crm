@@ -7,8 +7,17 @@ export type Attachment = {
   personId: string;
   authorId: string;
   createdAt: string;
+  description: string;
+  orderIndex: number;
   __typename: string;
 };
+
+export type PropertyAttachmentType =
+  | 'PropertyImage'
+  | 'PropertyDocument'
+  | 'PropertyVideo'
+  | 'PropertyDocumentation'
+  | 'PorpertyFlyer';
 
 export type AttachmentType =
   | 'Archive'
@@ -18,4 +27,5 @@ export type AttachmentType =
   | 'Spreadsheet'
   | 'TextDocument'
   | 'Video'
-  | 'Other';
+  | 'Other'
+  | PropertyAttachmentType;

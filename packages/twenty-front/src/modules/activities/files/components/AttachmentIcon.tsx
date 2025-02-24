@@ -10,6 +10,7 @@ import {
   IconPresentation,
   IconTable,
   IconVideo,
+  IconFileDescription,
 } from 'twenty-ui';
 
 import { AttachmentType } from '@/activities/files/types/Attachment';
@@ -35,6 +36,11 @@ const IconMapping: { [key in AttachmentType]: IconComponent } = {
   TextDocument: IconFileText,
   Video: IconVideo,
   Other: IconFile,
+  PropertyImage: IconPhoto,
+  PropertyDocument: IconFile,
+  PropertyVideo: IconVideo,
+  PropertyDocumentation: IconFileText,
+  PorpertyFlyer: IconFileDescription,
 };
 
 export const AttachmentIcon = ({
@@ -46,13 +52,18 @@ export const AttachmentIcon = ({
 
   const IconColors: { [key in AttachmentType]: string } = {
     Archive: theme.color.gray,
-    Audio: theme.color.pink,
-    Image: theme.color.yellow,
-    Presentation: theme.color.orange,
-    Spreadsheet: theme.color.turquoise,
-    TextDocument: theme.color.blue,
-    Video: theme.color.purple,
+    Audio: theme.color.gray,
+    Image: theme.color.gray,
+    Presentation: theme.color.gray,
+    Spreadsheet: theme.color.gray,
+    TextDocument: theme.color.gray,
+    Video: theme.color.gray,
     Other: theme.color.gray,
+    PropertyImage: theme.color.yellow,
+    PropertyDocument: theme.color.blue,
+    PropertyVideo: theme.color.purple,
+    PropertyDocumentation: theme.color.turquoise,
+    PorpertyFlyer: theme.color.orange,
   };
 
   const Icon = IconMapping[attachmentType];

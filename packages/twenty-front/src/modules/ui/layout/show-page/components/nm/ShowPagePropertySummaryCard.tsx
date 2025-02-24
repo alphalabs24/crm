@@ -1,11 +1,9 @@
 import { SKELETON_LOADER_HEIGHT_SIZES } from '@/activities/components/SkeletonLoader';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
-// eslint-disable-next-line no-restricted-imports
-import { IconMap } from '@tabler/icons-react';
 import { ReactNode } from 'react';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
-import { AppTooltip } from 'twenty-ui';
+import { AppTooltip, IconMap } from 'twenty-ui';
 import { v4 as uuidV4 } from 'uuid';
 
 import {

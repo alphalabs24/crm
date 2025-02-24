@@ -11,7 +11,9 @@ import { useRecordEdit } from '@/record-edit/contexts/RecordEditContext';
 import { SectionFieldType } from '@/record-edit/types/EditSectionTypes';
 import styled from '@emotion/styled';
 import { isNull } from '@sniptt/guards';
+import { useMemo } from 'react';
 import { isDefined } from 'twenty-shared';
+import { PropertyImageFormInput } from './custom/PropertyImageFormInput';
 
 const StyledFieldContainer = styled.div<{ isHorizontal?: boolean }>`
   display: flex;
@@ -58,6 +60,16 @@ export const RecordEditField = ({
 
   const updatedFields = getUpdatedFields()[field.name];
 
+  // Custom components for fields
+  const CustomComponent = useMemo(() => {
+    switch (field.name) {
+      case 'pictures':
+        return PropertyImageFormInput;
+      default:
+        return null;
+    }
+  }, [field.name]);
+
   const isEmpty =
     (Array.isArray(updatedFields) && updatedFields.length === 0) ||
     updatedFields === '';
@@ -76,7 +88,7 @@ export const RecordEditField = ({
 
   return (
     <StyledFieldContainer>
-      {showLabel && field.label}
+      {showLabel && type !== 'custom' && field.label}
 
       <FieldContext.Provider
         key={record.id + field.id + 'edit'}
@@ -97,7 +109,9 @@ export const RecordEditField = ({
           hotkeyScope: InlineCellHotkeyScope.InlineCell,
         }}
       >
-        {type === 'field' ? (
+        {type === 'custom' && CustomComponent ? (
+          <CustomComponent loading={loading} />
+        ) : type === 'field' ? (
           <StyledVerticalAligner>
             <RecordFormCell loading={loading} />
           </StyledVerticalAligner>

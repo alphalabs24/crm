@@ -1,11 +1,11 @@
 import styled from '@emotion/styled';
 // eslint-disable-next-line no-restricted-imports
 import {
-    IconBrandInstagram,
-    IconChevronLeft,
-    IconChevronRight,
-    IconPlayerPlay,
-} from '@tabler/icons-react';
+  IconBrandInstagram,
+  IconChevronLeft,
+  IconChevronRight,
+  IconPlayerPlay,
+} from 'twenty-ui';
 import { useEffect, useState } from 'react';
 
 const StyledInstagramPreview = styled.div`

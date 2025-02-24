@@ -23,7 +23,7 @@ import { Key } from 'ts-key-enum';
 
 export const StyledDropdownContentContainer = styled.div`
   display: flex;
-  z-index: 30;
+  z-index: 200000;
 `;
 
 export type DropdownContentProps = {

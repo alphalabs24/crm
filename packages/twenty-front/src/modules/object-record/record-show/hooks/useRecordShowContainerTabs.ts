@@ -8,8 +8,6 @@ import { RecordLayout } from '@/object-record/record-show/types/RecordLayout';
 import { SingleTabProps } from '@/ui/layout/tab/components/TabList';
 import { RecordLayoutTab } from '@/ui/layout/tab/types/RecordLayoutTab';
 import { useIsMobile } from '@/ui/utilities/responsive/hooks/useIsMobile';
-// eslint-disable-next-line no-restricted-imports
-import { IconLayoutDashboard } from '@tabler/icons-react';
 import { useRecoilValue } from 'recoil';
 import {
   IconCalendarEvent,
@@ -21,6 +19,7 @@ import {
   IconSettings,
   IconSparkles,
   IconTimelineEvent,
+  IconLayoutDashboard,
 } from 'twenty-ui';
 import { FieldMetadataType } from '~/generated-metadata/graphql';
 import { FeatureFlagKey } from '~/generated/graphql';

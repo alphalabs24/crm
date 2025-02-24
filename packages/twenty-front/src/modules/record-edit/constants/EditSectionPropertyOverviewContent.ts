@@ -5,8 +5,20 @@ import { SectionContent } from '@/record-edit/types/EditSectionTypes';
 // Field will use inline fields and input will use form inputs
 export const OVERVIEW_SECTION_CONTENT: SectionContent[] = [
   {
+    title: 'Media',
+    width: 'half',
+    groups: [
+      {
+        fields: [
+          { name: 'pictures', type: 'custom' },
+          { name: 'videos', type: 'custom' },
+        ],
+      },
+    ],
+  },
+  {
     title: 'Basic Information',
-    width: 'twoThirds',
+    width: 'half',
     groups: [
       {
         fields: [
@@ -16,6 +28,7 @@ export const OVERVIEW_SECTION_CONTENT: SectionContent[] = [
       },
     ],
   },
+
   {
     title: 'Stakeholders',
     width: 'third',
@@ -41,7 +54,7 @@ export const OVERVIEW_SECTION_CONTENT: SectionContent[] = [
   },
   {
     title: 'Key Numbers',
-    width: 'half',
+    width: 'third',
     groups: [
       {
         isHorizontal: true,
@@ -69,7 +82,7 @@ export const OVERVIEW_SECTION_CONTENT: SectionContent[] = [
   },
   {
     title: 'Location',
-    width: 'half',
+    width: 'third',
     groups: [
       {
         fields: [

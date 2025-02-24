@@ -1,8 +1,11 @@
 import styled from '@emotion/styled';
 
+import { useUploadAttachmentFile } from '@/activities/files/hooks/useUploadAttachmentFile';
 import { Attachment } from '@/activities/files/types/Attachment';
 import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadataItem';
+import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { getLinkToShowPage } from '@/object-metadata/utils/getLinkToShowPage';
+import { useDeleteOneRecord } from '@/object-record/hooks/useDeleteOneRecord';
 import { useUpdateOneRecord } from '@/object-record/hooks/useUpdateOneRecord';
 import { isNewViewableRecordLoadingState } from '@/object-record/record-right-drawer/states/isNewViewableRecordLoading';
 import { useRecordShowPage } from '@/object-record/record-show/hooks/useRecordShowPage';
@@ -15,6 +18,7 @@ import { ShowPageImageBanner } from '@/ui/layout/show-page/components/nm/ShowPag
 import { SingleTabProps, TabList } from '@/ui/layout/tab/components/TabList';
 import { useTabList } from '@/ui/layout/tab/hooks/useTabList';
 import { useLingui } from '@lingui/react/macro';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { isDefined } from 'twenty-shared';
@@ -129,7 +133,6 @@ export const TAB_LIST_COMPONENT_ID = 'edit-record-right-tab-list';
 type RecordEditContainerProps = {
   recordId: string;
   objectNameSingular: string;
-  recordLoading: boolean;
   tabs: SingleTabProps[];
   isInRightDrawer?: boolean;
   isNewRightDrawerItemLoading?: boolean;
@@ -138,12 +141,12 @@ type RecordEditContainerProps = {
 export const RecordEditContainer = ({
   recordId,
   objectNameSingular,
-  recordLoading,
   isInRightDrawer,
   tabs,
 }: RecordEditContainerProps) => {
   const navigate = useNavigate();
   const { enqueueSnackBar } = useSnackBar();
+  const [isSaving, setIsSaving] = useState(false);
   const { t } = useLingui();
   const { objectMetadataItem } = useObjectMetadataItem({
     objectNameSingular,
@@ -153,9 +156,22 @@ export const RecordEditContainer = ({
 
   const { activeTabId } = useTabList(tabListComponentId);
 
-  const { record } = useRecordShowPage(objectNameSingular, recordId);
+  const { record, loading: recordLoading } = useRecordShowPage(
+    objectNameSingular,
+    recordId,
+  );
 
-  const { getUpdatedFields, resetFields, isDirty } = useRecordEdit();
+  const { updateOneRecord: updateOneAttachment } = useUpdateOneRecord({
+    objectNameSingular: CoreObjectNameSingular.Attachment,
+  });
+
+  const { uploadAttachmentFile } = useUploadAttachmentFile();
+  const { getUpdatedFields, resetFields, isDirty, propertyImages } =
+    useRecordEdit();
+
+  const { deleteOneRecord: deleteOneAttachment } = useDeleteOneRecord({
+    objectNameSingular: CoreObjectNameSingular.Attachment,
+  });
 
   const { updateOneRecord } = useUpdateOneRecord({
     objectNameSingular,
@@ -178,23 +194,58 @@ export const RecordEditContainer = ({
     return acc;
   }, {});
 
-  // TODO show UI for uploading images
-  const images = record?.attachments?.filter((attachment: Attachment) =>
-    attachment?.name?.includes('propertyimage'),
-  );
-
   // This saves the whole record with the updated fields from the form
   const handleSave = async () => {
+    setIsSaving(true);
     try {
       // If no fields are dirty, don't save
       if (isDirty) {
         const updatedFields = getUpdatedFields();
-        console.log(updatedFields);
 
         await updateOneRecord({
           idToUpdate: recordId,
           updateOneRecordInput: updatedFields,
         });
+
+        const toDelete = record?.attachments
+          .filter(
+            (attachment: Attachment) => attachment.type === 'PropertyImage',
+          )
+          .filter(
+            (attachment: Attachment) =>
+              !propertyImages.some((image) => image.id === attachment.id),
+          );
+
+        await Promise.all(
+          propertyImages.map(async (image) => {
+            if (image.isAttachment && isDefined(image.attachment)) {
+              await updateOneAttachment({
+                idToUpdate: image.attachment.id,
+                updateOneRecordInput: {
+                  orderIndex: image.orderIndex,
+                  description: image.description,
+                },
+              });
+            } else if (isDefined(image.file)) {
+              await uploadAttachmentFile(
+                image.file,
+                {
+                  id: recordId,
+                  targetObjectNameSingular: objectNameSingular,
+                },
+                'PropertyImage',
+                image.orderIndex,
+                image.description,
+              );
+            }
+          }),
+        );
+
+        await Promise.all(
+          toDelete.map((attachment: Attachment) => {
+            deleteOneAttachment(attachment.id);
+          }),
+        );
         resetFields();
       }
 
@@ -213,6 +264,8 @@ export const RecordEditContainer = ({
           },
         );
       }
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -338,6 +391,7 @@ export const RecordEditContainer = ({
             accent="blue"
             size="small"
             onClick={handleSave}
+            disabled={isSaving}
           />
         </StyledButtonContainer>
       </StyledTabListContainer>

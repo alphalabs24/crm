@@ -5,9 +5,6 @@ import {
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useLingui } from '@lingui/react/macro';
-// eslint-disable-next-line no-restricted-imports
-import { IconLayoutGrid } from '@tabler/icons-react';
-// eslint-disable-next-line no-restricted-imports
 import { tokenPairState } from '@/auth/states/tokenPairState';
 import { getLinkToShowPage } from '@/object-metadata/utils/getLinkToShowPage';
 import { SnackBarVariant } from '@/ui/feedback/snack-bar-manager/components/SnackBar';
@@ -16,7 +13,13 @@ import axios from 'axios';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
-import { Button, IconCheck, IconWand, LARGE_DESKTOP_VIEWPORT } from 'twenty-ui';
+import {
+  Button,
+  IconCheck,
+  IconWand,
+  LARGE_DESKTOP_VIEWPORT,
+  IconLayoutGrid,
+} from 'twenty-ui';
 const StyledPlatformSelectionContainer = styled.div`
   display: flex;
   flex-direction: column;

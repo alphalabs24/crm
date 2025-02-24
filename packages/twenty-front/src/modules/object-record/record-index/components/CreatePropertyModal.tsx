@@ -1,16 +1,19 @@
 import { useCreateOneRecord } from '@/object-record/hooks/useCreateOneRecord';
+import { FieldAddressValue } from '@/object-record/record-field/types/FieldMetadata';
+import { AddressInput } from '@/ui/field/input/components/AddressInput';
 import { TextInputV2 } from '@/ui/input/components/TextInputV2';
 import { Modal, ModalRefType } from '@/ui/layout/modal/components/Modal';
 import { ModalHotkeyScope } from '@/ui/layout/modal/components/types/ModalHotkeyScope';
 import styled from '@emotion/styled';
 import { forwardRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { isDefined } from 'twenty-shared';
 import { Button, IconPlus } from 'twenty-ui';
 
 const StyledModalContent = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(2)};
+  gap: ${({ theme }) => theme.spacing(4)};
   padding: ${({ theme }) => theme.spacing(4)};
 `;
 
@@ -39,14 +42,9 @@ const StyledModalTitleContainer = styled.div`
   gap: ${({ theme }) => theme.spacing(2)};
 `;
 
-const StyledInput = styled.input`
-  border: 1px solid ${({ theme }) => theme.border.color.light};
-  border-radius: ${({ theme }) => theme.border.radius.sm};
-  padding: ${({ theme }) => theme.spacing(2)};
-`;
-
 const StyledDescription = styled.div`
   color: ${({ theme }) => theme.font.color.secondary};
+  font-size: ${({ theme }) => theme.font.size.md};
 `;
 
 type CreatePropertyModalProps = {
@@ -60,6 +58,16 @@ export const CreatePropertyModal = forwardRef<
 >(({ onClose, objectNameSingular }, ref) => {
   const navigate = useNavigate();
   const [propertyName, setPropertyName] = useState('');
+  const [address, setAddress] = useState<FieldAddressValue>({
+    addressStreet1: '',
+    addressStreet2: '',
+    addressCity: '',
+    addressState: '',
+    addressPostcode: '',
+    addressCountry: '',
+    addressLat: 0,
+    addressLng: 0,
+  });
   const { createOneRecord } = useCreateOneRecord({
     objectNameSingular,
   });
@@ -69,6 +77,7 @@ export const CreatePropertyModal = forwardRef<
 
     const record = await createOneRecord({
       name: propertyName.trim(),
+      address: address,
     });
 
     onClose();
@@ -98,20 +107,57 @@ export const CreatePropertyModal = forwardRef<
             title="Create"
             onClick={handleCreate}
             accent="blue"
-            disabled={!propertyName.trim()}
+            disabled={
+              !propertyName.trim() ||
+              !isDefined(address.addressStreet1) ||
+              !isDefined(address.addressPostcode) ||
+              !isDefined(address.addressCity) ||
+              !isDefined(address.addressCountry)
+            }
           />
         </StyledModalHeaderButtons>
       </StyledModalHeader>
+
       <StyledModalContent>
         <StyledDescription>
-          Enter the name of the new property you want to create.
+          Enter the address of the new property
         </StyledDescription>
-        <TextInputV2
-          value={propertyName}
-          onChange={(text) => setPropertyName(text)}
-          placeholder="Property name"
-          autoFocus
+        <AddressInput
+          listenToOutsideClick={false}
+          autofocus={true}
+          value={address}
+          fullWidth={true}
+          noPadding
+          onChange={(updatedAddress) => setAddress(updatedAddress)}
+          onEnter={() => {}}
+          onEscape={() => {}}
+          onClickOutside={() => {}}
+          onTab={() => {}}
+          onShiftTab={() => {}}
+          hotkeyScope="address"
         />
+        {address.addressStreet1 !== '' &&
+          address.addressPostcode !== '' &&
+          address.addressCity !== '' &&
+          address.addressCountry !== '' && (
+            <>
+              <StyledDescription>
+                Enter a name for the property
+              </StyledDescription>
+              <TextInputV2
+                value={propertyName}
+                onChange={(text) => setPropertyName(text)}
+                placeholder="Property name"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    if (isDefined(propertyName)) {
+                      handleCreate();
+                    }
+                  }
+                }}
+              />
+            </>
+          )}
       </StyledModalContent>
     </Modal>
   );

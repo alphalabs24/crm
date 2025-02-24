@@ -1,3 +1,4 @@
+import { Attachment } from '@/activities/files/types/Attachment';
 import { ObjectMetadataItem } from '@/object-metadata/types/ObjectMetadataItem';
 import { FieldDefinition } from '@/object-record/record-field/types/FieldDefinition';
 import { FieldMetadata } from '@/object-record/record-field/types/FieldMetadata';
@@ -17,13 +18,33 @@ type FieldUpdate = {
   fieldDefinition: FieldDefinition<FieldMetadata>;
 };
 
+export type RecordEditPropertyImage = {
+  id: string;
+  isAttachment: boolean;
+  attachment?: Attachment;
+  file?: File;
+  previewUrl: string;
+  orderIndex: number;
+  description: string;
+};
+
 export type RecordEditContextType = {
   objectMetadataItem: ObjectMetadataItem;
   updateField: (update: FieldUpdate) => void;
   getUpdatedFields: () => Record<string, unknown>;
   isDirty: boolean;
   resetFields: () => void;
+  resetImages: () => void;
   initialRecord: ObjectRecord | null;
+  propertyImages: RecordEditPropertyImage[];
+  addPropertyImage: (image: RecordEditPropertyImage) => void;
+  removePropertyImage: (image: RecordEditPropertyImage) => void;
+  updatePropertyImageOrder: (images: RecordEditPropertyImage[]) => void;
+  refreshPropertyImageUrls: () => void;
+  updatePropertyImage: (
+    imageId: string,
+    updates: Partial<RecordEditPropertyImage>,
+  ) => void;
 };
 
 export const RecordEditContext = createContext<RecordEditContextType | null>(
@@ -42,6 +63,44 @@ export const RecordEditProvider = ({
 }: RecordEditProviderProps) => {
   const [fieldUpdates, setFieldUpdates] = useState<Record<string, unknown>>({});
   const [isDirty, setIsDirty] = useState(false);
+
+  const [propertyImages, setPropertyImages] = useState<
+    RecordEditPropertyImage[]
+  >(
+    Object.values(
+      (initialRecord?.attachments ?? [])
+        .filter((attachment: Attachment) => attachment.type === 'PropertyImage')
+        .reduce(
+          (
+            acc: Record<string, RecordEditPropertyImage>,
+            attachment: Attachment,
+          ) => ({
+            ...acc,
+            [attachment.id]: {
+              id: attachment.id,
+              isAttachment: true,
+              attachment,
+              file: undefined,
+              description: attachment.description ?? '',
+              previewUrl: attachment.fullPath,
+              orderIndex: attachment.orderIndex,
+            },
+          }),
+          {},
+        ),
+    ),
+  );
+
+  const refreshPropertyImageUrls = useCallback(() => {
+    setPropertyImages((prev) =>
+      prev.map((image) => ({
+        ...image,
+        previewUrl: image.file
+          ? URL.createObjectURL(image.file)
+          : image.previewUrl,
+      })),
+    );
+  }, []);
 
   const updateField = useCallback(
     (update: FieldUpdate, fieldValue?: unknown) => {
@@ -65,12 +124,72 @@ export const RecordEditProvider = ({
     [],
   );
 
+  const addPropertyImage = useCallback((image: RecordEditPropertyImage) => {
+    setIsDirty(true);
+    setPropertyImages((prev) => [...prev, image]);
+  }, []);
+
+  const removePropertyImage = useCallback((image: RecordEditPropertyImage) => {
+    setIsDirty(true);
+    setPropertyImages((prev) => prev.filter((i) => i.id !== image.id));
+  }, []);
+
+  const updatePropertyImageOrder = useCallback(
+    (orderedImages: RecordEditPropertyImage[]) => {
+      setIsDirty(true);
+      setPropertyImages(orderedImages);
+    },
+    [],
+  );
+
+  const updatePropertyImage = useCallback(
+    (imageId: string, updates: Partial<RecordEditPropertyImage>) => {
+      setIsDirty(true);
+      setPropertyImages((prev) =>
+        prev.map((image) =>
+          image.id === imageId ? { ...image, ...updates } : image,
+        ),
+      );
+    },
+    [],
+  );
+
   const getUpdatedFields = useCallback(() => fieldUpdates, [fieldUpdates]);
+
+  const resetImages = useCallback(() => {
+    setPropertyImages(
+      Object.values(
+        (initialRecord?.attachments ?? [])
+          .filter(
+            (attachment: Attachment) => attachment.type === 'PropertyImage',
+          )
+          .reduce(
+            (
+              acc: Record<string, RecordEditPropertyImage>,
+              attachment: Attachment,
+            ) => ({
+              ...acc,
+              [attachment.id]: {
+                id: attachment.id,
+                isAttachment: true,
+                attachment,
+                file: undefined,
+                previewUrl: attachment.fullPath,
+                orderIndex: attachment.orderIndex,
+                description: attachment.description ?? '',
+              },
+            }),
+            {},
+          ),
+      ),
+    );
+  }, [initialRecord?.attachments]);
 
   const resetFields = useCallback(() => {
     setFieldUpdates({});
+    resetImages();
     setIsDirty(false);
-  }, []);
+  }, [resetImages]);
 
   // This is used to block the user from leaving the page if there are unsaved changes
   useBlocker(({ currentLocation, nextLocation }) => {
@@ -98,7 +217,14 @@ export const RecordEditProvider = ({
         getUpdatedFields,
         isDirty,
         resetFields,
+        resetImages,
         initialRecord,
+        propertyImages,
+        addPropertyImage,
+        removePropertyImage,
+        updatePropertyImageOrder,
+        refreshPropertyImageUrls,
+        updatePropertyImage,
       }}
     >
       {children}

@@ -60,7 +60,6 @@ export const RecordEditPage = () => {
   const {
     objectNameSingular,
     objectRecordId,
-    loading,
     pageTitle,
     pageName,
     isFavorite,
@@ -78,6 +77,10 @@ export const RecordEditPage = () => {
 
   const { labelIdentifierFieldMetadataItem } =
     getObjectMetadataIdentifierFields({ objectMetadataItem });
+
+  if (!record) {
+    return null;
+  }
 
   return (
     <RecordFieldValueSelectorContextProvider>
@@ -147,7 +150,6 @@ export const RecordEditPage = () => {
                     <RecordEditContainer
                       objectNameSingular={objectNameSingular}
                       recordId={objectRecordId}
-                      recordLoading={loading}
                       tabs={EDIT_SECTIONS_TABS}
                     />
                   </TimelineActivityContext.Provider>

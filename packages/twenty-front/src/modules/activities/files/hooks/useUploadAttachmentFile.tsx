@@ -1,6 +1,9 @@
 import { useRecoilValue } from 'recoil';
 
-import { Attachment } from '@/activities/files/types/Attachment';
+import {
+  Attachment,
+  AttachmentType,
+} from '@/activities/files/types/Attachment';
 import { getFileType } from '@/activities/files/utils/getFileType';
 import { ActivityTargetableObject } from '@/activities/types/ActivityTargetableEntity';
 import { getActivityTargetObjectFieldIdName } from '@/activities/utils/getActivityTargetObjectFieldIdName';
@@ -27,6 +30,9 @@ export const useUploadAttachmentFile = () => {
   const uploadAttachmentFile = async (
     file: File,
     targetableObject: ActivityTargetableObject,
+    fileType?: AttachmentType,
+    orderIndex?: number,
+    description?: string,
   ) => {
     const result = await uploadFile({
       variables: {
@@ -49,15 +55,20 @@ export const useUploadAttachmentFile = () => {
       authorId: currentWorkspaceMember?.id,
       name: file.name,
       fullPath: computePathWithoutToken(attachmentPath),
-      type: getFileType(file.name),
+      type: fileType ?? getFileType(file.name),
       [targetableObjectFieldIdName]: targetableObject.id,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-    } as Partial<Attachment>;
+      orderIndex: orderIndex,
+      description: description,
+    };
 
     const createdAttachment = await createOneAttachment(attachmentToCreate);
 
-    return { attachmentAbsoluteURL: createdAttachment.fullPath };
+    return {
+      attachmentAbsoluteURL: createdAttachment.fullPath,
+      attachmentId: createdAttachment.id,
+    };
   };
 
   return { uploadAttachmentFile };

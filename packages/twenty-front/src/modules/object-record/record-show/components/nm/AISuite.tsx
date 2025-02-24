@@ -3,7 +3,6 @@ import { ActivityTargetableObject } from '@/activities/types/ActivityTargetableE
 import { useRecordShowContainerData } from '@/object-record/record-show/hooks/useRecordShowContainerData';
 import { Modal, ModalRefType } from '@/ui/layout/modal/components/Modal';
 import styled from '@emotion/styled';
-// eslint-disable-next-line no-restricted-imports
 import { Trans, useLingui } from '@lingui/react/macro';
 
 import { useCallback, useEffect, useRef, useState } from 'react';

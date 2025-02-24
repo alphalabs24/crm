@@ -2,19 +2,17 @@ import { ActivityTargetableObject } from '@/activities/types/ActivityTargetableE
 import { StatusBadge } from '@/object-record/record-show/components/nm/publication/StatusBadge';
 import { useRecordShowContainerData } from '@/object-record/record-show/hooks/useRecordShowContainerData';
 import styled from '@emotion/styled';
-// eslint-disable-next-line no-restricted-imports
 import { Trans, useLingui } from '@lingui/react/macro';
-import {
-  IconCalendarStats,
-  IconChartBar,
-  IconMessageCircle2,
-} from '@tabler/icons-react';
+
 import { useMemo } from 'react';
 import {
   IconBuildingSkyscraper,
   IconUsers,
   LARGE_DESKTOP_VIEWPORT,
   MOBILE_VIEWPORT,
+  IconCalendarStats,
+  IconChartBar,
+  IconMessageCircle2,
 } from 'twenty-ui';
 import { ObjectOverview } from './ObjectOverview';
 import { CompletionProgress } from './publication/CompletionProgress';

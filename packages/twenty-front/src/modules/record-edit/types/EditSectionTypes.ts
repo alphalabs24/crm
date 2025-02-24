@@ -1,6 +1,6 @@
 import { IconComponent } from 'twenty-ui';
 
-export type SectionFieldType = 'input' | 'multiLine' | 'field';
+export type SectionFieldType = 'input' | 'multiLine' | 'field' | 'custom';
 
 export type FieldDefinition = {
   name: string;
