@@ -26,6 +26,10 @@ msgstr ""
 msgid "{name}"
 msgstr ""
 
+#: src/modules/record-edit/components/RecordEditContainer.tsx
+msgid "{objectNameSingular} saved successfully"
+msgstr ""
+
 #: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
 msgid "{overviewLabel} Overview"
 msgstr ""
@@ -116,8 +120,16 @@ msgstr ""
 msgid "Add"
 msgstr ""
 
+#: src/modules/record-edit/components/custom/DocumentEditModal.tsx
+msgid "Add a description for this document..."
+msgstr ""
+
 #: src/modules/record-edit/components/custom/ImageEditModal.tsx
 msgid "Add a description..."
+msgstr ""
+
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Add documents related to your property that will be visible in the publication."
 msgstr ""
 
 #: src/modules/settings/data-model/object-details/components/tabs/ObjectFields.tsx
@@ -351,6 +363,7 @@ msgstr ""
 #: src/modules/ui/layout/modal/components/ConfirmationModal.tsx
 #: src/modules/settings/components/SaveAndCancelButtons/CancelButton.tsx
 #: src/modules/record-edit/components/custom/ImageEditModal.tsx
+#: src/modules/record-edit/components/custom/DocumentEditModal.tsx
 #: src/modules/object-record/record-show/components/nm/VideoGenerationModal.tsx
 #: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
 msgid "Cancel"
@@ -404,6 +417,10 @@ msgstr ""
 
 #: src/pages/onboarding/ChooseYourPlan.tsx
 msgid "Choose your Trial"
+msgstr ""
+
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+msgid "Click to select files"
 msgstr ""
 
 #: src/modules/ui/feedback/snack-bar-manager/components/SnackBar.tsx
@@ -652,6 +669,7 @@ msgstr ""
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 #: src/modules/action-menu/components/__stories__/RightDrawerActionMenuDropdown.stories.tsx
 #: src/modules/action-menu/components/__stories__/RecordIndexActionMenuDropdown.stories.tsx
 #: src/modules/action-menu/components/__stories__/RecordIndexActionMenuBarEntry.stories.tsx
@@ -753,19 +771,31 @@ msgstr ""
 msgid "Display as relative date"
 msgstr ""
 
+#: src/modules/record-edit/components/custom/DocumentEditModal.tsx
+msgid "Document Description"
+msgstr ""
+
 #: src/pages/settings/SettingsWorkspace.tsx
 #: src/pages/settings/workspace/SettingsDomain.tsx
 #: src/pages/settings/workspace/SettingsDomain.tsx
 msgid "Domain"
 msgstr ""
 
-#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Download"
+msgstr ""
+
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Drag & drop documents here, or click to select files"
+msgstr ""
+
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 msgid "Drag & drop images here, or click to select files"
 msgstr ""
 
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Drop the files here..."
 msgstr ""
 
@@ -795,6 +825,7 @@ msgid "Edit billing interval"
 msgstr ""
 
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Edit Description"
 msgstr ""
 
@@ -869,6 +900,10 @@ msgstr ""
 
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
 msgid "Error regenerating api key: {err}"
+msgstr ""
+
+#: src/modules/record-edit/components/RecordEditContainer.tsx
+msgid "Error saving {objectNameSingular}"
 msgstr ""
 
 #: src/pages/settings/SettingsBilling.tsx
@@ -1427,6 +1462,8 @@ msgid "No connected account"
 msgstr ""
 
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "No description"
 msgstr ""
 
@@ -1661,6 +1698,10 @@ msgstr ""
 msgid "Profile"
 msgstr ""
 
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Property Documents"
+msgstr ""
+
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 msgid "Property Images"
 msgstr ""
@@ -1774,6 +1815,7 @@ msgstr ""
 
 #: src/modules/record-edit/components/RecordEditContainer.tsx
 #: src/modules/record-edit/components/custom/ImageEditModal.tsx
+#: src/modules/record-edit/components/custom/DocumentEditModal.tsx
 msgid "Save"
 msgstr ""
 

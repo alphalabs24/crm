@@ -31,6 +31,10 @@ msgstr "{apiKeyName} API 키"
 msgid "{name}"
 msgstr "{name}"
 
+#: src/modules/record-edit/components/RecordEditContainer.tsx
+msgid "{objectNameSingular} saved successfully"
+msgstr ""
+
 #: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
 msgid "{overviewLabel} Overview"
 msgstr ""
@@ -123,8 +127,16 @@ msgstr "본인 또는 팀이 생성한 활성 API 키입니다."
 msgid "Add"
 msgstr "추가"
 
+#: src/modules/record-edit/components/custom/DocumentEditModal.tsx
+msgid "Add a description for this document..."
+msgstr ""
+
 #: src/modules/record-edit/components/custom/ImageEditModal.tsx
 msgid "Add a description..."
+msgstr ""
+
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Add documents related to your property that will be visible in the publication."
 msgstr ""
 
 #: src/modules/settings/data-model/object-details/components/tabs/ObjectFields.tsx
@@ -358,6 +370,7 @@ msgstr "캘린더"
 #: src/modules/ui/layout/modal/components/ConfirmationModal.tsx
 #: src/modules/settings/components/SaveAndCancelButtons/CancelButton.tsx
 #: src/modules/record-edit/components/custom/ImageEditModal.tsx
+#: src/modules/record-edit/components/custom/DocumentEditModal.tsx
 #: src/modules/object-record/record-show/components/nm/VideoGenerationModal.tsx
 #: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
 msgid "Cancel"
@@ -412,6 +425,10 @@ msgstr "제공업체 선택"
 #: src/pages/onboarding/ChooseYourPlan.tsx
 msgid "Choose your Trial"
 msgstr "평가판 선택"
+
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+msgid "Click to select files"
+msgstr ""
 
 #: src/modules/ui/feedback/snack-bar-manager/components/SnackBar.tsx
 #~ msgid "Close"
@@ -659,6 +676,7 @@ msgstr "개체의 이름과 설명을 정의하세요"
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 #: src/modules/action-menu/components/__stories__/RightDrawerActionMenuDropdown.stories.tsx
 #: src/modules/action-menu/components/__stories__/RecordIndexActionMenuDropdown.stories.tsx
 #: src/modules/action-menu/components/__stories__/RecordIndexActionMenuBarEntry.stories.tsx
@@ -760,19 +778,31 @@ msgstr "초안 삭제"
 msgid "Display as relative date"
 msgstr "상대 날짜로 표시"
 
+#: src/modules/record-edit/components/custom/DocumentEditModal.tsx
+msgid "Document Description"
+msgstr ""
+
 #: src/pages/settings/SettingsWorkspace.tsx
 #: src/pages/settings/workspace/SettingsDomain.tsx
 #: src/pages/settings/workspace/SettingsDomain.tsx
 msgid "Domain"
 msgstr "도메인"
 
-#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Download"
+msgstr ""
+
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Drag & drop documents here, or click to select files"
+msgstr ""
+
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 msgid "Drag & drop images here, or click to select files"
 msgstr ""
 
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Drop the files here..."
 msgstr ""
 
@@ -802,6 +832,7 @@ msgid "Edit billing interval"
 msgstr "청구 주기 편집"
 
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Edit Description"
 msgstr ""
 
@@ -877,6 +908,10 @@ msgstr "API 키 삭제 오류: {err}"
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
 msgid "Error regenerating api key: {err}"
 msgstr "API 키 재생성 오류: {err}"
+
+#: src/modules/record-edit/components/RecordEditContainer.tsx
+msgid "Error saving {objectNameSingular}"
+msgstr ""
 
 #: src/pages/settings/SettingsBilling.tsx
 msgid "Error while switching subscription {to}."
@@ -1434,6 +1469,8 @@ msgid "No connected account"
 msgstr "연결된 계정 없음"
 
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "No description"
 msgstr ""
 
@@ -1668,6 +1705,10 @@ msgstr "개인정보 보호정책"
 msgid "Profile"
 msgstr "프로필"
 
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Property Documents"
+msgstr ""
+
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 msgid "Property Images"
 msgstr ""
@@ -1781,6 +1822,7 @@ msgstr "러시아어"
 
 #: src/modules/record-edit/components/RecordEditContainer.tsx
 #: src/modules/record-edit/components/custom/ImageEditModal.tsx
+#: src/modules/record-edit/components/custom/DocumentEditModal.tsx
 msgid "Save"
 msgstr ""
 

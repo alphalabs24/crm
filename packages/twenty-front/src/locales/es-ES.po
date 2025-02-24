@@ -31,6 +31,10 @@ msgstr "Clave API {apiKeyName}"
 msgid "{name}"
 msgstr "{name}"
 
+#: src/modules/record-edit/components/RecordEditContainer.tsx
+msgid "{objectNameSingular} saved successfully"
+msgstr ""
+
 #: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
 msgid "{overviewLabel} Overview"
 msgstr ""
@@ -121,8 +125,16 @@ msgstr "Claves API activas creadas por usted o su equipo."
 msgid "Add"
 msgstr "Añadir"
 
+#: src/modules/record-edit/components/custom/DocumentEditModal.tsx
+msgid "Add a description for this document..."
+msgstr ""
+
 #: src/modules/record-edit/components/custom/ImageEditModal.tsx
 msgid "Add a description..."
+msgstr ""
+
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Add documents related to your property that will be visible in the publication."
 msgstr ""
 
 #: src/modules/settings/data-model/object-details/components/tabs/ObjectFields.tsx
@@ -356,6 +368,7 @@ msgstr "Calendarios"
 #: src/modules/ui/layout/modal/components/ConfirmationModal.tsx
 #: src/modules/settings/components/SaveAndCancelButtons/CancelButton.tsx
 #: src/modules/record-edit/components/custom/ImageEditModal.tsx
+#: src/modules/record-edit/components/custom/DocumentEditModal.tsx
 #: src/modules/object-record/record-show/components/nm/VideoGenerationModal.tsx
 #: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
 msgid "Cancel"
@@ -410,6 +423,10 @@ msgstr "Elija su proveedor"
 #: src/pages/onboarding/ChooseYourPlan.tsx
 msgid "Choose your Trial"
 msgstr "Elija su prueba"
+
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+msgid "Click to select files"
+msgstr ""
 
 #: src/modules/ui/feedback/snack-bar-manager/components/SnackBar.tsx
 #~ msgid "Close"
@@ -657,6 +674,7 @@ msgstr "Defina el nombre y la descripción de su objeto"
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 #: src/modules/action-menu/components/__stories__/RightDrawerActionMenuDropdown.stories.tsx
 #: src/modules/action-menu/components/__stories__/RecordIndexActionMenuDropdown.stories.tsx
 #: src/modules/action-menu/components/__stories__/RecordIndexActionMenuBarEntry.stories.tsx
@@ -758,19 +776,31 @@ msgstr "Descartar borrador"
 msgid "Display as relative date"
 msgstr "Mostrar como fecha relativa"
 
+#: src/modules/record-edit/components/custom/DocumentEditModal.tsx
+msgid "Document Description"
+msgstr ""
+
 #: src/pages/settings/SettingsWorkspace.tsx
 #: src/pages/settings/workspace/SettingsDomain.tsx
 #: src/pages/settings/workspace/SettingsDomain.tsx
 msgid "Domain"
 msgstr "Dominio"
 
-#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Download"
+msgstr ""
+
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Drag & drop documents here, or click to select files"
+msgstr ""
+
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 msgid "Drag & drop images here, or click to select files"
 msgstr ""
 
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Drop the files here..."
 msgstr ""
 
@@ -800,6 +830,7 @@ msgid "Edit billing interval"
 msgstr "Editar el intervalo de facturación"
 
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Edit Description"
 msgstr ""
 
@@ -875,6 +906,10 @@ msgstr "Error al eliminar la clave API: {err}"
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
 msgid "Error regenerating api key: {err}"
 msgstr "Error al regenerar la clave API: {err}"
+
+#: src/modules/record-edit/components/RecordEditContainer.tsx
+msgid "Error saving {objectNameSingular}"
+msgstr ""
 
 #: src/pages/settings/SettingsBilling.tsx
 msgid "Error while switching subscription {to}."
@@ -1432,6 +1467,8 @@ msgid "No connected account"
 msgstr "No hay cuenta conectada"
 
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "No description"
 msgstr ""
 
@@ -1666,6 +1703,10 @@ msgstr "Política de privacidad"
 msgid "Profile"
 msgstr "Perfil"
 
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Property Documents"
+msgstr ""
+
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 msgid "Property Images"
 msgstr ""
@@ -1779,6 +1820,7 @@ msgstr "Ruso"
 
 #: src/modules/record-edit/components/RecordEditContainer.tsx
 #: src/modules/record-edit/components/custom/ImageEditModal.tsx
+#: src/modules/record-edit/components/custom/DocumentEditModal.tsx
 msgid "Save"
 msgstr ""
 

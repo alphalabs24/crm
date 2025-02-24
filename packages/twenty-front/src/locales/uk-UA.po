@@ -31,6 +31,10 @@ msgstr "API-ключ {apiKeyName}"
 msgid "{name}"
 msgstr "{name}"
 
+#: src/modules/record-edit/components/RecordEditContainer.tsx
+msgid "{objectNameSingular} saved successfully"
+msgstr ""
+
 #: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
 msgid "{overviewLabel} Overview"
 msgstr ""
@@ -121,8 +125,16 @@ msgstr "Активні API-ключі, створені вами або вашо
 msgid "Add"
 msgstr "Додати"
 
+#: src/modules/record-edit/components/custom/DocumentEditModal.tsx
+msgid "Add a description for this document..."
+msgstr ""
+
 #: src/modules/record-edit/components/custom/ImageEditModal.tsx
 msgid "Add a description..."
+msgstr ""
+
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Add documents related to your property that will be visible in the publication."
 msgstr ""
 
 #: src/modules/settings/data-model/object-details/components/tabs/ObjectFields.tsx
@@ -356,6 +368,7 @@ msgstr "Календарі"
 #: src/modules/ui/layout/modal/components/ConfirmationModal.tsx
 #: src/modules/settings/components/SaveAndCancelButtons/CancelButton.tsx
 #: src/modules/record-edit/components/custom/ImageEditModal.tsx
+#: src/modules/record-edit/components/custom/DocumentEditModal.tsx
 #: src/modules/object-record/record-show/components/nm/VideoGenerationModal.tsx
 #: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
 msgid "Cancel"
@@ -410,6 +423,10 @@ msgstr "Виберіть провайдера"
 #: src/pages/onboarding/ChooseYourPlan.tsx
 msgid "Choose your Trial"
 msgstr "Виберіть вашу пробну версію"
+
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+msgid "Click to select files"
+msgstr ""
 
 #: src/modules/ui/feedback/snack-bar-manager/components/SnackBar.tsx
 #~ msgid "Close"
@@ -657,6 +674,7 @@ msgstr "Визначте назву та опис вашого об'єкта"
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 #: src/modules/action-menu/components/__stories__/RightDrawerActionMenuDropdown.stories.tsx
 #: src/modules/action-menu/components/__stories__/RecordIndexActionMenuDropdown.stories.tsx
 #: src/modules/action-menu/components/__stories__/RecordIndexActionMenuBarEntry.stories.tsx
@@ -791,6 +809,10 @@ msgstr ""
 "              \n"
 "              Показувати як відносну дату"
 
+#: src/modules/record-edit/components/custom/DocumentEditModal.tsx
+msgid "Document Description"
+msgstr ""
+
 #: src/pages/settings/SettingsWorkspace.tsx
 #: src/pages/settings/workspace/SettingsDomain.tsx
 #: src/pages/settings/workspace/SettingsDomain.tsx
@@ -800,13 +822,21 @@ msgstr ""
 "              \n"
 "              Домен"
 
-#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Download"
+msgstr ""
+
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Drag & drop documents here, or click to select files"
+msgstr ""
+
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 msgid "Drag & drop images here, or click to select files"
 msgstr ""
 
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Drop the files here..."
 msgstr ""
 
@@ -848,6 +878,7 @@ msgstr ""
 "              Редагувати інтервал білінгу"
 
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Edit Description"
 msgstr ""
 
@@ -931,6 +962,10 @@ msgstr "Помилка видалення API-ключа: {err}"
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
 msgid "Error regenerating api key: {err}"
 msgstr "Помилка регенерації API-ключа: {err}"
+
+#: src/modules/record-edit/components/RecordEditContainer.tsx
+msgid "Error saving {objectNameSingular}"
+msgstr ""
 
 #: src/pages/settings/SettingsBilling.tsx
 msgid "Error while switching subscription {to}."
@@ -1488,6 +1523,8 @@ msgid "No connected account"
 msgstr "Немає підключеного акаунту"
 
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "No description"
 msgstr ""
 
@@ -1722,6 +1759,10 @@ msgstr "Політика конфіденційності"
 msgid "Profile"
 msgstr "Профіль"
 
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Property Documents"
+msgstr ""
+
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 msgid "Property Images"
 msgstr ""
@@ -1835,6 +1876,7 @@ msgstr "Російська"
 
 #: src/modules/record-edit/components/RecordEditContainer.tsx
 #: src/modules/record-edit/components/custom/ImageEditModal.tsx
+#: src/modules/record-edit/components/custom/DocumentEditModal.tsx
 msgid "Save"
 msgstr ""
 
