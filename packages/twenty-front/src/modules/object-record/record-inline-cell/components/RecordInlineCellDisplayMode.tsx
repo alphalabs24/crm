@@ -64,13 +64,8 @@ export const RecordInlineCellDisplayMode = ({
 
   const { t } = useLingui();
 
-  const {
-    editModeContentOnly,
-
-    showLabel,
-    label,
-    buttonIcon,
-  } = useRecordInlineCellContext();
+  const { editModeContentOnly, showLabel, label, buttonIcon } =
+    useRecordInlineCellContext();
 
   const isDisplayModeContentEmpty = useIsFieldEmpty();
   const showEditButton =

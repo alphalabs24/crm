@@ -1,5 +1,11 @@
 import { Section } from '@/record-edit/types/EditSectionTypes';
-import { IconBuildingSkyscraper, IconFile, IconHome, IconMap } from 'twenty-ui';
+import {
+  IconBuildingSkyscraper,
+  IconFile,
+  IconHome,
+  IconLink,
+  IconMap,
+} from 'twenty-ui';
 import { AMENITIES_SECTION_CONTENT } from './EditSectionAmenitiesContent';
 import { DOCUMENTS_SECTION_CONTENT } from './EditSectionDocumentsContent';
 import { LOCATION_SECTION_CONTENT } from './EditSectionLocationContent';
@@ -27,8 +33,8 @@ export const EDIT_SECTIONS_TABS: Section[] = [
   },
   {
     id: 'property-documents',
-    title: 'Media & Documents',
-    Icon: IconFile,
+    title: 'Links',
+    Icon: IconLink,
     content: DOCUMENTS_SECTION_CONTENT,
   },
 ];

@@ -23,9 +23,7 @@ export const getFieldButtonIcon = (
   if (
     isFieldDisplayedAsPhone(fieldDefinition) ||
     isFieldMultiSelect(fieldDefinition) ||
-    (isFieldRelation(fieldDefinition) &&
-      fieldDefinition.metadata.relationObjectMetadataNameSingular !==
-        'workspaceMember') ||
+    isFieldRelation(fieldDefinition) ||
     isFieldLinks(fieldDefinition) ||
     isFieldEmails(fieldDefinition) ||
     isFieldArray(fieldDefinition) ||

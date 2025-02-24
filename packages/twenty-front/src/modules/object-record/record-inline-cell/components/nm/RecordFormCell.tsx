@@ -21,8 +21,8 @@ import { activeDropdownFocusIdState } from '@/ui/layout/dropdown/states/activeDr
 import { useRecoilCallback } from 'recoil';
 import { RecordInlineCellContainer } from '../RecordInlineCellContainer';
 import {
-    RecordInlineCellContext,
-    RecordInlineCellContextProps,
+  RecordInlineCellContext,
+  RecordInlineCellContextProps,
 } from '../RecordInlineCellContext';
 
 type RecordFormCellProps = {
