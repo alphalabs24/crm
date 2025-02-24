@@ -23,6 +23,7 @@ import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { isDefined } from 'twenty-shared';
 import { Button, LARGE_DESKTOP_VIEWPORT, MOBILE_VIEWPORT } from 'twenty-ui';
+import { useDestroyOneRecord } from '@/object-record/hooks/useDestroyOneRecord';
 
 export const EDIT_CONTAINER_WIDTH = 1440;
 
@@ -146,7 +147,6 @@ export const RecordEditContainer = ({
 }: RecordEditContainerProps) => {
   const navigate = useNavigate();
   const { enqueueSnackBar } = useSnackBar();
-  const [isSaving, setIsSaving] = useState(false);
   const { t } = useLingui();
   const { objectMetadataItem } = useObjectMetadataItem({
     objectNameSingular,
@@ -161,21 +161,29 @@ export const RecordEditContainer = ({
     recordId,
   );
 
-  const { updateOneRecord: updateOneAttachment } = useUpdateOneRecord({
-    objectNameSingular: CoreObjectNameSingular.Attachment,
-  });
+  const { getUpdatedFields, saveRecord, loading } = useRecordEdit();
 
-  const { uploadAttachmentFile } = useUploadAttachmentFile();
-  const { getUpdatedFields, resetFields, isDirty, propertyImages } =
-    useRecordEdit();
+  const handleSave = async () => {
+    try {
+      await saveRecord();
 
-  const { deleteOneRecord: deleteOneAttachment } = useDeleteOneRecord({
-    objectNameSingular: CoreObjectNameSingular.Attachment,
-  });
+      const link = getLinkToShowPage(objectNameSingular ?? '', {
+        id: recordId ?? '',
+      });
 
-  const { updateOneRecord } = useUpdateOneRecord({
-    objectNameSingular,
-  });
+      enqueueSnackBar(t`${objectNameSingular} saved successfully`, {
+        variant: SnackBarVariant.Success,
+      });
+
+      setTimeout(() => {
+        navigate(link);
+      }, 100);
+    } catch (error) {
+      enqueueSnackBar(t`Error saving ${objectNameSingular}`, {
+        variant: SnackBarVariant.Error,
+      });
+    }
+  };
 
   const availableFields = objectMetadataItem.fields.filter(
     (field) => !field.isSystem && isDefined(field.name),
@@ -193,81 +201,6 @@ export const RecordEditContainer = ({
     }
     return acc;
   }, {});
-
-  // This saves the whole record with the updated fields from the form
-  const handleSave = async () => {
-    setIsSaving(true);
-    try {
-      // If no fields are dirty, don't save
-      if (isDirty) {
-        const updatedFields = getUpdatedFields();
-
-        await updateOneRecord({
-          idToUpdate: recordId,
-          updateOneRecordInput: updatedFields,
-        });
-
-        const toDelete = record?.attachments
-          .filter(
-            (attachment: Attachment) => attachment.type === 'PropertyImage',
-          )
-          .filter(
-            (attachment: Attachment) =>
-              !propertyImages.some((image) => image.id === attachment.id),
-          );
-
-        await Promise.all(
-          propertyImages.map(async (image) => {
-            if (image.isAttachment && isDefined(image.attachment)) {
-              await updateOneAttachment({
-                idToUpdate: image.attachment.id,
-                updateOneRecordInput: {
-                  orderIndex: image.orderIndex,
-                  description: image.description,
-                },
-              });
-            } else if (isDefined(image.file)) {
-              await uploadAttachmentFile(
-                image.file,
-                {
-                  id: recordId,
-                  targetObjectNameSingular: objectNameSingular,
-                },
-                'PropertyImage',
-                image.orderIndex,
-                image.description,
-              );
-            }
-          }),
-        );
-
-        await Promise.all(
-          toDelete.map((attachment: Attachment) => {
-            deleteOneAttachment(attachment.id);
-          }),
-        );
-        resetFields();
-      }
-
-      const link = getLinkToShowPage(objectNameSingular, {
-        id: recordId,
-      });
-      setTimeout(() => {
-        navigate(link);
-      }, 100);
-    } catch (error) {
-      if (error instanceof Error) {
-        enqueueSnackBar(
-          `Something went wrong while saving the record: ${error.message}`,
-          {
-            variant: SnackBarVariant.Error,
-          },
-        );
-      }
-    } finally {
-      setIsSaving(false);
-    }
-  };
 
   const renderActiveTabContent = () => {
     const activeTab = tabs.find((tab) => tab.id === activeTabId);
@@ -351,7 +284,11 @@ export const RecordEditContainer = ({
                           objectMetadataItem={objectMetadataItem}
                           record={record}
                           objectNameSingular={objectNameSingular}
-                          loading={recordLoading || isNewViewableRecordLoading}
+                          loading={
+                            loading ||
+                            recordLoading ||
+                            isNewViewableRecordLoading
+                          }
                         />
                       ) : null;
                     },
@@ -391,7 +328,7 @@ export const RecordEditContainer = ({
             accent="blue"
             size="small"
             onClick={handleSave}
-            disabled={isSaving}
+            disabled={loading}
           />
         </StyledButtonContainer>
       </StyledTabListContainer>

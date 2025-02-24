@@ -27,6 +27,7 @@ import {
   IconTrash,
   IconUpload,
   MenuItem,
+  MOBILE_VIEWPORT,
   TooltipDelay,
 } from 'twenty-ui';
 import { ImageEditModal } from './ImageEditModal';
@@ -68,6 +69,9 @@ const StyledImageGrid = styled.div<{ isDraggingOver?: boolean }>`
   overflow-y: hidden;
   white-space: nowrap;
 
+  /* Prevent flex items from stretching */
+  align-items: flex-start;
+
   /* Smooth scroll behavior */
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
@@ -77,6 +81,8 @@ const StyledSkeletonLoader = styled(Skeleton)`
   height: 120px;
   margin: 0 8px 0 0;
   width: 120px;
+  flex: 0 0 120px; /* Add this to match image wrapper */
+  display: inline-block; /* Add this to respect white-space: nowrap */
 `;
 
 const StyledImageWrapper = styled.div`
@@ -87,6 +93,7 @@ const StyledImageWrapper = styled.div`
   overflow: hidden;
   cursor: move;
   will-change: transform;
+  display: inline-block; /* Add this to respect white-space: nowrap */
 
   &:hover {
     border-color: ${({ theme }) => theme.border.color.strong};
@@ -137,9 +144,7 @@ const StyledRemoveButton = styled.button<{ show: boolean }>`
 `;
 
 const StyledDropzone = styled.div<{ isDragActive: boolean }>`
-  border: 2px dashed
-    ${({ theme, isDragActive }) =>
-      isDragActive ? theme.color.blue : theme.border.color.medium};
+  border: 2px solid ${({ theme }) => theme.border.color.medium};
   border-radius: ${({ theme }) => theme.border.radius.md};
   padding: ${({ theme }) => theme.spacing(4)};
   display: flex;
@@ -159,6 +164,12 @@ const StyledDropzone = styled.div<{ isDragActive: boolean }>`
   &:hover {
     border-color: ${({ theme }) => theme.border.color.strong};
     background: ${({ theme }) => theme.background.tertiary};
+  }
+
+  @media only screen and (min-width: ${MOBILE_VIEWPORT}px) {
+    border: 2px dashed
+      ${({ theme, isDragActive }) =>
+        isDragActive ? theme.color.blue : theme.border.color.medium};
   }
 `;
 
@@ -230,10 +241,7 @@ const reorderImages = (
   result.splice(endIndex, 0, removed);
 
   // Update orderIndex for all items
-  return result.map((image, index) => ({
-    ...image,
-    orderIndex: index,
-  }));
+  return result;
 };
 
 const DraggableImageItem = ({
@@ -350,6 +358,7 @@ const StyledFullHeightDropzone = styled(StyledDropzone)`
 export const PropertyImageFormInput = ({ loading }: { loading?: boolean }) => {
   const [hasRefreshed, setHasRefreshed] = useState(false);
   const { t } = useLingui();
+
   const {
     propertyImages,
     addPropertyImage,
@@ -401,7 +410,6 @@ export const PropertyImageFormInput = ({ loading }: { loading?: boolean }) => {
     newPreviewFiles.forEach((file) => {
       addPropertyImage({
         ...file,
-        orderIndex: propertyImages.length,
         description: '',
       });
     });
@@ -434,11 +442,6 @@ export const PropertyImageFormInput = ({ loading }: { loading?: boolean }) => {
     onDrop: onAdd,
   });
 
-  // Initialize images with orderIndex from attachments or array index
-  const sortedImages = useMemo(() => {
-    return [...propertyImages].sort((a, b) => a.orderIndex - b.orderIndex);
-  }, [propertyImages]);
-
   const onDragEnd = (result: DropResult) => {
     const { destination, source } = result;
 
@@ -447,7 +450,7 @@ export const PropertyImageFormInput = ({ loading }: { loading?: boolean }) => {
     }
 
     const updatedImages = reorderImages(
-      sortedImages,
+      propertyImages,
       source.index,
       destination.index,
     );
@@ -455,7 +458,6 @@ export const PropertyImageFormInput = ({ loading }: { loading?: boolean }) => {
     updatePropertyImageOrder(updatedImages);
   };
 
-  // eslint-disable-next-line @nx/workspace-no-state-useref
   const gridRef = useRef<HTMLDivElement | null>(null);
   const [showScrollButtons, setShowScrollButtons] = useState(false);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
@@ -465,26 +467,38 @@ export const PropertyImageFormInput = ({ loading }: { loading?: boolean }) => {
     if (isDefined(gridRef.current)) {
       const { scrollLeft, scrollWidth, clientWidth } = gridRef.current;
       setCanScrollLeft(scrollLeft > 0);
-      setCanScrollRight(scrollLeft < scrollWidth - clientWidth);
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 1);
       setShowScrollButtons(scrollWidth > clientWidth);
     }
   }, []);
 
   useEffect(() => {
+    // Check on mount and when images change
     checkScrollability();
-    window.addEventListener('resize', checkScrollability);
-    return () => window.removeEventListener('resize', checkScrollability);
-  }, [checkScrollability, propertyImages]);
 
-  // Add scroll event listener to update button visibility
-  useEffect(() => {
+    // Check on scroll
     const gridElement = gridRef.current;
     if (isDefined(gridElement)) {
       gridElement.addEventListener('scroll', checkScrollability);
-      return () =>
-        gridElement.removeEventListener('scroll', checkScrollability);
     }
-  }, [checkScrollability]);
+
+    // Check on window resize
+    window.addEventListener('resize', checkScrollability);
+
+    // Check after images load
+    const observer = new ResizeObserver(checkScrollability);
+    if (gridElement) {
+      observer.observe(gridElement);
+    }
+
+    return () => {
+      if (isDefined(gridElement)) {
+        gridElement.removeEventListener('scroll', checkScrollability);
+      }
+      window.removeEventListener('resize', checkScrollability);
+      observer.disconnect();
+    };
+  }, [checkScrollability, propertyImages]);
 
   const scroll = (direction: 'left' | 'right') => {
     if (isDefined(gridRef.current)) {
@@ -504,7 +518,7 @@ export const PropertyImageFormInput = ({ loading }: { loading?: boolean }) => {
       return <Skeleton height={200} width={'100%'} />;
     }
 
-    if (sortedImages.length === 0) {
+    if (propertyImages.length === 0) {
       return (
         <StyledFullHeightDropzone
           {...getRootProps()}
@@ -559,7 +573,7 @@ export const PropertyImageFormInput = ({ loading }: { loading?: boolean }) => {
                   {...provided.droppableProps}
                   isDraggingOver={snapshot.isDraggingOver}
                 >
-                  {sortedImages.map((image, index) =>
+                  {propertyImages.map((image, index) =>
                     !loading && hasRefreshed ? (
                       <DraggableImageItem
                         key={image.id}
@@ -586,7 +600,7 @@ export const PropertyImageFormInput = ({ loading }: { loading?: boolean }) => {
           <StyledDropzoneText>
             {isDragActive
               ? t`Drop the files here...`
-              : t`Drag & drop images here, or click to select files`}
+              : t`Click to select files`}
           </StyledDropzoneText>
         </StyledDropzone>
       </>

@@ -1,16 +1,27 @@
+import { useAttachments } from '@/activities/files/hooks/useAttachments';
+import { useUploadAttachmentFile } from '@/activities/files/hooks/useUploadAttachmentFile';
 import { Attachment } from '@/activities/files/types/Attachment';
+import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { ObjectMetadataItem } from '@/object-metadata/types/ObjectMetadataItem';
+import { getLinkToShowPage } from '@/object-metadata/utils/getLinkToShowPage';
+import { useDestroyOneRecord } from '@/object-record/hooks/useDestroyOneRecord';
+import { useUpdateOneRecord } from '@/object-record/hooks/useUpdateOneRecord';
 import { FieldDefinition } from '@/object-record/record-field/types/FieldDefinition';
 import { FieldMetadata } from '@/object-record/record-field/types/FieldMetadata';
 import { ObjectRecord } from '@/object-record/types/ObjectRecord';
+import { SnackBarVariant } from '@/ui/feedback/snack-bar-manager/components/SnackBar';
+import { useSnackBar } from '@/ui/feedback/snack-bar-manager/hooks/useSnackBar';
 import {
   createContext,
   PropsWithChildren,
   useCallback,
   useContext,
+  useEffect,
+  useMemo,
   useState,
 } from 'react';
-import { useBlocker } from 'react-router-dom';
+import { useBlocker, useNavigate, useParams } from 'react-router-dom';
+import { isDefined } from 'twenty-shared';
 
 type FieldUpdate = {
   fieldName: string;
@@ -24,7 +35,6 @@ export type RecordEditPropertyImage = {
   attachment?: Attachment;
   file?: File;
   previewUrl: string;
-  orderIndex: number;
   description: string;
 };
 
@@ -45,6 +55,8 @@ export type RecordEditContextType = {
     imageId: string,
     updates: Partial<RecordEditPropertyImage>,
   ) => void;
+  loading: boolean;
+  saveRecord: () => void;
 };
 
 export const RecordEditContext = createContext<RecordEditContextType | null>(
@@ -61,35 +73,58 @@ export const RecordEditProvider = ({
   objectMetadataItem,
   initialRecord,
 }: RecordEditProviderProps) => {
+  const [loading, setLoading] = useState(false);
   const [fieldUpdates, setFieldUpdates] = useState<Record<string, unknown>>({});
   const [isDirty, setIsDirty] = useState(false);
+  const { objectRecordId, objectNameSingular } = useParams();
+
+  const [attachmentsToDelete, setAttachmentsToDelete] = useState<Attachment[]>(
+    [],
+  );
+
+  // Record Handling
+  const { updateOneRecord } = useUpdateOneRecord({
+    objectNameSingular: objectNameSingular ?? '',
+  });
+
+  // Attachment Handling
+  const { uploadAttachmentFile } = useUploadAttachmentFile();
+  const { updateOneRecord: updateOneAttachment } = useUpdateOneRecord({
+    objectNameSingular: CoreObjectNameSingular.Attachment,
+  });
+  const { destroyOneRecord: destroyOneAttachment } = useDestroyOneRecord({
+    objectNameSingular: CoreObjectNameSingular.Attachment,
+  });
+  const { attachments } = useAttachments({
+    id: objectRecordId ?? '',
+    targetObjectNameSingular: objectNameSingular ?? '',
+  });
+  const attachmentImages = useMemo(() => {
+    return attachments
+      ?.filter((attachment: Attachment) => attachment.type === 'PropertyImage')
+      .sort((a, b) => a.orderIndex - b.orderIndex)
+      .reduce(
+        (
+          acc: Record<string, RecordEditPropertyImage>,
+          attachment: Attachment,
+        ) => ({
+          ...acc,
+          [attachment.id]: {
+            id: attachment.id,
+            isAttachment: true,
+            attachment,
+            file: undefined,
+            previewUrl: attachment.fullPath,
+            description: attachment.description ?? '',
+          },
+        }),
+        {},
+      );
+  }, [attachments]);
 
   const [propertyImages, setPropertyImages] = useState<
     RecordEditPropertyImage[]
-  >(
-    Object.values(
-      (initialRecord?.attachments ?? [])
-        .filter((attachment: Attachment) => attachment.type === 'PropertyImage')
-        .reduce(
-          (
-            acc: Record<string, RecordEditPropertyImage>,
-            attachment: Attachment,
-          ) => ({
-            ...acc,
-            [attachment.id]: {
-              id: attachment.id,
-              isAttachment: true,
-              attachment,
-              file: undefined,
-              description: attachment.description ?? '',
-              previewUrl: attachment.fullPath,
-              orderIndex: attachment.orderIndex,
-            },
-          }),
-          {},
-        ),
-    ),
-  );
+  >([]);
 
   const refreshPropertyImageUrls = useCallback(() => {
     setPropertyImages((prev) =>
@@ -131,6 +166,12 @@ export const RecordEditProvider = ({
 
   const removePropertyImage = useCallback((image: RecordEditPropertyImage) => {
     setIsDirty(true);
+    const attachment = image.attachment;
+
+    if (isDefined(attachment)) {
+      setAttachmentsToDelete((prev) => [...prev, attachment]);
+    }
+
     setPropertyImages((prev) => prev.filter((i) => i.id !== image.id));
   }, []);
 
@@ -157,39 +198,13 @@ export const RecordEditProvider = ({
   const getUpdatedFields = useCallback(() => fieldUpdates, [fieldUpdates]);
 
   const resetImages = useCallback(() => {
-    setPropertyImages(
-      Object.values(
-        (initialRecord?.attachments ?? [])
-          .filter(
-            (attachment: Attachment) => attachment.type === 'PropertyImage',
-          )
-          .reduce(
-            (
-              acc: Record<string, RecordEditPropertyImage>,
-              attachment: Attachment,
-            ) => ({
-              ...acc,
-              [attachment.id]: {
-                id: attachment.id,
-                isAttachment: true,
-                attachment,
-                file: undefined,
-                previewUrl: attachment.fullPath,
-                orderIndex: attachment.orderIndex,
-                description: attachment.description ?? '',
-              },
-            }),
-            {},
-          ),
-      ),
-    );
-  }, [initialRecord?.attachments]);
+    setPropertyImages(Object.values(attachmentImages));
+  }, [attachmentImages]);
 
   const resetFields = useCallback(() => {
     setFieldUpdates({});
-    resetImages();
     setIsDirty(false);
-  }, [resetImages]);
+  }, []);
 
   // This is used to block the user from leaving the page if there are unsaved changes
   useBlocker(({ currentLocation, nextLocation }) => {
@@ -209,6 +224,60 @@ export const RecordEditProvider = ({
     return true; // Block navigation
   });
 
+  // This saves the whole record with the updated fields from the form
+  const saveRecord = async () => {
+    setLoading(true);
+
+    // If no fields are dirty, don't save
+    if (isDirty) {
+      const updatedFields = getUpdatedFields();
+
+      await updateOneRecord({
+        idToUpdate: objectRecordId ?? '',
+        updateOneRecordInput: updatedFields,
+      });
+
+      // First delete removed images
+      await Promise.all(
+        attachmentsToDelete.map((attachment: Attachment) => {
+          return destroyOneAttachment(attachment.id);
+        }),
+      );
+
+      let orderIndex = 0;
+      // Then process remaining/new images
+      for (const image of propertyImages) {
+        if (image.isAttachment && isDefined(image.attachment)) {
+          await updateOneAttachment({
+            idToUpdate: image.attachment.id,
+            updateOneRecordInput: {
+              orderIndex,
+              description: image.description,
+            },
+          });
+        } else if (isDefined(image.file)) {
+          await uploadAttachmentFile(
+            image.file,
+            {
+              id: objectRecordId ?? '',
+              targetObjectNameSingular: objectNameSingular ?? '',
+            },
+            'PropertyImage',
+            orderIndex,
+            image.description,
+          );
+        }
+        orderIndex++;
+      }
+      setLoading(false);
+      resetFields();
+    }
+  };
+
+  useEffect(() => {
+    resetImages();
+  }, [resetImages]);
+
   return (
     <RecordEditContext.Provider
       value={{
@@ -225,6 +294,8 @@ export const RecordEditProvider = ({
         updatePropertyImageOrder,
         refreshPropertyImageUrls,
         updatePropertyImage,
+        loading,
+        saveRecord,
       }}
     >
       {children}
