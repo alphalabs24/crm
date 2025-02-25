@@ -18,11 +18,12 @@ const StyledContainer = styled.div`
   }
 `;
 
+// TODO: Update the links to the correct ones if necessary.
 export const FooterNote = () => (
   <StyledContainer>
-    <Trans>By using Twenty, you agree to the</Trans>{' '}
+    <Trans>By using nestermind, you agree to the</Trans>{' '}
     <a
-      href="https://twenty.com/legal/terms"
+      href="https://www.nestermind.com/impressum"
       target="_blank"
       rel="noopener noreferrer"
     >
@@ -30,7 +31,7 @@ export const FooterNote = () => (
     </a>{' '}
     <Trans>and</Trans>{' '}
     <a
-      href="https://twenty.com/legal/privacy"
+      href="https://www.nestermind.com/privacy-policy"
       target="_blank"
       rel="noopener noreferrer"
     >
