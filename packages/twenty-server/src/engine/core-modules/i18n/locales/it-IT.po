@@ -6,17 +6,17 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: @lingui/cli\n"
 "Language: it\n"
-"Project-Id-Version: cf448e737e0d6d7b78742f963d761c61\n"
+"Project-Id-Version: nestermind-crm\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-01-01 00:00\n"
+"PO-Revision-Date: 2025-02-25 13:06\n"
 "Last-Translator: \n"
 "Language-Team: Italian\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Crowdin-Project: cf448e737e0d6d7b78742f963d761c61\n"
-"X-Crowdin-Project-ID: 1\n"
+"X-Crowdin-Project: nestermind-crm\n"
+"X-Crowdin-Project-ID: 765211\n"
 "X-Crowdin-Language: it\n"
 "X-Crowdin-File: /packages/twenty-server/src/engine/core-modules/i18n/locales/en.po\n"
-"X-Crowdin-File-ID: 31\n"
+"X-Crowdin-File-ID: 32\n"
 
 #: src/modules/view/standard-objects/view-field.workspace-entity.ts
 msgid "(System) View Fields"
@@ -183,11 +183,11 @@ msgstr "Ricavi annuali ricorrenti: Il fatturato annuale effettivo o stimato dell
 
 #: src/modules/api-key/standard-objects/api-key.workspace-entity.ts
 msgid "API Key"
-msgstr "API Key"
+msgstr ""
 
 #: src/modules/api-key/standard-objects/api-key.workspace-entity.ts
 msgid "API Keys"
-msgstr "API Keys"
+msgstr ""
 
 #: src/modules/api-key/standard-objects/api-key.workspace-entity.ts
 msgid "ApiKey expiration date"
@@ -203,7 +203,7 @@ msgstr "Data di revoca della API Key"
 
 #: src/modules/company/standard-objects/company.workspace-entity.ts
 msgid "ARR"
-msgstr "ARR"
+msgstr ""
 
 #: src/modules/workspace-member/standard-objects/workspace-member.workspace-entity.ts
 msgid "Assigned tasks"
@@ -323,7 +323,7 @@ msgstr "Creare automaticamente i record delle persone con cui si è partecipato 
 
 #: src/modules/person/standard-objects/person.workspace-entity.ts
 msgid "Avatar"
-msgstr "Avatar"
+msgstr ""
 
 #: src/modules/workspace-member/standard-objects/workspace-member.workspace-entity.ts
 msgid "Avatar Url"
@@ -891,7 +891,7 @@ msgstr "Raggruppa per valore di questo campo"
 
 #: src/modules/connected-account/standard-objects/connected-account.workspace-entity.ts
 msgid "handle"
-msgstr "handle"
+msgstr ""
 
 #: src/modules/messaging/common/standard-objects/message-participant.workspace-entity.ts
 #: src/modules/messaging/common/standard-objects/message-participant.workspace-entity.ts
@@ -926,12 +926,12 @@ msgstr "Icona"
 
 #: src/modules/company/standard-objects/company.workspace-entity.ts
 msgid "ICP"
-msgstr "ICP"
+msgstr ""
 
 #: src/engine/twenty-orm/base.workspace-entity.ts
 #: src/engine/twenty-orm/base.workspace-entity.ts
 msgid "Id"
-msgstr "Id"
+msgstr ""
 
 #: src/modules/company/standard-objects/company.workspace-entity.ts
 msgid "Ideal Customer Profile:  Indicates whether the company is the most suitable and valuable customer for you"
@@ -999,7 +999,7 @@ msgstr "Valore Json per i dettagli dell'evento"
 
 #: src/modules/view/standard-objects/view.workspace-entity.ts
 msgid "kanbanfieldMetadataId"
-msgstr "kanbanfieldMetadataId"
+msgstr ""
 
 #: src/modules/view/standard-objects/view.workspace-entity.ts
 msgid "Key"
@@ -1059,7 +1059,7 @@ msgstr "ID del record collegato"
 #: src/modules/person/standard-objects/person.workspace-entity.ts
 #: src/modules/company/standard-objects/company.workspace-entity.ts
 msgid "Linkedin"
-msgstr "Linkedin"
+msgstr ""
 
 #: src/modules/person/standard-objects/person.workspace-entity.ts
 msgid "List of opportunities for which that person is the point of contact"
@@ -1404,7 +1404,7 @@ msgstr "Segreto opzionale per calcolare la firma HMAC dei payload dei webhook. Q
 
 #: src/modules/workflow/common/standard-objects/workflow-run.workspace-entity.ts
 msgid "Output"
-msgstr "Output"
+msgstr ""
 
 #: src/modules/view/standard-objects/view-filter-group.workspace-entity.ts
 msgid "Parent View Filter Group"
@@ -1497,7 +1497,7 @@ msgstr "Probabilità"
 
 #: src/modules/connected-account/standard-objects/connected-account.workspace-entity.ts
 msgid "provider"
-msgstr "provider"
+msgstr ""
 
 #: src/modules/messaging/common/standard-objects/message.workspace-entity.ts
 msgid "Received At"
@@ -2097,7 +2097,7 @@ msgstr "Visibile"
 
 #: src/modules/webhook/standard-objects/webhook.workspace-entity.ts
 msgid "Webhook"
-msgstr "Webhook"
+msgstr ""
 
 #: src/modules/webhook/standard-objects/webhook.workspace-entity.ts
 msgid "Webhook operation"
@@ -2113,7 +2113,7 @@ msgstr "URL di destinazione del webhook"
 
 #: src/modules/webhook/standard-objects/webhook.workspace-entity.ts
 msgid "Webhooks"
-msgstr "Webhooks"
+msgstr ""
 
 #: src/modules/workflow/common/standard-objects/workflow.workspace-entity.ts
 #: src/modules/workflow/common/standard-objects/workflow-version.workspace-entity.ts
@@ -2124,7 +2124,7 @@ msgstr "Webhooks"
 #: src/modules/favorite/standard-objects/favorite.workspace-entity.ts
 #: src/modules/favorite/standard-objects/favorite.workspace-entity.ts
 msgid "Workflow"
-msgstr "Workflow"
+msgstr ""
 
 #: src/modules/workflow/common/standard-objects/workflow.workspace-entity.ts
 msgid "Workflow event listeners linked to the workflow."
@@ -2212,7 +2212,7 @@ msgstr "Ascoltatori di eventi del workflow"
 
 #: src/modules/workflow/common/standard-objects/workflow.workspace-entity.ts
 msgid "Workflows"
-msgstr "Workflows"
+msgstr ""
 
 #: src/modules/timeline/standard-objects/timeline-activity.workspace-entity.ts
 msgid "WorkflowVersion"
@@ -2256,7 +2256,7 @@ msgstr "Membro dello spazio di lavoro"
 #: src/modules/person/standard-objects/person.workspace-entity.ts
 #: src/modules/company/standard-objects/company.workspace-entity.ts
 msgid "X"
-msgstr "X"
+msgstr ""
 
 #: src/modules/company/standard-objects/company.workspace-entity.ts
 msgid "Your team member responsible for managing the company account"

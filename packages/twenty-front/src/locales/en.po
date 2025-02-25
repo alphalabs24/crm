@@ -184,8 +184,8 @@ msgid "Advanced filter"
 msgstr "Advanced filter"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Afrikaans"
-msgstr "Afrikaans"
+#~ msgid "Afrikaans"
+#~ msgstr "Afrikaans"
 
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationShortLabel.ts
 msgid "All"
@@ -258,8 +258,8 @@ msgid "Appearance"
 msgstr "Appearance"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Arabic"
-msgstr "Arabic"
+#~ msgid "Arabic"
+#~ msgstr "Arabic"
 
 #: src/pages/settings/SettingsBilling.tsx
 msgid "Are you sure that you want to change your billing interval?"
@@ -343,8 +343,12 @@ msgid "Book a Call"
 msgstr "Book a Call"
 
 #: src/modules/auth/sign-in-up/components/FooterNote.tsx
-msgid "By using Twenty, you agree to the"
-msgstr "By using Twenty, you agree to the"
+msgid "By using nestermind, you agree to the"
+msgstr "By using nestermind, you agree to the"
+
+#: src/modules/auth/sign-in-up/components/FooterNote.tsx
+#~ msgid "By using Twenty, you agree to the"
+#~ msgstr "By using Twenty, you agree to the"
 
 #: src/modules/object-record/record-table/record-table-footer/components/RecordTableColumnAggregateFooterValue.tsx
 msgid "Calculate"
@@ -383,8 +387,8 @@ msgid "Cancel your subscription"
 msgstr "Cancel your subscription"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Catalan"
-msgstr "Catalan"
+#~ msgid "Catalan"
+#~ msgstr "Catalan"
 
 #: src/pages/settings/SettingsBilling.tsx
 msgid "Change {to}"
@@ -397,12 +401,12 @@ msgid "Change Password"
 msgstr "Change Password"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Chinese — Simplified"
-msgstr "Chinese — Simplified"
+#~ msgid "Chinese — Simplified"
+#~ msgstr "Chinese — Simplified"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Chinese — Traditional"
-msgstr "Chinese — Traditional"
+#~ msgid "Chinese — Traditional"
+#~ msgstr "Chinese — Traditional"
 
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx
 msgid "Choose an object"
@@ -594,8 +598,8 @@ msgid "Customize your workspace security"
 msgstr "Customize your workspace security"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Czech"
-msgstr "Czech"
+#~ msgid "Czech"
+#~ msgstr "Czech"
 
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
@@ -607,8 +611,8 @@ msgid "Danger zone"
 msgstr "Danger zone"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Danish"
-msgstr "Danish"
+#~ msgid "Danish"
+#~ msgstr "Danish"
 
 #: src/pages/settings/profile/appearance/components/SettingsExperience.tsx
 msgid "Dark"
@@ -811,8 +815,8 @@ msgstr "Drop images here"
 #~ msgstr "Drop the files here..."
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Dutch"
-msgstr "Dutch"
+#~ msgid "Dutch"
+#~ msgstr "Dutch"
 
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeysNew.tsx
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
@@ -1042,8 +1046,8 @@ msgid "Filters"
 msgstr "Filters"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Finnish"
-msgstr "Finnish"
+#~ msgid "Finnish"
+#~ msgstr "Finnish"
 
 #: src/pages/onboarding/CreateProfile.tsx
 msgid "First Name"
@@ -1137,16 +1141,16 @@ msgid "Grant Twenty support temporary access to your workspace so we can trouble
 msgstr "Grant Twenty support temporary access to your workspace so we can troubleshoot problems or recover content on your behalf. You can revoke access at any time."
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Greek"
-msgstr "Greek"
+#~ msgid "Greek"
+#~ msgstr "Greek"
 
 #: src/pages/settings/admin-panel/SettingsAdminIndicatorHealthStatus.tsx
 msgid "Health Status"
 msgstr "Health Status"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Hebrew"
-msgstr "Hebrew"
+#~ msgid "Hebrew"
+#~ msgstr "Hebrew"
 
 #: src/modules/object-record/record-table/record-table-header/components/RecordTableColumnHeadDropdownMenu.tsx
 msgid "Hide"
@@ -1157,8 +1161,8 @@ msgid "How you'll be identified on the app."
 msgstr "How you'll be identified on the app."
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Hungarian"
-msgstr "Hungarian"
+#~ msgid "Hungarian"
+#~ msgstr "Hungarian"
 
 #: src/pages/settings/data-model/SettingsObjectFieldEdit.tsx
 #: src/pages/settings/data-model/SettingsObjectNewField/SettingsObjectNewFieldConfigure.tsx
@@ -1251,12 +1255,12 @@ msgid "Italian"
 msgstr "Italian"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Japanese"
-msgstr "Japanese"
+#~ msgid "Japanese"
+#~ msgstr "Japanese"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Korean"
-msgstr "Korean"
+#~ msgid "Korean"
+#~ msgstr "Korean"
 
 #: src/modules/settings/hooks/useSettingsNavigationItems.tsx
 msgid "Lab"
@@ -1546,8 +1550,8 @@ msgid "No workflow versions yet"
 msgstr "No workflow versions yet"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Norwegian"
-msgstr "Norwegian"
+#~ msgid "Norwegian"
+#~ msgstr "Norwegian"
 
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationShortLabel.ts
 msgid "Not empty"
@@ -1669,20 +1673,20 @@ msgid "Plural"
 msgstr "Plural"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Polish"
-msgstr "Polish"
+#~ msgid "Polish"
+#~ msgstr "Polish"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 #~ msgid "Portuguese"
 #~ msgstr "Portuguese"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Portuguese — Brazil"
-msgstr "Portuguese — Brazil"
+#~ msgid "Portuguese — Brazil"
+#~ msgstr "Portuguese — Brazil"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Portuguese — Portugal"
-msgstr "Portuguese — Portugal"
+#~ msgid "Portuguese — Portugal"
+#~ msgstr "Portuguese — Portugal"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 #~ msgid "Portuguese (Brazil)"
@@ -1828,16 +1832,16 @@ msgid "Roles"
 msgstr "Roles"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Romanian"
-msgstr "Romanian"
+#~ msgid "Romanian"
+#~ msgstr "Romanian"
 
 #: src/modules/object-record/record-table/empty-state/utils/getEmptyStateSubTitle.ts
 msgid "Run a workflow and return here to view its executions"
 msgstr "Run a workflow and return here to view its executions"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Russian"
-msgstr "Russian"
+#~ msgid "Russian"
+#~ msgstr "Russian"
 
 #: src/modules/record-edit/components/RecordEditContainer.tsx
 #: src/modules/record-edit/components/custom/ImageEditModal.tsx
@@ -1931,8 +1935,8 @@ msgid "Send an invite email to your team"
 msgstr "Send an invite email to your team"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Serbian (Cyrillic)"
-msgstr "Serbian (Cyrillic)"
+#~ msgid "Serbian (Cyrillic)"
+#~ msgstr "Serbian (Cyrillic)"
 
 #: src/pages/settings/admin-panel/SettingsAdmin.tsx
 #: src/modules/settings/hooks/useSettingsNavigationItems.tsx
@@ -2011,8 +2015,8 @@ msgid "Sort"
 msgstr "Sort"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Spanish"
-msgstr "Spanish"
+#~ msgid "Spanish"
+#~ msgstr "Spanish"
 
 #: src/pages/settings/security/SettingsSecurity.tsx
 msgid "SSO"
@@ -2053,8 +2057,8 @@ msgid "Support"
 msgstr "Support"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Swedish"
-msgstr "Swedish"
+#~ msgid "Swedish"
+#~ msgstr "Swedish"
 
 #: src/pages/settings/SettingsBilling.tsx
 msgid "Switch {from}"
@@ -2185,8 +2189,8 @@ msgid "Trigger type should be Manual - when no record(s) are selected"
 msgstr "Trigger type should be Manual - when no record(s) are selected"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Turkish"
-msgstr "Turkish"
+#~ msgid "Turkish"
+#~ msgstr "Turkish"
 
 #: src/pages/settings/roles/components/RolePermissionsSettingsTableHeader.tsx
 #: src/pages/settings/data-model/SettingsObjectIndexTable.tsx
@@ -2199,8 +2203,8 @@ msgid "Type anything"
 msgstr "Type anything"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Ukrainian"
-msgstr "Ukrainian"
+#~ msgid "Ukrainian"
+#~ msgstr "Ukrainian"
 
 #: src/pages/settings/data-model/SettingsObjectIndexTable.tsx
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationShortLabel.ts
@@ -2262,8 +2266,8 @@ msgid "Values"
 msgstr "Values"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Vietnamese"
-msgstr "Vietnamese"
+#~ msgid "Vietnamese"
+#~ msgstr "Vietnamese"
 
 #: src/pages/settings/SettingsBilling.tsx
 msgid "View billing details"

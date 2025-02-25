@@ -368,8 +368,8 @@
     "i18n:compile": "nx run-many -t lingui:compile",
     "i18n:fix-po": "find packages -name '*.po' -exec sed -i'' -E ':a;N;$!ba;s/\\n\"$/\"/g;s/msgstr \"([^\"]*)\\n([^\"]*)\"/msgstr \"\\1\\\\n\\2\"/g' {} +",
     "i18n:crowdin-push": "crowdin upload sources && crowdin upload translations",
-    "i18n:crowdin-pull": "crowdin download && find packages -name",
-    "translate": "yarn i18n:crowdin-pull && yarn i18n:extract && yarn i18n:compile && yarn i18n:crowdin-push && yarn i18n:crowdin-pull"
+    "i18n:crowdin-pull": "crowdin download",
+    "translate": "yarn i18n:crowdin-pull && yarn i18n:extract && yarn i18n:compile && yarn i18n:crowdin-push"
   },
   "workspaces": {
     "packages": [

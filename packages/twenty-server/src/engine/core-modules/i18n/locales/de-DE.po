@@ -6,17 +6,17 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: @lingui/cli\n"
 "Language: de\n"
-"Project-Id-Version: cf448e737e0d6d7b78742f963d761c61\n"
+"Project-Id-Version: nestermind-crm\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-01-01 00:00\n"
+"PO-Revision-Date: 2025-02-25 13:06\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Crowdin-Project: cf448e737e0d6d7b78742f963d761c61\n"
-"X-Crowdin-Project-ID: 1\n"
+"X-Crowdin-Project: nestermind-crm\n"
+"X-Crowdin-Project-ID: 765211\n"
 "X-Crowdin-Language: de\n"
 "X-Crowdin-File: /packages/twenty-server/src/engine/core-modules/i18n/locales/en.po\n"
-"X-Crowdin-File-ID: 31\n"
+"X-Crowdin-File-ID: 32\n"
 
 #: src/modules/view/standard-objects/view-field.workspace-entity.ts
 msgid "(System) View Fields"
@@ -203,7 +203,7 @@ msgstr "Widerrufsdatum des API-Schlüssels"
 
 #: src/modules/company/standard-objects/company.workspace-entity.ts
 msgid "ARR"
-msgstr "ARR"
+msgstr ""
 
 #: src/modules/workspace-member/standard-objects/workspace-member.workspace-entity.ts
 msgid "Assigned tasks"
@@ -323,7 +323,7 @@ msgstr "Automatisch Datensätze für Personen erstellen, mit denen Sie an einer 
 
 #: src/modules/person/standard-objects/person.workspace-entity.ts
 msgid "Avatar"
-msgstr "Avatar"
+msgstr ""
 
 #: src/modules/workspace-member/standard-objects/workspace-member.workspace-entity.ts
 msgid "Avatar Url"
@@ -904,7 +904,7 @@ msgstr "Handle"
 #: src/modules/blocklist/standard-objects/blocklist.workspace-entity.ts
 #: src/modules/blocklist/standard-objects/blocklist.workspace-entity.ts
 msgid "Handle"
-msgstr "Handle"
+msgstr ""
 
 #: src/modules/connected-account/standard-objects/connected-account.workspace-entity.ts
 #: src/modules/connected-account/standard-objects/connected-account.workspace-entity.ts
@@ -918,7 +918,7 @@ msgstr "Header-Nachrichten-ID"
 #: src/modules/calendar/common/standard-objects/calendar-event.workspace-entity.ts
 #: src/modules/calendar/common/standard-objects/calendar-event.workspace-entity.ts
 msgid "iCal UID"
-msgstr "iCal UID"
+msgstr ""
 
 #: src/modules/view/standard-objects/view.workspace-entity.ts
 msgid "Icon"
@@ -926,7 +926,7 @@ msgstr "Symbol"
 
 #: src/modules/company/standard-objects/company.workspace-entity.ts
 msgid "ICP"
-msgstr "ICP"
+msgstr ""
 
 #: src/engine/twenty-orm/base.workspace-entity.ts
 #: src/engine/twenty-orm/base.workspace-entity.ts
@@ -999,7 +999,7 @@ msgstr "JSON-Wert für Ereignisdetails"
 
 #: src/modules/view/standard-objects/view.workspace-entity.ts
 msgid "kanbanfieldMetadataId"
-msgstr "kanbanfieldMetadataId"
+msgstr ""
 
 #: src/modules/view/standard-objects/view.workspace-entity.ts
 msgid "Key"
@@ -1059,7 +1059,7 @@ msgstr "Verknüpfte Datensatz-ID"
 #: src/modules/person/standard-objects/person.workspace-entity.ts
 #: src/modules/company/standard-objects/company.workspace-entity.ts
 msgid "Linkedin"
-msgstr "Linkedin"
+msgstr ""
 
 #: src/modules/person/standard-objects/person.workspace-entity.ts
 msgid "List of opportunities for which that person is the point of contact"
@@ -1221,7 +1221,7 @@ msgstr "Aktualisierungstoken des Messaging-Anbieters"
 #: src/engine/twenty-orm/custom.workspace-entity.ts
 #: src/engine/twenty-orm/custom.workspace-entity.ts
 msgid "Name"
-msgstr "Name"
+msgstr ""
 
 #: src/modules/favorite-folder/standard-objects/favorite-folder.workspace-entity.ts
 msgid "Name of the favorite folder"
@@ -1337,11 +1337,11 @@ msgstr ""
 
 #: src/modules/view/standard-objects/view-filter.workspace-entity.ts
 msgid "Operand"
-msgstr "Operand"
+msgstr ""
 
 #: src/modules/webhook/standard-objects/webhook.workspace-entity.ts
 msgid "Operation"
-msgstr "Operation"
+msgstr ""
 
 #: src/modules/webhook/standard-objects/webhook.workspace-entity.ts
 msgid "Operations"
@@ -1350,7 +1350,7 @@ msgstr "Operationen"
 #: src/modules/opportunity/standard-objects/opportunity.workspace-entity.ts
 #: src/modules/company/standard-objects/company.workspace-entity.ts
 msgid "Opportunities"
-msgstr "Opportunities"
+msgstr ""
 
 #: src/modules/company/standard-objects/company.workspace-entity.ts
 msgid "Opportunities linked to the company."
@@ -1363,7 +1363,7 @@ msgstr "Mit dem Unternehmen verbundene Opportunities."
 #: src/modules/favorite/standard-objects/favorite.workspace-entity.ts
 #: src/modules/attachment/standard-objects/attachment.workspace-entity.ts
 msgid "Opportunity"
-msgstr "Opportunity"
+msgstr ""
 
 #: src/modules/opportunity/standard-objects/opportunity.workspace-entity.ts
 msgid "Opportunity amount"
@@ -1434,7 +1434,7 @@ msgstr "Mit dem Unternehmen verbundene Personen."
 #: src/modules/calendar/common/standard-objects/calendar-event-participant.workspace-entity.ts
 #: src/modules/attachment/standard-objects/attachment.workspace-entity.ts
 msgid "Person"
-msgstr "Person"
+msgstr ""
 
 #: src/modules/person/standard-objects/person.workspace-entity.ts
 msgid "Person record Position"
@@ -1468,7 +1468,7 @@ msgstr "Ansprechpartner"
 #: src/engine/twenty-orm/custom.workspace-entity.ts
 #: src/engine/twenty-orm/custom.workspace-entity.ts
 msgid "Position"
-msgstr "Position"
+msgstr ""
 
 #: src/modules/view/standard-objects/view-filter-group.workspace-entity.ts
 msgid "Position in the parent view filter group"
@@ -1573,7 +1573,7 @@ msgstr "Startdatum"
 
 #: src/modules/task/standard-objects/task.workspace-entity.ts
 msgid "Status"
-msgstr "Status"
+msgstr ""
 
 #: src/modules/workflow/common/standard-objects/workflow.workspace-entity.ts
 msgid "Statuses"
@@ -1715,7 +1715,7 @@ msgstr "Aufgabenziel Aufgabe"
 #: src/modules/messaging/common/standard-objects/message.workspace-entity.ts
 #: src/modules/messaging/common/standard-objects/message.workspace-entity.ts
 msgid "Text"
-msgstr "Text"
+msgstr ""
 
 #: src/modules/connected-account/standard-objects/connected-account.workspace-entity.ts
 msgid "The account handle (email, username, phone number, etc.)"
@@ -2097,7 +2097,7 @@ msgstr "Sichtbar"
 
 #: src/modules/webhook/standard-objects/webhook.workspace-entity.ts
 msgid "Webhook"
-msgstr "Webhook"
+msgstr ""
 
 #: src/modules/webhook/standard-objects/webhook.workspace-entity.ts
 msgid "Webhook operation"
@@ -2113,7 +2113,7 @@ msgstr "Webhook-Ziel-URL"
 
 #: src/modules/webhook/standard-objects/webhook.workspace-entity.ts
 msgid "Webhooks"
-msgstr "Webhooks"
+msgstr ""
 
 #: src/modules/workflow/common/standard-objects/workflow.workspace-entity.ts
 #: src/modules/workflow/common/standard-objects/workflow-version.workspace-entity.ts
@@ -2124,7 +2124,7 @@ msgstr "Webhooks"
 #: src/modules/favorite/standard-objects/favorite.workspace-entity.ts
 #: src/modules/favorite/standard-objects/favorite.workspace-entity.ts
 msgid "Workflow"
-msgstr "Workflow"
+msgstr ""
 
 #: src/modules/workflow/common/standard-objects/workflow.workspace-entity.ts
 msgid "Workflow event listeners linked to the workflow."
@@ -2200,7 +2200,7 @@ msgstr "Mit dem Workflow verknüpfte Workflow-Versionen."
 
 #: src/modules/workflow/common/standard-objects/workflow-event-listener.workspace-entity.ts
 msgid "WorkflowEventListener"
-msgstr "WorkflowEventListener"
+msgstr ""
 
 #: src/modules/workflow/common/standard-objects/workflow-event-listener.workspace-entity.ts
 msgid "WorkflowEventListener workflow"
@@ -2208,15 +2208,15 @@ msgstr "WorkflowEventListener Workflow"
 
 #: src/modules/workflow/common/standard-objects/workflow-event-listener.workspace-entity.ts
 msgid "WorkflowEventListeners"
-msgstr "WorkflowEventListeners"
+msgstr ""
 
 #: src/modules/workflow/common/standard-objects/workflow.workspace-entity.ts
 msgid "Workflows"
-msgstr "Workflows"
+msgstr ""
 
 #: src/modules/timeline/standard-objects/timeline-activity.workspace-entity.ts
 msgid "WorkflowVersion"
-msgstr "WorkflowVersion"
+msgstr ""
 
 #: src/modules/workflow/common/standard-objects/workflow-version.workspace-entity.ts
 msgid "WorkflowVersion workflow"
@@ -2256,7 +2256,7 @@ msgstr "Arbeitsbereichsmitglied"
 #: src/modules/person/standard-objects/person.workspace-entity.ts
 #: src/modules/company/standard-objects/company.workspace-entity.ts
 msgid "X"
-msgstr "X"
+msgstr ""
 
 #: src/modules/company/standard-objects/company.workspace-entity.ts
 msgid "Your team member responsible for managing the company account"

@@ -6,17 +6,17 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: @lingui/cli\n"
 "Language: fr\n"
-"Project-Id-Version: cf448e737e0d6d7b78742f963d761c61\n"
+"Project-Id-Version: nestermind-crm\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-01-01 00:00\n"
+"PO-Revision-Date: 2025-02-25 13:27\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Crowdin-Project: cf448e737e0d6d7b78742f963d761c61\n"
-"X-Crowdin-Project-ID: 1\n"
+"X-Crowdin-Project: nestermind-crm\n"
+"X-Crowdin-Project-ID: 765211\n"
 "X-Crowdin-Language: fr\n"
 "X-Crowdin-File: /packages/twenty-front/src/locales/en.po\n"
-"X-Crowdin-File-ID: 29\n"
+"X-Crowdin-File-ID: 16\n"
 
 #: src/modules/object-record/record-board/record-board-column/utils/computeAggregateValueAndLabel.ts
 msgid "{aggregateLabel} of {fieldLabel}"
@@ -29,7 +29,7 @@ msgstr "{apiKeyName} Clé API"
 #: src/modules/action-menu/actions/record-agnostic-actions/run-workflow-actions/hooks/useRunWorkflowActions.tsx
 #: src/modules/action-menu/actions/record-actions/workflow-run-record-actions/hooks/useWorkflowRunRecordActions.tsx
 msgid "{name}"
-msgstr "{name}"
+msgstr ""
 
 #: src/modules/record-edit/components/RecordEditContainer.tsx
 msgid "{objectNameSingular} saved successfully"
@@ -53,7 +53,7 @@ msgstr "1 000 exécutions de nœuds de workflow"
 
 #: src/pages/settings/profile/appearance/components/DateTimeSettingsTimeFormatSelect.tsx
 msgid "12h ({hour12Label})"
-msgstr "12h ({hour12Label})"
+msgstr ""
 
 #: src/pages/settings/data-model/SettingsObjectNewField/SettingsObjectNewFieldConfigure.tsx
 msgid "2. Configure field"
@@ -61,7 +61,7 @@ msgstr "2. Configurer le champ"
 
 #: src/pages/settings/profile/appearance/components/DateTimeSettingsTimeFormatSelect.tsx
 msgid "24h ({hour24Label})"
-msgstr "24h ({hour24Label})"
+msgstr ""
 
 #: src/pages/onboarding/CreateWorkspace.tsx
 msgid "A shared environment where you will be able to manage your customer relations with your team."
@@ -100,7 +100,7 @@ msgstr "Comptes"
 #: src/pages/settings/roles/components/RolePermissionsObjectsTableHeader.tsx
 #: src/pages/settings/roles/components/RoleAssignmentTableHeader.tsx
 msgid "Actions"
-msgstr "Actions"
+msgstr ""
 
 #: src/pages/settings/data-model/SettingsObjectFieldEdit.tsx
 #: src/modules/workflow/components/RecordShowPageWorkflowHeader.tsx
@@ -127,7 +127,7 @@ msgstr "Ajouter"
 
 #: src/modules/record-edit/components/custom/DocumentEditModal.tsx
 #~ msgid "Add a description for this document..."
-#~ msgstr ""
+#~ msgstr "Add a description for this document..."
 
 #: src/modules/record-edit/components/custom/ImageEditModal.tsx
 #: src/modules/record-edit/components/custom/DocumentEditModal.tsx
@@ -189,8 +189,8 @@ msgid "Advanced filter"
 msgstr "Filtre avancé"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Afrikaans"
-msgstr "Afrikaans"
+#~ msgid "Afrikaans"
+#~ msgstr "Afrikaans"
 
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationShortLabel.ts
 msgid "All"
@@ -235,7 +235,7 @@ msgstr "et"
 #: src/pages/onboarding/ChooseYourPlan.tsx
 #: src/modules/settings/hooks/useSettingsNavigationItems.tsx
 msgid "API & Webhooks"
-msgstr "API & Webhooks"
+msgstr ""
 
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
@@ -263,8 +263,8 @@ msgid "Appearance"
 msgstr "Apparence"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Arabic"
-msgstr "Arabe"
+#~ msgid "Arabic"
+#~ msgstr "Arabic"
 
 #: src/pages/settings/SettingsBilling.tsx
 msgid "Are you sure that you want to change your billing interval?"
@@ -348,8 +348,12 @@ msgid "Book a Call"
 msgstr "Réserver un appel"
 
 #: src/modules/auth/sign-in-up/components/FooterNote.tsx
-msgid "By using Twenty, you agree to the"
-msgstr "En utilisant Twenty, vous acceptez les"
+msgid "By using nestermind, you agree to the"
+msgstr ""
+
+#: src/modules/auth/sign-in-up/components/FooterNote.tsx
+#~ msgid "By using Twenty, you agree to the"
+#~ msgstr "By using Twenty, you agree to the"
 
 #: src/modules/object-record/record-table/record-table-footer/components/RecordTableColumnAggregateFooterValue.tsx
 msgid "Calculate"
@@ -388,8 +392,8 @@ msgid "Cancel your subscription"
 msgstr "Annuler votre abonnement"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Catalan"
-msgstr "Catalan"
+#~ msgid "Catalan"
+#~ msgstr "Catalan"
 
 #: src/pages/settings/SettingsBilling.tsx
 msgid "Change {to}"
@@ -402,12 +406,12 @@ msgid "Change Password"
 msgstr "Changer le mot de passe"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Chinese — Simplified"
-msgstr "Chinois - Simplifié"
+#~ msgid "Chinese — Simplified"
+#~ msgstr "Chinese — Simplified"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Chinese — Traditional"
-msgstr "Chinois - Traditionnel"
+#~ msgid "Chinese — Traditional"
+#~ msgstr "Chinese — Traditional"
 
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx
 msgid "Choose an object"
@@ -427,11 +431,11 @@ msgstr "Choisissez votre essai"
 
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 #~ msgid "Click to select files"
-#~ msgstr ""
+#~ msgstr "Click to select files"
 
 #: src/modules/ui/feedback/snack-bar-manager/components/SnackBar.tsx
 #~ msgid "Close"
-#~ msgstr "Fermer"
+#~ msgstr "Close"
 
 #: src/modules/ui/layout/page-header/components/PageHeaderOpenCommandMenuButton.tsx
 msgid "Close command menu"
@@ -599,8 +603,8 @@ msgid "Customize your workspace security"
 msgstr "Personnaliser la sécurité de votre espace de travail"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Czech"
-msgstr "Tchèque"
+#~ msgid "Czech"
+#~ msgstr "Czech"
 
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
@@ -612,8 +616,8 @@ msgid "Danger zone"
 msgstr "Zone de danger"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Danish"
-msgstr "Danois"
+#~ msgid "Danish"
+#~ msgstr "Danish"
 
 #: src/pages/settings/profile/appearance/components/SettingsExperience.tsx
 msgid "Dark"
@@ -634,7 +638,7 @@ msgstr "Type de données"
 #: src/modules/object-record/record-board/record-board-column/components/RecordBoardColumnHeaderAggregateDropdownMenuContent.tsx
 #: src/modules/object-record/record-board/record-board-column/components/RecordBoardColumnHeaderAggregateDropdownContent.tsx
 msgid "Date"
-msgstr "Date"
+msgstr ""
 
 #: src/pages/settings/profile/appearance/components/SettingsExperience.tsx
 msgid "Date and time"
@@ -749,7 +753,7 @@ msgstr "Descendant"
 #: src/pages/settings/data-model/SettingsObjectFieldEdit.tsx
 #: src/pages/settings/data-model/SettingsObjectNewField/SettingsObjectNewFieldConfigure.tsx
 msgid "Description"
-msgstr "Description"
+msgstr ""
 
 #: src/modules/action-menu/actions/record-actions/constants/WorkflowActionsConfig.ts
 #: src/modules/action-menu/actions/record-actions/constants/WorkflowActionsConfig.ts
@@ -779,7 +783,7 @@ msgstr "Afficher comme date relative"
 
 #: src/modules/record-edit/components/custom/DocumentEditModal.tsx
 #~ msgid "Document Description"
-#~ msgstr ""
+#~ msgstr "Document Description"
 
 #: src/pages/settings/SettingsWorkspace.tsx
 #: src/pages/settings/workspace/SettingsDomain.tsx
@@ -793,11 +797,11 @@ msgstr ""
 
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 #~ msgid "Drag & drop documents here, or click to select files"
-#~ msgstr ""
+#~ msgstr "Drag & drop documents here, or click to select files"
 
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 #~ msgid "Drag & drop images here, or click to select files"
-#~ msgstr ""
+#~ msgstr "Drag & drop images here, or click to select files"
 
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
@@ -813,11 +817,11 @@ msgstr ""
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 #~ msgid "Drop the files here..."
-#~ msgstr ""
+#~ msgstr "Drop the files here..."
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Dutch"
-msgstr "Néerlandais"
+#~ msgid "Dutch"
+#~ msgstr "Dutch"
 
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeysNew.tsx
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
@@ -969,7 +973,7 @@ msgstr "Expérience"
 
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
 msgid "Expiration"
-msgstr "Expiration"
+msgstr ""
 
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeysNew.tsx
 msgid "Expiration Date"
@@ -1047,8 +1051,8 @@ msgid "Filters"
 msgstr "Filtres"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Finnish"
-msgstr "Finnois"
+#~ msgid "Finnish"
+#~ msgstr "Finnish"
 
 #: src/pages/onboarding/CreateProfile.tsx
 msgid "First Name"
@@ -1135,23 +1139,23 @@ msgstr "Obtenez votre abonnement"
 
 #: src/modules/command-menu/components/CommandMenu.tsx
 msgid "Global"
-msgstr "Global"
+msgstr ""
 
 #: src/pages/settings/SettingsWorkspace.tsx
 msgid "Grant Twenty support temporary access to your workspace so we can troubleshoot problems or recover content on your behalf. You can revoke access at any time."
 msgstr "Accordez à Twenty un accès temporaire à votre espace de travail pour que nous puissions résoudre des problèmes ou récupérer du contenu en votre nom. Vous pouvez révoquer l'accès à tout moment."
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Greek"
-msgstr "Grec"
+#~ msgid "Greek"
+#~ msgstr "Greek"
 
 #: src/pages/settings/admin-panel/SettingsAdminIndicatorHealthStatus.tsx
 msgid "Health Status"
 msgstr "Statut de santé"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Hebrew"
-msgstr "Hébreu"
+#~ msgid "Hebrew"
+#~ msgstr "Hebrew"
 
 #: src/modules/object-record/record-table/record-table-header/components/RecordTableColumnHeadDropdownMenu.tsx
 msgid "Hide"
@@ -1162,8 +1166,8 @@ msgid "How you'll be identified on the app."
 msgstr "Comment vous serez identifié sur l'application."
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Hungarian"
-msgstr "Hongrois"
+#~ msgid "Hungarian"
+#~ msgstr "Hungarian"
 
 #: src/pages/settings/data-model/SettingsObjectFieldEdit.tsx
 #: src/pages/settings/data-model/SettingsObjectNewField/SettingsObjectNewFieldConfigure.tsx
@@ -1198,7 +1202,7 @@ msgstr ""
 
 #: src/pages/settings/data-model/constants/SettingsObjectTableMetadata.ts
 msgid "Instances"
-msgstr "Instances"
+msgstr ""
 
 #: src/pages/settings/integrations/SettingsIntegrations.tsx
 #: src/pages/settings/integrations/SettingsIntegrations.tsx
@@ -1256,16 +1260,16 @@ msgid "Italian"
 msgstr "Italien"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Japanese"
-msgstr "Japonais"
+#~ msgid "Japanese"
+#~ msgstr "Japanese"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Korean"
-msgstr "Coréen"
+#~ msgid "Korean"
+#~ msgstr "Korean"
 
 #: src/modules/settings/hooks/useSettingsNavigationItems.tsx
 msgid "Lab"
-msgstr "Lab"
+msgstr ""
 
 #: src/pages/settings/profile/appearance/components/SettingsExperience.tsx
 msgid "Language"
@@ -1350,7 +1354,7 @@ msgstr ""
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationShortLabel.ts
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationLabel.ts
 msgid "Max"
-msgstr "Max"
+msgstr ""
 
 #: src/pages/settings/SettingsWorkspaceMembers.tsx
 #: src/pages/settings/SettingsWorkspaceMembers.tsx
@@ -1361,7 +1365,7 @@ msgstr "Membres"
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationShortLabel.ts
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationLabel.ts
 msgid "Min"
-msgstr "Min"
+msgstr ""
 
 #: src/modules/object-record/record-table/record-table-footer/components/RecordTableColumnAggregateFooterDropdownContent.tsx
 #: src/modules/object-record/record-board/record-board-column/components/RecordBoardColumnHeaderAggregateDropdownMenuContent.tsx
@@ -1551,8 +1555,8 @@ msgid "No workflow versions yet"
 msgstr "Aucune version de workflow pour l'instant"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Norwegian"
-msgstr "Norvégien"
+#~ msgid "Norwegian"
+#~ msgstr "Norwegian"
 
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationShortLabel.ts
 msgid "Not empty"
@@ -1594,7 +1598,7 @@ msgstr "Ouvert"
 #: src/modules/settings/data-model/object-details/components/tabs/ObjectSettings.tsx
 #: src/modules/object-record/object-options-dropdown/components/ObjectOptionsDropdown.tsx
 msgid "Options"
-msgstr "Options"
+msgstr ""
 
 #: src/pages/onboarding/InviteTeam.tsx
 msgid "or"
@@ -1650,7 +1654,7 @@ msgstr "Détruire définitivement les workflows"
 
 #: src/pages/settings/roles/SettingsRoleEdit.tsx
 msgid "Permissions"
-msgstr "Permissions"
+msgstr ""
 
 #: src/pages/settings/SettingsWorkspace.tsx
 #: src/pages/settings/SettingsProfile.tsx
@@ -1674,20 +1678,20 @@ msgid "Plural"
 msgstr "Pluriel"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Polish"
-msgstr "Polonais"
+#~ msgid "Polish"
+#~ msgstr "Polish"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 #~ msgid "Portuguese"
 #~ msgstr "Portuguese"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Portuguese — Brazil"
-msgstr "Portugais — Brésil"
+#~ msgid "Portuguese — Brazil"
+#~ msgstr "Portuguese — Brazil"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Portuguese — Portugal"
-msgstr "Portugais — Portugal"
+#~ msgid "Portuguese — Portugal"
+#~ msgstr "Portuguese — Portugal"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 #~ msgid "Portuguese (Brazil)"
@@ -1833,16 +1837,16 @@ msgid "Roles"
 msgstr "Rôles"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Romanian"
-msgstr "Roumain"
+#~ msgid "Romanian"
+#~ msgstr "Romanian"
 
 #: src/modules/object-record/record-table/empty-state/utils/getEmptyStateSubTitle.ts
 msgid "Run a workflow and return here to view its executions"
 msgstr "Exécutez un workflow et revenez ici pour voir ses exécutions"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Russian"
-msgstr "Russe"
+#~ msgid "Russian"
+#~ msgstr "Russian"
 
 #: src/modules/record-edit/components/RecordEditContainer.tsx
 #: src/modules/record-edit/components/custom/ImageEditModal.tsx
@@ -1936,8 +1940,8 @@ msgid "Send an invite email to your team"
 msgstr "Envoyer un email d'invitation à votre équipe"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Serbian (Cyrillic)"
-msgstr "Serbe (Cyrillique)"
+#~ msgid "Serbian (Cyrillic)"
+#~ msgstr "Serbian (Cyrillic)"
 
 #: src/pages/settings/admin-panel/SettingsAdmin.tsx
 #: src/modules/settings/hooks/useSettingsNavigationItems.tsx
@@ -2004,7 +2008,7 @@ msgstr ""
 
 #: src/modules/auth/sign-in-up/components/SignInUpWithSSO.tsx
 msgid "Single sign-on (SSO)"
-msgstr "Single sign-on (SSO)"
+msgstr ""
 
 #: src/pages/onboarding/InviteTeam.tsx
 msgid "Skip"
@@ -2016,12 +2020,12 @@ msgid "Sort"
 msgstr "Trier"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Spanish"
-msgstr "Espagnol"
+#~ msgid "Spanish"
+#~ msgstr "Spanish"
 
 #: src/pages/settings/security/SettingsSecurity.tsx
 msgid "SSO"
-msgstr "SSO"
+msgstr ""
 
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
 msgid "Status"
@@ -2055,11 +2059,11 @@ msgstr "Somme"
 
 #: src/pages/settings/SettingsWorkspace.tsx
 msgid "Support"
-msgstr "Support"
+msgstr ""
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Swedish"
-msgstr "Suédois"
+#~ msgid "Swedish"
+#~ msgstr "Swedish"
 
 #: src/pages/settings/SettingsBilling.tsx
 msgid "Switch {from}"
@@ -2100,7 +2104,7 @@ msgstr "Conditions d'utilisation"
 #: src/modules/workflow/components/RecordShowPageWorkflowHeader.tsx
 #: src/modules/action-menu/actions/record-actions/constants/WorkflowActionsConfig.ts
 msgid "Test"
-msgstr "Test"
+msgstr ""
 
 #: src/modules/action-menu/actions/record-actions/constants/WorkflowActionsConfig.ts
 msgid "Test Workflow"
@@ -2190,27 +2194,27 @@ msgid "Trigger type should be Manual - when no record(s) are selected"
 msgstr "Le type de déclencheur doit être Manuel - lorsqu'aucun enregistrement n'est sélectionné"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Turkish"
-msgstr "Turc"
+#~ msgid "Turkish"
+#~ msgstr "Turkish"
 
 #: src/pages/settings/roles/components/RolePermissionsSettingsTableHeader.tsx
 #: src/pages/settings/data-model/SettingsObjectIndexTable.tsx
 #: src/pages/settings/data-model/constants/SettingsObjectTableMetadata.ts
 msgid "Type"
-msgstr "Type"
+msgstr ""
 
 #: src/modules/command-menu/components/CommandMenuTopBar.tsx
 msgid "Type anything"
 msgstr "Tapez n'importe quoi"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Ukrainian"
-msgstr "Ukrainien"
+#~ msgid "Ukrainian"
+#~ msgstr "Ukrainian"
 
 #: src/pages/settings/data-model/SettingsObjectIndexTable.tsx
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationShortLabel.ts
 msgid "Unique"
-msgstr "Unique"
+msgstr ""
 
 #: src/pages/onboarding/CreateWorkspace.tsx
 msgid "Unknown error"
@@ -2231,7 +2235,7 @@ msgstr ""
 
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx
 msgid "URL"
-msgstr "URL"
+msgstr ""
 
 #: src/modules/action-menu/actions/record-actions/constants/WorkflowVersionsActionsConfig.ts
 #: src/modules/action-menu/actions/record-actions/constants/WorkflowVersionsActionsConfig.ts
@@ -2267,8 +2271,8 @@ msgid "Values"
 msgstr "Valeurs"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Vietnamese"
-msgstr "Vietnamien"
+#~ msgid "Vietnamese"
+#~ msgstr "Vietnamese"
 
 #: src/pages/settings/SettingsBilling.tsx
 msgid "View billing details"
@@ -2296,11 +2300,11 @@ msgstr "Nous enverrons des requêtes POST à ce point de terminaison pour chaque
 
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx
 msgid "Webhook"
-msgstr "Webhook"
+msgstr ""
 
 #: src/pages/settings/developers/SettingsDevelopers.tsx
 msgid "Webhooks"
-msgstr "Webhooks"
+msgstr ""
 
 #: src/pages/auth/SignInUp.tsx
 #~ msgid "Welcome to"

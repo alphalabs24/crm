@@ -6,17 +6,17 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: @lingui/cli\n"
 "Language: de\n"
-"Project-Id-Version: cf448e737e0d6d7b78742f963d761c61\n"
+"Project-Id-Version: nestermind-crm\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-01-01 00:00\n"
+"PO-Revision-Date: 2025-02-25 14:12\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Crowdin-Project: cf448e737e0d6d7b78742f963d761c61\n"
-"X-Crowdin-Project-ID: 1\n"
+"X-Crowdin-Project: nestermind-crm\n"
+"X-Crowdin-Project-ID: 765211\n"
 "X-Crowdin-Language: de\n"
 "X-Crowdin-File: /packages/twenty-front/src/locales/en.po\n"
-"X-Crowdin-File-ID: 29\n"
+"X-Crowdin-File-ID: 16\n"
 
 #: src/modules/object-record/record-board/record-board-column/utils/computeAggregateValueAndLabel.ts
 msgid "{aggregateLabel} of {fieldLabel}"
@@ -33,11 +33,11 @@ msgstr "{name}"
 
 #: src/modules/record-edit/components/RecordEditContainer.tsx
 msgid "{objectNameSingular} saved successfully"
-msgstr ""
+msgstr "{objectNameSingular} erfolgreich gespeichert"
 
 #: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
 msgid "{overviewLabel} Overview"
-msgstr ""
+msgstr "{overviewLabel} Übersicht"
 
 #: src/pages/settings/roles/components/RoleAssignmentConfirmationModalSubtitle.tsx
 msgid "{workspaceMemberName} will be unassigned from the following role:"
@@ -45,7 +45,7 @@ msgstr "{workspaceMemberName} wird von folgender Rolle abgezogen:"
 
 #: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
 msgid "<0>Nester</0> will analyze available data and suggest values for empty fields."
-msgstr ""
+msgstr "<0>Nester</0> analysiert die verfügbaren Daten und schlägt Werte für leere Felder vor."
 
 #: src/pages/onboarding/ChooseYourPlan.tsx
 msgid "1 000 workflow node executions"
@@ -127,12 +127,12 @@ msgstr "Hinzufügen"
 
 #: src/modules/record-edit/components/custom/DocumentEditModal.tsx
 #~ msgid "Add a description for this document..."
-#~ msgstr ""
+#~ msgstr "Add a description for this document..."
 
 #: src/modules/record-edit/components/custom/ImageEditModal.tsx
 #: src/modules/record-edit/components/custom/DocumentEditModal.tsx
 msgid "Add a description..."
-msgstr ""
+msgstr "Beschreibung schreiben..."
 
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Add documents related to your property that will be visible in the publication."
@@ -189,8 +189,8 @@ msgid "Advanced filter"
 msgstr "Erweiterter Filter"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Afrikaans"
-msgstr "Afrikaans"
+#~ msgid "Afrikaans"
+#~ msgstr "Afrikaans"
 
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationShortLabel.ts
 msgid "All"
@@ -263,8 +263,8 @@ msgid "Appearance"
 msgstr "Erscheinungsbild"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Arabic"
-msgstr "Arabisch"
+#~ msgid "Arabic"
+#~ msgstr "Arabic"
 
 #: src/pages/settings/SettingsBilling.tsx
 msgid "Are you sure that you want to change your billing interval?"
@@ -348,8 +348,12 @@ msgid "Book a Call"
 msgstr "Anruf buchen"
 
 #: src/modules/auth/sign-in-up/components/FooterNote.tsx
-msgid "By using Twenty, you agree to the"
-msgstr "Durch die Nutzung von Twenty stimmen Sie den"
+msgid "By using nestermind, you agree to the"
+msgstr ""
+
+#: src/modules/auth/sign-in-up/components/FooterNote.tsx
+#~ msgid "By using Twenty, you agree to the"
+#~ msgstr "By using Twenty, you agree to the"
 
 #: src/modules/object-record/record-table/record-table-footer/components/RecordTableColumnAggregateFooterValue.tsx
 msgid "Calculate"
@@ -388,8 +392,8 @@ msgid "Cancel your subscription"
 msgstr "Abonnement kündigen"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Catalan"
-msgstr "Katalanisch"
+#~ msgid "Catalan"
+#~ msgstr "Catalan"
 
 #: src/pages/settings/SettingsBilling.tsx
 msgid "Change {to}"
@@ -402,12 +406,12 @@ msgid "Change Password"
 msgstr "Passwort ändern"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Chinese — Simplified"
-msgstr "Chinesisch - Vereinfacht"
+#~ msgid "Chinese — Simplified"
+#~ msgstr "Chinese — Simplified"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Chinese — Traditional"
-msgstr "Chinesisch - Traditionell"
+#~ msgid "Chinese — Traditional"
+#~ msgstr "Chinese — Traditional"
 
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx
 msgid "Choose an object"
@@ -427,11 +431,11 @@ msgstr "Wählen Sie Ihre Testphase"
 
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 #~ msgid "Click to select files"
-#~ msgstr ""
+#~ msgstr "Click to select files"
 
 #: src/modules/ui/feedback/snack-bar-manager/components/SnackBar.tsx
 #~ msgid "Close"
-#~ msgstr "Schließen"
+#~ msgstr "Close"
 
 #: src/modules/ui/layout/page-header/components/PageHeaderOpenCommandMenuButton.tsx
 msgid "Close command menu"
@@ -440,7 +444,7 @@ msgstr "Befehlsmenü schließen"
 #. js-lingui-explicit-id
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
 msgid "Coming Soon"
-msgstr ""
+msgstr "Bald Verfügbar"
 
 #: src/pages/settings/security/SettingsSecurity.tsx
 msgid "Configure an SSO connection"
@@ -504,7 +508,7 @@ msgstr "Mit Microsoft fortfahren"
 
 #: src/modules/command-menu/components/CommandMenu.tsx
 msgid "Copilot"
-msgstr "Copilot"
+msgstr "Kopilot"
 
 #: src/pages/onboarding/InviteTeam.tsx
 msgid "Copy invitation link"
@@ -551,7 +555,7 @@ msgstr "API-Schlüssel erstellen"
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
 msgid "Create Draft"
-msgstr ""
+msgstr "Entwurf erstellen"
 
 #: src/modules/action-menu/actions/record-actions/constants/WorkflowActionsConfig.ts
 #: src/modules/action-menu/actions/record-actions/constants/DefaultActionsConfigV2.ts
@@ -572,7 +576,7 @@ msgstr "Webhook erstellen"
 
 #: src/modules/object-record/record-table/empty-state/utils/getEmptyStateSubTitle.ts
 msgid "Create your first publication from a property"
-msgstr ""
+msgstr "Erstellen Sie Ihre erste Publikation von einem Objekt aus"
 
 #: src/pages/onboarding/CreateWorkspace.tsx
 msgid "Create your workspace"
@@ -599,8 +603,8 @@ msgid "Customize your workspace security"
 msgstr "Sicherheit des Arbeitsbereichs anpassen"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Czech"
-msgstr "Tschechisch"
+#~ msgid "Czech"
+#~ msgstr "Czech"
 
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
@@ -612,8 +616,8 @@ msgid "Danger zone"
 msgstr "Gefahrenzone"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Danish"
-msgstr "D\\u00e4nisch"
+#~ msgid "Danish"
+#~ msgstr "Danish"
 
 #: src/pages/settings/profile/appearance/components/SettingsExperience.tsx
 msgid "Dark"
@@ -642,7 +646,7 @@ msgstr "Datum und Uhrzeit"
 
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
 msgid "Days Published"
-msgstr ""
+msgstr "Tage veröffentlicht"
 
 #: src/pages/settings/data-model/SettingsObjectFieldEdit.tsx
 #: src/modules/workflow/components/RecordShowPageWorkflowHeader.tsx
@@ -779,7 +783,7 @@ msgstr "Als relatives Datum anzeigen"
 
 #: src/modules/record-edit/components/custom/DocumentEditModal.tsx
 #~ msgid "Document Description"
-#~ msgstr ""
+#~ msgstr "Document Description"
 
 #: src/pages/settings/SettingsWorkspace.tsx
 #: src/pages/settings/workspace/SettingsDomain.tsx
@@ -789,35 +793,35 @@ msgstr "Domäne"
 
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Download"
-msgstr ""
+msgstr "Herunterladen"
 
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 #~ msgid "Drag & drop documents here, or click to select files"
-#~ msgstr ""
+#~ msgstr "Drag & drop documents here, or click to select files"
 
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 #~ msgid "Drag & drop images here, or click to select files"
-#~ msgstr ""
+#~ msgstr "Drag & drop images here, or click to select files"
 
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Drop documents here"
-msgstr ""
+msgstr "Dokumente hier ablegen"
 
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 msgid "Drop images here"
-msgstr ""
+msgstr "Bilder hier ablegen"
 
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 #~ msgid "Drop the files here..."
-#~ msgstr ""
+#~ msgstr "Drop the files here..."
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Dutch"
-msgstr "Niederl\\u00e4ndisch"
+#~ msgid "Dutch"
+#~ msgstr "Dutch"
 
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeysNew.tsx
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
@@ -834,7 +838,7 @@ msgstr "Frühestes Datum"
 
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
 msgid "Edit"
-msgstr ""
+msgstr "Bearbeiten"
 
 #: src/pages/settings/SettingsBilling.tsx
 msgid "Edit billing interval"
@@ -842,19 +846,19 @@ msgstr "Abrechnungsintervall bearbeiten"
 
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 msgid "Edit Description"
-msgstr ""
+msgstr "Beschreibung ändern"
 
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Edit Details"
-msgstr ""
+msgstr "Details bearbeiten"
 
 #: src/modules/record-edit/components/custom/DocumentEditModal.tsx
 msgid "Edit Document"
-msgstr ""
+msgstr "Dokument bearbeiten"
 
 #: src/modules/record-edit/components/custom/ImageEditModal.tsx
 msgid "Edit Image"
-msgstr ""
+msgstr "Foto bearbeiten"
 
 #: src/pages/settings/SettingsBilling.tsx
 msgid "Edit payment method, see your invoices and more"
@@ -915,7 +919,7 @@ msgstr "Genießen Sie eine {withCreditCardTrialPeriodDuration}-tägige kostenlos
 
 #: src/modules/record-edit/components/custom/DocumentEditModal.tsx
 msgid "Enter document name"
-msgstr ""
+msgstr "Dokumentnamen eingeben"
 
 #: src/pages/settings/security/SettingsSecurity.tsx
 msgid "Enterprise"
@@ -931,7 +935,7 @@ msgstr "Fehler beim Regenerieren des API-Schlüssels: {err}"
 
 #: src/modules/record-edit/components/RecordEditContainer.tsx
 msgid "Error saving {objectNameSingular}"
-msgstr ""
+msgstr "Fehler beim Speichern von {objectNameSingular}"
 
 #: src/pages/settings/SettingsBilling.tsx
 msgid "Error while switching subscription {to}."
@@ -1047,8 +1051,8 @@ msgid "Filters"
 msgstr "Filter"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Finnish"
-msgstr "Finnisch"
+#~ msgid "Finnish"
+#~ msgstr "Finnish"
 
 #: src/pages/onboarding/CreateProfile.tsx
 msgid "First Name"
@@ -1087,11 +1091,11 @@ msgstr "Allgemein"
 
 #: src/modules/object-record/record-show/components/nm/AISuite.tsx
 msgid "Generate Analysis"
-msgstr ""
+msgstr "Analyse generieren"
 
 #: src/modules/object-record/record-show/components/nm/AISuite.tsx
 msgid "Generate Insights"
-msgstr ""
+msgstr "Einblicke generieren"
 
 #: src/modules/object-record/record-show/components/nm/AISuite.tsx
 msgid "Generate professional videos using AI by using your property images."
@@ -1099,19 +1103,19 @@ msgstr ""
 
 #: src/modules/object-record/record-show/components/nm/AISuite.tsx
 msgid "Generate Video"
-msgstr ""
+msgstr "Video generieren"
 
 #: src/modules/object-record/record-show/components/nm/AISuite.tsx
 msgid "Generated Videos"
-msgstr ""
+msgstr "Generierte Videos"
 
 #: src/modules/object-record/record-show/components/nm/AISuite.tsx
 msgid "Generating videos..."
-msgstr ""
+msgstr "Videos werden erstellt..."
 
 #: src/modules/object-record/record-show/components/nm/AISuite.tsx
 msgid "Generating..."
-msgstr ""
+msgstr "Wird generiert..."
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 msgid "German"
@@ -1142,16 +1146,16 @@ msgid "Grant Twenty support temporary access to your workspace so we can trouble
 msgstr "Gewähren Sie dem Twenty-Support vorübergehend Zugang zu Ihrem Arbeitsbereich, damit wir Probleme beheben oder Inhalte in Ihrem Namen wiederherstellen können. Sie können den Zugriff jederzeit widerrufen."
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Greek"
-msgstr "Griechisch"
+#~ msgid "Greek"
+#~ msgstr "Greek"
 
 #: src/pages/settings/admin-panel/SettingsAdminIndicatorHealthStatus.tsx
 msgid "Health Status"
 msgstr "Gesundheitsstatus"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Hebrew"
-msgstr "Hebr\\u00e4isch"
+#~ msgid "Hebrew"
+#~ msgstr "Hebrew"
 
 #: src/modules/object-record/record-table/record-table-header/components/RecordTableColumnHeadDropdownMenu.tsx
 msgid "Hide"
@@ -1162,8 +1166,8 @@ msgid "How you'll be identified on the app."
 msgstr "Wie Sie in der App identifiziert werden."
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Hungarian"
-msgstr "Ungarisch"
+#~ msgid "Hungarian"
+#~ msgstr "Hungarian"
 
 #: src/pages/settings/data-model/SettingsObjectFieldEdit.tsx
 #: src/pages/settings/data-model/SettingsObjectNewField/SettingsObjectNewFieldConfigure.tsx
@@ -1256,12 +1260,12 @@ msgid "Italian"
 msgstr "Italienisch"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Japanese"
-msgstr "Japanisch"
+#~ msgid "Japanese"
+#~ msgstr "Japanese"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Korean"
-msgstr "Koreanisch"
+#~ msgid "Korean"
+#~ msgstr "Korean"
 
 #: src/modules/settings/hooks/useSettingsNavigationItems.tsx
 msgid "Lab"
@@ -1345,12 +1349,12 @@ msgstr ""
 
 #: src/modules/object-record/record-show/components/nm/AISuite.tsx
 msgid "Marketing Video"
-msgstr ""
+msgstr "Marketing Video"
 
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationShortLabel.ts
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationLabel.ts
 msgid "Max"
-msgstr "Max"
+msgstr "Max."
 
 #: src/pages/settings/SettingsWorkspaceMembers.tsx
 #: src/pages/settings/SettingsWorkspaceMembers.tsx
@@ -1361,7 +1365,7 @@ msgstr "Mitglieder"
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationShortLabel.ts
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationLabel.ts
 msgid "Min"
-msgstr "Min"
+msgstr "Min."
 
 #: src/modules/object-record/record-table/record-table-footer/components/RecordTableColumnAggregateFooterDropdownContent.tsx
 #: src/modules/object-record/record-board/record-board-column/components/RecordBoardColumnHeaderAggregateDropdownMenuContent.tsx
@@ -1551,8 +1555,8 @@ msgid "No workflow versions yet"
 msgstr "Noch keine Workflow-Versionen"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Norwegian"
-msgstr "Norwegisch"
+#~ msgid "Norwegian"
+#~ msgstr "Norwegian"
 
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationShortLabel.ts
 msgid "Not empty"
@@ -1674,20 +1678,20 @@ msgid "Plural"
 msgstr "Mehrzahl"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Polish"
-msgstr "Polnisch"
+#~ msgid "Polish"
+#~ msgstr "Polish"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 #~ msgid "Portuguese"
 #~ msgstr "Portuguese"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Portuguese — Brazil"
-msgstr "Portugiesisch - Brasilien"
+#~ msgid "Portuguese — Brazil"
+#~ msgstr "Portuguese — Brazil"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Portuguese — Portugal"
-msgstr "Portugiesisch - Portugal"
+#~ msgid "Portuguese — Portugal"
+#~ msgstr "Portuguese — Portugal"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 #~ msgid "Portuguese (Brazil)"
@@ -1700,11 +1704,11 @@ msgstr "Portugiesisch - Portugal"
 #: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
 #: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
 msgid "Prefill"
-msgstr ""
+msgstr "Vorfüllen"
 
 #: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
 msgid "Prefill Property"
-msgstr ""
+msgstr "Objekt Vorfüllen"
 
 #: src/modules/settings/data-model/objects/forms/components/SettingsDataModelObjectSettingsFormCard.tsx
 #: src/modules/settings/data-model/components/SettingsDataModelPreviewFormCard.tsx
@@ -1713,11 +1717,11 @@ msgstr "Vorschau"
 
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
 msgid "Price History"
-msgstr ""
+msgstr "Preisentwicklung"
 
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
 msgid "Price history chart coming soon"
-msgstr ""
+msgstr "Preisverlauf bald verfügbar"
 
 #: src/modules/auth/sign-in-up/components/FooterNote.tsx
 msgid "Privacy Policy"
@@ -1731,11 +1735,11 @@ msgstr "Profil"
 
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Property Documents"
-msgstr ""
+msgstr "Objektdokumente"
 
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 msgid "Property Images"
-msgstr ""
+msgstr "Objektbilder"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 msgid "Pseudo-English"
@@ -1743,15 +1747,15 @@ msgstr "Pseudo-Englisch"
 
 #: src/modules/object-record/record-show/components/nm/publication/CompletionProgress.tsx
 msgid "Publication completion -"
-msgstr ""
+msgstr "Vollständigkeit der Veröffentlichung"
 
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
 msgid "Publication Draft created successfully"
-msgstr ""
+msgstr "Veröffentlichungsentwurf erfolgreich erstellt"
 
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
 msgid "Publish"
-msgstr ""
+msgstr "Veröffentlichen"
 
 #: src/modules/settings/developers/components/SettingsReadDocumentationButton.tsx
 msgid "Read documentation"
@@ -1833,16 +1837,16 @@ msgid "Roles"
 msgstr "Rollen"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Romanian"
-msgstr "Rum\\u00e4nisch"
+#~ msgid "Romanian"
+#~ msgstr "Romanian"
 
 #: src/modules/object-record/record-table/empty-state/utils/getEmptyStateSubTitle.ts
 msgid "Run a workflow and return here to view its executions"
 msgstr "Führen Sie einen Workflow aus und kehren Sie zurück, um die Ausführungen anzuzeigen"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Russian"
-msgstr "Russisch"
+#~ msgid "Russian"
+#~ msgstr "Russian"
 
 #: src/modules/record-edit/components/RecordEditContainer.tsx
 #: src/modules/record-edit/components/custom/ImageEditModal.tsx
@@ -1936,8 +1940,8 @@ msgid "Send an invite email to your team"
 msgstr "Einladung per E-Mail an Ihr Team senden"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Serbian (Cyrillic)"
-msgstr "Serbisch (Kyrillisch)"
+#~ msgid "Serbian (Cyrillic)"
+#~ msgstr "Serbian (Cyrillic)"
 
 #: src/pages/settings/admin-panel/SettingsAdmin.tsx
 #: src/modules/settings/hooks/useSettingsNavigationItems.tsx
@@ -2016,8 +2020,8 @@ msgid "Sort"
 msgstr "Sortieren"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Spanish"
-msgstr "Spanisch"
+#~ msgid "Spanish"
+#~ msgstr "Spanish"
 
 #: src/pages/settings/security/SettingsSecurity.tsx
 msgid "SSO"
@@ -2058,8 +2062,8 @@ msgid "Support"
 msgstr "Support"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Swedish"
-msgstr "Schwedisch"
+#~ msgid "Swedish"
+#~ msgstr "Swedish"
 
 #: src/pages/settings/SettingsBilling.tsx
 msgid "Switch {from}"
@@ -2190,8 +2194,8 @@ msgid "Trigger type should be Manual - when no record(s) are selected"
 msgstr "Der Auslöser-Typ sollte manuell sein - wenn keine Aufzeichnung(en) ausgewählt ist/sind"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Turkish"
-msgstr "T\\u00fcrkisch"
+#~ msgid "Turkish"
+#~ msgstr "Turkish"
 
 #: src/pages/settings/roles/components/RolePermissionsSettingsTableHeader.tsx
 #: src/pages/settings/data-model/SettingsObjectIndexTable.tsx
@@ -2204,8 +2208,8 @@ msgid "Type anything"
 msgstr "Geben Sie irgendetwas ein"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Ukrainian"
-msgstr "Ukrainisch"
+#~ msgid "Ukrainian"
+#~ msgstr "Ukrainian"
 
 #: src/pages/settings/data-model/SettingsObjectIndexTable.tsx
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationShortLabel.ts
@@ -2267,8 +2271,8 @@ msgid "Values"
 msgstr "Werte"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
-msgid "Vietnamese"
-msgstr "Vietnamesisch"
+#~ msgid "Vietnamese"
+#~ msgstr "Vietnamese"
 
 #: src/pages/settings/SettingsBilling.tsx
 msgid "View billing details"
