@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: nestermind-crm\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-02-25 13:27\n"
+"PO-Revision-Date: 2025-02-25 14:44\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -2228,9 +2228,12 @@ msgstr "Contacts illimités"
 msgid "Upload"
 msgstr "Téléverser"
 
-#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Upload Documents"
+msgstr ""
+
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+msgid "Upload Images"
 msgstr ""
 
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx

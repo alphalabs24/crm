@@ -2223,9 +2223,12 @@ msgstr ""
 msgid "Upload"
 msgstr ""
 
-#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Upload Documents"
+msgstr ""
+
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+msgid "Upload Images"
 msgstr ""
 
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx

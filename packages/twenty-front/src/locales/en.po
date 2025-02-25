@@ -2223,10 +2223,13 @@ msgstr "Unlimited contacts"
 msgid "Upload"
 msgstr "Upload"
 
-#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Upload Documents"
 msgstr "Upload Documents"
+
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+msgid "Upload Images"
+msgstr "Upload Images"
 
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx
 msgid "URL"

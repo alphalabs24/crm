@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: nestermind-crm\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-02-25 14:12\n"
+"PO-Revision-Date: 2025-02-25 14:44\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -322,7 +322,7 @@ msgstr "Autorisieren"
 #. placeholder {0}: images.length
 #: src/modules/object-record/record-show/components/nm/AISuite.tsx
 msgid "Available Assets ({0})"
-msgstr ""
+msgstr "Verfügbare Assets ({0})"
 
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationShortLabel.ts
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationLabel.ts
@@ -349,7 +349,7 @@ msgstr "Anruf buchen"
 
 #: src/modules/auth/sign-in-up/components/FooterNote.tsx
 msgid "By using nestermind, you agree to the"
-msgstr ""
+msgstr "Mit der Verwendung von nestermind, erklären Sie sich mit dem"
 
 #: src/modules/auth/sign-in-up/components/FooterNote.tsx
 #~ msgid "By using Twenty, you agree to the"
@@ -1099,7 +1099,7 @@ msgstr "Einblicke generieren"
 
 #: src/modules/object-record/record-show/components/nm/AISuite.tsx
 msgid "Generate professional videos using AI by using your property images."
-msgstr ""
+msgstr "Generieren Sie professionelle Videos mit Hilfe von KI mit Ihren Objektbildern."
 
 #: src/modules/object-record/record-show/components/nm/AISuite.tsx
 msgid "Generate Video"
@@ -1198,7 +1198,7 @@ msgstr "Die Eingabe muss im CamelCase-Format sein und darf nicht mit einer Zahl 
 
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
 msgid "Inquiries"
-msgstr ""
+msgstr "Anfragen"
 
 #: src/pages/settings/data-model/constants/SettingsObjectTableMetadata.ts
 msgid "Instances"
@@ -1308,7 +1308,7 @@ msgstr "Auflistungen"
 #: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
 #: src/modules/object-record/record-show/components/nm/AISuite.tsx
 msgid "Loading..."
-msgstr ""
+msgstr "Laden..."
 
 #: src/pages/onboarding/ChooseYourPlan.tsx
 msgid "Log out"
@@ -1320,7 +1320,7 @@ msgstr "Abmelden"
 
 #: src/modules/object-record/record-show/components/nm/publication/CompletionProgress.tsx
 msgid "Looking good!"
-msgstr ""
+msgstr "Sieht gut aus!"
 
 #: src/pages/settings/SettingsWorkspaceMembers.tsx
 msgid "Manage Members"
@@ -1345,7 +1345,7 @@ msgstr "Als erledigt markieren"
 
 #: src/modules/object-record/record-show/components/nm/AISuite.tsx
 msgid "Market Analysis"
-msgstr ""
+msgstr "Marktanalyse"
 
 #: src/modules/object-record/record-show/components/nm/AISuite.tsx
 msgid "Marketing Video"
@@ -1581,7 +1581,7 @@ msgstr "Abseits der ausgetretenen Pfade"
 
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Open"
-msgstr ""
+msgstr "Öffnen"
 
 #: src/modules/ui/layout/page-header/components/PageHeaderOpenCommandMenuButton.tsx
 msgid "Open command menu"
@@ -1589,7 +1589,7 @@ msgstr "Befehlsmenü öffnen"
 
 #: src/modules/object-record/object-options-dropdown/components/ObjectOptionsDropdownViewSettingsOpenInContent.tsx
 msgid "Open in"
-msgstr ""
+msgstr "Öffnen in"
 
 #: src/modules/object-metadata/components/NavigationDrawerOpenedSection.tsx
 msgid "Opened"
@@ -1852,15 +1852,15 @@ msgstr "Führen Sie einen Workflow aus und kehren Sie zurück, um die Ausführun
 #: src/modules/record-edit/components/custom/ImageEditModal.tsx
 #: src/modules/record-edit/components/custom/DocumentEditModal.tsx
 msgid "Save"
-msgstr ""
+msgstr "Speichern"
 
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 msgid "Scroll left"
-msgstr ""
+msgstr "Nach links scrollen"
 
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 msgid "Scroll right"
-msgstr ""
+msgstr "Nach rechts scrollen"
 
 #: src/modules/sign-in-background-mock/components/SignInAppNavigationDrawerMock.tsx
 #: src/modules/navigation/components/MainNavigationDrawerItems.tsx
@@ -2228,10 +2228,13 @@ msgstr "Unbegrenzte Kontakte"
 msgid "Upload"
 msgstr "Hochladen"
 
-#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Upload Documents"
-msgstr ""
+msgstr "Dokumente hochladen"
+
+#: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
+msgid "Upload Images"
+msgstr "Bilder hochladen"
 
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx
 msgid "URL"

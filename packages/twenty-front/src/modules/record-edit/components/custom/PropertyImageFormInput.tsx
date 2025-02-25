@@ -689,7 +689,7 @@ export const PropertyImageFormInput = ({ loading }: { loading?: boolean }) => {
               input.click();
             }}
             variant="secondary"
-            title={t`Upload Documents`}
+            title={t`Upload Images`}
             Icon={IconUpload}
           />
         </StyledHeaderContainer>
