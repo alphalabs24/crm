@@ -53,7 +53,6 @@ export const VideoGenerationModal = forwardRef<
   VideoGenerationModalProps
 >(({ onClose, onGenerate, targetableObject }, ref) => {
   const { t } = useLingui();
-  console.log(targetableObject);
   const { attachments = [] } = useAttachments(targetableObject);
 
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -63,7 +62,8 @@ export const VideoGenerationModal = forwardRef<
   const [generationProgress, setGenerationProgress] = useState(0);
 
   const images =
-    attachments?.filter((attachment) => attachment.type === 'Image') ?? [];
+    attachments?.filter((attachment) => attachment.type === 'PropertyImage') ??
+    [];
 
   const handleGenerate = () => {
     setIsGenerating(true);

@@ -352,7 +352,6 @@ export const RecordEditProvider = ({
               description: image.description,
             },
           });
-          console.log('updated image', image.attachment.id);
         } else if (isDefined(image.file)) {
           await uploadAttachmentFile(
             image.file,
@@ -364,7 +363,6 @@ export const RecordEditProvider = ({
             orderIndex,
             image.description,
           );
-          console.log('uploaded image', image.file.name);
         }
         orderIndex++;
       }
@@ -387,7 +385,6 @@ export const RecordEditProvider = ({
               description: document.description,
             },
           });
-          console.log('updated document', document.attachment.id);
         } else if (isDefined(document.file)) {
           await uploadAttachmentFile(
             document.file,
@@ -400,7 +397,6 @@ export const RecordEditProvider = ({
             document.fileName,
             document.description,
           );
-          console.log('uploaded document', document.file.name);
         }
         orderIndex++;
       }

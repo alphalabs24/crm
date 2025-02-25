@@ -114,7 +114,6 @@ export const ShowPagePropertySubContainer = ({
 
   const visibleTabs = tabs.filter((tab) => !tab.hide);
 
-  // eslint-disable-next-line @nx/workspace-no-state-useref
   const modalRef = useRef<ModalRefType>(null);
 
   const openModal = () => {
