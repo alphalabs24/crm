@@ -5,6 +5,7 @@ import { BillingModule } from 'src/engine/core-modules/billing/billing.module';
 import { FeatureFlagModule } from 'src/engine/core-modules/feature-flag/feature-flag.module';
 import { Workspace } from 'src/engine/core-modules/workspace/workspace.entity';
 import { DataSourceEntity } from 'src/engine/metadata-modules/data-source/data-source.entity';
+import { ObjectMetadataEntity } from 'src/engine/metadata-modules/object-metadata/object-metadata.entity';
 import { WorkspaceDataSourceModule } from 'src/engine/workspace-datasource/workspace-datasource.module';
 import { EmailAliasManagerModule } from 'src/modules/connected-account/email-alias-manager/email-alias-manager.module';
 import { RefreshAccessTokenManagerModule } from 'src/modules/connected-account/refresh-access-token-manager/refresh-access-token-manager.module';
@@ -44,7 +45,10 @@ import { MessagingMonitoringModule } from 'src/modules/messaging/monitoring/mess
     MessagingMicrosoftDriverModule,
     MessagingCommonModule,
     TypeOrmModule.forFeature([Workspace], 'core'),
-    TypeOrmModule.forFeature([DataSourceEntity], 'metadata'),
+    TypeOrmModule.forFeature(
+      [DataSourceEntity, ObjectMetadataEntity],
+      'metadata',
+    ),
     BillingModule,
     EmailAliasManagerModule,
     FeatureFlagModule,
