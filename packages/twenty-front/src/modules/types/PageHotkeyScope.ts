@@ -13,6 +13,9 @@ export enum PageHotkeyScope {
   PeoplePage = 'people-page',
   OpportunitiesPage = 'opportunities-page',
   ProfilePage = 'profile-page',
+  EditPage = 'edit-page',
+  PropertyShowPage = 'property-show-page',
+  PublicationShowPage = 'publication-show-page',
   WorkspaceMemberPage = 'workspace-member-page',
   TaskPage = 'task-page',
 }

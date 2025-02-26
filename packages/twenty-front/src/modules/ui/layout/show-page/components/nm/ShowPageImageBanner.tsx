@@ -1,10 +1,12 @@
 import { useAttachments } from '@/activities/files/hooks/useAttachments';
 import { ActivityTargetableObject } from '@/activities/types/ActivityTargetableEntity';
 import { useMemo } from 'react';
-
 import styled from '@emotion/styled';
 import Skeleton from 'react-loading-skeleton';
 import { LARGE_DESKTOP_VIEWPORT, MOBILE_VIEWPORT } from 'twenty-ui';
+import { IconPhoto } from '@tabler/icons-react';
+import { useTheme } from '@emotion/react';
+import { useLingui } from '@lingui/react/macro';
 
 type ShowPageImageBannerProps = {
   targetableObject: ActivityTargetableObject;
@@ -82,9 +84,27 @@ const StyledUploadTitle = styled.div`
   font-weight: ${({ theme }) => theme.font.weight.medium};
 `;
 
+const StyledPlaceholderContainer = styled.div`
+  align-items: center;
+  background-color: ${({ theme }) => theme.background.tertiary};
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+  width: 100%;
+`;
+
+const StyledPlaceholderText = styled.div`
+  color: ${({ theme }) => theme.font.color.light};
+  font-size: ${({ theme }) => theme.font.size.lg};
+  margin-top: ${({ theme }) => theme.spacing(2)};
+`;
+
 export const ShowPageImageBanner = ({
   targetableObject,
 }: ShowPageImageBannerProps) => {
+  const theme = useTheme();
+  const { t } = useLingui();
   const { attachments = [] } = useAttachments(targetableObject);
   const images = useMemo(
     () =>
@@ -97,26 +117,43 @@ export const ShowPageImageBanner = ({
   return (
     <div style={{ position: 'relative' }}>
       <StyledImageContainer>
-        {images[0] ? (
-          <StyledInnerFirstImageContainer isSingleImage={images.length === 1}>
-            <StyledFirstImage src={images[0].fullPath} alt="Property" />
+        {images.length === 0 ? (
+          <StyledInnerFirstImageContainer isSingleImage>
+            <StyledPlaceholderContainer>
+              <IconPhoto size={48} color={theme.font.color.light} />
+              <StyledPlaceholderText>
+                {t`No images available`}
+              </StyledPlaceholderText>
+            </StyledPlaceholderContainer>
           </StyledInnerFirstImageContainer>
         ) : (
-          <Skeleton height={'100%'} width="100%" />
-        )}
-        {images.length > 1 && (
-          <StyledInnerSecondaryImageContainer>
-            {images[1] && (
-              <StyledSecondImageContainer isFullHeight={images.length === 2}>
-                <StyledSecondImage src={images[1].fullPath} alt="Property" />
-              </StyledSecondImageContainer>
+          <>
+            <StyledInnerFirstImageContainer isSingleImage={images.length === 1}>
+              <StyledFirstImage src={images[0].fullPath} alt="Property" />
+            </StyledInnerFirstImageContainer>
+            {images.length > 1 && (
+              <StyledInnerSecondaryImageContainer>
+                {images[1] && (
+                  <StyledSecondImageContainer
+                    isFullHeight={images.length === 2}
+                  >
+                    <StyledSecondImage
+                      src={images[1].fullPath}
+                      alt="Property"
+                    />
+                  </StyledSecondImageContainer>
+                )}
+                {images[2] && (
+                  <StyledSecondImageContainer>
+                    <StyledSecondImage
+                      src={images[2].fullPath}
+                      alt="Property"
+                    />
+                  </StyledSecondImageContainer>
+                )}
+              </StyledInnerSecondaryImageContainer>
             )}
-            {images[2] && (
-              <StyledSecondImageContainer>
-                <StyledSecondImage src={images[2].fullPath} alt="Property" />
-              </StyledSecondImageContainer>
-            )}
-          </StyledInnerSecondaryImageContainer>
+          </>
         )}
       </StyledImageContainer>
     </div>

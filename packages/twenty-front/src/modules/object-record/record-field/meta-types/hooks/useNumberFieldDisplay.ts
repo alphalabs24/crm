@@ -14,7 +14,6 @@ export const useNumberFieldDisplay = () => {
 
   const fieldName = fieldDefinition.metadata.fieldName;
   const fieldValue = useRecordFieldValue<number | null>(recordId, fieldName);
-
   return {
     fieldDefinition,
     fieldValue,

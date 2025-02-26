@@ -140,6 +140,18 @@ export const PageChangeEffect = () => {
         });
         break;
       }
+      case isMatchingLocation(AppPath.RecordEditPage): {
+        setHotkeyScope(PageHotkeyScope.EditPage);
+        break;
+      }
+      case isMatchingLocation(AppPath.RecordShowPropertyPage): {
+        setHotkeyScope(PageHotkeyScope.PropertyShowPage);
+        break;
+      }
+      case isMatchingLocation(AppPath.RecordShowPublicationPage): {
+        setHotkeyScope(PageHotkeyScope.PublicationShowPage);
+        break;
+      }
       case isMatchingLocation(SettingsPath.Domain, AppBasePath.Settings): {
         setHotkeyScope(PageHotkeyScope.Settings, {
           goto: false,
