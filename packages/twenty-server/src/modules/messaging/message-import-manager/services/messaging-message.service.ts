@@ -138,24 +138,33 @@ export class MessagingMessageService {
 
       // Get each created entry
       const createdAssociation =
-        await messageChannelMessageAssociationRepository.findOne({
-          where: {
-            messageId: newMessageId,
-            messageChannelId: messageChannelId,
+        await messageChannelMessageAssociationRepository.findOne(
+          {
+            where: {
+              messageId: newMessageId,
+              messageChannelId: messageChannelId,
+            },
           },
-        });
+          transactionManager,
+        );
 
-      const createdMessage = await messageRepository.findOne({
-        where: {
-          id: newMessageId,
+      const createdMessage = await messageRepository.findOne(
+        {
+          where: {
+            id: newMessageId,
+          },
         },
-      });
+        transactionManager,
+      );
 
-      const createdThread = await messageThreadRepository.findOne({
-        where: {
-          id: newOrExistingMessageThreadId,
+      const createdThread = await messageThreadRepository.findOne(
+        {
+          where: {
+            id: newOrExistingMessageThreadId,
+          },
         },
-      });
+        transactionManager,
+      );
 
       // Get workspace id for email
       const workspaceDataSource = await this.twentyORMManager.getDatasource();

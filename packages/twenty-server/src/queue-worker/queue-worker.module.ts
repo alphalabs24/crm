@@ -5,6 +5,7 @@ import { MessageQueueModule } from 'src/engine/core-modules/message-queue/messag
 import { TwentyORMModule } from 'src/engine/twenty-orm/twenty-orm.module';
 import { WorkspaceEventEmitterModule } from 'src/engine/workspace-event-emitter/workspace-event-emitter.module';
 import { CoreEngineModule } from 'src/engine/core-modules/core-engine.module';
+import { EntityEventsToDbListener } from 'src/engine/api/graphql/workspace-query-runner/listeners/entity-events-to-db.listener';
 
 @Module({
   imports: [
@@ -14,5 +15,6 @@ import { CoreEngineModule } from 'src/engine/core-modules/core-engine.module';
     JobsModule,
     TwentyORMModule,
   ],
+  providers: [EntityEventsToDbListener],
 })
 export class QueueWorkerModule {}
