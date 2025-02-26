@@ -112,7 +112,7 @@ export const Publishing = ({
     try {
       setIsLoading(true);
       const response = await axios.post(
-        `${window._env_?.REACT_APP_PUBLICATION_SERVER_BASE_URL ?? 'http://localhost:3002'}/publications/upload?id=${recordId}`,
+        `${window._env_?.REACT_APP_PUBLICATION_SERVER_BASE_URL ?? 'http://api.localhost'}/publications/upload?id=${recordId}`,
         {},
         {
           headers: {

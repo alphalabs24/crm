@@ -259,7 +259,7 @@ export const PlatformSelect = ({
       // TODO: This will be changed to a loop that creates all drafts and consolidates them into one show page later. For now only newhome works anyway.
       const response = await axios.post(
         // TODO: Replace the selectedPlatforms with an actual enum of platforms from the backend once we have standard entities.
-        `${window._env_?.REACT_APP_PUBLICATION_SERVER_BASE_URL ?? 'http://localhost:3002'}/properties/publish?id=${recordId}&platform=${selectedPlatforms?.[0].toUpperCase()}`,
+        `${window._env_?.REACT_APP_PUBLICATION_SERVER_BASE_URL ?? 'http://api.localhost'}/properties/publish?id=${recordId}&platform=${selectedPlatforms?.[0].toUpperCase()}`,
         {},
         {
           headers: {
