@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 
-import { Any, EntityManager } from 'typeorm';
+import { Any, EntityManager, IsNull, Not } from 'typeorm';
 
 import { FeatureFlagMap } from 'src/engine/core-modules/feature-flag/interfaces/feature-flag-map.interface';
 import { WorkspaceMigrationBuilderAction } from 'src/engine/workspace-manager/workspace-migration-builder/interfaces/workspace-migration-builder-action.interface';
@@ -86,29 +86,23 @@ export class WorkspaceSyncIndexMetadataService {
     // Generate index metadata from models
     const standardIndexMetadataCollection = this.standardIndexFactory.create(
       context.defaultMetadataWorkspaceId
-        ? await indexMetadataRepository
-            .createQueryBuilder('index')
-            .leftJoinAndSelect('index.objectMetadata', 'objectMetadata')
-            .leftJoinAndSelect(
-              'index.indexFieldMetadatas',
-              'indexFieldMetadatas',
-            )
-            .leftJoinAndSelect(
-              'indexFieldMetadatas.fieldMetadata',
-              'fieldMetadata',
-            )
-            .where('index.workspaceId = :workspaceId', {
+        ? await indexMetadataRepository.find({
+            where: {
               workspaceId: context.defaultMetadataWorkspaceId,
-            })
-            .andWhere(
-              'objectMetadata.isCustom = :isCustom AND objectMetadata.standardId IS NOT NULL',
-              { isCustom: false },
-            )
-            .andWhere(
-              'fieldMetadata.id IS NULL OR (fieldMetadata.isCustom = :isCustom AND fieldMetadata.standardId IS NOT NULL)',
-              { isCustom: false },
-            )
-            .getMany()
+              isCustom: false,
+              objectMetadata: {
+                isCustom: false,
+                standardId: Not(IsNull()),
+              },
+              indexFieldMetadatas: {
+                fieldMetadata: {
+                  isCustom: false,
+                  standardId: Not(IsNull()),
+                },
+              },
+            },
+            relations: ['objectMetadata', 'indexFieldMetadatas.fieldMetadata'],
+          })
         : standardObjectMetadataDefinitions,
       context,
       originalStandardObjectMetadataMap,
