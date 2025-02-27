@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 
-import { EntityManager } from 'typeorm';
+import { EntityManager, IsNull, Not } from 'typeorm';
 
 import { FeatureFlagMap } from 'src/engine/core-modules/feature-flag/interfaces/feature-flag-map.interface';
 import { WorkspaceMigrationBuilderAction } from 'src/engine/workspace-manager/workspace-migration-builder/interfaces/workspace-migration-builder-action.interface';
@@ -85,6 +85,8 @@ export class WorkspaceSyncObjectMetadataService {
         ? await objectMetadataRepository.find({
             where: {
               workspaceId: context.defaultMetadataWorkspaceId,
+              // standardObjectFactory.create function needs to have standardId to map the objects
+              standardId: Not(IsNull()),
             },
             relations: ['fields'],
           })

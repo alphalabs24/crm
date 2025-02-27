@@ -135,12 +135,131 @@ export class WorkspaceSyncFieldMetadataService {
     const standardObjectStandardFieldMetadataMap =
       this.standardFieldFactory.create(
         defaultMetadataWorkspaceId
-          ? await fieldMetadataRepository.find({
-              where: {
-                workspaceId: defaultMetadataWorkspaceId,
-              },
-              relations: ['object'],
-            })
+          ? await fieldMetadataRepository
+              .createQueryBuilder('field')
+              .leftJoinAndSelect('field.object', 'object')
+              .leftJoin(
+                'field.relationTargetFieldMetadata',
+                'relationTargetFieldMetadata',
+              )
+              .leftJoin(
+                'relationTargetFieldMetadata.relationTargetObjectMetadata',
+                'rtfmObject',
+              )
+              .leftJoin(
+                'field.relationTargetObjectMetadata',
+                'relationTargetObjectMetadata',
+              )
+              .leftJoin('field.fromRelationMetadata', 'fromRelationMetadata')
+              .leftJoin(
+                'fromRelationMetadata.fromObjectMetadata',
+                'frmFromObject',
+              )
+              .leftJoin('fromRelationMetadata.toObjectMetadata', 'frmToObject')
+              .leftJoin(
+                'fromRelationMetadata.fromFieldMetadata',
+                'frmFromField',
+              )
+              .leftJoin('fromRelationMetadata.toFieldMetadata', 'frmToField')
+              .leftJoin('field.toRelationMetadata', 'toRelationMetadata')
+              .leftJoin(
+                'toRelationMetadata.fromObjectMetadata',
+                'trmFromObject',
+              )
+              .leftJoin('toRelationMetadata.toObjectMetadata', 'trmToObject')
+              .leftJoin('toRelationMetadata.fromFieldMetadata', 'trmFromField')
+              .leftJoin('toRelationMetadata.toFieldMetadata', 'trmToField')
+              .leftJoin('field.indexFieldMetadatas', 'indexFieldMetadatas')
+              .leftJoin('indexFieldMetadatas.indexMetadata', 'indexMetadata')
+              .where(
+                `field.workspaceId = :workspaceId 
+                  AND field.isCustom = :isCustom 
+                  AND field.standardId IS NOT NULL`,
+                {
+                  workspaceId: defaultMetadataWorkspaceId,
+                  isCustom: false,
+                },
+              )
+              .andWhere(
+                `object.isCustom = :objectIsCustom 
+                  AND object.standardId IS NOT NULL`,
+                {
+                  objectIsCustom: false,
+                },
+              )
+              .andWhere(
+                `(relationTargetFieldMetadata.id IS NULL 
+                  OR (relationTargetFieldMetadata.isCustom = :rtfmIsCustom 
+                      AND relationTargetFieldMetadata.standardId IS NOT NULL))`,
+                { rtfmIsCustom: false },
+              )
+              .andWhere(
+                `(rtfmObject.id IS NULL 
+                  OR (rtfmObject.isCustom = :rtfmObjectIsCustom 
+                      AND rtfmObject.standardId IS NOT NULL))`,
+                {
+                  rtfmObjectIsCustom: false,
+                },
+              )
+              .andWhere(
+                `(relationTargetObjectMetadata.id IS NULL 
+                  OR (relationTargetObjectMetadata.isCustom = :rtoIsCustom 
+                      AND relationTargetObjectMetadata.standardId IS NOT NULL))`,
+                { rtoIsCustom: false },
+              )
+              .andWhere(
+                `(fromRelationMetadata.id IS NULL 
+                  OR (
+                    (frmFromObject.id IS NULL 
+                      OR (frmFromObject.isCustom = :frmFromObjIsCustom 
+                          AND frmFromObject.standardId IS NOT NULL)) 
+                    AND (frmToObject.id IS NULL 
+                      OR (frmToObject.isCustom = :frmToObjIsCustom 
+                          AND frmToObject.standardId IS NOT NULL)) 
+                    AND (frmFromField.id IS NULL 
+                      OR (frmFromField.isCustom = :frmFromFieldIsCustom 
+                          AND frmFromField.standardId IS NOT NULL)) 
+                    AND (frmToField.id IS NULL 
+                      OR (frmToField.isCustom = :frmToFieldIsCustom 
+                          AND frmToField.standardId IS NOT NULL))
+                  ))`,
+                {
+                  frmFromObjIsCustom: false,
+                  frmToObjIsCustom: false,
+                  frmFromFieldIsCustom: false,
+                  frmToFieldIsCustom: false,
+                },
+              )
+              .andWhere(
+                `(toRelationMetadata.id IS NULL 
+                  OR (
+                    (trmFromObject.id IS NULL 
+                      OR (trmFromObject.isCustom = :trmFromObjIsCustom 
+                          AND trmFromObject.standardId IS NOT NULL)) 
+                    AND (trmToObject.id IS NULL 
+                      OR (trmToObject.isCustom = :trmToObjIsCustom 
+                          AND trmToObject.standardId IS NOT NULL)) 
+                    AND (trmFromField.id IS NULL 
+                      OR (trmFromField.isCustom = :trmFromFieldIsCustom 
+                          AND trmFromField.standardId IS NOT NULL)) 
+                    AND (trmToField.id IS NULL 
+                      OR (trmToField.isCustom = :trmToFieldIsCustom 
+                          AND trmToField.standardId IS NOT NULL))
+                  ))`,
+                {
+                  trmFromObjIsCustom: false,
+                  trmToObjIsCustom: false,
+                  trmFromFieldIsCustom: false,
+                  trmToFieldIsCustom: false,
+                },
+              )
+              .andWhere(
+                `(indexFieldMetadatas.id IS NULL 
+                  OR (indexMetadata.id IS NULL 
+                      OR indexMetadata.isCustom = :indexMetaIsCustom))`,
+                { indexMetaIsCustom: false },
+              )
+              .getMany()
           : standardObjectMetadataDefinitions,
         context,
         workspaceFeatureFlagsMap,

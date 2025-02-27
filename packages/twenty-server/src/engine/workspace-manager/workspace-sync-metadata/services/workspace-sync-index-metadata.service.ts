@@ -86,12 +86,29 @@ export class WorkspaceSyncIndexMetadataService {
     // Generate index metadata from models
     const standardIndexMetadataCollection = this.standardIndexFactory.create(
       context.defaultMetadataWorkspaceId
-        ? await indexMetadataRepository.find({
-            where: {
+        ? await indexMetadataRepository
+            .createQueryBuilder('index')
+            .leftJoinAndSelect('index.objectMetadata', 'objectMetadata')
+            .leftJoinAndSelect(
+              'index.indexFieldMetadatas',
+              'indexFieldMetadatas',
+            )
+            .leftJoinAndSelect(
+              'indexFieldMetadatas.fieldMetadata',
+              'fieldMetadata',
+            )
+            .where('index.workspaceId = :workspaceId', {
               workspaceId: context.defaultMetadataWorkspaceId,
-            },
-            relations: ['objectMetadata', 'indexFieldMetadatas.fieldMetadata'],
-          })
+            })
+            .andWhere(
+              'objectMetadata.isCustom = :isCustom AND objectMetadata.standardId IS NOT NULL',
+              { isCustom: false },
+            )
+            .andWhere(
+              'fieldMetadata.id IS NULL OR (fieldMetadata.isCustom = :isCustom AND fieldMetadata.standardId IS NOT NULL)',
+              { isCustom: false },
+            )
+            .getMany()
         : standardObjectMetadataDefinitions,
       context,
       originalStandardObjectMetadataMap,

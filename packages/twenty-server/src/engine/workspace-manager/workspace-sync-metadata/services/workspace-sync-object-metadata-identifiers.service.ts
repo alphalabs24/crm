@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 import { FieldMetadataType } from 'twenty-shared';
-import { EntityManager, Repository } from 'typeorm';
+import { EntityManager, IsNull, Not, Repository } from 'typeorm';
 
 import { FeatureFlagMap } from 'src/engine/core-modules/feature-flag/interfaces/feature-flag-map.interface';
 import { WorkspaceSyncContext } from 'src/engine/workspace-manager/workspace-sync-metadata/interfaces/workspace-sync-context.interface';
@@ -64,7 +64,11 @@ export class WorkspaceSyncObjectMetadataIdentifiersService {
     const standardObjectMetadataCollection = this.standardObjectFactory.create(
       context.defaultMetadataWorkspaceId
         ? await objectMetadataRepository.find({
-            where: { workspaceId: context.defaultMetadataWorkspaceId },
+            where: {
+              workspaceId: context.defaultMetadataWorkspaceId,
+              // standardObjectFactory.create function needs to have standardId to map the objects
+              standardId: Not(IsNull()),
+            },
             relations: ['fields'],
           })
         : standardObjectMetadataDefinitions,
