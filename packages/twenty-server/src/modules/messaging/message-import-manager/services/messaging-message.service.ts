@@ -22,6 +22,18 @@ export class MessagingMessageService {
     private readonly objectMetadataRepository: Repository<ObjectMetadataEntity>,
   ) {}
 
+  private async getObjectMetadata(
+    objectMetadataName: string,
+    workspaceId: string,
+  ) {
+    return this.objectMetadataRepository.findOneOrFail({
+      where: {
+        nameSingular: objectMetadataName,
+        workspaceId,
+      },
+    });
+  }
+
   public async saveMessagesWithinTransaction(
     messages: MessageWithParticipants[],
     messageChannelId: string,
@@ -171,30 +183,20 @@ export class MessagingMessageService {
       const workspaceId = workspaceDataSource.internalContext.workspaceId;
 
       // Get Metadata for each created entry type
-      const messageMetadata = await this.objectMetadataRepository.findOneOrFail(
-        {
-          where: {
-            nameSingular: 'message',
-            workspaceId,
-          },
-        },
+      const messageMetadata = await this.getObjectMetadata(
+        'message',
+        workspaceId,
       );
 
-      const messageAssociationMetadata =
-        await this.objectMetadataRepository.findOneOrFail({
-          where: {
-            nameSingular: 'messageChannelMessageAssociation',
-            workspaceId,
-          },
-        });
+      const messageAssociationMetadata = await this.getObjectMetadata(
+        'messageChannelMessageAssociation',
+        workspaceId,
+      );
 
-      const messageThreadMetadata =
-        await this.objectMetadataRepository.findOneOrFail({
-          where: {
-            nameSingular: 'messageThread',
-            workspaceId,
-          },
-        });
+      const messageThreadMetadata = await this.getObjectMetadata(
+        'messageThread',
+        workspaceId,
+      );
 
       // Emit events for each created entry
       this.workspaceEventEmitter.emitDatabaseBatchEvent({
