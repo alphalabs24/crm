@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: nestermind-crm\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-02-25 14:44\n"
+"PO-Revision-Date: 2025-02-27 13:16\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -21,25 +21,25 @@ msgstr ""
 #. js-lingui-explicit-id
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
 #~ msgid "Coming Soon"
-#~ msgstr "Bald Verfügbar"
+#~ msgstr "Coming Soon"
 
 #. js-lingui-explicit-id
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
 #~ msgid "Create Draft"
-#~ msgstr "Entwurf erstellen"
+#~ msgstr "Create Draft"
 
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
 msgid "(coming soon)"
-msgstr ""
+msgstr "(bald verfügbar)"
 
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
 msgid "(Old)"
-msgstr ""
+msgstr "(Alt)"
 
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
 msgid "(Updated)"
-msgstr ""
+msgstr "(Aktualisiert)"
 
 #: src/modules/object-record/record-board/record-board-column/utils/computeAggregateValueAndLabel.ts
 msgid "{aggregateLabel} of {fieldLabel}"
@@ -159,7 +159,7 @@ msgstr "Beschreibung schreiben..."
 
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Add documents related to your property that will be visible in the publication."
-msgstr ""
+msgstr "Fügen Sie Dokumente zu Ihrer Immobilie hinzu, die in der Publikation sichtbar sein werden."
 
 #: src/modules/settings/data-model/object-details/components/tabs/ObjectFields.tsx
 msgid "Add Field"
@@ -167,11 +167,11 @@ msgstr "Feld hinzufügen"
 
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 msgid "Add images of your property that will be visible in the publication."
-msgstr ""
+msgstr "Fügen Sie Bilder Ihrer Immobilie hinzu, die in der Publikation sichtbar sein werden."
 
 #: src/modules/object-record/record-show/components/nm/publication/CompletionProgress.tsx
 msgid "Add more details to improve your listing"
-msgstr ""
+msgstr "Fügen Sie weitere Details hinzu, um Ihr Angebot zu verbessern"
 
 #: src/pages/settings/data-model/SettingsObjects.tsx
 msgid "Add object"
@@ -468,11 +468,11 @@ msgstr "Befehlsmenü schließen"
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
 msgid "Coming Soon"
-msgstr ""
+msgstr "Bald Verfügbar"
 
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
 msgid "Compare Changes"
-msgstr ""
+msgstr "Änderungen vergleichen"
 
 #: src/pages/settings/security/SettingsSecurity.tsx
 msgid "Configure an SSO connection"
@@ -581,7 +581,7 @@ msgstr "API-Schlüssel erstellen"
 
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
 msgid "Create Draft"
-msgstr ""
+msgstr "Entwurf erstellen"
 
 #: src/modules/action-menu/actions/record-actions/constants/WorkflowActionsConfig.ts
 #: src/modules/action-menu/actions/record-actions/constants/DefaultActionsConfigV2.ts
@@ -610,7 +610,7 @@ msgstr "Ihren Arbeitsbereich erstellen"
 
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
 msgid "Current draft values"
-msgstr ""
+msgstr "Aktuelle Entwurfswerte"
 
 #: src/pages/settings/workspace/SettingsCustomDomain.tsx
 msgid "Custom Domain"
@@ -804,7 +804,7 @@ msgstr "Entwickler"
 
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
 msgid "Differences {differenceLength}"
-msgstr ""
+msgstr "Unterschiede {differenceLength}"
 
 #: src/modules/workflow/components/RecordShowPageWorkflowHeader.tsx
 #: src/modules/action-menu/actions/record-actions/constants/WorkflowActionsConfig.ts
@@ -1158,11 +1158,11 @@ msgstr "Deutsch"
 
 #: src/modules/object-record/record-show/components/nm/AISuite.tsx
 msgid "Get AI-powered insights about potential buyers and personalized engagement strategies"
-msgstr ""
+msgstr "Erhalten Sie KI-gestützte Einblicke über potenzielle Käufer und personalisierte Engagement-Strategien"
 
 #: src/modules/object-record/record-show/components/nm/AISuite.tsx
 msgid "Get AI-powered insights about the local market and property positioning"
-msgstr ""
+msgstr "Erhalten Sie AI-gestützte Einblicke über den lokalen Markt und die Positionierung von Immobilien"
 
 #: src/pages/onboarding/InviteTeam.tsx
 msgid "Get the most out of your workspace by inviting your team."
@@ -1324,7 +1324,7 @@ msgstr "Neuester Termin"
 
 #: src/modules/object-record/record-show/components/nm/AISuite.tsx
 msgid "Lead Insights"
-msgstr ""
+msgstr "Lead Einblicke"
 
 #: src/pages/settings/profile/appearance/components/SettingsExperience.tsx
 msgid "Light"
@@ -1404,7 +1404,7 @@ msgstr "Min."
 
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
 msgid "More"
-msgstr ""
+msgstr "Mehr"
 
 #: src/modules/object-record/record-table/record-table-footer/components/RecordTableColumnAggregateFooterDropdownContent.tsx
 #: src/modules/object-record/record-board/record-board-column/components/RecordBoardColumnHeaderAggregateDropdownMenuContent.tsx
@@ -1515,7 +1515,7 @@ msgstr "Neues Passwort"
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
 msgid "New Publication"
-msgstr ""
+msgstr "Neue Veröffentlichung"
 
 #: src/modules/ui/layout/page/components/PageAddButton.tsx
 #: src/modules/ui/layout/page/components/PageAddButton.tsx
@@ -1540,15 +1540,15 @@ msgstr "Kein verbundenes Konto"
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "No description"
-msgstr ""
+msgstr "Keine Beschreibung"
 
 #: src/modules/ui/layout/show-page/components/nm/ShowPageImageBanner.tsx
 msgid "No images available"
-msgstr ""
+msgstr "Keine Bilder verfügbar"
 
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
 msgid "No inquiries yet"
-msgstr ""
+msgstr "Noch keine Anfragen"
 
 #: src/pages/settings/roles/components/RoleAssignment.tsx
 #~ msgid "No members assigned to this role yet"
@@ -1572,15 +1572,15 @@ msgstr "Keine Mitglieder mehr zuzuweisen"
 
 #: src/modules/object-record/record-table/empty-state/utils/getEmptyStateTitle.ts
 msgid "No publications yet"
-msgstr ""
+msgstr "Noch keine Publikationen"
 
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
 msgid "No recent visitors yet"
-msgstr ""
+msgstr "Noch keine neueren Besucher"
 
 #: src/modules/object-record/record-table/empty-state/components/RecordTableEmptyStateReadOnly.tsx
 msgid "No records found"
-msgstr ""
+msgstr "Kein Datensatz gefunden"
 
 #: src/pages/settings/roles/components/RoleWorkspaceMemberPickerDropdownContent.tsx
 #~ msgid "No Result"
@@ -1592,7 +1592,7 @@ msgstr "Keine Ergebnisse"
 
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
 msgid "No similar properties found"
-msgstr ""
+msgstr "Keine ähnlichen Objekte gefunden"
 
 #: src/modules/object-record/record-table/empty-state/utils/getEmptyStateTitle.ts
 msgid "No workflow runs yet"
@@ -1783,7 +1783,7 @@ msgstr "Profil"
 
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
 msgid "Property"
-msgstr ""
+msgstr "Objekt"
 
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Property Documents"
@@ -1803,7 +1803,7 @@ msgstr "Vollständigkeit der Veröffentlichung"
 
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
 msgid "Publication Draft"
-msgstr ""
+msgstr "Veröffentlichungsentwurf"
 
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
@@ -1824,11 +1824,11 @@ msgstr "Erhalten Sie eine E-Mail mit einem Link zur Passwortaktualisierung"
 
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
 msgid "Recent Inquiries"
-msgstr ""
+msgstr "Neueste Anfragen"
 
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
 msgid "Recent Visitors"
-msgstr ""
+msgstr "Neueste Besucher"
 
 #: src/modules/command-menu/components/CommandMenu.tsx
 msgid "Record Selection"
@@ -1889,7 +1889,7 @@ msgstr "Ergebnisse"
 
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
 msgid "Review differences between your property and its publication drafts. Syncing will update the publication drafts with the current property values."
-msgstr ""
+msgstr "Überprüfen Sie die Unterschiede zwischen Ihrem Objekt und seinen Veröffentlichungsentwürfen. Die Synchronisierung aktualisiert die Veröffentlichungsentwürfe mit den aktuellen Stammdaten."
 
 #: src/pages/settings/roles/SettingsRoles.tsx
 #: src/pages/settings/roles/SettingsRoles.tsx
@@ -2065,7 +2065,7 @@ msgstr "Registrieren"
 
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
 msgid "Similar Properties"
-msgstr ""
+msgstr "Ähnliche Eigenschaften"
 
 #: src/modules/auth/sign-in-up/components/SignInUpWithSSO.tsx
 msgid "Single sign-on (SSO)"
@@ -2082,7 +2082,7 @@ msgstr "Sortieren"
 
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
 msgid "Source values"
-msgstr ""
+msgstr "Stammdaten"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 #~ msgid "Spanish"
@@ -2094,7 +2094,7 @@ msgstr "SSO"
 
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
 msgid "Status"
-msgstr ""
+msgstr "Status"
 
 #: src/pages/settings/workspace/SettingsSubdomain.tsx
 msgid "Subdomain"
@@ -2144,11 +2144,15 @@ msgstr "Abrechnung auf {to} umstellen"
 
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
 msgid "Sync All"
-msgstr ""
+msgstr "Alle synchronisieren"
 
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
 msgid "Sync Drafts with Property"
-msgstr ""
+msgstr "Entwürfe mit Objekt synchronisieren"
+
+#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+msgid "Sync Publications"
+msgstr "Entwürfe synchronisieren"
 
 #: src/modules/settings/data-model/fields/forms/components/SettingsDataModelFieldIconLabelForm.tsx
 msgid "Synchronize Field Label and API Name"
@@ -2356,11 +2360,11 @@ msgstr "Rechnungsdetails anzeigen"
 
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
 msgid "Visitor Activity"
-msgstr ""
+msgstr "Besucheraktivität"
 
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
 msgid "Visitor activity chart coming soon"
-msgstr ""
+msgstr "Bald verfügbar"
 
 #: src/modules/settings/data-model/objects/components/SettingsObjectCoverImage.tsx
 msgid "Visualize"
@@ -2450,7 +2454,7 @@ msgstr "ja"
 
 #: src/modules/object-record/record-table/empty-state/components/RecordTableEmptyStateReadOnly.tsx
 msgid "You are not allowed to create records in this object"
-msgstr ""
+msgstr "Sie sind nicht berechtigt, Einträge in diesem Objekt zu erstellen"
 
 #: src/pages/settings/SettingsBilling.tsx
 msgid "You will be charged immediately for the full year."
@@ -2469,8 +2473,12 @@ msgid "Your name as it will be displayed on the app"
 msgstr "Ihr Name, wie er in der App angezeigt wird"
 
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
-msgid "Your Publications Draft was synced successfully"
-msgstr ""
+msgid "Your Publication Drafts were synced successfully"
+msgstr "Ihre Veröffentlichungsentwürfe wurden erfolgreich synchronisiert"
+
+#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+#~ msgid "Your Publications Draft was synced successfully"
+#~ msgstr "Your Publications Draft was synced successfully"
 
 #: src/pages/auth/SignInUp.tsx
 msgid "Your Workspace"

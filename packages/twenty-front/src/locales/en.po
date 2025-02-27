@@ -2145,6 +2145,10 @@ msgstr "Sync All"
 msgid "Sync Drafts with Property"
 msgstr "Sync Drafts with Property"
 
+#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+msgid "Sync Publications"
+msgstr "Sync Publications"
+
 #: src/modules/settings/data-model/fields/forms/components/SettingsDataModelFieldIconLabelForm.tsx
 msgid "Synchronize Field Label and API Name"
 msgstr "Synchronize Field Label and API Name"
@@ -2464,8 +2468,12 @@ msgid "Your name as it will be displayed on the app"
 msgstr "Your name as it will be displayed on the app"
 
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
-msgid "Your Publications Draft was synced successfully"
-msgstr "Your Publications Draft was synced successfully"
+msgid "Your Publication Drafts were synced successfully"
+msgstr "Your Publication Drafts were synced successfully"
+
+#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+#~ msgid "Your Publications Draft was synced successfully"
+#~ msgstr "Your Publications Draft was synced successfully"
 
 #: src/pages/auth/SignInUp.tsx
 msgid "Your Workspace"

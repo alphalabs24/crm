@@ -22,7 +22,10 @@ const doNotCompareKeys = [
   'favorites',
   'noteTargets',
   'timelineActivites',
-  'assignee',
+  // TODO: handle relations
+  'assigneeId',
+  'agencyId',
+  'sellerId',
 ];
 
 export type PropertyPublicationDifference = {

@@ -168,7 +168,7 @@ export const ShowPagePropertySubContainer = ({
         throw new Error('Failed to create draft, id was not returned');
       }
 
-      enqueueSnackBar(t`Your Publications Draft was synced successfully`, {
+      enqueueSnackBar(t`Your Publication Drafts were synced successfully`, {
         variant: SnackBarVariant.Success,
       });
       differencesModalRef.current?.close();
@@ -354,6 +354,13 @@ export const ShowPagePropertySubContainer = ({
                           openModal();
                           closeDropdown();
                         }}
+                      />
+                    )}
+                    {differences?.length === 0 && (
+                      <MenuItem
+                        text={t`Sync Publications`}
+                        LeftIcon={IconRefresh}
+                        onClick={syncPublications}
                       />
                     )}
                     <MenuItem

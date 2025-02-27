@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: nestermind-crm\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-02-25 14:44\n"
+"PO-Revision-Date: 2025-02-27 13:16\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -21,13 +21,13 @@ msgstr ""
 #. js-lingui-explicit-id
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
 #~ msgid "Coming Soon"
-#~ msgstr ""
+#~ msgstr "Coming Soon"
 
 #. js-lingui-explicit-id
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
 #~ msgid "Create Draft"
-#~ msgstr ""
+#~ msgstr "Create Draft"
 
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
 msgid "(coming soon)"
@@ -2150,6 +2150,10 @@ msgstr ""
 msgid "Sync Drafts with Property"
 msgstr ""
 
+#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+msgid "Sync Publications"
+msgstr ""
+
 #: src/modules/settings/data-model/fields/forms/components/SettingsDataModelFieldIconLabelForm.tsx
 msgid "Synchronize Field Label and API Name"
 msgstr "Synchroniser l'étiquette du champ et le nom de l'API"
@@ -2469,8 +2473,12 @@ msgid "Your name as it will be displayed on the app"
 msgstr "Votre nom tel qu'il sera affiché sur l'application"
 
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
-msgid "Your Publications Draft was synced successfully"
+msgid "Your Publication Drafts were synced successfully"
 msgstr ""
+
+#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+#~ msgid "Your Publications Draft was synced successfully"
+#~ msgstr "Your Publications Draft was synced successfully"
 
 #: src/pages/auth/SignInUp.tsx
 msgid "Your Workspace"
