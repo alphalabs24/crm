@@ -1,4 +1,5 @@
 import { useCreateOneRecord } from '@/object-record/hooks/useCreateOneRecord';
+import { useFindManyRecords } from '@/object-record/hooks/useFindManyRecords';
 import { FieldAddressValue } from '@/object-record/record-field/types/FieldMetadata';
 import { AddressInput } from '@/ui/field/input/components/AddressInput';
 import { TextInputV2 } from '@/ui/input/components/TextInputV2';
@@ -57,6 +58,9 @@ export const CreatePropertyModal = forwardRef<
   ModalRefType,
   CreatePropertyModalProps
 >(({ onClose, objectNameSingular }, ref) => {
+  const { records } = useFindManyRecords({
+    objectNameSingular,
+  });
   const navigate = useNavigate();
   const [propertyName, setPropertyName] = useState('');
   const [address, setAddress] = useState<FieldAddressValue>({
@@ -73,12 +77,23 @@ export const CreatePropertyModal = forwardRef<
     objectNameSingular,
   });
 
+  const generateNumericRef = () => {
+    const existingRefs = records.map((record) => record.refProperty);
+    let id = Math.floor(Math.random() * 100000000);
+
+    while (existingRefs?.includes(id.toString())) {
+      id = Math.floor(Math.random() * 100000000);
+    }
+    return id.toString();
+  };
+
   const handleCreate = async () => {
     if (!propertyName) return;
 
     const record = await createOneRecord({
       name: propertyName.trim(),
       address: address,
+      refProperty: generateNumericRef(),
     });
 
     onClose();
@@ -94,7 +109,7 @@ export const CreatePropertyModal = forwardRef<
       isClosable
       ref={ref}
       closedOnMount
-      hotkeyScope={ModalHotkeyScope.Default}
+      hotkeyScope={ModalHotkeyScope.CreateProperty}
       padding="none"
     >
       <StyledModalHeader>
@@ -129,7 +144,7 @@ export const CreatePropertyModal = forwardRef<
           onClickOutside={() => {}}
           onTab={() => {}}
           onShiftTab={() => {}}
-          hotkeyScope="address"
+          hotkeyScope={ModalHotkeyScope.CreateProperty}
         />
         {((address.addressStreet1 !== '' &&
           address.addressPostcode !== '' &&

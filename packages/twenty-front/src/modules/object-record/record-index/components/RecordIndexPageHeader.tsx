@@ -3,15 +3,22 @@ import { contextStoreNumberOfSelectedRecordsComponentState } from '@/context-sto
 import { useFilteredObjectMetadataItems } from '@/object-metadata/hooks/useFilteredObjectMetadataItems';
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { isObjectMetadataReadOnly } from '@/object-metadata/utils/isObjectMetadataReadOnly';
+import { useFieldFocus } from '@/object-record/record-field/hooks/useFieldFocus';
 import { CreatePropertyModal } from '@/object-record/record-index/components/CreatePropertyModal';
 import { RecordIndexPageKanbanAddButton } from '@/object-record/record-index/components/RecordIndexPageKanbanAddButton';
 import { RecordIndexPageTableAddButton } from '@/object-record/record-index/components/RecordIndexPageTableAddButton';
 import { useRecordIndexContextOrThrow } from '@/object-record/record-index/contexts/RecordIndexContext';
 import { recordIndexViewTypeState } from '@/object-record/record-index/states/recordIndexViewTypeState';
+import { useDisableSoftFocus } from '@/object-record/record-table/hooks/internal/useDisableSoftFocus';
+import { useLeaveTableFocus } from '@/object-record/record-table/hooks/internal/useLeaveTableFocus';
+import { useRecordTable } from '@/object-record/record-table/hooks/useRecordTable';
+import { useIsSoftFocusOnCurrentTableCell } from '@/object-record/record-table/record-table-cell/hooks/useIsSoftFocusOnCurrentTableCell';
 import { ModalRefType } from '@/ui/layout/modal/components/Modal';
+import { ModalHotkeyScope } from '@/ui/layout/modal/components/types/ModalHotkeyScope';
 import { PageHeaderOpenCommandMenuButton } from '@/ui/layout/page-header/components/PageHeaderOpenCommandMenuButton';
 import { PageAddButton } from '@/ui/layout/page/components/PageAddButton';
 import { PageHeader } from '@/ui/layout/page/components/PageHeader';
+import { useSetHotkeyScope } from '@/ui/utilities/hotkey/hooks/useSetHotkeyScope';
 import { useRecoilComponentValueV2 } from '@/ui/utilities/state/component-state/hooks/useRecoilComponentValueV2';
 import { ViewType } from '@/views/types/ViewType';
 import { useIsFeatureEnabled } from '@/workspace/hooks/useIsFeatureEnabled';
@@ -21,7 +28,11 @@ import { capitalize, isDefined } from 'twenty-shared';
 import { useIcons } from 'twenty-ui';
 import { FeatureFlagKey } from '~/generated/graphql';
 
-export const RecordIndexPageHeader = () => {
+export const RecordIndexPageHeader = ({
+  recordTableId,
+}: {
+  recordTableId: string;
+}) => {
   const { findObjectMetadataItemByNamePlural } =
     useFilteredObjectMetadataItems();
 
@@ -42,11 +53,17 @@ export const RecordIndexPageHeader = () => {
 
   const recordIndexViewType = useRecoilValue(recordIndexViewTypeState);
 
+  const { leaveTableFocus, resetTableRowSelection } = useRecordTable({
+    recordTableId,
+  });
+
   const { recordIndexId } = useRecordIndexContextOrThrow();
 
   const numberOfSelectedRecords = useRecoilComponentValueV2(
     contextStoreNumberOfSelectedRecordsComponentState,
   );
+
+  const setHotkeyScope = useSetHotkeyScope();
 
   const isCommandMenuV2Enabled = useIsFeatureEnabled(
     FeatureFlagKey.IsCommandMenuV2Enabled,
@@ -76,7 +93,14 @@ export const RecordIndexPageHeader = () => {
          * TODO: Logic between Table and Kanban should be merged here when we move some states to record-index
          */
         (isPublication ? null : isProperty ? (
-          <PageAddButton onClick={() => modalRef.current?.open()} />
+          <PageAddButton
+            onClick={() => {
+              leaveTableFocus();
+              resetTableRowSelection();
+              setHotkeyScope(ModalHotkeyScope.CreateProperty);
+              modalRef.current?.open();
+            }}
+          />
         ) : isTable ? (
           <RecordIndexPageTableAddButton />
         ) : (
