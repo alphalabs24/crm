@@ -5,9 +5,8 @@ import { useFieldMetadataItem } from '@/object-metadata/hooks/useFieldMetadataIt
 import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadataItem';
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { FieldMetadataItem } from '@/object-metadata/types/FieldMetadataItem';
-import { ObjectMetadataItem } from '@/object-metadata/types/ObjectMetadataItem';
 
-// These keys are ignored when comparing. Add new publication-specific keys here!
+// These keys are ignored when comparing
 const doNotCompareKeys = [
   'id',
   'createdAt',
@@ -17,31 +16,34 @@ const doNotCompareKeys = [
   'propertyId',
   'publishUntil',
   'stage',
+  'position',
+  'searchVector',
+  'taskTargets',
+  'favorites',
+  'noteTargets',
+  'timelineActivites',
+  'assignee',
 ];
 
 export type PropertyPublicationDifference = {
   key: string;
   propertyValue: any;
   publicationValue: any;
-  fieldLabel: string; // Human readable field name
+  fieldLabel: string;
   propertyFieldMetadataItem: FieldMetadataItem | undefined;
   publicationFieldMetadataItem: FieldMetadataItem | undefined;
-  propertyMetadataItem: ObjectMetadataItem;
-  publicationMetadataItem: ObjectMetadataItem;
-  // TODO: show platforms in difference UI. Maybe handle each platform individually (show difference for each draft)
-  platforms?: string[];
+};
+
+export type PublicationDifferences = {
+  publicationId: string;
+  platform: string;
+  differences: PropertyPublicationDifference[];
 };
 
 export const usePropertyAndPublicationDifferences = (
   propertyRecord: ObjectRecord | null,
   publications: ObjectRecord[] | undefined,
 ) => {
-  const { objectMetadataItem: publicationMetadataItem } = useObjectMetadataItem(
-    {
-      objectNameSingular: CoreObjectNameSingular.Publication,
-    },
-  );
-
   const { objectMetadataItem: propertyMetadataItem } = useObjectMetadataItem({
     objectNameSingular: CoreObjectNameSingular.Property,
   });
@@ -55,23 +57,28 @@ export const usePropertyAndPublicationDifferences = (
   }, [propertyMetadataItem]);
 
   const differences = useMemo(() => {
-    if (!publications || publications.length === 0 || !propertyRecord)
+    if (!publications || publications.length === 0 || !propertyRecord) {
       return [];
+    }
 
-    const diffs: PropertyPublicationDifference[] = [];
+    const allDifferences: PublicationDifferences[] = [];
 
+    // Process each publication
     for (const publication of publications) {
       if (!publication) continue;
 
+      const publicationDiffs: PropertyPublicationDifference[] = [];
+
+      // Compare fields
       Object.keys(publication).forEach((key) => {
         if (
           !deepEqual(propertyRecord?.[key], publication[key], {
             strict: true,
           }) &&
           !doNotCompareKeys.includes(key) &&
-          propertyFieldMetadataLabels[key] // Only include fields we have labels for
+          propertyFieldMetadataLabels[key]
         ) {
-          diffs.push({
+          publicationDiffs.push({
             key,
             propertyValue: propertyRecord?.[key],
             publicationValue: publication[key],
@@ -79,23 +86,29 @@ export const usePropertyAndPublicationDifferences = (
             propertyFieldMetadataItem: propertyMetadataItem?.fields.find(
               (field) => field.name === key,
             ),
-            publicationFieldMetadataItem: publicationMetadataItem?.fields.find(
+            publicationFieldMetadataItem: propertyMetadataItem?.fields.find(
               (field) => field.name === key,
             ),
-            propertyMetadataItem: propertyMetadataItem,
-            publicationMetadataItem: publicationMetadataItem,
           });
         }
       });
+
+      // Only add to results if there are differences
+      if (publicationDiffs.length > 0) {
+        allDifferences.push({
+          publicationId: publication.id,
+          platform: publication.platform,
+          differences: publicationDiffs,
+        });
+      }
     }
 
-    return diffs;
+    return allDifferences;
   }, [
     publications,
     propertyRecord,
     propertyFieldMetadataLabels,
     propertyMetadataItem,
-    publicationMetadataItem,
   ]);
 
   return {

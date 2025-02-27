@@ -231,7 +231,12 @@ export const ShowPagePropertySubContainer = ({
   };
 
   const differenceLength = useMemo(
-    () => (differences?.length > 0 ? `(${differences.length})` : ''),
+    () =>
+      differences?.length > 0
+        ? `(${differences
+            .map((difference) => difference.differences.length)
+            .reduce((a, b) => a + b, 0)})`
+        : '',
     [differences],
   );
 

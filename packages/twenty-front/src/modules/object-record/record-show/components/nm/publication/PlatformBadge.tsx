@@ -1,10 +1,13 @@
 import {
-    PLATFORMS,
-    PlatformId,
+  PLATFORMS,
+  PlatformId,
 } from '@/ui/layout/show-page/components/nm/types/Platform';
 import styled from '@emotion/styled';
 
-const StyledPlatformBadge = styled.div<{ isActive?: boolean }>`
+const StyledPlatformBadge = styled.div<{
+  isActive?: boolean;
+  disabled?: boolean;
+}>`
   align-items: center;
   display: flex;
   gap: ${({ theme }) => theme.spacing(2)};
@@ -14,9 +17,12 @@ const StyledPlatformBadge = styled.div<{ isActive?: boolean }>`
   border-radius: ${({ theme }) => theme.border.radius.sm};
   padding: ${({ theme }) => theme.spacing(1)};
   cursor: pointer;
+  background: ${({ theme, disabled }) =>
+    disabled ? theme.background.secondary : theme.background.primary};
 
   &:hover {
-    background: ${({ theme }) => theme.background.secondary};
+    background: ${({ theme, disabled }) =>
+      disabled ? theme.background.secondary : theme.background.primary};
   }
 `;
 
@@ -42,7 +48,11 @@ export const PlatformBadge = ({
       : PLATFORMS[platformId];
 
   return (
-    <StyledPlatformBadge isActive={isActive} onClick={onClick}>
+    <StyledPlatformBadge
+      isActive={isActive}
+      onClick={onClick}
+      disabled={!onClick}
+    >
       {platform?.logo && (
         <StyledPlatformLogo src={platform.logo} alt={platform.name} />
       )}
