@@ -28,6 +28,8 @@ export type PropertyPublicationDifference = {
   publicationFieldMetadataItem: FieldMetadataItem | undefined;
   propertyMetadataItem: ObjectMetadataItem;
   publicationMetadataItem: ObjectMetadataItem;
+  // TODO: show platforms in difference UI. Maybe handle each platform individually (show difference for each draft)
+  platforms?: string[];
 };
 
 export const usePropertyAndPublicationDifferences = (

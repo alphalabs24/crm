@@ -118,11 +118,13 @@ export const ShowPagePropertySubContainer = ({
   const [recordFromStore] = useRecoilState<ObjectRecord | null>(
     recordStoreFamilyState(targetableObject.id),
   );
-  const { publications: publicationDraftsOfProperty } =
-    usePublicationsOfProperty(
-      isPublication ? undefined : recordFromStore?.id,
-      'draft',
-    );
+  const {
+    publications: publicationDraftsOfProperty,
+    refetch: refetchPublications,
+  } = usePublicationsOfProperty(
+    isPublication ? undefined : recordFromStore?.id,
+    'draft',
+  );
 
   const { differences } = usePropertyAndPublicationDifferences(
     isPublication ? null : recordFromStore,
@@ -164,6 +166,8 @@ export const ShowPagePropertySubContainer = ({
       enqueueSnackBar(t`Your Publications Draft was synced successfully`, {
         variant: SnackBarVariant.Success,
       });
+      differencesModalRef.current?.close();
+      refetchPublications();
     } catch (error: any) {
       enqueueSnackBar(error?.message, {
         variant: SnackBarVariant.Error,
@@ -280,22 +284,21 @@ export const ShowPagePropertySubContainer = ({
               />
             )}
 
-            {publicationDraftsOfProperty.length === 0 && (
-              <Button
-                title={isPublication ? t`Publish` : t`Create Publication`}
-                variant="primary"
-                accent="blue"
-                size="small"
-                Icon={isPublication ? IconUpload : IconPlus}
-                onClick={openModal}
-              />
-            )}
+            <Button
+              title={isPublication ? t`Publish` : t`New Publication`}
+              variant="primary"
+              accent="blue"
+              size="small"
+              Icon={isPublication ? IconUpload : IconPlus}
+              onClick={openModal}
+            />
+
             {differences?.length > 0 && (
               <Button
                 onClick={() => differencesModalRef.current?.open()}
                 variant="primary"
                 accent="blue"
-                title={t`View Differences ${differenceLength}`}
+                title={t`Sync Differences ${differenceLength}`}
                 size="small"
               />
             )}

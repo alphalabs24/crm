@@ -108,7 +108,7 @@ const StyledArrowContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: ${({ theme }) => theme.font.color.light};
+  color: ${({ theme }) => theme.font.color.secondary};
 `;
 
 const StyledModalDescription = styled.div`
@@ -165,14 +165,6 @@ const StyledColumnSubtitle = styled.div`
   font-size: ${({ theme }) => theme.font.size.xs};
 `;
 
-const StyledHeaderSpacer = styled.div`
-  width: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: ${({ theme }) => theme.font.color.light};
-`;
-
 type PropertyDifferencesModalProps = {
   differences: PropertyPublicationDifference[];
   onClose: () => void;
@@ -199,6 +191,7 @@ export const PropertyDifferencesModal = forwardRef<
     const setEntityFields = useSetRecoilState(
       recordStoreFamilyState(publicationRecordId),
     );
+    // This is required in order to have publication data in recoil state
     const FIND_ONE_RECORD_FOR_SHOW_PAGE_OPERATION_SIGNATURE =
       buildFindOneRecordForShowPageOperationSignature({
         objectMetadataItem,
@@ -276,7 +269,7 @@ export const PropertyDifferencesModal = forwardRef<
                   <StyledColumnSubtitle>{t`Current draft values`}</StyledColumnSubtitle>
                 </div>
               </StyledColumnHeader>
-              <IconArrowRight size={16} />
+              <StyledArrowContainer>→</StyledArrowContainer>
               <StyledColumnHeader>
                 <IconHome size={16} />
                 <div>
@@ -358,9 +351,7 @@ export const PropertyDifferencesModal = forwardRef<
                             </RecordFieldValueSelectorContextProvider>
                           </div>
                         </StyledValueColumn>
-                        <StyledArrowContainer>
-                          <IconArrowRight size={16} />
-                        </StyledArrowContainer>
+                        <StyledArrowContainer>→</StyledArrowContainer>
                         <StyledValueColumn>
                           <div>
                             {isValueEmpty(diff.propertyValue) ? (

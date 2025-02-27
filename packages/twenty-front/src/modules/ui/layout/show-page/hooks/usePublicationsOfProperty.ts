@@ -14,7 +14,7 @@ export const usePublicationsOfProperty = (
     nameSingular: CoreObjectNameSingular.Property,
   });
 
-  const { records: publications } = useFindManyRecords({
+  const { records: publications, refetch } = useFindManyRecords({
     objectNameSingular: CoreObjectNameSingular.Publication,
     filter: {
       ...(propertyId
@@ -31,5 +31,6 @@ export const usePublicationsOfProperty = (
   return {
     publications,
     arePublicationsEqual,
+    refetch,
   };
 };
