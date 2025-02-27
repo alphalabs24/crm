@@ -94,12 +94,18 @@ export class StandardFieldFactory {
     }
 
     if (isFieldMetadata<FieldMetadataType | 'default'>(targetOrTargets)) {
+      if (!targetOrTargets.standardId) {
+        throw new Error('field standardId not found');
+      }
+
       const {
         id: _1,
         createdAt: _2,
         updatedAt: _3,
         object: _4,
         objectMetadataId: _5,
+        relationTargetFieldMetadataId: _6,
+        relationTargetObjectMetadataId: _7,
         ...rest
       } = targetOrTargets;
 
@@ -107,7 +113,7 @@ export class StandardFieldFactory {
         {
           ...rest,
           workspaceId: context.workspaceId,
-          standardId: targetOrTargets.standardId ?? '',
+          standardId: targetOrTargets.standardId,
         },
       ];
     }
