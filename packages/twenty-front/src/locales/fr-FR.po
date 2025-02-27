@@ -18,6 +18,29 @@ msgstr ""
 "X-Crowdin-File: /packages/twenty-front/src/locales/en.po\n"
 "X-Crowdin-File-ID: 16\n"
 
+#. js-lingui-explicit-id
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
+#~ msgid "Coming Soon"
+#~ msgstr ""
+
+#. js-lingui-explicit-id
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
+#~ msgid "Create Draft"
+#~ msgstr ""
+
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
+msgid "(coming soon)"
+msgstr ""
+
+#: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
+msgid "(Old)"
+msgstr ""
+
+#: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
+msgid "(Updated)"
+msgstr ""
+
 #: src/modules/object-record/record-board/record-board-column/utils/computeAggregateValueAndLabel.ts
 msgid "{aggregateLabel} of {fieldLabel}"
 msgstr "{aggregateLabel} de {fieldLabel}"
@@ -370,6 +393,7 @@ msgid "Calendars"
 msgstr "Calendriers"
 
 #: src/pages/auth/Authorize.tsx
+#: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
 #: src/modules/ui/layout/modal/components/ConfirmationModal.tsx
 #: src/modules/settings/components/SaveAndCancelButtons/CancelButton.tsx
 #: src/modules/record-edit/components/custom/ImageEditModal.tsx
@@ -441,9 +465,13 @@ msgstr "Choisissez votre essai"
 msgid "Close command menu"
 msgstr "Fermer le menu de commande"
 
-#. js-lingui-explicit-id
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
 msgid "Coming Soon"
+msgstr ""
+
+#: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
+msgid "Compare Changes"
 msgstr ""
 
 #: src/pages/settings/security/SettingsSecurity.tsx
@@ -551,8 +579,6 @@ msgstr "Créez un workflow et revenez ici pour voir ses versions"
 msgid "Create API key"
 msgstr "Créer une clé API"
 
-#. js-lingui-explicit-id
-#: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
 msgid "Create Draft"
 msgstr ""
@@ -581,6 +607,10 @@ msgstr ""
 #: src/pages/onboarding/CreateWorkspace.tsx
 msgid "Create your workspace"
 msgstr "Créez votre espace de travail"
+
+#: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
+msgid "Current draft values"
+msgstr ""
 
 #: src/pages/settings/workspace/SettingsCustomDomain.tsx
 msgid "Custom Domain"
@@ -678,6 +708,7 @@ msgstr "Définir le nom et la description de votre objet"
 
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
+#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 #: src/modules/action-menu/components/__stories__/RightDrawerActionMenuDropdown.stories.tsx
@@ -770,6 +801,10 @@ msgstr "Détruire"
 #: src/modules/settings/hooks/useSettingsNavigationItems.tsx
 msgid "Developers"
 msgstr "Développeurs"
+
+#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+msgid "Differences {differenceLength}"
+msgstr ""
 
 #: src/modules/workflow/components/RecordShowPageWorkflowHeader.tsx
 #: src/modules/action-menu/actions/record-actions/constants/WorkflowActionsConfig.ts
@@ -1367,6 +1402,10 @@ msgstr "Membres"
 msgid "Min"
 msgstr ""
 
+#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+msgid "More"
+msgstr ""
+
 #: src/modules/object-record/record-table/record-table-footer/components/RecordTableColumnAggregateFooterDropdownContent.tsx
 #: src/modules/object-record/record-board/record-board-column/components/RecordBoardColumnHeaderAggregateDropdownMenuContent.tsx
 msgid "More options"
@@ -1473,6 +1512,11 @@ msgstr "Nouvel objet"
 msgid "New Password"
 msgstr "Nouveau mot de passe"
 
+#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+msgid "New Publication"
+msgstr ""
+
 #: src/modules/ui/layout/page/components/PageAddButton.tsx
 #: src/modules/ui/layout/page/components/PageAddButton.tsx
 #: src/modules/action-menu/actions/record-actions/constants/WorkflowActionsConfig.ts
@@ -1496,6 +1540,10 @@ msgstr "Aucun compte connecté"
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "No description"
+msgstr ""
+
+#: src/modules/ui/layout/show-page/components/nm/ShowPageImageBanner.tsx
+msgid "No images available"
 msgstr ""
 
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
@@ -1733,6 +1781,10 @@ msgstr "Politique de confidentialité"
 msgid "Profile"
 msgstr "Profil"
 
+#: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
+msgid "Property"
+msgstr ""
+
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Property Documents"
 msgstr ""
@@ -1749,6 +1801,11 @@ msgstr "Pseudo-anglais"
 msgid "Publication completion -"
 msgstr ""
 
+#: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
+msgid "Publication Draft"
+msgstr ""
+
+#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
 msgid "Publication Draft created successfully"
 msgstr ""
@@ -1829,6 +1886,10 @@ msgstr "Réinitialiser à"
 #: src/modules/command-menu/hooks/useSearchRecords.tsx
 msgid "Results"
 msgstr "Résultats"
+
+#: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
+msgid "Review differences between your property and its publication drafts. Syncing will update the publication drafts with the current property values."
+msgstr ""
 
 #: src/pages/settings/roles/SettingsRoles.tsx
 #: src/pages/settings/roles/SettingsRoles.tsx
@@ -2019,6 +2080,10 @@ msgstr "Passer"
 msgid "Sort"
 msgstr "Trier"
 
+#: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
+msgid "Source values"
+msgstr ""
+
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 #~ msgid "Spanish"
 #~ msgstr "Spanish"
@@ -2076,6 +2141,14 @@ msgstr "Changer {to}"
 #: src/pages/settings/SettingsBilling.tsx
 msgid "Switch billing {to}"
 msgstr "Changer la facturation {to}"
+
+#: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
+msgid "Sync All"
+msgstr ""
+
+#: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
+msgid "Sync Drafts with Property"
+msgstr ""
 
 #: src/modules/settings/data-model/fields/forms/components/SettingsDataModelFieldIconLabelForm.tsx
 msgid "Synchronize Field Label and API Name"
@@ -2394,6 +2467,10 @@ msgstr "Votre nom tel qu'il sera affiché"
 #: src/pages/onboarding/CreateProfile.tsx
 msgid "Your name as it will be displayed on the app"
 msgstr "Votre nom tel qu'il sera affiché sur l'application"
+
+#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+msgid "Your Publications Draft was synced successfully"
+msgstr ""
 
 #: src/pages/auth/SignInUp.tsx
 msgid "Your Workspace"

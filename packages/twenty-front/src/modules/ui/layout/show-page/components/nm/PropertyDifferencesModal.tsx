@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { useLingui } from '@lingui/react/macro';
-import { forwardRef, useEffect, useState } from 'react';
+import { forwardRef, useEffect, useState, useRef } from 'react';
 import { Modal, ModalRefType } from '@/ui/layout/modal/components/Modal';
 import { motion } from 'framer-motion';
 import {
@@ -33,6 +33,7 @@ import { useFindOneRecord } from '@/object-record/hooks/useFindOneRecord';
 import { isDefined } from 'twenty-shared';
 import { PlatformId, PLATFORMS } from './types/Platform';
 import { PlatformBadge } from '@/object-record/record-show/components/nm/publication/PlatformBadge';
+import Skeleton from 'react-loading-skeleton';
 
 const StyledModalContainer = styled.div`
   display: flex;
@@ -183,7 +184,14 @@ const StyledPublicationTabs = styled.div`
   gap: ${({ theme }) => theme.spacing(0)};
   background: ${({ theme }) => theme.background.tertiary};
   border-radius: ${({ theme }) => theme.border.radius.sm};
-  width: fit-content;
+  max-width: fit-content;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const StyledPublicationTab = styled.button<{ isActive: boolean }>`
@@ -297,7 +305,7 @@ const PublicationDiffView = ({
     recordStoreFamilyState(publicationRecordId),
   );
 
-  const { record } = useFindOneRecord({
+  const { record, loading } = useFindOneRecord({
     objectRecordId: publicationRecordId,
     objectNameSingular: CoreObjectNameSingular.Publication,
   });
@@ -358,13 +366,12 @@ const PublicationDiffView = ({
                 <div>
                   <RecordFieldValueSelectorContextProvider>
                     <RecordValueSetterEffect recordId={publicationRecordId} />
-                    <StyledValueColumn>
-                      <div>
+                    <div>
+                      {loading ? (
+                        <Skeleton height={12} width={100} />
+                      ) : (
                         <FieldContext.Provider
                           value={{
-                            overridenIsFieldEmpty: isValueEmpty(
-                              diff.publicationValue,
-                            ),
                             recordId: publicationRecordId,
                             isLabelIdentifier: isLabelIdentifierField({
                               fieldMetadataItem:
@@ -396,8 +403,8 @@ const PublicationDiffView = ({
                         >
                           <FieldDisplay wrap />
                         </FieldContext.Provider>
-                      </div>
-                    </StyledValueColumn>
+                      )}
+                    </div>
                   </RecordFieldValueSelectorContextProvider>
                 </div>
               </StyledValueColumn>
@@ -405,35 +412,40 @@ const PublicationDiffView = ({
               <StyledArrowContainer>→</StyledArrowContainer>
               <StyledValueColumn>
                 <div>
-                  <FieldContext.Provider
-                    value={{
-                      overridenIsFieldEmpty: isValueEmpty(diff.propertyValue),
-                      recordId: propertyRecordId,
-                      isLabelIdentifier: isLabelIdentifierField({
-                        fieldMetadataItem: diff.propertyFieldMetadataItem,
-                        objectMetadataItem: propertyMetadataItem,
-                      }),
-                      fieldDefinition: {
-                        type: diff.propertyFieldMetadataItem.type,
-                        iconName:
-                          diff.propertyFieldMetadataItem.icon || 'FieldIcon',
-                        fieldMetadataId:
-                          diff.propertyFieldMetadataItem.id || '',
-                        label: diff.propertyFieldMetadataItem.label,
-                        metadata: {
-                          fieldName: diff.propertyFieldMetadataItem.name,
-                          objectMetadataNameSingular:
-                            propertyMetadataItem?.nameSingular,
-                          options: diff.propertyFieldMetadataItem.options ?? [],
+                  {loading ? (
+                    <Skeleton height={12} width={100} />
+                  ) : (
+                    <FieldContext.Provider
+                      value={{
+                        overridenIsFieldEmpty: isValueEmpty(diff.propertyValue),
+                        recordId: propertyRecordId,
+                        isLabelIdentifier: isLabelIdentifierField({
+                          fieldMetadataItem: diff.propertyFieldMetadataItem,
+                          objectMetadataItem: propertyMetadataItem,
+                        }),
+                        fieldDefinition: {
+                          type: diff.propertyFieldMetadataItem.type,
+                          iconName:
+                            diff.propertyFieldMetadataItem.icon || 'FieldIcon',
+                          fieldMetadataId:
+                            diff.propertyFieldMetadataItem.id || '',
+                          label: diff.propertyFieldMetadataItem.label,
+                          metadata: {
+                            fieldName: diff.propertyFieldMetadataItem.name,
+                            objectMetadataNameSingular:
+                              propertyMetadataItem?.nameSingular,
+                            options:
+                              diff.propertyFieldMetadataItem.options ?? [],
+                          },
+                          defaultValue:
+                            diff.propertyFieldMetadataItem.defaultValue,
                         },
-                        defaultValue:
-                          diff.propertyFieldMetadataItem.defaultValue,
-                      },
-                      hotkeyScope: 'property-diff',
-                    }}
-                  >
-                    <FieldDisplay wrap />
-                  </FieldContext.Provider>
+                        hotkeyScope: 'property-diff',
+                      }}
+                    >
+                      <FieldDisplay wrap />
+                    </FieldContext.Provider>
+                  )}
                 </div>
               </StyledValueColumn>
             </StyledValueComparison>
@@ -451,6 +463,23 @@ export const PropertyDifferencesModal = forwardRef<
 >(({ differences, onClose, onSync, propertyRecordId }, ref) => {
   const { t } = useLingui();
   const [activePublicationIndex, setActivePublicationIndex] = useState(0);
+  const tabsContainerRef = useRef<HTMLDivElement>(null);
+  const activeTabRef = useRef<HTMLButtonElement>(null);
+
+  // Scroll active tab into view when it changes
+  useEffect(() => {
+    if (activeTabRef.current && tabsContainerRef.current) {
+      const container = tabsContainerRef.current;
+      const activeTab = activeTabRef.current;
+
+      // Simply scroll the active tab into view with smooth behavior
+      activeTab.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'center',
+      });
+    }
+  }, [activePublicationIndex]);
 
   return (
     <Modal
@@ -488,12 +517,13 @@ export const PropertyDifferencesModal = forwardRef<
           </StyledModalDescription>
 
           <StyledTabsContainer>
-            <StyledPublicationTabs>
+            <StyledPublicationTabs ref={tabsContainerRef}>
               {differences.map((publicationDiff, index) => (
                 <StyledPublicationTab
                   key={publicationDiff.publicationId}
                   isActive={index === activePublicationIndex}
                   onClick={() => setActivePublicationIndex(index)}
+                  ref={index === activePublicationIndex ? activeTabRef : null}
                 >
                   <StyledPlatformIcon platform={publicationDiff.platform}>
                     <PlatformBadge

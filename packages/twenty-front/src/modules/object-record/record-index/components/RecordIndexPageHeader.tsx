@@ -25,7 +25,6 @@ export const RecordIndexPageHeader = () => {
   const { findObjectMetadataItemByNamePlural } =
     useFilteredObjectMetadataItems();
 
-  // eslint-disable-next-line @nx/workspace-no-state-useref
   const modalRef = useRef<ModalRefType>(null);
 
   const { objectNamePlural, objectNameSingular } =
@@ -53,14 +52,17 @@ export const RecordIndexPageHeader = () => {
     FeatureFlagKey.IsCommandMenuV2Enabled,
   );
 
+  const isNotPublicationOrProperty = !isPublication && !isProperty;
+
   const isObjectMetadataItemReadOnly =
     isDefined(objectMetadataItem) &&
     isObjectMetadataReadOnly(objectMetadataItem);
 
   const shouldDisplayAddButton =
-    (numberOfSelectedRecords === 0 || !isCommandMenuV2Enabled) &&
-    !isObjectMetadataItemReadOnly &&
-    !isCommandMenuV2Enabled;
+    ((numberOfSelectedRecords === 0 || !isCommandMenuV2Enabled) &&
+      !isObjectMetadataItemReadOnly &&
+      !isCommandMenuV2Enabled) ||
+    !isNotPublicationOrProperty;
 
   const isTable = recordIndexViewType === ViewType.Table;
 
@@ -83,7 +85,9 @@ export const RecordIndexPageHeader = () => {
 
       {isCommandMenuV2Enabled && (
         <>
-          <RecordIndexActionMenu indexId={recordIndexId} />
+          {isNotPublicationOrProperty && (
+            <RecordIndexActionMenu indexId={recordIndexId} />
+          )}
           <PageHeaderOpenCommandMenuButton />
         </>
       )}

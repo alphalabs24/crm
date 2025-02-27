@@ -15,6 +15,7 @@ const StyledModalContent = styled.div`
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(4)};
   padding: ${({ theme }) => theme.spacing(4)};
+  min-height: 40vh;
 `;
 
 const StyledModalHeader = styled(Modal.Header)`
@@ -107,13 +108,7 @@ export const CreatePropertyModal = forwardRef<
             title="Create"
             onClick={handleCreate}
             accent="blue"
-            disabled={
-              !propertyName.trim() ||
-              !isDefined(address.addressStreet1) ||
-              !isDefined(address.addressPostcode) ||
-              !isDefined(address.addressCity) ||
-              !isDefined(address.addressCountry)
-            }
+            disabled={!propertyName.trim()}
           />
         </StyledModalHeaderButtons>
       </StyledModalHeader>
@@ -129,35 +124,34 @@ export const CreatePropertyModal = forwardRef<
           fullWidth={true}
           noPadding
           onChange={(updatedAddress) => setAddress(updatedAddress)}
-          onEnter={() => {}}
+          onEnter={handleCreate}
           onEscape={() => {}}
           onClickOutside={() => {}}
           onTab={() => {}}
           onShiftTab={() => {}}
           hotkeyScope="address"
         />
-        {address.addressStreet1 !== '' &&
+        {((address.addressStreet1 !== '' &&
           address.addressPostcode !== '' &&
           address.addressCity !== '' &&
-          address.addressCountry !== '' && (
-            <>
-              <StyledDescription>
-                Enter a name for the property
-              </StyledDescription>
-              <TextInputV2
-                value={propertyName}
-                onChange={(text) => setPropertyName(text)}
-                placeholder="Property name"
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    if (isDefined(propertyName)) {
-                      handleCreate();
-                    }
+          address.addressCountry !== '') ||
+          propertyName) && (
+          <>
+            <StyledDescription>Enter a name for the property</StyledDescription>
+            <TextInputV2
+              value={propertyName}
+              onChange={(text) => setPropertyName(text)}
+              placeholder="Property name"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  if (isDefined(propertyName)) {
+                    handleCreate();
                   }
-                }}
-              />
-            </>
-          )}
+                }
+              }}
+            />
+          </>
+        )}
       </StyledModalContent>
     </Modal>
   );

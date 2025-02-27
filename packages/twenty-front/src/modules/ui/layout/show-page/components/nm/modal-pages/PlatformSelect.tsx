@@ -344,7 +344,7 @@ export const PlatformSelect = ({
                 </StyledPlatformIconContainer>
                 <StyledPlatformInfo>
                   <StyledPlatformName comingSoon={platform.isBeta}>
-                    {platform.name} {platform.isBeta ? '(coming soon)' : ''}
+                    {platform.name} {platform.isBeta ? t`(coming soon)` : ''}
                     {platform.isNew && <StyledNewTag>NEW</StyledNewTag>}
                   </StyledPlatformName>
                   <StyledPlatformDescription>
@@ -368,10 +368,7 @@ export const PlatformSelect = ({
             <Button
               variant="primary"
               accent="blue"
-              title={t({
-                id: 'Create Draft',
-                message: 'Create Draft',
-              })}
+              title={t`Create Draft`}
               onClick={createDraft}
               disabled={
                 selectedPlatforms?.length === 0 || !selectedPlatforms || loading
@@ -404,10 +401,7 @@ export const PlatformSelect = ({
               <Button
                 variant="primary"
                 accent="blue"
-                title={t({
-                  id: 'Create Draft',
-                  message: 'Create Draft',
-                })}
+                title={t`Coming Soon`}
                 disabled
               />
             </StyledPlatformTypeActions>
@@ -434,10 +428,7 @@ export const PlatformSelect = ({
               <Button
                 variant="primary"
                 accent="blue"
-                title={t({
-                  id: 'Coming Soon',
-                  message: 'Coming Soon',
-                })}
+                title={t`Coming Soon`}
                 disabled
               />
             </StyledPlatformTypeActions>

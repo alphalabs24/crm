@@ -15,7 +15,7 @@ import { useTabList } from '@/ui/layout/tab/hooks/useTabList';
 import { useIsMobile } from '@/ui/utilities/responsive/hooks/useIsMobile';
 import styled from '@emotion/styled';
 import { useLingui } from '@lingui/react/macro';
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import {
@@ -41,6 +41,7 @@ import { useDropdown } from '@/ui/layout/dropdown/hooks/useDropdown';
 import { usePublicationsOfProperty } from '../../hooks/usePublicationsOfProperty';
 import { usePropertyAndPublicationDifferences } from '../../hooks/usePropertyAndPublicationDifferences';
 import { PropertyDifferencesModal } from './PropertyDifferencesModal';
+import { requiredPublicationFields } from '@/object-record/record-show/components/nm/ObjectOverview';
 
 const StyledShowPageRightContainer = styled.div<{ isMobile: boolean }>`
   display: flex;
@@ -126,6 +127,10 @@ export const ShowPagePropertySubContainer = ({
     'draft',
   );
 
+  useEffect(() => {
+    refetchPublications();
+  }, [refetchPublications]);
+
   const { differences } = usePropertyAndPublicationDifferences(
     isPublication ? null : recordFromStore,
     publicationDraftsOfProperty,
@@ -198,6 +203,8 @@ export const ShowPagePropertySubContainer = ({
         variant: SnackBarVariant.Success,
       });
 
+      refetchPublications();
+
       const route = `${getLinkToShowPage(CoreObjectNameSingular.Publication, {
         id: response.data,
       })}/edit`;
@@ -264,6 +271,21 @@ export const ShowPagePropertySubContainer = ({
     modalRef.current?.close();
   };
 
+  const showPublishButton = useMemo(() => {
+    if (recordFromStore?.stage === 'PUBLISHED') return false;
+    if (recordFromStore?.stage === 'SCHEDULED') return false;
+
+    if (differences?.length === 0) return true;
+    return false;
+  }, [recordFromStore, differences?.length]);
+
+  const isPublishButtonDisabled = useMemo(() => {
+    for (const field of requiredPublicationFields) {
+      if (!recordFromStore?.[field]) return true;
+    }
+    return false;
+  }, [recordFromStore]);
+
   return (
     <>
       <StyledShowPageRightContainer isMobile={isMobile}>
@@ -289,21 +311,25 @@ export const ShowPagePropertySubContainer = ({
               />
             )}
 
-            <Button
-              title={isPublication ? t`Publish` : t`New Publication`}
-              variant="primary"
-              accent="blue"
-              size="small"
-              Icon={isPublication ? IconUpload : IconPlus}
-              onClick={openModal}
-            />
+            {showPublishButton && (
+              <Button
+                title={isPublication ? t`Publish` : t`New Publication`}
+                variant="primary"
+                accent="blue"
+                size="small"
+                Icon={isPublication ? IconUpload : IconPlus}
+                onClick={openModal}
+                disabled={isPublishButtonDisabled}
+              />
+            )}
 
             {differences?.length > 0 && (
               <Button
                 onClick={() => differencesModalRef.current?.open()}
                 variant="primary"
-                accent="blue"
-                title={t`Sync Differences ${differenceLength}`}
+                accent="orange"
+                inverted
+                title={t`Differences ${differenceLength}`}
                 size="small"
               />
             )}
@@ -320,6 +346,16 @@ export const ShowPagePropertySubContainer = ({
                 dropdownMenuWidth={160}
                 dropdownComponents={
                   <DropdownMenuItemsContainer>
+                    {!isPublication && differences?.length > 0 && (
+                      <MenuItem
+                        text={t`New Publication`}
+                        LeftIcon={IconPlus}
+                        onClick={() => {
+                          openModal();
+                          closeDropdown();
+                        }}
+                      />
+                    )}
                     <MenuItem
                       text={t`Delete`}
                       accent="danger"

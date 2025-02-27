@@ -26,9 +26,20 @@ const StyledGridEntryLabelContainer = styled.div`
 
 const StyledGridEntryContainer = styled.div`
   display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing(1)};
 `;
 
-export const RecordInlineEntryContainer = () => {
+const StyledRequiredIndicator = styled.div`
+  color: ${({ theme }) => theme.color.blue};
+  font-size: ${({ theme }) => theme.font.size.sm};
+`;
+
+export const RecordInlineEntryContainer = ({
+  isRequired,
+}: {
+  isRequired?: boolean;
+}) => {
   const { label } = useRecordInlineCellContext();
 
   const { fieldDefinition } = useContext(FieldContext);
@@ -42,6 +53,9 @@ export const RecordInlineEntryContainer = () => {
       <StyledGridEntryLabelContainer>{label}</StyledGridEntryLabelContainer>
       <StyledGridEntryContainer>
         <RecordInlineCellValue />
+        {isRequired && (
+          <StyledRequiredIndicator>Required</StyledRequiredIndicator>
+        )}
       </StyledGridEntryContainer>
     </StyledValueContainer>
   );
