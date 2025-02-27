@@ -216,21 +216,6 @@ const StyledHeaderContainer = styled.div`
   align-items: flex-start;
 `;
 
-const StyledUploadButton = styled.button`
-  display: flex;
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing(2)};
-  padding: ${({ theme }) => theme.spacing(2)};
-  border-radius: ${({ theme }) => theme.border.radius.sm};
-  border: 1px solid ${({ theme }) => theme.border.color.medium};
-  background: ${({ theme }) => theme.background.primary};
-  cursor: pointer;
-
-  &:hover {
-    background: ${({ theme }) => theme.background.secondary};
-  }
-`;
-
 const StyledDragOverlay = styled.div<{
   position?: 'relative' | 'absolute';
   isDragActive?: boolean;
