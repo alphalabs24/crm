@@ -327,8 +327,7 @@ export const ShowPagePropertySubContainer = ({
               <Button
                 onClick={() => differencesModalRef.current?.open()}
                 variant="primary"
-                accent="orange"
-                inverted
+                accent="blue"
                 title={t`Differences ${differenceLength}`}
                 size="small"
               />
