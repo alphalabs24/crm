@@ -84,7 +84,7 @@ export const RecordIndexContainerGater = () => {
                 <PageTitle
                   title={`${capitalize(objectMetadataItem.namePlural)}`}
                 />
-                <RecordIndexPageHeader />
+                <RecordIndexPageHeader recordTableId={recordIndexId} />
                 <PageBody>
                   <StyledIndexContainer>
                     <RecordIndexContainerContextStoreNumberOfSelectedRecordsEffect />

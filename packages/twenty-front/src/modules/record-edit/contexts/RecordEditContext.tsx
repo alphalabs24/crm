@@ -33,6 +33,7 @@ export type RecordEditPropertyImage = {
   file?: File;
   previewUrl: string;
   description: string;
+  fileName?: string;
 };
 
 export type RecordEditPropertyDocument = {
@@ -361,6 +362,7 @@ export const RecordEditProvider = ({
             },
             'PropertyImage',
             orderIndex,
+            image.fileName,
             image.description,
           );
         }
@@ -381,7 +383,10 @@ export const RecordEditProvider = ({
             idToUpdate: document.attachment.id,
             updateOneRecordInput: {
               orderIndex,
-              name: document.fileName,
+              name:
+                document.fileName ??
+                document.file?.name ??
+                document.attachment.name,
               description: document.description,
             },
           });

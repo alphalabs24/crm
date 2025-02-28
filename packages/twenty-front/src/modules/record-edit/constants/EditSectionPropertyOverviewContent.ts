@@ -42,13 +42,7 @@ export const OVERVIEW_SECTION_CONTENT: SectionContent[] = [
         ],
       },
       {
-        fields: [
-          { name: 'buyerLeads', type: 'field' },
-          {
-            name: 'refProperty',
-            type: 'input',
-          },
-        ],
+        fields: [{ name: 'buyerLeads', type: 'field' }],
       },
     ],
   },

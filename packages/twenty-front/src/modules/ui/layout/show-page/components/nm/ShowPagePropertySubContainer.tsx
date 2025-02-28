@@ -15,7 +15,7 @@ import { useTabList } from '@/ui/layout/tab/hooks/useTabList';
 import { useIsMobile } from '@/ui/utilities/responsive/hooks/useIsMobile';
 import styled from '@emotion/styled';
 import { useLingui } from '@lingui/react/macro';
-import { useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import {
@@ -38,7 +38,10 @@ import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSi
 import { Dropdown } from '@/ui/layout/dropdown/components/Dropdown';
 import { DropdownMenuItemsContainer } from '@/ui/layout/dropdown/components/DropdownMenuItemsContainer';
 import { useDropdown } from '@/ui/layout/dropdown/hooks/useDropdown';
-import { usePublications } from '../../hooks/usePublications';
+import { usePublicationsOfProperty } from '../../hooks/usePublicationsOfProperty';
+import { usePropertyAndPublicationDifferences } from '../../hooks/usePropertyAndPublicationDifferences';
+import { PropertyDifferencesModal } from './PropertyDifferencesModal';
+import { requiredPublicationFields } from '@/object-record/record-show/components/nm/ObjectOverview';
 
 const StyledShowPageRightContainer = styled.div<{ isMobile: boolean }>`
   display: flex;
@@ -109,7 +112,6 @@ export const ShowPagePropertySubContainer = ({
   const tokenPair = useRecoilValue(tokenPairState);
   const [loadingDraft, setLoadingDraft] = useState(false);
   const [loadingSync, setLoadingSync] = useState(false);
-  const { getAllPublications } = usePublications();
   const { enqueueSnackBar } = useSnackBar();
   const isNewViewableRecordLoading = useRecoilValue(
     isNewViewableRecordLoadingState,
@@ -117,15 +119,33 @@ export const ShowPagePropertySubContainer = ({
   const [recordFromStore] = useRecoilState<ObjectRecord | null>(
     recordStoreFamilyState(targetableObject.id),
   );
+  const {
+    publications: publicationDraftsOfProperty,
+    refetch: refetchPublications,
+  } = usePublicationsOfProperty(
+    isPublication ? undefined : recordFromStore?.id,
+    'draft',
+  );
+
+  useEffect(() => {
+    refetchPublications();
+  }, [refetchPublications]);
+
+  const { differences } = usePropertyAndPublicationDifferences(
+    isPublication ? null : recordFromStore,
+    publicationDraftsOfProperty,
+  );
+
   const dropdownId = `show-page-property-sub-container-dropdown-${targetableObject.id}`;
 
-  console.log(getAllPublications());
   const { t } = useLingui();
   const { closeDropdown } = useDropdown(dropdownId);
 
   const visibleTabs = tabs.filter((tab) => !tab.hide);
 
   const modalRef = useRef<ModalRefType>(null);
+
+  const differencesModalRef = useRef<ModalRefType>(null);
 
   const handleDelete = () => {
     // TODO: Implement delete
@@ -148,9 +168,11 @@ export const ShowPagePropertySubContainer = ({
         throw new Error('Failed to create draft, id was not returned');
       }
 
-      enqueueSnackBar(t`Your Publications Draft was synced successfully`, {
+      enqueueSnackBar(t`Your Publication Drafts were synced successfully`, {
         variant: SnackBarVariant.Success,
       });
+      differencesModalRef.current?.close();
+      refetchPublications();
     } catch (error: any) {
       enqueueSnackBar(error?.message, {
         variant: SnackBarVariant.Error,
@@ -180,6 +202,8 @@ export const ShowPagePropertySubContainer = ({
       enqueueSnackBar(t`Publication Draft created successfully`, {
         variant: SnackBarVariant.Success,
       });
+
+      refetchPublications();
 
       const route = `${getLinkToShowPage(CoreObjectNameSingular.Publication, {
         id: response.data,
@@ -213,6 +237,16 @@ export const ShowPagePropertySubContainer = ({
     }
   };
 
+  const differenceLength = useMemo(
+    () =>
+      differences?.length > 0
+        ? `(${differences
+            .map((difference) => difference.differences.length)
+            .reduce((a, b) => a + b, 0)})`
+        : '',
+    [differences],
+  );
+
   const renderActiveTabContent = () => {
     const activeTab = tabs.find((tab) => tab.id === activeTabId);
     if (!activeTab?.cards?.length) return null;
@@ -236,6 +270,21 @@ export const ShowPagePropertySubContainer = ({
   const handleModalClose = () => {
     modalRef.current?.close();
   };
+
+  const showPublishButton = useMemo(() => {
+    if (recordFromStore?.stage === 'PUBLISHED') return false;
+    if (recordFromStore?.stage === 'SCHEDULED') return false;
+
+    if (differences?.length === 0) return true;
+    return false;
+  }, [recordFromStore, differences?.length]);
+
+  const isPublishButtonDisabled = useMemo(() => {
+    for (const field of requiredPublicationFields) {
+      if (!recordFromStore?.[field]) return true;
+    }
+    return false;
+  }, [recordFromStore]);
 
   return (
     <>
@@ -262,14 +311,27 @@ export const ShowPagePropertySubContainer = ({
               />
             )}
 
-            <Button
-              title={isPublication ? t`Publish` : t`Create Publication`}
-              variant="primary"
-              accent="blue"
-              size="small"
-              Icon={isPublication ? IconUpload : IconPlus}
-              onClick={openModal}
-            />
+            {showPublishButton && (
+              <Button
+                title={isPublication ? t`Publish` : t`New Publication`}
+                variant="primary"
+                accent="blue"
+                size="small"
+                Icon={isPublication ? IconUpload : IconPlus}
+                onClick={openModal}
+                disabled={isPublishButtonDisabled}
+              />
+            )}
+
+            {differences?.length > 0 && (
+              <Button
+                onClick={() => differencesModalRef.current?.open()}
+                variant="primary"
+                accent="blue"
+                title={t`Differences ${differenceLength}`}
+                size="small"
+              />
+            )}
             {isPublication ? null : (
               <Dropdown
                 dropdownId={dropdownId}
@@ -283,11 +345,23 @@ export const ShowPagePropertySubContainer = ({
                 dropdownMenuWidth={160}
                 dropdownComponents={
                   <DropdownMenuItemsContainer>
-                    <MenuItem
-                      text={t`Sync Drafts`}
-                      LeftIcon={IconRefresh}
-                      onClick={syncPublications}
-                    />
+                    {!isPublication && differences?.length > 0 && (
+                      <MenuItem
+                        text={t`New Publication`}
+                        LeftIcon={IconPlus}
+                        onClick={() => {
+                          openModal();
+                          closeDropdown();
+                        }}
+                      />
+                    )}
+                    {differences?.length === 0 && (
+                      <MenuItem
+                        text={t`Sync Publications`}
+                        LeftIcon={IconRefresh}
+                        onClick={syncPublications}
+                      />
+                    )}
                     <MenuItem
                       text={t`Delete`}
                       accent="danger"
@@ -320,6 +394,17 @@ export const ShowPagePropertySubContainer = ({
           ref={modalRef}
           onClose={handleModalClose}
           targetableObject={targetableObject}
+        />
+      )}
+
+      {differences?.length > 0 && (
+        <PropertyDifferencesModal
+          ref={differencesModalRef}
+          differences={differences}
+          onClose={() => differencesModalRef.current?.close()}
+          onSync={syncPublications}
+          propertyRecordId={recordFromStore?.id ?? ''}
+          publicationRecordId={publicationDraftsOfProperty?.[0]?.id ?? ''}
         />
       )}
     </>

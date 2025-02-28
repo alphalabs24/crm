@@ -1,9 +1,10 @@
 export type PlatformType = 'social_media' | 'real_estate' | 'smart_listing';
 
+// TODO adapt these to the actual values
 export enum PlatformId {
   SocialMedia = 'Social Media',
   SwissMarketplaceGroup = 'Swiss Marketplace Group (SMG)',
-  Newhome = 'Newhome',
+  Newhome = 'NEWHOME',
   SmartListing = 'Smart Listing',
 }
 

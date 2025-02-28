@@ -43,7 +43,7 @@ type MenuItemSelectProps = {
   needIconCheck?: boolean;
   text: string;
   className?: string;
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
   disabled?: boolean;
   hovered?: boolean;
   hasSubMenu?: boolean;
