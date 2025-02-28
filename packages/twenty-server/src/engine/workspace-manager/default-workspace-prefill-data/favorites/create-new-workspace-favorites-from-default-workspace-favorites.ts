@@ -40,17 +40,6 @@ export async function createNewWorkspaceFavoritesFromDefaultWorkspaceFavorites(
     .values(dwFavoriteFolders)
     .execute();
 
-  const views = await entityManager
-    .createQueryBuilder()
-    .select()
-    .from(`${schemaName}.view`, 'v')
-    .where('v."deletedAt" IS NULL')
-    .execute();
-
-  const find = dwFavorites.find(
-    (favorite) => !views.map((view) => view.id).includes(favorite.viewId),
-  );
-
   await entityManager
     .createQueryBuilder()
     .insert()
