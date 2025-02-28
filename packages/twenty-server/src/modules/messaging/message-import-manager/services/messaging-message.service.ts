@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 
-import { EntityManager } from 'typeorm';
+import { EntityManager, Repository } from 'typeorm';
 import { v4 } from 'uuid';
 
 import { TwentyORMManager } from 'src/engine/twenty-orm/twenty-orm.manager';
@@ -8,10 +9,30 @@ import { MessageChannelMessageAssociationWorkspaceEntity } from 'src/modules/mes
 import { MessageThreadWorkspaceEntity } from 'src/modules/messaging/common/standard-objects/message-thread.workspace-entity';
 import { MessageWorkspaceEntity } from 'src/modules/messaging/common/standard-objects/message.workspace-entity';
 import { MessageWithParticipants } from 'src/modules/messaging/message-import-manager/types/message';
+import { WorkspaceEventEmitter } from 'src/engine/workspace-event-emitter/workspace-event-emitter';
+import { ObjectMetadataEntity } from 'src/engine/metadata-modules/object-metadata/object-metadata.entity';
+import { DatabaseEventAction } from 'src/engine/api/graphql/graphql-query-runner/enums/database-event-action';
 
 @Injectable()
 export class MessagingMessageService {
-  constructor(private readonly twentyORMManager: TwentyORMManager) {}
+  constructor(
+    private readonly twentyORMManager: TwentyORMManager,
+    private readonly workspaceEventEmitter: WorkspaceEventEmitter,
+    @InjectRepository(ObjectMetadataEntity, 'metadata')
+    private readonly objectMetadataRepository: Repository<ObjectMetadataEntity>,
+  ) {}
+
+  private async getObjectMetadata(
+    objectMetadataName: string,
+    workspaceId: string,
+  ) {
+    return this.objectMetadataRepository.findOneOrFail({
+      where: {
+        nameSingular: objectMetadataName,
+        workspaceId,
+      },
+    });
+  }
 
   public async saveMessagesWithinTransaction(
     messages: MessageWithParticipants[],
@@ -126,6 +147,102 @@ export class MessagingMessageService {
         },
         transactionManager,
       );
+
+      // Get each created entry
+      const createdAssociation =
+        await messageChannelMessageAssociationRepository.findOne(
+          {
+            where: {
+              messageId: newMessageId,
+              messageChannelId: messageChannelId,
+            },
+          },
+          transactionManager,
+        );
+
+      const createdMessage = await messageRepository.findOne(
+        {
+          where: {
+            id: newMessageId,
+          },
+        },
+        transactionManager,
+      );
+
+      const createdThread = await messageThreadRepository.findOne(
+        {
+          where: {
+            id: newOrExistingMessageThreadId,
+          },
+        },
+        transactionManager,
+      );
+
+      // Get workspace id for email
+      const workspaceDataSource = await this.twentyORMManager.getDatasource();
+      const workspaceId = workspaceDataSource.internalContext.workspaceId;
+
+      // Get Metadata for each created entry type
+      const messageMetadata = await this.getObjectMetadata(
+        'message',
+        workspaceId,
+      );
+
+      const messageAssociationMetadata = await this.getObjectMetadata(
+        'messageChannelMessageAssociation',
+        workspaceId,
+      );
+
+      const messageThreadMetadata = await this.getObjectMetadata(
+        'messageThread',
+        workspaceId,
+      );
+
+      // Emit events for each created entry
+      this.workspaceEventEmitter.emitDatabaseBatchEvent({
+        objectMetadataNameSingular: 'message',
+        action: DatabaseEventAction.CREATED,
+        events: [
+          {
+            recordId: createdMessage?.id ?? '',
+            objectMetadata: messageMetadata,
+            properties: {
+              after: createdMessage,
+            },
+          },
+        ],
+        workspaceId,
+      });
+
+      this.workspaceEventEmitter.emitDatabaseBatchEvent({
+        objectMetadataNameSingular: 'messageChannelMessageAssociation',
+        action: DatabaseEventAction.CREATED,
+        events: [
+          {
+            recordId: createdAssociation?.id ?? '',
+            objectMetadata: messageAssociationMetadata,
+            properties: {
+              after: createdAssociation,
+            },
+          },
+        ],
+        workspaceId,
+      });
+
+      this.workspaceEventEmitter.emitDatabaseBatchEvent({
+        objectMetadataNameSingular: 'messageThread',
+        action: DatabaseEventAction.CREATED,
+        events: [
+          {
+            recordId: createdThread?.id ?? '',
+            objectMetadata: messageThreadMetadata,
+            properties: {
+              after: createdThread,
+            },
+          },
+        ],
+        workspaceId,
+      });
     }
 
     return messageExternalIdsAndIdsMap;

@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 
-import { Any, EntityManager, Equal } from 'typeorm';
+import { Any, EntityManager, Equal, Repository } from 'typeorm';
 
 import { ScopedWorkspaceContextFactory } from 'src/engine/twenty-orm/factories/scoped-workspace-context.factory';
 import { TwentyORMManager } from 'src/engine/twenty-orm/twenty-orm.manager';
@@ -9,6 +10,8 @@ import { CalendarEventParticipantWorkspaceEntity } from 'src/modules/calendar/co
 import { MessageParticipantWorkspaceEntity } from 'src/modules/messaging/common/standard-objects/message-participant.workspace-entity';
 import { PersonWorkspaceEntity } from 'src/modules/person/standard-objects/person.workspace-entity';
 import { WorkspaceMemberWorkspaceEntity } from 'src/modules/workspace-member/standard-objects/workspace-member.workspace-entity';
+import { DatabaseEventAction } from 'src/engine/api/graphql/graphql-query-runner/enums/database-event-action';
+import { ObjectMetadataEntity } from 'src/engine/metadata-modules/object-metadata/object-metadata.entity';
 
 @Injectable()
 export class MatchParticipantService<
@@ -20,6 +23,8 @@ export class MatchParticipantService<
     private readonly workspaceEventEmitter: WorkspaceEventEmitter,
     private readonly twentyORMManager: TwentyORMManager,
     private readonly scopedWorkspaceContextFactory: ScopedWorkspaceContextFactory,
+    @InjectRepository(ObjectMetadataEntity, 'metadata')
+    private readonly objectMetadataRepository: Repository<ObjectMetadataEntity>,
   ) {}
 
   private async getParticipantRepository(
@@ -125,6 +130,32 @@ export class MatchParticipantService<
       ],
       workspaceId,
     );
+
+    const participantMetadata =
+      await this.objectMetadataRepository.findOneOrFail({
+        where: {
+          nameSingular: objectMetadataName,
+          workspaceId,
+        },
+      });
+
+    for (const participant of matchedParticipants) {
+      this.workspaceEventEmitter.emitDatabaseBatchEvent({
+        objectMetadataNameSingular: 'messageParticipant',
+        action: DatabaseEventAction.UPDATED,
+        events: [
+          {
+            recordId: participant.id,
+            objectMetadata: participantMetadata,
+            properties: {
+              before: participant,
+              after: participant,
+            },
+          },
+        ],
+        workspaceId,
+      });
+    }
   }
 
   public async matchParticipantsAfterPersonOrWorkspaceMemberCreation(
