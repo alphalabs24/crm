@@ -12,7 +12,7 @@ export async function getWorkspaceViews(
   defaultWorkspaceDataSourceSchemaName: string,
 ) {
   const views: ViewWorkspaceEntity[] = await defaultWorkspaceDataSource.query(
-    `SELECT * FROM "${defaultWorkspaceDataSourceSchemaName}"."view"`,
+    `SELECT * FROM "${defaultWorkspaceDataSourceSchemaName}"."view" WHERE "deletedAt" IS NULL`,
   );
 
   const viewIds = views.map((view) => `'${view.id}'`).join(',');
@@ -27,23 +27,23 @@ export async function getWorkspaceViews(
   if (viewIds.length > 0) {
     // Fetch all related data with separate queries
     viewFields = await defaultWorkspaceDataSource.query(
-      `SELECT * FROM "${defaultWorkspaceDataSourceSchemaName}"."viewField" WHERE "viewId" IN (${viewIds})`,
+      `SELECT * FROM "${defaultWorkspaceDataSourceSchemaName}"."viewField" WHERE "viewId" IN (${viewIds}) AND "deletedAt" IS NULL`,
     );
 
     viewFilters = await defaultWorkspaceDataSource.query(
-      `SELECT * FROM "${defaultWorkspaceDataSourceSchemaName}"."viewFilter" WHERE "viewId" IN (${viewIds})`,
+      `SELECT * FROM "${defaultWorkspaceDataSourceSchemaName}"."viewFilter" WHERE "viewId" IN (${viewIds}) AND "deletedAt" IS NULL`,
     );
 
     viewFilterGroups = await defaultWorkspaceDataSource.query(
-      `SELECT * FROM "${defaultWorkspaceDataSourceSchemaName}"."viewFilterGroup" WHERE "viewId" IN (${viewIds})`,
+      `SELECT * FROM "${defaultWorkspaceDataSourceSchemaName}"."viewFilterGroup" WHERE "viewId" IN (${viewIds}) AND "deletedAt" IS NULL`,
     );
 
     viewGroups = await defaultWorkspaceDataSource.query(
-      `SELECT * FROM "${defaultWorkspaceDataSourceSchemaName}"."viewGroup" WHERE "viewId" IN (${viewIds})`,
+      `SELECT * FROM "${defaultWorkspaceDataSourceSchemaName}"."viewGroup" WHERE "viewId" IN (${viewIds}) AND "deletedAt" IS NULL`,
     );
 
     viewSorts = await defaultWorkspaceDataSource.query(
-      `SELECT * FROM "${defaultWorkspaceDataSourceSchemaName}"."viewSort" WHERE "viewId" IN (${viewIds})`,
+      `SELECT * FROM "${defaultWorkspaceDataSourceSchemaName}"."viewSort" WHERE "viewId" IN (${viewIds}) AND "deletedAt" IS NULL`,
     );
   }
 
