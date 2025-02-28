@@ -7,12 +7,38 @@ import { ViewGroupWorkspaceEntity } from 'src/modules/view/standard-objects/view
 import { ViewSortWorkspaceEntity } from 'src/modules/view/standard-objects/view-sort.workspace-entity';
 import { ViewWorkspaceEntity } from 'src/modules/view/standard-objects/view.workspace-entity';
 
-export async function getWorkspaceViews(
+export async function getStandardObjectWorkspaceViews(
   defaultWorkspaceDataSource: DataSource,
   defaultWorkspaceDataSourceSchemaName: string,
 ) {
+  // currently the connection to multiple datasources is not supported
+  // so we need to get the views by schema name instead of using the repository
+  // const viewsTest = await defaultWorkspaceDataSource
+  //   .getRepository(ViewWorkspaceEntity)
+  //   .find();
+
+  // Get views and related entities from default workspace using separate queries
+
   const views: ViewWorkspaceEntity[] = await defaultWorkspaceDataSource.query(
-    `SELECT * FROM "${defaultWorkspaceDataSourceSchemaName}"."view" WHERE "deletedAt" IS NULL`,
+    `
+    SELECT
+      v.*
+    FROM
+      "${defaultWorkspaceDataSourceSchemaName}"."view" v
+      LEFT JOIN "metadata"."objectMetadata" om ON v. "objectMetadataId" = om. "id"
+      LEFT JOIN "metadata"."fieldMetadata" kfm ON v. "kanbanFieldMetadataId" = kfm. "id"::text
+      LEFT JOIN "metadata"."fieldMetadata" kaofm ON v. "kanbanAggregateOperationFieldMetadataId" = kaofm. "id"
+    WHERE
+      v. "deletedAt" IS NULL
+      AND om. "isCustom" = 'false'
+      AND om. "standardId" IS NOT NULL
+      AND(kfm. "id" IS NULL
+        OR(kfm. "isCustom" = 'false'
+          AND kfm. "standardId" IS NOT NULL))
+      AND(kaofm. "id" IS NULL
+        OR(kaofm. "isCustom" = 'false'
+          AND kaofm. "standardId" IS NOT NULL))
+    `,
   );
 
   const viewIds = views.map((view) => `'${view.id}'`).join(',');

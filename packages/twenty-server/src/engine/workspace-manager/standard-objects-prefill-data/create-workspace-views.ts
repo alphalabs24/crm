@@ -10,7 +10,7 @@ export const createWorkspaceViews = async (
 ) => {
   const viewDefinitionsWithId = viewDefinitions.map((viewDefinition) => ({
     ...viewDefinition,
-    id: v4(),
+    id: viewDefinition.id ?? v4(),
   }));
 
   await entityManager

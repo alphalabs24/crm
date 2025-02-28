@@ -1,8 +1,9 @@
 import { DataSource, EntityManager } from 'typeorm';
 
 import { ObjectMetadataEntity } from 'src/engine/metadata-modules/object-metadata/object-metadata.entity';
+import { createNewWorkspaceFavoritesFromDefaultWorkspaceFavorites } from 'src/engine/workspace-manager/default-workspace-prefill-data/favorites/create-new-workspace-favorites-from-default-workspace-favorites';
 import { createNewWorkspaceViewsFromDefaultWorkspaceViews } from 'src/engine/workspace-manager/default-workspace-prefill-data/views/create-new-workspace-views-from-default-workspace-views';
-import { getWorkspaceViews } from 'src/engine/workspace-manager/default-workspace-prefill-data/views/get-workspace-views';
+import { getStandardObjectWorkspaceViews } from 'src/engine/workspace-manager/default-workspace-prefill-data/views/get-workspace-views';
 
 export const defaultWorkspacePrefillData = async (
   workspaceDataSource: DataSource,
@@ -32,20 +33,27 @@ export const defaultWorkspacePrefillData = async (
     return standardIdToNewMetadataIdMap[fieldStandardId] ?? null;
   }
 
-  // Get views and related entities from default workspace using separate queries
-  const defaultWorkspaceViews = await getWorkspaceViews(
+  const defaultWorkspaceViews = await getStandardObjectWorkspaceViews(
     defaultWorkspaceDataSource,
     defaultWorkspaceDataSourceSchemaName,
   );
 
-  workspaceDataSource.transaction(async (entityManager: EntityManager) => {
-    await createNewWorkspaceViewsFromDefaultWorkspaceViews(
-      defaultWorkspaceViews,
-      mapDwIdToNewId,
-      entityManager,
-      schemaName,
-    );
-  });
+  await workspaceDataSource.transaction(
+    async (entityManager: EntityManager) => {
+      await createNewWorkspaceViewsFromDefaultWorkspaceViews(
+        defaultWorkspaceViews,
+        mapDwIdToNewId,
+        entityManager,
+        schemaName,
+      );
+
+      await createNewWorkspaceFavoritesFromDefaultWorkspaceFavorites(
+        entityManager,
+        schemaName,
+        defaultWorkspaceDataSourceSchemaName,
+      );
+    },
+  );
 };
 
 function createMetadataIdToStandardIdMap(

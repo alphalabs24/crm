@@ -27,10 +27,10 @@ import { PETS_METADATA_SEEDS } from 'src/engine/seeder/metadata-seeds/pets-metad
 import { SURVEY_RESULTS_METADATA_SEEDS } from 'src/engine/seeder/metadata-seeds/survey-results-metadata-seeds';
 import { SeederService } from 'src/engine/seeder/seeder.service';
 import { WorkspaceDataSourceService } from 'src/engine/workspace-datasource/workspace-datasource.service';
+import { defaultWorkspacePrefillData } from 'src/engine/workspace-manager/default-workspace-prefill-data/default-workspace-prefill-data';
 import { seedWorkspaceWithDemoData } from 'src/engine/workspace-manager/demo-objects-prefill-data/seed-workspace-with-demo-data';
 import { standardObjectsPrefillData } from 'src/engine/workspace-manager/standard-objects-prefill-data/standard-objects-prefill-data';
 import { WorkspaceSyncMetadataService } from 'src/engine/workspace-manager/workspace-sync-metadata/workspace-sync-metadata.service';
-import { defaultWorkspacePrefillData } from './default-workspace-prefill-data/views/get-workspace-views';
 
 @Injectable()
 export class WorkspaceManagerService {
@@ -223,6 +223,9 @@ export class WorkspaceManagerService {
 
     // the same for the default workspace
 
+    // currently the connection to multiple datasources is not supported
+    // so basically the datasource is always connected to core,
+    // see: typeorm.service.ts, connectToDataSource method, isMultiDatasourceEnabled = false
     const defaultWorkspaceDataSource =
       await this.workspaceDataSourceService.connectToWorkspaceDataSource(
         defaultMetadataWorkspaceId,

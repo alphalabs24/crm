@@ -87,6 +87,7 @@ export async function createNewWorkspaceViewsFromDefaultWorkspaceViews(
           : undefined;
 
       return {
+        id: defaultWorkspaceView.id,
         name: defaultWorkspaceView.name,
         objectMetadataId: newObjectId,
         type: defaultWorkspaceView.type,
