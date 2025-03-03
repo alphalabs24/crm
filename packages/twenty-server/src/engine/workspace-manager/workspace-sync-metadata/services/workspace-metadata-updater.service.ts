@@ -47,7 +47,7 @@ export class WorkspaceMetadataUpdaterService {
       await objectMetadataRepository.save(
         storage.objectMetadataCreateCollection.map((objectMetadata) => ({
           ...objectMetadata,
-          isActive: true,
+          isActive: objectMetadata.isActive ?? true,
         })) as DeepPartial<ObjectMetadataEntity>[],
       );
     const identifiers = createdPartialObjectMetadataCollection.map(
