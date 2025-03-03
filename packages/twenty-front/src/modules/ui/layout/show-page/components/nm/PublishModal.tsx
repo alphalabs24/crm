@@ -4,11 +4,12 @@ import styled from '@emotion/styled';
 // eslint-disable-next-line no-restricted-imports
 
 import { motion } from 'framer-motion';
-import { forwardRef } from 'react';
+import { forwardRef, useState } from 'react';
 import { Button, IconUpload, LARGE_DESKTOP_VIEWPORT } from 'twenty-ui';
 
 import { Publishing } from '@/ui/layout/show-page/components/nm/modal-pages/Publishing';
 import { PlatformId } from './types/Platform';
+import { ValidationResult } from '../../hooks/usePublicationValidation';
 
 const StyledModalContent = styled(motion.div)`
   background: ${({ theme }) => theme.background.secondary};
@@ -60,13 +61,14 @@ type PublishModalProps = {
     id: string;
     targetObjectNameSingular: string;
   };
+  validationDetails: ValidationResult;
 };
 
 export const PublishModal = forwardRef<ModalRefType, PublishModalProps>(
-  ({ onClose, targetableObject }, ref) => {
+  ({ onClose, targetableObject, validationDetails }, ref) => {
     return (
       <Modal
-        size="medium"
+        size="large"
         onClose={onClose}
         isClosable
         ref={ref}
@@ -95,6 +97,7 @@ export const PublishModal = forwardRef<ModalRefType, PublishModalProps>(
             recordId={targetableObject.id}
             renderPlatformIcon={() => <IconUpload size={16} />}
             selectedPlatform={PlatformId.Newhome}
+            validationDetails={validationDetails}
           />
         </StyledModalContent>
       </Modal>

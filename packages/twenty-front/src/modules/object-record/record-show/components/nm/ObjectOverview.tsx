@@ -39,7 +39,6 @@ const StyledFormBorder = styled.div`
   border: 1px solid ${({ theme }) => theme.border.color.light};
   border-radius: ${({ theme }) => theme.border.radius.sm};
   margin: ${({ theme }) => theme.spacing(4)};
-  width: 100%;
 
   @media (min-width: ${LARGE_DESKTOP_VIEWPORT}px) {
     max-width: 800px;
@@ -188,7 +187,16 @@ const StyledDocumentName = styled.div`
   font-weight: ${({ theme }) => theme.font.weight.medium};
 `;
 
-export const requiredPublicationFields = ['agency'];
+export const requiredPublicationFields = ['agency', 'platform', 'category'];
+
+// Careful: Don't use this for anything else than the overview UI. This contains subtypes which should not be defined for validation purposes.
+const requiredPublicationFieldsAndSubtypes = [
+  ...requiredPublicationFields,
+  'apartmentSubtype',
+  'houseSubtype',
+  'plotSubtype',
+  'gastronomySubtype',
+];
 
 export const ObjectOverview = ({
   targetableObject,
@@ -451,7 +459,7 @@ export const ObjectOverview = ({
                       loading={recordLoading}
                       isRequired={
                         !isDefinedInRecord(FieldMetadataitem.name) &&
-                        requiredPublicationFields.includes(
+                        requiredPublicationFieldsAndSubtypes.includes(
                           FieldMetadataitem.name,
                         )
                       }
@@ -491,6 +499,12 @@ export const ObjectOverview = ({
                     <RecordInlineEntry
                       key={fieldMetadataItem.id + 'inline' + index}
                       loading={recordLoading}
+                      isRequired={
+                        !isDefinedInRecord(fieldMetadataItem.name) &&
+                        requiredPublicationFieldsAndSubtypes.includes(
+                          fieldMetadataItem.name,
+                        )
+                      }
                     />
                   </FieldContext.Provider>
                   {index < mainDetails.length - 1 && <StyledBottomBorder />}

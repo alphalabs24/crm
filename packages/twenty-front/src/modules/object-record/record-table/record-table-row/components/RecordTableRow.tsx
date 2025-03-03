@@ -10,6 +10,7 @@ type RecordTableRowProps = {
   rowIndexForFocus: number;
   rowIndexForDrag: number;
   isPendingRow?: boolean;
+  readonly?: boolean;
 };
 
 export const RecordTableRow = ({
@@ -17,6 +18,7 @@ export const RecordTableRow = ({
   rowIndexForFocus,
   rowIndexForDrag,
   isPendingRow,
+  readonly,
 }: RecordTableRowProps) => {
   return (
     <RecordTableRowWrapper
@@ -24,6 +26,7 @@ export const RecordTableRow = ({
       rowIndexForFocus={rowIndexForFocus}
       rowIndexForDrag={rowIndexForDrag}
       isPendingRow={isPendingRow}
+      readonly={readonly}
     >
       <RecordTableCellGrip />
       <RecordTableCellCheckbox />

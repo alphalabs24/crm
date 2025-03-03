@@ -12,7 +12,11 @@ import { useRecoilComponentValueV2 } from '@/ui/utilities/state/component-state/
 import { useMemo } from 'react';
 import { isDefined } from 'twenty-shared';
 
-export const RecordTableRecordGroupRows = () => {
+export const RecordTableRecordGroupRows = ({
+  readonly,
+}: {
+  readonly?: boolean;
+}) => {
   const currentRecordGroupId = useCurrentRecordGroupId();
 
   const allRecordIds = useRecoilComponentValueV2(
@@ -54,6 +58,7 @@ export const RecordTableRecordGroupRows = () => {
             rowIndexForFocus={rowIndex}
             rowIndexForDrag={rowIndexInGroup}
             isPendingRow={!isRecordGroupTableSectionToggled}
+            readonly={readonly}
           />
         );
       })}

@@ -8,7 +8,11 @@ import { RecordTablePendingRow } from '@/object-record/record-table/record-table
 import { isRecordTableInitialLoadingComponentState } from '@/object-record/record-table/states/isRecordTableInitialLoadingComponentState';
 import { useRecoilComponentValueV2 } from '@/ui/utilities/state/component-state/hooks/useRecoilComponentValueV2';
 
-export const RecordTableNoRecordGroupBody = () => {
+export const RecordTableNoRecordGroupBody = ({
+  readonly,
+}: {
+  readonly?: boolean;
+}) => {
   const allRecordIds = useRecoilComponentValueV2(
     recordIndexAllRecordIdsComponentSelector,
   );
@@ -25,8 +29,8 @@ export const RecordTableNoRecordGroupBody = () => {
     <RecordTableNoRecordGroupBodyContextProvider>
       <RecordTableBodyDragDropContextProvider>
         <RecordTableBodyDroppable>
-          <RecordTablePendingRow />
-          <RecordTableNoRecordGroupRows />
+          <RecordTablePendingRow readonly={readonly} />
+          <RecordTableNoRecordGroupRows readonly={readonly} />
         </RecordTableBodyDroppable>
       </RecordTableBodyDragDropContextProvider>
     </RecordTableNoRecordGroupBodyContextProvider>

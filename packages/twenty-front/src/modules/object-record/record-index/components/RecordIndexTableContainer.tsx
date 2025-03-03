@@ -1,3 +1,5 @@
+import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
+import { isPropertyOrPublication } from '@/object-metadata/utils/isPropertyOrPublication';
 import { useUpdateOneRecord } from '@/object-record/hooks/useUpdateOneRecord';
 import { RecordUpdateHookParams } from '@/object-record/record-field/contexts/FieldContext';
 import { RecordIndexRemoveSortingModal } from '@/object-record/record-index/components/RecordIndexRemoveSortingModal';
@@ -32,6 +34,7 @@ export const RecordIndexTableContainer = ({
         recordTableId={recordTableId}
         objectNameSingular={objectNameSingular}
         viewBarId={viewBarId}
+        readonly={objectNameSingular === CoreObjectNameSingular.Publication}
         updateRecordMutation={updateEntity}
       />
       <RecordIndexRemoveSortingModal recordIndexId={recordTableId} />

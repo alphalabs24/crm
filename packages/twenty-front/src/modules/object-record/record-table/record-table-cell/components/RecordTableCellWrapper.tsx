@@ -14,10 +14,12 @@ export const RecordTableCellWrapper = ({
   children,
   column,
   columnIndex,
+  readonly,
 }: {
   column: ColumnDefinition<FieldMetadata>;
   columnIndex: number;
   children: React.ReactNode;
+  readonly?: boolean;
 }) => {
   const { rowIndex } = useRecordTableRowContextOrThrow();
 
@@ -47,10 +49,11 @@ export const RecordTableCellWrapper = ({
         isInEditMode,
         hasSoftFocus,
         cellPosition: currentTableCellPosition,
+        readonly,
       }}
       key={column.fieldMetadataId}
     >
-      <RecordTableCellFieldContextWrapper>
+      <RecordTableCellFieldContextWrapper readonly={readonly}>
         {children}
       </RecordTableCellFieldContextWrapper>
     </RecordTableCellContext.Provider>

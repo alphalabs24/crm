@@ -17,6 +17,8 @@ import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { isDefined } from 'twenty-shared';
 import { Button, LARGE_DESKTOP_VIEWPORT, MOBILE_VIEWPORT } from 'twenty-ui';
+import { useMemo } from 'react';
+import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 
 export const EDIT_CONTAINER_WIDTH = 1440;
 
@@ -145,6 +147,10 @@ export const RecordEditContainer = ({
     objectNameSingular,
   });
 
+  const isPublication = useMemo(() => {
+    return objectNameSingular === CoreObjectNameSingular.Publication;
+  }, [objectNameSingular]);
+
   const tabListComponentId = `${TAB_LIST_COMPONENT_ID}-${isInRightDrawer}-${recordId}`;
 
   const { activeTabId } = useTabList(tabListComponentId);
@@ -231,6 +237,7 @@ export const RecordEditContainer = ({
                   maxWidth: field.fieldWidth,
                   conditionFieldNames: field.conditionFields,
                   conditionValues: field.conditionValues,
+                  omitForPublication: field.omitForPublication,
                 }))
                 .filter(({ field }) => isDefined(field));
 
@@ -246,6 +253,7 @@ export const RecordEditContainer = ({
                       maxWidth,
                       conditionFieldNames,
                       conditionValues,
+                      omitForPublication,
                     }) => {
                       const conditionFields = conditionFieldNames?.map(
                         (conditionFieldName) =>
@@ -268,7 +276,8 @@ export const RecordEditContainer = ({
                           );
                         }) ?? true;
 
-                      return shouldRender ? (
+                      return shouldRender &&
+                        (!omitForPublication || !isPublication) ? (
                         <RecordEditField
                           key={field.id}
                           field={field}

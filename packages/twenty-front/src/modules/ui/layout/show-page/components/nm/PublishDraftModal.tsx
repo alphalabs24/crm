@@ -10,6 +10,8 @@ import { Button, IconUpload, LARGE_DESKTOP_VIEWPORT } from 'twenty-ui';
 
 import { PlatformSelect } from './modal-pages/PlatformSelect';
 import { PlatformId } from './types/Platform';
+import { useLingui } from '@lingui/react/macro';
+import { ValidationResult } from '../../hooks/usePublicationValidation';
 
 const StyledModalContent = styled(motion.div)`
   background: ${({ theme }) => theme.background.secondary};
@@ -61,12 +63,13 @@ type PublishModalProps = {
     id: string;
     targetObjectNameSingular: string;
   };
+  validationDetails: ValidationResult;
 };
 
 export const PublishDraftModal = forwardRef<ModalRefType, PublishModalProps>(
-  ({ onClose, targetableObject }, ref) => {
+  ({ onClose, targetableObject, validationDetails }, ref) => {
     const [currentStep, setCurrentStep] = useState<Step>('platform-select');
-
+    const { t } = useLingui();
     const [selectedPlatforms, setSelectedPlatforms] = useState<
       PlatformId[] | null
     >(null);
@@ -110,7 +113,7 @@ export const PublishDraftModal = forwardRef<ModalRefType, PublishModalProps>(
             <StyledModalTitle>Publication Draft</StyledModalTitle>
           </StyledModalTitleContainer>
           <StyledModalHeaderButtons>
-            <Button variant="tertiary" title={`Cancel`} onClick={onClose} />
+            <Button variant="tertiary" title={t`Cancel`} onClick={onClose} />
           </StyledModalHeaderButtons>
         </StyledModalHeader>
         <StyledModalContent
@@ -126,6 +129,7 @@ export const PublishDraftModal = forwardRef<ModalRefType, PublishModalProps>(
             setSelectedPlatforms={setSelectedPlatforms}
             recordId={targetableObject.id}
             closeModal={onClose}
+            validationDetails={validationDetails}
           />
         </StyledModalContent>
       </Modal>

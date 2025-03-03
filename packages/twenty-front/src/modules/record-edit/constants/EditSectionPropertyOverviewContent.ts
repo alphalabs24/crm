@@ -54,7 +54,7 @@ export const OVERVIEW_SECTION_CONTENT: SectionContent[] = [
         isHorizontal: true,
         fields: [
           { name: 'category', type: 'field' },
-          { name: 'stage', type: 'field' },
+          { name: 'stage', type: 'field', omitForPublication: true },
         ],
       },
       {

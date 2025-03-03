@@ -54,12 +54,12 @@ export const usePropertyAndPublicationDifferences = (
   const propertyFieldMetadataLabels = useMemo(() => {
     const map: Record<string, string> = {};
     propertyMetadataItem?.fields.forEach((field) => {
-      map[field.name] = field.label;
+      if (field.name) map[field.name] = field.label;
     });
     return map;
   }, [propertyMetadataItem]);
 
-  const differences = useMemo(() => {
+  const differenceRecords = useMemo(() => {
     if (!publications || publications.length === 0 || !propertyRecord) {
       return [];
     }
@@ -87,10 +87,10 @@ export const usePropertyAndPublicationDifferences = (
             publicationValue: publication[key],
             fieldLabel: propertyFieldMetadataLabels[key],
             propertyFieldMetadataItem: propertyMetadataItem?.fields.find(
-              (field) => field.name === key,
+              (field) => field?.name === key,
             ),
             publicationFieldMetadataItem: propertyMetadataItem?.fields.find(
-              (field) => field.name === key,
+              (field) => field?.name === key,
             ),
           });
         }
@@ -115,6 +115,6 @@ export const usePropertyAndPublicationDifferences = (
   ]);
 
   return {
-    differences,
+    differenceRecords,
   };
 };
