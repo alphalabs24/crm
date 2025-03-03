@@ -16,7 +16,7 @@ import { useIsMobile } from '@/ui/utilities/responsive/hooks/useIsMobile';
 import styled from '@emotion/styled';
 import { useLingui } from '@lingui/react/macro';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import {
   Button,
@@ -25,7 +25,6 @@ import {
   IconRefresh,
   IconDotsVertical,
   MenuItem,
-  IconExternalLink,
   IconTrash,
   IconPlus,
 } from 'twenty-ui';
@@ -41,7 +40,6 @@ import { useDropdown } from '@/ui/layout/dropdown/hooks/useDropdown';
 import { usePublicationsOfProperty } from '../../hooks/usePublicationsOfProperty';
 import { usePropertyAndPublicationDifferences } from '../../hooks/usePropertyAndPublicationDifferences';
 import { PropertyDifferencesModal } from './PropertyDifferencesModal';
-import { requiredPublicationFields } from '@/object-record/record-show/components/nm/ObjectOverview';
 import { usePublicationValidation } from '../../hooks/usePublicationValidation';
 
 const StyledShowPageRightContainer = styled.div<{ isMobile: boolean }>`
