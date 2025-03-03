@@ -25,6 +25,8 @@ export async function createNewWorkspaceFavoritesFromDefaultWorkspaceFavorites(
         LEFT JOIN "${schemaName}"."view" v ON v. "id" = f. "viewId"
     WHERE
         f. "deletedAt" IS NULL
+        -- check what is save with memberid and what without
+        AND f. "workspaceMemberId" IS NULL
         -- we currently only copy views and favorite folders
         AND(f. "favoriteFolderId" IS NOT NULL
             OR(f. "viewId" IS NOT NULL
