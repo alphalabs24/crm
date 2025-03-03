@@ -174,17 +174,21 @@ export class WorkspaceSyncFieldMetadataService {
               .where(
                 `field.workspaceId = :workspaceId 
                   AND field.isCustom = :isCustom 
+                  AND field.isActive = :isActive
                   AND field.standardId IS NOT NULL`,
                 {
                   workspaceId: defaultMetadataWorkspaceId,
                   isCustom: false,
+                  isActive: true,
                 },
               )
               .andWhere(
                 `object.isCustom = :objectIsCustom 
+                  AND object.isActive = :objectIsActive
                   AND object.standardId IS NOT NULL`,
                 {
                   objectIsCustom: false,
+                  objectIsActive: true,
                 },
               )
               .andWhere(

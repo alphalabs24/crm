@@ -86,6 +86,7 @@ export class WorkspaceSyncObjectMetadataService {
             where: {
               workspaceId: context.defaultMetadataWorkspaceId,
               isCustom: false,
+              isActive: true,
               // standardObjectFactory.create function needs to have standardId to map the objects
               standardId: Not(IsNull()),
             },
