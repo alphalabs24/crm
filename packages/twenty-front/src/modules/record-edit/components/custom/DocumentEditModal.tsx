@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { useLingui } from '@lingui/react/macro';
-import { forwardRef, useState } from 'react';
+import { forwardRef, useState, useEffect } from 'react';
 import { RecordEditPropertyDocument } from '@/record-edit/contexts/RecordEditContext';
 import { Modal, ModalRefType } from '@/ui/layout/modal/components/Modal';
 import { ModalHotkeyScope } from '@/ui/layout/modal/components/types/ModalHotkeyScope';
@@ -40,11 +40,7 @@ const StyledButtonContainer = styled.div`
 type DocumentEditModalProps = {
   document: RecordEditPropertyDocument;
   onClose: () => void;
-  onSave: (
-    document: RecordEditPropertyDocument,
-    name: string,
-    description: string,
-  ) => void;
+  onSave: (updates: Partial<RecordEditPropertyDocument>) => void;
 };
 
 export const DocumentEditModal = forwardRef<
@@ -56,9 +52,17 @@ export const DocumentEditModal = forwardRef<
   const [description, setDescription] = useState(document.description || '');
 
   const handleSave = () => {
-    onSave(document, name, description);
+    onSave({
+      fileName: name,
+      description,
+    });
     onClose();
   };
+
+  useEffect(() => {
+    setName(document.fileName || '');
+    setDescription(document.description || '');
+  }, [document]);
 
   return (
     <Modal

@@ -1,6 +1,10 @@
 import { useAttachments } from '@/activities/files/hooks/useAttachments';
 import { useUploadAttachmentFile } from '@/activities/files/hooks/useUploadAttachmentFile';
-import { Attachment } from '@/activities/files/types/Attachment';
+import {
+  Attachment,
+  PropertyAttachmentType,
+  AttachmentType,
+} from '@/activities/files/types/Attachment';
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { ObjectMetadataItem } from '@/object-metadata/types/ObjectMetadataItem';
 import { useDestroyOneRecord } from '@/object-record/hooks/useDestroyOneRecord';
@@ -38,11 +42,12 @@ export type RecordEditPropertyImage = {
 
 export type RecordEditPropertyDocument = {
   id: string;
+  file?: File;
+  description?: string;
+  previewUrl: string;
+  type: PropertyAttachmentType;
   isAttachment: boolean;
   attachment?: Attachment;
-  file?: File;
-  previewUrl: string;
-  description: string;
   orderIndex?: number;
   fileName?: string;
 };
@@ -145,7 +150,10 @@ export const RecordEditProvider = ({
   const attachmentDocuments = useMemo(() => {
     return attachments
       ?.filter(
-        (attachment: Attachment) => attachment.type === 'PropertyDocument',
+        (attachment: Attachment) =>
+          attachment.type === 'PropertyDocument' ||
+          attachment.type === 'PropertyDocumentation' ||
+          attachment.type === 'PropertyFlyer',
       )
       .sort((a, b) => a.orderIndex - b.orderIndex)
       .map((attachment: Attachment) => ({
@@ -239,7 +247,9 @@ export const RecordEditProvider = ({
   }, [attachmentImages]);
 
   const resetDocuments = useCallback(() => {
-    setPropertyDocuments(Object.values(attachmentDocuments));
+    setPropertyDocuments(
+      Object.values(attachmentDocuments) as RecordEditPropertyDocument[],
+    );
   }, [attachmentDocuments]);
 
   const resetFields = useCallback(() => {
@@ -273,17 +283,39 @@ export const RecordEditProvider = ({
 
   // Document handling functions
   const addPropertyDocument = useCallback(
-    (document: RecordEditPropertyDocument) => {
+    async (document: Omit<RecordEditPropertyDocument, 'id'>) => {
       setIsDirty(true);
-      setPropertyDocuments((prev) => [...prev, document]);
+
+      if (
+        document.type === 'PropertyDocumentation' ||
+        document.type === 'PropertyFlyer'
+      ) {
+        const existingIndex = propertyDocuments.findIndex(
+          (doc) => doc.type === document.type,
+        );
+        // replace existing document of same type if it exists
+        if (existingIndex !== -1) {
+          const updatedDocuments = [...propertyDocuments];
+          updatedDocuments.splice(existingIndex, 1);
+          setPropertyDocuments(updatedDocuments);
+        }
+      }
+
+      const newDocument: RecordEditPropertyDocument = {
+        ...document,
+        // local id
+        id: crypto.randomUUID(),
+      };
+
+      setPropertyDocuments((prev) => [...prev, newDocument]);
     },
-    [],
+    [propertyDocuments],
   );
 
   const removePropertyDocument = useCallback(
     (document: RecordEditPropertyDocument) => {
-      setIsDirty(true);
       const attachment = document.attachment;
+      setIsDirty(true);
 
       if (isDefined(attachment)) {
         setDocumentsToDelete((prev) => [...prev, attachment]);
@@ -326,7 +358,6 @@ export const RecordEditProvider = ({
   // This saves the whole record with the updated fields from the form
   const saveRecord = async () => {
     setLoading(true);
-
     if (isDirty) {
       const updatedFields = getUpdatedFields();
 
@@ -397,7 +428,7 @@ export const RecordEditProvider = ({
               id: objectRecordId ?? '',
               targetObjectNameSingular: objectNameSingular ?? '',
             },
-            'PropertyDocument',
+            document.type ?? 'PropertyDocument',
             orderIndex,
             document.fileName,
             document.description,

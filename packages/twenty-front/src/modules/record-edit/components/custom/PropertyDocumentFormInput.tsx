@@ -31,10 +31,14 @@ import {
   IconUpload,
   MenuItem,
   TooltipDelay,
+  IconFileText,
+  IconRefresh,
+  StyledTextContent,
 } from 'twenty-ui';
 import { DocumentEditModal } from './DocumentEditModal';
 import { ModalRefType } from '@/ui/layout/modal/components/Modal';
-import { css } from '@emotion/react';
+import { css, useTheme } from '@emotion/react';
+import { PropertyAttachmentType } from '@/activities/files/types/Attachment';
 
 const StyledContainer = styled.div`
   display: flex;
@@ -179,17 +183,6 @@ const StyledDropzone = styled.div<{ isDragActive: boolean }>`
   }
 `;
 
-const StyledUploadIcon = styled(IconUpload)`
-  color: ${({ theme }) => theme.font.color.light};
-  width: 32px;
-  height: 32px;
-`;
-
-const StyledDropzoneText = styled.span`
-  color: ${({ theme }) => theme.font.color.secondary};
-  font-size: ${({ theme }) => theme.font.size.sm};
-`;
-
 const StyledActionButton = styled.button`
   background: transparent;
   border: none;
@@ -240,9 +233,8 @@ const DraggableDocumentItem = ({
   index: number;
   onRemove: (document: RecordEditPropertyDocument) => void;
   onSaveEdit: (
-    document: RecordEditPropertyDocument,
-    name: string,
-    description: string,
+    id: string,
+    updates: Partial<RecordEditPropertyDocument>,
   ) => void;
   isNew?: boolean;
 }) => {
@@ -275,10 +267,9 @@ const DraggableDocumentItem = ({
 
   const handleSaveEdit = (
     document: RecordEditPropertyDocument,
-    name: string,
-    description: string,
+    updates: Partial<RecordEditPropertyDocument>,
   ) => {
-    onSaveEdit(document, name, description);
+    onSaveEdit(document.id, updates);
   };
 
   const handleOpen = () => {
@@ -364,9 +355,7 @@ const DraggableDocumentItem = ({
         ref={modalRef}
         document={document}
         onClose={() => modalRef.current?.close()}
-        onSave={(document, name, description) =>
-          handleSaveEdit(document, name, description)
-        }
+        onSave={(updates) => handleSaveEdit(document, updates)}
       />
     </>
   );
@@ -444,6 +433,170 @@ const StyledDragOverlay = styled.div<{
     position === 'relative' ? 'auto' : 'none'};
 `;
 
+const StyledSpecialDocumentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(4)};
+  margin-bottom: ${({ theme }) => theme.spacing(4)};
+  padding: ${({ theme }) => theme.spacing(3)} 0;
+`;
+
+const StyledSpecialDocumentRow = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(2)};
+`;
+
+const StyledSpecialDocumentHeader = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: ${({ theme }) => theme.spacing(2)};
+`;
+
+const StyledSpecialDocumentContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(1)};
+`;
+
+const StyledDocumentInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(1)};
+`;
+
+const StyledDocumentTitle = styled.span`
+  color: ${({ theme }) => theme.font.color.primary};
+  font-size: ${({ theme }) => theme.font.size.md};
+  font-weight: ${({ theme }) => theme.font.weight.medium};
+`;
+
+const StyledDocumentDescription = styled.span`
+  color: ${({ theme }) => theme.font.color.tertiary};
+  font-size: ${({ theme }) => theme.font.size.sm};
+`;
+
+const StyledSpecialDocumentListItem = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: ${({ theme }) => theme.spacing(2)};
+  padding: ${({ theme }) => theme.spacing(2)};
+  background: ${({ theme }) => theme.background.primary};
+  border-radius: ${({ theme }) => theme.border.radius.sm};
+  width: 100%;
+`;
+
+const SpecialDocumentItem = ({
+  document,
+  onRemove,
+  onSaveEdit,
+}: {
+  document: RecordEditPropertyDocument;
+  onRemove: (doc: RecordEditPropertyDocument) => void;
+  onSaveEdit: (
+    id: string,
+    updates: Partial<RecordEditPropertyDocument>,
+  ) => void;
+}) => {
+  const { t } = useLingui();
+  const dropdownId = `document-dropdown-${document.id}`;
+  const { closeDropdown } = useDropdown(dropdownId);
+  const modalRef = useRef<ModalRefType>(null);
+
+  const handleDelete = () => {
+    onRemove(document);
+    closeDropdown();
+  };
+
+  const handleEdit = () => {
+    modalRef.current?.open();
+    closeDropdown();
+  };
+
+  const handleDownload = () => {
+    window.open(document.previewUrl, '_blank');
+    closeDropdown();
+  };
+
+  return (
+    <StyledSpecialDocumentListItem>
+      <StyledFileIcon>{getFileIcon(document.fileName || '')}</StyledFileIcon>
+      <StyledFileInfo>
+        <StyledFileName>{document.fileName}</StyledFileName>
+        <StyledFileDescription>
+          {document.description || t`No description`}
+        </StyledFileDescription>
+      </StyledFileInfo>
+      <Dropdown
+        dropdownHotkeyScope={{ scope: dropdownId }}
+        dropdownId={dropdownId}
+        clickableComponent={
+          <StyledActionButton>
+            <IconDotsVertical size={16} />
+          </StyledActionButton>
+        }
+        dropdownMenuWidth={160}
+        dropdownComponents={
+          <DropdownMenuItemsContainer>
+            <MenuItem text={t`Edit`} LeftIcon={IconEdit} onClick={handleEdit} />
+            <MenuItem
+              text={t`Download`}
+              LeftIcon={IconDownload}
+              onClick={handleDownload}
+            />
+            <MenuItem
+              text={t`Remove`}
+              LeftIcon={IconTrash}
+              accent="danger"
+              onClick={handleDelete}
+            />
+          </DropdownMenuItemsContainer>
+        }
+      />
+      <DocumentEditModal
+        ref={modalRef}
+        document={document}
+        onClose={() => modalRef.current?.close()}
+        onSave={(updates) => onSaveEdit(document.id, updates)}
+      />
+    </StyledSpecialDocumentListItem>
+  );
+};
+
+const StyledSectionContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(2)};
+`;
+
+const StyledSectionTitle = styled.h4`
+  color: ${({ theme }) => theme.font.color.primary};
+  font-size: ${({ theme }) => theme.font.size.md};
+  font-weight: ${({ theme }) => theme.font.weight.medium};
+  margin: 0;
+`;
+
+const StyledSectionDescription = styled.p`
+  color: ${({ theme }) => theme.font.color.tertiary};
+  font-size: ${({ theme }) => theme.font.size.sm};
+  margin: 0 0 ${({ theme }) => theme.spacing(2)} 0;
+`;
+
+const StyledDivider = styled.div`
+  height: 1px;
+  background: ${({ theme }) => theme.border.color.medium};
+  margin: ${({ theme }) => theme.spacing(2)} 0;
+`;
+
+const StyledSectionHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: ${({ theme }) => theme.spacing(2)};
+`;
+
 export const PropertyDocumentFormInput = ({
   loading,
 }: {
@@ -481,8 +634,8 @@ export const PropertyDocumentFormInput = ({
 
   const [newDocumentIds, setNewDocumentIds] = useState<Set<string>>(new Set());
 
-  const onAdd = async (acceptedFiles: File[]) => {
-    const newDocuments = acceptedFiles.map((file) => ({
+  const onAdd = (files: File[], type: PropertyAttachmentType) => {
+    const newDocuments = files.map((file) => ({
       id: crypto.randomUUID(),
       isAttachment: false,
       file,
@@ -491,14 +644,8 @@ export const PropertyDocumentFormInput = ({
       fileName: file.name,
       fileType: file.type,
       description: '',
+      type,
     }));
-
-    const newIds = new Set(newDocuments.map((doc) => doc.id));
-    setNewDocumentIds(newIds);
-
-    setTimeout(() => {
-      setNewDocumentIds(new Set());
-    }, 1500);
 
     newDocuments.forEach((doc) => {
       addPropertyDocument(doc);
@@ -511,14 +658,10 @@ export const PropertyDocumentFormInput = ({
   };
 
   const onSaveEdit = (
-    document: RecordEditPropertyDocument,
-    name: string,
-    description: string,
+    id: string,
+    updates: Partial<RecordEditPropertyDocument>,
   ) => {
-    updatePropertyDocument(document.id, {
-      fileName: name,
-      description,
-    });
+    updatePropertyDocument(id, updates);
   };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -532,7 +675,9 @@ export const PropertyDocumentFormInput = ({
         '.xlsx',
       ],
     },
-    onDrop: onAdd,
+    onDrop: (files) => {
+      onAdd(files, 'PropertyDocument');
+    },
     noClick: true,
     noDragEventsBubbling: true,
   });
@@ -553,64 +698,188 @@ export const PropertyDocumentFormInput = ({
     updatePropertyDocumentOrder(updatedDocuments);
   };
 
-  const renderContent = () => {
-    if (!hasRefreshed) {
-      return <Skeleton height={200} width={'100%'} />;
-    }
+  const handleGenerateDocument = (type: PropertyAttachmentType) => {
+    // To be implemented later
+    console.log(`Generate ${type} document`);
+  };
 
-    if (propertyDocuments.length === 0) {
+  const specialDocuments = [
+    {
+      type: 'PropertyDocumentation' as const,
+      title: t`Property Exposé`,
+      description: t`Detailed property presentation document sent to potential buyers through the auto responder.`,
+    },
+    {
+      type: 'PropertyFlyer' as const,
+      title: t`Property Flyer`,
+      description: t`Concise property information overview sent to clients through the auto responder.`,
+    },
+  ];
+
+  const renderContent = () => {
+    if (!hasRefreshed || loading) {
       return (
-        <StyledDragOverlay
-          position="relative"
-          isDragActive={isDragActive}
-          onClick={(e) => {
-            e.stopPropagation();
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.multiple = true;
-            input.accept = '.pdf,.doc,.docx,.xls,.xlsx';
-            input.onchange = (e) => {
-              const files = (e.target as HTMLInputElement).files;
-              if (files) onAdd(Array.from(files));
-            };
-            input.click();
-          }}
-        >
-          <IconUpload size={32} />
-          <span>{t`Drop documents here`}</span>
-        </StyledDragOverlay>
+        <>
+          <StyledSpecialDocumentContainer>
+            {[1, 2].map((index) => (
+              <StyledSpecialDocumentRow key={index}>
+                <StyledSpecialDocumentHeader>
+                  <StyledDocumentInfo>
+                    <Skeleton width={200} height={24} />
+                    <Skeleton width={300} height={20} />
+                  </StyledDocumentInfo>
+                  <div style={{ display: 'flex', gap: '8px' }}>
+                    <Skeleton width={80} height={32} />
+                    <Skeleton width={80} height={32} />
+                  </div>
+                </StyledSpecialDocumentHeader>
+              </StyledSpecialDocumentRow>
+            ))}
+          </StyledSpecialDocumentContainer>
+
+          <StyledDivider />
+
+          <StyledSectionContainer>
+            <Skeleton height={200} width={'100%'} />
+          </StyledSectionContainer>
+        </>
       );
     }
+
+    const standardDocuments = propertyDocuments.filter(
+      (doc) => doc.type === 'PropertyDocument',
+    );
+
+    const specialDocumentTypes = [
+      'PropertyDocumentation',
+      'PropertyFlyer',
+    ] as const;
+    const specialDocs = Object.fromEntries(
+      specialDocumentTypes.map((type) => [
+        type,
+        propertyDocuments.find((doc) => doc.type === type),
+      ]),
+    );
+
     return (
       <>
-        <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId="property-documents">
-            {(provided, snapshot) => (
-              <StyledDocumentList
-                ref={provided.innerRef}
-                // eslint-disable-next-line react/jsx-props-no-spreading
-                {...provided.droppableProps}
-                isDraggingOver={snapshot.isDraggingOver}
-              >
-                {propertyDocuments.map((document, index) =>
-                  !loading && hasRefreshed ? (
-                    <DraggableDocumentItem
-                      key={document.id}
-                      document={document}
-                      index={index}
+        <StyledSpecialDocumentContainer>
+          {specialDocuments.map((doc) => {
+            const docType = doc.type;
+            const specialDoc = specialDocs[docType];
+            return (
+              <StyledSpecialDocumentRow key={docType}>
+                <StyledSpecialDocumentHeader>
+                  <StyledDocumentInfo>
+                    <StyledDocumentTitle>{doc.title}</StyledDocumentTitle>
+                    <StyledDocumentDescription>
+                      {doc.description}
+                    </StyledDocumentDescription>
+                  </StyledDocumentInfo>
+                  <div style={{ display: 'flex', gap: '8px' }}>
+                    <Button
+                      variant="secondary"
+                      size="small"
+                      Icon={IconRefresh}
+                      title={t`Generate`}
+                      disabled
+                      onClick={() => handleGenerateDocument(doc.type)}
+                    />
+                    {!specialDocs[doc.type] && (
+                      <Button
+                        variant="primary"
+                        size="small"
+                        Icon={IconFileText}
+                        title={t`Upload`}
+                        onClick={() => {
+                          const input = document.createElement('input');
+                          input.type = 'file';
+                          input.accept = '.pdf,.doc,.docx';
+                          input.onchange = (e) => {
+                            const files = (e.target as HTMLInputElement).files;
+                            if (files?.[0]) {
+                              onAdd([files[0]], doc.type);
+                            }
+                          };
+                          input.click();
+                        }}
+                      />
+                    )}
+                  </div>
+                </StyledSpecialDocumentHeader>
+                {specialDoc && (
+                  <StyledSpecialDocumentContent>
+                    <SpecialDocumentItem
+                      document={specialDoc}
                       onRemove={onRemove}
                       onSaveEdit={onSaveEdit}
-                      isNew={newDocumentIds.has(document.id)}
                     />
-                  ) : (
-                    <Skeleton key={index} height={56} />
-                  ),
+                  </StyledSpecialDocumentContent>
                 )}
-                {provided.placeholder}
-              </StyledDocumentList>
-            )}
-          </Droppable>
-        </DragDropContext>
+              </StyledSpecialDocumentRow>
+            );
+          })}
+        </StyledSpecialDocumentContainer>
+
+        <StyledDivider />
+
+        <StyledSectionContainer>
+          <StyledSectionHeader>
+            <div>
+              <StyledSectionTitle>{t`Additional Documents`}</StyledSectionTitle>
+              <StyledSectionDescription>
+                {t`Add any other documents that should be included in the publication.`}
+              </StyledSectionDescription>
+            </div>
+            <Button
+              onClick={(e) => {
+                e.stopPropagation();
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.multiple = true;
+                input.accept = '.pdf,.doc,.docx,.xls,.xlsx';
+                input.onchange = (e) => {
+                  const files = (e.target as HTMLInputElement).files;
+                  if (files) onAdd(Array.from(files), 'PropertyDocument');
+                };
+                input.click();
+              }}
+              variant="secondary"
+              title={t`Upload Documents`}
+              Icon={IconUpload}
+            />
+          </StyledSectionHeader>
+
+          {standardDocuments.length > 0 && (
+            <DragDropContext onDragEnd={onDragEnd}>
+              <Droppable droppableId="property-documents">
+                {(provided, snapshot) => (
+                  <StyledDocumentList
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                    isDraggingOver={snapshot.isDraggingOver}
+                  >
+                    {standardDocuments.map((document, index) =>
+                      !loading && hasRefreshed ? (
+                        <DraggableDocumentItem
+                          key={document.id}
+                          document={document}
+                          index={index}
+                          onRemove={onRemove}
+                          onSaveEdit={onSaveEdit}
+                          isNew={newDocumentIds.has(document.id)}
+                        />
+                      ) : (
+                        <Skeleton key={index} height={56} />
+                      ),
+                    )}
+                    {provided.placeholder}
+                  </StyledDocumentList>
+                )}
+              </Droppable>
+            </DragDropContext>
+          )}
+        </StyledSectionContainer>
       </>
     );
   };
@@ -619,31 +888,12 @@ export const PropertyDocumentFormInput = ({
     <div {...getRootProps()} style={{ position: 'relative' }}>
       <input {...getInputProps()} />
       <StyledContainer>
-        <StyledHeaderContainer>
-          <StyledTitleContainer>
-            <StyledTitle>{t`Property Documents`}</StyledTitle>
-            <StyledDescription>
-              {t`Add documents related to your property that will be visible in the publication.`}
-            </StyledDescription>
-          </StyledTitleContainer>
-          <Button
-            onClick={(e) => {
-              e.stopPropagation();
-              const input = document.createElement('input');
-              input.type = 'file';
-              input.multiple = true;
-              input.accept = '.pdf,.doc,.docx,.xls,.xlsx';
-              input.onchange = (e) => {
-                const files = (e.target as HTMLInputElement).files;
-                if (files) onAdd(Array.from(files));
-              };
-              input.click();
-            }}
-            variant="secondary"
-            title={t`Upload Documents`}
-            Icon={IconUpload}
-          />
-        </StyledHeaderContainer>
+        <StyledTitleContainer>
+          <StyledTitle>{t`Property Documents`}</StyledTitle>
+          <StyledDescription>
+            {t`Add documents related to your property that will be visible in the publication.`}
+          </StyledDescription>
+        </StyledTitleContainer>
 
         {renderContent()}
       </StyledContainer>

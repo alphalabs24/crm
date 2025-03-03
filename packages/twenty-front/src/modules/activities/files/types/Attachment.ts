@@ -17,7 +17,7 @@ export type PropertyAttachmentType =
   | 'PropertyDocument'
   | 'PropertyVideo'
   | 'PropertyDocumentation'
-  | 'PorpertyFlyer';
+  | 'PropertyFlyer';
 
 export type AttachmentType =
   | 'Archive'
