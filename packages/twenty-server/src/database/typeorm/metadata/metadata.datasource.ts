@@ -27,7 +27,7 @@ export const typeORMMetadataModuleOptions: TypeOrmModuleOptions = {
         }
       : undefined,
   extra: {
-    query_timeout: 10000,
+    query_timeout: process.env.DB_QUERY_TIMEOUT ?? 30000,
   },
 };
 
