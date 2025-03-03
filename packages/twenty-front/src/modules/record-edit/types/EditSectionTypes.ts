@@ -10,6 +10,7 @@ export type FieldDefinition = {
   // Conditionally render the field based on the value of another field
   conditionFields?: string[];
   conditionValues?: string[];
+  omitForPublication?: boolean;
 };
 
 export type FieldGroup = {

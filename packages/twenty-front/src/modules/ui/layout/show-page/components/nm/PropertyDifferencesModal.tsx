@@ -8,7 +8,6 @@ import {
   PublicationDifferences,
 } from '../../hooks/usePropertyAndPublicationDifferences';
 import {
-  IconArrowRight,
   IconExchange,
   Button,
   LARGE_DESKTOP_VIEWPORT,
@@ -24,13 +23,9 @@ import { RecordFieldValueSelectorContextProvider } from '@/object-record/record-
 import { RecordValueSetterEffect } from '@/object-record/record-store/components/RecordValueSetterEffect';
 import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadataItem';
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
-import { useObjectMetadataItems } from '@/object-metadata/hooks/useObjectMetadataItems';
 import { useSetRecoilState } from 'recoil';
-import { useLabelIdentifierFieldMetadataItem } from '@/object-metadata/hooks/useLabelIdentifierFieldMetadataItem';
 import { recordStoreFamilyState } from '@/object-record/record-store/states/recordStoreFamilyState';
-import { buildFindOneRecordForShowPageOperationSignature } from '@/object-record/record-show/graphql/operations/factories/findOneRecordForShowPageOperationSignatureFactory';
 import { useFindOneRecord } from '@/object-record/hooks/useFindOneRecord';
-import { isDefined } from 'twenty-shared';
 import { PlatformId, PLATFORMS } from './types/Platform';
 import { PlatformBadge } from '@/object-record/record-show/components/nm/publication/PlatformBadge';
 import Skeleton from 'react-loading-skeleton';
@@ -349,12 +344,14 @@ const PublicationDiffView = ({
         const PublicationIcon = getIcon(
           diff.publicationFieldMetadataItem?.icon,
         );
+
         if (
           !diff.propertyFieldMetadataItem ||
           !diff.publicationFieldMetadataItem
         ) {
           return null;
         }
+
         return (
           <StyledDifferenceItem key={index}>
             <StyledDifferenceHeader>
@@ -390,7 +387,7 @@ const PublicationDiffView = ({
                                 fieldName:
                                   diff.publicationFieldMetadataItem.name,
                                 objectMetadataNameSingular:
-                                  objectMetadataItem?.nameSingular,
+                                  objectMetadataItem.nameSingular,
                                 options:
                                   diff.publicationFieldMetadataItem.options ??
                                   [],
@@ -469,7 +466,6 @@ export const PropertyDifferencesModal = forwardRef<
   // Scroll active tab into view when it changes
   useEffect(() => {
     if (activeTabRef.current && tabsContainerRef.current) {
-      const container = tabsContainerRef.current;
       const activeTab = activeTabRef.current;
 
       // Simply scroll the active tab into view with smooth behavior
@@ -533,7 +529,7 @@ export const PropertyDifferencesModal = forwardRef<
                       }
                     />
                   </StyledPlatformIcon>
-                  {PLATFORMS[publicationDiff.platform as PlatformId].name}
+                  {PLATFORMS[publicationDiff.platform as PlatformId]?.name}
                   <StyledDiffCount>
                     {publicationDiff.differences.length}
                   </StyledDiffCount>

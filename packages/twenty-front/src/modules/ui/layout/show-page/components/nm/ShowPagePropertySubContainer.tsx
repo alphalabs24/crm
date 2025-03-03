@@ -42,6 +42,7 @@ import { usePublicationsOfProperty } from '../../hooks/usePublicationsOfProperty
 import { usePropertyAndPublicationDifferences } from '../../hooks/usePropertyAndPublicationDifferences';
 import { PropertyDifferencesModal } from './PropertyDifferencesModal';
 import { requiredPublicationFields } from '@/object-record/record-show/components/nm/ObjectOverview';
+import { usePublicationValidation } from '../../hooks/usePublicationValidation';
 
 const StyledShowPageRightContainer = styled.div<{ isMobile: boolean }>`
   display: flex;
@@ -51,10 +52,6 @@ const StyledShowPageRightContainer = styled.div<{ isMobile: boolean }>`
   width: 100%;
   height: 100%;
   overflow-y: auto;
-`;
-
-const StyledEditButtonLink = styled(Link)`
-  text-decoration: none;
 `;
 
 const StyledTabListContainer = styled.div<{ shouldDisplay: boolean }>`
@@ -111,6 +108,7 @@ export const ShowPagePropertySubContainer = ({
   const navigate = useNavigate();
   const tokenPair = useRecoilValue(tokenPairState);
   const [loadingDraft, setLoadingDraft] = useState(false);
+  // TODO use this for loading state
   const [loadingSync, setLoadingSync] = useState(false);
   const { enqueueSnackBar } = useSnackBar();
   const isNewViewableRecordLoading = useRecoilValue(
@@ -131,7 +129,7 @@ export const ShowPagePropertySubContainer = ({
     refetchPublications();
   }, [refetchPublications]);
 
-  const { differences } = usePropertyAndPublicationDifferences(
+  const { differenceRecords } = usePropertyAndPublicationDifferences(
     isPublication ? null : recordFromStore,
     publicationDraftsOfProperty,
   );
@@ -239,12 +237,12 @@ export const ShowPagePropertySubContainer = ({
 
   const differenceLength = useMemo(
     () =>
-      differences?.length > 0
-        ? `(${differences
+      differenceRecords?.length > 0
+        ? `(${differenceRecords
             .map((difference) => difference.differences.length)
             .reduce((a, b) => a + b, 0)})`
         : '',
-    [differences],
+    [differenceRecords],
   );
 
   const renderActiveTabContent = () => {
@@ -271,20 +269,16 @@ export const ShowPagePropertySubContainer = ({
     modalRef.current?.close();
   };
 
-  const showPublishButton = useMemo(() => {
-    if (recordFromStore?.stage === 'PUBLISHED') return false;
-    if (recordFromStore?.stage === 'SCHEDULED') return false;
+  const { canPublish, showPublishButton, validationDetails } =
+    usePublicationValidation({
+      record: recordFromStore,
+      differences: differenceRecords,
+      isPublication,
+    });
 
-    if (differences?.length === 0) return true;
-    return false;
-  }, [recordFromStore, differences?.length]);
-
-  const isPublishButtonDisabled = useMemo(() => {
-    for (const field of requiredPublicationFields) {
-      if (!recordFromStore?.[field]) return true;
-    }
-    return false;
-  }, [recordFromStore]);
+  const handlePublishClick = () => {
+    openModal();
+  };
 
   return (
     <>
@@ -318,12 +312,11 @@ export const ShowPagePropertySubContainer = ({
                 accent="blue"
                 size="small"
                 Icon={isPublication ? IconUpload : IconPlus}
-                onClick={openModal}
-                disabled={isPublishButtonDisabled}
+                onClick={handlePublishClick}
               />
             )}
 
-            {differences?.length > 0 && (
+            {differenceRecords?.length > 0 && (
               <Button
                 onClick={() => differencesModalRef.current?.open()}
                 variant="primary"
@@ -345,7 +338,7 @@ export const ShowPagePropertySubContainer = ({
                 dropdownMenuWidth={160}
                 dropdownComponents={
                   <DropdownMenuItemsContainer>
-                    {!isPublication && differences?.length > 0 && (
+                    {!isPublication && differenceRecords?.length > 0 && (
                       <MenuItem
                         text={t`New Publication`}
                         LeftIcon={IconPlus}
@@ -355,11 +348,12 @@ export const ShowPagePropertySubContainer = ({
                         }}
                       />
                     )}
-                    {differences?.length === 0 && (
+                    {differenceRecords?.length === 0 && (
                       <MenuItem
                         text={t`Sync Publications`}
                         LeftIcon={IconRefresh}
                         onClick={syncPublications}
+                        disabled={loadingSync}
                       />
                     )}
                     <MenuItem
@@ -388,19 +382,21 @@ export const ShowPagePropertySubContainer = ({
           ref={modalRef}
           onClose={handleModalClose}
           targetableObject={targetableObject}
+          validationDetails={validationDetails}
         />
       ) : (
         <PublishDraftModal
           ref={modalRef}
           onClose={handleModalClose}
           targetableObject={targetableObject}
+          validationDetails={validationDetails}
         />
       )}
 
-      {differences?.length > 0 && (
+      {differenceRecords?.length > 0 && (
         <PropertyDifferencesModal
           ref={differencesModalRef}
-          differences={differences}
+          differences={differenceRecords}
           onClose={() => differencesModalRef.current?.close()}
           onSync={syncPublications}
           propertyRecordId={recordFromStore?.id ?? ''}

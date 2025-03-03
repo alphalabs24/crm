@@ -12,7 +12,11 @@ import { useRecoilComponentFamilyValueV2 } from '@/ui/utilities/state/component-
 import { useRecoilComponentValueV2 } from '@/ui/utilities/state/component-state/hooks/useRecoilComponentValueV2';
 import { ViewType } from '@/views/types/ViewType';
 
-export const RecordTableRecordGroupsBody = () => {
+export const RecordTableRecordGroupsBody = ({
+  readonly,
+}: {
+  readonly?: boolean;
+}) => {
   const allRecordIds = useRecoilComponentValueV2(
     recordIndexAllRecordIdsComponentSelector,
   );
@@ -41,7 +45,7 @@ export const RecordTableRecordGroupsBody = () => {
             <RecordGroupContext.Provider value={{ recordGroupId }}>
               <RecordTableBodyDroppable recordGroupId={recordGroupId}>
                 <RecordTableRecordGroupSection />
-                <RecordTableRecordGroupRows />
+                <RecordTableRecordGroupRows readonly={readonly} />
               </RecordTableBodyDroppable>
             </RecordGroupContext.Provider>
           </RecordTableRecordGroupBodyContextProvider>

@@ -1,4 +1,5 @@
 import { tokenPairState } from '@/auth/states/tokenPairState';
+import { useFindOneRecord } from '@/object-record/hooks/useFindOneRecord';
 import { useRecordShowContainerData } from '@/object-record/record-show/hooks/useRecordShowContainerData';
 import { SnackBarVariant } from '@/ui/feedback/snack-bar-manager/components/SnackBar';
 import { useSnackBar } from '@/ui/feedback/snack-bar-manager/hooks/useSnackBar';
@@ -7,6 +8,7 @@ import {
   PLATFORMS,
 } from '@/ui/layout/show-page/components/nm/types/Platform';
 import styled from '@emotion/styled';
+import { useLingui } from '@lingui/react/macro';
 import axios from 'axios';
 import { useState } from 'react';
 import { useRecoilValue } from 'recoil';
@@ -16,6 +18,9 @@ import {
   IconCheck,
   IconExternalLink,
 } from 'twenty-ui';
+import { ValidationResult } from '../../../hooks/usePublicationValidation';
+import { getLinkToShowPage } from '@/object-metadata/utils/getLinkToShowPage';
+import { Link } from 'react-router-dom';
 
 const StyledPublishingProcess = styled.div`
   display: flex;
@@ -86,30 +91,50 @@ const StyledViewPublicationButton = styled.button`
   }
 `;
 
+const StyledValidationDetails = styled.div`
+  color: ${({ theme }) => theme.font.color.danger};
+  font-size: ${({ theme }) => theme.font.size.sm};
+  gap: ${({ theme }) => theme.spacing(2)};
+  display: flex;
+  align-items: center;
+`;
+
+const StyledEditLink = styled(Link)`
+  color: ${({ theme }) => theme.font.color.primary};
+  font-size: ${({ theme }) => theme.font.size.sm};
+`;
+
 type PublishingProps = {
   selectedPlatform: PlatformId;
   renderPlatformIcon: (platformId: PlatformId) => React.ReactNode;
   recordId: string;
+  validationDetails: ValidationResult;
 };
 
-// TODO: use this once we publish to a platform
 export const Publishing = ({
   selectedPlatform,
   renderPlatformIcon,
   recordId,
+  validationDetails,
 }: PublishingProps) => {
   const [isPublished, setIsPublished] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { enqueueSnackBar } = useSnackBar();
+  const { t } = useLingui();
   const tokenPair = useRecoilValue(tokenPairState);
+  const [showError, setShowError] = useState(false);
 
-  const { recordFromStore: record } = useRecordShowContainerData({
+  const { refetch } = useFindOneRecord({
     objectNameSingular: 'publication',
     objectRecordId: recordId,
   });
 
   const publishDraft = async () => {
     try {
+      if (validationDetails?.missingFields?.length > 0) {
+        setShowError(true);
+        return;
+      }
       setIsLoading(true);
       const response = await axios.post(
         `${window._env_?.REACT_APP_PUBLICATION_SERVER_BASE_URL ?? 'http://api.localhost'}/publications/upload?id=${recordId}`,
@@ -127,6 +152,7 @@ export const Publishing = ({
       enqueueSnackBar(`Publication created successfully`, {
         variant: SnackBarVariant.Success,
       });
+      await refetch();
     } catch (error: any) {
       enqueueSnackBar(error?.message, {
         variant: SnackBarVariant.Error,
@@ -148,20 +174,30 @@ export const Publishing = ({
           <StyledPlatformPublishStatus isPublished={isPublished}>
             {isPublished ? (
               <>
-                Successfully published
+                {t`Successfully published`}
                 <IconCheck size={14} />
               </>
             ) : isLoading ? (
-              'Publishing...'
+              t`Publishing...`
             ) : (
-              'Unpublished'
+              t`Unpublished`
             )}
           </StyledPlatformPublishStatus>
         </StyledPlatformPublishInfo>
+        {showError && (
+          <StyledValidationDetails>
+            {validationDetails?.message}
+            <StyledEditLink
+              to={`${getLinkToShowPage('publication', { id: recordId })}/edit`}
+            >
+              {t`Edit`}
+            </StyledEditLink>
+          </StyledValidationDetails>
+        )}
         <StyledPlatformPublishStatusIcon>
           {isPublished ? (
             <StyledViewPublicationButton>
-              View Publication
+              {t`View Publication`}
               <IconExternalLink size={14} />
             </StyledViewPublicationButton>
           ) : isLoading ? (
@@ -170,7 +206,7 @@ export const Publishing = ({
             <Button
               variant="primary"
               accent="blue"
-              title={`Publish`}
+              title={t`Publish`}
               onClick={publishDraft}
             />
           )}
