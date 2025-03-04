@@ -41,6 +41,12 @@ import { usePublicationsOfProperty } from '../../hooks/usePublicationsOfProperty
 import { usePropertyAndPublicationDifferences } from '../../hooks/usePropertyAndPublicationDifferences';
 import { PropertyDifferencesModal } from './PropertyDifferencesModal';
 import { usePublicationValidation } from '../../hooks/usePublicationValidation';
+import { useDeleteOneRecord } from '@/object-record/hooks/useDeleteOneRecord';
+import { useDeleteManyRecords } from '@/object-record/hooks/useDeleteManyRecords';
+import { AppPath } from '@/types/AppPath';
+import { useNavigateApp } from '~/hooks/useNavigateApp';
+import { useObjectNamePluralFromSingular } from '@/object-metadata/hooks/useObjectNamePluralFromSingular';
+import DeleteConfirmationModal from '@/ui/layout/show-page/components/nm/DeleteConfirmationModal';
 
 const StyledShowPageRightContainer = styled.div<{ isMobile: boolean }>`
   display: flex;
@@ -78,6 +84,31 @@ const StyledContentContainer = styled.div<{ isInRightDrawer: boolean }>`
     isInRightDrawer ? theme.spacing(16) : 0};
 `;
 
+const StyledModalHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: ${({ theme }) => theme.spacing(4)};
+`;
+
+const StyledModalTitle = styled.h2`
+  font-size: ${({ theme }) => theme.font.size.lg};
+  font-weight: ${({ theme }) => theme.font.weight.semiBold};
+`;
+
+const StyledModalContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(4)};
+  padding: ${({ theme }) => theme.spacing(4)};
+`;
+
+const StyledModalDescription = styled.div`
+  color: ${({ theme }) => theme.font.color.secondary};
+  font-size: ${({ theme }) => theme.font.size.md};
+  line-height: 1.5;
+`;
+
 export const TAB_LIST_COMPONENT_ID = 'show-page-right-tab-list';
 
 type ShowPagePropertySubContainerProps = {
@@ -93,6 +124,8 @@ type ShowPagePropertySubContainerProps = {
   isPublication?: boolean;
 };
 
+// This view is used to display a property or publication.
+// The isPublication flag is used to determine if the view shows a publication.
 export const ShowPagePropertySubContainer = ({
   tabs,
   targetableObject,
@@ -104,17 +137,46 @@ export const ShowPagePropertySubContainer = ({
   const { activeTabId } = useTabList(tabListComponentId);
   const isMobile = useIsMobile();
   const navigate = useNavigate();
+  const navigateApp = useNavigateApp();
+  const { objectNamePlural } = useObjectNamePluralFromSingular({
+    objectNameSingular: targetableObject.targetObjectNameSingular,
+  });
+
+  // Token for API calls
   const tokenPair = useRecoilValue(tokenPairState);
+
+  // Loading states
   const [loadingDraft, setLoadingDraft] = useState(false);
-  // TODO use this for loading state
   const [loadingSync, setLoadingSync] = useState(false);
+  const [loadingDelete, setLoadingDelete] = useState(false);
+
+  const dropdownId = `show-page-property-sub-container-dropdown-${targetableObject.id}`;
+
+  // Translations
+  const { t } = useLingui();
+
+  // Dropdown
+  const { closeDropdown } = useDropdown(dropdownId);
+
+  const visibleTabs = tabs.filter((tab) => !tab.hide);
+
+  // Modals
+  const modalRef = useRef<ModalRefType>(null);
+  const differencesModalRef = useRef<ModalRefType>(null);
+  const deleteModalRef = useRef<ModalRefType>(null);
+
   const { enqueueSnackBar } = useSnackBar();
+
   const isNewViewableRecordLoading = useRecoilValue(
     isNewViewableRecordLoadingState,
   );
+
+  // Record
   const [recordFromStore] = useRecoilState<ObjectRecord | null>(
     recordStoreFamilyState(targetableObject.id),
   );
+
+  // Publications of Property
   const {
     publications: publicationDraftsOfProperty,
     refetch: refetchPublications,
@@ -123,8 +185,13 @@ export const ShowPagePropertySubContainer = ({
     'draft',
   );
 
+  const { publications: allPublications, refetch: refetchAllPublications } =
+    usePublicationsOfProperty(isPublication ? undefined : recordFromStore?.id);
+
+  // Refetch publications when the component mounts so we have the latest data.
   useEffect(() => {
     refetchPublications();
+    refetchAllPublications();
   }, [refetchPublications]);
 
   const { differenceRecords } = usePropertyAndPublicationDifferences(
@@ -132,20 +199,40 @@ export const ShowPagePropertySubContainer = ({
     publicationDraftsOfProperty,
   );
 
-  const dropdownId = `show-page-property-sub-container-dropdown-${targetableObject.id}`;
+  const { deleteOneRecord } = useDeleteOneRecord({
+    objectNameSingular: targetableObject.targetObjectNameSingular,
+  });
 
-  const { t } = useLingui();
-  const { closeDropdown } = useDropdown(dropdownId);
+  const { deleteManyRecords } = useDeleteManyRecords({
+    objectNameSingular: CoreObjectNameSingular.Publication,
+  });
 
-  const visibleTabs = tabs.filter((tab) => !tab.hide);
-
-  const modalRef = useRef<ModalRefType>(null);
-
-  const differencesModalRef = useRef<ModalRefType>(null);
-
+  // Update handleDelete to show confirmation first
   const handleDelete = () => {
-    // TODO: Implement delete
-    console.log('delete');
+    deleteModalRef.current?.open();
+    closeDropdown();
+  };
+
+  const handleConfirmDelete = async () => {
+    try {
+      setLoadingDelete(true);
+      await deleteManyRecords({
+        recordIdsToDelete: allPublications?.map(
+          (publication) => publication.id,
+        ),
+      });
+      await deleteOneRecord(targetableObject.id);
+      deleteModalRef.current?.close();
+      navigateApp(AppPath.RecordIndexPage, {
+        objectNamePlural,
+      });
+    } catch (error: any) {
+      enqueueSnackBar(error?.message, {
+        variant: SnackBarVariant.Error,
+      });
+    } finally {
+      setLoadingDelete(false);
+    }
   };
 
   const syncPublications = async () => {
@@ -359,6 +446,7 @@ export const ShowPagePropertySubContainer = ({
                       accent="danger"
                       LeftIcon={IconTrash}
                       onClick={handleDelete}
+                      disabled={loadingDelete}
                     />
                   </DropdownMenuItemsContainer>
                 }
@@ -401,6 +489,14 @@ export const ShowPagePropertySubContainer = ({
           publicationRecordId={publicationDraftsOfProperty?.[0]?.id ?? ''}
         />
       )}
+
+      <DeleteConfirmationModal
+        ref={deleteModalRef}
+        onDelete={handleConfirmDelete}
+        onClose={() => deleteModalRef.current?.close()}
+        loading={loadingDelete}
+        description={t`Are you sure you want to delete this property and all it's publications?`}
+      />
     </>
   );
 };
