@@ -1,3 +1,4 @@
+import { BLOCKED_OBJECTS_FROM_CREATION } from '@/object-record/constants/BlockedObjects';
 import {
   SingleRecordSelectMenuItems,
   SingleRecordSelectMenuItemsProps,
@@ -125,11 +126,13 @@ export const SingleRecordSelectMenuItemsWithSearch = ({
           {records.recordsToSelect.length > 0 && isDefined(onCreate) && (
             <DropdownMenuSeparator />
           )}
-          {isDefined(onCreate) && !hasObjectReadOnlyPermission && (
-            <DropdownMenuItemsContainer scrollable={false}>
-              {createNewButton}
-            </DropdownMenuItemsContainer>
-          )}
+          {isDefined(onCreate) &&
+            !hasObjectReadOnlyPermission &&
+            !BLOCKED_OBJECTS_FROM_CREATION.includes(objectNameSingular) && (
+              <DropdownMenuItemsContainer scrollable={false}>
+                {createNewButton}
+              </DropdownMenuItemsContainer>
+            )}
         </>
       )}
     </>
