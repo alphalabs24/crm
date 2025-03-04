@@ -157,6 +157,10 @@ msgid "Add a description..."
 msgstr "Add a description..."
 
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Add any other documents that should be included in the publication."
+msgstr "Add any other documents that should be included in the publication."
+
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Add documents related to your property that will be visible in the publication."
 msgstr "Add documents related to your property that will be visible in the publication."
 
@@ -205,6 +209,10 @@ msgstr "Add your first {objectLabel}"
 #: src/modules/ui/layout/show-page/components/ShowPageSummaryCard.tsx
 msgid "Added {beautifiedCreatedAt}"
 msgstr "Added {beautifiedCreatedAt}"
+
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Additional Documents"
+msgstr "Additional Documents"
 
 #: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
 msgid "Address"
@@ -517,6 +525,10 @@ msgstr "Coming Soon"
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
 msgid "Compare Changes"
 msgstr "Compare Changes"
+
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Concise property information overview sent to clients through the auto responder."
+msgstr "Concise property information overview sent to clients through the auto responder."
 
 #: src/pages/settings/security/SettingsSecurity.tsx
 msgid "Configure an SSO connection"
@@ -837,6 +849,10 @@ msgstr "Description"
 msgid "Destroy"
 msgstr "Destroy"
 
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Detailed property presentation document sent to potential buyers through the auto responder."
+msgstr "Detailed property presentation document sent to potential buyers through the auto responder."
+
 #: src/pages/settings/developers/SettingsDevelopers.tsx
 #: src/pages/settings/developers/SettingsDevelopers.tsx
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx
@@ -871,6 +887,7 @@ msgid "Domain"
 msgstr "Domain"
 
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Download"
 msgstr "Download"
 
@@ -882,7 +899,6 @@ msgstr "Download"
 #~ msgid "Drag & drop images here, or click to select files"
 #~ msgstr "Drag & drop images here, or click to select files"
 
-#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Drop documents here"
 msgstr "Drop documents here"
@@ -918,6 +934,7 @@ msgstr "Earliest date"
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/Publishing.tsx
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Edit"
 msgstr "Edit"
 
@@ -1173,6 +1190,10 @@ msgstr "Gastronomy Subtype"
 #: src/modules/settings/hooks/useSettingsNavigationItems.tsx
 msgid "General"
 msgstr "General"
+
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Generate"
+msgstr "Generate"
 
 #: src/modules/object-record/record-show/components/nm/AISuite.tsx
 msgid "Generate Analysis"
@@ -1643,6 +1664,7 @@ msgstr "No connected account"
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "No description"
 msgstr "No description"
 
@@ -1913,6 +1935,14 @@ msgstr "Property"
 msgid "Property Documents"
 msgstr "Property Documents"
 
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Property Exposé"
+msgstr "Property Exposé"
+
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Property Flyer"
+msgstr "Property Flyer"
+
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 msgid "Property Images"
 msgstr "Property Images"
@@ -1993,6 +2023,7 @@ msgstr "Releases"
 #: src/pages/settings/roles/components/RoleAssignmentTableRow.tsx
 #: src/pages/settings/roles/components/RoleAssignmentConfirmationModal.tsx
 #: src/modules/ui/input/components/ImageInput.tsx
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Remove"
 msgstr "Remove"
 
@@ -2459,6 +2490,7 @@ msgid "Unpublished"
 msgstr "Unpublished"
 
 #: src/modules/ui/input/components/ImageInput.tsx
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Upload"
 msgstr "Upload"
 

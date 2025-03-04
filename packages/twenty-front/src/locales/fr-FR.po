@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: nestermind-crm\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-03-03 14:12\n"
+"PO-Revision-Date: 2025-03-04 07:42\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -162,6 +162,10 @@ msgid "Add a description..."
 msgstr ""
 
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Add any other documents that should be included in the publication."
+msgstr ""
+
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Add documents related to your property that will be visible in the publication."
 msgstr ""
 
@@ -210,6 +214,10 @@ msgstr "Ajoutez votre premier {objectLabel}"
 #: src/modules/ui/layout/show-page/components/ShowPageSummaryCard.tsx
 msgid "Added {beautifiedCreatedAt}"
 msgstr "Ajouté {beautifiedCreatedAt}"
+
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Additional Documents"
+msgstr ""
 
 #: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
 msgid "Address"
@@ -521,6 +529,10 @@ msgstr ""
 
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
 msgid "Compare Changes"
+msgstr ""
+
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Concise property information overview sent to clients through the auto responder."
 msgstr ""
 
 #: src/pages/settings/security/SettingsSecurity.tsx
@@ -842,6 +854,10 @@ msgstr ""
 msgid "Destroy"
 msgstr "Détruire"
 
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Detailed property presentation document sent to potential buyers through the auto responder."
+msgstr ""
+
 #: src/pages/settings/developers/SettingsDevelopers.tsx
 #: src/pages/settings/developers/SettingsDevelopers.tsx
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx
@@ -876,6 +892,7 @@ msgid "Domain"
 msgstr "Domaine"
 
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Download"
 msgstr ""
 
@@ -887,7 +904,6 @@ msgstr ""
 #~ msgid "Drag & drop images here, or click to select files"
 #~ msgstr "Drag & drop images here, or click to select files"
 
-#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Drop documents here"
 msgstr ""
@@ -923,6 +939,7 @@ msgstr "Date la plus ancienne"
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/Publishing.tsx
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Edit"
 msgstr ""
 
@@ -1178,6 +1195,10 @@ msgstr ""
 #: src/modules/settings/hooks/useSettingsNavigationItems.tsx
 msgid "General"
 msgstr "Général"
+
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Generate"
+msgstr ""
 
 #: src/modules/object-record/record-show/components/nm/AISuite.tsx
 msgid "Generate Analysis"
@@ -1645,6 +1666,7 @@ msgstr "Aucun compte connecté"
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "No description"
 msgstr ""
 
@@ -1915,6 +1937,14 @@ msgstr ""
 msgid "Property Documents"
 msgstr ""
 
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Property Exposé"
+msgstr ""
+
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Property Flyer"
+msgstr ""
+
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 msgid "Property Images"
 msgstr ""
@@ -1995,6 +2025,7 @@ msgstr "Communiqués"
 #: src/pages/settings/roles/components/RoleAssignmentTableRow.tsx
 #: src/pages/settings/roles/components/RoleAssignmentConfirmationModal.tsx
 #: src/modules/ui/input/components/ImageInput.tsx
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Remove"
 msgstr "Retirer"
 
@@ -2461,6 +2492,7 @@ msgid "Unpublished"
 msgstr ""
 
 #: src/modules/ui/input/components/ImageInput.tsx
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Upload"
 msgstr "Téléverser"
 
