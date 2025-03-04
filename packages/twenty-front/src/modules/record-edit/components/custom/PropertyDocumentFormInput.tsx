@@ -604,7 +604,7 @@ export const PropertyDocumentFormInput = ({
 }) => {
   const [hasRefreshed, setHasRefreshed] = useState(false);
   const { t } = useLingui();
-
+  const theme = useTheme();
   const {
     propertyDocuments,
     addPropertyDocument,
@@ -725,12 +725,32 @@ export const PropertyDocumentFormInput = ({
               <StyledSpecialDocumentRow key={index}>
                 <StyledSpecialDocumentHeader>
                   <StyledDocumentInfo>
-                    <Skeleton width={200} height={24} />
-                    <Skeleton width={300} height={20} />
+                    <Skeleton
+                      width={200}
+                      height={24}
+                      baseColor={theme.background.secondary}
+                      highlightColor={theme.background.transparent.lighter}
+                    />
+                    <Skeleton
+                      width={300}
+                      height={20}
+                      baseColor={theme.background.secondary}
+                      highlightColor={theme.background.transparent.lighter}
+                    />
                   </StyledDocumentInfo>
                   <div style={{ display: 'flex', gap: '8px' }}>
-                    <Skeleton width={80} height={32} />
-                    <Skeleton width={80} height={32} />
+                    <Skeleton
+                      width={80}
+                      height={32}
+                      baseColor={theme.background.secondary}
+                      highlightColor={theme.background.transparent.lighter}
+                    />
+                    <Skeleton
+                      width={80}
+                      height={32}
+                      baseColor={theme.background.secondary}
+                      highlightColor={theme.background.transparent.lighter}
+                    />
                   </div>
                 </StyledSpecialDocumentHeader>
               </StyledSpecialDocumentRow>
@@ -740,7 +760,12 @@ export const PropertyDocumentFormInput = ({
           <StyledDivider />
 
           <StyledSectionContainer>
-            <Skeleton height={200} width={'100%'} />
+            <Skeleton
+              height={200}
+              width={'100%'}
+              baseColor={theme.background.secondary}
+              highlightColor={theme.background.transparent.lighter}
+            />
           </StyledSectionContainer>
         </>
       );
@@ -870,7 +895,12 @@ export const PropertyDocumentFormInput = ({
                           isNew={newDocumentIds.has(document.id)}
                         />
                       ) : (
-                        <Skeleton key={index} height={56} />
+                        <Skeleton
+                          key={index}
+                          height={56}
+                          baseColor={theme.background.secondary}
+                          highlightColor={theme.background.transparent.lighter}
+                        />
                       ),
                     )}
                     {provided.placeholder}

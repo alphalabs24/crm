@@ -21,6 +21,7 @@ import {
   IconLayoutGrid,
 } from 'twenty-ui';
 import { ValidationResult } from '../../../hooks/usePublicationValidation';
+import { useColorScheme } from '@/ui/theme/hooks/useColorScheme';
 const StyledPlatformSelectionContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -183,15 +184,18 @@ const StyledPlatformDescription = styled.div`
   line-height: 1.4;
 `;
 
-const StyledPlatformLogo = styled.div`
+const StyledPlatformLogo = styled.div<{ dark?: boolean }>`
   align-items: center;
   border-radius: ${({ theme }) => theme.border.radius.sm};
   display: flex;
   flex-shrink: 0;
   height: 100%;
   width: 100%;
-  justify-content: flex-end;
+  justify-content: center;
   position: relative;
+  background: ${({ theme, dark }) =>
+    dark ? theme.background.invertedPrimary : theme.background.primary};
+  padding: ${({ theme }) => theme.spacing(1)};
 `;
 
 const StyledSmartListingIcon = styled.div`
@@ -251,6 +255,7 @@ export const PlatformSelect = ({
   const [loading, setLoading] = useState(false);
   const { t } = useLingui();
   const [showError, setShowError] = useState(false);
+  const { colorScheme } = useColorScheme();
   const realEstatePlatforms = Object.keys(PLATFORMS)
     .filter(
       (platform) => PLATFORMS[platform as PlatformId].type === 'real_estate',
@@ -357,7 +362,7 @@ export const PlatformSelect = ({
             >
               <StyledPlatformCardContent>
                 <StyledPlatformIconContainer>
-                  <StyledPlatformLogo>
+                  <StyledPlatformLogo dark={colorScheme === 'Dark'}>
                     {platform.logo ? (
                       <StyledPlatformLogoImage
                         src={platform.logo}
