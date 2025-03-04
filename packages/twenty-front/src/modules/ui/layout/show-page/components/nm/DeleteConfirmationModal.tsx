@@ -8,8 +8,13 @@ import {
   StyledModalTitle,
   StyledModalTitleContainer,
 } from '@/ui/layout/show-page/components/nm/modal-components/ModalComponents';
-import { Button, IconExchange, IconTrash } from 'twenty-ui';
+import { Button, IconTrash } from 'twenty-ui';
 import { useLingui } from '@lingui/react/macro';
+import styled from '@emotion/styled';
+
+const StyledSpacer = styled.div`
+  padding-top: ${({ theme }) => theme.spacing(1)};
+`;
 
 type Props = {
   onClose: () => void;
@@ -37,8 +42,8 @@ const DeleteConfirmationModal = forwardRef<ModalRefType, Props>(
         <StyledModalContainer adaptiveHeight>
           <StyledModalHeader>
             <StyledModalTitleContainer>
-              <IconExchange size={16} />
-              <StyledModalTitle>{t`Compare Changes`}</StyledModalTitle>
+              <IconTrash size={16} />
+              <StyledModalTitle>{t`Delete`}</StyledModalTitle>
             </StyledModalTitleContainer>
             <StyledModalHeaderButtons>
               <Button
@@ -51,12 +56,12 @@ const DeleteConfirmationModal = forwardRef<ModalRefType, Props>(
           </StyledModalHeader>
           <StyledModalContent>
             {description && <div>{description}</div>}
+            <StyledSpacer />
             <div>
               <Button
                 title={'Yes, I understand'}
                 variant={'primary'}
                 accent={'danger'}
-                Icon={IconTrash}
                 disabled={loading}
                 onClick={onDelete}
               />
