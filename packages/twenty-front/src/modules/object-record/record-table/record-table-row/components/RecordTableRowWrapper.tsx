@@ -16,6 +16,7 @@ type RecordTableRowWrapperProps = {
   rowIndexForDrag: number;
   isPendingRow?: boolean;
   children: ReactNode;
+  readonly?: boolean;
 };
 
 export const RecordTableRowWrapper = ({
@@ -24,6 +25,7 @@ export const RecordTableRowWrapper = ({
   rowIndexForDrag,
   isPendingRow,
   children,
+  readonly,
 }: RecordTableRowWrapperProps) => {
   const { objectMetadataItem } = useRecordTableContextOrThrow();
 
@@ -72,6 +74,7 @@ export const RecordTableRowWrapper = ({
           isSelected: currentRowSelected,
           isPendingRow,
           inView,
+          readonly,
         }}
       >
         {children}

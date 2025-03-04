@@ -13,6 +13,29 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#. js-lingui-explicit-id
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
+#~ msgid "Coming Soon"
+#~ msgstr "Coming Soon"
+
+#. js-lingui-explicit-id
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
+#~ msgid "Create Draft"
+#~ msgstr "Create Draft"
+
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
+msgid "(coming soon)"
+msgstr "(coming soon)"
+
+#: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
+msgid "(Old)"
+msgstr "(Old)"
+
+#: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
+msgid "(Updated)"
+msgstr "(Updated)"
+
 #: src/modules/object-record/record-board/record-board-column/utils/computeAggregateValueAndLabel.ts
 msgid "{aggregateLabel} of {fieldLabel}"
 msgstr "{aggregateLabel} of {fieldLabel}"
@@ -37,6 +60,10 @@ msgstr "{overviewLabel} Overview"
 #: src/pages/settings/roles/components/RoleAssignmentConfirmationModalSubtitle.tsx
 msgid "{workspaceMemberName} will be unassigned from the following role:"
 msgstr "{workspaceMemberName} will be unassigned from the following role:"
+
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
+#~ msgid "<0>{0}</0>"
+#~ msgstr "<0>{0}</0>"
 
 #: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
 msgid "<0>Nester</0> will analyze available data and suggest values for empty fields."
@@ -130,6 +157,10 @@ msgid "Add a description..."
 msgstr "Add a description..."
 
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Add any other documents that should be included in the publication."
+msgstr "Add any other documents that should be included in the publication."
+
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Add documents related to your property that will be visible in the publication."
 msgstr "Add documents related to your property that will be visible in the publication."
 
@@ -179,6 +210,34 @@ msgstr "Add your first {objectLabel}"
 msgid "Added {beautifiedCreatedAt}"
 msgstr "Added {beautifiedCreatedAt}"
 
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Additional Documents"
+msgstr "Additional Documents"
+
+#: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
+msgid "Address"
+msgstr "Address"
+
+#: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
+msgid "Address City"
+msgstr "Address City"
+
+#: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
+msgid "Address Country"
+msgstr "Address Country"
+
+#: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
+msgid "Address Postcode"
+msgstr "Address Postcode"
+
+#: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
+msgid "Address State"
+msgstr "Address State"
+
+#: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
+msgid "Address Street 1"
+msgstr "Address Street 1"
+
 #: src/modules/object-record/object-filter-dropdown/components/AdvancedFilterButton.tsx
 msgid "Advanced filter"
 msgstr "Advanced filter"
@@ -186,6 +245,14 @@ msgstr "Advanced filter"
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 #~ msgid "Afrikaans"
 #~ msgstr "Afrikaans"
+
+#: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
+msgid "Agency Credentials"
+msgstr "Agency Credentials"
+
+#: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
+msgid "Agriculture Subtype"
+msgstr "Agriculture Subtype"
 
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationShortLabel.ts
 msgid "All"
@@ -226,6 +293,10 @@ msgstr "An optional description"
 #: src/modules/auth/sign-in-up/components/FooterNote.tsx
 msgid "and"
 msgstr "and"
+
+#: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
+msgid "Apartment Subtype"
+msgstr "Apartment Subtype"
 
 #: src/pages/onboarding/ChooseYourPlan.tsx
 #: src/modules/settings/hooks/useSettingsNavigationItems.tsx
@@ -365,6 +436,8 @@ msgid "Calendars"
 msgstr "Calendars"
 
 #: src/pages/auth/Authorize.tsx
+#: src/modules/ui/layout/show-page/components/nm/PublishDraftModal.tsx
+#: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
 #: src/modules/ui/layout/modal/components/ConfirmationModal.tsx
 #: src/modules/settings/components/SaveAndCancelButtons/CancelButton.tsx
 #: src/modules/record-edit/components/custom/ImageEditModal.tsx
@@ -390,6 +463,10 @@ msgstr "Cancel your subscription"
 #~ msgid "Catalan"
 #~ msgstr "Catalan"
 
+#: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
+msgid "Category"
+msgstr "Category"
+
 #: src/pages/settings/SettingsBilling.tsx
 msgid "Change {to}"
 msgstr "Change {to}"
@@ -407,6 +484,10 @@ msgstr "Change Password"
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 #~ msgid "Chinese — Traditional"
 #~ msgstr "Chinese — Traditional"
+
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
+msgid "Choose a platform"
+msgstr "Choose a platform"
 
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx
 msgid "Choose an object"
@@ -436,10 +517,18 @@ msgstr "Choose your Trial"
 msgid "Close command menu"
 msgstr "Close command menu"
 
-#. js-lingui-explicit-id
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
 msgid "Coming Soon"
 msgstr "Coming Soon"
+
+#: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
+msgid "Compare Changes"
+msgstr "Compare Changes"
+
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Concise property information overview sent to clients through the auto responder."
+msgstr "Concise property information overview sent to clients through the auto responder."
 
 #: src/pages/settings/security/SettingsSecurity.tsx
 msgid "Configure an SSO connection"
@@ -546,8 +635,6 @@ msgstr "Create a workflow and return here to view its versions"
 msgid "Create API key"
 msgstr "Create API key"
 
-#. js-lingui-explicit-id
-#: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
 msgid "Create Draft"
 msgstr "Create Draft"
@@ -576,6 +663,10 @@ msgstr "Create your first publication from a property"
 #: src/pages/onboarding/CreateWorkspace.tsx
 msgid "Create your workspace"
 msgstr "Create your workspace"
+
+#: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
+msgid "Current draft values"
+msgstr "Current draft values"
 
 #: src/pages/settings/workspace/SettingsCustomDomain.tsx
 msgid "Custom Domain"
@@ -673,6 +764,7 @@ msgstr "Define the name and description of your object"
 
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
+#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 #: src/modules/action-menu/components/__stories__/RightDrawerActionMenuDropdown.stories.tsx
@@ -757,6 +849,10 @@ msgstr "Description"
 msgid "Destroy"
 msgstr "Destroy"
 
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Detailed property presentation document sent to potential buyers through the auto responder."
+msgstr "Detailed property presentation document sent to potential buyers through the auto responder."
+
 #: src/pages/settings/developers/SettingsDevelopers.tsx
 #: src/pages/settings/developers/SettingsDevelopers.tsx
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx
@@ -765,6 +861,10 @@ msgstr "Destroy"
 #: src/modules/settings/hooks/useSettingsNavigationItems.tsx
 msgid "Developers"
 msgstr "Developers"
+
+#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+msgid "Differences {differenceLength}"
+msgstr "Differences {differenceLength}"
 
 #: src/modules/workflow/components/RecordShowPageWorkflowHeader.tsx
 #: src/modules/action-menu/actions/record-actions/constants/WorkflowActionsConfig.ts
@@ -787,6 +887,7 @@ msgid "Domain"
 msgstr "Domain"
 
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Download"
 msgstr "Download"
 
@@ -798,7 +899,6 @@ msgstr "Download"
 #~ msgid "Drag & drop images here, or click to select files"
 #~ msgstr "Drag & drop images here, or click to select files"
 
-#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Drop documents here"
 msgstr "Drop documents here"
@@ -832,6 +932,9 @@ msgid "Earliest date"
 msgstr "Earliest date"
 
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/Publishing.tsx
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Edit"
 msgstr "Edit"
 
@@ -1077,12 +1180,20 @@ msgstr "Full access"
 msgid "Functions"
 msgstr "Functions"
 
+#: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
+msgid "Gastronomy Subtype"
+msgstr "Gastronomy Subtype"
+
 #: src/pages/settings/SettingsWorkspace.tsx
 #: src/pages/settings/SettingsWorkspace.tsx
 #: src/pages/settings/workspace/SettingsDomain.tsx
 #: src/modules/settings/hooks/useSettingsNavigationItems.tsx
 msgid "General"
 msgstr "General"
+
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Generate"
+msgstr "Generate"
 
 #: src/modules/object-record/record-show/components/nm/AISuite.tsx
 msgid "Generate Analysis"
@@ -1182,9 +1293,23 @@ msgstr "If you’ve lost this key, you can regenerate it, but be aware that any 
 msgid "Inactive"
 msgstr "Inactive"
 
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
+msgid ""
+"Increase your reach and target potential buyers and tenants through\n"
+"            the largest real estate platforms. Choose the platforms you want to\n"
+"            publish on."
+msgstr ""
+"Increase your reach and target potential buyers and tenants through\n"
+"            the largest real estate platforms. Choose the platforms you want to\n"
+"            publish on."
+
 #: src/pages/settings/data-model/SettingsObjectDetailPage.tsx
 msgid "Indexes"
 msgstr "Indexes"
+
+#: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
+msgid "Industrial Objects Subtype"
+msgstr "Industrial Objects Subtype"
 
 #: src/modules/settings/data-model/objects/forms/components/SettingsDataModelObjectAboutForm.tsx
 #: src/modules/settings/data-model/fields/forms/components/SettingsDataModelFieldIconLabelForm.tsx
@@ -1295,6 +1420,34 @@ msgstr "Light"
 msgid "Link copied to clipboard"
 msgstr "Link copied to clipboard"
 
+#: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
+msgid "List your property conveniently to newhome.ch."
+msgstr "List your property conveniently to newhome.ch."
+
+#: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
+msgid "List your property on Comparis."
+msgstr "List your property on Comparis."
+
+#: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
+msgid "List your property on Facebook."
+msgstr "List your property on Facebook."
+
+#: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
+msgid "List your property on Flatfox."
+msgstr "List your property on Flatfox."
+
+#: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
+msgid "List your property on Homegate."
+msgstr "List your property on Homegate."
+
+#: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
+msgid "List your property on ImmoScout24."
+msgstr "List your property on ImmoScout24."
+
+#: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
+msgid "List your property on Instagram."
+msgstr "List your property on Instagram."
+
 #: src/modules/settings/data-model/objects/forms/components/SettingsDataModelObjectAboutForm.tsx
 msgid "Listings"
 msgstr "Listings"
@@ -1351,6 +1504,10 @@ msgstr "Marketing Video"
 msgid "Max"
 msgstr "Max"
 
+#: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
+msgid "Maximum reach through social media! Advertise your property directly on Facebook and Instagram. Create targeted ads and track performance in real-time."
+msgstr "Maximum reach through social media! Advertise your property directly on Facebook and Instagram. Create targeted ads and track performance in real-time."
+
 #: src/pages/settings/SettingsWorkspaceMembers.tsx
 #: src/pages/settings/SettingsWorkspaceMembers.tsx
 #: src/modules/settings/hooks/useSettingsNavigationItems.tsx
@@ -1361,6 +1518,14 @@ msgstr "Members"
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationLabel.ts
 msgid "Min"
 msgstr "Min"
+
+#: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
+msgid "Missing required fields: {missingFieldsString}"
+msgstr "Missing required fields: {missingFieldsString}"
+
+#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+msgid "More"
+msgstr "More"
 
 #: src/modules/object-record/record-table/record-table-footer/components/RecordTableColumnAggregateFooterDropdownContent.tsx
 #: src/modules/object-record/record-board/record-board-column/components/RecordBoardColumnHeaderAggregateDropdownMenuContent.tsx
@@ -1440,6 +1605,10 @@ msgstr "Navigate to previous workflow"
 msgid "New"
 msgstr "New"
 
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
+msgid "NEW"
+msgstr "NEW"
+
 #: src/modules/command-menu/hooks/useCommandMenu.ts
 msgid "New {capitalizedObjectNameSingular}"
 msgstr "New {capitalizedObjectNameSingular}"
@@ -1468,6 +1637,11 @@ msgstr "New Object"
 msgid "New Password"
 msgstr "New Password"
 
+#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+msgid "New Publication"
+msgstr "New Publication"
+
 #: src/modules/ui/layout/page/components/PageAddButton.tsx
 #: src/modules/ui/layout/page/components/PageAddButton.tsx
 #: src/modules/action-menu/actions/record-actions/constants/WorkflowActionsConfig.ts
@@ -1490,8 +1664,13 @@ msgstr "No connected account"
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "No description"
 msgstr "No description"
+
+#: src/modules/ui/layout/show-page/components/nm/ShowPageImageBanner.tsx
+msgid "No images available"
+msgstr "No images available"
 
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
 msgid "No inquiries yet"
@@ -1574,6 +1753,10 @@ msgstr "Objects"
 msgid "Off the beaten path"
 msgstr "Off the beaten path"
 
+#: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
+msgid "Offer Type"
+msgstr "Offer Type"
+
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Open"
 msgstr "Open"
@@ -1608,6 +1791,10 @@ msgstr "Other"
 #: src/pages/not-found/NotFound.tsx
 msgid "Page Not Found"
 msgstr "Page Not Found"
+
+#: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
+msgid "Parking Space Subtype"
+msgstr "Parking Space Subtype"
 
 #: src/modules/settings/security/components/SettingsSecurityOptionsList.tsx
 msgid "Password"
@@ -1651,10 +1838,18 @@ msgstr "Permanently destroy workflows"
 msgid "Permissions"
 msgstr "Permissions"
 
+#: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
+msgid "Personalized listing for your property. Get more visibility and better reach with a tailored listing."
+msgstr "Personalized listing for your property. Get more visibility and better reach with a tailored listing."
+
 #: src/pages/settings/SettingsWorkspace.tsx
 #: src/pages/settings/SettingsProfile.tsx
 msgid "Picture"
 msgstr "Picture"
+
+#: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
+msgid "Platform"
+msgstr "Platform"
 
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx
 msgid "Please enter a valid URL"
@@ -1667,6 +1862,10 @@ msgstr "Please type \"{confirmationValue}\" to confirm you want to delete this A
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx
 msgid "Please type {confirmationText} to confirm you want to delete this webhook."
 msgstr "Please type {confirmationText} to confirm you want to delete this webhook."
+
+#: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
+msgid "Plot Subtype"
+msgstr "Plot Subtype"
 
 #: src/modules/settings/data-model/objects/forms/components/SettingsDataModelObjectAboutForm.tsx
 msgid "Plural"
@@ -1728,9 +1927,21 @@ msgstr "Privacy Policy"
 msgid "Profile"
 msgstr "Profile"
 
+#: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
+msgid "Property"
+msgstr "Property"
+
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Property Documents"
 msgstr "Property Documents"
+
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Property Exposé"
+msgstr "Property Exposé"
+
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Property Flyer"
+msgstr "Property Flyer"
 
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 msgid "Property Images"
@@ -1744,17 +1955,31 @@ msgstr "Pseudo-English"
 msgid "Publication completion -"
 msgstr "Publication completion -"
 
+#: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
+msgid "Publication Draft"
+msgstr "Publication Draft"
+
+#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
 msgid "Publication Draft created successfully"
 msgstr "Publication Draft created successfully"
 
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/Publishing.tsx
 msgid "Publish"
 msgstr "Publish"
+
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/Publishing.tsx
+msgid "Publishing..."
+msgstr "Publishing..."
 
 #: src/modules/settings/developers/components/SettingsReadDocumentationButton.tsx
 msgid "Read documentation"
 msgstr "Read documentation"
+
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
+msgid "Real Estate Platforms"
+msgstr "Real Estate Platforms"
 
 #: src/modules/settings/profile/components/ChangePassword.tsx
 msgid "Receive an email containing password update link"
@@ -1771,6 +1996,10 @@ msgstr "Recent Visitors"
 #: src/modules/command-menu/components/CommandMenu.tsx
 msgid "Record Selection"
 msgstr "Record Selection"
+
+#: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
+msgid "Reference Property"
+msgstr "Reference Property"
 
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
@@ -1794,6 +2023,7 @@ msgstr "Releases"
 #: src/pages/settings/roles/components/RoleAssignmentTableRow.tsx
 #: src/pages/settings/roles/components/RoleAssignmentConfirmationModal.tsx
 #: src/modules/ui/input/components/ImageInput.tsx
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Remove"
 msgstr "Remove"
 
@@ -1824,6 +2054,10 @@ msgstr "Reset to"
 #: src/modules/command-menu/hooks/useSearchRecords.tsx
 msgid "Results"
 msgstr "Results"
+
+#: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
+msgid "Review differences between your property and its publication drafts. Syncing will update the publication drafts with the current property values."
+msgstr "Review differences between your property and its publication drafts. Syncing will update the publication drafts with the current property values."
 
 #: src/pages/settings/roles/SettingsRoles.tsx
 #: src/pages/settings/roles/SettingsRoles.tsx
@@ -1894,6 +2128,10 @@ msgstr "Search for an object..."
 msgid "Search records"
 msgstr "Search records"
 
+#: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
+msgid "Secondary Rooms Subtype"
+msgstr "Secondary Rooms Subtype"
+
 #: src/pages/settings/security/SettingsSecurity.tsx
 #: src/pages/settings/security/SettingsSecurity.tsx
 #: src/modules/settings/hooks/useSettingsNavigationItems.tsx
@@ -1925,6 +2163,10 @@ msgstr "See versions history"
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx
 msgid "Select the events you wish to send to this endpoint"
 msgstr "Select the events you wish to send to this endpoint"
+
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
+msgid "Select where you want to publish your property listing"
+msgstr "Select where you want to publish your property listing"
 
 #: src/pages/settings/profile/appearance/components/SettingsExperience.tsx
 msgid "Select your preferred language"
@@ -2014,6 +2256,10 @@ msgstr "Skip"
 msgid "Sort"
 msgstr "Sort"
 
+#: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
+msgid "Source values"
+msgstr "Source values"
+
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 #~ msgid "Spanish"
 #~ msgstr "Spanish"
@@ -2047,6 +2293,10 @@ msgstr "Subdomain can not be shorter than 3 characters"
 msgid "Subscription has been switched {to}"
 msgstr "Subscription has been switched {to}"
 
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/Publishing.tsx
+msgid "Successfully published"
+msgstr "Successfully published"
+
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationShortLabel.ts
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationLabel.ts
 msgid "Sum"
@@ -2071,6 +2321,18 @@ msgstr "Switch {to}"
 #: src/pages/settings/SettingsBilling.tsx
 msgid "Switch billing {to}"
 msgstr "Switch billing {to}"
+
+#: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
+msgid "Sync All"
+msgstr "Sync All"
+
+#: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
+msgid "Sync Drafts with Property"
+msgstr "Sync Drafts with Property"
+
+#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+msgid "Sync Publications"
+msgstr "Sync Publications"
 
 #: src/modules/settings/data-model/fields/forms/components/SettingsDataModelFieldIconLabelForm.tsx
 msgid "Synchronize Field Label and API Name"
@@ -2152,6 +2414,10 @@ msgstr "This action cannot be undone. This will permanently delete this user and
 msgid "This action cannot be undone. This will permanently delete your entire workspace. <0/> Please type in your email to confirm."
 msgstr "This action cannot be undone. This will permanently delete your entire workspace. <0/> Please type in your email to confirm."
 
+#: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
+msgid "This includes the following platforms: ImmoScout24, Homegate, and more."
+msgstr "This includes the following platforms: ImmoScout24, Homegate, and more."
+
 #: src/pages/settings/roles/components/RoleAssignmentConfirmationModalSubtitle.tsx
 msgid "This member will be unassigned from this role."
 msgstr "This member will be unassigned from this role."
@@ -2219,7 +2485,12 @@ msgstr "Unknown error"
 msgid "Unlimited contacts"
 msgstr "Unlimited contacts"
 
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/Publishing.tsx
+msgid "Unpublished"
+msgstr "Unpublished"
+
 #: src/modules/ui/input/components/ImageInput.tsx
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Upload"
 msgstr "Upload"
 
@@ -2275,6 +2546,10 @@ msgstr "Values"
 #: src/pages/settings/SettingsBilling.tsx
 msgid "View billing details"
 msgstr "View billing details"
+
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/Publishing.tsx
+msgid "View Publication"
+msgstr "View Publication"
 
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
 msgid "Visitor Activity"
@@ -2389,6 +2664,14 @@ msgstr "Your name as it will be displayed"
 #: src/pages/onboarding/CreateProfile.tsx
 msgid "Your name as it will be displayed on the app"
 msgstr "Your name as it will be displayed on the app"
+
+#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+msgid "Your Publication Drafts were synced successfully"
+msgstr "Your Publication Drafts were synced successfully"
+
+#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+#~ msgid "Your Publications Draft was synced successfully"
+#~ msgstr "Your Publications Draft was synced successfully"
 
 #: src/pages/auth/SignInUp.tsx
 msgid "Your Workspace"

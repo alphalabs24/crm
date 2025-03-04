@@ -8,7 +8,7 @@ import { useRecoilComponentValueV2 } from '@/ui/utilities/state/component-state/
 import { isNonEmptyArray } from '~/utils/isNonEmptyArray';
 
 export const RecordTableCellsVisible = () => {
-  const { isSelected } = useRecordTableRowContextOrThrow();
+  const { isSelected, readonly } = useRecordTableRowContextOrThrow();
 
   const { isDragging } = useRecordTableRowDraggableContextOrThrow();
 
@@ -24,7 +24,11 @@ export const RecordTableCellsVisible = () => {
 
   return (
     <>
-      <RecordTableCellWrapper column={visibleTableColumns[0]} columnIndex={0}>
+      <RecordTableCellWrapper
+        column={visibleTableColumns[0]}
+        columnIndex={0}
+        readonly={readonly}
+      >
         <RecordTableTd
           isSelected={isSelected}
           isDragging={isDragging}
@@ -38,6 +42,7 @@ export const RecordTableCellsVisible = () => {
           key={column.fieldMetadataId}
           column={column}
           columnIndex={columnIndex + 1}
+          readonly={readonly}
         >
           <RecordTableTd
             isSelected={isSelected}

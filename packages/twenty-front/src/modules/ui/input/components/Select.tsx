@@ -156,10 +156,11 @@ export const Select = <Value extends SelectValue>({
                       text={option.label}
                       selected={selectedOption.value === option.value}
                       needIconCheck={needIconCheck}
-                      onClick={() => {
+                      onClick={(e) => {
                         onChange?.(option.value);
                         onBlur?.();
                         closeDropdown();
+                        e.stopPropagation();
                       }}
                     />
                   ))}

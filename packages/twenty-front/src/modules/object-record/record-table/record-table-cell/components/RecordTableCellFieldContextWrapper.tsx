@@ -16,8 +16,10 @@ import { isUndefinedOrNull } from '~/utils/isUndefinedOrNull';
 
 export const RecordTableCellFieldContextWrapper = ({
   children,
+  readonly,
 }: {
   children: ReactNode;
+  readonly?: boolean;
 }) => {
   const { objectMetadataItem } = useRecordTableContextOrThrow();
 
@@ -45,7 +47,7 @@ export const RecordTableCellFieldContextWrapper = ({
         recoilScopeId: recordId + columnDefinition.label,
         recordId,
         fieldDefinition: columnDefinition,
-        useUpdateRecord: () => [updateRecord, {}],
+        useUpdateRecord: readonly ? undefined : () => [updateRecord, {}],
         hotkeyScope: customHotkeyScope,
         labelIdentifierLink: indexIdentifierUrl(recordId),
         isLabelIdentifier: isLabelIdentifierField({

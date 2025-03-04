@@ -10,6 +10,7 @@ export type RecordTableCellContextValue = {
   isInEditMode: boolean;
   hasSoftFocus: boolean;
   cellPosition: TableCellPosition;
+  readonly?: boolean;
 };
 
 export const RecordTableCellContext =

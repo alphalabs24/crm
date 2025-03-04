@@ -12,9 +12,7 @@ import { ShowPageSummaryCardSkeletonLoader } from '@/ui/layout/show-page/compone
 
 import { useIsMobile } from '@/ui/utilities/responsive/hooks/useIsMobile';
 import styled from '@emotion/styled';
-// eslint-disable-next-line no-restricted-imports
 import { Modal, ModalRefType } from '@/ui/layout/modal/components/Modal';
-// eslint-disable-next-line no-restricted-imports
 import { FieldMetadataItem } from '@/object-metadata/types/FieldMetadataItem';
 import { PlatformBadge } from '@/object-record/record-show/components/nm/publication/PlatformBadge';
 import { ModalHotkeyScope } from '@/ui/layout/modal/components/types/ModalHotkeyScope';
@@ -35,12 +33,12 @@ import {
   LARGE_DESKTOP_VIEWPORT,
 } from 'twenty-ui';
 import { FieldMetadataType } from '~/generated/graphql';
+import { useSubcategoryByCategory } from '../../hooks/useSubcategoryByCategory';
 
 const StyledFormBorder = styled.div`
   border: 1px solid ${({ theme }) => theme.border.color.light};
   border-radius: ${({ theme }) => theme.border.radius.sm};
   margin: ${({ theme }) => theme.spacing(4)};
-  width: 100%;
 
   @media (min-width: ${LARGE_DESKTOP_VIEWPORT}px) {
     max-width: 800px;
@@ -159,27 +157,6 @@ const StyledUploadIcon = styled(IconUpload)`
   margin-bottom: ${({ theme }) => theme.spacing(3)};
 `;
 
-const StyledLoadingContainer = styled.div`
-  align-items: center;
-  background: ${({ theme }) => theme.background.transparent.secondary};
-  border-radius: ${({ theme }) => theme.border.radius.md};
-  bottom: 0;
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(2)};
-  justify-content: center;
-  left: 0;
-  position: absolute;
-  right: 0;
-  top: 0;
-`;
-
-const StyledLoadingText = styled.div`
-  color: ${({ theme }) => theme.font.color.primary};
-  font-size: ${({ theme }) => theme.font.size.md};
-  font-weight: ${({ theme }) => theme.font.weight.medium};
-`;
-
 const StyledModalTitleContainer = styled.div`
   align-items: center;
   display: flex;
@@ -209,6 +186,17 @@ const StyledDocumentName = styled.div`
   font-size: ${({ theme }) => theme.font.size.md};
   font-weight: ${({ theme }) => theme.font.weight.medium};
 `;
+
+export const requiredPublicationFields = ['agency', 'platform', 'category'];
+
+// Careful: Don't use this for anything else than the overview UI. This contains subtypes which should not be defined for validation purposes.
+const requiredPublicationFieldsAndSubtypes = [
+  ...requiredPublicationFields,
+  'apartmentSubtype',
+  'houseSubtype',
+  'plotSubtype',
+  'gastronomySubtype',
+];
 
 export const ObjectOverview = ({
   targetableObject,
@@ -240,7 +228,6 @@ export const ObjectOverview = ({
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [isProcessed, setIsProcessed] = useState(false);
 
-  // eslint-disable-next-line @nx/workspace-no-state-useref
   const modalRef = useRef<ModalRefType>(null);
 
   const availableFieldMetadataItems = objectMetadataItem.fields
@@ -267,32 +254,9 @@ export const ObjectOverview = ({
         : 'inlineFieldMetadataItems',
   );
 
-  const rowsToShow = useMemo(() => {
-    let subType = '';
-    // Check Category Subtype to show
-    switch (recordFromStore?.category?.subtype) {
-      case 'house':
-        subType = 'houseSubtype';
-        break;
-      case 'apartment':
-        subType = 'apartmentSubtype';
-        break;
-      case 'plot':
-        subType = 'plotSubtype';
-        break;
-      case 'property':
-        subType = 'propertySubtype';
-        break;
-      case 'gastronomy':
-        subType = 'gastronomySubtype';
-        break;
-      case 'industrial':
-        subType = 'industrialSubtype';
-        break;
-      default:
-        break;
-    }
+  const subType = useSubcategoryByCategory(recordFromStore?.category);
 
+  const rowsToShow = useMemo(() => {
     const finances = [];
 
     // Check Price Unit to show either price or rent
@@ -324,7 +288,14 @@ export const ObjectOverview = ({
     ];
 
     return base;
-  }, [recordFromStore]);
+  }, [isPublication, recordFromStore?.priceUnit, subType]);
+
+  const isDefinedInRecord = (field: string) => {
+    return (
+      recordFromStore?.[field] !== undefined &&
+      recordFromStore?.[field] !== null
+    );
+  };
 
   const mainDetails: FieldMetadataItem[] = [];
   const { t } = useLingui();
@@ -455,7 +426,7 @@ export const ObjectOverview = ({
                   recordFromStore.address &&
                   (recordFromStore.address.addressStreet1 ||
                     recordFromStore.address.addressCity)
-                    ? `${recordFromStore.address?.addressStreet1} ${recordFromStore.address?.addressCity} ${recordFromStore.address?.addressState} ${recordFromStore.address?.addressPostcode}`
+                    ? `${recordFromStore.address?.addressStreet1 || ''} ${recordFromStore.address?.addressCity || ''} ${recordFromStore.address?.addressState || ''} ${recordFromStore.address?.addressPostcode || ''} ${recordFromStore.address?.addressCountry || ''}`
                     : undefined
                 }
                 isMobile={isMobile}
@@ -486,6 +457,12 @@ export const ObjectOverview = ({
                     <RecordInlineEntry
                       key={FieldMetadataitem.id + 'relation' + index}
                       loading={recordLoading}
+                      isRequired={
+                        !isDefinedInRecord(FieldMetadataitem.name) &&
+                        requiredPublicationFieldsAndSubtypes.includes(
+                          FieldMetadataitem.name,
+                        )
+                      }
                     />
                   </FieldContext.Provider>
                   {inlineFieldMetadataItems?.length === 0 ? (
@@ -522,6 +499,12 @@ export const ObjectOverview = ({
                     <RecordInlineEntry
                       key={fieldMetadataItem.id + 'inline' + index}
                       loading={recordLoading}
+                      isRequired={
+                        !isDefinedInRecord(fieldMetadataItem.name) &&
+                        requiredPublicationFieldsAndSubtypes.includes(
+                          fieldMetadataItem.name,
+                        )
+                      }
                     />
                   </FieldContext.Provider>
                   {index < mainDetails.length - 1 && <StyledBottomBorder />}

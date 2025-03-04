@@ -13,9 +13,13 @@ import { useIcons } from 'twenty-ui';
 
 type RecordInlineEntryProps = {
   loading?: boolean;
+  isRequired?: boolean;
 };
 
-export const RecordInlineEntry = ({ loading }: RecordInlineEntryProps) => {
+export const RecordInlineEntry = ({
+  loading,
+  isRequired,
+}: RecordInlineEntryProps) => {
   const { fieldDefinition, isCentered, isDisplayModeFixHeight } =
     useContext(FieldContext);
   const buttonIcon = useGetButtonIcon();
@@ -43,7 +47,7 @@ export const RecordInlineEntry = ({ loading }: RecordInlineEntryProps) => {
 
   return (
     <RecordInlineCellContext.Provider value={RecordInlineCellContextValue}>
-      <RecordInlineEntryContainer />
+      <RecordInlineEntryContainer isRequired={isRequired} />
     </RecordInlineCellContext.Provider>
   );
 };

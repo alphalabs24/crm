@@ -4,14 +4,14 @@ import {
 } from '@/ui/layout/show-page/components/nm/types/Platform';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
-import { useLingui } from '@lingui/react/macro';
+import { Trans, useLingui } from '@lingui/react/macro';
 import { tokenPairState } from '@/auth/states/tokenPairState';
 import { getLinkToShowPage } from '@/object-metadata/utils/getLinkToShowPage';
 import { SnackBarVariant } from '@/ui/feedback/snack-bar-manager/components/SnackBar';
 import { useSnackBar } from '@/ui/feedback/snack-bar-manager/hooks/useSnackBar';
 import axios from 'axios';
 import { Dispatch, SetStateAction, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import {
   Button,
@@ -20,6 +20,8 @@ import {
   LARGE_DESKTOP_VIEWPORT,
   IconLayoutGrid,
 } from 'twenty-ui';
+import { ValidationResult } from '../../../hooks/usePublicationValidation';
+import { useColorScheme } from '@/ui/theme/hooks/useColorScheme';
 const StyledPlatformSelectionContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -79,6 +81,8 @@ const StyledPlatformTypeActionsContainer = styled.div`
 const StyledPlatformTypeActions = styled.div`
   display: flex;
   gap: ${({ theme }) => theme.spacing(2)};
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing(4)};
 `;
 
 const StyledPlatformTypeTitle = styled.div`
@@ -180,15 +184,18 @@ const StyledPlatformDescription = styled.div`
   line-height: 1.4;
 `;
 
-const StyledPlatformLogo = styled.div`
+const StyledPlatformLogo = styled.div<{ dark?: boolean }>`
   align-items: center;
   border-radius: ${({ theme }) => theme.border.radius.sm};
   display: flex;
   flex-shrink: 0;
   height: 100%;
   width: 100%;
-  justify-content: flex-end;
+  justify-content: center;
   position: relative;
+  background: ${({ theme, dark }) =>
+    dark ? theme.background.invertedPrimary : theme.background.primary};
+  padding: ${({ theme }) => theme.spacing(1)};
 `;
 
 const StyledSmartListingIcon = styled.div`
@@ -206,6 +213,19 @@ const StyledPlatformLogoImage = styled.img`
   width: 100%;
 `;
 
+const StyledValidationDetails = styled.div`
+  color: ${({ theme }) => theme.font.color.danger};
+  font-size: ${({ theme }) => theme.font.size.sm};
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing(2)};
+`;
+
+const StyledEditLink = styled(Link)`
+  color: ${({ theme }) => theme.font.color.primary};
+  font-size: ${({ theme }) => theme.font.size.sm};
+`;
+
 // TODO: Remove this once we have the actual type form standard graphql
 type Agency = {
   id: string;
@@ -218,6 +238,7 @@ type PlatformSelectProps = {
   setSelectedPlatforms: Dispatch<SetStateAction<PlatformId[] | null>>;
   recordId: string;
   closeModal?: () => void;
+  validationDetails?: ValidationResult;
 };
 
 export const PlatformSelect = ({
@@ -225,6 +246,7 @@ export const PlatformSelect = ({
   selectedPlatforms,
   recordId,
   closeModal,
+  validationDetails,
 }: PlatformSelectProps) => {
   const navigate = useNavigate();
   const theme = useTheme();
@@ -232,6 +254,8 @@ export const PlatformSelect = ({
   const { enqueueSnackBar } = useSnackBar();
   const [loading, setLoading] = useState(false);
   const { t } = useLingui();
+  const [showError, setShowError] = useState(false);
+  const { colorScheme } = useColorScheme();
   const realEstatePlatforms = Object.keys(PLATFORMS)
     .filter(
       (platform) => PLATFORMS[platform as PlatformId].type === 'real_estate',
@@ -255,6 +279,13 @@ export const PlatformSelect = ({
 
   const createDraft = async () => {
     try {
+      if (
+        validationDetails?.missingFields &&
+        validationDetails?.missingFields?.length > 0
+      ) {
+        setShowError(true);
+        return;
+      }
       setLoading(true);
       // TODO: This will be changed to a loop that creates all drafts and consolidates them into one show page later. For now only newhome works anyway.
       const response = await axios.post(
@@ -298,22 +329,22 @@ export const PlatformSelect = ({
       <div>
         <StyledPlatformSelectionTitle>
           <IconLayoutGrid size={20} color={theme.font.color.primary} />
-          Choose a platform
+          {t`Choose a platform`}
         </StyledPlatformSelectionTitle>
         <StyledPlatformSelectionSubtitle>
-          Select where you want to publish your property listing
+          {t`Select where you want to publish your property listing`}
         </StyledPlatformSelectionSubtitle>
       </div>
 
       <StyledPlatformTypeContainer>
         <StyledPlatformTypeHeader>
           <StyledPlatformTypeTitle>
-            Real Estate Platforms
+            {t`Real Estate Platforms`}
           </StyledPlatformTypeTitle>
           <StyledPlatformTypeDescription>
-            Increase your reach and target potential buyers and tenants through
+            {t`Increase your reach and target potential buyers and tenants through
             the largest real estate platforms. Choose the platforms you want to
-            publish on.
+            publish on.`}
           </StyledPlatformTypeDescription>
         </StyledPlatformTypeHeader>
         <StyledPlatformGrid>
@@ -331,7 +362,7 @@ export const PlatformSelect = ({
             >
               <StyledPlatformCardContent>
                 <StyledPlatformIconContainer>
-                  <StyledPlatformLogo>
+                  <StyledPlatformLogo dark={colorScheme === 'Dark'}>
                     {platform.logo ? (
                       <StyledPlatformLogoImage
                         src={platform.logo}
@@ -344,8 +375,8 @@ export const PlatformSelect = ({
                 </StyledPlatformIconContainer>
                 <StyledPlatformInfo>
                   <StyledPlatformName comingSoon={platform.isBeta}>
-                    {platform.name} {platform.isBeta ? '(coming soon)' : ''}
-                    {platform.isNew && <StyledNewTag>NEW</StyledNewTag>}
+                    {platform.name} {platform.isBeta ? t`(coming soon)` : ''}
+                    {platform.isNew && <StyledNewTag>{t`NEW`}</StyledNewTag>}
                   </StyledPlatformName>
                   <StyledPlatformDescription>
                     {platform.description}
@@ -365,13 +396,20 @@ export const PlatformSelect = ({
         </StyledPlatformGrid>
         <StyledPlatformTypeActionsContainer>
           <StyledPlatformTypeActions>
+            {showError && (
+              <StyledValidationDetails>
+                {validationDetails?.message}
+                <StyledEditLink
+                  to={`${getLinkToShowPage('property', { id: recordId })}/edit`}
+                >
+                  {t`Edit`}
+                </StyledEditLink>
+              </StyledValidationDetails>
+            )}
             <Button
               variant="primary"
               accent="blue"
-              title={t({
-                id: 'Create Draft',
-                message: 'Create Draft',
-              })}
+              title={t`Create Draft`}
               onClick={createDraft}
               disabled={
                 selectedPlatforms?.length === 0 || !selectedPlatforms || loading
@@ -404,10 +442,7 @@ export const PlatformSelect = ({
               <Button
                 variant="primary"
                 accent="blue"
-                title={t({
-                  id: 'Create Draft',
-                  message: 'Create Draft',
-                })}
+                title={t`Coming Soon`}
                 disabled
               />
             </StyledPlatformTypeActions>
@@ -434,10 +469,7 @@ export const PlatformSelect = ({
               <Button
                 variant="primary"
                 accent="blue"
-                title={t({
-                  id: 'Coming Soon',
-                  message: 'Coming Soon',
-                })}
+                title={t`Coming Soon`}
                 disabled
               />
             </StyledPlatformTypeActions>

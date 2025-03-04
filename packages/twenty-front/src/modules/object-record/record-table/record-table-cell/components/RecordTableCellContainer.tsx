@@ -20,13 +20,15 @@ export const RecordTableCellContainer = ({
   editModeContent,
   nonEditModeContent,
 }: RecordTableCellContainerProps) => {
-  const { hasSoftFocus, isInEditMode } = useContext(RecordTableCellContext);
+  const { hasSoftFocus, isInEditMode, readonly } = useContext(
+    RecordTableCellContext,
+  );
 
   return (
     <RecordTableCellBaseContainer>
-      {isInEditMode ? (
+      {isInEditMode && !readonly ? (
         <RecordTableCellEditMode>{editModeContent}</RecordTableCellEditMode>
-      ) : hasSoftFocus ? (
+      ) : hasSoftFocus && !readonly ? (
         <RecordTableCellSoftFocusMode
           editModeContent={editModeContent}
           nonEditModeContent={nonEditModeContent}

@@ -33,7 +33,7 @@ const StyledTable = styled.table`
   }
 `;
 
-export const RecordTable = () => {
+export const RecordTable = ({ readonly }: { readonly?: boolean }) => {
   const { recordTableId, objectNameSingular } = useRecordTableContextOrThrow();
 
   const tableBodyRef = useRef<HTMLTableElement>(null);
@@ -90,24 +90,26 @@ export const RecordTable = () => {
           <StyledTable ref={tableBodyRef}>
             <RecordTableHeader />
             {!hasRecordGroups ? (
-              <RecordTableNoRecordGroupBody />
+              <RecordTableNoRecordGroupBody readonly={readonly} />
             ) : (
-              <RecordTableRecordGroupsBody />
+              <RecordTableRecordGroupsBody readonly={readonly} />
             )}
             <RecordTableStickyEffect />
             <RecordTableStickyBottomEffect />
           </StyledTable>
-          <DragSelect
-            dragSelectable={tableBodyRef}
-            onDragSelectionStart={() => {
-              resetTableRowSelection();
-              toggleClickOutsideListener(false);
-            }}
-            onDragSelectionChange={setRowSelected}
-            onDragSelectionEnd={() => {
-              toggleClickOutsideListener(true);
-            }}
-          />
+          {!readonly && (
+            <DragSelect
+              dragSelectable={tableBodyRef}
+              onDragSelectionStart={() => {
+                resetTableRowSelection();
+                toggleClickOutsideListener(false);
+              }}
+              onDragSelectionChange={setRowSelected}
+              onDragSelectionEnd={() => {
+                toggleClickOutsideListener(true);
+              }}
+            />
+          )}
         </>
       )}
     </>

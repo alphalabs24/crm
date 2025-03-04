@@ -24,6 +24,10 @@ const StyledFieldContainer = styled.div<{ isHorizontal?: boolean }>`
   min-width: ${({ isHorizontal }) => (isHorizontal ? '160px' : 'unset')};
 `;
 
+const StyledFieldName = styled.div`
+  color: ${({ theme }) => theme.font.color.primary};
+`;
+
 const StyledVerticalAligner = styled.div`
   align-items: center;
   display: flex;
@@ -91,7 +95,9 @@ export const RecordEditField = ({
 
   return (
     <StyledFieldContainer>
-      {showLabel && type !== 'custom' && field.label}
+      {showLabel && type !== 'custom' && (
+        <StyledFieldName>{field.label}</StyledFieldName>
+      )}
 
       <FieldContext.Provider
         key={record.id + field.id + 'edit'}

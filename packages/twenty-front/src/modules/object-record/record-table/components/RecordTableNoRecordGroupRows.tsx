@@ -5,7 +5,11 @@ import { RecordTableRow } from '@/object-record/record-table/record-table-row/co
 import { isRecordTableInitialLoadingComponentState } from '@/object-record/record-table/states/isRecordTableInitialLoadingComponentState';
 import { useRecoilComponentValueV2 } from '@/ui/utilities/state/component-state/hooks/useRecoilComponentValueV2';
 
-export const RecordTableNoRecordGroupRows = () => {
+export const RecordTableNoRecordGroupRows = ({
+  readonly,
+}: {
+  readonly?: boolean;
+}) => {
   const allRecordIds = useRecoilComponentValueV2(
     recordIndexAllRecordIdsComponentSelector,
   );
@@ -23,6 +27,7 @@ export const RecordTableNoRecordGroupRows = () => {
             recordId={recordId}
             rowIndexForFocus={rowIndex}
             rowIndexForDrag={rowIndex}
+            readonly={readonly}
           />
         );
       })}

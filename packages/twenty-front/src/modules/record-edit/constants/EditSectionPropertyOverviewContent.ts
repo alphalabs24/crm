@@ -1,5 +1,6 @@
 import { FinancialOverviewGroup } from '@/record-edit/constants/snippets/FinancialOverviewGroup';
 import { SectionContent } from '@/record-edit/types/EditSectionTypes';
+import { PropertyCategoryGroup } from './snippets/PropertyCategoryGroup';
 
 // TODO use graphql types of standard entities to reference the field names!
 // Field will use inline fields and input will use form inputs
@@ -42,13 +43,7 @@ export const OVERVIEW_SECTION_CONTENT: SectionContent[] = [
         ],
       },
       {
-        fields: [
-          { name: 'buyerLeads', type: 'field' },
-          {
-            name: 'refProperty',
-            type: 'input',
-          },
-        ],
+        fields: [{ name: 'buyerLeads', type: 'field' }],
       },
     ],
   },
@@ -56,13 +51,7 @@ export const OVERVIEW_SECTION_CONTENT: SectionContent[] = [
     title: 'Key Numbers',
     width: 'third',
     groups: [
-      {
-        isHorizontal: true,
-        fields: [
-          { name: 'category', type: 'field' },
-          { name: 'stage', type: 'field' },
-        ],
-      },
+      PropertyCategoryGroup,
       {
         isHorizontal: true,
         fields: [

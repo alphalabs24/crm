@@ -38,7 +38,7 @@ export const useFindOneRecord = <T extends ObjectRecord = ObjectRecord>({
     withSoftDeleted,
   });
 
-  const { data, loading, error } = useQuery<{
+  const { data, loading, error, refetch } = useQuery<{
     [nameSingular: string]: RecordGqlNode;
   }>(findOneRecordQuery, {
     skip: !objectMetadataItem || !objectRecordId || skip,
@@ -69,5 +69,6 @@ export const useFindOneRecord = <T extends ObjectRecord = ObjectRecord>({
     record: recordWithoutConnection,
     loading,
     error,
+    refetch,
   };
 };

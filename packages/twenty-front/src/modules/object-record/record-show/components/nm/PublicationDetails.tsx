@@ -133,6 +133,8 @@ type PublicationDetailsProps = {
   >;
 };
 
+const fieldToIgnore = ['id', '__typename', 'createdAt', 'updatedAt', 'stage'];
+
 export const PublicationDetails = ({
   targetableObject,
 }: PublicationDetailsProps) => {
@@ -145,7 +147,7 @@ export const PublicationDetails = ({
 
   const definedValuePercentage = useMemo(() => {
     const definedValues = Object.values(publication ?? {}).filter(
-      (value) => value !== null,
+      (value) => value !== null && !fieldToIgnore.includes(value),
     );
     return (definedValues.length / Object.keys(publication ?? {}).length) * 100;
   }, [publication]);

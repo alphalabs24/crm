@@ -39,6 +39,7 @@ type RecordTableWithWrappersProps = {
   objectNameSingular: string;
   recordTableId: string;
   viewBarId: string;
+  readonly?: boolean;
   updateRecordMutation: (params: any) => void;
 };
 
@@ -47,6 +48,7 @@ export const RecordTableWithWrappers = ({
   objectNameSingular,
   recordTableId,
   viewBarId,
+  readonly,
 }: RecordTableWithWrappersProps) => {
   const { resetTableRowSelection, selectAllRows, setHasUserSelectedAllRows } =
     useRecordTable({
@@ -109,7 +111,7 @@ export const RecordTableWithWrappers = ({
               <StyledTableWithHeader>
                 <StyledTableContainer>
                   <StyledTableInternalContainer>
-                    <RecordTable />
+                    <RecordTable readonly={readonly} />
                   </StyledTableInternalContainer>
                 </StyledTableContainer>
               </StyledTableWithHeader>

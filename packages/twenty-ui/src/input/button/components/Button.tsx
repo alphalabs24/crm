@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 export type ButtonSize = 'medium' | 'small';
 export type ButtonPosition = 'standalone' | 'left' | 'middle' | 'right';
 export type ButtonVariant = 'primary' | 'secondary' | 'tertiary';
-export type ButtonAccent = 'default' | 'blue' | 'danger' | 'purple';
+export type ButtonAccent = 'default' | 'blue' | 'danger' | 'purple' | 'orange';
 
 export type ButtonProps = {
   className?: string;
@@ -132,6 +132,7 @@ const StyledButton = styled('button', {
               background: ${!inverted
                 ? theme.color.blue
                 : theme.background.primary};
+              opacity: ${disabled ? 0.65 : 1};
               border-color: ${!inverted
                 ? focus
                   ? theme.color.blue
@@ -191,6 +192,42 @@ const StyledButton = styled('button', {
                     &:active {
                       background: ${!inverted
                         ? theme.color.red50
+                        : theme.background.tertiary};
+                    }
+                  `}
+            `;
+          case 'orange':
+            return css`
+              background: ${!inverted
+                ? theme.color.orange
+                : theme.background.primary};
+              border-color: ${!inverted
+                ? focus
+                  ? theme.color.orange
+                  : theme.background.transparent.light
+                : theme.background.transparent.light};
+              border-width: 1px 1px !important;
+              box-shadow: ${!disabled && focus
+                ? `0 0 0 3px ${
+                    !inverted
+                      ? theme.color.orange10
+                      : theme.background.transparent.medium
+                  }`
+                : 'none'};
+              color: ${!inverted
+                ? theme.background.primary
+                : theme.color.orange};
+              ${disabled
+                ? ''
+                : css`
+                    &:hover {
+                      background: ${!inverted
+                        ? theme.color.orange40
+                        : theme.background.secondary};
+                    }
+                    &:active {
+                      background: ${!inverted
+                        ? theme.color.orange50
                         : theme.background.tertiary};
                     }
                   `}
@@ -335,6 +372,54 @@ const StyledButton = styled('button', {
                     : 'transparent'
                   : theme.background.transparent.medium};
               }
+            `;
+          case 'orange':
+            return css`
+              background: transparent;
+              border-color: ${!inverted
+                ? variant === 'secondary'
+                  ? focus
+                    ? theme.color.orange
+                    : theme.color.orange
+                  : focus
+                    ? theme.color.orange
+                    : 'transparent'
+                : variant === 'secondary'
+                  ? focus || disabled
+                    ? theme.grayScale.gray0
+                    : theme.background.transparent.primary
+                  : focus
+                    ? theme.grayScale.gray0
+                    : 'transparent'};
+              border-width: 1px 1px 1px 1px !important;
+              box-shadow: ${!disabled && focus
+                ? `0 0 0 3px ${
+                    !inverted
+                      ? theme.color.orange10
+                      : theme.background.transparent.medium
+                  }`
+                : 'none'};
+              color: ${!inverted
+                ? theme.font.color.inverted
+                : theme.color.orange};
+              ${disabled
+                ? ''
+                : css`
+                    &:hover {
+                      background: ${!inverted
+                        ? !disabled
+                          ? theme.background.transparent.light
+                          : 'transparent'
+                        : theme.background.transparent.light};
+                    }
+                    &:active {
+                      background: ${!inverted
+                        ? !disabled
+                          ? theme.background.transparent.light
+                          : 'transparent'
+                        : theme.background.transparent.medium};
+                    }
+                  `}
             `;
         }
     }

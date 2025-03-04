@@ -1,10 +1,15 @@
 import {
-    PLATFORMS,
-    PlatformId,
+  PLATFORMS,
+  PlatformId,
 } from '@/ui/layout/show-page/components/nm/types/Platform';
+import { useColorScheme } from '@/ui/theme/hooks/useColorScheme';
 import styled from '@emotion/styled';
 
-const StyledPlatformBadge = styled.div<{ isActive?: boolean }>`
+const StyledPlatformBadge = styled.div<{
+  isActive?: boolean;
+  disabled?: boolean;
+  dark?: boolean;
+}>`
   align-items: center;
   display: flex;
   gap: ${({ theme }) => theme.spacing(2)};
@@ -14,9 +19,24 @@ const StyledPlatformBadge = styled.div<{ isActive?: boolean }>`
   border-radius: ${({ theme }) => theme.border.radius.sm};
   padding: ${({ theme }) => theme.spacing(1)};
   cursor: pointer;
+  background: ${({ theme, disabled, dark }) =>
+    disabled
+      ? dark
+        ? theme.background.invertedPrimary
+        : theme.background.secondary
+      : dark
+        ? theme.background.invertedPrimary
+        : theme.background.primary};
 
   &:hover {
-    background: ${({ theme }) => theme.background.secondary};
+    background: ${({ theme, disabled, dark }) =>
+      disabled
+        ? dark
+          ? theme.background.invertedPrimary
+          : theme.background.secondary
+        : dark
+          ? theme.background.invertedPrimary
+          : theme.background.primary};
   }
 `;
 
@@ -35,6 +55,7 @@ export const PlatformBadge = ({
   isActive,
   onClick,
 }: PlatformBadgeProps) => {
+  const { colorScheme } = useColorScheme();
   const platform =
     // TODO remove this and replace it with enum
     platformId === ('NEWHOME' as unknown as PlatformId)
@@ -42,7 +63,12 @@ export const PlatformBadge = ({
       : PLATFORMS[platformId];
 
   return (
-    <StyledPlatformBadge isActive={isActive} onClick={onClick}>
+    <StyledPlatformBadge
+      isActive={isActive}
+      onClick={onClick}
+      dark={colorScheme === 'Dark'}
+      disabled={!onClick}
+    >
       {platform?.logo && (
         <StyledPlatformLogo src={platform.logo} alt={platform.name} />
       )}
