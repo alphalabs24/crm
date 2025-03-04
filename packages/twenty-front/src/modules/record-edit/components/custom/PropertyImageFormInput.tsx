@@ -32,7 +32,8 @@ import {
   TooltipDelay,
 } from 'twenty-ui';
 import { ImageEditModal } from './ImageEditModal';
-import { css } from '@emotion/react';
+import { css, useTheme } from '@emotion/react';
+import { useColorScheme } from '@/ui/theme/hooks/useColorScheme';
 
 const StyledContainer = styled.div`
   display: flex;
@@ -325,6 +326,8 @@ const DraggableImageItem = ({
     onSaveEdit(image, newDescription);
   };
 
+  const theme = useTheme();
+
   return (
     <>
       <AppTooltip
@@ -362,7 +365,10 @@ const DraggableImageItem = ({
                 dropdownId={dropdownId}
                 clickableComponent={
                   <StyledRemoveButton show={hovering}>
-                    <IconDotsVertical size={14} />
+                    <IconDotsVertical
+                      size={14}
+                      color={theme.font.color.primary}
+                    />
                   </StyledRemoveButton>
                 }
                 dropdownMenuWidth={160}
@@ -401,6 +407,7 @@ const DraggableImageItem = ({
 export const PropertyImageFormInput = ({ loading }: { loading?: boolean }) => {
   const [hasRefreshed, setHasRefreshed] = useState(false);
   const { t } = useLingui();
+  const theme = useTheme();
 
   const {
     propertyImages,
@@ -560,7 +567,14 @@ export const PropertyImageFormInput = ({ loading }: { loading?: boolean }) => {
 
   const renderContent = () => {
     if (!hasRefreshed) {
-      return <Skeleton height={200} width={'100%'} />;
+      return (
+        <Skeleton
+          height={200}
+          width={'100%'}
+          baseColor={theme.background.secondary}
+          highlightColor={theme.background.transparent.lighter}
+        />
+      );
     }
 
     if (propertyImages.length === 0) {

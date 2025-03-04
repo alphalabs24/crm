@@ -14,6 +14,7 @@ import {
   ProgressBar,
 } from 'twenty-ui';
 import { VideoGenerationModal } from './VideoGenerationModal';
+import { useTheme } from '@emotion/react';
 
 const StyledContainer = styled.div`
   display: flex;
@@ -258,6 +259,7 @@ export const AISuite = ({ targetableObject }: AISuiteProps) => {
   const [hasGeneratedVideos, setHasGeneratedVideos] = useState(false);
   const [loadedImages, setLoadedImages] = useState<Record<string, boolean>>({});
   const [generationProgress, setGenerationProgress] = useState(0);
+  const theme = useTheme();
 
   const videoModalRef = useRef<ModalRefType>(null);
 
@@ -334,11 +336,11 @@ export const AISuite = ({ targetableObject }: AISuiteProps) => {
             <StyledAITools>
               <StyledAITool>
                 <StyledToolHeader>
-                  <IconSparkles size={16} />
+                  <IconSparkles size={16} color={theme.font.color.primary} />
                   <StyledToolTitle>{t`Lead Insights`}</StyledToolTitle>
                 </StyledToolHeader>
                 <StyledToolContent>
-                  <IconSparkles size={32} />
+                  <IconSparkles size={32} color={theme.font.color.primary} />
                   <StyledToolDescription>
                     {t`Get AI-powered insights about potential buyers and personalized engagement strategies`}
                   </StyledToolDescription>
@@ -354,11 +356,11 @@ export const AISuite = ({ targetableObject }: AISuiteProps) => {
 
               <StyledAITool>
                 <StyledToolHeader>
-                  <IconSearch size={16} />
+                  <IconSearch size={16} color={theme.font.color.primary} />
                   <StyledToolTitle>{t`Market Analysis`}</StyledToolTitle>
                 </StyledToolHeader>
                 <StyledToolContent>
-                  <IconSearch size={32} />
+                  <IconSearch size={32} color={theme.font.color.primary} />
                   <StyledToolDescription>
                     {t`Get AI-powered insights about the local market and property positioning`}
                   </StyledToolDescription>
@@ -377,7 +379,7 @@ export const AISuite = ({ targetableObject }: AISuiteProps) => {
           <StyledRightContent>
             <StyledVideoSection>
               <StyledVideoSectionHeader>
-                <IconVideo size={16} />
+                <IconVideo size={16} color={theme.font.color.primary} />
                 <StyledVideoSectionTitle>
                   {t`Marketing Video`}
                 </StyledVideoSectionTitle>
@@ -393,7 +395,7 @@ export const AISuite = ({ targetableObject }: AISuiteProps) => {
                     </StyledProgressContainer>
                   ) : (
                     <>
-                      <IconVideo size={32} />
+                      <IconVideo size={32} color={theme.font.color.primary} />
                       <StyledToolDescription>
                         {t`Generate professional videos using AI by using your property images.`}
                       </StyledToolDescription>
