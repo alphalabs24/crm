@@ -47,7 +47,7 @@ export const CurrencyFormInput = ({
     fieldDefinition,
   } = useCurrencyField();
 
-  const { updateField } = useRecordEdit();
+  const { updateField, getUpdatedFields } = useRecordEdit();
 
   const initialDraftValue = useMemo(() => {
     return {
@@ -163,14 +163,24 @@ export const CurrencyFormInput = ({
     handleUpdateField(newValue);
   };
 
+  const editDraftValue = getUpdatedFields()[
+    fieldDefinition.metadata.fieldName
+  ] as FieldCurrencyValue | undefined;
+
   const initializedOrDraftEqualsFieldValue =
     initialized ||
     ((fieldValue?.amountMicros ?? 0) / 1000000).toString() ===
-      draftValue?.amount?.toString();
+      draftValue?.amount?.toString() ||
+    editDraftValue?.amountMicros?.toString() ===
+      fieldValue?.amountMicros?.toString();
 
   return initializedOrDraftEqualsFieldValue ? (
     <CurrencyInput
-      value={draftValue?.amount?.toString() ?? ''}
+      value={
+        editDraftValue?.amountMicros
+          ? ((editDraftValue?.amountMicros ?? 0) / 1000000).toString()
+          : (draftValue?.amount?.toString() ?? '')
+      }
       currencyCode={currencyCode}
       placeholder="Currency"
       onClickOutside={handleClickOutside}
