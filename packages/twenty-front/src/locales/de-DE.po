@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: nestermind-crm\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-03-03 14:12\n"
+"PO-Revision-Date: 2025-03-04 07:42\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -162,6 +162,10 @@ msgid "Add a description..."
 msgstr "Beschreibung schreiben..."
 
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Add any other documents that should be included in the publication."
+msgstr "Fügen Sie alle anderen Dokumente hinzu, die in der Veröffentlichung enthalten sein sollen."
+
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Add documents related to your property that will be visible in the publication."
 msgstr "Fügen Sie Dokumente zu Ihrer Immobilie hinzu, die in der Publikation sichtbar sein werden."
 
@@ -210,6 +214,10 @@ msgstr "Fügen Sie Ihr erstes {objectLabel} hinzu"
 #: src/modules/ui/layout/show-page/components/ShowPageSummaryCard.tsx
 msgid "Added {beautifiedCreatedAt}"
 msgstr "Hinzugefügt am {beautifiedCreatedAt}"
+
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Additional Documents"
+msgstr "Zusätzliche Dokumente"
 
 #: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
 msgid "Address"
@@ -522,6 +530,10 @@ msgstr "Bald Verfügbar"
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
 msgid "Compare Changes"
 msgstr "Änderungen vergleichen"
+
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Concise property information overview sent to clients through the auto responder."
+msgstr "Eine kurze Übersicht über die Immobilie, die den Kunden über den Autoresponder, geschickt wird."
 
 #: src/pages/settings/security/SettingsSecurity.tsx
 msgid "Configure an SSO connection"
@@ -842,6 +854,10 @@ msgstr "Beschreibung"
 msgid "Destroy"
 msgstr "Zerstören"
 
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Detailed property presentation document sent to potential buyers through the auto responder."
+msgstr "Eine detaillierte Übersicht über die Immobilie, die den Kunden über den Autoresponder, geschickt wird."
+
 #: src/pages/settings/developers/SettingsDevelopers.tsx
 #: src/pages/settings/developers/SettingsDevelopers.tsx
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx
@@ -876,6 +892,7 @@ msgid "Domain"
 msgstr "Domäne"
 
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Download"
 msgstr "Herunterladen"
 
@@ -887,7 +904,6 @@ msgstr "Herunterladen"
 #~ msgid "Drag & drop images here, or click to select files"
 #~ msgstr "Drag & drop images here, or click to select files"
 
-#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Drop documents here"
 msgstr "Dokumente hier ablegen"
@@ -923,6 +939,7 @@ msgstr "Frühestes Datum"
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/Publishing.tsx
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Edit"
 msgstr "Bearbeiten"
 
@@ -1178,6 +1195,10 @@ msgstr "Gastronomie Unterkategorie"
 #: src/modules/settings/hooks/useSettingsNavigationItems.tsx
 msgid "General"
 msgstr "Allgemein"
+
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Generate"
+msgstr "Generieren"
 
 #: src/modules/object-record/record-show/components/nm/AISuite.tsx
 msgid "Generate Analysis"
@@ -1648,6 +1669,7 @@ msgstr "Kein verbundenes Konto"
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "No description"
 msgstr "Keine Beschreibung"
 
@@ -1918,6 +1940,14 @@ msgstr "Objekt"
 msgid "Property Documents"
 msgstr "Objektdokumente"
 
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Property Exposé"
+msgstr "Dokumentation"
+
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Property Flyer"
+msgstr "Flyer"
+
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 msgid "Property Images"
 msgstr "Objektbilder"
@@ -1998,6 +2028,7 @@ msgstr "Veröffentlichungen"
 #: src/pages/settings/roles/components/RoleAssignmentTableRow.tsx
 #: src/pages/settings/roles/components/RoleAssignmentConfirmationModal.tsx
 #: src/modules/ui/input/components/ImageInput.tsx
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Remove"
 msgstr "Entfernen"
 
@@ -2464,6 +2495,7 @@ msgid "Unpublished"
 msgstr "Unveröffentlicht"
 
 #: src/modules/ui/input/components/ImageInput.tsx
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Upload"
 msgstr "Hochladen"
 
