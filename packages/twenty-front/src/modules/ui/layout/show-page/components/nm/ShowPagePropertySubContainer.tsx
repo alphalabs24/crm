@@ -49,6 +49,9 @@ import { useObjectNamePluralFromSingular } from '@/object-metadata/hooks/useObje
 import DeleteConfirmationModal from '@/ui/layout/show-page/components/nm/DeleteConfirmationModal';
 import { useFindOneRecord } from '@/object-record/hooks/useFindOneRecord';
 import { useRecordShowPage } from '@/object-record/record-show/hooks/useRecordShowPage';
+import { useDeleteProperty } from '../../hooks/useDeleteProperty';
+import { ConfirmationModal } from '@/ui/layout/modal/components/ConfirmationModal';
+import { capitalize } from 'twenty-shared';
 
 const StyledShowPageRightContainer = styled.div<{ isMobile: boolean }>`
   display: flex;
@@ -139,9 +142,11 @@ export const ShowPagePropertySubContainer = ({
   const { activeTabId } = useTabList(tabListComponentId);
   const isMobile = useIsMobile();
   const navigate = useNavigate();
-  const { objectNamePlural } = useObjectNamePluralFromSingular({
-    objectNameSingular: targetableObject.targetObjectNameSingular,
-  });
+  const [isDeleteRecordsModalOpen, setIsDeleteRecordsModalOpen] =
+    useState(false);
+
+  const objectNameSingular = targetableObject.targetObjectNameSingular;
+  const capitalizedObjectNameSingular = capitalize(objectNameSingular);
 
   // Token for API calls
   const tokenPair = useRecoilValue(tokenPairState);
@@ -149,7 +154,6 @@ export const ShowPagePropertySubContainer = ({
   // Loading states
   const [loadingDraft, setLoadingDraft] = useState(false);
   const [loadingSync, setLoadingSync] = useState(false);
-  const [loadingDelete, setLoadingDelete] = useState(false);
 
   const dropdownId = `show-page-property-sub-container-dropdown-${targetableObject.id}`;
 
@@ -171,6 +175,43 @@ export const ShowPagePropertySubContainer = ({
   const isNewViewableRecordLoading = useRecoilValue(
     isNewViewableRecordLoadingState,
   );
+
+  // Delete callback
+  const onDelete = async () => {
+    enqueueSnackBar(t`${objectNameSingular} deleted successfully`, {
+      variant: SnackBarVariant.Success,
+    });
+    await refetchAllPublications();
+    await refetchRecord();
+    deleteModalRef.current?.close();
+  };
+
+  // Delete functions for properties and publications
+  const {
+    deletePublication,
+    deletePropertyAndAllPublications,
+    loading: loadingDelete,
+  } = useDeleteProperty({
+    objectRecordId: targetableObject.id,
+    onDelete,
+  });
+
+  const { deleteOneRecord } = useDeleteOneRecord({
+    objectNameSingular: objectNameSingular,
+  });
+
+  // When user presses on the accept button in the delete confirmation modal,
+  // we delete the property or publication
+  const handleConfirmDelete = async () => {
+    if (isPublication) {
+      await deletePublication();
+    } else {
+      await deletePropertyAndAllPublications();
+    }
+    // Refetches the record after the deletion if it is a property or publication
+    await deleteOneRecord(targetableObject.id);
+    setIsDeleteRecordsModalOpen(false);
+  };
 
   // Record
   const { record: recordFromStore, refetch: refetchRecord } = useRecordShowPage(
@@ -205,42 +246,11 @@ export const ShowPagePropertySubContainer = ({
 
   // Update handleDelete to show confirmation first
   const handleDelete = () => {
-    deleteModalRef.current?.open();
+    setIsDeleteRecordsModalOpen(true);
     closeDropdown();
   };
 
-  const handleConfirmDelete = async () => {
-    try {
-      setLoadingDelete(true);
-      const response = await axios.delete(
-        `${window._env_?.REACT_APP_PUBLICATION_SERVER_BASE_URL ?? 'http://api.localhost'}/${objectNamePlural}/delete?id=${targetableObject.id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${tokenPair?.accessToken?.token}`,
-          },
-        },
-      );
-
-      if (response.status !== 200) {
-        throw new Error('Failed to delete property or publication');
-      }
-
-      const objectNameSingular = targetableObject.targetObjectNameSingular;
-      enqueueSnackBar(t`${objectNameSingular} deleted successfully`, {
-        variant: SnackBarVariant.Success,
-      });
-      await refetchAllPublications();
-      await refetchRecord();
-      deleteModalRef.current?.close();
-    } catch (error: any) {
-      enqueueSnackBar(error?.message, {
-        variant: SnackBarVariant.Error,
-      });
-    } finally {
-      setLoadingDelete(false);
-    }
-  };
-
+  // Sync publication drafts with master data from property
   const syncPublications = async () => {
     try {
       setLoadingSync(true);
@@ -272,6 +282,7 @@ export const ShowPagePropertySubContainer = ({
     }
   };
 
+  // Create a draft if the publication is published
   const createDraftIfPublished = async () => {
     try {
       setLoadingDraft(true);
@@ -376,13 +387,19 @@ export const ShowPagePropertySubContainer = ({
   );
 
   const showSyncButton = useMemo(
-    () => !isPublication && differenceRecords?.length === 0,
-    [differenceRecords, isPublication],
+    () =>
+      !recordFromStore?.deletedAt &&
+      !isPublication &&
+      differenceRecords?.length === 0,
+    [differenceRecords?.length, isPublication, recordFromStore?.deletedAt],
   );
 
   const showNewPublicationButton = useMemo(
-    () => !isPublication && differenceRecords?.length > 0,
-    [differenceRecords, isPublication],
+    () =>
+      !recordFromStore?.deletedAt &&
+      !isPublication &&
+      differenceRecords?.length > 0,
+    [differenceRecords?.length, isPublication, recordFromStore?.deletedAt],
   );
 
   const showDropdown = useMemo(
@@ -518,16 +535,20 @@ export const ShowPagePropertySubContainer = ({
         />
       )}
 
-      <DeleteConfirmationModal
-        ref={deleteModalRef}
-        onDelete={handleConfirmDelete}
-        onClose={() => deleteModalRef.current?.close()}
-        loading={loadingDelete}
-        description={
+      <ConfirmationModal
+        isOpen={isDeleteRecordsModalOpen}
+        setIsOpen={setIsDeleteRecordsModalOpen}
+        title={t`Delete ${capitalizedObjectNameSingular}`}
+        subtitle={
           isPublication
             ? t`Are you sure you want to delete this publication?`
             : t`Are you sure you want to delete this property and all it's publications?`
         }
+        loading={loadingDelete}
+        onConfirmClick={() => {
+          handleConfirmDelete();
+        }}
+        deleteButtonText={t`Delete ${capitalizedObjectNameSingular}`}
       />
     </>
   );

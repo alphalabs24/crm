@@ -3,12 +3,14 @@ import { ActionHookWithObjectMetadataItem } from '@/action-menu/actions/types/Ac
 import { ActionMenuContext } from '@/action-menu/contexts/ActionMenuContext';
 import { useDeleteFavorite } from '@/favorites/hooks/useDeleteFavorite';
 import { useFavorites } from '@/favorites/hooks/useFavorites';
+import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { useDeleteOneRecord } from '@/object-record/hooks/useDeleteOneRecord';
 import { recordStoreFamilyState } from '@/object-record/record-store/states/recordStoreFamilyState';
 import { useRecordTable } from '@/object-record/record-table/hooks/useRecordTable';
 import { useHasObjectReadOnlyPermission } from '@/settings/roles/hooks/useHasObjectReadOnlyPermission';
 import { ConfirmationModal } from '@/ui/layout/modal/components/ConfirmationModal';
 import { useRightDrawer } from '@/ui/layout/right-drawer/hooks/useRightDrawer';
+import { useDeleteProperty } from '@/ui/layout/show-page/hooks/useDeleteProperty';
 import { isNull } from '@sniptt/guards';
 import { useCallback, useContext, useState } from 'react';
 import { useRecoilValue } from 'recoil';
@@ -37,6 +39,14 @@ export const useDeleteSingleRecordAction: ActionHookWithObjectMetadataItem = ({
   const { sortedFavorites: favorites } = useFavorites();
   const { deleteFavorite } = useDeleteFavorite();
 
+  const {
+    deletePropertyAndAllPublications,
+    deletePublication,
+    loading: loadingDelete,
+  } = useDeleteProperty({
+    objectRecordId: recordId,
+  });
+
   const { closeRightDrawer } = useRightDrawer();
 
   const handleDeleteClick = useCallback(async () => {
@@ -49,14 +59,27 @@ export const useDeleteSingleRecordAction: ActionHookWithObjectMetadataItem = ({
     if (isDefined(foundFavorite)) {
       deleteFavorite(foundFavorite.id);
     }
+    const isProperty =
+      objectMetadataItem.nameSingular === CoreObjectNameSingular.Property;
+    const isPublication =
+      objectMetadataItem.nameSingular === CoreObjectNameSingular.Publication;
 
+    if (isProperty) {
+      await deletePropertyAndAllPublications();
+    } else if (isPublication) {
+      await deletePublication();
+    }
+    // Refetches the record after the deletion if it is a property or publication
     await deleteOneRecord(recordId);
   }, [
-    deleteFavorite,
-    deleteOneRecord,
-    favorites,
     resetTableRowSelection,
+    favorites,
+    objectMetadataItem.nameSingular,
     recordId,
+    deleteFavorite,
+    deletePropertyAndAllPublications,
+    deletePublication,
+    deleteOneRecord,
   ]);
 
   const isRemoteObject = objectMetadataItem.isRemote;
@@ -87,6 +110,7 @@ export const useDeleteSingleRecordAction: ActionHookWithObjectMetadataItem = ({
         subtitle={
           'Are you sure you want to delete this record? It can be recovered from the Options menu.'
         }
+        loading={loadingDelete}
         onConfirmClick={() => {
           handleDeleteClick();
           if (isInRightDrawer) {
