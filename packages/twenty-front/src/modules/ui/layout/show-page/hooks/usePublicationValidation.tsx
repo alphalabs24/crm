@@ -21,7 +21,7 @@ export const usePublicationValidation = ({
   differences,
   isPublication = false,
 }: {
-  record: ObjectRecord | null;
+  record?: ObjectRecord | null;
   differences?: PublicationDifferences[];
   isPublication?: boolean;
 }): PublicationValidationState => {

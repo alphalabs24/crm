@@ -47,6 +47,8 @@ import { AppPath } from '@/types/AppPath';
 import { useNavigateApp } from '~/hooks/useNavigateApp';
 import { useObjectNamePluralFromSingular } from '@/object-metadata/hooks/useObjectNamePluralFromSingular';
 import DeleteConfirmationModal from '@/ui/layout/show-page/components/nm/DeleteConfirmationModal';
+import { useFindOneRecord } from '@/object-record/hooks/useFindOneRecord';
+import { useRecordShowPage } from '@/object-record/record-show/hooks/useRecordShowPage';
 
 const StyledShowPageRightContainer = styled.div<{ isMobile: boolean }>`
   display: flex;
@@ -137,7 +139,6 @@ export const ShowPagePropertySubContainer = ({
   const { activeTabId } = useTabList(tabListComponentId);
   const isMobile = useIsMobile();
   const navigate = useNavigate();
-  const navigateApp = useNavigateApp();
   const { objectNamePlural } = useObjectNamePluralFromSingular({
     objectNameSingular: targetableObject.targetObjectNameSingular,
   });
@@ -172,8 +173,9 @@ export const ShowPagePropertySubContainer = ({
   );
 
   // Record
-  const [recordFromStore] = useRecoilState<ObjectRecord | null>(
-    recordStoreFamilyState(targetableObject.id),
+  const { record: recordFromStore, refetch: refetchRecord } = useRecordShowPage(
+    targetableObject.targetObjectNameSingular,
+    targetableObject.id,
   );
 
   // Publications of Property
@@ -185,27 +187,21 @@ export const ShowPagePropertySubContainer = ({
     'draft',
   );
 
-  const { publications: allPublications, refetch: refetchAllPublications } =
-    usePublicationsOfProperty(isPublication ? undefined : recordFromStore?.id);
+  // Refetch all publications when something changes through the API
+  const { refetch: refetchAllPublications } = usePublicationsOfProperty(
+    isPublication ? undefined : recordFromStore?.id,
+  );
 
   // Refetch publications when the component mounts so we have the latest data.
   useEffect(() => {
     refetchPublications();
     refetchAllPublications();
-  }, [refetchPublications]);
+  }, [refetchAllPublications, refetchPublications]);
 
   const { differenceRecords } = usePropertyAndPublicationDifferences(
-    isPublication ? null : recordFromStore,
     publicationDraftsOfProperty,
+    isPublication ? null : recordFromStore,
   );
-
-  const { deleteOneRecord } = useDeleteOneRecord({
-    objectNameSingular: targetableObject.targetObjectNameSingular,
-  });
-
-  const { deleteManyRecords } = useDeleteManyRecords({
-    objectNameSingular: CoreObjectNameSingular.Publication,
-  });
 
   // Update handleDelete to show confirmation first
   const handleDelete = () => {
@@ -216,16 +212,26 @@ export const ShowPagePropertySubContainer = ({
   const handleConfirmDelete = async () => {
     try {
       setLoadingDelete(true);
-      await deleteManyRecords({
-        recordIdsToDelete: allPublications?.map(
-          (publication) => publication.id,
-        ),
+      const response = await axios.delete(
+        `${window._env_?.REACT_APP_PUBLICATION_SERVER_BASE_URL ?? 'http://api.localhost'}/${objectNamePlural}/delete?id=${targetableObject.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${tokenPair?.accessToken?.token}`,
+          },
+        },
+      );
+
+      if (response.status !== 200) {
+        throw new Error('Failed to delete property or publication');
+      }
+
+      const objectNameSingular = targetableObject.targetObjectNameSingular;
+      enqueueSnackBar(t`${objectNameSingular} deleted successfully`, {
+        variant: SnackBarVariant.Success,
       });
-      await deleteOneRecord(targetableObject.id);
+      await refetchAllPublications();
+      await refetchRecord();
       deleteModalRef.current?.close();
-      navigateApp(AppPath.RecordIndexPage, {
-        objectNamePlural,
-      });
     } catch (error: any) {
       enqueueSnackBar(error?.message, {
         variant: SnackBarVariant.Error,
@@ -354,16 +360,35 @@ export const ShowPagePropertySubContainer = ({
     modalRef.current?.close();
   };
 
-  const { canPublish, showPublishButton, validationDetails } =
-    usePublicationValidation({
-      record: recordFromStore,
-      differences: differenceRecords,
-      isPublication,
-    });
+  const { showPublishButton, validationDetails } = usePublicationValidation({
+    record: recordFromStore,
+    differences: differenceRecords,
+    isPublication,
+  });
 
   const handlePublishClick = () => {
     openModal();
   };
+
+  const showDeleteButton = useMemo(
+    () => !recordFromStore?.deletedAt,
+    [recordFromStore],
+  );
+
+  const showSyncButton = useMemo(
+    () => !isPublication && differenceRecords?.length === 0,
+    [differenceRecords, isPublication],
+  );
+
+  const showNewPublicationButton = useMemo(
+    () => !isPublication && differenceRecords?.length > 0,
+    [differenceRecords, isPublication],
+  );
+
+  const showDropdown = useMemo(
+    () => showNewPublicationButton || showSyncButton || showDeleteButton,
+    [showNewPublicationButton, showSyncButton, showDeleteButton],
+  );
 
   return (
     <>
@@ -380,7 +405,7 @@ export const ShowPagePropertySubContainer = ({
             isInRightDrawer={isInRightDrawer}
           />
           <StyledButtonContainer>
-            {recordFromStore && (
+            {recordFromStore && !recordFromStore.deletedAt && (
               <Button
                 title={t`Edit`}
                 Icon={IconPencil}
@@ -390,7 +415,7 @@ export const ShowPagePropertySubContainer = ({
               />
             )}
 
-            {showPublishButton && (
+            {showPublishButton && !recordFromStore?.deletedAt && (
               <Button
                 title={isPublication ? t`Publish` : t`New Publication`}
                 variant="primary"
@@ -410,7 +435,8 @@ export const ShowPagePropertySubContainer = ({
                 size="small"
               />
             )}
-            {isPublication ? null : (
+
+            {showDropdown && (
               <Dropdown
                 dropdownId={dropdownId}
                 clickableComponent={
@@ -423,7 +449,7 @@ export const ShowPagePropertySubContainer = ({
                 dropdownMenuWidth={160}
                 dropdownComponents={
                   <DropdownMenuItemsContainer>
-                    {!isPublication && differenceRecords?.length > 0 && (
+                    {showNewPublicationButton && (
                       <MenuItem
                         text={t`New Publication`}
                         LeftIcon={IconPlus}
@@ -433,7 +459,7 @@ export const ShowPagePropertySubContainer = ({
                         }}
                       />
                     )}
-                    {differenceRecords?.length === 0 && (
+                    {showSyncButton && (
                       <MenuItem
                         text={t`Sync Publications`}
                         LeftIcon={IconRefresh}
@@ -441,13 +467,15 @@ export const ShowPagePropertySubContainer = ({
                         disabled={loadingSync}
                       />
                     )}
-                    <MenuItem
-                      text={t`Delete`}
-                      accent="danger"
-                      LeftIcon={IconTrash}
-                      onClick={handleDelete}
-                      disabled={loadingDelete}
-                    />
+                    {showDeleteButton && (
+                      <MenuItem
+                        text={t`Delete`}
+                        accent="danger"
+                        LeftIcon={IconTrash}
+                        onClick={handleDelete}
+                        disabled={loadingDelete}
+                      />
+                    )}
                   </DropdownMenuItemsContainer>
                 }
                 dropdownHotkeyScope={{ scope: dropdownId }}
@@ -495,7 +523,11 @@ export const ShowPagePropertySubContainer = ({
         onDelete={handleConfirmDelete}
         onClose={() => deleteModalRef.current?.close()}
         loading={loadingDelete}
-        description={t`Are you sure you want to delete this property and all it's publications?`}
+        description={
+          isPublication
+            ? t`Are you sure you want to delete this publication?`
+            : t`Are you sure you want to delete this property and all it's publications?`
+        }
       />
     </>
   );

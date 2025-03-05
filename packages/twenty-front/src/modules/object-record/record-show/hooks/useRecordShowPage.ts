@@ -49,7 +49,7 @@ export const useRecordShowPage = (
       objectMetadataItems,
     });
 
-  const { record, loading } = useFindOneRecord({
+  const { record, loading, refetch } = useFindOneRecord({
     objectRecordId,
     objectNameSingular,
     recordGqlFields: FIND_ONE_RECORD_FOR_SHOW_PAGE_OPERATION_SIGNATURE.fields,
@@ -104,5 +104,6 @@ export const useRecordShowPage = (
     record,
     objectMetadataItem,
     handleFavoriteButtonClick,
+    refetch,
   };
 };
