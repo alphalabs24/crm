@@ -47,12 +47,6 @@ const StyledModalTitleContainer = styled.div`
   gap: ${({ theme }) => theme.spacing(2)};
 `;
 
-type Step =
-  | 'platform-select'
-  | 'upload-assets'
-  | 'content-customize'
-  | 'real-estate-config';
-
 const ANIMATION_DURATION = 0.2;
 
 type PublishModalProps = {

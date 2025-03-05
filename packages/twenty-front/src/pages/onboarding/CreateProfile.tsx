@@ -2,10 +2,18 @@ import styled from '@emotion/styled';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCallback, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { Key } from 'ts-key-enum';
-import { H2Title, MainButton } from 'twenty-ui';
+import {
+  H2Title,
+  MainButton,
+  IconInfoCircle,
+  Checkbox,
+  AppTooltip,
+  TooltipDelay,
+} from 'twenty-ui';
 import { z } from 'zod';
+import { useTheme } from '@emotion/react';
 
 import { SubTitle } from '@/auth/components/SubTitle';
 import { Title } from '@/auth/components/Title';
@@ -24,6 +32,8 @@ import { WorkspaceMember } from '@/workspace-member/types/WorkspaceMember';
 import { Trans, useLingui } from '@lingui/react/macro';
 import { isDefined } from 'twenty-shared';
 import { OnboardingStatus } from '~/generated/graphql';
+import axios from 'axios';
+import { tokenPairState } from '@/auth/states/tokenPairState';
 
 const StyledContentContainer = styled.div`
   width: 100%;
@@ -46,6 +56,28 @@ const StyledComboInputContainer = styled.div`
   }
 `;
 
+const StyledCheckboxContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing(4)};
+  margin-top: ${({ theme }) => theme.spacing(4)};
+`;
+
+const StyledCheckboxLabel = styled.div`
+  align-items: center;
+  color: ${({ theme }) => theme.font.color.primary};
+  font-size: ${({ theme }) => theme.font.size.sm};
+`;
+
+const StyledWhyNeeded = styled.span`
+  color: ${({ theme }) => theme.font.color.secondary};
+  font-size: ${({ theme }) => theme.font.size.sm};
+  font-style: italic;
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing(1)};
+`;
+
 const validationSchema = z
   .object({
     firstName: z.string().min(1, { message: 'First name can not be empty' }),
@@ -60,14 +92,32 @@ export const CreateProfile = () => {
   const onboardingStatus = useOnboardingStatus();
   const setNextOnboardingStatus = useSetNextOnboardingStatus();
   const { enqueueSnackBar } = useSnackBar();
+  const tokenPair = useRecoilValue(tokenPairState);
   const [currentWorkspaceMember, setCurrentWorkspaceMember] = useRecoilState(
     currentWorkspaceMemberState,
   );
   const { updateOneRecord } = useUpdateOneRecord<WorkspaceMember>({
     objectNameSingular: CoreObjectNameSingular.WorkspaceMember,
   });
+  const [dataAccessChecked, setDataAccessChecked] = useState(false);
+  const theme = useTheme();
 
-  // Form
+  const acceptTermsAndConditions = useCallback(async () => {
+    console.log(tokenPair?.accessToken?.token);
+    const response = await axios.post(
+      `${window._env_?.REACT_APP_PUBLICATION_SERVER_BASE_URL ?? 'http://api.localhost'}/setup/create-workspace`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${tokenPair?.accessToken?.token}`,
+        },
+      },
+    );
+    if (response.status !== 201) {
+      throw new Error('Failed to publish');
+    }
+  }, [tokenPair?.accessToken?.token]);
+
   const {
     control,
     handleSubmit,
@@ -91,6 +141,8 @@ export const CreateProfile = () => {
         if (!data.firstName || !data.lastName) {
           throw new Error('First name or last name is missing');
         }
+
+        await acceptTermsAndConditions();
 
         await updateOneRecord({
           idToUpdate: currentWorkspaceMember?.id,
@@ -215,12 +267,32 @@ export const CreateProfile = () => {
             />
           </StyledComboInputContainer>
         </StyledSectionContainer>
+        <StyledCheckboxContainer>
+          <Checkbox
+            checked={dataAccessChecked}
+            onChange={(event) => setDataAccessChecked(event.target.checked)}
+          />
+          <StyledCheckboxLabel>
+            {t`Allow Nestermind to access and administer my data.`}{' '}
+            <StyledWhyNeeded id="data-access-info">
+              <IconInfoCircle size={14} color={theme.font.color.secondary} />
+              {t`Why is this required?`}
+            </StyledWhyNeeded>
+          </StyledCheckboxLabel>
+          <AppTooltip
+            anchorSelect={`${'#'}data-access-info`}
+            content={t`This permission is required for Nestermind's automation and AI features to function properly.`}
+            place="bottom"
+            noArrow
+            delay={TooltipDelay.shortDelay}
+          />
+        </StyledCheckboxContainer>
       </StyledContentContainer>
       <StyledButtonContainer>
         <MainButton
           title={t`Continue`}
           onClick={handleSubmit(onSubmit)}
-          disabled={!isValid || isSubmitting}
+          disabled={!isValid || isSubmitting || !dataAccessChecked}
           fullWidth
         />
       </StyledButtonContainer>

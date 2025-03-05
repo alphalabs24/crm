@@ -106,6 +106,7 @@ export const DocumentEditModal = forwardRef<
           onClickOutside={onClose}
           hotkeyScope={ModalHotkeyScope.Default}
           minHeight={80}
+          copyButton={false}
           autoFocus={Boolean(name)}
         />
       </StyledModalContent>
