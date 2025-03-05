@@ -21,7 +21,7 @@ export const usePublicationValidation = ({
   differences,
   isPublication = false,
 }: {
-  record: ObjectRecord | null;
+  record?: ObjectRecord | null;
   differences?: PublicationDifferences[];
   isPublication?: boolean;
 }): PublicationValidationState => {
@@ -56,12 +56,9 @@ export const usePublicationValidation = ({
 
     const CATEGORY_SUBTYPE_MAP = {
       APARTMENT: ['apartmentSubtype', t`Apartment Subtype`],
-      AGRICULTURE: ['agricultureSubtype', t`Agriculture Subtype`],
       GASTRONOMY: ['gastronomySubtype', t`Gastronomy Subtype`],
-      INDUSTRIAL_OBJECTS: ['industrialSubtype', t`Industrial Objects Subtype`],
-      PARKING_SPACE: ['parkingSubtype', t`Parking Space Subtype`],
+      HOUSE: ['houseSubtype', t`House Subtype`],
       PLOT: ['plotSubtype', t`Plot Subtype`],
-      SECONDARY_ROOMS: ['secondaryRoomsSubtype', t`Secondary Rooms Subtype`],
     } as const;
 
     const missingFields: ReactNode[] = [];

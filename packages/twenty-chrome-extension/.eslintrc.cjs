@@ -7,9 +7,6 @@ module.exports = {
       parserOptions: {
         project: ['packages/twenty-chrome-extension/tsconfig.{json,*.json}'],
       },
-      rules: {
-        '@nx/workspace-explicit-boolean-predicates-in-if': 'warn',
-      },
     },
   ],
 };

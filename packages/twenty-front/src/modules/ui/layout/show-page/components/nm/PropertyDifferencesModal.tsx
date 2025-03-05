@@ -2,7 +2,6 @@ import styled from '@emotion/styled';
 import { useLingui } from '@lingui/react/macro';
 import { forwardRef, useEffect, useState, useRef } from 'react';
 import { Modal, ModalRefType } from '@/ui/layout/modal/components/Modal';
-import { motion } from 'framer-motion';
 import {
   PropertyPublicationDifference,
   PublicationDifferences,
@@ -10,7 +9,6 @@ import {
 import {
   IconExchange,
   Button,
-  LARGE_DESKTOP_VIEWPORT,
   IconRefresh,
   useIcons,
   IconFileText,
@@ -29,55 +27,14 @@ import { useFindOneRecord } from '@/object-record/hooks/useFindOneRecord';
 import { PlatformId, PLATFORMS } from './types/Platform';
 import { PlatformBadge } from '@/object-record/record-show/components/nm/publication/PlatformBadge';
 import Skeleton from 'react-loading-skeleton';
-
-const StyledModalContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  max-height: 80vh;
-  min-height: 70vh;
-`;
-
-const StyledModalContent = styled(motion.div)`
-  background: ${({ theme }) => theme.background.secondary};
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(2)};
-  overflow-y: auto;
-  padding: ${({ theme }) => theme.spacing(4)};
-  height: 100%;
-  flex: 1;
-
-  @media only screen and (min-width: ${LARGE_DESKTOP_VIEWPORT}px) {
-    padding: ${({ theme }) => theme.spacing(4)};
-  }
-`;
-
-const StyledModalHeader = styled(Modal.Header)`
-  border-bottom: 1px solid ${({ theme }) => theme.border.color.light};
-  padding: 0 ${({ theme }) => theme.spacing(4)};
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 50px;
-  flex-shrink: 0;
-`;
-
-const StyledModalHeaderButtons = styled.div`
-  display: flex;
-  gap: ${({ theme }) => theme.spacing(2)};
-`;
-
-const StyledModalTitle = styled.div`
-  font-size: ${({ theme }) => theme.font.size.md};
-  font-weight: ${({ theme }) => theme.font.weight.semiBold};
-`;
-
-const StyledModalTitleContainer = styled.div`
-  align-items: center;
-  display: flex;
-  gap: ${({ theme }) => theme.spacing(2)};
-`;
+import {
+  StyledModalContainer,
+  StyledModalContent,
+  StyledModalHeader,
+  StyledModalHeaderButtons,
+  StyledModalTitle,
+  StyledModalTitleContainer,
+} from './modal-components/ModalComponents';
 
 const StyledDifferenceItem = styled.div`
   background: ${({ theme }) => theme.background.primary};
@@ -89,18 +46,18 @@ const StyledDifferenceItem = styled.div`
 `;
 
 const StyledDifferenceHeader = styled.div`
+  align-items: center;
   color: ${({ theme }) => theme.font.color.secondary};
+  display: flex;
   font-size: ${({ theme }) => theme.font.size.sm};
   font-weight: ${({ theme }) => theme.font.weight.medium};
-  display: flex;
   gap: ${({ theme }) => theme.spacing(2)};
-  align-items: center;
 `;
 
 const StyledValueComparison = styled.div`
+  align-items: center;
   display: flex;
   gap: ${({ theme }) => theme.spacing(3)};
-  align-items: center;
 `;
 
 const StyledValueColumn = styled.div`
@@ -108,10 +65,10 @@ const StyledValueColumn = styled.div`
 `;
 
 const StyledArrowContainer = styled.div`
-  display: flex;
   align-items: center;
-  justify-content: center;
   color: ${({ theme }) => theme.font.color.secondary};
+  display: flex;
+  justify-content: center;
 `;
 
 const StyledModalDescription = styled.div`
@@ -134,13 +91,13 @@ const StyledColumnHeaders = styled.div`
   padding: ${({ theme }) => theme.spacing(3)};
 `;
 
-const NewTag = styled.div`
+const StyledNewTag = styled.div`
   color: ${({ theme }) => theme.color.blue};
   width: fit-content;
   font-size: ${({ theme }) => theme.font.size.xs};
 `;
 
-const OldTag = styled.div`
+const StyledOldTag = styled.div`
   color: ${({ theme }) => theme.color.gray50};
   width: fit-content;
   font-size: ${({ theme }) => theme.font.size.xs};
@@ -261,11 +218,11 @@ const StyledPlatformIcon = styled.div<{ platform: string }>`
 `;
 
 const StyledTabsContainer = styled.div`
+  border-bottom: 1px solid ${({ theme }) => theme.border.color.light};
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(4)};
   padding: ${({ theme }) => theme.spacing(2)} 0;
-  border-bottom: 1px solid ${({ theme }) => theme.border.color.light};
 `;
 
 type PropertyDifferencesModalProps = {
@@ -322,7 +279,7 @@ const PublicationDiffView = ({
           <div>
             <StyledColumnTitle>
               {t`Publication Draft`}
-              <OldTag>{t`(Old)`}</OldTag>
+              <StyledOldTag>{t`(Old)`}</StyledOldTag>
             </StyledColumnTitle>
             <StyledColumnSubtitle>{t`Current draft values`}</StyledColumnSubtitle>
           </div>
@@ -333,7 +290,7 @@ const PublicationDiffView = ({
           <div>
             <StyledColumnTitle>
               {t`Property`}
-              <NewTag>{t`(Updated)`}</NewTag>
+              <StyledNewTag>{t`(Updated)`}</StyledNewTag>
             </StyledColumnTitle>
             <StyledColumnSubtitle>{t`Source values`}</StyledColumnSubtitle>
           </div>

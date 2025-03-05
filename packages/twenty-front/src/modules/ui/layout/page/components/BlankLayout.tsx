@@ -23,7 +23,7 @@ export const BlankLayout = () => {
           }
         `}
       />
-      <StyledLayout>
+      <StyledLayout className="default-layout">
         <Outlet />
       </StyledLayout>
     </>
