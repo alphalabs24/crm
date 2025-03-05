@@ -16,6 +16,8 @@ import React, {
   useState,
 } from 'react';
 import { Key } from 'ts-key-enum';
+import { createPortal } from 'react-dom';
+import { OptionalWrap } from '../../utilities/components/OptionalWrapWith';
 
 const StyledModalDiv = styled(motion.div)<{
   size?: ModalSize;
@@ -79,7 +81,6 @@ const StyledHeader = styled.div`
   display: flex;
   flex-direction: row;
   height: 60px;
-  overflow: hidden;
   padding: ${({ theme }) => theme.spacing(5)};
 `;
 
@@ -157,6 +158,8 @@ export type ModalProps = React.PropsWithChildren & {
   onEnter?: () => void;
   modalVariant?: ModalVariants;
   closedOnMount?: boolean;
+  // Set this for full height modals, so the nav bar doesn't overlap the modal on mobile
+  portal?: boolean;
 } & (
     | { isClosable: true; onClose: () => void }
     | { isClosable?: false; onClose?: never }
@@ -173,6 +176,19 @@ export type ModalRefType = {
   close: () => void;
 };
 
+// When portal is true, the modal will be rendered in the DefaultLayout or BlankLayout
+// in order to have it at the very top (avoids z-index issues)
+const ModalPortal = ({ children }: React.PropsWithChildren) => {
+  // Get the layout element to portal into
+  const layoutElement = document.querySelector('.default-layout');
+
+  if (!layoutElement) {
+    return null;
+  }
+
+  return createPortal(children, layoutElement);
+};
+
 export const Modal = Object.assign(
   forwardRef<ModalRefType, ModalProps>((props, ref) => {
     const {
@@ -186,6 +202,7 @@ export const Modal = Object.assign(
       onClose,
       modalVariant = 'primary',
       closedOnMount = false,
+      portal = false,
     } = props;
     const isMobile = useIsMobile();
     const modalRef = useRef<HTMLDivElement>(null);
@@ -254,27 +271,29 @@ export const Modal = Object.assign(
     }
 
     return (
-      <StyledBackDrop
-        className="modal-backdrop"
-        onMouseDown={stopEventPropagation}
-        modalVariant={modalVariant}
-      >
-        <StyledModalDiv
-          ref={modalRef}
-          size={size}
-          padding={padding}
-          initial="hidden"
-          animate="visible"
-          exit="exit"
-          layout
+      <OptionalWrap condition={portal} With={<ModalPortal />}>
+        <StyledBackDrop
+          className="modal-backdrop"
+          onMouseDown={stopEventPropagation}
           modalVariant={modalVariant}
-          variants={modalAnimation}
-          className={className}
-          isMobile={isMobile}
         >
-          {children}
-        </StyledModalDiv>
-      </StyledBackDrop>
+          <StyledModalDiv
+            ref={modalRef}
+            size={size}
+            padding={padding}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            layout
+            modalVariant={modalVariant}
+            variants={modalAnimation}
+            className={className}
+            isMobile={isMobile}
+          >
+            {children}
+          </StyledModalDiv>
+        </StyledBackDrop>
+      </OptionalWrap>
     );
   }),
   {

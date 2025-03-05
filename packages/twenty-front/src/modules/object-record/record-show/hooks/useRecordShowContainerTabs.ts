@@ -69,6 +69,7 @@ export const useRecordShowContainerTabs = (
             ifRelationsMissing: [],
           },
         },
+        fields: null,
       },
     },
     [CoreObjectNameSingular.Publication]: {

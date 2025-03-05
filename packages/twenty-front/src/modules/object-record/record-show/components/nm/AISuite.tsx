@@ -11,6 +11,7 @@ import {
   IconSearch,
   IconSparkles,
   IconVideo,
+  MOBILE_VIEWPORT,
   ProgressBar,
 } from 'twenty-ui';
 import { VideoGenerationModal } from './VideoGenerationModal';
@@ -26,23 +27,38 @@ const StyledContainer = styled.div`
 
 const StyledMainContent = styled.div`
   display: flex;
-  gap: ${({ theme }) => theme.spacing(4)};
-  height: 100%;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(16)};
+
+  @media only screen and (min-width: ${MOBILE_VIEWPORT}px) {
+    height: 100%;
+    gap: ${({ theme }) => theme.spacing(4)};
+    flex-direction: row;
+  }
 `;
 
 const StyledLeftContent = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(4)};
-  width: 50%;
-  height: 100%;
+  width: 100%;
+  height: fit-content;
+
+  @media only screen and (min-width: ${MOBILE_VIEWPORT}px) {
+    width: 50%;
+    height: 100%;
+  }
 `;
 
 const StyledRightContent = styled.div`
   display: flex;
   flex-direction: column;
-  width: 50%;
-  height: 100%;
+  width: 100%;
+
+  @media only screen and (min-width: ${MOBILE_VIEWPORT}px) {
+    width: 50%;
+    height: 100%;
+  }
 `;
 
 const StyledAvailableAssets = styled.div`

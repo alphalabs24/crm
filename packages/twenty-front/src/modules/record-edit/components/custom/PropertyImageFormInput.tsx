@@ -14,7 +14,7 @@ import {
   DropResult,
 } from '@hello-pangea/dnd';
 import { useLingui } from '@lingui/react/macro';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import Skeleton from 'react-loading-skeleton';
 import { isDefined } from 'twenty-shared';
@@ -33,7 +33,6 @@ import {
 } from 'twenty-ui';
 import { ImageEditModal } from './ImageEditModal';
 import { css, useTheme } from '@emotion/react';
-import { useColorScheme } from '@/ui/theme/hooks/useColorScheme';
 
 const StyledContainer = styled.div`
   display: flex;

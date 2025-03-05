@@ -8,17 +8,28 @@ import {
   IconCheck,
   IconChevronRight,
   IconSparkles,
+  LARGE_DESKTOP_VIEWPORT,
   ProgressBar,
 } from 'twenty-ui';
 
 const StyledContentLayout = styled.div`
   display: flex;
-  height: 660px;
+
+  flex-direction: column;
+
+  @media only screen and (min-width: ${LARGE_DESKTOP_VIEWPORT}px) {
+    flex-direction: row;
+    height: 660px;
+  }
 `;
 
 const StyledCarouselContainer = styled.div`
   aspect-ratio: 1;
   min-width: 0;
+  width: 100%;
+  @media only screen and (min-width: ${LARGE_DESKTOP_VIEWPORT}px) {
+    width: unset;
+  }
 `;
 
 const StyledSettingsContainer = styled.div`

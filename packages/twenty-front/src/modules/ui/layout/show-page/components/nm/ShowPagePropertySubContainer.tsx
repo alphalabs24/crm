@@ -4,8 +4,6 @@ import { getLinkToShowPage } from '@/object-metadata/utils/getLinkToShowPage';
 import { isNewViewableRecordLoadingState } from '@/object-record/record-right-drawer/states/isNewViewableRecordLoading';
 import { CardComponents } from '@/object-record/record-show/components/CardComponents';
 import { RecordLayout } from '@/object-record/record-show/types/RecordLayout';
-import { recordStoreFamilyState } from '@/object-record/record-store/states/recordStoreFamilyState';
-import { ObjectRecord } from '@/object-record/types/ObjectRecord';
 import { ModalRefType } from '@/ui/layout/modal/components/Modal';
 import { RightDrawerFooter } from '@/ui/layout/right-drawer/components/RightDrawerFooter';
 import { PublishModal } from '@/ui/layout/show-page/components/nm/PublishModal';
@@ -17,16 +15,15 @@ import styled from '@emotion/styled';
 import { useLingui } from '@lingui/react/macro';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import {
   Button,
   IconPencil,
   IconUpload,
   IconRefresh,
-  IconDotsVertical,
-  MenuItem,
   IconTrash,
   IconPlus,
+  MOBILE_VIEWPORT,
 } from 'twenty-ui';
 import { PublishDraftModal } from './PublishDraftModal';
 import axios from 'axios';
@@ -34,24 +31,17 @@ import { useSnackBar } from '@/ui/feedback/snack-bar-manager/hooks/useSnackBar';
 import { SnackBarVariant } from '@/ui/feedback/snack-bar-manager/components/SnackBar';
 import { tokenPairState } from '@/auth/states/tokenPairState';
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
-import { Dropdown } from '@/ui/layout/dropdown/components/Dropdown';
-import { DropdownMenuItemsContainer } from '@/ui/layout/dropdown/components/DropdownMenuItemsContainer';
 import { useDropdown } from '@/ui/layout/dropdown/hooks/useDropdown';
 import { usePublicationsOfProperty } from '../../hooks/usePublicationsOfProperty';
 import { usePropertyAndPublicationDifferences } from '../../hooks/usePropertyAndPublicationDifferences';
 import { PropertyDifferencesModal } from './PropertyDifferencesModal';
 import { usePublicationValidation } from '../../hooks/usePublicationValidation';
 import { useDeleteOneRecord } from '@/object-record/hooks/useDeleteOneRecord';
-import { useDeleteManyRecords } from '@/object-record/hooks/useDeleteManyRecords';
-import { AppPath } from '@/types/AppPath';
-import { useNavigateApp } from '~/hooks/useNavigateApp';
-import { useObjectNamePluralFromSingular } from '@/object-metadata/hooks/useObjectNamePluralFromSingular';
-import DeleteConfirmationModal from '@/ui/layout/show-page/components/nm/DeleteConfirmationModal';
-import { useFindOneRecord } from '@/object-record/hooks/useFindOneRecord';
 import { useRecordShowPage } from '@/object-record/record-show/hooks/useRecordShowPage';
 import { useDeleteProperty } from '../../hooks/useDeleteProperty';
 import { ConfirmationModal } from '@/ui/layout/modal/components/ConfirmationModal';
 import { capitalize } from 'twenty-shared';
+import { ActionDropdown } from './ActionDropdown';
 
 const StyledShowPageRightContainer = styled.div<{ isMobile: boolean }>`
   display: flex;
@@ -64,17 +54,23 @@ const StyledShowPageRightContainer = styled.div<{ isMobile: boolean }>`
 `;
 
 const StyledTabListContainer = styled.div<{ shouldDisplay: boolean }>`
-  align-items: center;
-  padding-left: ${({ theme }) => theme.spacing(2)};
+  align-items: flex-end;
+  background: ${({ theme }) => theme.background.primary};
   border-bottom: ${({ theme }) => `1px solid ${theme.border.color.light}`};
   box-sizing: border-box;
   display: ${({ shouldDisplay }) => (shouldDisplay ? 'flex' : 'none')};
+  flex-direction: column-reverse;
   gap: ${({ theme }) => theme.spacing(2)};
-  height: 40px;
+  padding-left: ${({ theme }) => theme.spacing(2)};
   position: sticky;
   top: 0;
-  background: ${({ theme }) => theme.background.primary};
   z-index: 10;
+
+  @media only screen and (min-width: ${MOBILE_VIEWPORT}px) {
+    flex-direction: row;
+    align-items: center;
+    height: 40px;
+  }
 `;
 
 const StyledButtonContainer = styled.div`
@@ -432,72 +428,46 @@ export const ShowPagePropertySubContainer = ({
               />
             )}
 
-            {showPublishButton && !recordFromStore?.deletedAt && (
-              <Button
-                title={isPublication ? t`Publish` : t`New Publication`}
-                variant="primary"
-                accent="blue"
-                size="small"
-                Icon={isPublication ? IconUpload : IconPlus}
-                onClick={handlePublishClick}
-              />
-            )}
-
-            {differenceRecords?.length > 0 && (
-              <Button
-                onClick={() => differencesModalRef.current?.open()}
-                variant="primary"
-                accent="blue"
-                title={t`Differences ${differenceLength}`}
-                size="small"
-              />
-            )}
-
-            {showDropdown && (
-              <Dropdown
-                dropdownId={dropdownId}
-                clickableComponent={
-                  <Button
-                    title={t`More`}
-                    Icon={IconDotsVertical}
-                    size="small"
-                  />
-                }
-                dropdownMenuWidth={160}
-                dropdownComponents={
-                  <DropdownMenuItemsContainer>
-                    {showNewPublicationButton && (
-                      <MenuItem
-                        text={t`New Publication`}
-                        LeftIcon={IconPlus}
-                        onClick={() => {
-                          openModal();
-                          closeDropdown();
-                        }}
-                      />
-                    )}
-                    {showSyncButton && (
-                      <MenuItem
-                        text={t`Sync Publications`}
-                        LeftIcon={IconRefresh}
-                        onClick={syncPublications}
-                        disabled={loadingSync}
-                      />
-                    )}
-                    {showDeleteButton && (
-                      <MenuItem
-                        text={t`Delete`}
-                        accent="danger"
-                        LeftIcon={IconTrash}
-                        onClick={handleDelete}
-                        disabled={loadingDelete}
-                      />
-                    )}
-                  </DropdownMenuItemsContainer>
-                }
-                dropdownHotkeyScope={{ scope: dropdownId }}
-              />
-            )}
+            <ActionDropdown
+              dropdownId={dropdownId}
+              actions={[
+                ...(showSyncButton
+                  ? [
+                      {
+                        title: t`Sync Publications`,
+                        Icon: IconRefresh,
+                        onClick: syncPublications,
+                        disabled: loadingSync,
+                      },
+                    ]
+                  : []),
+                ...(showDeleteButton
+                  ? [
+                      {
+                        title: t`Delete`,
+                        Icon: IconTrash,
+                        onClick: handleDelete,
+                        distructive: true,
+                        disabled: loadingDelete,
+                      },
+                    ]
+                  : []),
+              ]}
+              primaryAction={
+                showPublishButton && !recordFromStore?.deletedAt
+                  ? {
+                      title: isPublication ? t`Publish` : t`New Publication`,
+                      Icon: isPublication ? IconUpload : IconPlus,
+                      onClick: handlePublishClick,
+                    }
+                  : differenceRecords?.length > 0
+                    ? {
+                        title: t`Differences ${differenceLength}`,
+                        onClick: () => differencesModalRef.current?.open(),
+                      }
+                    : null
+              }
+            />
           </StyledButtonContainer>
         </StyledTabListContainer>
         <StyledContentContainer isInRightDrawer={isInRightDrawer}>
