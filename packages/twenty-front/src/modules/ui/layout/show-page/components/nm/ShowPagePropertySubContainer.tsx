@@ -41,6 +41,17 @@ import { usePublicationsOfProperty } from '../../hooks/usePublicationsOfProperty
 import { usePropertyAndPublicationDifferences } from '../../hooks/usePropertyAndPublicationDifferences';
 import { PropertyDifferencesModal } from './PropertyDifferencesModal';
 import { usePublicationValidation } from '../../hooks/usePublicationValidation';
+import { useDeleteOneRecord } from '@/object-record/hooks/useDeleteOneRecord';
+import { useDeleteManyRecords } from '@/object-record/hooks/useDeleteManyRecords';
+import { AppPath } from '@/types/AppPath';
+import { useNavigateApp } from '~/hooks/useNavigateApp';
+import { useObjectNamePluralFromSingular } from '@/object-metadata/hooks/useObjectNamePluralFromSingular';
+import DeleteConfirmationModal from '@/ui/layout/show-page/components/nm/DeleteConfirmationModal';
+import { useFindOneRecord } from '@/object-record/hooks/useFindOneRecord';
+import { useRecordShowPage } from '@/object-record/record-show/hooks/useRecordShowPage';
+import { useDeleteProperty } from '../../hooks/useDeleteProperty';
+import { ConfirmationModal } from '@/ui/layout/modal/components/ConfirmationModal';
+import { capitalize } from 'twenty-shared';
 
 const StyledShowPageRightContainer = styled.div<{ isMobile: boolean }>`
   display: flex;
@@ -78,6 +89,31 @@ const StyledContentContainer = styled.div<{ isInRightDrawer: boolean }>`
     isInRightDrawer ? theme.spacing(16) : 0};
 `;
 
+const StyledModalHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: ${({ theme }) => theme.spacing(4)};
+`;
+
+const StyledModalTitle = styled.h2`
+  font-size: ${({ theme }) => theme.font.size.lg};
+  font-weight: ${({ theme }) => theme.font.weight.semiBold};
+`;
+
+const StyledModalContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(4)};
+  padding: ${({ theme }) => theme.spacing(4)};
+`;
+
+const StyledModalDescription = styled.div`
+  color: ${({ theme }) => theme.font.color.secondary};
+  font-size: ${({ theme }) => theme.font.size.md};
+  line-height: 1.5;
+`;
+
 export const TAB_LIST_COMPONENT_ID = 'show-page-right-tab-list';
 
 type ShowPagePropertySubContainerProps = {
@@ -93,6 +129,8 @@ type ShowPagePropertySubContainerProps = {
   isPublication?: boolean;
 };
 
+// This view is used to display a property or publication.
+// The isPublication flag is used to determine if the view shows a publication.
 export const ShowPagePropertySubContainer = ({
   tabs,
   targetableObject,
@@ -104,17 +142,84 @@ export const ShowPagePropertySubContainer = ({
   const { activeTabId } = useTabList(tabListComponentId);
   const isMobile = useIsMobile();
   const navigate = useNavigate();
+  const [isDeleteRecordsModalOpen, setIsDeleteRecordsModalOpen] =
+    useState(false);
+
+  const objectNameSingular = targetableObject.targetObjectNameSingular;
+  const capitalizedObjectNameSingular = capitalize(objectNameSingular);
+
+  // Token for API calls
   const tokenPair = useRecoilValue(tokenPairState);
+
+  // Loading states
   const [loadingDraft, setLoadingDraft] = useState(false);
-  // TODO use this for loading state
   const [loadingSync, setLoadingSync] = useState(false);
+
+  const dropdownId = `show-page-property-sub-container-dropdown-${targetableObject.id}`;
+
+  // Translations
+  const { t } = useLingui();
+
+  // Dropdown
+  const { closeDropdown } = useDropdown(dropdownId);
+
+  const visibleTabs = tabs.filter((tab) => !tab.hide);
+
+  // Modals
+  const modalRef = useRef<ModalRefType>(null);
+  const differencesModalRef = useRef<ModalRefType>(null);
+  const deleteModalRef = useRef<ModalRefType>(null);
+
   const { enqueueSnackBar } = useSnackBar();
+
   const isNewViewableRecordLoading = useRecoilValue(
     isNewViewableRecordLoadingState,
   );
-  const [recordFromStore] = useRecoilState<ObjectRecord | null>(
-    recordStoreFamilyState(targetableObject.id),
+
+  // Delete callback
+  const onDelete = async () => {
+    enqueueSnackBar(t`${objectNameSingular} deleted successfully`, {
+      variant: SnackBarVariant.Success,
+    });
+    await refetchAllPublications();
+    await refetchRecord();
+    deleteModalRef.current?.close();
+  };
+
+  // Delete functions for properties and publications
+  const {
+    deletePublication,
+    deletePropertyAndAllPublications,
+    loading: loadingDelete,
+  } = useDeleteProperty({
+    objectRecordId: targetableObject.id,
+    onDelete,
+  });
+
+  const { deleteOneRecord } = useDeleteOneRecord({
+    objectNameSingular: objectNameSingular,
+  });
+
+  // When user presses on the accept button in the delete confirmation modal,
+  // we delete the property or publication
+  const handleConfirmDelete = async () => {
+    if (isPublication) {
+      await deletePublication();
+    } else {
+      await deletePropertyAndAllPublications();
+    }
+    // Refetches the record after the deletion if it is a property or publication
+    await deleteOneRecord(targetableObject.id);
+    setIsDeleteRecordsModalOpen(false);
+  };
+
+  // Record
+  const { record: recordFromStore, refetch: refetchRecord } = useRecordShowPage(
+    targetableObject.targetObjectNameSingular,
+    targetableObject.id,
   );
+
+  // Publications of Property
   const {
     publications: publicationDraftsOfProperty,
     refetch: refetchPublications,
@@ -123,31 +228,29 @@ export const ShowPagePropertySubContainer = ({
     'draft',
   );
 
-  useEffect(() => {
-    refetchPublications();
-  }, [refetchPublications]);
-
-  const { differenceRecords } = usePropertyAndPublicationDifferences(
-    isPublication ? null : recordFromStore,
-    publicationDraftsOfProperty,
+  // Refetch all publications when something changes through the API
+  const { refetch: refetchAllPublications } = usePublicationsOfProperty(
+    isPublication ? undefined : recordFromStore?.id,
   );
 
-  const dropdownId = `show-page-property-sub-container-dropdown-${targetableObject.id}`;
+  // Refetch publications when the component mounts so we have the latest data.
+  useEffect(() => {
+    refetchPublications();
+    refetchAllPublications();
+  }, [refetchAllPublications, refetchPublications]);
 
-  const { t } = useLingui();
-  const { closeDropdown } = useDropdown(dropdownId);
+  const { differenceRecords } = usePropertyAndPublicationDifferences(
+    publicationDraftsOfProperty,
+    isPublication ? null : recordFromStore,
+  );
 
-  const visibleTabs = tabs.filter((tab) => !tab.hide);
-
-  const modalRef = useRef<ModalRefType>(null);
-
-  const differencesModalRef = useRef<ModalRefType>(null);
-
+  // Update handleDelete to show confirmation first
   const handleDelete = () => {
-    // TODO: Implement delete
-    console.log('delete');
+    setIsDeleteRecordsModalOpen(true);
+    closeDropdown();
   };
 
+  // Sync publication drafts with master data from property
   const syncPublications = async () => {
     try {
       setLoadingSync(true);
@@ -179,6 +282,7 @@ export const ShowPagePropertySubContainer = ({
     }
   };
 
+  // Create a draft if the publication is published
   const createDraftIfPublished = async () => {
     try {
       setLoadingDraft(true);
@@ -267,16 +371,41 @@ export const ShowPagePropertySubContainer = ({
     modalRef.current?.close();
   };
 
-  const { canPublish, showPublishButton, validationDetails } =
-    usePublicationValidation({
-      record: recordFromStore,
-      differences: differenceRecords,
-      isPublication,
-    });
+  const { showPublishButton, validationDetails } = usePublicationValidation({
+    record: recordFromStore,
+    differences: differenceRecords,
+    isPublication,
+  });
 
   const handlePublishClick = () => {
     openModal();
   };
+
+  const showDeleteButton = useMemo(
+    () => !recordFromStore?.deletedAt,
+    [recordFromStore],
+  );
+
+  const showSyncButton = useMemo(
+    () =>
+      !recordFromStore?.deletedAt &&
+      !isPublication &&
+      differenceRecords?.length === 0,
+    [differenceRecords?.length, isPublication, recordFromStore?.deletedAt],
+  );
+
+  const showNewPublicationButton = useMemo(
+    () =>
+      !recordFromStore?.deletedAt &&
+      !isPublication &&
+      differenceRecords?.length > 0,
+    [differenceRecords?.length, isPublication, recordFromStore?.deletedAt],
+  );
+
+  const showDropdown = useMemo(
+    () => showNewPublicationButton || showSyncButton || showDeleteButton,
+    [showNewPublicationButton, showSyncButton, showDeleteButton],
+  );
 
   return (
     <>
@@ -293,7 +422,7 @@ export const ShowPagePropertySubContainer = ({
             isInRightDrawer={isInRightDrawer}
           />
           <StyledButtonContainer>
-            {recordFromStore && (
+            {recordFromStore && !recordFromStore.deletedAt && (
               <Button
                 title={t`Edit`}
                 Icon={IconPencil}
@@ -303,7 +432,7 @@ export const ShowPagePropertySubContainer = ({
               />
             )}
 
-            {showPublishButton && (
+            {showPublishButton && !recordFromStore?.deletedAt && (
               <Button
                 title={isPublication ? t`Publish` : t`New Publication`}
                 variant="primary"
@@ -323,7 +452,8 @@ export const ShowPagePropertySubContainer = ({
                 size="small"
               />
             )}
-            {isPublication ? null : (
+
+            {showDropdown && (
               <Dropdown
                 dropdownId={dropdownId}
                 clickableComponent={
@@ -336,7 +466,7 @@ export const ShowPagePropertySubContainer = ({
                 dropdownMenuWidth={160}
                 dropdownComponents={
                   <DropdownMenuItemsContainer>
-                    {!isPublication && differenceRecords?.length > 0 && (
+                    {showNewPublicationButton && (
                       <MenuItem
                         text={t`New Publication`}
                         LeftIcon={IconPlus}
@@ -346,7 +476,7 @@ export const ShowPagePropertySubContainer = ({
                         }}
                       />
                     )}
-                    {differenceRecords?.length === 0 && (
+                    {showSyncButton && (
                       <MenuItem
                         text={t`Sync Publications`}
                         LeftIcon={IconRefresh}
@@ -354,12 +484,15 @@ export const ShowPagePropertySubContainer = ({
                         disabled={loadingSync}
                       />
                     )}
-                    <MenuItem
-                      text={t`Delete`}
-                      accent="danger"
-                      LeftIcon={IconTrash}
-                      onClick={handleDelete}
-                    />
+                    {showDeleteButton && (
+                      <MenuItem
+                        text={t`Delete`}
+                        accent="danger"
+                        LeftIcon={IconTrash}
+                        onClick={handleDelete}
+                        disabled={loadingDelete}
+                      />
+                    )}
                   </DropdownMenuItemsContainer>
                 }
                 dropdownHotkeyScope={{ scope: dropdownId }}
@@ -401,6 +534,22 @@ export const ShowPagePropertySubContainer = ({
           publicationRecordId={publicationDraftsOfProperty?.[0]?.id ?? ''}
         />
       )}
+
+      <ConfirmationModal
+        isOpen={isDeleteRecordsModalOpen}
+        setIsOpen={setIsDeleteRecordsModalOpen}
+        title={t`Delete ${capitalizedObjectNameSingular}`}
+        subtitle={
+          isPublication
+            ? t`Are you sure you want to delete this publication?`
+            : t`Are you sure you want to delete this property and all it's publications?`
+        }
+        loading={loadingDelete}
+        onConfirmClick={() => {
+          handleConfirmDelete();
+        }}
+        deleteButtonText={t`Delete ${capitalizedObjectNameSingular}`}
+      />
     </>
   );
 };

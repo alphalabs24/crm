@@ -44,8 +44,8 @@ export type PublicationDifferences = {
 };
 
 export const usePropertyAndPublicationDifferences = (
-  propertyRecord: ObjectRecord | null,
   publications: ObjectRecord[] | undefined,
+  propertyRecord?: ObjectRecord | null,
 ) => {
   const { objectMetadataItem: propertyMetadataItem } = useObjectMetadataItem({
     objectNameSingular: CoreObjectNameSingular.Property,
