@@ -21,16 +21,23 @@ export const defaultWorkspacePrefillData = async (
   const standardIdToNewMetadataIdMap =
     createStandardIdToMetadataIdMap(objectMetadata);
 
-  function mapDwIdToNewId(oldFieldId: string): string | null {
+  function mapDefaultWorkspaceMetadataIdToNewMetadataId(
+    oldFieldId: string,
+  ): string | null {
     // First get standardId from old field ID
-    const fieldStandardId = dwMetadataIdToStandardIdMap[oldFieldId];
+    const standardId = dwMetadataIdToStandardIdMap[oldFieldId];
 
-    if (!fieldStandardId) {
+    if (!standardId) {
       return null;
     }
 
-    // Then get new field ID from standardId
-    return standardIdToNewMetadataIdMap[fieldStandardId] ?? null;
+    const newFieldId = standardIdToNewMetadataIdMap[standardId];
+
+    if (!newFieldId) {
+      return null;
+    }
+
+    return newFieldId;
   }
 
   const defaultWorkspaceViews = await getStandardObjectWorkspaceViews(
@@ -42,7 +49,7 @@ export const defaultWorkspacePrefillData = async (
     async (entityManager: EntityManager) => {
       await createNewWorkspaceViewsFromDefaultWorkspaceViews(
         defaultWorkspaceViews,
-        mapDwIdToNewId,
+        mapDefaultWorkspaceMetadataIdToNewMetadataId,
         entityManager,
         schemaName,
       );
