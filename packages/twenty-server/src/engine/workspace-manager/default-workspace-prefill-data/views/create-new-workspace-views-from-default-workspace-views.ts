@@ -6,29 +6,38 @@ import { ViewWorkspaceEntity } from 'src/modules/view/standard-objects/view.work
 
 export async function createNewWorkspaceViewsFromDefaultWorkspaceViews(
   defaultWorkspaceViews: ViewWorkspaceEntity[],
-  mapDwIdToNewId: (oldFieldId: string) => string | null,
+  mapDefaultWorkspaceMetadataIdToNewMetadataId: (
+    oldFieldId: string,
+  ) => string | null,
   entityManager: EntityManager,
   schemaName: string,
 ) {
   const newViewDefinitions: ViewDefinition[] = defaultWorkspaceViews
     .map((defaultWorkspaceView) => {
-      const newObjectId = mapDwIdToNewId(defaultWorkspaceView.objectMetadataId);
+      const newObjectMetadataId = mapDefaultWorkspaceMetadataIdToNewMetadataId(
+        defaultWorkspaceView.objectMetadataId,
+      );
 
-      if (!newObjectId) {
+      if (!newObjectMetadataId) {
         return null;
       }
 
       const newViewFields =
         defaultWorkspaceView.viewFields
           ?.map((dwvField) => {
-            const newFieldId = mapDwIdToNewId(dwvField.fieldMetadataId);
+            const newFieldMetadataId =
+              mapDefaultWorkspaceMetadataIdToNewMetadataId(
+                dwvField.fieldMetadataId,
+              );
 
-            if (!newFieldId) {
+
+            if (!newFieldMetadataId) {
               return null;
             }
 
             return {
-              fieldMetadataId: newFieldId,
+              id: dwvField.id,
+              fieldMetadataId: newFieldMetadataId,
               position: dwvField.position,
               isVisible: dwvField.isVisible,
               size: dwvField.size,
@@ -40,14 +49,18 @@ export async function createNewWorkspaceViewsFromDefaultWorkspaceViews(
       const newViewFilters =
         defaultWorkspaceView.viewFilters
           ?.map((filter) => {
-            const newFieldId = mapDwIdToNewId(filter.fieldMetadataId);
+            const newFieldMetadataId =
+              mapDefaultWorkspaceMetadataIdToNewMetadataId(
+                filter.fieldMetadataId,
+              );
 
-            if (!newFieldId) {
+            if (!newFieldMetadataId) {
               return null;
             }
 
             return {
-              fieldMetadataId: newFieldId,
+              id: filter.id,
+              fieldMetadataId: newFieldMetadataId,
               displayValue: filter.displayValue,
               operand: filter.operand,
               value: filter.value,
@@ -58,14 +71,18 @@ export async function createNewWorkspaceViewsFromDefaultWorkspaceViews(
       const newViewGroups =
         defaultWorkspaceView.viewGroups
           ?.map((group) => {
-            const newFieldId = mapDwIdToNewId(group.fieldMetadataId);
+            const newFieldMetadataId =
+              mapDefaultWorkspaceMetadataIdToNewMetadataId(
+                group.fieldMetadataId,
+              );
 
-            if (!newFieldId) {
+            if (!newFieldMetadataId) {
               return null;
             }
 
             return {
-              fieldMetadataId: newFieldId,
+              id: group.id,
+              fieldMetadataId: newFieldMetadataId,
               isVisible: group.isVisible,
               fieldValue: group.fieldValue,
               position: group.position,
@@ -75,13 +92,14 @@ export async function createNewWorkspaceViewsFromDefaultWorkspaceViews(
 
       const newKanbanFieldMetadataId =
         defaultWorkspaceView.kanbanFieldMetadataId
-          ? (mapDwIdToNewId(defaultWorkspaceView.kanbanFieldMetadataId) ??
-            undefined)
+          ? (mapDefaultWorkspaceMetadataIdToNewMetadataId(
+              defaultWorkspaceView.kanbanFieldMetadataId,
+            ) ?? undefined)
           : undefined;
 
       const newKanbanAggregateOperationFieldMetadataId =
         defaultWorkspaceView.kanbanAggregateOperationFieldMetadataId
-          ? (mapDwIdToNewId(
+          ? (mapDefaultWorkspaceMetadataIdToNewMetadataId(
               defaultWorkspaceView.kanbanAggregateOperationFieldMetadataId,
             ) ?? undefined)
           : undefined;
@@ -89,7 +107,7 @@ export async function createNewWorkspaceViewsFromDefaultWorkspaceViews(
       return {
         id: defaultWorkspaceView.id,
         name: defaultWorkspaceView.name,
-        objectMetadataId: newObjectId,
+        objectMetadataId: newObjectMetadataId,
         type: defaultWorkspaceView.type,
         key: defaultWorkspaceView.key,
         position: defaultWorkspaceView.position,
