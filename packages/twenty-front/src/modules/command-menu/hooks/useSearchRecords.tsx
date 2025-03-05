@@ -6,6 +6,7 @@ import { Company } from '@/companies/types/Company';
 import { CoreObjectNamePlural } from '@/object-metadata/types/CoreObjectNamePlural';
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { getCompanyDomainName } from '@/object-metadata/utils/getCompanyDomainName';
+import { getLinkToShowPage } from '@/object-metadata/utils/getLinkToShowPage';
 import { useFindManyRecords } from '@/object-record/hooks/useFindManyRecords';
 import { useMultiObjectSearch } from '@/object-record/relation-picker/hooks/useMultiObjectSearch';
 import { useMultiObjectSearchQueryResultFormattedAsObjectRecordsMap } from '@/object-record/relation-picker/hooks/useMultiObjectSearchQueryResultFormattedAsObjectRecordsMap';
@@ -88,6 +89,118 @@ export const useSearchRecords = () => {
   );
   const opportunities = matchesSearchFilterObjectRecords.opportunities?.map(
     (opportunities) => opportunities.record,
+  );
+
+  const properties = matchesSearchFilterObjectRecords.properties?.map(
+    (properties) => properties.record,
+  );
+
+  const publications = matchesSearchFilterObjectRecords.publications?.map(
+    (publications) => publications.record,
+  );
+
+  const agencies = matchesSearchFilterObjectRecords.agencies?.map(
+    (agencies) => agencies.record,
+  );
+
+  const buyerLeads = matchesSearchFilterObjectRecords.buyerLeads?.map(
+    (buyerLeads) => buyerLeads.record,
+  );
+
+  const propertiesCommands = useMemo(
+    () =>
+      properties?.map((property) => ({
+        id: property.id,
+        label: property.name ?? '',
+        description: 'Property',
+        to: getLinkToShowPage(CoreObjectNameSingular.Property, {
+          id: property.id,
+          name: property.name,
+          avatarUrl: property.avatarUrl,
+        }),
+        shouldCloseCommandMenuOnClick: true,
+        Icon: () => (
+          <Avatar
+            type="rounded"
+            avatarUrl={property.avatarUrl}
+            placeholderColorSeed={property.id}
+            placeholder={property.name ?? ''}
+          />
+        ),
+      })),
+    [properties],
+  );
+
+  const agenciesCommands = useMemo(
+    () =>
+      agencies?.map((agency) => ({
+        id: agency.id,
+        label: agency.name ?? '',
+        description: 'Agency',
+        to: getLinkToShowPage(CoreObjectNameSingular.Agency, {
+          id: agency.id,
+          name: agency.name,
+          avatarUrl: agency.avatarUrl,
+        }),
+        shouldCloseCommandMenuOnClick: true,
+        Icon: () => (
+          <Avatar
+            type="rounded"
+            avatarUrl={agency.avatarUrl}
+            placeholderColorSeed={agency.id}
+            placeholder={agency.name ?? ''}
+          />
+        ),
+      })),
+    [agencies],
+  );
+
+  const buyerLeadsCommands = useMemo(
+    () =>
+      buyerLeads?.map((buyerLead) => ({
+        id: buyerLead.id,
+        label: buyerLead.name ?? '',
+        description: 'Buyer Lead',
+        to: getLinkToShowPage(CoreObjectNameSingular.BuyerLead, {
+          id: buyerLead.id,
+          name: buyerLead.name,
+          avatarUrl: buyerLead.avatarUrl,
+        }),
+        shouldCloseCommandMenuOnClick: true,
+        Icon: () => (
+          <Avatar
+            type="rounded"
+            avatarUrl={buyerLead.avatarUrl}
+            placeholderColorSeed={buyerLead.id}
+            placeholder={buyerLead.name ?? ''}
+          />
+        ),
+      })),
+    [buyerLeads],
+  );
+
+  const publicationsCommands = useMemo(
+    () =>
+      publications?.map((publication) => ({
+        id: publication.id,
+        label: publication.name ?? '',
+        description: 'Publication',
+        to: getLinkToShowPage(CoreObjectNameSingular.Publication, {
+          id: publication.id,
+          name: publication.name,
+          avatarUrl: publication.avatarUrl,
+        }),
+        shouldCloseCommandMenuOnClick: true,
+        Icon: () => (
+          <Avatar
+            type="rounded"
+            avatarUrl={publication.avatarUrl}
+            placeholderColorSeed={publication.id}
+            placeholder={publication.name ?? ''}
+          />
+        ),
+      })),
+    [publications],
   );
 
   const peopleCommands = useMemo(
@@ -195,6 +308,10 @@ export const useSearchRecords = () => {
             CoreObjectNamePlural.Person,
             CoreObjectNamePlural.Opportunity,
             CoreObjectNamePlural.Company,
+            CoreObjectNamePlural.Property,
+            CoreObjectNamePlural.Publication,
+            CoreObjectNamePlural.Agency,
+            CoreObjectNamePlural.BuyerLead,
           ].includes(namePlural as CoreObjectNamePlural) && !isEmpty(records),
       ),
     );
@@ -226,6 +343,10 @@ export const useSearchRecords = () => {
     ...(opportunityCommands ?? []),
     ...(noteCommands ?? []),
     ...(tasksCommands ?? []),
+    ...(propertiesCommands ?? []),
+    ...(publicationsCommands ?? []),
+    ...(agenciesCommands ?? []),
+    ...(buyerLeadsCommands ?? []),
     ...(customObjectCommands ?? []),
   ];
 
@@ -235,6 +356,10 @@ export const useSearchRecords = () => {
     !opportunityCommands?.length &&
     !noteCommands?.length &&
     !tasksCommands?.length &&
+    !propertiesCommands?.length &&
+    !publicationsCommands?.length &&
+    !agenciesCommands?.length &&
+    !buyerLeadsCommands?.length &&
     !customObjectCommands?.length;
 
   return {

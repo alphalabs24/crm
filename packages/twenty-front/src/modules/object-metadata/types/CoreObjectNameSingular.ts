@@ -5,6 +5,7 @@ export enum CoreObjectNameSingular {
   ApiKey = 'apiKey',
   Attachment = 'attachment',
   Blocklist = 'blocklist',
+  BuyerLead = 'buyerLead',
   CalendarChannel = 'calendarChannel',
   CalendarEvent = 'calendarEvent',
   Comment = 'comment',
