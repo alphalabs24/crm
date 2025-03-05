@@ -69,9 +69,9 @@ export class StandardIndexFactory {
           workspaceId: context.workspaceId,
           objectMetadataId: objectMetadata.id,
           name: target.name,
-          columns: target.indexFieldMetadatas.map(
-            (indexFieldMetadata) => indexFieldMetadata.fieldMetadata.name,
-          ),
+          columns: target.indexFieldMetadatas
+            .sort((a, b) => a.order - b.order)
+            .map((indexFieldMetadata) => indexFieldMetadata.fieldMetadata.name),
           isUnique: target.isUnique,
           isCustom: target.isCustom,
           indexWhereClause: target.indexWhereClause,

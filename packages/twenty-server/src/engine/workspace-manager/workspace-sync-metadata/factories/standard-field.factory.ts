@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { FieldMetadataType } from 'twenty-shared';
 
 import { FeatureFlagMap } from 'src/engine/core-modules/feature-flag/interfaces/feature-flag-map.interface';
+import { FieldMetadataInterface } from 'src/engine/metadata-modules/field-metadata/interfaces/field-metadata.interface';
 import { WorkspaceDynamicRelationMetadataArgs } from 'src/engine/twenty-orm/interfaces/workspace-dynamic-relation-metadata-args.interface';
 import { WorkspaceEntityMetadataArgs } from 'src/engine/twenty-orm/interfaces/workspace-entity-metadata-args.interface';
 import { WorkspaceFieldMetadataArgs } from 'src/engine/twenty-orm/interfaces/workspace-field-metadata-args.interface';
@@ -15,12 +16,15 @@ import { WorkspaceSyncContext } from 'src/engine/workspace-manager/workspace-syn
 
 import { FieldMetadataEntity } from 'src/engine/metadata-modules/field-metadata/field-metadata.entity';
 import { isFieldMetadata } from 'src/engine/metadata-modules/field-metadata/utils/is-field-metadata';
+import { DEFAULT_LABEL_IDENTIFIER_FIELD_NAME } from 'src/engine/metadata-modules/object-metadata/object-metadata.constants';
 import { RelationMetadataType } from 'src/engine/metadata-modules/relation-metadata/relation-metadata.entity';
 import { BaseWorkspaceEntity } from 'src/engine/twenty-orm/base.workspace-entity';
 import { metadataArgsStorage } from 'src/engine/twenty-orm/storage/metadata-args.storage';
 import { getJoinColumn } from 'src/engine/twenty-orm/utils/get-join-column.util';
 import { createDeterministicUuid } from 'src/engine/workspace-manager/workspace-sync-metadata/utils/create-deterministic-uuid.util';
+import { getTsVectorColumnExpressionFromFields } from 'src/engine/workspace-manager/workspace-sync-metadata/utils/get-ts-vector-column-expression.util';
 import { isGatedAndNotEnabled } from 'src/engine/workspace-manager/workspace-sync-metadata/utils/is-gate-and-not-enabled.util';
+import { SearchableFieldType } from 'src/engine/workspace-manager/workspace-sync-metadata/utils/is-searchable-field.util';
 
 @Injectable()
 export class StandardFieldFactory {
@@ -30,6 +34,9 @@ export class StandardFieldFactory {
       | FieldMetadataEntity<FieldMetadataType | 'default'>,
     context: WorkspaceSyncContext,
     workspaceFeatureFlagsMap: FeatureFlagMap,
+    allTargets?:
+      | (typeof BaseWorkspaceEntity)[]
+      | FieldMetadataEntity<FieldMetadataType | 'default'>[],
   ): (PartialFieldMetadata | PartialComputedFieldMetadata)[];
 
   create(
@@ -38,6 +45,9 @@ export class StandardFieldFactory {
       | FieldMetadataEntity<FieldMetadataType | 'default'>[],
     context: WorkspaceSyncContext,
     workspaceFeatureFlagsMap: FeatureFlagMap, // Map of standardId to field metadata
+    allTargets?:
+      | (typeof BaseWorkspaceEntity)[]
+      | FieldMetadataEntity<FieldMetadataType | 'default'>[],
   ): Map<string, (PartialFieldMetadata | PartialComputedFieldMetadata)[]>;
 
   create(
@@ -48,49 +58,83 @@ export class StandardFieldFactory {
       | FieldMetadataEntity<FieldMetadataType | 'default'>[],
     context: WorkspaceSyncContext,
     workspaceFeatureFlagsMap: FeatureFlagMap,
+    allTargets?:
+      | (typeof BaseWorkspaceEntity)[]
+      | FieldMetadataEntity<FieldMetadataType | 'default'>[],
   ):
     | (PartialFieldMetadata | PartialComputedFieldMetadata)[]
     | Map<string, (PartialFieldMetadata | PartialComputedFieldMetadata)[]> {
     if (Array.isArray(targetOrTargets)) {
-      return targetOrTargets.reduce((acc, target) => {
-        if (isFieldMetadata<FieldMetadataType | 'default'>(target)) {
-          if (!target.object.standardId) {
-            throw new Error('object.standardId not found');
-          }
+      return (
+        targetOrTargets
+          // Put TS_VECTOR fields at the end, otherwise the migration will fail
+          // because the columns are not created at that point in time
+          .sort((a, b) => {
+            if (
+              isFieldMetadata<FieldMetadataType | 'default'>(a) &&
+              isFieldMetadata<FieldMetadataType | 'default'>(b)
+            ) {
+              if (
+                a.type === FieldMetadataType.TS_VECTOR &&
+                b.type !== FieldMetadataType.TS_VECTOR
+              ) {
+                return 1;
+              }
+              if (
+                a.type !== FieldMetadataType.TS_VECTOR &&
+                b.type === FieldMetadataType.TS_VECTOR
+              ) {
+                return -1;
+              }
+            }
 
-          const existingFieldMetadata = acc.get(target.object.standardId);
+            return 0;
+          })
+          .reduce((acc, target) => {
+            if (isFieldMetadata<FieldMetadataType | 'default'>(target)) {
+              if (!target.object.standardId) {
+                throw new Error('object.standardId not found');
+              }
 
-          acc.set(target.object.standardId, [
-            ...(existingFieldMetadata ?? []),
-            ...this.create(target, context, workspaceFeatureFlagsMap),
-          ]);
+              const existingFieldMetadata = acc.get(target.object.standardId);
 
-          return acc;
-        }
+              acc.set(target.object.standardId, [
+                ...(existingFieldMetadata ?? []),
+                ...this.create(
+                  target,
+                  context,
+                  workspaceFeatureFlagsMap,
+                  targetOrTargets,
+                ),
+              ]);
 
-        const workspaceEntityMetadataArgs =
-          metadataArgsStorage.filterEntities(target);
+              return acc;
+            }
 
-        if (!workspaceEntityMetadataArgs) {
-          return acc;
-        }
+            const workspaceEntityMetadataArgs =
+              metadataArgsStorage.filterEntities(target);
 
-        if (
-          isGatedAndNotEnabled(
-            workspaceEntityMetadataArgs.gate,
-            workspaceFeatureFlagsMap,
-          )
-        ) {
-          return acc;
-        }
+            if (!workspaceEntityMetadataArgs) {
+              return acc;
+            }
 
-        acc.set(
-          workspaceEntityMetadataArgs.standardId,
-          this.create(target, context, workspaceFeatureFlagsMap),
-        );
+            if (
+              isGatedAndNotEnabled(
+                workspaceEntityMetadataArgs.gate,
+                workspaceFeatureFlagsMap,
+              )
+            ) {
+              return acc;
+            }
 
-        return acc;
-      }, new Map<string, (PartialFieldMetadata | PartialComputedFieldMetadata)[]>());
+            acc.set(
+              workspaceEntityMetadataArgs.standardId,
+              this.create(target, context, workspaceFeatureFlagsMap),
+            );
+
+            return acc;
+          }, new Map<string, (PartialFieldMetadata | PartialComputedFieldMetadata)[]>())
+      );
     }
 
     if (isFieldMetadata<FieldMetadataType | 'default'>(targetOrTargets)) {
@@ -102,20 +146,48 @@ export class StandardFieldFactory {
         id: _1,
         createdAt: _2,
         updatedAt: _3,
-        object: _4,
-        objectMetadataId: _5,
+        object,
+        objectMetadataId,
         relationTargetFieldMetadataId: _6,
         relationTargetObjectMetadataId: _7,
         ...rest
       } = targetOrTargets;
 
-      return [
-        {
-          ...rest,
-          workspaceId: context.workspaceId,
-          standardId: targetOrTargets.standardId,
-        },
-      ];
+      const newFieldMetadata: PartialFieldMetadata = {
+        ...rest,
+        workspaceId: context.workspaceId,
+        standardId: targetOrTargets.standardId,
+      };
+
+      if (targetOrTargets.type !== FieldMetadataType.TS_VECTOR) {
+        return [newFieldMetadata];
+      } else {
+        const searchableField = allTargets?.find(
+          (field) =>
+            isFieldMetadata<FieldMetadataType | 'default'>(field) &&
+            field.objectMetadataId === objectMetadataId &&
+            field.name === DEFAULT_LABEL_IDENTIFIER_FIELD_NAME,
+        ) as FieldMetadataEntity<FieldMetadataType | 'default'> | undefined;
+
+        return [
+          {
+            ...newFieldMetadata,
+            generatedType:
+              (targetOrTargets as FieldMetadataInterface).generatedType ??
+              'STORED',
+            asExpression:
+              (targetOrTargets as FieldMetadataInterface).asExpression ??
+              (searchableField
+                ? getTsVectorColumnExpressionFromFields([
+                    {
+                      type: searchableField.type as SearchableFieldType,
+                      name: searchableField.name,
+                    },
+                  ])
+                : undefined),
+          },
+        ];
+      }
     }
 
     const workspaceEntityMetadataArgs =
