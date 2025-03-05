@@ -39,6 +39,7 @@ const StyledFormBorder = styled.div`
   border: 1px solid ${({ theme }) => theme.border.color.light};
   border-radius: ${({ theme }) => theme.border.radius.sm};
   margin: ${({ theme }) => theme.spacing(4)};
+  width: 100%;
 
   @media (min-width: ${LARGE_DESKTOP_VIEWPORT}px) {
     max-width: 800px;

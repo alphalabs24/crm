@@ -98,6 +98,7 @@ export const ImageEditModal = ({
           hotkeyScope={ModalHotkeyScope.Default}
           minHeight={80}
           autoFocus
+          copyButton={false}
         />
       </StyledModalContent>
     </Modal>
