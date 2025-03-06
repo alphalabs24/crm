@@ -16,6 +16,12 @@ import { RestApiService } from 'src/engine/api/rest/rest-api.service';
 import { AuthModule } from 'src/engine/core-modules/auth/auth.module';
 import { TwentyORMModule } from 'src/engine/twenty-orm/twenty-orm.module';
 import { WorkspaceCacheStorageModule } from 'src/engine/workspace-cache-storage/workspace-cache-storage.module';
+import { RestApiNewCoreController } from 'src/engine/api/rest/core/controllers/rest-new-core.controller';
+import { SendEmailWorkflowAction } from 'src/modules/workflow/workflow-executor/workflow-actions/mail-sender/send-email.workflow-action';
+import { GmailClientProvider } from 'src/modules/messaging/message-import-manager/drivers/gmail/providers/gmail-client.provider';
+import { ScopedWorkspaceContextFactory } from 'src/engine/twenty-orm/factories/scoped-workspace-context.factory';
+import { OAuth2ClientManagerService } from 'src/modules/connected-account/oauth2-client-manager/services/oauth2-client-manager.service';
+import { GoogleOAuth2ClientManagerService } from 'src/modules/connected-account/oauth2-client-manager/drivers/google/google-oauth2-client-manager.service';
 
 @Module({
   imports: [
@@ -27,6 +33,7 @@ import { WorkspaceCacheStorageModule } from 'src/engine/workspace-cache-storage/
     TwentyORMModule,
   ],
   controllers: [
+    RestApiNewCoreController,
     RestApiMetadataController,
     RestApiCoreBatchController,
     RestApiCoreController,
@@ -39,6 +46,11 @@ import { WorkspaceCacheStorageModule } from 'src/engine/workspace-cache-storage/
     StartingAfterInputFactory,
     EndingBeforeInputFactory,
     LimitInputFactory,
+    SendEmailWorkflowAction,
+    GmailClientProvider,
+    ScopedWorkspaceContextFactory,
+    OAuth2ClientManagerService,
+    GoogleOAuth2ClientManagerService,
   ],
   exports: [RestApiMetadataService],
 })
