@@ -115,7 +115,7 @@ export const SummaryCard = ({
             isDisplayModeFixHeight: true,
           }}
         >
-          {isCommandMenuV2Enabled ? (
+          {isCommandMenuV2Enabled && isInRightDrawer ? (
             <StyledRecordTitleContainer>
               <RecordTitleCell sizeVariant="md" />
               <Link
