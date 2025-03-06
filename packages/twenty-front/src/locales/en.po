@@ -1669,6 +1669,7 @@ msgid "New Password"
 msgstr "New Password"
 
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
 msgid "New Publication"
 msgstr "New Publication"
 
