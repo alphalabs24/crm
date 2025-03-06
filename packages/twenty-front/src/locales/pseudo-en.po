@@ -49,6 +49,10 @@ msgstr ""
 msgid "{name}"
 msgstr ""
 
+#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+msgid "{objectNameSingular} deleted successfully"
+msgstr ""
+
 #: src/modules/record-edit/components/RecordEditContainer.tsx
 msgid "{objectNameSingular} saved successfully"
 msgstr ""
@@ -242,6 +246,10 @@ msgstr ""
 msgid "Advanced filter"
 msgstr ""
 
+#: src/modules/navigation/components/AppNavigationDrawer.tsx
+msgid "Advanced:"
+msgstr ""
+
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 #~ msgid "Afrikaans"
 #~ msgstr ""
@@ -251,8 +259,8 @@ msgid "Agency Credentials"
 msgstr ""
 
 #: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
-msgid "Agriculture Subtype"
-msgstr ""
+#~ msgid "Agriculture Subtype"
+#~ msgstr ""
 
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationShortLabel.ts
 msgid "All"
@@ -272,6 +280,10 @@ msgstr ""
 
 #: src/modules/settings/security/components/SettingsSecurityOptionsList.tsx
 msgid "Allow logins through Microsoft's single sign-on functionality."
+msgstr ""
+
+#: src/pages/onboarding/CreateProfile.tsx
+msgid "Allow Nestermind to access and administer my data."
 msgstr ""
 
 #: src/modules/settings/security/components/SettingsSecurityOptionsList.tsx
@@ -338,6 +350,14 @@ msgstr ""
 
 #: src/pages/settings/roles/components/RoleAssignmentConfirmationModalSubtitle.tsx
 msgid "Are you sure you want to assign this role?"
+msgstr ""
+
+#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+msgid "Are you sure you want to delete this property and all it's publications?"
+msgstr ""
+
+#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+msgid "Are you sure you want to delete this publication?"
 msgstr ""
 
 #: src/modules/object-record/object-sort-dropdown/components/ObjectSortDropdownButton.tsx
@@ -438,6 +458,7 @@ msgstr ""
 #: src/pages/auth/Authorize.tsx
 #: src/modules/ui/layout/show-page/components/nm/PublishDraftModal.tsx
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
+#: src/modules/ui/layout/show-page/components/nm/DeleteConfirmationModal.tsx
 #: src/modules/ui/layout/modal/components/ConfirmationModal.tsx
 #: src/modules/settings/components/SaveAndCancelButtons/CancelButton.tsx
 #: src/modules/record-edit/components/custom/ImageEditModal.tsx
@@ -765,6 +786,7 @@ msgstr ""
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+#: src/modules/ui/layout/show-page/components/nm/DeleteConfirmationModal.tsx
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 #: src/modules/action-menu/components/__stories__/RightDrawerActionMenuDropdown.stories.tsx
@@ -779,6 +801,11 @@ msgstr ""
 #: src/modules/action-menu/actions/record-actions/constants/DefaultActionsConfigV1.ts
 #: src/modules/action-menu/actions/record-actions/constants/DefaultActionsConfigV1.ts
 msgid "Delete"
+msgstr ""
+
+#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+msgid "Delete {capitalizedObjectNameSingular}"
 msgstr ""
 
 #: src/pages/settings/SettingsWorkspaceMembers.tsx
@@ -1267,6 +1294,10 @@ msgstr ""
 msgid "Hide"
 msgstr ""
 
+#: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
+msgid "House Subtype"
+msgstr ""
+
 #: src/pages/onboarding/CreateProfile.tsx
 msgid "How you'll be identified on the app."
 msgstr ""
@@ -1305,8 +1336,8 @@ msgid "Indexes"
 msgstr ""
 
 #: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
-msgid "Industrial Objects Subtype"
-msgstr ""
+#~ msgid "Industrial Objects Subtype"
+#~ msgstr ""
 
 #: src/modules/settings/data-model/objects/forms/components/SettingsDataModelObjectAboutForm.tsx
 #: src/modules/settings/data-model/fields/forms/components/SettingsDataModelFieldIconLabelForm.tsx
@@ -1521,8 +1552,8 @@ msgid "Missing required fields: {missingFieldsString}"
 msgstr ""
 
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
-msgid "More"
-msgstr ""
+#~ msgid "More"
+#~ msgstr ""
 
 #: src/modules/object-record/record-table/record-table-footer/components/RecordTableColumnAggregateFooterDropdownContent.tsx
 #: src/modules/object-record/record-board/record-board-column/components/RecordBoardColumnHeaderAggregateDropdownMenuContent.tsx
@@ -1634,7 +1665,6 @@ msgstr ""
 msgid "New Password"
 msgstr ""
 
-#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
 msgid "New Publication"
 msgstr ""
@@ -1790,8 +1820,8 @@ msgid "Page Not Found"
 msgstr ""
 
 #: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
-msgid "Parking Space Subtype"
-msgstr ""
+#~ msgid "Parking Space Subtype"
+#~ msgstr ""
 
 #: src/modules/settings/security/components/SettingsSecurityOptionsList.tsx
 msgid "Password"
@@ -2126,8 +2156,8 @@ msgid "Search records"
 msgstr ""
 
 #: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
-msgid "Secondary Rooms Subtype"
-msgstr ""
+#~ msgid "Secondary Rooms Subtype"
+#~ msgstr ""
 
 #: src/pages/settings/security/SettingsSecurity.tsx
 #: src/pages/settings/security/SettingsSecurity.tsx
@@ -2419,6 +2449,10 @@ msgstr ""
 msgid "This member will be unassigned from this role."
 msgstr ""
 
+#: src/pages/onboarding/CreateProfile.tsx
+msgid "This permission is required for Nestermind's automation and AI features to function properly."
+msgstr ""
+
 #: src/pages/settings/roles/components/RolePermissions.tsx
 #~ msgid "This Role has the following permissions."
 #~ msgstr ""
@@ -2590,6 +2624,10 @@ msgstr ""
 
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
 msgid "When the key will be disabled"
+msgstr ""
+
+#: src/pages/onboarding/CreateProfile.tsx
+msgid "Why is this required?"
 msgstr ""
 
 #: src/modules/workflow/components/RecordShowPageWorkflowHeader.tsx

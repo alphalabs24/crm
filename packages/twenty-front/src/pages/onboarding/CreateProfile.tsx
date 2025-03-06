@@ -177,10 +177,11 @@ export const CreateProfile = () => {
     },
     [
       currentWorkspaceMember?.id,
+      acceptTermsAndConditions,
+      updateOneRecord,
+      setCurrentWorkspaceMember,
       setNextOnboardingStatus,
       enqueueSnackBar,
-      setCurrentWorkspaceMember,
-      updateOneRecord,
     ],
   );
 
