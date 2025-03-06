@@ -131,6 +131,7 @@ export const useRecordShowContainerTabs = (
             ifRelationsMissing: ['noteTargets'],
           },
         },
+        fields: null,
       },
     },
     [CoreObjectNameSingular.Note]: {
