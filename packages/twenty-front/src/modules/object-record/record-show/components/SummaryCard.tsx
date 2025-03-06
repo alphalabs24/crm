@@ -1,5 +1,7 @@
+import { useCommandMenu } from '@/command-menu/hooks/useCommandMenu';
 import { useGetStandardObjectIcon } from '@/object-metadata/hooks/useGetStandardObjectIcon';
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
+import { getLinkToShowPage } from '@/object-metadata/utils/getLinkToShowPage';
 import { FieldContext } from '@/object-record/record-field/contexts/FieldContext';
 import { isFieldValueReadOnly } from '@/object-record/record-field/utils/isFieldValueReadOnly';
 import { RecordInlineCell } from '@/object-record/record-inline-cell/components/RecordInlineCell';
@@ -12,8 +14,20 @@ import { ShowPageSummaryCard } from '@/ui/layout/show-page/components/ShowPageSu
 import { ShowPageSummaryCardSkeletonLoader } from '@/ui/layout/show-page/components/ShowPageSummaryCardSkeletonLoader';
 import { useIsMobile } from '@/ui/utilities/responsive/hooks/useIsMobile';
 import { useIsFeatureEnabled } from '@/workspace/hooks/useIsFeatureEnabled';
+import styled from '@emotion/styled';
+import { Link } from 'react-router-dom';
 import { isDefined } from 'twenty-shared';
+import { Button, IconArrowUpRight } from 'twenty-ui';
 import { FeatureFlagKey, FieldMetadataType } from '~/generated/graphql';
+
+const StyledRecordTitleContainer = styled.div`
+  align-items: center;
+  display: flex;
+  gap: ${({ theme }) => theme.spacing(2)};
+  justify-content: center;
+  padding: 0 ${({ theme }) => theme.spacing(2)};
+  overflow: hidden;
+`;
 
 type SummaryCardProps = {
   objectNameSingular: string;
@@ -46,6 +60,8 @@ export const SummaryCard = ({
       objectRecordId,
       recordFromStore,
     });
+
+  const { closeCommandMenu } = useCommandMenu();
 
   const { Icon, IconColor } = useGetStandardObjectIcon(objectNameSingular);
   const isMobile = useIsMobile() || isInRightDrawer;
@@ -100,7 +116,25 @@ export const SummaryCard = ({
           }}
         >
           {isCommandMenuV2Enabled ? (
-            <RecordTitleCell sizeVariant="md" />
+            <StyledRecordTitleContainer>
+              <RecordTitleCell sizeVariant="md" />
+              <Link
+                style={{
+                  textDecoration: 'none',
+                }}
+                to={getLinkToShowPage(objectNameSingular, {
+                  id: objectRecordId,
+                })}
+              >
+                <Button
+                  title="Open"
+                  size="small"
+                  variant="secondary"
+                  IconRight={IconArrowUpRight}
+                  onClick={closeCommandMenu}
+                />
+              </Link>
+            </StyledRecordTitleContainer>
           ) : isInRightDrawer ? (
             <RightDrawerTitleRecordInlineCell />
           ) : (

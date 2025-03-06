@@ -29,7 +29,6 @@ export const OVERVIEW_SECTION_CONTENT: SectionContent[] = [
       },
     ],
   },
-
   {
     title: 'Stakeholders',
     width: 'third',
