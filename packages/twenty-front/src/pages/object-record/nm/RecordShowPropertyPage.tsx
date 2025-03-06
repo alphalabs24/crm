@@ -23,6 +23,7 @@ import { RecordShowPageWorkflowVersionHeader } from '@/workflow/components/Recor
 import { useIsFeatureEnabled } from '@/workspace/hooks/useIsFeatureEnabled';
 import styled from '@emotion/styled';
 import { FeatureFlagKey } from '~/generated/graphql';
+import { RecordSortsComponentInstanceContext } from '@/object-record/record-sort/states/context/RecordSortsComponentInstanceContext';
 
 const StyledHeader = styled.div`
   align-items: center;
@@ -88,72 +89,77 @@ export const RecordShowPropertyPage = () => {
       <RecordFiltersComponentInstanceContext.Provider
         value={{ instanceId: `record-show-${objectRecordId}` }}
       >
-        <ContextStoreComponentInstanceContext.Provider
+        <RecordSortsComponentInstanceContext.Provider
           value={{ instanceId: `record-show-${objectRecordId}` }}
         >
-          <ActionMenuComponentInstanceContext.Provider
-            value={{ instanceId: `record-show-${objectRecordId}` }}
+          <ContextStoreComponentInstanceContext.Provider
+            value={{ instanceId: `main-context-store` }}
           >
-            <RecordValueSetterEffect recordId={objectRecordId} />
-            <PageContainer>
-              <PageTitle title={pageTitle} />
-              <StyledHeader>
-                <StyledLeftContainer>
-                  <RecordShowPropertyBreadcrumb
-                    objectNameSingular={objectNameSingular}
-                    objectRecordId={objectRecordId}
-                    objectLabelPlural={objectMetadataItem.labelPlural}
-                    labelIdentifierFieldMetadataItem={
-                      labelIdentifierFieldMetadataItem
-                    }
-                    showBackButton
-                    handleCloseClick={navigateToIndexView}
-                  />
-                </StyledLeftContainer>
-                <StyledRightContainer>
-                  {!isCommandMenuV2Enabled &&
-                    objectNameSingular === CoreObjectNameSingular.Workflow && (
-                      <RecordShowPageWorkflowHeader
-                        workflowId={objectRecordId}
-                      />
-                    )}
-                  {!isCommandMenuV2Enabled &&
-                    objectNameSingular ===
-                      CoreObjectNameSingular.WorkflowVersion && (
-                      <RecordShowPageWorkflowVersionHeader
-                        workflowVersionId={objectRecordId}
-                      />
-                    )}
-                  {(isCommandMenuV2Enabled ||
-                    (objectNameSingular !== CoreObjectNameSingular.Workflow &&
-                      objectNameSingular !==
-                        CoreObjectNameSingular.WorkflowVersion)) && (
-                    <RecordShowActionMenu
-                      {...{
-                        isFavorite,
-                        record,
-                        handleFavoriteButtonClick,
-                        objectMetadataItem,
-                        objectNameSingular,
-                      }}
+            <ActionMenuComponentInstanceContext.Provider
+              value={{ instanceId: `record-show-${objectRecordId}` }}
+            >
+              <RecordValueSetterEffect recordId={objectRecordId} />
+              <PageContainer>
+                <PageTitle title={pageTitle} />
+                <StyledHeader>
+                  <StyledLeftContainer>
+                    <RecordShowPropertyBreadcrumb
+                      objectNameSingular={objectNameSingular}
+                      objectRecordId={objectRecordId}
+                      objectLabelPlural={objectMetadataItem.labelPlural}
+                      labelIdentifierFieldMetadataItem={
+                        labelIdentifierFieldMetadataItem
+                      }
+                      showBackButton
+                      handleCloseClick={navigateToIndexView}
                     />
-                  )}
-                </StyledRightContainer>
-              </StyledHeader>
-              <PageBody>
-                <TimelineActivityContext.Provider
-                  value={{ labelIdentifierValue: pageName }}
-                >
-                  <RecordShowPropertyContainer
-                    objectNameSingular={objectNameSingular}
-                    objectRecordId={objectRecordId}
-                    loading={loading}
-                  />
-                </TimelineActivityContext.Provider>
-              </PageBody>
-            </PageContainer>
-          </ActionMenuComponentInstanceContext.Provider>
-        </ContextStoreComponentInstanceContext.Provider>
+                  </StyledLeftContainer>
+                  <StyledRightContainer>
+                    {!isCommandMenuV2Enabled &&
+                      objectNameSingular ===
+                        CoreObjectNameSingular.Workflow && (
+                        <RecordShowPageWorkflowHeader
+                          workflowId={objectRecordId}
+                        />
+                      )}
+                    {!isCommandMenuV2Enabled &&
+                      objectNameSingular ===
+                        CoreObjectNameSingular.WorkflowVersion && (
+                        <RecordShowPageWorkflowVersionHeader
+                          workflowVersionId={objectRecordId}
+                        />
+                      )}
+                    {(isCommandMenuV2Enabled ||
+                      (objectNameSingular !== CoreObjectNameSingular.Workflow &&
+                        objectNameSingular !==
+                          CoreObjectNameSingular.WorkflowVersion)) && (
+                      <RecordShowActionMenu
+                        {...{
+                          isFavorite,
+                          record,
+                          handleFavoriteButtonClick,
+                          objectMetadataItem,
+                          objectNameSingular,
+                        }}
+                      />
+                    )}
+                  </StyledRightContainer>
+                </StyledHeader>
+                <PageBody>
+                  <TimelineActivityContext.Provider
+                    value={{ labelIdentifierValue: pageName }}
+                  >
+                    <RecordShowPropertyContainer
+                      objectNameSingular={objectNameSingular}
+                      objectRecordId={objectRecordId}
+                      loading={loading}
+                    />
+                  </TimelineActivityContext.Provider>
+                </PageBody>
+              </PageContainer>
+            </ActionMenuComponentInstanceContext.Provider>
+          </ContextStoreComponentInstanceContext.Provider>
+        </RecordSortsComponentInstanceContext.Provider>
       </RecordFiltersComponentInstanceContext.Provider>
     </RecordFieldValueSelectorContextProvider>
   );

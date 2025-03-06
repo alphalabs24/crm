@@ -85,31 +85,6 @@ const StyledContentContainer = styled.div<{ isInRightDrawer: boolean }>`
     isInRightDrawer ? theme.spacing(16) : 0};
 `;
 
-const StyledModalHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: ${({ theme }) => theme.spacing(4)};
-`;
-
-const StyledModalTitle = styled.h2`
-  font-size: ${({ theme }) => theme.font.size.lg};
-  font-weight: ${({ theme }) => theme.font.weight.semiBold};
-`;
-
-const StyledModalContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(4)};
-  padding: ${({ theme }) => theme.spacing(4)};
-`;
-
-const StyledModalDescription = styled.div`
-  color: ${({ theme }) => theme.font.color.secondary};
-  font-size: ${({ theme }) => theme.font.size.md};
-  line-height: 1.5;
-`;
-
 export const TAB_LIST_COMPONENT_ID = 'show-page-right-tab-list';
 
 type ShowPagePropertySubContainerProps = {
