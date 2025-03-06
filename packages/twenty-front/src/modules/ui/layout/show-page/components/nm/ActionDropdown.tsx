@@ -10,6 +10,7 @@ import { IconButton } from '@ui/input/button/components/IconButton';
 import { useState } from 'react';
 import { MenuItem } from 'twenty-ui';
 import styled from '@emotion/styled';
+import { useDropdown } from '@/ui/layout/dropdown/hooks/useDropdown';
 
 const StyledContainer = styled.div`
   display: flex;
@@ -52,6 +53,7 @@ export const ActionDropdown = ({
   dropdownId,
 }: ActionDropdownProps) => {
   const [showingOptions, setShowingOptions] = useState(false);
+  const { closeDropdown } = useDropdown(dropdownId);
 
   if (!primaryAction) {
     return null;
@@ -85,6 +87,7 @@ export const ActionDropdown = ({
               LeftIcon={action.Icon}
               onClick={() => {
                 action.onClick();
+                closeDropdown();
               }}
               disabled={action.disabled}
               accent={action.distructive ? 'danger' : 'default'}

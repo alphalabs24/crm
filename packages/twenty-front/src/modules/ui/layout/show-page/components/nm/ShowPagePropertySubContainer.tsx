@@ -367,7 +367,7 @@ export const ShowPagePropertySubContainer = ({
     modalRef.current?.close();
   };
 
-  const { showPublishButton, validationDetails } = usePublicationValidation({
+  const { validationDetails } = usePublicationValidation({
     record: recordFromStore,
     differences: differenceRecords,
     isPublication,
@@ -431,6 +431,15 @@ export const ShowPagePropertySubContainer = ({
             <ActionDropdown
               dropdownId={dropdownId}
               actions={[
+                ...(differenceRecords?.length > 0
+                  ? [
+                      {
+                        title: t`New Publication`,
+                        Icon: IconPlus,
+                        onClick: handlePublishClick,
+                      },
+                    ]
+                  : []),
                 ...(showSyncButton
                   ? [
                       {
@@ -454,7 +463,7 @@ export const ShowPagePropertySubContainer = ({
                   : []),
               ]}
               primaryAction={
-                showPublishButton && !recordFromStore?.deletedAt
+                !recordFromStore?.deletedAt
                   ? {
                       title: isPublication ? t`Publish` : t`New Publication`,
                       Icon: isPublication ? IconUpload : IconPlus,
