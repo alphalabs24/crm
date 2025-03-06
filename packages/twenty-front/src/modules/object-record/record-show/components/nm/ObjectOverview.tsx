@@ -35,11 +35,11 @@ import {
 import { FieldMetadataType } from '~/generated/graphql';
 import { useSubcategoryByCategory } from '../../hooks/useSubcategoryByCategory';
 
-const StyledFormBorder = styled.div`
+const StyledFormBorder = styled.div<{ isInRightDrawer?: boolean }>`
   border: 1px solid ${({ theme }) => theme.border.color.light};
   border-radius: ${({ theme }) => theme.border.radius.sm};
   margin: ${({ theme }) => theme.spacing(4)};
-  width: 100%;
+  width: ${({ isInRightDrawer }) => (isInRightDrawer ? 'unset' : '100%')};
 
   @media (min-width: ${LARGE_DESKTOP_VIEWPORT}px) {
     max-width: 800px;
@@ -385,7 +385,7 @@ export const ObjectOverview = ({
   }
   return (
     <>
-      <StyledFormBorder>
+      <StyledFormBorder isInRightDrawer={isInRightDrawer}>
         {recordLoading ? (
           // TODO: Add skeleton loader
           <div>
@@ -399,12 +399,14 @@ export const ObjectOverview = ({
               </StyledTitle>
               <StyledButtonContainer>
                 {!isPublication ? (
-                  <Button
-                    title={t`Prefill`}
-                    Icon={IconSparkles}
-                    accent="purple"
-                    onClick={openModal}
-                  />
+                  isInRightDrawer ? null : (
+                    <Button
+                      title={t`Prefill`}
+                      Icon={IconSparkles}
+                      accent="purple"
+                      onClick={openModal}
+                    />
+                  )
                 ) : (
                   <PlatformBadge
                     platformId={recordFromStore.platform ?? PlatformId.Newhome}

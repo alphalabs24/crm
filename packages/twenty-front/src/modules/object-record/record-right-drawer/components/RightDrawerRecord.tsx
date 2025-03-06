@@ -52,7 +52,7 @@ export const RightDrawerRecord = () => {
       >
         <ContextStoreComponentInstanceContext.Provider
           value={{
-            instanceId: `record-show-${objectRecordId}`,
+            instanceId: `main-context-store`,
           }}
         >
           <ActionMenuComponentInstanceContext.Provider

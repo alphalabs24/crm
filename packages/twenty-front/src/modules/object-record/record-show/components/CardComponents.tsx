@@ -104,15 +104,27 @@ export const CardComponents: Record<CardType, CardComponentType> = {
     <WorkflowRunOutputVisualizer workflowRunId={targetableObject.id} />
   ),
 
-  [CardType.OverviewCard]: ({ targetableObject }) => (
-    <ObjectOverview targetableObject={targetableObject} />
+  [CardType.OverviewCard]: ({ targetableObject, isInRightDrawer }) => (
+    <ObjectOverview
+      targetableObject={targetableObject}
+      isInRightDrawer={isInRightDrawer}
+    />
   ),
 
-  [CardType.AISuiteCard]: ({ targetableObject }) => (
-    <AISuite targetableObject={targetableObject} />
+  [CardType.AISuiteCard]: ({ targetableObject, isInRightDrawer }) => (
+    <AISuite
+      targetableObject={targetableObject}
+      isInRightDrawer={isInRightDrawer}
+    />
   ),
 
-  [CardType.PublicationDetailsCard]: ({ targetableObject }) => (
-    <PublicationDetails targetableObject={targetableObject} />
+  [CardType.PublicationDetailsCard]: ({
+    targetableObject,
+    isInRightDrawer,
+  }) => (
+    <PublicationDetails
+      targetableObject={targetableObject}
+      isInRightDrawer={isInRightDrawer}
+    />
   ),
 };

@@ -17,8 +17,9 @@ import {
 import { ObjectOverview } from './ObjectOverview';
 import { CompletionProgress } from './publication/CompletionProgress';
 import { KPICard } from './publication/KPICard';
+import { css } from '@emotion/react';
 
-const StyledContentContainer = styled.div`
+const StyledContentContainer = styled.div<{ isInRightDrawer?: boolean }>`
   display: flex;
   gap: ${({ theme }) => theme.spacing(2)};
   flex-wrap: wrap;
@@ -28,10 +29,18 @@ const StyledContentContainer = styled.div`
     flex-wrap: nowrap;
     width: unset;
     padding: 0 ${({ theme }) => theme.spacing(4)} 0 0;
+
+    ${({ isInRightDrawer }) =>
+      isInRightDrawer &&
+      css`
+        width: 100%;
+        padding: 0;
+        flex-wrap: wrap;
+      `}
   }
 `;
 
-const StyledRightContentContainer = styled.div`
+const StyledRightContentContainer = styled.div<{ isInRightDrawer?: boolean }>`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(4)};
@@ -43,6 +52,12 @@ const StyledRightContentContainer = styled.div`
   @media (min-width: ${LARGE_DESKTOP_VIEWPORT}px) {
     max-width: 900px;
     padding: 0;
+    ${({ isInRightDrawer, theme }) =>
+      isInRightDrawer &&
+      css`
+        padding: 0 ${theme.spacing(4)};
+        width: 100%;
+      `}
   }
 `;
 
@@ -131,12 +146,14 @@ type PublicationDetailsProps = {
     ActivityTargetableObject,
     'id' | 'targetObjectNameSingular'
   >;
+  isInRightDrawer?: boolean;
 };
 
 const fieldToIgnore = ['id', '__typename', 'createdAt', 'updatedAt', 'stage'];
 
 export const PublicationDetails = ({
   targetableObject,
+  isInRightDrawer,
 }: PublicationDetailsProps) => {
   const { t } = useLingui();
   const { recordFromStore: publication, recordLoading } =
@@ -161,14 +178,14 @@ export const PublicationDetails = ({
   }
 
   return (
-    <StyledContentContainer>
+    <StyledContentContainer isInRightDrawer={isInRightDrawer}>
       <ObjectOverview
         targetableObject={targetableObject}
-        isInRightDrawer={false}
+        isInRightDrawer={isInRightDrawer}
         isNewRightDrawerItemLoading={false}
         isPublication
       />
-      <StyledRightContentContainer>
+      <StyledRightContentContainer isInRightDrawer={isInRightDrawer}>
         <StyledProgressContainer>
           <CompletionProgress percentage={definedValuePercentage} />
         </StyledProgressContainer>

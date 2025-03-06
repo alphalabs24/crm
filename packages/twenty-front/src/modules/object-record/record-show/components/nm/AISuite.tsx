@@ -15,7 +15,7 @@ import {
   ProgressBar,
 } from 'twenty-ui';
 import { VideoGenerationModal } from './VideoGenerationModal';
-import { useTheme } from '@emotion/react';
+import { css, useTheme } from '@emotion/react';
 
 const StyledContainer = styled.div`
   display: flex;
@@ -25,19 +25,20 @@ const StyledContainer = styled.div`
   height: calc(100vh - ${({ theme }) => theme.spacing(8)});
 `;
 
-const StyledMainContent = styled.div`
+const StyledMainContent = styled.div<{ isInRightDrawer?: boolean }>`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(16)};
 
   @media only screen and (min-width: ${MOBILE_VIEWPORT}px) {
-    height: 100%;
+    height: ${({ isInRightDrawer }) => (isInRightDrawer ? 'auto' : '100%')};
     gap: ${({ theme }) => theme.spacing(4)};
-    flex-direction: row;
+    flex-direction: ${({ isInRightDrawer }) =>
+      isInRightDrawer ? 'column' : 'row'};
   }
 `;
 
-const StyledLeftContent = styled.div`
+const StyledLeftContent = styled.div<{ isInRightDrawer?: boolean }>`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(4)};
@@ -45,18 +46,18 @@ const StyledLeftContent = styled.div`
   height: fit-content;
 
   @media only screen and (min-width: ${MOBILE_VIEWPORT}px) {
-    width: 50%;
+    width: ${({ isInRightDrawer }) => (isInRightDrawer ? '100%' : '50%')};
     height: 100%;
   }
 `;
 
-const StyledRightContent = styled.div`
+const StyledRightContent = styled.div<{ isInRightDrawer?: boolean }>`
   display: flex;
   flex-direction: column;
   width: 100%;
 
   @media only screen and (min-width: ${MOBILE_VIEWPORT}px) {
-    width: 50%;
+    width: ${({ isInRightDrawer }) => (isInRightDrawer ? '100%' : '50%')};
     height: 100%;
   }
 `;
@@ -266,11 +267,15 @@ type AISuiteProps = {
     ActivityTargetableObject,
     'targetObjectNameSingular' | 'id'
   >;
+  isInRightDrawer?: boolean;
 };
 
 const DEMO_VIDEOS = ['/videos/1.mp4', '/videos/2.mp4', '/videos/3.mp4'];
 
-export const AISuite = ({ targetableObject }: AISuiteProps) => {
+export const AISuite = ({
+  targetableObject,
+  isInRightDrawer,
+}: AISuiteProps) => {
   const [isGenerating] = useState(false);
   const [hasGeneratedVideos, setHasGeneratedVideos] = useState(false);
   const [loadedImages, setLoadedImages] = useState<Record<string, boolean>>({});
@@ -327,8 +332,8 @@ export const AISuite = ({ targetableObject }: AISuiteProps) => {
   return (
     <>
       <StyledContainer>
-        <StyledMainContent>
-          <StyledLeftContent>
+        <StyledMainContent isInRightDrawer={isInRightDrawer}>
+          <StyledLeftContent isInRightDrawer={isInRightDrawer}>
             <StyledAvailableAssets>
               <StyledAssetsTitle>
                 <Trans>Available Assets ({images.length})</Trans>
@@ -392,7 +397,7 @@ export const AISuite = ({ targetableObject }: AISuiteProps) => {
             </StyledAITools>
           </StyledLeftContent>
 
-          <StyledRightContent>
+          <StyledRightContent isInRightDrawer={isInRightDrawer}>
             <StyledVideoSection>
               <StyledVideoSectionHeader>
                 <IconVideo size={16} color={theme.font.color.primary} />
