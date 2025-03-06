@@ -367,9 +367,8 @@ export const ShowPagePropertySubContainer = ({
     modalRef.current?.close();
   };
 
-  const { validationDetails } = usePublicationValidation({
+  const { showPublishButton, validationDetails } = usePublicationValidation({
     record: recordFromStore,
-    differences: differenceRecords,
     isPublication,
   });
 
@@ -386,16 +385,13 @@ export const ShowPagePropertySubContainer = ({
     () =>
       !recordFromStore?.deletedAt &&
       !isPublication &&
-      differenceRecords?.length === 0,
+      differenceRecords?.length > 0,
     [differenceRecords?.length, isPublication, recordFromStore?.deletedAt],
   );
 
   const showNewPublicationButton = useMemo(
-    () =>
-      !recordFromStore?.deletedAt &&
-      !isPublication &&
-      differenceRecords?.length > 0,
-    [differenceRecords?.length, isPublication, recordFromStore?.deletedAt],
+    () => !recordFromStore?.deletedAt && differenceRecords?.length === 0,
+    [differenceRecords?.length, recordFromStore?.deletedAt],
   );
 
   const showDropdown = useMemo(
@@ -428,55 +424,57 @@ export const ShowPagePropertySubContainer = ({
               />
             )}
 
-            <ActionDropdown
-              dropdownId={dropdownId}
-              actions={[
-                ...(differenceRecords?.length > 0
-                  ? [
-                      {
-                        title: t`New Publication`,
-                        Icon: IconPlus,
-                        onClick: handlePublishClick,
-                      },
-                    ]
-                  : []),
-                ...(showSyncButton
-                  ? [
-                      {
-                        title: t`Sync Publications`,
-                        Icon: IconRefresh,
-                        onClick: syncPublications,
-                        disabled: loadingSync,
-                      },
-                    ]
-                  : []),
-                ...(showDeleteButton
-                  ? [
-                      {
-                        title: t`Delete`,
-                        Icon: IconTrash,
-                        onClick: handleDelete,
-                        distructive: true,
-                        disabled: loadingDelete,
-                      },
-                    ]
-                  : []),
-              ]}
-              primaryAction={
-                !recordFromStore?.deletedAt
-                  ? {
-                      title: isPublication ? t`Publish` : t`New Publication`,
-                      Icon: isPublication ? IconUpload : IconPlus,
-                      onClick: handlePublishClick,
-                    }
-                  : differenceRecords?.length > 0
+            {showDropdown && (
+              <ActionDropdown
+                dropdownId={dropdownId}
+                actions={[
+                  ...(showSyncButton // When sync button is primary
+                    ? [
+                        {
+                          title: t`New Publication`,
+                          Icon: IconPlus,
+                          onClick: handlePublishClick,
+                        },
+                      ]
+                    : []),
+                  ...(showNewPublicationButton && !isPublication // When publication button is primary
+                    ? [
+                        {
+                          title: t`Sync Publications`,
+                          Icon: IconRefresh,
+                          onClick: syncPublications,
+                          disabled: loadingSync,
+                        },
+                      ]
+                    : []),
+                  ...(showDeleteButton
+                    ? [
+                        {
+                          title: t`Delete`,
+                          Icon: IconTrash,
+                          onClick: handleDelete,
+                          distructive: true,
+                          disabled: loadingDelete,
+                        },
+                      ]
+                    : []),
+                ]}
+                primaryAction={
+                  showNewPublicationButton && showPublishButton
                     ? {
-                        title: t`Differences ${differenceLength}`,
-                        onClick: () => differencesModalRef.current?.open(),
+                        title: isPublication ? t`Publish` : t`New Publication`,
+                        Icon: isPublication ? IconUpload : IconPlus,
+                        onClick: handlePublishClick,
                       }
-                    : null
-              }
-            />
+                    : showSyncButton
+                      ? {
+                          title: t`Differences ${differenceLength}`,
+                          onClick: () => differencesModalRef.current?.open(),
+                        }
+                      : null
+                }
+              />
+            )}
           </StyledButtonContainer>
         </StyledTabListContainer>
         <StyledContentContainer isInRightDrawer={isInRightDrawer}>

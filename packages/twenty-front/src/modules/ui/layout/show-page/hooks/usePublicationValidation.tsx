@@ -18,11 +18,9 @@ export type PublicationValidationState = {
 
 export const usePublicationValidation = ({
   record,
-  differences,
   isPublication = false,
 }: {
   record?: ObjectRecord | null;
-  differences?: PublicationDifferences[];
   isPublication?: boolean;
 }): PublicationValidationState => {
   const { t } = useLingui();
@@ -122,11 +120,12 @@ export const usePublicationValidation = ({
 
   const showPublishButton = useMemo(() => {
     if (!record) return false;
+    if (!isPublication) return true; // Always show for properties
+
     if (record.stage === 'PUBLISHED') return false;
     if (record.stage === 'SCHEDULED') return false;
-    if (differences?.length && differences.length > 0) return false;
     return true;
-  }, [record, differences]);
+  }, [record, isPublication]);
 
   const canPublish = useMemo(
     () => validationDetails.isValid && showPublishButton,
