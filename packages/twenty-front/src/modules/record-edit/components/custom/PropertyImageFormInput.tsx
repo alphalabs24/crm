@@ -29,6 +29,7 @@ import {
   IconUpload,
   MenuItem,
   MOBILE_VIEWPORT,
+  IconPhoto,
   TooltipDelay,
 } from 'twenty-ui';
 import { ImageEditModal } from './ImageEditModal';
@@ -664,7 +665,7 @@ export const PropertyImageFormInput = ({ loading }: { loading?: boolean }) => {
             }}
             variant="secondary"
             title={t`Upload Images`}
-            Icon={IconUpload}
+            Icon={IconPhoto}
           />
         </StyledHeaderContainer>
 

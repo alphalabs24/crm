@@ -206,31 +206,6 @@ export const PublicationDetails = ({
             icon={<IconBuildingSkyscraper size={16} />}
           />
         </StyledKPIGrid>
-
-        <StyledTwoColumns>
-          <StyledSection>
-            <StyledSectionTitle>
-              <IconChartBar size={16} />
-              {t`Visitor Activity`}
-            </StyledSectionTitle>
-            <StyledSectionContent>
-              <StyledChartPlaceholder>
-                {t`Visitor activity chart coming soon`}
-              </StyledChartPlaceholder>
-            </StyledSectionContent>
-          </StyledSection>
-
-          <StyledSection>
-            <StyledSectionTitle>
-              <IconUsers size={16} />
-              {t`Recent Visitors`}
-            </StyledSectionTitle>
-            <StyledSectionContent>
-              <StyledEmptyTable>{t`No recent visitors yet`}</StyledEmptyTable>
-            </StyledSectionContent>
-          </StyledSection>
-        </StyledTwoColumns>
-
         <StyledSection>
           <StyledSectionTitle>
             <IconMessageCircle2 size={16} />

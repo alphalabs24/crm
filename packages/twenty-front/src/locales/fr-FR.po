@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: nestermind-crm\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-03-06 07:51\n"
+"PO-Revision-Date: 2025-03-06 14:08\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -1985,9 +1985,14 @@ msgid "Pseudo-English"
 msgstr "Pseudo-anglais"
 
 #: src/modules/object-record/record-show/components/nm/publication/CompletionProgress.tsx
-msgid "Publication completion -"
+msgid "Publication completion"
 msgstr ""
 
+#: src/modules/object-record/record-show/components/nm/publication/CompletionProgress.tsx
+#~ msgid "Publication completion -"
+#~ msgstr "Publication completion -"
+
+#: src/modules/ui/layout/show-page/components/nm/PublishModal.tsx
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
 msgid "Publication Draft"
 msgstr ""

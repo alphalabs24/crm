@@ -31,15 +31,19 @@ import {
   IconUpload,
   IconX,
   LARGE_DESKTOP_VIEWPORT,
+  MOBILE_VIEWPORT,
 } from 'twenty-ui';
 import { FieldMetadataType } from '~/generated/graphql';
 import { useSubcategoryByCategory } from '../../hooks/useSubcategoryByCategory';
 
-const StyledFormBorder = styled.div<{ isInRightDrawer?: boolean }>`
+const StyledFormBorder = styled.div`
   border: 1px solid ${({ theme }) => theme.border.color.light};
   border-radius: ${({ theme }) => theme.border.radius.sm};
   margin: ${({ theme }) => theme.spacing(4)};
-  width: ${({ isInRightDrawer }) => (isInRightDrawer ? 'unset' : '100%')};
+
+  @media only screen and (min-width: ${MOBILE_VIEWPORT}px) {
+    width: 100%;
+  }
 
   @media (min-width: ${LARGE_DESKTOP_VIEWPORT}px) {
     max-width: 800px;
@@ -385,7 +389,7 @@ export const ObjectOverview = ({
   }
   return (
     <>
-      <StyledFormBorder isInRightDrawer={isInRightDrawer}>
+      <StyledFormBorder>
         {recordLoading ? (
           // TODO: Add skeleton loader
           <div>
@@ -401,6 +405,7 @@ export const ObjectOverview = ({
                 {!isPublication ? (
                   isInRightDrawer ? null : (
                     <Button
+                      size="small"
                       title={t`Prefill`}
                       Icon={IconSparkles}
                       accent="purple"

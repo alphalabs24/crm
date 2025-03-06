@@ -1983,9 +1983,14 @@ msgid "Pseudo-English"
 msgstr "Pseudo-English"
 
 #: src/modules/object-record/record-show/components/nm/publication/CompletionProgress.tsx
-msgid "Publication completion -"
-msgstr "Publication completion -"
+msgid "Publication completion"
+msgstr "Publication completion"
 
+#: src/modules/object-record/record-show/components/nm/publication/CompletionProgress.tsx
+#~ msgid "Publication completion -"
+#~ msgstr "Publication completion -"
+
+#: src/modules/ui/layout/show-page/components/nm/PublishModal.tsx
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
 msgid "Publication Draft"
 msgstr "Publication Draft"
