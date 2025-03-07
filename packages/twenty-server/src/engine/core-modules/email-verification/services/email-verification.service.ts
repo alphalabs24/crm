@@ -73,7 +73,7 @@ export class EmailVerificationService {
         'EMAIL_FROM_NAME',
       )} <${this.environmentService.get('EMAIL_FROM_ADDRESS')}>`,
       to: email,
-      subject: 'Welcome to Twenty: Please Confirm Your Email',
+      subject: 'Welcome to nestermind: Please Confirm Your Email',
       text,
       html,
     });

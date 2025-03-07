@@ -15,11 +15,13 @@ import { isNull } from '@sniptt/guards';
 import { useCallback, useContext, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { isDefined } from 'twenty-shared';
+import { useDeleteMessage } from './useDeleteMessage';
 
 export const useDeleteSingleRecordAction: ActionHookWithObjectMetadataItem = ({
   objectMetadataItem,
 }) => {
   const recordId = useSelectedRecordIdOrThrow();
+  const deleteMessage = useDeleteMessage(objectMetadataItem);
 
   const [isDeleteRecordsModalOpen, setIsDeleteRecordsModalOpen] =
     useState(false);
@@ -107,9 +109,7 @@ export const useDeleteSingleRecordAction: ActionHookWithObjectMetadataItem = ({
         isOpen={isDeleteRecordsModalOpen}
         setIsOpen={setIsDeleteRecordsModalOpen}
         title={'Delete Record'}
-        subtitle={
-          'Are you sure you want to delete this record? It can be recovered from the Options menu.'
-        }
+        subtitle={deleteMessage}
         loading={loadingDelete}
         onConfirmClick={() => {
           handleDeleteClick();
