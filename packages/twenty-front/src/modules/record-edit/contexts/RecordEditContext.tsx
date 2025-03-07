@@ -3,14 +3,11 @@ import { useUploadAttachmentFile } from '@/activities/files/hooks/useUploadAttac
 import {
   Attachment,
   PropertyAttachmentType,
-  AttachmentType,
 } from '@/activities/files/types/Attachment';
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { ObjectMetadataItem } from '@/object-metadata/types/ObjectMetadataItem';
 import { useDestroyOneRecord } from '@/object-record/hooks/useDestroyOneRecord';
 import { useUpdateOneRecord } from '@/object-record/hooks/useUpdateOneRecord';
-import { FieldDefinition } from '@/object-record/record-field/types/FieldDefinition';
-import { FieldMetadata } from '@/object-record/record-field/types/FieldMetadata';
 import { ObjectRecord } from '@/object-record/types/ObjectRecord';
 import {
   createContext,
@@ -27,7 +24,6 @@ import { isDefined } from 'twenty-shared';
 type FieldUpdate = {
   fieldName: string;
   value: unknown;
-  fieldDefinition: FieldDefinition<FieldMetadata>;
 };
 
 export type RecordEditPropertyImage = {
@@ -70,7 +66,7 @@ export type RecordEditContextType = {
     updates: Partial<RecordEditPropertyImage>,
   ) => void;
   loading: boolean;
-  saveRecord: () => void;
+  saveRecord: () => Promise<void>;
   propertyDocuments: RecordEditPropertyDocument[];
   addPropertyDocument: (document: RecordEditPropertyDocument) => void;
   removePropertyDocument: (document: RecordEditPropertyDocument) => void;
@@ -360,7 +356,7 @@ export const RecordEditProvider = ({
     setLoading(true);
     if (isDirty) {
       const updatedFields = getUpdatedFields();
-
+      console.log('updatedFields', updatedFields);
       await updateOneRecord({
         idToUpdate: objectRecordId ?? '',
         updateOneRecordInput: updatedFields,

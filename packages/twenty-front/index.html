@@ -3,18 +3,22 @@
   <head>
     <meta charset="UTF-8" />
 
-    <link rel="icon" type="image/x-icon" href="/icons/ios/192.png" data-rh="true"/>
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="/icons/ios/192.png"
+      data-rh="true"
+    />
     <link rel="apple-touch-icon" href="/icons/ios/192.png" />
 
     <meta name="theme-color" content="#000000" />
     <meta name="description" content="Mehr Leads. Weniger CRM." />
 
     <meta property="og:description" content="Mehr Leads. Weniger CRM." />
-    <meta property="og:title" content="Nestermind" />
+    <meta property="og:title" content="nestermind" />
 
     <meta name="twitter:description" content="Mehr Leads. Weniger CRM." />
-    <meta name="twitter:title" content="Nestermind" />
- 
+    <meta name="twitter:title" content="nestermind" />
 
     <title>Nestermind</title>
     <!-- BEGIN: Twenty Config -->
@@ -31,9 +35,12 @@
         const viewportMetadata = document.querySelector('meta[name=viewport]');
 
         if (viewportMetadata !== null) {
-          viewportMetadata.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0');
+          viewportMetadata.setAttribute(
+            'content',
+            'width=device-width, initial-scale=1.0, maximum-scale=1.0',
+          );
         }
-      }
+      };
 
       const isIOS = /iPad|iPhone/.test(navigator.userAgent);
       if (isIOS) {

@@ -43,6 +43,7 @@ type RecordEditFieldProps = {
   objectNameSingular: string;
   loading?: boolean;
   maxWidth?: number;
+  isRequired?: boolean;
 };
 
 export const RecordEditField = ({
@@ -54,6 +55,7 @@ export const RecordEditField = ({
   record,
   objectNameSingular,
   loading,
+  isRequired,
 }: RecordEditFieldProps) => {
   const { useUpdateOneObjectRecordMutation } = useRecordShowContainerActions({
     objectNameSingular,
@@ -96,7 +98,9 @@ export const RecordEditField = ({
   return (
     <StyledFieldContainer>
       {showLabel && type !== 'custom' && (
-        <StyledFieldName>{field.label}</StyledFieldName>
+        <StyledFieldName>
+          {field.label} {isRequired ? '*' : ''}
+        </StyledFieldName>
       )}
 
       <FieldContext.Provider

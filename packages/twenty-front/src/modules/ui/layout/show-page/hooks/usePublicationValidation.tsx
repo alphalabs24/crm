@@ -57,6 +57,9 @@ export const usePublicationValidation = ({
       GASTRONOMY: ['gastronomySubtype', t`Gastronomy Subtype`],
       HOUSE: ['houseSubtype', t`House Subtype`],
       PLOT: ['plotSubtype', t`Plot Subtype`],
+      SECONDARY_ROOMS: ['secondaryRoomsSubtype', t`Secondary Rooms Subtype`],
+      AGRICULTURE: ['agricultureSubtype', t`Agriculture Subtype`],
+      INDUSTRIAL_OBJECTS: ['industrialSubtype', t`Industrial Subtype`],
     } as const;
 
     const missingFields: ReactNode[] = [];

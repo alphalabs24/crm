@@ -5,7 +5,7 @@ import { Chip, ChipSize, ChipVariant } from '@ui/display/chip/components/Chip';
 import { IconComponent } from '@ui/display/icon/types/IconComponent';
 import { ThemeContext } from '@ui/theme';
 import { Nullable } from '@ui/utilities/types/Nullable';
-import { MouseEvent, useContext } from 'react';
+import { MouseEvent, ReactElement, useContext } from 'react';
 import { isDefined } from 'twenty-shared';
 
 // Import Link from react-router-dom instead of UndecoratedLink
@@ -25,6 +25,7 @@ export type AvatarChipProps = {
   onClick?: (event: MouseEvent) => void;
   to?: string;
   maxWidth?: number;
+  LeftCustomComponent?: ReactElement;
 };
 
 export enum AvatarChipVariant {
@@ -62,6 +63,7 @@ export const AvatarChip = ({
   to,
   size = ChipSize.Small,
   maxWidth,
+  LeftCustomComponent,
 }: AvatarChipProps) => {
   const { theme } = useContext(ThemeContext);
 
@@ -77,7 +79,9 @@ export const AvatarChip = ({
       }
       size={size}
       leftComponent={
-        isDefined(LeftIcon) ? (
+        isDefined(LeftCustomComponent) ? (
+          LeftCustomComponent
+        ) : isDefined(LeftIcon) ? (
           isIconInverted === true ? (
             <StyledInvertedIconContainer
               backgroundColor={theme.background.invertedSecondary}

@@ -2,11 +2,14 @@ import { useActivityTargetObjectRecords } from '@/activities/hooks/useActivityTa
 import { NoteTarget } from '@/activities/types/NoteTarget';
 import { TaskTarget } from '@/activities/types/TaskTarget';
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
+import { isPublication } from '@/object-metadata/utils/isPropertyOrPublication';
 import { RecordChip } from '@/object-record/components/RecordChip';
 import { useFieldFocus } from '@/object-record/record-field/hooks/useFieldFocus';
 import { useRelationFromManyFieldDisplay } from '@/object-record/record-field/meta-types/hooks/useRelationFromManyFieldDisplay';
+import { PlatformBadge } from '@/object-record/record-show/components/nm/publication/PlatformBadge';
 import { ExpandableList } from '@/ui/layout/expandable-list/components/ExpandableList';
 import { isNull } from '@sniptt/guards';
+import { IconHomeShare } from 'twenty-ui';
 
 export const RelationFromManyFieldDisplay = ({
   wrap = false,
@@ -87,6 +90,14 @@ export const RelationFromManyFieldDisplay = ({
               key={record.id}
               objectNameSingular={objectNameSingular}
               record={record}
+              LeftCustomComponent={
+                isPublication(objectNameSingular) ? (
+                  <PlatformBadge
+                    platformId={record.platform?.toUpperCase()}
+                    variant="small"
+                  />
+                ) : undefined
+              }
             />
           ))}
       </ExpandableList>

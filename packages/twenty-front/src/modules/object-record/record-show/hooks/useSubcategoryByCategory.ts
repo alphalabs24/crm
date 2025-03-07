@@ -1,3 +1,4 @@
+import { CATEGORY_SUBTYPES } from '@/record-edit/constants/CategorySubtypes';
 import { useEffect, useState } from 'react';
 
 export const useSubcategoryByCategory = (category?: string) => {
@@ -6,22 +7,28 @@ export const useSubcategoryByCategory = (category?: string) => {
   useEffect(() => {
     switch (category?.toLowerCase()) {
       case 'house':
-        setSubType('houseSubtype');
+        setSubType(CATEGORY_SUBTYPES.HOUSE);
         break;
       case 'apartment':
-        setSubType('apartmentSubtype');
+        setSubType(CATEGORY_SUBTYPES.APARTMENT);
         break;
       case 'plot':
-        setSubType('plotSubtype');
+        setSubType(CATEGORY_SUBTYPES.PLOT);
         break;
       case 'property':
-        setSubType('propertySubtype');
+        setSubType(CATEGORY_SUBTYPES.PROPERTY);
         break;
       case 'gastronomy':
-        setSubType('gastronomySubtype');
+        setSubType(CATEGORY_SUBTYPES.GASTRONOMY);
         break;
-      case 'industrial':
-        setSubType('industrialSubtype');
+      case 'secondaryRooms':
+        setSubType(CATEGORY_SUBTYPES.SECONDARY_ROOMS);
+        break;
+      case 'agriculture':
+        setSubType(CATEGORY_SUBTYPES.AGRICULTURE);
+        break;
+      case 'industrialObjects':
+        setSubType(CATEGORY_SUBTYPES.INDUSTRIAL_OBJECTS);
         break;
       default:
         break;

@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { useCallback, useEffect } from 'react';
 
 import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadataItem';
 import { getLinkToShowPage } from '@/object-metadata/utils/getLinkToShowPage';
@@ -19,6 +20,8 @@ import { isDefined } from 'twenty-shared';
 import { Button, LARGE_DESKTOP_VIEWPORT, MOBILE_VIEWPORT } from 'twenty-ui';
 import { useMemo } from 'react';
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
+import { FieldDefinition } from '@/object-record/record-field/types/FieldDefinition';
+import { RecordEditContainerContext } from '../contexts/RecordEditContainerContext';
 
 export const EDIT_CONTAINER_WIDTH = 1440;
 
@@ -99,6 +102,12 @@ const StyledSection = styled.div<{
   }
 `;
 
+const StyledSectionHeader = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(2)};
+`;
+
 const StyledSectionTitle = styled.div`
   align-items: center;
   border-bottom: ${({ theme }) => `1px solid ${theme.border.color.light}`};
@@ -108,6 +117,12 @@ const StyledSectionTitle = styled.div`
   justify-content: space-between;
   padding: ${({ theme }) => theme.spacing(2)};
   background: ${({ theme }) => theme.background.secondary};
+`;
+
+const StyledSectionDescription = styled.div`
+  color: ${({ theme }) => theme.font.color.secondary};
+  font-size: ${({ theme }) => theme.font.size.sm};
+  padding: ${({ theme }) => theme.spacing(1)} ${({ theme }) => theme.spacing(2)};
 `;
 
 const StyledSectionContent = styled.div`
@@ -160,7 +175,76 @@ export const RecordEditContainer = ({
     recordId,
   );
 
-  const { getUpdatedFields, saveRecord, loading } = useRecordEdit();
+  const { getUpdatedFields, saveRecord, loading, updateField } =
+    useRecordEdit();
+
+  const availableFields = objectMetadataItem.fields.filter(
+    (field) => !field.isSystem && isDefined(field.name),
+  );
+
+  const fieldsByName = availableFields.reduce<
+    Record<string, (typeof availableFields)[0]>
+  >((acc, field) => {
+    if (isDefined(field?.name)) {
+      acc[field?.name] = field;
+    }
+    return acc;
+  }, {});
+
+  const clearConditionalFieldsWhereConditionIsNotMet = useCallback(() => {
+    const activeTab = tabs.find((tab) => tab.id === activeTabId);
+    if (!activeTab?.content?.length) return;
+
+    const fieldsToUpdate: { fieldName: string; value: null }[] = [];
+
+    activeTab.content.forEach((section) => {
+      section.groups.forEach((group) => {
+        const groupFields = group.fields
+          .map((field) => ({
+            field: fieldsByName[field?.name],
+            conditionFieldNames: field.conditionFields,
+            conditionValues: field.conditionValues,
+          }))
+          .filter(({ field }) => isDefined(field));
+
+        groupFields.forEach(
+          ({ field, conditionFieldNames, conditionValues }) => {
+            const conditionFields = conditionFieldNames?.map(
+              (conditionFieldName) => fieldsByName[conditionFieldName],
+            );
+
+            const shouldKeepField =
+              conditionFields?.every((conditionField) => {
+                const conditionFieldValue = String(
+                  getUpdatedFields()[conditionField?.name] ??
+                    record?.[conditionField?.name] ??
+                    '',
+                ).toLowerCase();
+
+                return conditionValues?.some(
+                  (value) =>
+                    String(value ?? '').toLowerCase() === conditionFieldValue,
+                );
+              }) ?? true;
+
+            if (!shouldKeepField) {
+              fieldsToUpdate.push({
+                fieldName: field.name,
+                value: null,
+              });
+            }
+          },
+        );
+      });
+    });
+
+    fieldsToUpdate.map(({ fieldName, value }) =>
+      updateField({
+        fieldName,
+        value,
+      }),
+    );
+  }, [tabs, activeTabId, fieldsByName, getUpdatedFields, record, updateField]);
 
   const handleSave = async () => {
     try {
@@ -185,22 +269,9 @@ export const RecordEditContainer = ({
     }
   };
 
-  const availableFields = objectMetadataItem.fields.filter(
-    (field) => !field.isSystem && isDefined(field.name),
-  );
-
   const isNewViewableRecordLoading = useRecoilValue(
     isNewViewableRecordLoadingState,
   );
-
-  const fieldsByName = availableFields.reduce<
-    Record<string, (typeof availableFields)[0]>
-  >((acc, field) => {
-    if (isDefined(field?.name)) {
-      acc[field?.name] = field;
-    }
-    return acc;
-  }, {});
 
   const renderActiveTabContent = () => {
     const activeTab = tabs.find((tab) => tab.id === activeTabId);
@@ -226,7 +297,12 @@ export const RecordEditContainer = ({
           width={section.width ?? 385}
           height={500}
         >
-          <StyledSectionTitle>{section.title}</StyledSectionTitle>
+          <StyledSectionHeader>
+            <StyledSectionTitle>{section.title}</StyledSectionTitle>
+            <StyledSectionDescription>
+              {section.description}
+            </StyledSectionDescription>
+          </StyledSectionHeader>
           <StyledSectionContent>
             {section.groups.map((group, groupIndex) => {
               const groupFields = group.fields
@@ -238,6 +314,7 @@ export const RecordEditContainer = ({
                   conditionFieldNames: field.conditionFields,
                   conditionValues: field.conditionValues,
                   omitForPublication: field.omitForPublication,
+                  required: field.required,
                 }))
                 .filter(({ field }) => isDefined(field));
 
@@ -254,6 +331,7 @@ export const RecordEditContainer = ({
                       conditionFieldNames,
                       conditionValues,
                       omitForPublication,
+                      required,
                     }) => {
                       const conditionFields = conditionFieldNames?.map(
                         (conditionFieldName) =>
@@ -286,6 +364,7 @@ export const RecordEditContainer = ({
                           maxWidth={maxWidth}
                           objectMetadataItem={objectMetadataItem}
                           record={record}
+                          isRequired={required}
                           objectNameSingular={objectNameSingular}
                           loading={
                             loading ||
@@ -306,41 +385,47 @@ export const RecordEditContainer = ({
   };
 
   return (
-    <StyledEditContainer>
-      {record && (
-        <ShowPageImageBanner
-          targetableObject={{
-            id: record.id,
-            targetObjectNameSingular: objectNameSingular,
-          }}
-        />
-      )}
-
-      <StyledTabListContainer shouldDisplay={true}>
-        <TabList
-          behaveAsLinks={!isInRightDrawer}
-          loading={recordLoading || isNewViewableRecordLoading}
-          tabListInstanceId={tabListComponentId}
-          tabs={tabs}
-          isInRightDrawer={isInRightDrawer}
-        />
-        <StyledButtonContainer>
-          <Button
-            title={t`Save`}
-            variant="primary"
-            accent="blue"
-            size="small"
-            onClick={handleSave}
-            disabled={loading}
+    <RecordEditContainerContext.Provider
+      value={{
+        cleanUpdatedFields: clearConditionalFieldsWhereConditionIsNotMet,
+      }}
+    >
+      <StyledEditContainer>
+        {record && (
+          <ShowPageImageBanner
+            targetableObject={{
+              id: record.id,
+              targetObjectNameSingular: objectNameSingular,
+            }}
           />
-        </StyledButtonContainer>
-      </StyledTabListContainer>
+        )}
 
-      <StyledScrollableContainer>
-        <StyledContentOuterContainer>
-          {renderActiveTabContent()}
-        </StyledContentOuterContainer>
-      </StyledScrollableContainer>
-    </StyledEditContainer>
+        <StyledTabListContainer shouldDisplay={true}>
+          <TabList
+            behaveAsLinks={!isInRightDrawer}
+            loading={recordLoading || isNewViewableRecordLoading}
+            tabListInstanceId={tabListComponentId}
+            tabs={tabs}
+            isInRightDrawer={isInRightDrawer}
+          />
+          <StyledButtonContainer>
+            <Button
+              title={t`Save`}
+              variant="primary"
+              accent="blue"
+              size="small"
+              onClick={handleSave}
+              disabled={loading}
+            />
+          </StyledButtonContainer>
+        </StyledTabListContainer>
+
+        <StyledScrollableContainer>
+          <StyledContentOuterContainer>
+            {renderActiveTabContent()}
+          </StyledContentOuterContainer>
+        </StyledScrollableContainer>
+      </StyledEditContainer>
+    </RecordEditContainerContext.Provider>
   );
 };

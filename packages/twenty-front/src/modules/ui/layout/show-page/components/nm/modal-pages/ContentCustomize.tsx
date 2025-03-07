@@ -1,10 +1,13 @@
 import { InstagramCarousel } from '@/object-record/record-show/components/nm/InstagramCarousel';
 import { TextAreaFormInput } from '@/ui/field/input/components/TextAreaFormInput';
 import { ModalHotkeyScope } from '@/ui/layout/modal/components/types/ModalHotkeyScope';
+import { useColorScheme } from '@/ui/theme/hooks/useColorScheme';
 import styled from '@emotion/styled';
+import { useLingui } from '@lingui/react/macro';
 import { Dispatch, SetStateAction } from 'react';
 import {
   Button,
+  ColorScheme,
   IconCheck,
   IconChevronRight,
   IconSparkles,
@@ -133,8 +136,11 @@ const StyledDescriptionContainer = styled.div`
   max-width: 350px;
 `;
 
-const StyledVideoGeneratorContainer = styled.div`
-  background: ${({ theme }) => theme.color.purple10};
+const StyledVideoGeneratorContainer = styled.div<{
+  colorScheme?: ColorScheme;
+}>`
+  background: ${({ theme, colorScheme }) =>
+    colorScheme ? theme.background.tertiary : theme.color.purple10};
   border-radius: ${({ theme }) => theme.border.radius.sm};
   display: flex;
   flex-direction: column;
@@ -245,6 +251,8 @@ export const ContentCustomize = ({
   setGenerationProgress,
   setIsVideoSelected,
 }: ContentCustomizeProps) => {
+  const { colorScheme } = useColorScheme();
+  const { t } = useLingui();
   return (
     <StyledContentLayout>
       <StyledCarouselContainer>
@@ -274,16 +282,16 @@ export const ContentCustomize = ({
         <StyledSettingsSectionContainer>
           <StyledMainTitle>Post Content</StyledMainTitle>
           <StyledMainSubtitle>
-            Create your Instagram post with a compelling description and media
+            {t`Create your Instagram post with a compelling description and media`}
           </StyledMainSubtitle>
         </StyledSettingsSectionContainer>
         <StyledSettingsSectionContainer>
           <StyledSectionTitle>
             <StyledConnectedContainer>
-              Account
+              {t`Account`}
               <StyledConnectedTag>
                 <IconCheck size={12} />
-                Connected
+                {t`Connected`}
               </StyledConnectedTag>
             </StyledConnectedContainer>
           </StyledSectionTitle>
@@ -301,14 +309,14 @@ export const ContentCustomize = ({
           </StyledAccountButton>
         </StyledSettingsSectionContainer>
         <StyledSettingsSectionContainer>
-          <StyledSectionTitle>Description</StyledSectionTitle>
+          <StyledSectionTitle>{t`Description`}</StyledSectionTitle>
           <StyledSectionSubtitle>
-            Write a compelling description that highlights the key features of
-            your property
+            {t`Write a compelling description that highlights the key features of
+            your property`}
           </StyledSectionSubtitle>
           <StyledDescriptionContainer>
             <TextAreaFormInput
-              placeholder="Write a description for your post..."
+              placeholder={t`Write a description for your post...`}
               value={description}
               onChange={(value) => setDescription(value)}
               onEnter={() => {}}
@@ -322,34 +330,34 @@ export const ContentCustomize = ({
           </StyledDescriptionContainer>
         </StyledSettingsSectionContainer>
 
-        <StyledVideoGeneratorContainer>
+        <StyledVideoGeneratorContainer colorScheme={colorScheme}>
           <StyledSettingsSectionContainer>
             <StyledVideoGeneratorTitle>
               <IconSparkles size={16} />
-              Generate Videos
+              {t`Generate Videos`}
             </StyledVideoGeneratorTitle>
             {generationProgress < 100 && (
               <StyledVideoGeneratorSubtitle>
-                We found 3 videos we can generate from your property images
+                {t`We found 3 videos we can generate from your property images`}
               </StyledVideoGeneratorSubtitle>
             )}
           </StyledSettingsSectionContainer>
           {generationProgress === 100 ? (
             <StyledToolDescription>
               <IconCheck size={22} />
-              <div>3 videos have been generated and added to your carousel</div>
+              <div>{t`3 videos have been generated and added to your carousel`}</div>
             </StyledToolDescription>
           ) : isGenerating ? (
             <StyledProgressContainer>
               <ProgressBar value={generationProgress} />
               <StyledProgressText>
-                Generating videos... {Math.min(generationProgress, 100)}%
+                {t`Generating videos...`} {Math.min(generationProgress, 100)}%
               </StyledProgressText>
             </StyledProgressContainer>
           ) : (
             <div>
               <Button
-                title="Generate"
+                title={t`Generate`}
                 Icon={IconSparkles}
                 accent="purple"
                 onClick={() => {
@@ -377,7 +385,7 @@ export const ContentCustomize = ({
         <StyledAdditonalSettingsDivider />
 
         <StyledAdditionalSettingsButton>
-          <span>Additional post settings</span>
+          <span>{t`Additional post settings`}</span>
           <IconChevronRight size={16} />
         </StyledAdditionalSettingsButton>
       </StyledSettingsContainer>

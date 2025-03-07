@@ -4,6 +4,7 @@ import {
   IconAlertCircle,
   IconCheck,
   IconInfoCircle,
+  IconChecklist,
   MOBILE_VIEWPORT,
 } from 'twenty-ui';
 
@@ -36,8 +37,9 @@ const StyledProgressTitle = styled.div`
 const StyledProgressTitleText = styled.div`
   display: flex;
   font-weight: ${({ theme }) => theme.font.weight.medium};
+  color: ${({ theme }) => theme.font.color.primary};
   align-items: center;
-  gap: ${({ theme }) => theme.spacing(1)};
+  gap: ${({ theme }) => theme.spacing(2)};
 `;
 
 const StyledProgressWithIcon = styled.div`
@@ -95,7 +97,10 @@ export const CompletionProgress = ({ percentage }: CompletionProgressProps) => (
   <StyledProgressContainer>
     <StyledProgressHeader>
       <StyledProgressTitle>
-        <StyledProgressTitleText>{t`Publication completion`}</StyledProgressTitleText>
+        <StyledProgressTitleText>
+          <IconChecklist size={16} />
+          {t`Publication completion`}
+        </StyledProgressTitleText>
         <StyledProgressWithIcon>
           {percentage < 80 ? (
             <IconAlertCircle size={16} />

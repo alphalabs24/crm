@@ -42,6 +42,9 @@ import { useDeleteProperty } from '../../hooks/useDeleteProperty';
 import { ConfirmationModal } from '@/ui/layout/modal/components/ConfirmationModal';
 import { capitalize } from 'twenty-shared';
 import { ActionDropdown } from './ActionDropdown';
+import { useDeleteMessage } from '@/action-menu/actions/record-actions/single-record/hooks/useDeleteMessage';
+import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadataItem';
+import { useFindManyRecords } from '@/object-record/hooks/useFindManyRecords';
 
 const StyledShowPageRightContainer = styled.div<{ isMobile: boolean }>`
   display: flex;
@@ -147,12 +150,34 @@ export const ShowPagePropertySubContainer = ({
     isNewViewableRecordLoadingState,
   );
 
+  const { objectMetadataItem } = useObjectMetadataItem({
+    objectNameSingular,
+  });
+
+  // Record
+  const { record: recordFromStore, refetch: refetchRecord } = useRecordShowPage(
+    targetableObject.targetObjectNameSingular,
+    targetableObject.id,
+  );
+
+  // Publications of Property
+  const { refetch: refetchPublications } = usePublicationsOfProperty(
+    isPublication ? undefined : recordFromStore?.id,
+  );
+
+  // Publication Drafts of Property
+  const { publications: publicationDraftsOfProperty } =
+    usePublicationsOfProperty(
+      isPublication ? undefined : recordFromStore?.id,
+      'draft',
+    );
+
   // Delete callback
   const onDelete = async () => {
     enqueueSnackBar(t`${objectNameSingular} deleted successfully`, {
       variant: SnackBarVariant.Success,
     });
-    await refetchAllPublications();
+    await refetchPublications();
     await refetchRecord();
     deleteModalRef.current?.close();
   };
@@ -171,6 +196,8 @@ export const ShowPagePropertySubContainer = ({
     objectNameSingular: objectNameSingular,
   });
 
+  const deleteMessage = useDeleteMessage(objectMetadataItem);
+
   // When user presses on the accept button in the delete confirmation modal,
   // we delete the property or publication
   const handleConfirmDelete = async () => {
@@ -178,37 +205,17 @@ export const ShowPagePropertySubContainer = ({
       await deletePublication();
     } else {
       await deletePropertyAndAllPublications();
+      await refetchPublications;
     }
     // Refetches the record after the deletion if it is a property or publication
     await deleteOneRecord(targetableObject.id);
     setIsDeleteRecordsModalOpen(false);
   };
 
-  // Record
-  const { record: recordFromStore, refetch: refetchRecord } = useRecordShowPage(
-    targetableObject.targetObjectNameSingular,
-    targetableObject.id,
-  );
-
-  // Publications of Property
-  const {
-    publications: publicationDraftsOfProperty,
-    refetch: refetchPublications,
-  } = usePublicationsOfProperty(
-    isPublication ? undefined : recordFromStore?.id,
-    'draft',
-  );
-
-  // Refetch all publications when something changes through the API
-  const { refetch: refetchAllPublications } = usePublicationsOfProperty(
-    isPublication ? undefined : recordFromStore?.id,
-  );
-
   // Refetch publications when the component mounts so we have the latest data.
   useEffect(() => {
     refetchPublications();
-    refetchAllPublications();
-  }, [refetchAllPublications, refetchPublications]);
+  }, [refetchPublications]);
 
   const { differenceRecords } = usePropertyAndPublicationDifferences(
     publicationDraftsOfProperty,
@@ -290,6 +297,7 @@ export const ShowPagePropertySubContainer = ({
     }
   };
 
+  // Edit publication
   const onEditPublication = () => {
     if (!recordFromStore) return;
 
@@ -308,6 +316,7 @@ export const ShowPagePropertySubContainer = ({
     }
   };
 
+  // Amount of differences between the property and the publication
   const differenceLength = useMemo(
     () =>
       differenceRecords?.length > 0
@@ -334,21 +343,17 @@ export const ShowPagePropertySubContainer = ({
     });
   };
 
-  const openModal = () => {
-    modalRef.current?.open();
-  };
-
-  const handleModalClose = () => {
-    modalRef.current?.close();
-  };
-
   const { showPublishButton, validationDetails } = usePublicationValidation({
     record: recordFromStore,
     isPublication,
   });
 
+  // Open the publish modal
   const handlePublishClick = () => {
-    openModal();
+    modalRef.current?.open();
+  };
+  const handleModalClose = () => {
+    modalRef.current?.close();
   };
 
   const showDeleteButton = useMemo(
@@ -412,7 +417,9 @@ export const ShowPagePropertySubContainer = ({
                         },
                       ]
                     : []),
-                  ...(showNewPublicationButton && !isPublication // When publication button is primary
+                  ...(showNewPublicationButton &&
+                  publicationDraftsOfProperty.length > 0 &&
+                  !isPublication // When publication button is primary
                     ? [
                         {
                           title: t`Sync Publications`,
@@ -491,11 +498,7 @@ export const ShowPagePropertySubContainer = ({
         isOpen={isDeleteRecordsModalOpen}
         setIsOpen={setIsDeleteRecordsModalOpen}
         title={t`Delete ${capitalizedObjectNameSingular}`}
-        subtitle={
-          isPublication
-            ? t`Are you sure you want to delete this publication?`
-            : t`Are you sure you want to delete this property and all it's publications?`
-        }
+        subtitle={deleteMessage}
         loading={loadingDelete}
         onConfirmClick={() => {
           handleConfirmDelete();

@@ -1,9 +1,12 @@
 import {
   IconBuildingSkyscraper,
   IconCheckbox,
+  IconHome,
   IconSettings,
   IconTargetArrow,
   IconUser,
+  IconHomeShare,
+  IconBuilding,
 } from 'twenty-ui';
 
 import { CoreObjectNamePlural } from '@/object-metadata/types/CoreObjectNamePlural';
@@ -36,16 +39,49 @@ export const COMMAND_MENU_NAVIGATE_COMMANDS: { [key: string]: Command } = {
     Icon: IconBuildingSkyscraper,
     shouldCloseCommandMenuOnClick: true,
   },
-  opportunities: {
-    id: 'go-to-activities',
+  buyerLeads: {
+    id: 'go-to-buyer-leads',
     to: getAppPath(AppPath.RecordIndexPage, {
-      objectNamePlural: CoreObjectNamePlural.Opportunity,
+      objectNamePlural: CoreObjectNamePlural.BuyerLead,
     }),
-    label: 'Go to Opportunities',
+    label: 'Go to Buyer Leads',
     type: CommandType.Navigate,
-    hotKeys: ['G', 'O'],
+    hotKeys: ['G', 'B'],
     Icon: IconTargetArrow,
     shouldCloseCommandMenuOnClick: true,
+  },
+  properties: {
+    id: 'go-to-properties',
+    to: getAppPath(AppPath.RecordIndexPage, {
+      objectNamePlural: CoreObjectNamePlural.Property,
+    }),
+    type: CommandType.Navigate,
+    hotKeys: ['G', 'O'],
+    Icon: IconHome,
+    shouldCloseCommandMenuOnClick: true,
+    label: 'Go to Properties',
+  },
+  publications: {
+    id: 'go-to-publications',
+    to: getAppPath(AppPath.RecordIndexPage, {
+      objectNamePlural: CoreObjectNamePlural.Publication,
+    }),
+    type: CommandType.Navigate,
+    hotKeys: ['G', 'U'],
+    Icon: IconHomeShare,
+    shouldCloseCommandMenuOnClick: true,
+    label: 'Go to Publications',
+  },
+  agencies: {
+    id: 'go-to-agencies',
+    to: getAppPath(AppPath.RecordIndexPage, {
+      objectNamePlural: CoreObjectNamePlural.Agency,
+    }),
+    type: CommandType.Navigate,
+    hotKeys: ['G', 'A'],
+    Icon: IconBuilding,
+    shouldCloseCommandMenuOnClick: true,
+    label: 'Go to Agencies',
   },
   settings: {
     id: 'go-to-settings',

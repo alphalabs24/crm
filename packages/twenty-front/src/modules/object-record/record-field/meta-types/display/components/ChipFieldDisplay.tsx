@@ -1,11 +1,13 @@
 import { useCommandMenu } from '@/command-menu/hooks/useCommandMenu';
+import { isPublication } from '@/object-metadata/utils/isPropertyOrPublication';
 import { RecordChip } from '@/object-record/components/RecordChip';
 import { useChipFieldDisplay } from '@/object-record/record-field/meta-types/hooks/useChipFieldDisplay';
 import { RecordIdentifierChip } from '@/object-record/record-index/components/RecordIndexRecordChip';
 import { recordIndexOpenRecordInState } from '@/object-record/record-index/states/recordIndexOpenRecordInState';
+import { PlatformBadge } from '@/object-record/record-show/components/nm/publication/PlatformBadge';
 import { ViewOpenRecordInType } from '@/views/types/ViewOpenRecordInType';
 import { useRecoilValue } from 'recoil';
-import { ChipSize } from 'twenty-ui';
+import { ChipSize, IconHomeShare } from 'twenty-ui';
 
 export const ChipFieldDisplay = () => {
   const {
@@ -43,8 +45,25 @@ export const ChipFieldDisplay = () => {
             }
           : undefined
       }
+      LeftCustomComponent={
+        isPublication(objectNameSingular) ? (
+          <PlatformBadge
+            platformId={recordValue.platform?.toUpperCase()}
+            variant="small"
+          />
+        ) : undefined
+      }
     />
   ) : (
-    <RecordChip objectNameSingular={objectNameSingular} record={recordValue} />
+    <RecordChip
+      objectNameSingular={objectNameSingular}
+      record={recordValue}
+      LeftCustomComponent={
+        <PlatformBadge
+          platformId={recordValue.platform?.toUpperCase()}
+          variant="small"
+        />
+      }
+    />
   );
 };
