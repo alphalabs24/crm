@@ -2,34 +2,47 @@ import {
   BadRequestException,
   Body,
   Controller,
-  Get,
   Post,
   Req,
   Res,
   UseGuards,
 } from '@nestjs/common';
 
+import { IsArray, IsEmail, IsOptional, IsString } from 'class-validator';
 import { Request, Response } from 'express';
 
 import { JwtAuthGuard } from 'src/engine/guards/jwt-auth.guard';
 import { WorkspaceAuthGuard } from 'src/engine/guards/workspace-auth.guard';
-import { SendEmailDto } from 'src/engine/api/rest/core/controllers/rest-api-core.controller';
 import { SendEmailWorkflowAction } from 'src/modules/workflow/workflow-executor/workflow-actions/mail-sender/send-email.workflow-action';
 import { WorkflowSendEmailActionInput } from 'src/modules/workflow/workflow-executor/workflow-actions/mail-sender/types/workflow-send-email-action-input.type';
 
+class SendEmailDto {
+  @IsEmail()
+  to: string;
+
+  @IsString()
+  subject: string;
+
+  @IsString()
+  body: string;
+
+  @IsString()
+  connectedAccount: string;
+
+  @IsArray()
+  @IsOptional()
+  attachments?: Array<{
+    filename: string;
+    content: string;
+  }>;
+}
+
 @Controller('rest/email')
 @UseGuards(JwtAuthGuard, WorkspaceAuthGuard)
-export class RestApiNewCoreController {
+export class RestApiExtensionController {
   constructor(
     private readonly sendEmailWorkflowAction: SendEmailWorkflowAction,
-  ) {
-    console.log('Email Controller is being instantiated');
-  }
-
-  @Get('/send')
-  async handleApiGetEmail() {
-    return { message: 'hello' };
-  }
+  ) {}
 
   @Post('/send')
   async handleApiSendEmail(
@@ -62,6 +75,5 @@ export class RestApiNewCoreController {
     console.log(result);
 
     res.status(200).send('hello');
-    // return { message: 'hello' };
   }
 }
