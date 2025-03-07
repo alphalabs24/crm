@@ -348,51 +348,57 @@ export const PlatformSelect = ({
           </StyledPlatformTypeDescription>
         </StyledPlatformTypeHeader>
         <StyledPlatformGrid>
-          {realEstatePlatforms.map((platform) => (
-            <StyledPlatformCard
-              key={platform.id}
-              onClick={() => {
-                if (platform.isBeta === true) {
-                  return;
-                }
-                handlePlatformSelect(platform.id);
-              }}
-              isSelected={selectedPlatforms?.includes(platform.id)}
-              selectable={!platform.isBeta}
-            >
-              <StyledPlatformCardContent>
-                <StyledPlatformIconContainer>
-                  <StyledPlatformLogo dark={colorScheme === 'Dark'}>
-                    {platform.logo ? (
-                      <StyledPlatformLogoImage
-                        src={platform.logo}
-                        alt={platform.name}
-                      />
-                    ) : (
-                      platform.name.slice(0, 2)
-                    )}
-                  </StyledPlatformLogo>
-                </StyledPlatformIconContainer>
-                <StyledPlatformInfo>
-                  <StyledPlatformName comingSoon={platform.isBeta}>
-                    {platform.name} {platform.isBeta ? t`(coming soon)` : ''}
-                    {platform.isNew && <StyledNewTag>{t`NEW`}</StyledNewTag>}
-                  </StyledPlatformName>
-                  <StyledPlatformDescription>
-                    {platform.description}
-                  </StyledPlatformDescription>
-                </StyledPlatformInfo>
-              </StyledPlatformCardContent>
-              <IconCheck
-                size={20}
-                color={
-                  selectedPlatforms?.includes(platform.id)
-                    ? theme.font.color.primary
-                    : 'transparent'
-                }
-              />
-            </StyledPlatformCard>
-          ))}
+          {realEstatePlatforms.map(
+            (platform) =>
+              platform.logo && (
+                <StyledPlatformCard
+                  key={platform.id}
+                  onClick={() => {
+                    if (platform.isBeta === true) {
+                      return;
+                    }
+                    handlePlatformSelect(platform.id);
+                  }}
+                  isSelected={selectedPlatforms?.includes(platform.id)}
+                  selectable={!platform.isBeta}
+                >
+                  <StyledPlatformCardContent>
+                    <StyledPlatformIconContainer>
+                      <StyledPlatformLogo dark={colorScheme === 'Dark'}>
+                        {platform.logo ? (
+                          <StyledPlatformLogoImage
+                            src={platform.logo}
+                            alt={platform.name}
+                          />
+                        ) : (
+                          platform.name.slice(0, 2)
+                        )}
+                      </StyledPlatformLogo>
+                    </StyledPlatformIconContainer>
+                    <StyledPlatformInfo>
+                      <StyledPlatformName comingSoon={platform.isBeta}>
+                        {platform.name}{' '}
+                        {platform.isBeta ? t`(coming soon)` : ''}
+                        {platform.isNew && (
+                          <StyledNewTag>{t`NEW`}</StyledNewTag>
+                        )}
+                      </StyledPlatformName>
+                      <StyledPlatformDescription>
+                        {platform.description}
+                      </StyledPlatformDescription>
+                    </StyledPlatformInfo>
+                  </StyledPlatformCardContent>
+                  <IconCheck
+                    size={20}
+                    color={
+                      selectedPlatforms?.includes(platform.id)
+                        ? theme.font.color.primary
+                        : 'transparent'
+                    }
+                  />
+                </StyledPlatformCard>
+              ),
+          )}
         </StyledPlatformGrid>
         <StyledPlatformTypeActionsContainer>
           <StyledPlatformTypeActions>

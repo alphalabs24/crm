@@ -31,6 +31,7 @@ import {
   IconUpload,
   IconX,
   LARGE_DESKTOP_VIEWPORT,
+  MOBILE_VIEWPORT,
 } from 'twenty-ui';
 import { FieldMetadataType } from '~/generated/graphql';
 import { useSubcategoryByCategory } from '../../hooks/useSubcategoryByCategory';
@@ -39,6 +40,10 @@ const StyledFormBorder = styled.div`
   border: 1px solid ${({ theme }) => theme.border.color.light};
   border-radius: ${({ theme }) => theme.border.radius.sm};
   margin: ${({ theme }) => theme.spacing(4)};
+
+  @media only screen and (min-width: ${MOBILE_VIEWPORT}px) {
+    width: 100%;
+  }
 
   @media (min-width: ${LARGE_DESKTOP_VIEWPORT}px) {
     max-width: 800px;
@@ -398,12 +403,15 @@ export const ObjectOverview = ({
               </StyledTitle>
               <StyledButtonContainer>
                 {!isPublication ? (
-                  <Button
-                    title={t`Prefill`}
-                    Icon={IconSparkles}
-                    accent="purple"
-                    onClick={openModal}
-                  />
+                  isInRightDrawer ? null : (
+                    <Button
+                      size="small"
+                      title={t`Prefill`}
+                      Icon={IconSparkles}
+                      accent="purple"
+                      onClick={openModal}
+                    />
+                  )
                 ) : (
                   <PlatformBadge
                     platformId={recordFromStore.platform ?? PlatformId.Newhome}

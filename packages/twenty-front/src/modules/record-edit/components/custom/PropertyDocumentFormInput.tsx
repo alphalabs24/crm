@@ -14,7 +14,7 @@ import {
   DropResult,
 } from '@hello-pangea/dnd';
 import { useLingui } from '@lingui/react/macro';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import Skeleton from 'react-loading-skeleton';
 import { isDefined } from 'twenty-shared';
@@ -33,7 +33,7 @@ import {
   TooltipDelay,
   IconFileText,
   IconRefresh,
-  StyledTextContent,
+  LARGE_DESKTOP_VIEWPORT,
 } from 'twenty-ui';
 import { DocumentEditModal } from './DocumentEditModal';
 import { ModalRefType } from '@/ui/layout/modal/components/Modal';
@@ -118,12 +118,12 @@ const StyledDocumentItem = styled.div`
 `;
 
 const StyledFileIcon = styled.div`
-  display: flex;
   align-items: center;
+  color: ${({ theme }) => theme.font.color.light};
+  display: flex;
+  height: 32px;
   justify-content: center;
   width: 32px;
-  height: 32px;
-  color: ${({ theme }) => theme.font.color.light};
 `;
 
 const StyledFileInfo = styled.div`
@@ -135,14 +135,14 @@ const StyledFileInfo = styled.div`
 `;
 
 const StyledFileName = styled.span`
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
   color: ${({ theme }) => theme.font.color.primary};
+  display: -webkit-box;
   font-size: ${({ theme }) => theme.font.size.sm};
   font-weight: ${({ theme }) => theme.font.weight.medium};
-  word-break: break-word;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
   overflow: hidden;
+  word-break: break-word;
 `;
 
 const StyledFileDescription = styled.span`
@@ -153,34 +153,6 @@ const StyledFileDescription = styled.span`
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-`;
-
-const StyledDropzone = styled.div<{ isDragActive: boolean }>`
-  border: 2px dashed
-    ${({ theme, isDragActive }) =>
-      isDragActive ? theme.color.blue : theme.border.color.medium};
-  border-radius: ${({ theme }) => theme.border.radius.md};
-  padding: ${({ theme }) => theme.spacing(4)};
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: ${({ theme }) => theme.spacing(2)};
-  cursor: pointer;
-  background: ${({ theme, isDragActive }) =>
-    isDragActive
-      ? theme.background.transparent.lighter
-      : theme.background.secondary};
-  transition: all 200ms ease-in-out;
-  transform: ${({ isDragActive }) =>
-    isDragActive ? 'scale(1.01)' : 'scale(1)'};
-  width: 100%;
-  box-sizing: border-box;
-
-  &:hover {
-    border-color: ${({ theme }) => theme.border.color.strong};
-    background: ${({ theme }) => theme.background.tertiary};
-  }
 `;
 
 const StyledActionButton = styled.button`
@@ -361,40 +333,18 @@ const DraggableDocumentItem = ({
   );
 };
 
-const StyledHeaderContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: ${({ theme }) => theme.spacing(4)};
-`;
-
-const StyledUploadButton = styled.button`
-  display: flex;
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing(2)};
-  padding: ${({ theme }) => theme.spacing(2)};
-  border-radius: ${({ theme }) => theme.border.radius.sm};
-  border: 1px solid ${({ theme }) => theme.border.color.medium};
-  background: ${({ theme }) => theme.background.primary};
-  cursor: pointer;
-  white-space: nowrap;
-  flex-shrink: 0;
-
-  &:hover {
-    background: ${({ theme }) => theme.background.secondary};
-  }
-`;
 const StyledDragOverlay = styled.div<{
   position?: 'relative' | 'absolute';
   isDragActive?: boolean;
 }>`
-  position: ${({ position }) =>
-    position === 'relative' ? 'relative' : 'absolute'};
+  align-items: center;
 
-  cursor: ${({ position }) =>
-    position === 'relative' ? 'pointer' : 'default'};
+  background: ${({ theme, position, isDragActive }) =>
+    position === 'relative' && isDragActive
+      ? theme.background.transparent.lighter
+      : theme.background.primary};
 
-  min-height: 80px;
+  border: 3px dashed ${({ theme }) => theme.border.color.medium};
 
   ${({ position }) =>
     position === 'relative' &&
@@ -402,35 +352,34 @@ const StyledDragOverlay = styled.div<{
       transition: all 200ms ease-in-out;
     `}
 
-  transform: ${({ isDragActive }) =>
-    isDragActive ? 'scale(1.01)' : 'scale(1)'};
+  border-radius: ${({ theme }) => theme.border.radius.md};
 
   &:hover {
-    border-color: ${({ theme }) => theme.border.color.strong};
     background: ${({ theme }) => theme.background.tertiary};
+    border-color: ${({ theme }) => theme.border.color.strong};
   }
 
-  top: 0;
-  left: 0;
-  right: 0;
   bottom: 0;
-  border: 3px dashed ${({ theme }) => theme.border.color.medium};
-
-  background: ${({ theme, position, isDragActive }) =>
-    position === 'relative' && isDragActive
-      ? theme.background.transparent.lighter
-      : theme.background.primary};
-  opacity: 0.95;
+  color: ${({ theme }) => theme.font.color.primary};
+  cursor: ${({ position }) =>
+    position === 'relative' ? 'pointer' : 'default'};
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+
   gap: ${({ theme }) => theme.spacing(2)};
-  border-radius: ${({ theme }) => theme.border.radius.md};
-  color: ${({ theme }) => theme.font.color.primary};
-  z-index: 1;
+  justify-content: center;
+  left: 0;
+  min-height: 80px;
+  opacity: 0.95;
   pointer-events: ${({ position }) =>
     position === 'relative' ? 'auto' : 'none'};
+  position: ${({ position }) =>
+    position === 'relative' ? 'relative' : 'absolute'};
+  right: 0;
+  top: 0;
+  transform: ${({ isDragActive }) =>
+    isDragActive ? 'scale(1.01)' : 'scale(1)'};
+  z-index: 1;
 `;
 
 const StyledSpecialDocumentContainer = styled.div`
@@ -448,10 +397,15 @@ const StyledSpecialDocumentRow = styled.div`
 `;
 
 const StyledSpecialDocumentHeader = styled.div`
-  display: flex;
   align-items: flex-start;
-  justify-content: space-between;
+  display: flex;
   gap: ${({ theme }) => theme.spacing(2)};
+  justify-content: space-between;
+  flex-direction: column;
+
+  @media (min-width: ${LARGE_DESKTOP_VIEWPORT}px) {
+    flex-direction: row;
+  }
 `;
 
 const StyledSpecialDocumentContent = styled.div`
@@ -591,10 +545,14 @@ const StyledDivider = styled.div`
 `;
 
 const StyledSectionHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
   align-items: flex-start;
+  display: flex;
   gap: ${({ theme }) => theme.spacing(2)};
+  justify-content: space-between;
+  flex-direction: column;
+  @media (min-width: ${LARGE_DESKTOP_VIEWPORT}px) {
+    flex-direction: row;
+  }
 `;
 
 export const PropertyDocumentFormInput = ({
@@ -631,8 +589,6 @@ export const PropertyDocumentFormInput = ({
       });
     };
   }, [hasRefreshed, previewFileUrls, refreshPropertyDocumentUrls]);
-
-  const [newDocumentIds, setNewDocumentIds] = useState<Set<string>>(new Set());
 
   const onAdd = (files: File[], type: PropertyAttachmentType) => {
     const newDocuments = files.map((file) => ({
@@ -801,16 +757,16 @@ export const PropertyDocumentFormInput = ({
                       {doc.description}
                     </StyledDocumentDescription>
                   </StyledDocumentInfo>
-                  <div style={{ display: 'flex', gap: '8px' }}>
-                    <Button
-                      variant="secondary"
-                      size="small"
-                      Icon={IconRefresh}
-                      title={t`Generate`}
-                      disabled
-                      onClick={() => handleGenerateDocument(doc.type)}
-                    />
-                    {!specialDocs[doc.type] && (
+                  {!specialDocs[doc.type] && (
+                    <div style={{ display: 'flex', gap: '8px' }}>
+                      <Button
+                        variant="secondary"
+                        size="small"
+                        Icon={IconRefresh}
+                        title={t`Generate`}
+                        disabled
+                        onClick={() => handleGenerateDocument(doc.type)}
+                      />
                       <Button
                         variant="primary"
                         size="small"
@@ -829,8 +785,8 @@ export const PropertyDocumentFormInput = ({
                           input.click();
                         }}
                       />
-                    )}
-                  </div>
+                    </div>
+                  )}
                 </StyledSpecialDocumentHeader>
                 {specialDoc && (
                   <StyledSpecialDocumentContent>
@@ -870,8 +826,8 @@ export const PropertyDocumentFormInput = ({
                 input.click();
               }}
               variant="secondary"
-              title={t`Upload Documents`}
               Icon={IconUpload}
+              title={t`Upload Documents`}
             />
           </StyledSectionHeader>
 
@@ -892,7 +848,6 @@ export const PropertyDocumentFormInput = ({
                           index={index}
                           onRemove={onRemove}
                           onSaveEdit={onSaveEdit}
-                          isNew={newDocumentIds.has(document.id)}
                         />
                       ) : (
                         <Skeleton

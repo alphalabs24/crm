@@ -79,7 +79,7 @@ export const DefaultLayout = () => {
           }
         `}
       />
-      <StyledLayout>
+      <StyledLayout className="default-layout">
         {!showAuthModal && (
           <>
             <CommandMenuRouter />

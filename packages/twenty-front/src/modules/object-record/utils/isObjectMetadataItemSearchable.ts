@@ -4,6 +4,10 @@ const SEARCHABLE_STANDARD_OBJECTS_NAMES_PLURAL = [
   'companies',
   'people',
   'opportunities',
+  'buyerLeads',
+  'publications',
+  'agencies',
+  'properties',
 ];
 export const isObjectMetadataItemSearchable = (
   objectMetadataItem: ObjectMetadataItem,

@@ -14,6 +14,7 @@ export interface ViewDefinition {
   kanbanAggregateOperation?: AGGREGATE_OPERATIONS;
   kanbanAggregateOperationFieldMetadataId?: string;
   fields?: {
+    id?: string;
     fieldMetadataId: string;
     position: number;
     isVisible: boolean;
@@ -21,12 +22,14 @@ export interface ViewDefinition {
     aggregateOperation?: AGGREGATE_OPERATIONS;
   }[];
   filters?: {
+    id?: string;
     fieldMetadataId: string;
     displayValue: string;
     operand: string;
     value: string;
   }[];
   groups?: {
+    id?: string;
     fieldMetadataId: string;
     isVisible: boolean;
     fieldValue: string;

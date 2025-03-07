@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: nestermind-crm\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-03-04 07:42\n"
+"PO-Revision-Date: 2025-03-06 14:08\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -53,6 +53,10 @@ msgstr "{apiKeyName} API-Schlüssel"
 #: src/modules/action-menu/actions/record-actions/workflow-run-record-actions/hooks/useWorkflowRunRecordActions.tsx
 msgid "{name}"
 msgstr "{name}"
+
+#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+msgid "{objectNameSingular} deleted successfully"
+msgstr "{objectNameSingular} erfolgreich gelöscht"
 
 #: src/modules/record-edit/components/RecordEditContainer.tsx
 msgid "{objectNameSingular} saved successfully"
@@ -247,6 +251,10 @@ msgstr "Adresse Strasse 1"
 msgid "Advanced filter"
 msgstr "Erweiterter Filter"
 
+#: src/modules/navigation/components/AppNavigationDrawer.tsx
+msgid "Advanced:"
+msgstr "Erweitert:"
+
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 #~ msgid "Afrikaans"
 #~ msgstr "Afrikaans"
@@ -256,8 +264,8 @@ msgid "Agency Credentials"
 msgstr "Agentur-Zugangsdaten"
 
 #: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
-msgid "Agriculture Subtype"
-msgstr "Landwirtschaft Unterkategorie"
+#~ msgid "Agriculture Subtype"
+#~ msgstr "Agriculture Subtype"
 
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationShortLabel.ts
 msgid "All"
@@ -278,6 +286,10 @@ msgstr "Anmeldungen über Google Single Sign-On zulassen."
 #: src/modules/settings/security/components/SettingsSecurityOptionsList.tsx
 msgid "Allow logins through Microsoft's single sign-on functionality."
 msgstr "Anmeldungen über Microsoft Single Sign-On zulassen."
+
+#: src/pages/onboarding/CreateProfile.tsx
+msgid "Allow Nestermind to access and administer my data."
+msgstr "nestermind den Zugriff und die Verwaltung meiner Daten gestatten."
 
 #: src/modules/settings/security/components/SettingsSecurityOptionsList.tsx
 msgid "Allow the invitation of new users by sharing an invite link."
@@ -301,7 +313,7 @@ msgstr "und"
 
 #: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
 msgid "Apartment Subtype"
-msgstr "Wohnung Unterkategorie"
+msgstr "Wohnung Kategorie"
 
 #: src/pages/onboarding/ChooseYourPlan.tsx
 #: src/modules/settings/hooks/useSettingsNavigationItems.tsx
@@ -344,6 +356,14 @@ msgstr "Sind Sie sicher, dass Sie Ihr Abrechnungsintervall ändern möchten?"
 #: src/pages/settings/roles/components/RoleAssignmentConfirmationModalSubtitle.tsx
 msgid "Are you sure you want to assign this role?"
 msgstr "Sind Sie sicher, dass Sie diese Rolle zuweisen m\\u00f6chten?"
+
+#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+msgid "Are you sure you want to delete this property and all it's publications?"
+msgstr "Sind Sie sicher, dass Sie dieses Objekt und alle zugehörigen Publikationen löschen möchten?"
+
+#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+msgid "Are you sure you want to delete this publication?"
+msgstr "Sind Sie sicher, dass Sie diese Veröffentlichung löschen möchten?"
 
 #: src/modules/object-record/object-sort-dropdown/components/ObjectSortDropdownButton.tsx
 #: src/modules/object-record/object-sort-dropdown/components/ObjectSortDropdownButton.tsx
@@ -443,6 +463,7 @@ msgstr "Kalender"
 #: src/pages/auth/Authorize.tsx
 #: src/modules/ui/layout/show-page/components/nm/PublishDraftModal.tsx
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
+#: src/modules/ui/layout/show-page/components/nm/DeleteConfirmationModal.tsx
 #: src/modules/ui/layout/modal/components/ConfirmationModal.tsx
 #: src/modules/settings/components/SaveAndCancelButtons/CancelButton.tsx
 #: src/modules/record-edit/components/custom/ImageEditModal.tsx
@@ -770,6 +791,7 @@ msgstr "Namen und Beschreibung des Objekts definieren"
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+#: src/modules/ui/layout/show-page/components/nm/DeleteConfirmationModal.tsx
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 #: src/modules/action-menu/components/__stories__/RightDrawerActionMenuDropdown.stories.tsx
@@ -785,6 +807,11 @@ msgstr "Namen und Beschreibung des Objekts definieren"
 #: src/modules/action-menu/actions/record-actions/constants/DefaultActionsConfigV1.ts
 msgid "Delete"
 msgstr "Löschen"
+
+#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+msgid "Delete {capitalizedObjectNameSingular}"
+msgstr "Neue {capitalizedObjectNameSingular}"
 
 #: src/pages/settings/SettingsWorkspaceMembers.tsx
 #: src/modules/settings/profile/components/DeleteAccount.tsx
@@ -1187,7 +1214,7 @@ msgstr "Funktionen"
 
 #: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
 msgid "Gastronomy Subtype"
-msgstr "Gastronomie Unterkategorie"
+msgstr "Gastronomie Kategorie"
 
 #: src/pages/settings/SettingsWorkspace.tsx
 #: src/pages/settings/SettingsWorkspace.tsx
@@ -1272,6 +1299,10 @@ msgstr "Gesundheitsstatus"
 msgid "Hide"
 msgstr "Ausblenden"
 
+#: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
+msgid "House Subtype"
+msgstr "Haus Kategorie"
+
 #: src/pages/onboarding/CreateProfile.tsx
 msgid "How you'll be identified on the app."
 msgstr "Wie Sie in der App identifiziert werden."
@@ -1313,8 +1344,8 @@ msgid "Indexes"
 msgstr "Indizes"
 
 #: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
-msgid "Industrial Objects Subtype"
-msgstr "Industrie-Objekte Unterkategorie"
+#~ msgid "Industrial Objects Subtype"
+#~ msgstr "Industrial Objects Subtype"
 
 #: src/modules/settings/data-model/objects/forms/components/SettingsDataModelObjectAboutForm.tsx
 #: src/modules/settings/data-model/fields/forms/components/SettingsDataModelFieldIconLabelForm.tsx
@@ -1529,8 +1560,8 @@ msgid "Missing required fields: {missingFieldsString}"
 msgstr "Erforderliche Felder fehlen: {missingFieldsString}"
 
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
-msgid "More"
-msgstr "Mehr"
+#~ msgid "More"
+#~ msgstr "More"
 
 #: src/modules/object-record/record-table/record-table-footer/components/RecordTableColumnAggregateFooterDropdownContent.tsx
 #: src/modules/object-record/record-board/record-board-column/components/RecordBoardColumnHeaderAggregateDropdownMenuContent.tsx
@@ -1798,8 +1829,8 @@ msgid "Page Not Found"
 msgstr "Seite nicht gefunden"
 
 #: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
-msgid "Parking Space Subtype"
-msgstr "Parkplatz Unterkategorie"
+#~ msgid "Parking Space Subtype"
+#~ msgstr "Parking Space Subtype"
 
 #: src/modules/settings/security/components/SettingsSecurityOptionsList.tsx
 msgid "Password"
@@ -1870,7 +1901,7 @@ msgstr "Bitte geben Sie {confirmationText} ein, um zu bestätigen, dass Sie dies
 
 #: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
 msgid "Plot Subtype"
-msgstr "Land Unterkategorie"
+msgstr "Land Kategorie"
 
 #: src/modules/settings/data-model/objects/forms/components/SettingsDataModelObjectAboutForm.tsx
 msgid "Plural"
@@ -1957,9 +1988,14 @@ msgid "Pseudo-English"
 msgstr "Pseudo-Englisch"
 
 #: src/modules/object-record/record-show/components/nm/publication/CompletionProgress.tsx
-msgid "Publication completion -"
+msgid "Publication completion"
 msgstr "Vollständigkeit der Veröffentlichung"
 
+#: src/modules/object-record/record-show/components/nm/publication/CompletionProgress.tsx
+#~ msgid "Publication completion -"
+#~ msgstr "Publication completion -"
+
+#: src/modules/ui/layout/show-page/components/nm/PublishModal.tsx
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
 msgid "Publication Draft"
 msgstr "Veröffentlichungsentwurf"
@@ -2134,8 +2170,8 @@ msgid "Search records"
 msgstr "Datensätze suchen"
 
 #: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
-msgid "Secondary Rooms Subtype"
-msgstr "Sekundärraum Unterkategorie"
+#~ msgid "Secondary Rooms Subtype"
+#~ msgstr "Secondary Rooms Subtype"
 
 #: src/pages/settings/security/SettingsSecurity.tsx
 #: src/pages/settings/security/SettingsSecurity.tsx
@@ -2427,6 +2463,10 @@ msgstr "Dazu gehören folgende Plattformen: ImmoScout24, Homegate und mehr."
 msgid "This member will be unassigned from this role."
 msgstr "Dieses Mitglied wird von dieser Rolle abgezogen."
 
+#: src/pages/onboarding/CreateProfile.tsx
+msgid "This permission is required for Nestermind's automation and AI features to function properly."
+msgstr "Diese Berechtigung wird benötigt, damit Automatisierung und KI-Funktionen richtig funktionieren."
+
 #: src/pages/settings/roles/components/RolePermissions.tsx
 #~ msgid "This Role has the following permissions."
 #~ msgstr "This Role has the following permissions."
@@ -2599,6 +2639,10 @@ msgstr "Wann der API-Schlüssel abläuft."
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
 msgid "When the key will be disabled"
 msgstr "Wann der Schlüssel deaktiviert wird"
+
+#: src/pages/onboarding/CreateProfile.tsx
+msgid "Why is this required?"
+msgstr "Warum wird das benötigt?"
 
 #: src/modules/workflow/components/RecordShowPageWorkflowHeader.tsx
 msgid "Workflow cannot be tested"

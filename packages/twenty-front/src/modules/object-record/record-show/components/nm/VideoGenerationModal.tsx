@@ -5,7 +5,7 @@ import { ContentCustomize } from '@/ui/layout/show-page/components/nm/modal-page
 import styled from '@emotion/styled';
 import { useLingui } from '@lingui/react/macro';
 import { forwardRef, useState } from 'react';
-import { Button, IconVideo } from 'twenty-ui';
+import { Button, IconVideo, LARGE_DESKTOP_VIEWPORT } from 'twenty-ui';
 
 const StyledModalContent = styled.div`
   display: flex;
@@ -16,11 +16,16 @@ const StyledModalContent = styled.div`
 
 const StyledModalHeader = styled(Modal.Header)`
   border-bottom: 1px solid ${({ theme }) => theme.border.color.light};
-  padding: 0 ${({ theme }) => theme.spacing(4)};
+  padding: ${({ theme }) => theme.spacing(2)} ${({ theme }) => theme.spacing(4)};
   display: flex;
   justify-content: space-between;
   align-items: center;
   height: 50px;
+
+  @media only screen and (min-width: ${LARGE_DESKTOP_VIEWPORT}px) {
+    padding: 0 ${({ theme }) => theme.spacing(4)};
+    height: 50px;
+  }
 `;
 
 const StyledModalHeaderButtons = styled.div`
@@ -79,6 +84,7 @@ export const VideoGenerationModal = forwardRef<
       closedOnMount
       hotkeyScope={ModalHotkeyScope.Default}
       padding="none"
+      portal
     >
       <StyledModalHeader>
         <StyledModalTitleContainer>

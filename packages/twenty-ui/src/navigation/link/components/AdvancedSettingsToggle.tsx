@@ -40,11 +40,13 @@ const StyledIconPoint = styled(IconPoint)`
 type AdvancedSettingsToggleProps = {
   isAdvancedModeEnabled: boolean;
   setIsAdvancedModeEnabled: (enabled: boolean) => void;
+  label: string;
 };
 
 export const AdvancedSettingsToggle = ({
   isAdvancedModeEnabled,
   setIsAdvancedModeEnabled,
+  label,
 }: AdvancedSettingsToggleProps) => {
   const { t } = useLingui();
   const onChange = (newValue: boolean) => {
@@ -62,7 +64,7 @@ export const AdvancedSettingsToggle = ({
         />
       </StyledIconContainer>
       <StyledToggleContainer htmlFor={inputId}>
-        <StyledText>{t`Advanced:`}</StyledText>
+        <StyledText>{label}</StyledText>
 
         <Toggle
           id={inputId}

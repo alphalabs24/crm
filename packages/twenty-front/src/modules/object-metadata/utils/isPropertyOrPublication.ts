@@ -6,3 +6,11 @@ export const isPropertyOrPublication = (objectNameSingular: string) => {
     objectNameSingular === CoreObjectNameSingular.Publication
   );
 };
+
+export const isProperty = (objectNameSingular: string) => {
+  return objectNameSingular === CoreObjectNameSingular.Property;
+};
+
+export const isPublication = (objectNameSingular: string) => {
+  return objectNameSingular === CoreObjectNameSingular.Publication;
+};

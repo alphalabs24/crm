@@ -10,7 +10,7 @@ export const createWorkspaceViews = async (
 ) => {
   const viewDefinitionsWithId = viewDefinitions.map((viewDefinition) => ({
     ...viewDefinition,
-    id: v4(),
+    id: viewDefinition.id ?? v4(),
   }));
 
   await entityManager
@@ -67,6 +67,7 @@ export const createWorkspaceViews = async (
         .createQueryBuilder()
         .insert()
         .into(`${schemaName}.viewField`, [
+          'id',
           'fieldMetadataId',
           'position',
           'isVisible',
@@ -76,6 +77,7 @@ export const createWorkspaceViews = async (
         ])
         .values(
           viewDefinition.fields.map((field) => ({
+            id: field.id ?? v4(),
             fieldMetadataId: field.fieldMetadataId,
             position: field.position,
             isVisible: field.isVisible,
@@ -92,6 +94,7 @@ export const createWorkspaceViews = async (
         .createQueryBuilder()
         .insert()
         .into(`${schemaName}.viewFilter`, [
+          'id',
           'fieldMetadataId',
           'displayValue',
           'operand',
@@ -100,6 +103,7 @@ export const createWorkspaceViews = async (
         ])
         .values(
           viewDefinition.filters.map((filter: any) => ({
+            id: filter.id ?? v4(),
             fieldMetadataId: filter.fieldMetadataId,
             displayValue: filter.displayValue,
             operand: filter.operand,
@@ -119,6 +123,7 @@ export const createWorkspaceViews = async (
         .createQueryBuilder()
         .insert()
         .into(`${schemaName}.viewGroup`, [
+          'id',
           'fieldMetadataId',
           'isVisible',
           'fieldValue',
@@ -127,6 +132,7 @@ export const createWorkspaceViews = async (
         ])
         .values(
           viewDefinition.groups.map((group: any) => ({
+            id: group.id ?? v4(),
             fieldMetadataId: group.fieldMetadataId,
             isVisible: group.isVisible,
             fieldValue: group.fieldValue,

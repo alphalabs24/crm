@@ -92,11 +92,11 @@ const StyledViewPublicationButton = styled.button`
 `;
 
 const StyledValidationDetails = styled.div`
+  align-items: center;
   color: ${({ theme }) => theme.font.color.danger};
+  display: flex;
   font-size: ${({ theme }) => theme.font.size.sm};
   gap: ${({ theme }) => theme.spacing(2)};
-  display: flex;
-  align-items: center;
 `;
 
 const StyledEditLink = styled(Link)`
@@ -109,6 +109,8 @@ type PublishingProps = {
   renderPlatformIcon: (platformId: PlatformId) => React.ReactNode;
   recordId: string;
   validationDetails: ValidationResult;
+  isPublished: boolean;
+  setIsPublished: (isPublished: boolean) => void;
 };
 
 export const Publishing = ({
@@ -116,8 +118,9 @@ export const Publishing = ({
   renderPlatformIcon,
   recordId,
   validationDetails,
+  isPublished,
+  setIsPublished,
 }: PublishingProps) => {
-  const [isPublished, setIsPublished] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { enqueueSnackBar } = useSnackBar();
   const { t } = useLingui();

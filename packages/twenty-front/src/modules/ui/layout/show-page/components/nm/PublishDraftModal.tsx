@@ -6,7 +6,12 @@ import styled from '@emotion/styled';
 
 import { motion } from 'framer-motion';
 import { forwardRef, useEffect, useMemo, useState } from 'react';
-import { Button, IconUpload, LARGE_DESKTOP_VIEWPORT } from 'twenty-ui';
+import {
+  Button,
+  IconUpload,
+  LARGE_DESKTOP_VIEWPORT,
+  MOBILE_VIEWPORT,
+} from 'twenty-ui';
 
 import { PlatformSelect } from './modal-pages/PlatformSelect';
 import { PlatformId } from './types/Platform';
@@ -26,11 +31,15 @@ const StyledModalContent = styled(motion.div)`
 
 const StyledModalHeader = styled(Modal.Header)`
   border-bottom: 1px solid ${({ theme }) => theme.border.color.light};
-  padding: 0 ${({ theme }) => theme.spacing(4)};
+  padding: ${({ theme }) => theme.spacing(2)} ${({ theme }) => theme.spacing(4)};
   display: flex;
   justify-content: space-between;
   align-items: center;
   height: 50px;
+
+  @media only screen and (min-width: ${MOBILE_VIEWPORT}px) {
+    padding: 0 ${({ theme }) => theme.spacing(4)};
+  }
 `;
 
 const StyledModalHeaderButtons = styled.div`
@@ -106,6 +115,7 @@ export const PublishDraftModal = forwardRef<ModalRefType, PublishModalProps>(
         closedOnMount
         hotkeyScope={ModalHotkeyScope.Default}
         padding="none"
+        portal
       >
         <StyledModalHeader>
           <StyledModalTitleContainer>

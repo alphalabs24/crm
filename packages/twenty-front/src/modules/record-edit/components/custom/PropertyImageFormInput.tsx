@@ -14,7 +14,7 @@ import {
   DropResult,
 } from '@hello-pangea/dnd';
 import { useLingui } from '@lingui/react/macro';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import Skeleton from 'react-loading-skeleton';
 import { isDefined } from 'twenty-shared';
@@ -29,11 +29,11 @@ import {
   IconUpload,
   MenuItem,
   MOBILE_VIEWPORT,
+  IconPhoto,
   TooltipDelay,
 } from 'twenty-ui';
 import { ImageEditModal } from './ImageEditModal';
 import { css, useTheme } from '@emotion/react';
-import { useColorScheme } from '@/ui/theme/hooks/useColorScheme';
 
 const StyledContainer = styled.div`
   display: flex;
@@ -82,11 +82,11 @@ const StyledImageGrid = styled.div<{ isDraggingOver?: boolean }>`
 `;
 
 const StyledSkeletonLoader = styled(Skeleton)`
+  display: inline-block;
+  flex: 0 0 120px;
   height: 120px;
-  margin: 0 8px 0 0;
-  width: 120px;
-  flex: 0 0 120px; /* Add this to match image wrapper */
-  display: inline-block; /* Add this to respect white-space: nowrap */
+  margin: 0 8px 0 0; /* Add this to match image wrapper */
+  width: 120px; /* Add this to respect white-space: nowrap */
 `;
 
 const StyledImageWrapper = styled.div`
@@ -147,34 +147,10 @@ const StyledRemoveButton = styled.button<{ show: boolean }>`
   }
 `;
 
-const StyledDropzone = styled.div<{ isDragActive: boolean }>`
-  border: 2px solid ${({ theme }) => theme.border.color.medium};
-  border-radius: ${({ theme }) => theme.border.radius.md};
-  padding: ${({ theme }) => theme.spacing(4)};
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: ${({ theme }) => theme.spacing(2)};
-  cursor: pointer;
-  background: ${({ theme, isDragActive }) =>
-    isDragActive
-      ? theme.background.transparent.lighter
-      : theme.background.secondary};
-  transition: all 200ms ease-in-out;
-  transform: ${({ isDragActive }) =>
-    isDragActive ? 'scale(1.01)' : 'scale(1)'};
-
-  &:hover {
-    border-color: ${({ theme }) => theme.border.color.strong};
-    background: ${({ theme }) => theme.background.tertiary};
-  }
-
-  @media only screen and (min-width: ${MOBILE_VIEWPORT}px) {
-    border: 2px dashed
-      ${({ theme, isDragActive }) =>
-        isDragActive ? theme.color.blue : theme.border.color.medium};
-  }
+const StyledDropdownButtonContainer = styled.div`
+  position: absolute;
+  right: ${({ theme }) => theme.spacing(2)};
+  top: ${({ theme }) => theme.spacing(2)};
 `;
 
 const StyledImageGridContainer = styled.div`
@@ -212,22 +188,23 @@ const StyledScrollButton = styled.button<{ direction: 'left' | 'right' }>`
 `;
 
 const StyledHeaderContainer = styled.div`
+  align-items: flex-start;
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
 `;
 
 const StyledDragOverlay = styled.div<{
   position?: 'relative' | 'absolute';
   isDragActive?: boolean;
 }>`
-  position: ${({ position }) =>
-    position === 'relative' ? 'relative' : 'absolute'};
+  align-items: center;
 
-  cursor: ${({ position }) =>
-    position === 'relative' ? 'pointer' : 'default'};
+  background: ${({ theme, position, isDragActive }) =>
+    position === 'relative' && isDragActive
+      ? theme.background.transparent.lighter
+      : theme.background.primary};
 
-  min-height: 80px;
+  border: 3px dashed ${({ theme }) => theme.border.color.medium};
 
   ${({ position }) =>
     position === 'relative' &&
@@ -235,35 +212,34 @@ const StyledDragOverlay = styled.div<{
       transition: all 200ms ease-in-out;
     `}
 
-  transform: ${({ isDragActive }) =>
-    isDragActive ? 'scale(1.01)' : 'scale(1)'};
+  border-radius: ${({ theme }) => theme.border.radius.md};
 
   &:hover {
-    border-color: ${({ theme }) => theme.border.color.strong};
     background: ${({ theme }) => theme.background.tertiary};
+    border-color: ${({ theme }) => theme.border.color.strong};
   }
 
-  top: 0;
-  left: 0;
-  right: 0;
   bottom: 0;
-  border: 3px dashed ${({ theme }) => theme.border.color.medium};
-
-  background: ${({ theme, position, isDragActive }) =>
-    position === 'relative' && isDragActive
-      ? theme.background.transparent.lighter
-      : theme.background.primary};
-  opacity: 0.95;
+  color: ${({ theme }) => theme.font.color.primary};
+  cursor: ${({ position }) =>
+    position === 'relative' ? 'pointer' : 'default'};
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+
   gap: ${({ theme }) => theme.spacing(2)};
-  border-radius: ${({ theme }) => theme.border.radius.md};
-  color: ${({ theme }) => theme.font.color.primary};
-  z-index: 1;
+  justify-content: center;
+  left: 0;
+  min-height: 80px;
+  opacity: 0.95;
   pointer-events: ${({ position }) =>
     position === 'relative' ? 'auto' : 'none'};
+  position: ${({ position }) =>
+    position === 'relative' ? 'relative' : 'absolute'};
+  right: 0;
+  top: 0;
+  transform: ${({ isDragActive }) =>
+    isDragActive ? 'scale(1.01)' : 'scale(1)'};
+  z-index: 1;
 `;
 
 const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
@@ -689,7 +665,7 @@ export const PropertyImageFormInput = ({ loading }: { loading?: boolean }) => {
             }}
             variant="secondary"
             title={t`Upload Images`}
-            Icon={IconUpload}
+            Icon={IconPhoto}
           />
         </StyledHeaderContainer>
 
@@ -705,9 +681,3 @@ export const PropertyImageFormInput = ({ loading }: { loading?: boolean }) => {
     </div>
   );
 };
-
-const StyledDropdownButtonContainer = styled.div`
-  position: absolute;
-  right: ${({ theme }) => theme.spacing(2)};
-  top: ${({ theme }) => theme.spacing(2)};
-`;

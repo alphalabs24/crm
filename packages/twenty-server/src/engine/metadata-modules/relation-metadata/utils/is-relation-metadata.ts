@@ -1,7 +1,7 @@
 import {
-    RelationMetadataEntity,
-    RelationMetadataType,
-    RelationOnDeleteAction,
+  RelationMetadataEntity,
+  RelationMetadataType,
+  RelationOnDeleteAction,
 } from 'src/engine/metadata-modules/relation-metadata/relation-metadata.entity';
 
 export const isRelationMetadata = (
@@ -28,4 +28,3 @@ export const isRelationMetadata = (
     candidate.updatedAt instanceof Date
   );
 };
-

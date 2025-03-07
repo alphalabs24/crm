@@ -16,6 +16,7 @@ export type ButtonAccent = 'default' | 'blue' | 'danger' | 'purple' | 'orange';
 export type ButtonProps = {
   className?: string;
   Icon?: IconComponent;
+  IconRight?: IconComponent;
   title?: string;
   fullWidth?: boolean;
   variant?: ButtonVariant;
@@ -522,6 +523,7 @@ const StyledShortcutLabel = styled.div<{
 export const Button = ({
   className,
   Icon,
+  IconRight,
   title,
   fullWidth = false,
   variant = 'primary',
@@ -574,6 +576,7 @@ export const Button = ({
         </>
       )}
       {soon && <StyledSoonPill label="Soon" />}
+      {IconRight && <IconRight size={theme.icon.size.sm} />}
     </StyledButton>
   );
 };

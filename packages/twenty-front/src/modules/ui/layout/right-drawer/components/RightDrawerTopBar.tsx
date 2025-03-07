@@ -47,7 +47,6 @@ export const RightDrawerTopBar = () => {
   const isMobile = useIsMobile();
 
   const rightDrawerPage = useRecoilValue(rightDrawerPageState);
-
   const [isRightDrawerMinimized, setIsRightDrawerMinimized] = useRecoilState(
     isRightDrawerMinimizedState,
   );

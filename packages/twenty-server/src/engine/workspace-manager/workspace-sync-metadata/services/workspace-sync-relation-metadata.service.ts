@@ -74,17 +74,57 @@ export class WorkspaceSyncRelationMetadataService {
     const standardRelationMetadataCollection =
       this.standardRelationFactory.create(
         context.defaultMetadataWorkspaceId
-          ? await relationMetadataRepository.find({
-              where: {
-                workspaceId: context.defaultMetadataWorkspaceId,
-              },
-              relations: [
+          ? await relationMetadataRepository
+              .createQueryBuilder('relation')
+              .leftJoinAndSelect(
+                'relation.fromObjectMetadata',
                 'fromObjectMetadata',
+              )
+              .leftJoinAndSelect(
+                'fromObjectMetadata.fields',
+                'fromObjectMetadataFields',
+              )
+              .leftJoinAndSelect(
+                'relation.toObjectMetadata',
                 'toObjectMetadata',
+              )
+              .leftJoinAndSelect(
+                'toObjectMetadata.fields',
+                'toObjectMetadataFields',
+              )
+              .leftJoinAndSelect(
+                'relation.fromFieldMetadata',
                 'fromFieldMetadata',
-                'toFieldMetadata',
-              ],
-            })
+              )
+              .leftJoinAndSelect('relation.toFieldMetadata', 'toFieldMetadata')
+              .where('relation.workspaceId = :workspaceId', {
+                workspaceId: context.defaultMetadataWorkspaceId,
+              })
+              .andWhere(
+                `(fromObjectMetadata.id IS NULL 
+                  OR (fromObjectMetadata.isCustom = :fromIsCustom 
+                      AND fromObjectMetadata.standardId IS NOT NULL))`,
+                { fromIsCustom: false },
+              )
+              .andWhere(
+                `(toObjectMetadata.id IS NULL 
+                  OR (toObjectMetadata.isCustom = :toIsCustom 
+                      AND toObjectMetadata.standardId IS NOT NULL))`,
+                { toIsCustom: false },
+              )
+              .andWhere(
+                `(fromFieldMetadata.id IS NULL 
+                  OR (fromFieldMetadata.isCustom = :fromFieldIsCustom 
+                      AND fromFieldMetadata.standardId IS NOT NULL))`,
+                { fromFieldIsCustom: false },
+              )
+              .andWhere(
+                `(toFieldMetadata.id IS NULL 
+                  OR (toFieldMetadata.isCustom = :toFieldIsCustom 
+                      AND toFieldMetadata.standardId IS NOT NULL))`,
+                { toFieldIsCustom: false },
+              )
+              .getMany()
           : standardObjectMetadataDefinitions,
         context,
         originalObjectMetadataMap,

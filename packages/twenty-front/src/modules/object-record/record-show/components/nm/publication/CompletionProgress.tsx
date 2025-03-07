@@ -1,6 +1,11 @@
 import styled from '@emotion/styled';
 import { t } from '@lingui/core/macro';
-import { IconCheck, IconInfoCircle } from 'twenty-ui';
+import {
+  IconAlertCircle,
+  IconCheck,
+  IconInfoCircle,
+  MOBILE_VIEWPORT,
+} from 'twenty-ui';
 
 const StyledProgressContainer = styled.div`
   display: flex;
@@ -16,10 +21,30 @@ const StyledProgressHeader = styled.div`
 `;
 
 const StyledProgressTitle = styled.div`
-  color: ${({ theme }) => theme.font.color.secondary};
-  font-size: ${({ theme }) => theme.font.size.md};
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(1)};
+  width: 100%;
+
+  @media only screen and (min-width: ${MOBILE_VIEWPORT}px) {
+    flex-direction: row;
+    align-items: center;
+  }
+`;
+
+const StyledProgressTitleText = styled.div`
+  display: flex;
+  font-weight: ${({ theme }) => theme.font.weight.medium};
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing(1)};
+`;
+
+const StyledProgressWithIcon = styled.div`
   display: flex;
   align-items: center;
+  color: ${({ theme }) => theme.font.color.secondary};
+
   gap: ${({ theme }) => theme.spacing(1)};
 `;
 
@@ -33,7 +58,7 @@ const StyledProgressBar = styled.div`
   background: ${({ theme }) => theme.background.tertiary};
   border-radius: ${({ theme }) => theme.border.radius.pill};
   flex-grow: 1;
-  height: 6px;
+  height: 8px;
   overflow: hidden;
   position: relative;
 `;
@@ -70,15 +95,17 @@ export const CompletionProgress = ({ percentage }: CompletionProgressProps) => (
   <StyledProgressContainer>
     <StyledProgressHeader>
       <StyledProgressTitle>
-        <strong>{t`Publication completion -`}</strong>
-        {percentage < 80
-          ? t`Add more details to improve your listing`
-          : t`Looking good!`}
-        {percentage < 80 ? (
-          <IconInfoCircle size={16} />
-        ) : (
-          <IconCheck size={16} />
-        )}
+        <StyledProgressTitleText>{t`Publication completion`}</StyledProgressTitleText>
+        <StyledProgressWithIcon>
+          {percentage < 80 ? (
+            <IconAlertCircle size={16} />
+          ) : (
+            <IconCheck size={16} />
+          )}
+          {percentage < 80
+            ? t`Add more details to improve your listing`
+            : t`Looking good!`}
+        </StyledProgressWithIcon>
       </StyledProgressTitle>
     </StyledProgressHeader>
     <StyledProgressBarContainer>

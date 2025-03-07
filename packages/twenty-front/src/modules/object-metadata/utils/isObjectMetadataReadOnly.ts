@@ -7,4 +7,5 @@ export const isObjectMetadataReadOnly = (
 ) =>
   objectMetadataItem.isRemote ||
   isWorkflowSubObjectMetadata(objectMetadataItem.nameSingular) ||
-  objectMetadataItem.nameSingular === CoreObjectNameSingular.Publication;
+  objectMetadataItem.nameSingular === CoreObjectNameSingular.Publication ||
+  objectMetadataItem.nameSingular === CoreObjectNameSingular.Property;

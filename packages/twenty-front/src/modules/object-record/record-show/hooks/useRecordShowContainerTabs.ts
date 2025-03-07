@@ -69,6 +69,7 @@ export const useRecordShowContainerTabs = (
             ifRelationsMissing: [],
           },
         },
+        fields: null,
       },
     },
     [CoreObjectNameSingular.Publication]: {
@@ -130,6 +131,7 @@ export const useRecordShowContainerTabs = (
             ifRelationsMissing: ['noteTargets'],
           },
         },
+        fields: null,
       },
     },
     [CoreObjectNameSingular.Note]: {

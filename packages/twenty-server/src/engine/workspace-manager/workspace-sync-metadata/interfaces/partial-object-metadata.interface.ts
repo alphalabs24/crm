@@ -16,6 +16,7 @@ export type PartialWorkspaceEntity = Omit<
   fields: (PartialFieldMetadata | PartialComputedFieldMetadata)[];
   labelIdentifierStandardId?: string | null;
   imageIdentifierStandardId?: string | null;
+  isActive?: boolean;
 };
 
 export type ComputedPartialWorkspaceEntity = Omit<

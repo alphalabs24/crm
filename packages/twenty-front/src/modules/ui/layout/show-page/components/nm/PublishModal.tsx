@@ -10,15 +10,19 @@ import { Button, IconUpload, LARGE_DESKTOP_VIEWPORT } from 'twenty-ui';
 import { Publishing } from '@/ui/layout/show-page/components/nm/modal-pages/Publishing';
 import { PlatformId } from './types/Platform';
 import { ValidationResult } from '../../hooks/usePublicationValidation';
+import { useLingui } from '@lingui/react/macro';
 
 const StyledModalContent = styled(motion.div)`
   background: ${({ theme }) => theme.background.secondary};
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(2)};
+  padding: ${({ theme }) => theme.spacing(2)};
+  height: 100%;
 
   @media only screen and (min-width: ${LARGE_DESKTOP_VIEWPORT}px) {
     padding: ${({ theme }) => theme.spacing(4)};
+    height: unset;
   }
 `;
 
@@ -47,12 +51,6 @@ const StyledModalTitleContainer = styled.div`
   gap: ${({ theme }) => theme.spacing(2)};
 `;
 
-type Step =
-  | 'platform-select'
-  | 'upload-assets'
-  | 'content-customize'
-  | 'real-estate-config';
-
 const ANIMATION_DURATION = 0.2;
 
 type PublishModalProps = {
@@ -66,6 +64,8 @@ type PublishModalProps = {
 
 export const PublishModal = forwardRef<ModalRefType, PublishModalProps>(
   ({ onClose, targetableObject, validationDetails }, ref) => {
+    const { t } = useLingui();
+    const [isPublished, setIsPublished] = useState(false);
     return (
       <Modal
         size="large"
@@ -75,11 +75,12 @@ export const PublishModal = forwardRef<ModalRefType, PublishModalProps>(
         closedOnMount
         hotkeyScope={ModalHotkeyScope.Default}
         padding="none"
+        portal
       >
         <StyledModalHeader>
           <StyledModalTitleContainer>
             <IconUpload size={16} />
-            <StyledModalTitle>Publication Draft</StyledModalTitle>
+            <StyledModalTitle>{t`Publication Draft`}</StyledModalTitle>
           </StyledModalTitleContainer>
           <StyledModalHeaderButtons>
             <Button variant="tertiary" title={`Cancel`} onClick={onClose} />
@@ -98,6 +99,8 @@ export const PublishModal = forwardRef<ModalRefType, PublishModalProps>(
             renderPlatformIcon={() => <IconUpload size={16} />}
             selectedPlatform={PlatformId.Newhome}
             validationDetails={validationDetails}
+            isPublished={isPublished}
+            setIsPublished={setIsPublished}
           />
         </StyledModalContent>
       </Modal>

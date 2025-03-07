@@ -33,6 +33,10 @@ export class StandardObjectFactory {
     workspaceFeatureFlagsMap: FeatureFlagMap,
   ): Omit<PartialWorkspaceEntity, 'fields' | 'indexMetadatas'> | undefined {
     if (isObjectMetadata(target)) {
+      if (!target.standardId) {
+        throw new Error('object standardId not found');
+      }
+
       const labelIdentifierStandardId = target.fields.find(
         (field) => field.id === target.labelIdentifierFieldMetadataId,
       )?.standardId;
@@ -53,7 +57,7 @@ export class StandardObjectFactory {
         ...rest,
         workspaceId: context.workspaceId,
         dataSourceId: context.dataSourceId,
-        standardId: target.standardId ?? '',
+        standardId: target.standardId,
         labelIdentifierStandardId,
         imageIdentifierStandardId,
       };

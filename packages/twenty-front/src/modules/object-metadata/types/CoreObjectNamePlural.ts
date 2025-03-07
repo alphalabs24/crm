@@ -1,9 +1,11 @@
 export enum CoreObjectNamePlural {
   Activity = 'activities',
   ActivityTarget = 'activityTargets',
+  Agency = 'agencies',
   ApiKey = 'apiKeys',
   Attachment = 'attachments',
   Blocklist = 'blocklists',
+  BuyerLead = 'buyerLeads',
   CalendarChannel = 'calendarChannels',
   CalendarEvent = 'calendarEvents',
   Comment = 'comments',
@@ -36,5 +38,4 @@ export enum CoreObjectNamePlural {
   WorkflowRun = 'workflowRuns',
   Publication = 'publications',
   Property = 'properties',
-  Agent = 'agencies',
 }
