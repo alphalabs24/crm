@@ -35,7 +35,10 @@ export class SendEmailWorkflowAction implements WorkflowAction {
     private readonly twentyORMGlobalManager: TwentyORMGlobalManager,
   ) {}
 
-  private async getEmailClient(connectedAccountId: string) {
+  private async getEmailClient(
+    connectedAccountId: string,
+    passedWorkspaceId?: string,
+  ) {
     if (!isValidUuid(connectedAccountId)) {
       throw new SendEmailActionException(
         `Connected Account ID is not a valid UUID`,
@@ -43,7 +46,9 @@ export class SendEmailWorkflowAction implements WorkflowAction {
       );
     }
 
-    const { workspaceId } = this.scopedWorkspaceContextFactory.create();
+    const { workspaceId } = passedWorkspaceId
+      ? { workspaceId: passedWorkspaceId }
+      : this.scopedWorkspaceContextFactory.create();
 
     if (!workspaceId) {
       throw new WorkflowStepExecutorException(
@@ -84,6 +89,7 @@ export class SendEmailWorkflowAction implements WorkflowAction {
   ): Promise<WorkflowActionResult> {
     const emailProvider = await this.getEmailClient(
       workflowActionInput.connectedAccountId,
+      workflowActionInput.workspaceId,
     );
     const { email, body, subject } = workflowActionInput;
 

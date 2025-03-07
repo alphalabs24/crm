@@ -3,4 +3,5 @@ export type WorkflowSendEmailActionInput = {
   email: string;
   subject?: string;
   body?: string;
+  workspaceId?: string;
 };
