@@ -46,15 +46,15 @@ export class RestApiExtensionController {
 
   @Post('/send')
   async handleApiSendEmail(
-    @Req() request: Request & { workspace: { id: string } },
+    @Req() request: Request,
     @Body() emailDto: SendEmailDto,
     @Res() res: Response,
   ) {
     console.log('emailDto', emailDto);
-    const workspace = request.workspaceId;
+    const workspaceId = request.workspaceId;
 
-    console.log('workspace', workspace);
-    if (!workspace) {
+    console.log('workspace', workspaceId);
+    if (!workspaceId) {
       throw new BadRequestException('Workspace not found');
     }
 
@@ -64,6 +64,7 @@ export class RestApiExtensionController {
       subject: emailDto.subject,
       body: emailDto.body,
       connectedAccountId: emailDto.connectedAccount,
+      workspaceId,
       // Optional: handle attachments if needed in the future
     };
 
