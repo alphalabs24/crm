@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { RefObject, useEffect, useRef, useState } from 'react';
 import { Key } from 'ts-key-enum';
+import { useDebounce } from 'use-debounce';
 
 import { FieldAddressDraftValue } from '@/object-record/record-field/types/FieldInputDraftValue';
 import { FieldAddressValue } from '@/object-record/record-field/types/FieldMetadata';
@@ -20,7 +21,7 @@ const StyledAddressContainer = styled.div<{
   fullWidth?: boolean;
 }>`
   padding: ${(p) => (p.noPadding ? 0 : `4px 8px`)};
-
+  position: relative;
   width: ${(p) => (p.fullWidth ? '100%' : '344px')};
   > div {
     margin-bottom: 6px;
@@ -50,6 +51,45 @@ const StyledHalfRowContainer = styled.div`
   }
 `;
 
+const StyledSuggestionsContainer = styled.div`
+  background: ${({ theme }) => theme.background.primary};
+  border: 1px solid ${({ theme }) => theme.border.color.medium};
+  border-radius: ${({ theme }) => theme.border.radius.sm};
+  box-shadow: ${({ theme }) => theme.boxShadow.light};
+  left: ${({ theme }) => theme.spacing(2)};
+  margin-top: -${({ theme }) => theme.spacing(1)};
+  max-height: 200px;
+  overflow-y: auto;
+  position: absolute;
+  right: ${({ theme }) => theme.spacing(2)};
+  z-index: 1;
+`;
+
+const StyledSuggestion = styled.div<{ isHighlighted: boolean }>`
+  cursor: pointer;
+  padding: ${({ theme }) => theme.spacing(2)};
+  transition: all 0.1s ease-in-out;
+
+  &:hover {
+    background: ${({ theme }) => theme.background.transparent.light};
+  }
+
+  ${({ isHighlighted, theme }) =>
+    isHighlighted &&
+    `
+    background: ${theme.background.tertiary};
+    color: ${theme.font.color.primary};
+  `}
+`;
+
+// Add country mapping
+const COUNTRY_MAPPING: Record<string, string> = {
+  CH: 'Switzerland',
+  DE: 'Germany',
+  IT: 'Italy',
+  FR: 'France',
+};
+
 export type AddressInputProps = {
   value: FieldAddressValue;
   onTab: (newAddress: FieldAddressDraftValue) => void;
@@ -68,6 +108,8 @@ export type AddressInputProps = {
   fullWidth?: boolean;
   noPadding?: boolean;
 };
+
+const apiKey = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
 
 export const AddressInput = ({
   value,
@@ -89,6 +131,11 @@ export const AddressInput = ({
   const addressCityInputRef = useRef<HTMLInputElement>(null);
   const addressStateInputRef = useRef<HTMLInputElement>(null);
   const addressPostCodeInputRef = useRef<HTMLInputElement>(null);
+  const [suggestions, setSuggestions] = useState<any[]>([]);
+  const [highlightedIndex, setHighlightedIndex] = useState(-1);
+  const [searchTerm] = useDebounce(internalValue.addressStreet1, 300);
+
+  const [showSuggestions, setShowSuggestions] = useState(false);
 
   const inputRefs: {
     [key in keyof FieldAddressDraftValue]?: RefObject<HTMLInputElement>;
@@ -213,9 +260,111 @@ export const AddressInput = ({
     listenerId: 'address-input',
   });
 
+  const handleSuggestionClick = (suggestion: any) => {
+    setShowSuggestions(false);
+
+    // Find country and get country code
+    const country = suggestion.context?.find((ctx: any) =>
+      ctx.id.startsWith('country.'),
+    );
+    const countryCode = country?.short_code?.toUpperCase();
+
+    // Get full address components
+    const fullAddress = suggestion.place_name?.split(',')[0] || ''; // This gets the full street address with number
+    const contextItems = suggestion.context || [];
+
+    // Find address components
+    const street = contextItems.find((ctx: any) => ctx.id.includes('address'));
+    const city = contextItems.find((ctx: any) => ctx.id.includes('place'));
+    const state = contextItems.find((ctx: any) => ctx.id.includes('region'));
+    const postcode = contextItems.find((ctx: any) =>
+      ctx.id.includes('postcode'),
+    );
+
+    // Only set address2 if there's additional address info
+    const hasSecondaryAddress = street?.text && street.text !== fullAddress;
+
+    const newValue = {
+      ...internalValue,
+      addressStreet1: fullAddress,
+      addressStreet2: hasSecondaryAddress ? street?.text || '' : '',
+      addressCity: city?.text || '',
+      addressState: state?.text || '',
+      addressPostcode: postcode?.text || '',
+      addressCountry: COUNTRY_MAPPING[countryCode] || '',
+    };
+
+    setInternalValue(newValue);
+    onChange?.(newValue);
+  };
+
+  useEffect(() => {
+    const fetchSuggestions = async () => {
+      if (!searchTerm || !apiKey) return;
+
+      const endpoint = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
+        searchTerm,
+      )}.json?access_token=${apiKey}&types=address&country=ch,de,fr,it&proximity=8.5417,47.3769&limit=5`;
+
+      try {
+        const response = await fetch(endpoint);
+        const data = await response.json();
+        setSuggestions(data.features);
+      } catch (error) {
+        console.error('Error fetching suggestions:', error);
+      }
+    };
+
+    fetchSuggestions();
+  }, [searchTerm]);
+
+  const handleStreet1Focus = () => {
+    if (suggestions.length > 0) {
+      setShowSuggestions(true);
+      setHighlightedIndex(-1);
+    }
+    getFocusHandler('addressStreet1')();
+  };
+
+  const handleStreet1Blur = () => {
+    setTimeout(() => setShowSuggestions(false), 200);
+  };
+
+  const handleStreet1Change = (value: string) => {
+    getChangeHandler('addressStreet1')(value);
+    if (value) {
+      setShowSuggestions(true);
+    }
+  };
+
   useEffect(() => {
     setInternalValue(value);
   }, [value]);
+
+  // Add keyboard handling
+  useScopedHotkeys(
+    'down',
+    () => {
+      if (showSuggestions && suggestions.length > 0) {
+        setHighlightedIndex((current) =>
+          current < suggestions.length - 1 ? current + 1 : current,
+        );
+      }
+    },
+    hotkeyScope,
+    [showSuggestions, suggestions.length],
+  );
+
+  useScopedHotkeys(
+    'up',
+    () => {
+      if (showSuggestions && suggestions.length > 0) {
+        setHighlightedIndex((current) => (current > 0 ? current - 1 : 0));
+      }
+    },
+    hotkeyScope,
+    [showSuggestions, suggestions.length],
+  );
 
   return (
     <StyledAddressContainer
@@ -229,9 +378,24 @@ export const AddressInput = ({
         ref={inputRefs['addressStreet1']}
         label="ADDRESS 1"
         fullWidth
-        onChange={getChangeHandler('addressStreet1')}
-        onFocus={getFocusHandler('addressStreet1')}
+        onChange={handleStreet1Change}
+        onFocus={handleStreet1Focus}
+        onBlur={handleStreet1Blur}
       />
+      {showSuggestions && suggestions.length > 0 && (
+        <StyledSuggestionsContainer>
+          {suggestions.map((suggestion, index) => (
+            <StyledSuggestion
+              key={suggestion.id}
+              isHighlighted={index === highlightedIndex}
+              onClick={() => handleSuggestionClick(suggestion)}
+              onMouseEnter={() => setHighlightedIndex(index)}
+            >
+              {suggestion.place_name}
+            </StyledSuggestion>
+          ))}
+        </StyledSuggestionsContainer>
+      )}
       <TextInputV2
         value={internalValue.addressStreet2 ?? ''}
         ref={inputRefs['addressStreet2']}
