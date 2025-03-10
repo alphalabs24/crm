@@ -19,6 +19,7 @@ export {
   IconBaselineDensitySmall,
   IconBell,
   IconBolt,
+  IconMailShare,
   IconBook2,
   IconBookmark,
   IconBookmarkPlus,
