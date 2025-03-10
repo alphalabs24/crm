@@ -38,7 +38,7 @@ export const NotFound = () => {
 
   return (
     <>
-      <PageTitle title={t`Page Not Found` + ' | Twenty'} />
+      <PageTitle title={t`Page Not Found` + ' | nestermind'} />
       <StyledBackDrop>
         <AnimatedPlaceholderErrorContainer>
           <AnimatedPlaceholder type="error404" />

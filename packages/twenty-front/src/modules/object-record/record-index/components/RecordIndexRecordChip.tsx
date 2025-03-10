@@ -2,6 +2,7 @@ import { useGetStandardObjectIcon } from '@/object-metadata/hooks/useGetStandard
 import { useRecordChipData } from '@/object-record/hooks/useRecordChipData';
 import { ObjectRecord } from '@/object-record/types/ObjectRecord';
 import { isNonEmptyString } from '@sniptt/guards';
+import { ReactElement } from 'react';
 import { AvatarChip, AvatarChipVariant, ChipSize } from 'twenty-ui';
 
 export type RecordIdentifierChipProps = {
@@ -12,6 +13,7 @@ export type RecordIdentifierChipProps = {
   to?: string;
   maxWidth?: number;
   onClick?: () => void;
+  LeftCustomComponent?: ReactElement;
 };
 
 export const RecordIdentifierChip = ({
@@ -22,6 +24,7 @@ export const RecordIdentifierChip = ({
   onClick,
   to,
   maxWidth,
+  LeftCustomComponent,
 }: RecordIdentifierChipProps) => {
   const { recordChipData } = useRecordChipData({
     objectNameSingular,
@@ -48,6 +51,7 @@ export const RecordIdentifierChip = ({
       LeftIconColor={LeftIconColor}
       size={size}
       maxWidth={maxWidth}
+      LeftCustomComponent={LeftCustomComponent}
     />
   );
 };

@@ -32,7 +32,6 @@ export const DateFormInput = ({
   const persistDate = (newDate: Nullable<Date>) => {
     if (!isDefined(newDate)) {
       updateField({
-        fieldDefinition,
         fieldName: fieldDefinition.metadata.fieldName,
         value: null,
       });
@@ -43,7 +42,6 @@ export const DateFormInput = ({
         .padStart(2, '0')}-${newDate?.getDate().toString().padStart(2, '0')}`;
 
       updateField({
-        fieldDefinition,
         fieldName: fieldDefinition.metadata.fieldName,
         value: newDateWithoutTime,
       });

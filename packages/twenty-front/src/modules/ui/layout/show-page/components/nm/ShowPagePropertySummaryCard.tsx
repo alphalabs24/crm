@@ -147,7 +147,7 @@ export const ShowPagePropertySummaryCard = ({
         <StyledAddressAndDateContainer isMobile={isMobile}>
           {address && (
             <StyledAddressContainer>
-              <IconMap size={16} stroke={theme.font.color.secondary} />
+              <IconMap size={16} color={theme.font.color.secondary} />
               <StyledAddress isMobile={isMobile}>{address}</StyledAddress>
             </StyledAddressContainer>
           )}

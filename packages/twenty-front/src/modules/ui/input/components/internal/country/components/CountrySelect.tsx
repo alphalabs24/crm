@@ -5,6 +5,8 @@ import { SELECT_COUNTRY_DROPDOWN_ID } from '@/ui/input/components/internal/count
 import { useCountries } from '@/ui/input/components/internal/hooks/useCountries';
 import { Select, SelectOption } from '@/ui/input/components/Select';
 
+const supportedCountries = ['DE', 'FR', 'CH', 'IT'];
+
 export const CountrySelect = ({
   label,
   selectedCountryName,
@@ -14,7 +16,11 @@ export const CountrySelect = ({
   selectedCountryName: string;
   onChange: (countryCode: string) => void;
 }) => {
-  const countries = useCountries();
+  const allCountries = useCountries();
+
+  const countries = allCountries.filter((country) =>
+    supportedCountries.includes(country.countryCode),
+  );
 
   const options: SelectOption<string>[] = useMemo(() => {
     const countryList = countries.map<SelectOption<string>>(

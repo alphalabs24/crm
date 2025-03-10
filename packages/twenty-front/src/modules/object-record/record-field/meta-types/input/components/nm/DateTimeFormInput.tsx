@@ -34,7 +34,6 @@ export const DateTimeFormInput = ({
   const persistDate = (newDate: Nullable<Date>) => {
     if (!isDefined(newDate)) {
       updateField({
-        fieldDefinition,
         fieldName: fieldDefinition.metadata.fieldName,
         value: null,
       });
@@ -42,7 +41,6 @@ export const DateTimeFormInput = ({
       const newDateISO = newDate?.toISOString();
 
       updateField({
-        fieldDefinition,
         fieldName: fieldDefinition.metadata.fieldName,
         value: newDateISO,
       });

@@ -103,7 +103,6 @@ export const CurrencyFormInput = ({
         return;
       }
       updateField({
-        fieldDefinition,
         fieldName,
         value: newCurrencyValue,
       });

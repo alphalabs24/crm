@@ -6,7 +6,7 @@ import { useRecordChipData } from '@/object-record/hooks/useRecordChipData';
 import { recordIndexOpenRecordInState } from '@/object-record/record-index/states/recordIndexOpenRecordInState';
 import { ObjectRecord } from '@/object-record/types/ObjectRecord';
 import { ViewOpenRecordInType } from '@/views/types/ViewOpenRecordInType';
-import { MouseEvent } from 'react';
+import { MouseEvent, ReactElement } from 'react';
 import { useRecoilValue } from 'recoil';
 
 export type RecordChipProps = {
@@ -14,6 +14,7 @@ export type RecordChipProps = {
   record: ObjectRecord;
   className?: string;
   variant?: AvatarChipVariant;
+  LeftCustomComponent?: ReactElement;
 };
 
 export const RecordChip = ({
@@ -21,6 +22,7 @@ export const RecordChip = ({
   record,
   className,
   variant,
+  LeftCustomComponent,
 }: RecordChipProps) => {
   const { recordChipData } = useRecordChipData({
     objectNameSingular,
@@ -55,6 +57,7 @@ export const RecordChip = ({
           ? getLinkToShowPage(objectNameSingular, record)
           : undefined
       }
+      LeftCustomComponent={LeftCustomComponent}
     />
   );
 };

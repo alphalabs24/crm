@@ -1,6 +1,7 @@
 import { FinancialOverviewGroup } from '@/record-edit/constants/snippets/FinancialOverviewGroup';
 import { SectionContent } from '@/record-edit/types/EditSectionTypes';
 import { PropertyCategoryGroup } from './snippets/PropertyCategoryGroup';
+import { Trans } from '@lingui/react/macro';
 
 // TODO use graphql types of standard entities to reference the field names!
 // Field will use inline fields and input will use form inputs
@@ -23,7 +24,7 @@ export const OVERVIEW_SECTION_CONTENT: SectionContent[] = [
     groups: [
       {
         fields: [
-          { name: 'name', type: 'input', fieldWidth: 0 },
+          { name: 'name', type: 'input', fieldWidth: 0, required: true },
           { name: 'description', type: 'multiLine', fieldWidth: 0 },
         ],
       },
@@ -36,8 +37,8 @@ export const OVERVIEW_SECTION_CONTENT: SectionContent[] = [
       {
         isHorizontal: true,
         fields: [
+          { name: 'agency', type: 'field', required: true },
           { name: 'seller', type: 'field' },
-          { name: 'agency', type: 'field' },
           { name: 'assignee', type: 'field' },
           { name: 'stage', type: 'field' },
         ],
@@ -66,18 +67,25 @@ export const OVERVIEW_SECTION_CONTENT: SectionContent[] = [
           { name: 'numberOfFloors', type: 'input', fieldWidth: 150 },
         ],
       },
+      {
+        isHorizontal: true,
+        fields: [{ name: 'availableFrom', type: 'field' }],
+      },
       FinancialOverviewGroup,
     ],
   },
   {
     title: 'Location',
     width: 'third',
+    description: (
+      <Trans>
+        The location of the property. These fields are <strong>required</strong>{' '}
+        in order to publish.
+      </Trans>
+    ),
     groups: [
       {
-        fields: [
-          { name: 'address', type: 'input', hideLabel: true },
-          { name: 'availableFrom', type: 'field' },
-        ],
+        fields: [{ name: 'address', type: 'input', hideLabel: true }],
       },
     ],
   },

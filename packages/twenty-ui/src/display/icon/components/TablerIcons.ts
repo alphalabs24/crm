@@ -278,6 +278,9 @@ export {
   IconFileDescription,
   IconBrandInstagram,
   IconExchange,
+  IconHomeShare,
+  IconBuilding,
+  IconChecklist,
 } from '@tabler/icons-react';
 
 export type { TablerIconsProps } from '@tabler/icons-react';

@@ -1,6 +1,7 @@
 import { useSelectField } from '@/object-record/record-field/meta-types/hooks/useSelectField';
 import { FieldInputEvent } from '@/object-record/record-field/types/FieldInputEvent';
 import { SINGLE_RECORD_SELECT_BASE_LIST } from '@/object-record/relation-picker/constants/SingleRecordSelectBaseList';
+import { useRecordEditContainerContext } from '@/record-edit/contexts/RecordEditContainerContext';
 import { useRecordEdit } from '@/record-edit/contexts/RecordEditContext';
 import { SelectOption } from '@/spreadsheet-import/types';
 import { SelectInput } from '@/ui/field/input/components/SelectInput';
@@ -19,7 +20,9 @@ export const SelectFormInput = ({
   onSubmit,
   onCancel,
 }: SelectFormInputProps) => {
-  const { fieldDefinition, fieldValue, hotkeyScope } = useSelectField();
+  const { fieldDefinition, hotkeyScope } = useSelectField();
+
+  const { cleanUpdatedFields } = useRecordEditContainerContext();
 
   const { updateField, getUpdatedFields } = useRecordEdit();
 
@@ -35,8 +38,8 @@ export const SelectFormInput = ({
   );
   // handlers
   const handleClearField = () => {
+    cleanUpdatedFields();
     updateField({
-      fieldDefinition,
       fieldName: fieldDefinition.metadata.fieldName,
       value: null,
     });
@@ -44,13 +47,13 @@ export const SelectFormInput = ({
   };
 
   const handleSubmit = (option: SelectOption) => {
-    onSubmit?.(() =>
+    onSubmit?.(() => {
+      cleanUpdatedFields();
       updateField({
-        fieldDefinition,
         fieldName: fieldDefinition.metadata.fieldName,
         value: option?.value,
-      }),
-    );
+      });
+    });
 
     resetSelectedItem();
   };
@@ -81,13 +84,10 @@ export const SelectFormInput = ({
         );
         if (isDefined(option)) {
           onSubmit?.(() =>
-            onSubmit?.(() =>
-              updateField({
-                fieldDefinition,
-                fieldName: fieldDefinition.metadata.fieldName,
-                value: option?.value,
-              }),
-            ),
+            updateField({
+              fieldName: fieldDefinition.metadata.fieldName,
+              value: option?.value,
+            }),
           );
           resetSelectedItem();
         }

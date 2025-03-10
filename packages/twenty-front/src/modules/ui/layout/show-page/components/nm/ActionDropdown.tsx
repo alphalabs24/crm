@@ -18,14 +18,8 @@ const StyledContainer = styled.div`
 `;
 
 const StyledPrimaryActionButton = styled(Button)`
-  align-items: center;
-  border-radius: 5px;
-  color: ${({ theme }) => theme.font.color.inverted};
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  border-top-right-radius: 0px;
   border-bottom-right-radius: 0px;
+  border-top-right-radius: 0px;
 `;
 
 const StyledIconButton = styled(IconButton)`

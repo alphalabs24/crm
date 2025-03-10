@@ -25,7 +25,6 @@ export const NumberFormInput = ({ icon }: { icon?: IconComponent }) => {
     updateField({
       fieldName: fieldDefinition.metadata.fieldName,
       value: newText,
-      fieldDefinition,
     });
   };
 

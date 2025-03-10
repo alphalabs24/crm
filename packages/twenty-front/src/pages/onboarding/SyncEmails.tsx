@@ -112,7 +112,8 @@ export const SyncEmails = () => {
     <>
       <Title noMarginTop>Emails and Calendar</Title>
       <SubTitle>
-        Sync your Emails and Calendar with Twenty. Choose your privacy settings.
+        Sync your Emails and Calendar with nestermind. Choose your privacy
+        settings.
       </SubTitle>
       <StyledSyncEmailsContainer>
         <OnboardingSyncEmailsSettingsCard

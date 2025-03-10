@@ -52,7 +52,6 @@ export const TextFormInput = ({
     updateField({
       fieldName: fieldDefinition.metadata.fieldName,
       value: turnIntoUndefinedIfWhitespacesOnly(trimmedValue) ?? '',
-      fieldDefinition,
     });
   };
 

@@ -11,8 +11,8 @@ import {
   Button,
   IconRefresh,
   useIcons,
-  IconFileText,
-  IconHome,
+  IconHomeShare,
+  MOBILE_VIEWPORT,
 } from 'twenty-ui';
 import { FieldDisplay } from '@/object-record/record-field/components/FieldDisplay';
 import { FieldContext } from '@/object-record/record-field/contexts/FieldContext';
@@ -43,6 +43,8 @@ const StyledDifferenceItem = styled.div`
   padding: ${({ theme }) => theme.spacing(3)};
   gap: ${({ theme }) => theme.spacing(4)};
   display: flex;
+  position: relative;
+  flex-wrap: wrap;
 `;
 
 const StyledDifferenceHeader = styled.div`
@@ -58,10 +60,19 @@ const StyledValueComparison = styled.div`
   align-items: center;
   display: flex;
   gap: ${({ theme }) => theme.spacing(3)};
+  max-width: 100%;
+  position: relative;
+  overflow: hidden;
+
+  @media only screen and (min-width: ${MOBILE_VIEWPORT}px) {
+    flex: 1;
+  }
 `;
 
 const StyledValueColumn = styled.div`
   flex: 1;
+  min-width: 0;
+  overflow: hidden;
 `;
 
 const StyledArrowContainer = styled.div`
@@ -92,13 +103,7 @@ const StyledColumnHeaders = styled.div`
 `;
 
 const StyledNewTag = styled.div`
-  color: ${({ theme }) => theme.color.blue};
-  width: fit-content;
-  font-size: ${({ theme }) => theme.font.size.xs};
-`;
-
-const StyledOldTag = styled.div`
-  color: ${({ theme }) => theme.color.gray50};
+  color: ${({ theme }) => theme.color.blue40};
   width: fit-content;
   font-size: ${({ theme }) => theme.font.size.xs};
 `;
@@ -112,7 +117,7 @@ const StyledColumnHeader = styled.div`
 const StyledColumnTitle = styled.div`
   color: ${({ theme }) => theme.font.color.primary};
   font-size: ${({ theme }) => theme.font.size.sm};
-  font-weight: ${({ theme }) => theme.font.weight.medium};
+  font-weight: ${({ theme }) => theme.font.weight.semiBold};
   display: flex;
   align-items: center;
   gap: ${({ theme }) => theme.spacing(1)};
@@ -275,22 +280,18 @@ const PublicationDiffView = ({
     <StyledDiffViewContainer>
       <StyledColumnHeaders>
         <StyledColumnHeader>
-          <IconFileText size={16} />
+          <IconHomeShare size={16} />
           <div>
-            <StyledColumnTitle>
-              {t`Publication Draft`}
-              <StyledOldTag>{t`(Old)`}</StyledOldTag>
-            </StyledColumnTitle>
+            <StyledColumnTitle>{t`Old`}</StyledColumnTitle>
             <StyledColumnSubtitle>{t`Current draft values`}</StyledColumnSubtitle>
           </div>
         </StyledColumnHeader>
         <StyledArrowContainer>→</StyledArrowContainer>
         <StyledColumnHeader>
-          <IconHome size={16} />
+          <IconHomeShare size={16} />
           <div>
             <StyledColumnTitle>
-              {t`Property`}
-              <StyledNewTag>{t`(Updated)`}</StyledNewTag>
+              <StyledNewTag>{t`Updated`}</StyledNewTag>
             </StyledColumnTitle>
             <StyledColumnSubtitle>{t`Source values`}</StyledColumnSubtitle>
           </div>
@@ -317,50 +318,44 @@ const PublicationDiffView = ({
             </StyledDifferenceHeader>
             <StyledValueComparison>
               <StyledValueColumn>
-                <div>
-                  <RecordFieldValueSelectorContextProvider>
-                    <RecordValueSetterEffect recordId={publicationRecordId} />
-                    <div>
-                      {loading ? (
-                        <Skeleton height={12} width={100} />
-                      ) : (
-                        <FieldContext.Provider
-                          value={{
-                            recordId: publicationRecordId,
-                            isLabelIdentifier: isLabelIdentifierField({
-                              fieldMetadataItem:
-                                diff.publicationFieldMetadataItem,
-                              objectMetadataItem: objectMetadataItem,
-                            }),
-                            fieldDefinition: {
-                              type: diff.publicationFieldMetadataItem.type,
-                              iconName:
-                                diff.publicationFieldMetadataItem.icon ||
-                                'FieldIcon',
-                              fieldMetadataId:
-                                diff.publicationFieldMetadataItem.id || '',
-                              label: diff.publicationFieldMetadataItem.label,
-                              metadata: {
-                                fieldName:
-                                  diff.publicationFieldMetadataItem.name,
-                                objectMetadataNameSingular:
-                                  objectMetadataItem.nameSingular,
-                                options:
-                                  diff.publicationFieldMetadataItem.options ??
-                                  [],
-                              },
-                              defaultValue:
-                                diff.publicationFieldMetadataItem.defaultValue,
-                            },
-                            hotkeyScope: 'property-diff',
-                          }}
-                        >
-                          <FieldDisplay wrap />
-                        </FieldContext.Provider>
-                      )}
-                    </div>
-                  </RecordFieldValueSelectorContextProvider>
-                </div>
+                <RecordFieldValueSelectorContextProvider>
+                  <RecordValueSetterEffect recordId={publicationRecordId} />
+
+                  {loading ? (
+                    <Skeleton height={12} width={100} />
+                  ) : (
+                    <FieldContext.Provider
+                      value={{
+                        recordId: publicationRecordId,
+                        isLabelIdentifier: isLabelIdentifierField({
+                          fieldMetadataItem: diff.publicationFieldMetadataItem,
+                          objectMetadataItem: objectMetadataItem,
+                        }),
+                        fieldDefinition: {
+                          type: diff.publicationFieldMetadataItem.type,
+                          iconName:
+                            diff.publicationFieldMetadataItem.icon ||
+                            'FieldIcon',
+                          fieldMetadataId:
+                            diff.publicationFieldMetadataItem.id || '',
+                          label: diff.publicationFieldMetadataItem.label,
+                          metadata: {
+                            fieldName: diff.publicationFieldMetadataItem.name,
+                            objectMetadataNameSingular:
+                              objectMetadataItem.nameSingular,
+                            options:
+                              diff.publicationFieldMetadataItem.options ?? [],
+                          },
+                          defaultValue:
+                            diff.publicationFieldMetadataItem.defaultValue,
+                        },
+                        hotkeyScope: 'property-diff',
+                      }}
+                    >
+                      <FieldDisplay wrap />
+                    </FieldContext.Provider>
+                  )}
+                </RecordFieldValueSelectorContextProvider>
               </StyledValueColumn>
 
               <StyledArrowContainer>→</StyledArrowContainer>

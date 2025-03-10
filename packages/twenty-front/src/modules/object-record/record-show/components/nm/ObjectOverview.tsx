@@ -35,6 +35,7 @@ import {
 } from 'twenty-ui';
 import { FieldMetadataType } from '~/generated/graphql';
 import { useSubcategoryByCategory } from '../../hooks/useSubcategoryByCategory';
+import { CATEGORY_SUBTYPES } from '@/record-edit/constants/CategorySubtypes';
 
 const StyledFormBorder = styled.div`
   border: 1px solid ${({ theme }) => theme.border.color.light};
@@ -197,10 +198,7 @@ export const requiredPublicationFields = ['agency', 'platform', 'category'];
 // Careful: Don't use this for anything else than the overview UI. This contains subtypes which should not be defined for validation purposes.
 const requiredPublicationFieldsAndSubtypes = [
   ...requiredPublicationFields,
-  'apartmentSubtype',
-  'houseSubtype',
-  'plotSubtype',
-  'gastronomySubtype',
+  ...Object.values(CATEGORY_SUBTYPES),
 ];
 
 export const ObjectOverview = ({
@@ -529,6 +527,7 @@ export const ObjectOverview = ({
           closedOnMount
           hotkeyScope={ModalHotkeyScope.Default}
           padding="none"
+          portal
         >
           <StyledModalHeader>
             <StyledModalTitleContainer>

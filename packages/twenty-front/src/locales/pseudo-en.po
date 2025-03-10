@@ -29,12 +29,12 @@ msgid "(coming soon)"
 msgstr ""
 
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
-msgid "(Old)"
-msgstr ""
+#~ msgid "(Old)"
+#~ msgstr ""
 
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
-msgid "(Updated)"
-msgstr ""
+#~ msgid "(Updated)"
+#~ msgstr ""
 
 #: src/modules/object-record/record-board/record-board-column/utils/computeAggregateValueAndLabel.ts
 msgid "{aggregateLabel} of {fieldLabel}"
@@ -89,6 +89,10 @@ msgstr ""
 msgid "24h ({hour24Label})"
 msgstr ""
 
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/ContentCustomize.tsx
+msgid "3 videos have been generated and added to your carousel"
+msgstr ""
+
 #: src/pages/onboarding/CreateWorkspace.tsx
 msgid "A shared environment where you will be able to manage your customer relations with your team."
 msgstr ""
@@ -108,6 +112,7 @@ msgstr ""
 
 #: src/pages/settings/accounts/SettingsAccounts.tsx
 #: src/pages/settings/accounts/SettingsAccounts.tsx
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/ContentCustomize.tsx
 msgid "Account"
 msgstr ""
 
@@ -218,6 +223,10 @@ msgstr ""
 msgid "Additional Documents"
 msgstr ""
 
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/ContentCustomize.tsx
+msgid "Additional post settings"
+msgstr ""
+
 #: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
 msgid "Address"
 msgstr ""
@@ -259,8 +268,8 @@ msgid "Agency Credentials"
 msgstr ""
 
 #: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
-#~ msgid "Agriculture Subtype"
-#~ msgstr ""
+msgid "Agriculture Subtype"
+msgstr ""
 
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationShortLabel.ts
 msgid "All"
@@ -352,13 +361,21 @@ msgstr ""
 msgid "Are you sure you want to assign this role?"
 msgstr ""
 
-#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
-msgid "Are you sure you want to delete this property and all it's publications?"
+#: src/modules/action-menu/actions/record-actions/single-record/hooks/useDeleteMessage.tsx
+msgid "Are you sure you want to delete this {objectNameSingularCapitalized}?"
+msgstr ""
+
+#: src/modules/action-menu/actions/record-actions/single-record/hooks/useDeleteMessage.tsx
+msgid "Are you sure you want to delete this {objectNameSingularCapitalized}? <0>All it's publications will be deleted as well.</0>"
 msgstr ""
 
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
-msgid "Are you sure you want to delete this publication?"
-msgstr ""
+#~ msgid "Are you sure you want to delete this property and all it's publications?"
+#~ msgstr ""
+
+#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+#~ msgid "Are you sure you want to delete this publication?"
+#~ msgstr ""
 
 #: src/modules/object-record/object-sort-dropdown/components/ObjectSortDropdownButton.tsx
 #: src/modules/object-record/object-sort-dropdown/components/ObjectSortDropdownButton.tsx
@@ -583,6 +600,10 @@ msgstr ""
 msgid "Connect with Microsoft"
 msgstr ""
 
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/ContentCustomize.tsx
+msgid "Connected"
+msgstr ""
+
 #: src/pages/settings/accounts/SettingsAccounts.tsx
 msgid "Connected accounts"
 msgstr ""
@@ -679,6 +700,10 @@ msgstr ""
 
 #: src/modules/object-record/record-table/empty-state/utils/getEmptyStateSubTitle.ts
 msgid "Create your first publication from a property"
+msgstr ""
+
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/ContentCustomize.tsx
+msgid "Create your Instagram post with a compelling description and media"
 msgstr ""
 
 #: src/pages/onboarding/CreateWorkspace.tsx
@@ -866,6 +891,7 @@ msgstr ""
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx
 #: src/pages/settings/data-model/SettingsObjectFieldEdit.tsx
 #: src/pages/settings/data-model/SettingsObjectNewField/SettingsObjectNewFieldConfigure.tsx
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/ContentCustomize.tsx
 msgid "Description"
 msgstr ""
 
@@ -1218,6 +1244,7 @@ msgstr ""
 msgid "General"
 msgstr ""
 
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/ContentCustomize.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Generate"
 msgstr ""
@@ -1238,10 +1265,15 @@ msgstr ""
 msgid "Generate Video"
 msgstr ""
 
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/ContentCustomize.tsx
+msgid "Generate Videos"
+msgstr ""
+
 #: src/modules/object-record/record-show/components/nm/AISuite.tsx
 msgid "Generated Videos"
 msgstr ""
 
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/ContentCustomize.tsx
 #: src/modules/object-record/record-show/components/nm/AISuite.tsx
 msgid "Generating videos..."
 msgstr ""
@@ -1338,6 +1370,10 @@ msgstr ""
 #: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
 #~ msgid "Industrial Objects Subtype"
 #~ msgstr ""
+
+#: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
+msgid "Industrial Subtype"
+msgstr ""
 
 #: src/modules/settings/data-model/objects/forms/components/SettingsDataModelObjectAboutForm.tsx
 #: src/modules/settings/data-model/fields/forms/components/SettingsDataModelFieldIconLabelForm.tsx
@@ -1729,8 +1765,8 @@ msgid "No publications yet"
 msgstr ""
 
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
-msgid "No recent visitors yet"
-msgstr ""
+#~ msgid "No recent visitors yet"
+#~ msgstr ""
 
 #: src/modules/object-record/record-table/empty-state/components/RecordTableEmptyStateReadOnly.tsx
 msgid "No records found"
@@ -1783,6 +1819,10 @@ msgstr ""
 
 #: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
 msgid "Offer Type"
+msgstr ""
+
+#: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
+msgid "Old"
 msgstr ""
 
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
@@ -1956,8 +1996,8 @@ msgid "Profile"
 msgstr ""
 
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
-msgid "Property"
-msgstr ""
+#~ msgid "Property"
+#~ msgstr ""
 
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Property Documents"
@@ -1988,7 +2028,6 @@ msgstr ""
 #~ msgstr ""
 
 #: src/modules/ui/layout/show-page/components/nm/PublishModal.tsx
-#: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
 msgid "Publication Draft"
 msgstr ""
 
@@ -2023,8 +2062,8 @@ msgid "Recent Inquiries"
 msgstr ""
 
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
-msgid "Recent Visitors"
-msgstr ""
+#~ msgid "Recent Visitors"
+#~ msgstr ""
 
 #: src/modules/command-menu/components/CommandMenu.tsx
 msgid "Record Selection"
@@ -2162,8 +2201,8 @@ msgid "Search records"
 msgstr ""
 
 #: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
-#~ msgid "Secondary Rooms Subtype"
-#~ msgstr ""
+msgid "Secondary Rooms Subtype"
+msgstr ""
 
 #: src/pages/settings/security/SettingsSecurity.tsx
 #: src/pages/settings/security/SettingsSecurity.tsx
@@ -2409,6 +2448,10 @@ msgstr ""
 msgid "The email associated to your account"
 msgstr ""
 
+#: src/modules/record-edit/constants/EditSectionPropertyOverviewContent.tsx
+msgid "The location of the property. These fields are <0>required</0> in order to publish."
+msgstr ""
+
 #: src/pages/settings/data-model/SettingsObjectFieldEdit.tsx
 #: src/pages/settings/data-model/SettingsObjectNewField/SettingsObjectNewFieldConfigure.tsx
 msgid "The name and icon of this field"
@@ -2526,6 +2569,10 @@ msgstr ""
 msgid "Unpublished"
 msgstr ""
 
+#: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
+msgid "Updated"
+msgstr ""
+
 #: src/modules/ui/input/components/ImageInput.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Upload"
@@ -2589,15 +2636,19 @@ msgid "View Publication"
 msgstr ""
 
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
-msgid "Visitor Activity"
-msgstr ""
+#~ msgid "Visitor Activity"
+#~ msgstr ""
 
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
-msgid "Visitor activity chart coming soon"
-msgstr ""
+#~ msgid "Visitor activity chart coming soon"
+#~ msgstr ""
 
 #: src/modules/settings/data-model/objects/components/SettingsObjectCoverImage.tsx
 msgid "Visualize"
+msgstr ""
+
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/ContentCustomize.tsx
+msgid "We found 3 videos we can generate from your property images"
 msgstr ""
 
 #: src/modules/ui/input/components/ImageInput.tsx
@@ -2675,10 +2726,20 @@ msgstr ""
 msgid "Workspace name"
 msgstr ""
 
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/ContentCustomize.tsx
+msgid ""
+"Write a compelling description that highlights the key features of\n"
+"            your property"
+msgstr ""
+
 #: src/pages/settings/roles/components/RoleSettings.tsx
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx
 #: src/modules/settings/data-model/objects/forms/components/SettingsDataModelObjectAboutForm.tsx
 msgid "Write a description"
+msgstr ""
+
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/ContentCustomize.tsx
+msgid "Write a description for your post..."
 msgstr ""
 
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx

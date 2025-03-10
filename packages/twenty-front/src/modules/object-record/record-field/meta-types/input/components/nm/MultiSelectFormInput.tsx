@@ -16,7 +16,6 @@ export const MultiSelectFormInput = ({
 
   const handleUpdate = (value: FieldMultiSelectValue) => {
     updateField({
-      fieldDefinition,
       fieldName: fieldDefinition.metadata.fieldName,
       value: value,
     });

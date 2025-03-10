@@ -39,7 +39,6 @@ export const AddressFormInput = ({
     updateField({
       fieldName: fieldDefinition.metadata.fieldName,
       value: address,
-      fieldDefinition,
     });
   };
 

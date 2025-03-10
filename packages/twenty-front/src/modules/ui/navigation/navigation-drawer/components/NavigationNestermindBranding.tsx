@@ -1,3 +1,4 @@
+import { useColorScheme } from '@/ui/theme/hooks/useColorScheme';
 import { Theme } from '@emotion/react';
 import styled from '@emotion/styled';
 
@@ -7,12 +8,6 @@ const StyledContainer = styled.div`
   flex-direction: column;
   gap: ${({ theme }: { theme: Theme }) => theme.spacing(1)};
   padding: ${({ theme }: { theme: Theme }) => theme.spacing(2)};
-`;
-
-const StyledText = styled.div`
-  color: ${({ theme }: { theme: Theme }) => theme.font.color.tertiary};
-  font-size: ${({ theme }: { theme: Theme }) => theme.font.size.xs};
-  font-weight: ${({ theme }: { theme: Theme }) => theme.font.weight.medium};
 `;
 
 const StyledImage = styled.img<{ size: number }>`
@@ -25,11 +20,13 @@ type NestermindBrandingProps = {
 };
 
 const NestermindBranding = ({ size = 50 }: NestermindBrandingProps) => {
+  const { colorScheme } = useColorScheme();
   return (
     <StyledContainer>
-      <StyledText>Powered by</StyledText>
       <StyledImage
-        src={'/images/integrations/nestermind-logo.svg'}
+        src={`/images/integrations/nestermind-logo${
+          colorScheme === 'Dark' ? '-light' : ''
+        }.svg`}
         alt="Nestermind logo"
         size={size}
       />
