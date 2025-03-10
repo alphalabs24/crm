@@ -41,8 +41,8 @@ const StyledContainer = withTheme(styled.div<
     'accent' | 'clickable' | 'disabled' | 'maxWidth' | 'size' | 'variant'
   > & { theme: Theme }
 >`
-  --chip-horizontal-padding: ${({ theme }) => theme.spacing(1)};
-  --chip-vertical-padding: ${({ theme }) => theme.spacing(1)};
+  --chip-horizontal-padding: ${({ theme }) => theme.spacing(2)};
+  --chip-vertical-padding: ${({ theme }) => theme.spacing(2)};
 
   text-decoration: none;
   align-items: center;
