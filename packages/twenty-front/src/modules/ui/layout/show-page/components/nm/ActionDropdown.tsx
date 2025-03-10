@@ -1,9 +1,6 @@
 import { Dropdown } from '@/ui/layout/dropdown/components/Dropdown';
 import { DropdownMenuItemsContainer } from '@/ui/layout/dropdown/components/DropdownMenuItemsContainer';
-import {
-  IconChevronDown,
-  IconTrash,
-} from '@ui/display/icon/components/TablerIcons';
+import { IconChevronDown } from '@ui/display/icon/components/TablerIcons';
 import { IconComponent } from '@ui/display/icon/types/IconComponent';
 import { Button } from '@ui/input/button/components/Button';
 import { IconButton } from '@ui/input/button/components/IconButton';

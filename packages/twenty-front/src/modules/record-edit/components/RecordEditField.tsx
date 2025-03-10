@@ -15,6 +15,8 @@ import { useMemo } from 'react';
 import { isDefined } from 'twenty-shared';
 import { PropertyImageFormInput } from './custom/PropertyImageFormInput';
 import { PropertyDocumentFormInput } from './custom/PropertyDocumentFormInput';
+import { PropertyEmailsFormInput } from './custom/PropertyEmailsFormInput';
+import { EmailTemplateContextProvider } from '../contexts/EmailTemplateContext';
 
 const StyledFieldContainer = styled.div<{ isHorizontal?: boolean }>`
   display: flex;
@@ -74,6 +76,8 @@ export const RecordEditField = ({
         return PropertyImageFormInput;
       case 'documents':
         return PropertyDocumentFormInput;
+      case 'emailTemplate':
+        return PropertyEmailsFormInput;
       default:
         return null;
     }
@@ -123,7 +127,14 @@ export const RecordEditField = ({
         }}
       >
         {type === 'custom' && CustomComponent ? (
-          <CustomComponent loading={loading} />
+          <EmailTemplateContextProvider
+            value={{
+              emailTemplateId: record.emailTemplateId,
+              emailTemplate: record.emailTemplate,
+            }}
+          >
+            <CustomComponent loading={loading} />
+          </EmailTemplateContextProvider>
         ) : type === 'field' ? (
           <StyledVerticalAligner>
             <RecordFormCell loading={loading} />
