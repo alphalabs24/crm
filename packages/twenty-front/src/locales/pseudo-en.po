@@ -446,6 +446,10 @@ msgstr ""
 msgid "Blocklist"
 msgstr ""
 
+#: src/modules/activities/components/ActivityRichTextEditorPlaceholderButtonBar.tsx
+msgid "Body"
+msgstr ""
+
 #: src/pages/onboarding/ChooseYourPlan.tsx
 msgid "Book a Call"
 msgstr ""
@@ -1033,6 +1037,10 @@ msgstr ""
 
 #: src/modules/settings/accounts/components/SettingsAccountsBlocklistInput.tsx
 msgid "Email or domain is already in blocklist"
+msgstr ""
+
+#: src/modules/record-edit/components/custom/PropertyEmailsFormInput.tsx
+msgid "Email Template"
 msgstr ""
 
 #: src/pages/settings/accounts/SettingsAccountsEmails.tsx

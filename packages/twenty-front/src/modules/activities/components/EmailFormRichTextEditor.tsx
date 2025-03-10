@@ -26,7 +26,6 @@ import { useUploadAttachmentFile } from '@/activities/files/hooks/useUploadAttac
 import { Note } from '@/activities/types/Note';
 import { Task } from '@/activities/types/Task';
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
-import { BlockEditor } from '@/ui/input/editor/components/BlockEditor';
 import { AppHotkeyScope } from '@/ui/utilities/hotkey/types/AppHotkeyScope';
 import { useIsFeatureEnabled } from '@/workspace/hooks/useIsFeatureEnabled';
 import '@blocknote/core/fonts/inter.css';
@@ -34,23 +33,26 @@ import '@blocknote/mantine/style.css';
 import '@blocknote/react/style.css';
 import { FeatureFlagKey } from '~/generated/graphql';
 import { usePrevious } from '@/hooks/local-state/usePrevious';
-import { ActivityRichTextEditorPlaceholderButtonBar } from './ActivityRichTextEditorPlaceholderButtonBar';
+import { EmailBlockEditor } from '@/ui/input/editor/components/EmailBlockEditor';
 
-type ActivityRichTextEditorProps = {
+type EmailFormRichTextEditorProps = {
+  activityToSet?: Task | Note | null;
   activityId: string;
   activityObjectNameSingular:
     | CoreObjectNameSingular.Task
     | CoreObjectNameSingular.Note;
+  showPlaceholderButtonBar?: boolean;
 };
 
-export const ActivityRichTextEditor = ({
+export const EmailFormRichTextEditor = ({
   activityId,
   activityObjectNameSingular,
-}: ActivityRichTextEditorProps) => {
+  activityToSet,
+}: EmailFormRichTextEditorProps) => {
   const [activityInStore] = useRecoilState(recordStoreFamilyState(activityId));
 
   const cache = useApolloClient().cache;
-  const activity = activityInStore as Task | Note | null;
+  const activity = (activityToSet ?? activityInStore) as Task | Note | null;
 
   const isRichTextV2Enabled = useIsFeatureEnabled(
     FeatureFlagKey.IsRichTextV2Enabled,
@@ -328,7 +330,7 @@ export const ActivityRichTextEditor = ({
         activityId={activityId}
       />
 
-      <BlockEditor
+      <EmailBlockEditor
         onFocus={handleBlockEditorFocus}
         onBlur={handlerBlockEditorBlur}
         onChange={handleEditorChange}

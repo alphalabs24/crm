@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: nestermind-crm\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-03-10 07:48\n"
+"PO-Revision-Date: 2025-03-10 16:05\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -450,6 +450,10 @@ msgstr "Abrechnung"
 #: src/modules/settings/accounts/components/SettingsAccountsBlocklistSection.tsx
 msgid "Blocklist"
 msgstr "Blockliste"
+
+#: src/modules/activities/components/ActivityRichTextEditorPlaceholderButtonBar.tsx
+msgid "Body"
+msgstr "Inhalt"
 
 #: src/pages/onboarding/ChooseYourPlan.tsx
 msgid "Book a Call"
@@ -1040,6 +1044,10 @@ msgstr "E-Mail-Integration"
 msgid "Email or domain is already in blocklist"
 msgstr "E-Mail oder Domain ist bereits in der Blockliste"
 
+#: src/modules/record-edit/components/custom/PropertyEmailsFormInput.tsx
+msgid "Email Template"
+msgstr "E-Mail-Vorlage"
+
 #: src/pages/settings/accounts/SettingsAccountsEmails.tsx
 #: src/pages/settings/accounts/SettingsAccountsEmails.tsx
 #: src/modules/settings/hooks/useSettingsNavigationItems.tsx
@@ -1362,10 +1370,12 @@ msgid "Inactive"
 msgstr "Inaktiv"
 
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
-msgid "Increase your reach and target potential buyers and tenants through\n"
+msgid ""
+"Increase your reach and target potential buyers and tenants through\n"
 "            the largest real estate platforms. Choose the platforms you want to\n"
 "            publish on."
-msgstr "Erhöhen Sie Ihre Reichweite und zielen Sie potenzielle Käufer und Mieter über\n"
+msgstr ""
+"Erhöhen Sie Ihre Reichweite und zielen Sie potenzielle Käufer und Mieter über\n"
 "            die größten Immobilienplattformen an. Wählen Sie die Plattformen, auf denen Sie\n"
 "            publizieren möchten."
 
@@ -2733,9 +2743,11 @@ msgid "Workspace name"
 msgstr "Arbeitsbereichsname"
 
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/ContentCustomize.tsx
-msgid "Write a compelling description that highlights the key features of\n"
+msgid ""
+"Write a compelling description that highlights the key features of\n"
 "            your property"
-msgstr "Schreibe eine überzeugende Beschreibung, die die Schlüsselfunktionen von\n"
+msgstr ""
+"Schreibe eine überzeugende Beschreibung, die die Schlüsselfunktionen von\n"
 "            Ihrer Immobilie hervorhebt"
 
 #: src/pages/settings/roles/components/RoleSettings.tsx
@@ -2788,4 +2800,3 @@ msgstr "Ihr Arbeitsbereich"
 #: src/pages/settings/SettingsBilling.tsx
 msgid "Your workspace will be disabled"
 msgstr "Ihr Arbeitsbereich wird deaktiviert"
-

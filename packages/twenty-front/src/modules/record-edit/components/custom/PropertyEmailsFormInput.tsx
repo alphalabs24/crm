@@ -7,6 +7,7 @@ import { TextInputV2 } from '@/ui/input/components/TextInputV2';
 import { useRecordEdit } from '@/record-edit/contexts/RecordEditContext';
 import { EmailTemplateSetDefaultValuesEffect } from '../EmailTemplateSetDefaultValuesEffect';
 import { Trans, useLingui } from '@lingui/react/macro';
+import { EmailFormRichTextEditor } from '@/activities/components/EmailFormRichTextEditor';
 
 const StyledContainer = styled.div`
   display: flex;
@@ -16,19 +17,30 @@ const StyledContainer = styled.div`
 `;
 
 const StyledEmailEntryContainer = styled.div`
+  border: 1px solid ${({ theme }) => theme.border.color.light};
+  border-radius: ${({ theme }) => theme.border.radius.md};
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(2)};
-
-  border: 1px solid ${({ theme }) => theme.border.color.light};
-  border-radius: ${({ theme }) => theme.border.radius.md};
-  padding: ${({ theme }) => theme.spacing(8)} 0;
+  padding: ${({ theme }) => theme.spacing(2)} 0;
 `;
 
 const StyledTitle = styled.div`
   font-size: ${({ theme }) => theme.font.size.md};
   color: ${({ theme }) => theme.font.color.primary};
   font-weight: ${({ theme }) => theme.font.weight.regular};
+`;
+
+const StyledEmailBody = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(1)};
+`;
+
+const StyledBodyTitle = styled.div`
+  color: ${({ theme }) => theme.font.color.light};
+  font-size: ${({ theme }) => theme.font.size.xs};
+  font-weight: ${({ theme }) => theme.font.weight.medium};
 `;
 
 export const PropertyEmailsFormInput = ({ loading }: { loading?: boolean }) => {
@@ -51,13 +63,16 @@ export const PropertyEmailsFormInput = ({ loading }: { loading?: boolean }) => {
           value={emailTemplateSubject}
           onChange={(text) => updateEmailTemplateSubject(text)}
         />
-        <StyledEmailEntryContainer>
-          <ActivityRichTextEditor
-            activityToSet={emailTemplate}
-            activityObjectNameSingular={CoreObjectNameSingular.Note}
-            activityId={emailTemplateId}
-          />
-        </StyledEmailEntryContainer>
+        <StyledEmailBody>
+          <StyledEmailEntryContainer>
+            <EmailFormRichTextEditor
+              showPlaceholderButtonBar
+              activityToSet={emailTemplate}
+              activityObjectNameSingular={CoreObjectNameSingular.Note}
+              activityId={emailTemplateId}
+            />
+          </StyledEmailEntryContainer>
+        </StyledEmailBody>
       </StyledContainer>
     </>
   );
