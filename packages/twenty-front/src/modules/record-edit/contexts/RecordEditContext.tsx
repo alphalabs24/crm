@@ -4,6 +4,7 @@ import {
   Attachment,
   PropertyAttachmentType,
 } from '@/activities/files/types/Attachment';
+import { Note } from '@/activities/types/Note';
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { ObjectMetadataItem } from '@/object-metadata/types/ObjectMetadataItem';
 import { useDestroyOneRecord } from '@/object-record/hooks/useDestroyOneRecord';
@@ -48,6 +49,11 @@ export type RecordEditPropertyDocument = {
   fileName?: string;
 };
 
+export type RecordEditPropertyEmail = {
+  id: string;
+  template: Note;
+};
+
 export type RecordEditContextType = {
   objectMetadataItem: ObjectMetadataItem;
   updateField: (update: FieldUpdate) => void;
@@ -78,6 +84,11 @@ export type RecordEditContextType = {
     documentId: string,
     updates: Partial<RecordEditPropertyDocument>,
   ) => void;
+  emailTemplate: RecordEditPropertyEmail | null;
+  emailTemplateSubject: string;
+  setEmailTemplate: (emailTemplate: RecordEditPropertyEmail) => void;
+  updateEmailTemplateSubject: (emailTemplateSubject: string) => void;
+  setEmailTemplateSubject: (emailTemplateSubject: string) => void;
 };
 
 export const RecordEditContext = createContext<RecordEditContextType | null>(
@@ -103,6 +114,10 @@ export const RecordEditProvider = ({
     [],
   );
 
+  const [emailTemplate, setEmailTemplate] =
+    useState<RecordEditPropertyEmail | null>(null);
+  const [emailTemplateSubject, setEmailTemplateSubject] = useState<string>('');
+
   // Record Handling
   const { updateOneRecord } = useUpdateOneRecord({
     objectNameSingular: objectNameSingular ?? '',
@@ -112,6 +127,9 @@ export const RecordEditProvider = ({
   const { uploadAttachmentFile } = useUploadAttachmentFile();
   const { updateOneRecord: updateOneAttachment } = useUpdateOneRecord({
     objectNameSingular: CoreObjectNameSingular.Attachment,
+  });
+  const { updateOneRecord: updateOneNote } = useUpdateOneRecord({
+    objectNameSingular: CoreObjectNameSingular.Note,
   });
   const { destroyOneRecord: destroyOneAttachment } = useDestroyOneRecord({
     objectNameSingular: CoreObjectNameSingular.Attachment,
@@ -248,10 +266,25 @@ export const RecordEditProvider = ({
     );
   }, [attachmentDocuments]);
 
+  // Email Template Handling
+  const resetEmailTemplate = useCallback(() => {
+    setEmailTemplate(null);
+    setEmailTemplateSubject('');
+  }, []);
+
+  const updateEmailTemplateSubject = useCallback(
+    (emailTemplateSubject: string) => {
+      setEmailTemplateSubject(emailTemplateSubject);
+      setIsDirty(true);
+    },
+    [],
+  );
+
   const resetFields = useCallback(() => {
     setFieldUpdates({});
+    resetEmailTemplate();
     setIsDirty(false);
-  }, []);
+  }, [resetEmailTemplate]);
 
   // This is used to block the user from leaving the page if there are unsaved changes
   useBlocker(({ currentLocation, nextLocation }) => {
@@ -356,7 +389,6 @@ export const RecordEditProvider = ({
     setLoading(true);
     if (isDirty) {
       const updatedFields = getUpdatedFields();
-      console.log('updatedFields', updatedFields);
       await updateOneRecord({
         idToUpdate: objectRecordId ?? '',
         updateOneRecordInput: updatedFields,
@@ -432,6 +464,18 @@ export const RecordEditProvider = ({
         }
         orderIndex++;
       }
+
+      // Update email template
+      // TODO check what if emailTemplate is undefined
+      if (emailTemplate) {
+        await updateOneNote({
+          idToUpdate: emailTemplate.id,
+          updateOneRecordInput: {
+            title: emailTemplateSubject,
+          },
+        });
+      }
+
       setLoading(false);
       resetFields();
     }
@@ -466,6 +510,11 @@ export const RecordEditProvider = ({
         updatePropertyDocumentOrder,
         refreshPropertyDocumentUrls,
         updatePropertyDocument,
+        emailTemplate,
+        emailTemplateSubject,
+        setEmailTemplate,
+        updateEmailTemplateSubject,
+        setEmailTemplateSubject,
       }}
     >
       {children}

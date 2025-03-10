@@ -22,6 +22,7 @@ import { useMemo } from 'react';
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { FieldDefinition } from '@/object-record/record-field/types/FieldDefinition';
 import { RecordEditContainerContext } from '../contexts/RecordEditContainerContext';
+import { useNotes } from '@/activities/notes/hooks/useNotes';
 
 export const EDIT_CONTAINER_WIDTH = 1440;
 
@@ -158,6 +159,7 @@ export const RecordEditContainer = ({
   const navigate = useNavigate();
   const { enqueueSnackBar } = useSnackBar();
   const { t } = useLingui();
+
   const { objectMetadataItem } = useObjectMetadataItem({
     objectNameSingular,
   });
