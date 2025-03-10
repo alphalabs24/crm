@@ -17,14 +17,68 @@ import { WorkspaceSyncContext } from 'src/engine/workspace-manager/workspace-syn
 import { FieldMetadataEntity } from 'src/engine/metadata-modules/field-metadata/field-metadata.entity';
 import { isFieldMetadata } from 'src/engine/metadata-modules/field-metadata/utils/is-field-metadata';
 import { DEFAULT_LABEL_IDENTIFIER_FIELD_NAME } from 'src/engine/metadata-modules/object-metadata/object-metadata.constants';
+import { ObjectMetadataEntity } from 'src/engine/metadata-modules/object-metadata/object-metadata.entity';
 import { RelationMetadataType } from 'src/engine/metadata-modules/relation-metadata/relation-metadata.entity';
 import { BaseWorkspaceEntity } from 'src/engine/twenty-orm/base.workspace-entity';
 import { metadataArgsStorage } from 'src/engine/twenty-orm/storage/metadata-args.storage';
 import { getJoinColumn } from 'src/engine/twenty-orm/utils/get-join-column.util';
+import {
+  NESTERMIND_STANDARD_OBJECT_IDS,
+  STANDARD_OBJECT_IDS,
+} from 'src/engine/workspace-manager/workspace-sync-metadata/constants/standard-object-ids';
 import { createDeterministicUuid } from 'src/engine/workspace-manager/workspace-sync-metadata/utils/create-deterministic-uuid.util';
-import { getTsVectorColumnExpressionFromFields } from 'src/engine/workspace-manager/workspace-sync-metadata/utils/get-ts-vector-column-expression.util';
+import {
+  FieldTypeAndNameMetadata,
+  getTsVectorColumnExpressionFromFields,
+} from 'src/engine/workspace-manager/workspace-sync-metadata/utils/get-ts-vector-column-expression.util';
 import { isGatedAndNotEnabled } from 'src/engine/workspace-manager/workspace-sync-metadata/utils/is-gate-and-not-enabled.util';
-import { SearchableFieldType } from 'src/engine/workspace-manager/workspace-sync-metadata/utils/is-searchable-field.util';
+import { SEARCH_FIELDS_FOR_COMPANY } from 'src/modules/company/standard-objects/company.workspace-entity';
+import { SEARCH_FIELDS_FOR_NOTES } from 'src/modules/note/standard-objects/note.workspace-entity';
+import { SEARCH_FIELDS_FOR_OPPORTUNITY } from 'src/modules/opportunity/standard-objects/opportunity.workspace-entity';
+import { SEARCH_FIELDS_FOR_PERSON } from 'src/modules/person/standard-objects/person.workspace-entity';
+import { SEARCH_FIELDS_FOR_TASKS } from 'src/modules/task/standard-objects/task.workspace-entity';
+import { SEARCH_FIELDS_FOR_WORKSPACE_MEMBER } from 'src/modules/workspace-member/standard-objects/workspace-member.workspace-entity';
+
+const searchableFieldsMap: Record<string, FieldTypeAndNameMetadata[]> = {
+  [STANDARD_OBJECT_IDS.person]: SEARCH_FIELDS_FOR_PERSON,
+  [STANDARD_OBJECT_IDS.company]: SEARCH_FIELDS_FOR_COMPANY,
+  [STANDARD_OBJECT_IDS.task]: SEARCH_FIELDS_FOR_TASKS,
+  [STANDARD_OBJECT_IDS.note]: SEARCH_FIELDS_FOR_NOTES,
+  [STANDARD_OBJECT_IDS.opportunity]: SEARCH_FIELDS_FOR_OPPORTUNITY,
+  [STANDARD_OBJECT_IDS.workspaceMember]: SEARCH_FIELDS_FOR_WORKSPACE_MEMBER,
+
+  // nestermind entities
+  [NESTERMIND_STANDARD_OBJECT_IDS.property]: [
+    { name: 'name', type: FieldMetadataType.TEXT },
+    { name: 'address', type: FieldMetadataType.ADDRESS },
+  ],
+  [NESTERMIND_STANDARD_OBJECT_IDS.publication]: [
+    { name: 'name', type: FieldMetadataType.TEXT },
+    { name: 'address', type: FieldMetadataType.ADDRESS },
+  ],
+  [NESTERMIND_STANDARD_OBJECT_IDS.agency]: [
+    { name: 'name', type: FieldMetadataType.TEXT },
+    { name: 'address', type: FieldMetadataType.ADDRESS },
+  ],
+  [NESTERMIND_STANDARD_OBJECT_IDS.buyerLead]: [
+    { name: 'name', type: FieldMetadataType.TEXT },
+  ],
+};
+
+const getSearchableFields = (
+  objectMetadata: ObjectMetadataEntity,
+): FieldTypeAndNameMetadata[] => {
+  const searchableFields = searchableFieldsMap[objectMetadata.standardId ?? ''];
+
+  return (
+    searchableFields ?? [
+      {
+        name: DEFAULT_LABEL_IDENTIFIER_FIELD_NAME,
+        type: FieldMetadataType.TEXT,
+      },
+    ]
+  );
+};
 
 @Injectable()
 export class StandardFieldFactory {
@@ -146,8 +200,8 @@ export class StandardFieldFactory {
         id: _1,
         createdAt: _2,
         updatedAt: _3,
-        object,
-        objectMetadataId,
+        object: _4,
+        objectMetadataId: _5,
         relationTargetFieldMetadataId: _6,
         relationTargetObjectMetadataId: _7,
         ...rest
@@ -162,13 +216,6 @@ export class StandardFieldFactory {
       if (targetOrTargets.type !== FieldMetadataType.TS_VECTOR) {
         return [newFieldMetadata];
       } else {
-        const searchableField = allTargets?.find(
-          (field) =>
-            isFieldMetadata<FieldMetadataType | 'default'>(field) &&
-            field.objectMetadataId === objectMetadataId &&
-            field.name === DEFAULT_LABEL_IDENTIFIER_FIELD_NAME,
-        ) as FieldMetadataEntity<FieldMetadataType | 'default'> | undefined;
-
         return [
           {
             ...newFieldMetadata,
@@ -177,14 +224,9 @@ export class StandardFieldFactory {
               'STORED',
             asExpression:
               (targetOrTargets as FieldMetadataInterface).asExpression ??
-              (searchableField
-                ? getTsVectorColumnExpressionFromFields([
-                    {
-                      type: searchableField.type as SearchableFieldType,
-                      name: searchableField.name,
-                    },
-                  ])
-                : undefined),
+              getTsVectorColumnExpressionFromFields(
+                getSearchableFields(targetOrTargets.object),
+              ),
           },
         ];
       }
