@@ -65,6 +65,7 @@ export class RestApiExtensionController {
       body: emailDto.body,
       connectedAccountId: emailDto.connectedAccount,
       workspaceId,
+      isHtml: true,
       // Optional: handle attachments if needed in the future
     };
 

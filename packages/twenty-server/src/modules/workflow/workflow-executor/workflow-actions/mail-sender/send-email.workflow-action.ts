@@ -113,7 +113,9 @@ export class SendEmailWorkflowAction implements WorkflowAction {
       `To: ${email}`,
       `Subject: ${safeSubject || ''}`,
       'MIME-Version: 1.0',
-      'Content-Type: text/plain; charset="UTF-8"',
+      workflowActionInput.isHtml
+        ? 'Content-Type: text/html; charset="UTF-8"'
+        : 'Content-Type: text/plain; charset="UTF-8"',
       '',
       safeBody,
     ].join('\n');

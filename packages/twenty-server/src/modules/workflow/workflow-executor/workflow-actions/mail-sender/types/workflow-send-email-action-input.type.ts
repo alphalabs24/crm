@@ -4,4 +4,5 @@ export type WorkflowSendEmailActionInput = {
   subject?: string;
   body?: string;
   workspaceId?: string;
+  isHtml?: boolean;
 };
