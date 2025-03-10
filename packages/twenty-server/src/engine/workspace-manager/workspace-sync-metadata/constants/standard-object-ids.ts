@@ -50,3 +50,10 @@ export const STANDARD_OBJECT_IDS = {
   workflowVersion: '20202020-d65d-4ab9-9344-d77bfb376a3d',
   workspaceMember: '20202020-3319-4234-a34c-82d5c0e881a6',
 };
+
+export const NESTERMIND_STANDARD_OBJECT_IDS = {
+  property: '10202020-1f22-763e-be39-2d96e2de7022',
+  publication: '10202020-bcf8-4652-b9b7-555bebfc0730',
+  agency: '10202020-efe2-4e4d-bfa6-73ea06b4ae17',
+  buyerLead: '10202020-0883-43b3-babf-5836043c1c64',
+};
