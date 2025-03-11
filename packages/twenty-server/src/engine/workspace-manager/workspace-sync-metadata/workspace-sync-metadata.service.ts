@@ -134,6 +134,13 @@ export class WorkspaceSyncMetadataService {
       // If we're running a dry run, rollback the transaction and do not execute migrations
       if (!options.applyChanges) {
         this.logger.log('Running in dry run mode, rolling back transaction');
+        this.logger.log(
+          `Here are the ${workspaceMigrations.length} migrations that would have been executed:`,
+        );
+        this.logger.log(workspaceMigrations);
+        if (workspaceMigrations.length > 0) {
+          this.logger.log(`Here is the storage: ${JSON.stringify(storage)}`);
+        }
 
         await queryRunner.rollbackTransaction();
 

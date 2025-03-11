@@ -4,8 +4,10 @@ import { Command, Option } from 'nest-commander';
 import { Repository } from 'typeorm';
 
 import { ActiveWorkspacesCommandRunner } from 'src/database/commands/active-workspaces.command';
+import { EnvironmentService } from 'src/engine/core-modules/environment/environment.service';
 import { Workspace } from 'src/engine/core-modules/workspace/workspace.entity';
 import { DataSourceService } from 'src/engine/metadata-modules/data-source/data-source.service';
+import { WorkspaceDataSourceService } from 'src/engine/workspace-datasource/workspace-datasource.service';
 import { WorkspaceHealthService } from 'src/engine/workspace-manager/workspace-health/workspace-health.service';
 import { WorkspaceSyncMetadataService } from 'src/engine/workspace-manager/workspace-sync-metadata/workspace-sync-metadata.service';
 
@@ -30,6 +32,8 @@ export class SyncWorkspaceMetadataCommand extends ActiveWorkspacesCommandRunner 
     private readonly workspaceHealthService: WorkspaceHealthService,
     private readonly dataSourceService: DataSourceService,
     private readonly syncWorkspaceLoggerService: SyncWorkspaceLoggerService,
+    private readonly environmentService: EnvironmentService,
+    private readonly workspaceDataSourceService: WorkspaceDataSourceService,
   ) {
     super(workspaceRepository);
   }
@@ -70,7 +74,9 @@ export class SyncWorkspaceMetadataCommand extends ActiveWorkspacesCommandRunner 
                 'Please use `workspace:health` command to check issues and fix them before running this command.',
               );
 
-              continue;
+              if (!options.dryRun) {
+                continue;
+              }
             }
 
             this.logger.warn(
@@ -95,11 +101,25 @@ export class SyncWorkspaceMetadataCommand extends ActiveWorkspacesCommandRunner 
             workspaceId,
           );
 
+        let defaultMetadataWorkspaceId = this.environmentService.get(
+          'DEFAULT_METADATA_WORKSPACE_ID',
+        );
+
+        if (
+          defaultMetadataWorkspaceId &&
+          !(await this.workspaceDataSourceService.checkSchemaExists(
+            defaultMetadataWorkspaceId,
+          ))
+        ) {
+          defaultMetadataWorkspaceId = '';
+        }
+
         const { storage, workspaceMigrations } =
           await this.workspaceSyncMetadataService.synchronize(
             {
               workspaceId,
               dataSourceId: dataSourceMetadata.id,
+              defaultMetadataWorkspaceId,
             },
             { applyChanges: !options.dryRun },
           );
