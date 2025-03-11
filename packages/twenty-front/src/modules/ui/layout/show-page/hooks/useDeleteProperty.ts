@@ -5,6 +5,7 @@ import { useLingui } from '@lingui/react/macro';
 import axios from 'axios';
 import { useCallback, useState } from 'react';
 import { useRecoilValue } from 'recoil';
+import { getEnv } from '~/utils/get-env';
 
 type Props = {
   objectRecordId: string;
@@ -22,7 +23,7 @@ export const useDeleteProperty = ({ objectRecordId, onDelete }: Props) => {
     try {
       setLoading(true);
       await axios.delete(
-        `${window._env_?.REACT_APP_PUBLICATION_SERVER_BASE_URL ?? 'http://api.localhost'}/properties/delete?id=${objectRecordId}`,
+        `${getEnv('REACT_APP_NESTERMIND_SERVER_BASE_URL') ?? 'http://api.localhost'}/properties/delete?id=${objectRecordId}`,
         {
           headers: {
             Authorization: `Bearer ${tokenPair?.accessToken?.token}`,
@@ -50,7 +51,7 @@ export const useDeleteProperty = ({ objectRecordId, onDelete }: Props) => {
     try {
       setLoading(true);
       await axios.delete(
-        `${window._env_?.REACT_APP_PUBLICATION_SERVER_BASE_URL ?? 'http://api.localhost'}/publications/delete?id=${objectRecordId}`,
+        `${getEnv('REACT_APP_NESTERMIND_SERVER_BASE_URL') ?? 'http://api.localhost'}/publications/delete?id=${objectRecordId}`,
         {
           headers: {
             Authorization: `Bearer ${tokenPair?.accessToken?.token}`,

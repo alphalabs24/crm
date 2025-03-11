@@ -4,16 +4,16 @@ export type PlatformType = 'social_media' | 'real_estate' | 'smart_listing';
 
 // TODO adapt these to the actual values
 export enum PlatformId {
-  SocialMedia = 'Social Media',
-  SwissMarketplaceGroup = 'Swiss Marketplace Group (SMG)',
+  SocialMedia = 'SOCIAL MEDIA',
+  SwissMarketplaceGroup = 'SMG',
   Newhome = 'NEWHOME',
-  ImmoScout = 'ImmoScout',
-  Homegate = 'Homegate',
-  Instagram = 'Instagram',
-  Facebook = 'Facebook',
-  Comparis = 'Comparis',
-  Flatfox = 'Flatfox',
-  SmartListing = 'Smart Listing',
+  ImmoScout = 'IMMOSCOUT',
+  Homegate = 'HOMEGATE',
+  Instagram = 'INSTAGRAM',
+  Facebook = 'FACEBOOK',
+  Comparis = 'COMPARIS',
+  Flatfox = 'FLATFOX',
+  SmartListing = 'SMART LISTING',
 }
 
 export type Platform = {

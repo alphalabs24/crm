@@ -1,6 +1,5 @@
 import { tokenPairState } from '@/auth/states/tokenPairState';
 import { useFindOneRecord } from '@/object-record/hooks/useFindOneRecord';
-import { useRecordShowContainerData } from '@/object-record/record-show/hooks/useRecordShowContainerData';
 import { SnackBarVariant } from '@/ui/feedback/snack-bar-manager/components/SnackBar';
 import { useSnackBar } from '@/ui/feedback/snack-bar-manager/hooks/useSnackBar';
 import {
@@ -8,7 +7,7 @@ import {
   PLATFORMS,
 } from '@/ui/layout/show-page/components/nm/types/Platform';
 import styled from '@emotion/styled';
-import { useLingui } from '@lingui/react/macro';
+import { Trans, useLingui } from '@lingui/react/macro';
 import axios from 'axios';
 import { useState } from 'react';
 import { useRecoilValue } from 'recoil';
@@ -21,6 +20,7 @@ import {
 import { ValidationResult } from '../../../hooks/usePublicationValidation';
 import { getLinkToShowPage } from '@/object-metadata/utils/getLinkToShowPage';
 import { Link } from 'react-router-dom';
+import { getEnv } from '~/utils/get-env';
 
 const StyledPublishingProcess = styled.div`
   display: flex;
@@ -42,8 +42,6 @@ const StyledPlatformPublishItem = styled.div`
 const StyledPlatformPublishIcon = styled.div`
   align-items: center;
   display: flex;
-  height: 32px;
-  width: 32px;
 `;
 
 const StyledPlatformPublishInfo = styled.div`
@@ -75,7 +73,16 @@ const StyledPlatformPublishStatusIcon = styled.div`
   color: ${({ theme }) => theme.color.green};
 `;
 
-const StyledViewPublicationButton = styled.button`
+const StyledPublishedInfo = styled.div`
+  align-items: flex-end;
+  color: ${({ theme }) => theme.font.color.secondary};
+  display: flex;
+  flex-direction: column;
+  font-size: ${({ theme }) => theme.font.size.sm};
+  gap: ${({ theme }) => theme.spacing(1)};
+`;
+
+const StyledViewPublicationButton = styled(Link)`
   align-items: center;
   background: none;
   border: none;
@@ -85,6 +92,7 @@ const StyledViewPublicationButton = styled.button`
   font-size: ${({ theme }) => theme.font.size.sm};
   gap: ${({ theme }) => theme.spacing(1)};
   padding: 0;
+  text-decoration: none;
 
   &:hover {
     color: ${({ theme }) => theme.font.color.primary};
@@ -127,7 +135,7 @@ export const Publishing = ({
   const tokenPair = useRecoilValue(tokenPairState);
   const [showError, setShowError] = useState(false);
 
-  const { refetch } = useFindOneRecord({
+  const { record, refetch } = useFindOneRecord({
     objectNameSingular: 'publication',
     objectRecordId: recordId,
   });
@@ -140,7 +148,7 @@ export const Publishing = ({
       }
       setIsLoading(true);
       const response = await axios.post(
-        `${window._env_?.REACT_APP_PUBLICATION_SERVER_BASE_URL ?? 'http://api.localhost'}/publications/upload?id=${recordId}`,
+        `${getEnv('REACT_APP_NESTERMIND_SERVER_BASE_URL') ?? 'http://api.localhost'}/publications/upload?id=${recordId}`,
         {},
         {
           headers: {
@@ -177,7 +185,7 @@ export const Publishing = ({
           <StyledPlatformPublishStatus isPublished={isPublished}>
             {isPublished ? (
               <>
-                {t`Successfully published`}
+                {t`Successfully published`}*
                 <IconCheck size={14} />
               </>
             ) : isLoading ? (
@@ -199,10 +207,15 @@ export const Publishing = ({
         )}
         <StyledPlatformPublishStatusIcon>
           {isPublished ? (
-            <StyledViewPublicationButton>
-              {t`View Publication`}
-              <IconExternalLink size={14} />
-            </StyledViewPublicationButton>
+            record?.agency.newhomePartnerId ? (
+              <StyledViewPublicationButton
+                to={`https://test.newhome.ch/partner/${record?.agency.newhomePartnerId}.aspx`}
+                target="_blank"
+              >
+                {t`View Publications`}
+                <IconExternalLink size={14} />
+              </StyledViewPublicationButton>
+            ) : null
           ) : isLoading ? (
             <CircularProgressBar size={16} barWidth={2} barColor="black" />
           ) : (
@@ -215,6 +228,13 @@ export const Publishing = ({
           )}
         </StyledPlatformPublishStatusIcon>
       </StyledPlatformPublishItem>
+      {isPublished && (
+        <StyledPublishedInfo>
+          <Trans>
+            *It can take up to 10 minutes until publications are visible.
+          </Trans>
+        </StyledPublishedInfo>
+      )}
     </StyledPublishingProcess>
   );
 };

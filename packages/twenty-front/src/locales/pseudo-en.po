@@ -65,6 +65,10 @@ msgstr ""
 msgid "{workspaceMemberName} will be unassigned from the following role:"
 msgstr ""
 
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/Publishing.tsx
+msgid "*It can take up to 10 minutes until publications are visible."
+msgstr ""
+
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
 #~ msgid "<0>{0}</0>"
 #~ msgstr ""
@@ -477,6 +481,7 @@ msgid "Calendars"
 msgstr ""
 
 #: src/pages/auth/Authorize.tsx
+#: src/modules/ui/layout/show-page/components/nm/PublishModal.tsx
 #: src/modules/ui/layout/show-page/components/nm/PublishDraftModal.tsx
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
 #: src/modules/ui/layout/show-page/components/nm/DeleteConfirmationModal.tsx
@@ -941,6 +946,10 @@ msgstr ""
 #: src/pages/settings/workspace/SettingsDomain.tsx
 #: src/pages/settings/workspace/SettingsDomain.tsx
 msgid "Domain"
+msgstr ""
+
+#: src/modules/ui/layout/show-page/components/nm/PublishModal.tsx
+msgid "Done"
 msgstr ""
 
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
@@ -2377,6 +2386,10 @@ msgstr ""
 msgid "Successfully published"
 msgstr ""
 
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/Publishing.tsx
+#~ msgid "Successfully published*"
+#~ msgstr ""
+
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationShortLabel.ts
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationLabel.ts
 msgid "Sum"
@@ -2640,7 +2653,11 @@ msgid "View billing details"
 msgstr ""
 
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/Publishing.tsx
-msgid "View Publication"
+#~ msgid "View Publication"
+#~ msgstr ""
+
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/Publishing.tsx
+msgid "View Publications"
 msgstr ""
 
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx

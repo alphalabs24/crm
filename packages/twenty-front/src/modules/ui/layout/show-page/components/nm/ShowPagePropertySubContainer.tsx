@@ -44,7 +44,8 @@ import { capitalize } from 'twenty-shared';
 import { ActionDropdown } from './ActionDropdown';
 import { useDeleteMessage } from '@/action-menu/actions/record-actions/single-record/hooks/useDeleteMessage';
 import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadataItem';
-import { useFindManyRecords } from '@/object-record/hooks/useFindManyRecords';
+import { PlatformId } from './types/Platform';
+import { getEnv } from '~/utils/get-env';
 
 const StyledShowPageRightContainer = styled.div<{ isMobile: boolean }>`
   display: flex;
@@ -233,7 +234,7 @@ export const ShowPagePropertySubContainer = ({
     try {
       setLoadingSync(true);
       const response = await axios.post(
-        `${window._env_?.REACT_APP_PUBLICATION_SERVER_BASE_URL ?? 'http://api.localhost'}/properties/sync?id=${targetableObject.id}`,
+        `${getEnv('REACT_APP_NESTERMIND_SERVER_BASE_URL') ?? 'http://api.localhost'}/properties/sync?id=${targetableObject.id}`,
         {},
         {
           headers: {
@@ -265,7 +266,7 @@ export const ShowPagePropertySubContainer = ({
     try {
       setLoadingDraft(true);
       const response = await axios.post(
-        `${window._env_?.REACT_APP_PUBLICATION_SERVER_BASE_URL ?? 'http://api.localhost'}/publications/duplicate?id=${targetableObject.id}`,
+        `${getEnv('REACT_APP_NESTERMIND_SERVER_BASE_URL') ?? 'http://api.localhost'}/publications/duplicate?id=${targetableObject.id}`,
         {},
         {
           headers: {
@@ -473,6 +474,7 @@ export const ShowPagePropertySubContainer = ({
           onClose={handleModalClose}
           targetableObject={targetableObject}
           validationDetails={validationDetails}
+          platformId={recordFromStore?.platform ?? PlatformId.Newhome}
         />
       ) : (
         <PublishDraftModal

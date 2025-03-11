@@ -15,6 +15,7 @@ import { useListenClickOutside } from '@/ui/utilities/pointer-event/hooks/useLis
 import { useRecoilValue } from 'recoil';
 import { isDefined } from 'twenty-shared';
 import { MOBILE_VIEWPORT } from 'twenty-ui';
+import { getEnv } from '~/utils/get-env';
 
 const StyledAddressContainer = styled.div<{
   noPadding?: boolean;
@@ -109,7 +110,7 @@ export type AddressInputProps = {
   noPadding?: boolean;
 };
 
-const apiKey = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
+const apiKey = getEnv('REACT_APP_MAPBOX_ACCESS_TOKEN');
 
 export const AddressInput = ({
   value,

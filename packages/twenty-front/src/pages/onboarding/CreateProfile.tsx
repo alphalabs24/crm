@@ -34,6 +34,7 @@ import { isDefined } from 'twenty-shared';
 import { OnboardingStatus } from '~/generated/graphql';
 import axios from 'axios';
 import { tokenPairState } from '@/auth/states/tokenPairState';
+import { getEnv } from '~/utils/get-env';
 
 const StyledContentContainer = styled.div`
   width: 100%;
@@ -103,9 +104,8 @@ export const CreateProfile = () => {
   const theme = useTheme();
 
   const acceptTermsAndConditions = useCallback(async () => {
-    console.log(tokenPair?.accessToken?.token);
     const response = await axios.post(
-      `${window._env_?.REACT_APP_PUBLICATION_SERVER_BASE_URL ?? 'http://api.localhost'}/setup/create-workspace`,
+      `${getEnv('REACT_APP_NESTERMIND_SERVER_BASE_URL') ?? 'http://api.localhost'}/setup/create-workspace`,
       {},
       {
         headers: {

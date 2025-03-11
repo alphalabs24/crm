@@ -65,6 +65,10 @@ msgstr "{overviewLabel} Overview"
 msgid "{workspaceMemberName} will be unassigned from the following role:"
 msgstr "{workspaceMemberName} will be unassigned from the following role:"
 
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/Publishing.tsx
+msgid "*It can take up to 10 minutes until publications are visible."
+msgstr "*It can take up to 10 minutes until publications are visible."
+
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
 #~ msgid "<0>{0}</0>"
 #~ msgstr "<0>{0}</0>"
@@ -477,6 +481,7 @@ msgid "Calendars"
 msgstr "Calendars"
 
 #: src/pages/auth/Authorize.tsx
+#: src/modules/ui/layout/show-page/components/nm/PublishModal.tsx
 #: src/modules/ui/layout/show-page/components/nm/PublishDraftModal.tsx
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
 #: src/modules/ui/layout/show-page/components/nm/DeleteConfirmationModal.tsx
@@ -942,6 +947,10 @@ msgstr "Display as relative date"
 #: src/pages/settings/workspace/SettingsDomain.tsx
 msgid "Domain"
 msgstr "Domain"
+
+#: src/modules/ui/layout/show-page/components/nm/PublishModal.tsx
+msgid "Done"
+msgstr "Done"
 
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
@@ -2380,6 +2389,10 @@ msgstr "Subscription has been switched {to}"
 msgid "Successfully published"
 msgstr "Successfully published"
 
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/Publishing.tsx
+#~ msgid "Successfully published*"
+#~ msgstr "Successfully published*"
+
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationShortLabel.ts
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationLabel.ts
 msgid "Sum"
@@ -2643,8 +2656,12 @@ msgid "View billing details"
 msgstr "View billing details"
 
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/Publishing.tsx
-msgid "View Publication"
-msgstr "View Publication"
+#~ msgid "View Publication"
+#~ msgstr "View Publication"
+
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/Publishing.tsx
+msgid "View Publications"
+msgstr "View Publications"
 
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
 #~ msgid "Visitor Activity"

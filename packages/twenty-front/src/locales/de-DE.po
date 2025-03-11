@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: nestermind-crm\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-03-10 16:05\n"
+"PO-Revision-Date: 2025-03-11 12:29\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -69,6 +69,10 @@ msgstr "{overviewLabel} Übersicht"
 #: src/pages/settings/roles/components/RoleAssignmentConfirmationModalSubtitle.tsx
 msgid "{workspaceMemberName} will be unassigned from the following role:"
 msgstr "{workspaceMemberName} wird von folgender Rolle abgezogen:"
+
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/Publishing.tsx
+msgid "*It can take up to 10 minutes until publications are visible."
+msgstr "*Es kann bis zu 10 Minuten dauern, bis Veröffentlichungen sichtbar sind auf der gewählten Plattform."
 
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
 #~ msgid "<0>{0}</0>"
@@ -482,6 +486,7 @@ msgid "Calendars"
 msgstr "Kalender"
 
 #: src/pages/auth/Authorize.tsx
+#: src/modules/ui/layout/show-page/components/nm/PublishModal.tsx
 #: src/modules/ui/layout/show-page/components/nm/PublishDraftModal.tsx
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
 #: src/modules/ui/layout/show-page/components/nm/DeleteConfirmationModal.tsx
@@ -947,6 +952,10 @@ msgstr "Als relatives Datum anzeigen"
 #: src/pages/settings/workspace/SettingsDomain.tsx
 msgid "Domain"
 msgstr "Domäne"
+
+#: src/modules/ui/layout/show-page/components/nm/PublishModal.tsx
+msgid "Done"
+msgstr ""
 
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
@@ -2385,6 +2394,10 @@ msgstr "Abonnement wurde auf {to} umgestellt"
 msgid "Successfully published"
 msgstr "Erfolgreich veröffentlicht"
 
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/Publishing.tsx
+#~ msgid "Successfully published*"
+#~ msgstr "Successfully published*"
+
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationShortLabel.ts
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationLabel.ts
 msgid "Sum"
@@ -2648,8 +2661,12 @@ msgid "View billing details"
 msgstr "Rechnungsdetails anzeigen"
 
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/Publishing.tsx
-msgid "View Publication"
-msgstr "Veröffentlichung anzeigen"
+#~ msgid "View Publication"
+#~ msgstr "View Publication"
+
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/Publishing.tsx
+msgid "View Publications"
+msgstr "Veröffentlichungen anzeigen"
 
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
 #~ msgid "Visitor Activity"
