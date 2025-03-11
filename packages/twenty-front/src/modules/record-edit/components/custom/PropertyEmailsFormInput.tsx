@@ -8,6 +8,12 @@ import { useRecordEdit } from '@/record-edit/contexts/RecordEditContext';
 import { EmailTemplateSetDefaultValuesEffect } from '../EmailTemplateSetDefaultValuesEffect';
 import { Trans, useLingui } from '@lingui/react/macro';
 import { EmailFormRichTextEditor } from '@/activities/components/EmailFormRichTextEditor';
+import { Button } from '@ui/input/button/components/Button';
+import { useCreateActivityInDB } from '@/activities/hooks/useCreateActivityInDB';
+import { useCreateOneRecord } from '@/object-record/hooks/useCreateOneRecord';
+import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadataItem';
+import { v4 } from 'uuid';
+import { useUpdateOneRecord } from '@/object-record/hooks/useUpdateOneRecord';
 
 const StyledContainer = styled.div`
   display: flex;
@@ -37,15 +43,56 @@ const StyledEmailBody = styled.div`
   gap: ${({ theme }) => theme.spacing(1)};
 `;
 
-const StyledBodyTitle = styled.div`
-  color: ${({ theme }) => theme.font.color.light};
-  font-size: ${({ theme }) => theme.font.size.xs};
-  font-weight: ${({ theme }) => theme.font.weight.medium};
-`;
-
 export const PropertyEmailsFormInput = ({ loading }: { loading?: boolean }) => {
-  const { emailTemplateId, emailTemplate } = useEmailTemplateContextOrThrow();
+  const { emailTemplateId, emailTemplate, propertyId, publicationId } =
+    useEmailTemplateContextOrThrow();
+
   const { emailTemplateSubject, updateEmailTemplateSubject } = useRecordEdit();
+
+  const { createOneRecord, loading: loadingCreation } = useCreateOneRecord({
+    objectNameSingular: CoreObjectNameSingular.Note,
+  });
+
+  const { updateOneRecord: updatePropertyEmailTemplate } = useUpdateOneRecord({
+    objectNameSingular: CoreObjectNameSingular.Property,
+  });
+
+  const { updateOneRecord: updatePublicationEmailTemplate } =
+    useUpdateOneRecord({
+      objectNameSingular: CoreObjectNameSingular.Publication,
+    });
+
+  const createEmailTemplate = async () => {
+    const newRecordId = v4();
+    const createRecordPayload: {
+      id: string;
+      title: string;
+      [key: string]: any;
+    } = {
+      id: newRecordId,
+      title: '',
+    };
+
+    await createOneRecord(createRecordPayload);
+
+    if (propertyId) {
+      await updatePropertyEmailTemplate({
+        idToUpdate: propertyId,
+        updateOneRecordInput: {
+          emailTemplateId: newRecordId,
+        },
+      });
+    }
+
+    if (publicationId) {
+      await updatePublicationEmailTemplate({
+        idToUpdate: publicationId,
+        updateOneRecordInput: {
+          emailTemplateId: newRecordId,
+        },
+      });
+    }
+  };
 
   if (loading) {
     // TODO: Add loading state
@@ -58,21 +105,33 @@ export const PropertyEmailsFormInput = ({ loading }: { loading?: boolean }) => {
         <StyledTitle>
           <Trans>Email Template</Trans>
         </StyledTitle>
-        <TextInputV2
-          label="Subject"
-          value={emailTemplateSubject}
-          onChange={(text) => updateEmailTemplateSubject(text)}
-        />
-        <StyledEmailBody>
-          <StyledEmailEntryContainer>
-            <EmailFormRichTextEditor
-              showPlaceholderButtonBar
-              activityToSet={emailTemplate}
-              activityObjectNameSingular={CoreObjectNameSingular.Note}
-              activityId={emailTemplateId}
+        {emailTemplateId ? (
+          <>
+            <TextInputV2
+              label="Subject"
+              value={emailTemplateSubject}
+              onChange={(text) => updateEmailTemplateSubject(text)}
             />
-          </StyledEmailEntryContainer>
-        </StyledEmailBody>
+            <StyledEmailBody>
+              <StyledEmailEntryContainer>
+                <EmailFormRichTextEditor
+                  showPlaceholderButtonBar
+                  activityToSet={emailTemplate}
+                  activityObjectNameSingular={CoreObjectNameSingular.Note}
+                  activityId={emailTemplateId}
+                />
+              </StyledEmailEntryContainer>
+            </StyledEmailBody>
+          </>
+        ) : (
+          <div>
+            <Button
+              title="Create Email Template"
+              onClick={createEmailTemplate}
+              disabled={loadingCreation}
+            />
+          </div>
+        )}
       </StyledContainer>
     </>
   );

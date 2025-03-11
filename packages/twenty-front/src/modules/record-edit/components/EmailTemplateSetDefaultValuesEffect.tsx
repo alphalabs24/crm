@@ -4,22 +4,26 @@ import { useEmailTemplateContextOrThrow } from '../contexts/EmailTemplateContext
 
 // Sets default values for email templates inside RecordEditContext
 export const EmailTemplateSetDefaultValuesEffect = () => {
-  const { setEmailTemplateSubject, setEmailTemplate } = useRecordEdit();
+  const { setEmailTemplateSubject, setEmailTemplate, emailTemplateSubject } =
+    useRecordEdit();
   const { emailTemplate, emailTemplateId } = useEmailTemplateContextOrThrow();
 
   useEffect(() => {
     if (emailTemplate) {
-      setEmailTemplateSubject(emailTemplate.title);
-      setEmailTemplate({
-        id: emailTemplateId,
-        template: emailTemplate,
-      });
+      if (!emailTemplateSubject) setEmailTemplateSubject(emailTemplate.title);
+
+      if (!emailTemplate)
+        setEmailTemplate({
+          id: emailTemplateId,
+          template: emailTemplate,
+        });
     }
   }, [
     emailTemplate,
     setEmailTemplateSubject,
     setEmailTemplate,
     emailTemplateId,
+    emailTemplateSubject,
   ]);
 
   return null;

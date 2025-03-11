@@ -18,6 +18,7 @@ const StyledButtonBar = styled.div`
   align-items: center;
   gap: ${({ theme }) => theme.spacing(2)};
   justify-content: space-between;
+  margin-bottom: ${({ theme }) => theme.spacing(4)};
   padding: 0 ${({ theme }) => theme.spacing(2)}
     ${({ theme }) => theme.spacing(1)};
 `;

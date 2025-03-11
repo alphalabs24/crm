@@ -17,6 +17,7 @@ import { PropertyImageFormInput } from './custom/PropertyImageFormInput';
 import { PropertyDocumentFormInput } from './custom/PropertyDocumentFormInput';
 import { PropertyEmailsFormInput } from './custom/PropertyEmailsFormInput';
 import { EmailTemplateContextProvider } from '../contexts/EmailTemplateContext';
+import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 
 const StyledFieldContainer = styled.div<{ isHorizontal?: boolean }>`
   display: flex;
@@ -131,6 +132,14 @@ export const RecordEditField = ({
             value={{
               emailTemplateId: record.emailTemplateId,
               emailTemplate: record.emailTemplate,
+              propertyId:
+                objectNameSingular === CoreObjectNameSingular.Property
+                  ? record.id
+                  : undefined,
+              publicationId:
+                objectNameSingular === CoreObjectNameSingular.Publication
+                  ? record.id
+                  : undefined,
             }}
           >
             <CustomComponent loading={loading} />
