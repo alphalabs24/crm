@@ -8,10 +8,12 @@ import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSi
 import { getObjectMetadataIdentifierFields } from '@/object-metadata/utils/getObjectMetadataIdentifierFields';
 import { RecordFiltersComponentInstanceContext } from '@/object-record/record-filter/states/context/RecordFiltersComponentInstanceContext';
 
+import { MAIN_CONTEXT_STORE_INSTANCE_ID } from '@/context-store/constants/MainContextStoreInstanceId';
 import { RecordShowPropertyBreadcrumb } from '@/object-record/record-show/components/nm/RecordShowPropertyBreadcrumb';
 import { RecordShowPropertyContainer } from '@/object-record/record-show/components/nm/RecordShowPropertyContainer';
 import { useRecordShowPage } from '@/object-record/record-show/hooks/useRecordShowPage';
 import { useRecordShowPagePagination } from '@/object-record/record-show/hooks/useRecordShowPagePagination';
+import { RecordSortsComponentInstanceContext } from '@/object-record/record-sort/states/context/RecordSortsComponentInstanceContext';
 import { RecordValueSetterEffect } from '@/object-record/record-store/components/RecordValueSetterEffect';
 import { RecordFieldValueSelectorContextProvider } from '@/object-record/record-store/contexts/RecordFieldValueSelectorContext';
 import { PageBody } from '@/ui/layout/page/components/PageBody';
@@ -23,7 +25,6 @@ import { RecordShowPageWorkflowVersionHeader } from '@/workflow/components/Recor
 import { useIsFeatureEnabled } from '@/workspace/hooks/useIsFeatureEnabled';
 import styled from '@emotion/styled';
 import { FeatureFlagKey } from '~/generated/graphql';
-import { RecordSortsComponentInstanceContext } from '@/object-record/record-sort/states/context/RecordSortsComponentInstanceContext';
 
 const StyledHeader = styled.div`
   align-items: center;
@@ -55,6 +56,7 @@ const StyledRightContainer = styled.div`
 export const RecordShowPropertyPage = () => {
   const parameters = useParams<{
     objectRecordId: string;
+    objectNameSingular: string;
   }>();
 
   const {
@@ -68,7 +70,7 @@ export const RecordShowPropertyPage = () => {
     objectMetadataItem,
     handleFavoriteButtonClick,
   } = useRecordShowPage(
-    CoreObjectNameSingular.Property,
+    parameters.objectNameSingular ?? '',
     parameters.objectRecordId ?? '',
   );
 
@@ -93,7 +95,7 @@ export const RecordShowPropertyPage = () => {
           value={{ instanceId: `record-show-${objectRecordId}` }}
         >
           <ContextStoreComponentInstanceContext.Provider
-            value={{ instanceId: `main-context-store` }}
+            value={{ instanceId: MAIN_CONTEXT_STORE_INSTANCE_ID }}
           >
             <ActionMenuComponentInstanceContext.Provider
               value={{ instanceId: `record-show-${objectRecordId}` }}
@@ -153,6 +155,10 @@ export const RecordShowPropertyPage = () => {
                       objectNameSingular={objectNameSingular}
                       objectRecordId={objectRecordId}
                       loading={loading}
+                      isPublication={
+                        objectNameSingular ===
+                        CoreObjectNameSingular.Publication
+                      }
                     />
                   </TimelineActivityContext.Provider>
                 </PageBody>

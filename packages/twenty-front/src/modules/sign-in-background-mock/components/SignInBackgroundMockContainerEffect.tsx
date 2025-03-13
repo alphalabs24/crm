@@ -12,6 +12,7 @@ import { SIGN_IN_BACKGROUND_MOCK_VIEW_FIELDS } from '@/sign-in-background-mock/c
 import { useSetRecoilComponentStateV2 } from '@/ui/utilities/state/component-state/hooks/useSetRecoilComponentStateV2';
 import { useInitViewBar } from '@/views/hooks/useInitViewBar';
 import { mapViewFieldsToColumnDefinitions } from '@/views/utils/mapViewFieldsToColumnDefinitions';
+import { MAIN_CONTEXT_STORE_INSTANCE_ID } from '@/context-store/constants/MainContextStoreInstanceId';
 
 type SignInBackgroundMockContainerEffectProps = {
   objectNamePlural: string;
@@ -26,7 +27,7 @@ export const SignInBackgroundMockContainerEffect = ({
 }: SignInBackgroundMockContainerEffectProps) => {
   const setContextStoreCurrentObjectMetadataItem = useSetRecoilComponentStateV2(
     contextStoreCurrentObjectMetadataItemComponentState,
-    'main-context-store',
+    MAIN_CONTEXT_STORE_INSTANCE_ID,
   );
 
   const { setAvailableTableColumns, setOnEntityCountChange } = useRecordTable({

@@ -19,6 +19,7 @@ import { RecordShowPageWorkflowVersionHeader } from '@/workflow/components/Recor
 import { useIsFeatureEnabled } from '@/workspace/hooks/useIsFeatureEnabled';
 import { FeatureFlagKey } from '~/generated/graphql';
 import { RecordShowPageHeader } from '~/pages/object-record/RecordShowPageHeader';
+import { MAIN_CONTEXT_STORE_INSTANCE_ID } from '@/context-store/constants/MainContextStoreInstanceId';
 
 export const RecordShowPage = () => {
   const parameters = useParams<{
@@ -55,7 +56,7 @@ export const RecordShowPage = () => {
           value={{ instanceId: `record-show-${objectRecordId}` }}
         >
           <ContextStoreComponentInstanceContext.Provider
-            value={{ instanceId: `main-context-store` }}
+            value={{ instanceId: MAIN_CONTEXT_STORE_INSTANCE_ID }}
           >
             <ActionMenuComponentInstanceContext.Provider
               value={{ instanceId: `record-show-${objectRecordId}` }}

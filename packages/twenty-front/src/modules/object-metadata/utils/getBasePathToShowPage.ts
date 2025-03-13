@@ -6,7 +6,7 @@ export const getBasePathToShowPage = ({
   objectNameSingular: string;
 }) => {
   if (isPropertyOrPublication(objectNameSingular)) {
-    return `/${objectNameSingular}/`;
+    return `/details/${objectNameSingular}/`;
   }
 
   const basePathToShowPage = `/object/${objectNameSingular}/`;

@@ -21,7 +21,6 @@ import { contextStoreCurrentViewTypeComponentState } from '@/context-store/state
 import { contextStoreFiltersComponentState } from '@/context-store/states/contextStoreFiltersComponentState';
 import { contextStoreNumberOfSelectedRecordsComponentState } from '@/context-store/states/contextStoreNumberOfSelectedRecordsComponentState';
 import { contextStoreTargetedRecordsRuleComponentState } from '@/context-store/states/contextStoreTargetedRecordsRuleComponentState';
-import { mainContextStoreComponentInstanceIdState } from '@/context-store/states/mainContextStoreComponentInstanceId';
 import { ContextStoreViewType } from '@/context-store/types/ContextStoreViewType';
 import { viewableRecordIdState } from '@/object-record/record-right-drawer/states/viewableRecordIdState';
 import { viewableRecordNameSingularState } from '@/object-record/record-right-drawer/states/viewableRecordNameSingularState';
@@ -30,6 +29,9 @@ import { t } from '@lingui/core/macro';
 import { useCallback } from 'react';
 import { capitalize, isDefined } from 'twenty-shared';
 import { isCommandMenuOpenedState } from '../states/isCommandMenuOpenedState';
+import { COMMAND_MENU_COMPONENT_INSTANCE_ID } from '../constants/CommandMenuComponentIntanceId';
+import { COMMAND_MENU_PREVIOUS_COMPONENT_INSTANCE_ID } from '../constants/CommandMenuPreviousComponentInstanceId';
+import { MAIN_CONTEXT_STORE_INSTANCE_ID } from '@/context-store/constants/MainContextStoreInstanceId';
 
 export const useCommandMenu = () => {
   const { resetSelectedItem } = useSelectableList('command-menu-list');
@@ -38,10 +40,6 @@ export const useCommandMenu = () => {
     goBackToPreviousHotkeyScope,
   } = usePreviousHotkeyScope();
   const { getIcon } = useIcons();
-
-  const mainContextStoreComponentInstanceId = useRecoilValue(
-    mainContextStoreComponentInstanceIdState,
-  );
 
   const { copyContextStoreStates } = useCopyContextStoreStates();
   const { resetContextStoreStates } = useResetContextStoreStates();
@@ -58,19 +56,15 @@ export const useCommandMenu = () => {
         }
 
         copyContextStoreStates({
-          instanceIdToCopyFrom: mainContextStoreComponentInstanceId,
-          instanceIdToCopyTo: 'command-menu',
+          instanceIdToCopyFrom: MAIN_CONTEXT_STORE_INSTANCE_ID,
+          instanceIdToCopyTo: COMMAND_MENU_COMPONENT_INSTANCE_ID,
         });
 
         set(isCommandMenuOpenedState, true);
         setHotkeyScopeAndMemorizePreviousScope(AppHotkeyScope.CommandMenuOpen);
         set(hasUserSelectedCommandState, false);
       },
-    [
-      copyContextStoreStates,
-      mainContextStoreComponentInstanceId,
-      setHotkeyScopeAndMemorizePreviousScope,
-    ],
+    [copyContextStoreStates, setHotkeyScopeAndMemorizePreviousScope],
   );
 
   const closeCommandMenu = useRecoilCallback(
@@ -84,8 +78,8 @@ export const useCommandMenu = () => {
   const onCommandMenuCloseAnimationComplete = useRecoilCallback(
     ({ set }) =>
       () => {
-        resetContextStoreStates('command-menu');
-        resetContextStoreStates('command-menu-previous');
+        resetContextStoreStates(COMMAND_MENU_COMPONENT_INSTANCE_ID);
+        resetContextStoreStates(COMMAND_MENU_PREVIOUS_COMPONENT_INSTANCE_ID);
 
         set(viewableRecordIdState, null);
         set(commandMenuPageState, CommandMenuPages.Root);
@@ -276,13 +270,13 @@ export const useCommandMenu = () => {
     ({ set }) => {
       return () => {
         copyContextStoreStates({
-          instanceIdToCopyFrom: 'command-menu',
-          instanceIdToCopyTo: 'command-menu-previous',
+          instanceIdToCopyFrom: COMMAND_MENU_COMPONENT_INSTANCE_ID,
+          instanceIdToCopyTo: COMMAND_MENU_PREVIOUS_COMPONENT_INSTANCE_ID,
         });
 
         set(
           contextStoreTargetedRecordsRuleComponentState.atomFamily({
-            instanceId: 'command-menu',
+            instanceId: COMMAND_MENU_COMPONENT_INSTANCE_ID,
           }),
           {
             mode: 'selection',
@@ -292,21 +286,21 @@ export const useCommandMenu = () => {
 
         set(
           contextStoreNumberOfSelectedRecordsComponentState.atomFamily({
-            instanceId: 'command-menu',
+            instanceId: COMMAND_MENU_COMPONENT_INSTANCE_ID,
           }),
           0,
         );
 
         set(
           contextStoreFiltersComponentState.atomFamily({
-            instanceId: 'command-menu',
+            instanceId: COMMAND_MENU_COMPONENT_INSTANCE_ID,
           }),
           [],
         );
 
         set(
           contextStoreCurrentViewTypeComponentState.atomFamily({
-            instanceId: 'command-menu',
+            instanceId: COMMAND_MENU_COMPONENT_INSTANCE_ID,
           }),
           ContextStoreViewType.Table,
         );
