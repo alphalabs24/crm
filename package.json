@@ -364,12 +364,12 @@
   "nx": {},
   "scripts": {
     "start": "npx concurrently --kill-others 'npx nx run-many -t start -p twenty-server twenty-front' 'npx wait-on tcp:3000 && npx nx run twenty-server:worker'",
-    "i18n:extract": "nx run-many -t lingui:extract",
-    "i18n:compile": "nx run-many -t lingui:compile",
+    "translate:extract": "nx run-many -t lingui:extract",
+    "translate:compile": "nx run-many -t lingui:compile",
     "i18n:fix-po": "find packages -name '*.po' -exec sed -i'' -E ':a;N;$!ba;s/\\n\"$/\"/g;s/msgstr \"([^\"]*)\\n([^\"]*)\"/msgstr \"\\1\\\\n\\2\"/g' {} +",
-    "i18n:crowdin-push": "crowdin upload sources && crowdin upload translations",
-    "i18n:crowdin-pull": "crowdin download",
-    "translate": "yarn i18n:crowdin-pull && yarn i18n:extract && yarn i18n:compile && yarn i18n:crowdin-push"
+    "translate:push": "crowdin upload sources && crowdin upload translations",
+    "translate:pull": "crowdin download",
+    "translate": "yarn translate:pull && yarn translate:extract && yarn translate:compile && yarn translate:push"
   },
   "workspaces": {
     "packages": [
