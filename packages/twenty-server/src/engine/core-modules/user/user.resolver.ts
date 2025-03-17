@@ -1,4 +1,4 @@
-import { UseGuards } from '@nestjs/common';
+import { BadRequestException, UseGuards } from '@nestjs/common';
 import {
   Args,
   Mutation,
@@ -13,7 +13,11 @@ import crypto from 'crypto';
 
 import { GraphQLJSONObject } from 'graphql-type-json';
 import { FileUpload, GraphQLUpload } from 'graphql-upload';
-import { PermissionsOnAllObjectRecords, SettingsFeatures } from 'twenty-shared';
+import {
+  PermissionsOnAllObjectRecords,
+  SettingsFeatures,
+  nestermindUserVars,
+} from 'twenty-shared';
 import { In, Repository } from 'typeorm';
 
 import { SupportDriver } from 'src/engine/core-modules/environment/interfaces/support.interface';
@@ -53,7 +57,6 @@ import { RoleDTO } from 'src/engine/metadata-modules/role/dtos/role.dto';
 import { UserRoleService } from 'src/engine/metadata-modules/user-role/user-role.service';
 import { AccountsToReconnectKeys } from 'src/modules/connected-account/types/accounts-to-reconnect-key-value.type';
 import { streamToBuffer } from 'src/utils/stream-to-buffer';
-
 const getHMACKey = (email?: string, key?: string | null) => {
   if (!email || !key) return null;
 
@@ -153,6 +156,7 @@ export class UserResolver {
       OnboardingStepKeys.ONBOARDING_CONNECT_ACCOUNT_PENDING,
       AccountsToReconnectKeys.ACCOUNTS_TO_RECONNECT_INSUFFICIENT_PERMISSIONS,
       AccountsToReconnectKeys.ACCOUNTS_TO_RECONNECT_EMAIL_ALIASES,
+      ...nestermindUserVars,
     ] as string[];
 
     const filteredMap = new Map(
