@@ -1,5 +1,5 @@
-import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
+import { gql } from '@apollo/client';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -1167,12 +1167,12 @@ export type ObjectIndexMetadatasConnection = {
 
 /** Onboarding status */
 export enum OnboardingStatus {
-  COMPLETED = 'COMPLETED',
-  INVITE_TEAM = 'INVITE_TEAM',
   PLAN_REQUIRED = 'PLAN_REQUIRED',
+  WORKSPACE_ACTIVATION = 'WORKSPACE_ACTIVATION',
   PROFILE_CREATION = 'PROFILE_CREATION',
   SYNC_EMAIL = 'SYNC_EMAIL',
-  WORKSPACE_ACTIVATION = 'WORKSPACE_ACTIVATION'
+  INVITE_TEAM = 'INVITE_TEAM',
+  COMPLETED = 'COMPLETED',
 }
 
 export type OnboardingStepSuccess = {

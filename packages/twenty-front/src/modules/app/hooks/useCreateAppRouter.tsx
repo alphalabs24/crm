@@ -26,6 +26,7 @@ import { CreateWorkspace } from '~/pages/onboarding/CreateWorkspace';
 import { InviteTeam } from '~/pages/onboarding/InviteTeam';
 import { PaymentSuccess } from '~/pages/onboarding/PaymentSuccess';
 import { SyncEmails } from '~/pages/onboarding/SyncEmails';
+import { Tutorial } from '~/pages/onboarding/tutorial';
 
 export const useCreateAppRouter = (
   isFunctionSettingsEnabled?: boolean,
@@ -50,6 +51,7 @@ export const useCreateAppRouter = (
           <Route path={AppPath.SyncEmails} element={<SyncEmails />} />
           <Route path={AppPath.InviteTeam} element={<InviteTeam />} />
           <Route path={AppPath.PlanRequired} element={<ChooseYourPlan />} />
+          <Route path={AppPath.Tutorial} element={<Tutorial />} />
           <Route
             path={AppPath.PlanRequiredSuccess}
             element={<PaymentSuccess />}

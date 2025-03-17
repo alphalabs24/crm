@@ -12,6 +12,8 @@ import { isAdvancedModeEnabledState } from '@/ui/navigation/navigation-drawer/st
 import { useIsSettingsDrawer } from '@/navigation/hooks/useIsSettingsDrawer';
 
 import { MainNavigationDrawerItems } from '@/navigation/components/MainNavigationDrawerItems';
+import { OnboardingSteps } from '@/onboarding-tutorial/components/OnboardingSteps';
+import NestermindBranding from '@/ui/navigation/navigation-drawer/components/NavigationNestermindBranding';
 import { useLingui } from '@lingui/react/macro';
 import { AdvancedSettingsToggle } from 'twenty-ui';
 
@@ -36,11 +38,14 @@ export const AppNavigationDrawer = ({
         title: t`Exit Settings`,
         children: <SettingsNavigationDrawerItems />,
         footer: (
-          <AdvancedSettingsToggle
-            isAdvancedModeEnabled={isAdvancedModeEnabled}
-            setIsAdvancedModeEnabled={setIsAdvancedModeEnabled}
-            label={t`Advanced:`}
-          />
+          <>
+            <AdvancedSettingsToggle
+              isAdvancedModeEnabled={isAdvancedModeEnabled}
+              setIsAdvancedModeEnabled={setIsAdvancedModeEnabled}
+              label={t`Advanced:`}
+            />
+            <NestermindBranding size={75} />
+          </>
         ),
         logo: '',
       }
@@ -48,7 +53,13 @@ export const AppNavigationDrawer = ({
         logo: currentWorkspace?.logo ?? '',
         title: currentWorkspace?.displayName ?? '',
         children: <MainNavigationDrawerItems />,
-        footer: <SupportDropdown />,
+        footer: (
+          <>
+            <SupportDropdown />
+            <OnboardingSteps />
+            <NestermindBranding size={75} />
+          </>
+        ),
       };
 
   return (

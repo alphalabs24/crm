@@ -14,6 +14,9 @@ export enum AppPath {
   PlanRequired = '/plan-required',
   PlanRequiredSuccess = '/plan-required/payment-success',
 
+  // Tutorial Onboarding
+  Tutorial = '/learn-about-nestermind',
+
   // Onboarded
   Index = '/',
   TasksPage = '/objects/tasks',
