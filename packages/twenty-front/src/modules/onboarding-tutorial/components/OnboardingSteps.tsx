@@ -113,6 +113,12 @@ export const OnboardingSteps = () => {
   ).length;
   const totalSteps = Object.keys(steps).length;
 
+  const hasCompletedAllSteps = completedSteps === totalSteps;
+
+  if (hasCompletedAllSteps) {
+    return null;
+  }
+
   return (
     <AnimatePresence mode="wait">
       {isTutorialPage ? null : (

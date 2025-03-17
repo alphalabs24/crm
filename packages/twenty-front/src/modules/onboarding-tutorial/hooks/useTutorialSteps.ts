@@ -30,7 +30,11 @@ export const useTutorialSteps = (): TutorialStepsType => {
         ...acc,
         [step.id]: {
           step,
-          completed: keyValueStore.getValueByKey(step.id) || false,
+          completed:
+            // TODO remove this dummy state
+            step.id === TutorialStatus.TUTORIAL_PLATFORM_SETUP
+              ? true
+              : keyValueStore.getValueByKey(step.id) || false,
         },
       }),
       {} as TutorialSteps,
