@@ -166,6 +166,31 @@ export class UserResolver {
     return Object.fromEntries(filteredMap);
   }
 
+  @Mutation(() => GraphQLJSONObject)
+  async setUserVar(
+    @AuthUser() user: User,
+    @AuthWorkspace() workspace: Workspace,
+    @Args({ name: 'key', type: () => String })
+    key: string,
+    @Args({ name: 'value', type: () => String })
+    value: string,
+  ): Promise<Record<string, any>> {
+    const userVarUpdateAllowList = [...nestermindUserVars] as string[];
+
+    if (!userVarUpdateAllowList.includes(key)) {
+      throw new BadRequestException(`User var ${key} not found`);
+    }
+
+    await this.userVarService.set({
+      userId: user.id,
+      workspaceId: workspace.id,
+      key,
+      value,
+    });
+
+    return this.userVars(user, workspace);
+  }
+
   @ResolveField(() => WorkspaceMember, {
     nullable: true,
   })
