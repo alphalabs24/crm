@@ -55,6 +55,20 @@ export const useRecordShowContainerTabs = (
           position: 0,
           cards: [{ type: CardType.OverviewCard }],
         },
+        emails: {
+          title: 'Emails',
+          position: 600,
+          Icon: IconMail,
+          cards: [{ type: CardType.EmailCard }],
+          hide: {
+            ifMobile: false,
+            ifDesktop: false,
+            ifInRightDrawer: false,
+            ifFeaturesDisabled: [],
+            ifRequiredObjectsInactive: [],
+            ifRelationsMissing: [],
+          },
+        },
         aiSuite: {
           title: 'AI Suite',
           position: 1,
@@ -88,7 +102,20 @@ export const useRecordShowContainerTabs = (
           position: 0,
           cards: [{ type: CardType.PublicationDetailsCard }],
         },
-
+        emails: {
+          title: 'Emails',
+          position: 600,
+          Icon: IconMail,
+          cards: [{ type: CardType.EmailCard }],
+          hide: {
+            ifMobile: false,
+            ifDesktop: false,
+            ifInRightDrawer: false,
+            ifFeaturesDisabled: [],
+            ifRequiredObjectsInactive: [],
+            ifRelationsMissing: [],
+          },
+        },
         timeline: {
           title: 'Timeline',
           Icon: IconTimelineEvent,
@@ -132,6 +159,24 @@ export const useRecordShowContainerTabs = (
           },
         },
         fields: null,
+      },
+    },
+    [CoreObjectNameSingular.BuyerLead]: {
+      tabs: {
+        emails: {
+          title: 'Emails',
+          position: 600,
+          Icon: IconMail,
+          cards: [{ type: CardType.EmailCard }],
+          hide: {
+            ifMobile: false,
+            ifDesktop: false,
+            ifInRightDrawer: false,
+            ifFeaturesDisabled: [],
+            ifRequiredObjectsInactive: [],
+            ifRelationsMissing: [],
+          },
+        },
       },
     },
     [CoreObjectNameSingular.Note]: {

@@ -21,6 +21,7 @@ import { ValidationResult } from '../../../hooks/usePublicationValidation';
 import { getLinkToShowPage } from '@/object-metadata/utils/getLinkToShowPage';
 import { Link } from 'react-router-dom';
 import { getEnv } from '~/utils/get-env';
+import { useNestermind } from '@/api/hooks/useNestermind';
 
 const StyledPublishingProcess = styled.div`
   display: flex;
@@ -132,13 +133,16 @@ export const Publishing = ({
   const [isLoading, setIsLoading] = useState(false);
   const { enqueueSnackBar } = useSnackBar();
   const { t } = useLingui();
-  const tokenPair = useRecoilValue(tokenPairState);
   const [showError, setShowError] = useState(false);
 
   const { record, refetch } = useFindOneRecord({
     objectNameSingular: 'publication',
     objectRecordId: recordId,
   });
+
+  const {
+    properties: { syncPublications },
+  } = useNestermind();
 
   const publishDraft = async () => {
     try {
@@ -147,15 +151,9 @@ export const Publishing = ({
         return;
       }
       setIsLoading(true);
-      const response = await axios.post(
-        `${getEnv('REACT_APP_NESTERMIND_SERVER_BASE_URL') ?? 'http://api.localhost'}/publications/upload?id=${recordId}`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${tokenPair?.accessToken?.token}`,
-          },
-        },
-      );
+
+      const response = await syncPublications(recordId);
+
       if (response.status !== 201) {
         throw new Error('Failed to publish');
       }
