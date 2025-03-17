@@ -7,7 +7,7 @@ import { recordIndexOpenRecordInState } from '@/object-record/record-index/state
 import { PlatformBadge } from '@/object-record/record-show/components/nm/publication/PlatformBadge';
 import { ViewOpenRecordInType } from '@/views/types/ViewOpenRecordInType';
 import { useRecoilValue } from 'recoil';
-import { ChipSize, IconHomeShare } from 'twenty-ui';
+import { ChipSize } from 'twenty-ui';
 
 export const ChipFieldDisplay = () => {
   const {

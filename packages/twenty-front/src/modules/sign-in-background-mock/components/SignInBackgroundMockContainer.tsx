@@ -14,6 +14,7 @@ import { ViewBar } from '@/views/components/ViewBar';
 import { ViewComponentInstanceContext } from '@/views/states/contexts/ViewComponentInstanceContext';
 import { useRecoilValue } from 'recoil';
 import { isDefined } from 'twenty-shared';
+import { MAIN_CONTEXT_STORE_INSTANCE_ID } from '@/context-store/constants/MainContextStoreInstanceId';
 
 const StyledContainer = styled.div`
   display: flex;
@@ -32,7 +33,7 @@ export const SignInBackgroundMockContainer = () => {
 
   const objectMetadataItem = useRecoilComponentValueV2(
     contextStoreCurrentObjectMetadataItemComponentState,
-    'main-context-store',
+    MAIN_CONTEXT_STORE_INSTANCE_ID,
   );
 
   return (
@@ -58,7 +59,7 @@ export const SignInBackgroundMockContainer = () => {
             >
               <ContextStoreComponentInstanceContext.Provider
                 value={{
-                  instanceId: 'main-context-store',
+                  instanceId: MAIN_CONTEXT_STORE_INSTANCE_ID,
                 }}
               >
                 <SignInBackgroundMockContainerEffect

@@ -26,6 +26,7 @@ import { useRef } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { useIsMobile } from 'twenty-ui';
 import { FeatureFlagKey } from '~/generated-metadata/graphql';
+import { COMMAND_MENU_COMPONENT_INSTANCE_ID } from '../constants/CommandMenuComponentIntanceId';
 
 const StyledCommandMenu = styled(motion.div)`
   background: ${({ theme }) => theme.background.secondary};
@@ -89,16 +90,16 @@ export const CommandMenuContainer = ({
 
   return (
     <RecordFiltersComponentInstanceContext.Provider
-      value={{ instanceId: 'command-menu' }}
+      value={{ instanceId: COMMAND_MENU_COMPONENT_INSTANCE_ID }}
     >
       <RecordSortsComponentInstanceContext.Provider
-        value={{ instanceId: 'command-menu' }}
+        value={{ instanceId: COMMAND_MENU_COMPONENT_INSTANCE_ID }}
       >
         <ContextStoreComponentInstanceContext.Provider
-          value={{ instanceId: 'command-menu' }}
+          value={{ instanceId: COMMAND_MENU_COMPONENT_INSTANCE_ID }}
         >
           <ActionMenuComponentInstanceContext.Provider
-            value={{ instanceId: 'command-menu' }}
+            value={{ instanceId: COMMAND_MENU_COMPONENT_INSTANCE_ID }}
           >
             <ActionMenuContext.Provider
               value={{

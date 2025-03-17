@@ -9,7 +9,6 @@ import { useRelationFromManyFieldDisplay } from '@/object-record/record-field/me
 import { PlatformBadge } from '@/object-record/record-show/components/nm/publication/PlatformBadge';
 import { ExpandableList } from '@/ui/layout/expandable-list/components/ExpandableList';
 import { isNull } from '@sniptt/guards';
-import { IconHomeShare } from 'twenty-ui';
 
 export const RelationFromManyFieldDisplay = ({
   wrap = false,
@@ -17,6 +16,7 @@ export const RelationFromManyFieldDisplay = ({
   wrap?: boolean;
 }) => {
   const { fieldValue, fieldDefinition } = useRelationFromManyFieldDisplay();
+
   const { isFocused } = useFieldFocus();
 
   const { fieldName, objectMetadataNameSingular } = fieldDefinition.metadata;

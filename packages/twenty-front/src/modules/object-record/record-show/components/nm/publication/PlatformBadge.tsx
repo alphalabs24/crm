@@ -63,8 +63,7 @@ export const PlatformBadge = ({
 }: PlatformBadgeProps) => {
   const { colorScheme } = useColorScheme();
   const platform =
-    // TODO remove this and replace it with enum
-    platformId === ('NEWHOME' as unknown as PlatformId)
+    platformId === 'NEWHOME'
       ? PLATFORMS[PlatformId.Newhome]
       : PLATFORMS[platformId];
 

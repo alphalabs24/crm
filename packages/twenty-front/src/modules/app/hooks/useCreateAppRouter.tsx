@@ -18,7 +18,6 @@ import { SignInUp } from '~/pages/auth/SignInUp';
 import { NotFound } from '~/pages/not-found/NotFound';
 import { RecordEditPage } from '~/pages/object-record/nm/RecordEditPage';
 import { RecordShowPropertyPage } from '~/pages/object-record/nm/RecordShowPropertyPage';
-import { RecordShowPublicationPage } from '~/pages/object-record/nm/RecordShowPublicationPage';
 import { RecordIndexPage } from '~/pages/object-record/RecordIndexPage';
 import { RecordShowPage } from '~/pages/object-record/RecordShowPage';
 import { ChooseYourPlan } from '~/pages/onboarding/ChooseYourPlan';
@@ -61,10 +60,6 @@ export const useCreateAppRouter = (
           <Route
             path={AppPath.RecordShowPropertyPage}
             element={<RecordShowPropertyPage />}
-          />
-          <Route
-            path={AppPath.RecordShowPublicationPage}
-            element={<RecordShowPublicationPage />}
           />
           <Route path={AppPath.RecordEditPage} element={<RecordEditPage />} />
           <Route

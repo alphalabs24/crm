@@ -1,12 +1,10 @@
 import { useAttachments } from '@/activities/files/hooks/useAttachments';
 import { ActivityTargetableObject } from '@/activities/types/ActivityTargetableEntity';
-import { useMemo } from 'react';
-import styled from '@emotion/styled';
-import Skeleton from 'react-loading-skeleton';
-import { LARGE_DESKTOP_VIEWPORT, MOBILE_VIEWPORT } from 'twenty-ui';
-import { IconPhoto } from '@tabler/icons-react';
 import { useTheme } from '@emotion/react';
+import styled from '@emotion/styled';
 import { useLingui } from '@lingui/react/macro';
+import { useMemo } from 'react';
+import { IconPhoto, LARGE_DESKTOP_VIEWPORT, MOBILE_VIEWPORT } from 'twenty-ui';
 
 type ShowPageImageBannerProps = {
   targetableObject: ActivityTargetableObject;

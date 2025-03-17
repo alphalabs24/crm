@@ -43,9 +43,13 @@ export const RecordChip = ({
     }
   };
 
+  if (!record) return null;
+
   return (
     <AvatarChip
-      placeholderColorSeed={record.id}
+      // TODO Added undefined check as quick fix, this should be further investigated!
+      // Notes seem to have a bug where record can be undefined
+      placeholderColorSeed={record?.id}
       name={recordChipData.name}
       avatarType={recordChipData.avatarType}
       avatarUrl={recordChipData.avatarUrl ?? ''}

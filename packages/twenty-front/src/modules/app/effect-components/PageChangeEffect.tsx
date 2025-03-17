@@ -148,10 +148,6 @@ export const PageChangeEffect = () => {
         setHotkeyScope(PageHotkeyScope.PropertyShowPage);
         break;
       }
-      case isMatchingLocation(AppPath.RecordShowPublicationPage): {
-        setHotkeyScope(PageHotkeyScope.PublicationShowPage);
-        break;
-      }
       case isMatchingLocation(SettingsPath.Domain, AppBasePath.Settings): {
         setHotkeyScope(PageHotkeyScope.Settings, {
           goto: false,

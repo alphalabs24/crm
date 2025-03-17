@@ -10,6 +10,7 @@ import { useRecoilComponentValueV2 } from '@/ui/utilities/state/component-state/
 import { isNonEmptyString } from '@sniptt/guards';
 import { useRecoilValue } from 'recoil';
 import { Key } from 'ts-key-enum';
+import { COMMAND_MENU_COMPONENT_INSTANCE_ID } from '../constants/CommandMenuComponentIntanceId';
 
 export const useCommandMenuHotKeys = () => {
   const {
@@ -27,7 +28,7 @@ export const useCommandMenuHotKeys = () => {
 
   const contextStoreTargetedRecordsRuleComponent = useRecoilComponentValueV2(
     contextStoreTargetedRecordsRuleComponentState,
-    'command-menu',
+    COMMAND_MENU_COMPONENT_INSTANCE_ID,
   );
 
   useScopedHotkeys(

@@ -13,6 +13,7 @@ import { RecordValueSetterEffect } from '@/object-record/record-store/components
 import { RecordFieldValueSelectorContextProvider } from '@/object-record/record-store/contexts/RecordFieldValueSelectorContext';
 import { useIsMobile } from '@/ui/utilities/responsive/hooks/useIsMobile';
 import styled from '@emotion/styled';
+import { RIGHT_DRAWER_RECORD_INSTANCE_ID } from '../constants/RightDrawerRecordInstanceId';
 
 const StyledRightDrawerRecord = styled.div<{ isMobile: boolean }>`
   height: ${({ theme, isMobile }) =>
@@ -29,7 +30,6 @@ export const RightDrawerRecord = () => {
     isNewViewableRecordLoadingState,
   );
   const viewableRecordId = useRecoilValue(viewableRecordIdState);
-
   if (!viewableRecordNameSingular && !isNewViewableRecordLoading) {
     throw new Error(`Object name is not defined`);
   }
@@ -52,11 +52,11 @@ export const RightDrawerRecord = () => {
       >
         <ContextStoreComponentInstanceContext.Provider
           value={{
-            instanceId: `record-show-${objectRecordId}`,
+            instanceId: RIGHT_DRAWER_RECORD_INSTANCE_ID,
           }}
         >
           <ActionMenuComponentInstanceContext.Provider
-            value={{ instanceId: `record-show-${objectRecordId}` }}
+            value={{ instanceId: RIGHT_DRAWER_RECORD_INSTANCE_ID }}
           >
             <StyledRightDrawerRecord isMobile={isMobile}>
               <RecordFieldValueSelectorContextProvider>
