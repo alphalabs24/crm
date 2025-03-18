@@ -204,7 +204,7 @@
       },
       "defaultConfiguration": "seed"
     },
-    "lingui:extract": {
+    "lingui:extract:deprecated": {
       "executor": "nx:run-commands",
       "options": {
         "cwd": "{projectRoot}",

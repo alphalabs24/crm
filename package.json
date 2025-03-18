@@ -366,11 +366,12 @@
   "scripts": {
     "start": "npx concurrently --kill-others 'npx nx run-many -t start -p twenty-server twenty-front' 'npx wait-on tcp:3000 && npx nx run twenty-server:worker'",
     "translate:extract": "nx run-many -t lingui:extract",
+    "translate:extract:deprecated": "nx run-many -t lingui:extract:deprecated",
     "translate:compile": "nx run-many -t lingui:compile",
     "i18n:fix-po": "find packages -name '*.po' -exec sed -i'' -E ':a;N;$!ba;s/\\n\"$/\"/g;s/msgstr \"([^\"]*)\\n([^\"]*)\"/msgstr \"\\1\\\\n\\2\"/g' {} +",
     "translate:push": "crowdin upload sources && crowdin upload translations",
     "translate:pull": "crowdin download",
-    "translate": "yarn translate:pull && yarn translate:extract && yarn translate:compile && yarn translate:push"
+    "translate": "yarn translate:extract && yarn translate:pull && yarn translate:compile && yarn translate:push"
   },
   "workspaces": {
     "packages": [

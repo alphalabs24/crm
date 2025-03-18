@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: nestermind-crm\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2025-03-14 12:40\n"
+"PO-Revision-Date: 2025-03-18 11:59\n"
 "Last-Translator: \n"
 "Language: de_DE\n"
 "Language-Team: German\n"
@@ -25,3 +25,4 @@ msgstr "Veröffentlichung"
 # nestermind standard objects translations
 msgid "Rooms"
 msgstr "Zimmer"
+
