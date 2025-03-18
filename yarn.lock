@@ -4236,6 +4236,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@crowdin/cli@npm:^4.6.1":
+  version: 4.6.1
+  resolution: "@crowdin/cli@npm:4.6.1"
+  dependencies:
+    command-exists-promise: "npm:^2.0.2"
+    node-fetch: "npm:2.7.0"
+    shelljs: "npm:^0.8.5"
+    tar: "npm:^7.4.3"
+    yauzl: "npm:^3.2.0"
+  bin:
+    crowdin: jdeploy-bundle/jdeploy.js
+  checksum: 10c0/594ad54381841c2123d1f865f10cbf6863b78f85f839072b74e2e1448808f75b29ec15d7d6d3ddb9edcb07cf7eb1f92310c57ab8f3e17cc9e622dd1f773f6ca5
+  languageName: node
+  linkType: hard
+
 "@crxjs/vite-plugin@npm:^1.0.14":
   version: 1.0.14
   resolution: "@crxjs/vite-plugin@npm:1.0.14"
@@ -6878,6 +6893,15 @@ __metadata:
     wrap-ansi: "npm:^8.1.0"
     wrap-ansi-cjs: "npm:wrap-ansi@^7.0.0"
   checksum: 10c0/b1bf42535d49f11dc137f18d5e4e63a28c5569de438a221c369483731e9dac9fb797af554e8bf02b6192d1e5eba6e6402cf93900c3d0ac86391d00d04876789e
+  languageName: node
+  linkType: hard
+
+"@isaacs/fs-minipass@npm:^4.0.0":
+  version: 4.0.1
+  resolution: "@isaacs/fs-minipass@npm:4.0.1"
+  dependencies:
+    minipass: "npm:^7.0.4"
+  checksum: 10c0/c25b6dc1598790d5b55c0947a9b7d111cfa92594db5296c3b907e2f533c033666f692a3939eadac17b1c7c40d362d0b0635dc874cbfe3e70db7c2b07cc97a5d2
   languageName: node
   linkType: hard
 
@@ -23629,6 +23653,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"chownr@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "chownr@npm:3.0.0"
+  checksum: 10c0/43925b87700f7e3893296c8e9c56cc58f926411cce3a6e5898136daaf08f08b9a8eb76d37d3267e707d0dcc17aed2e2ebdf5848c0c3ce95cf910a919935c1b10
+  languageName: node
+  linkType: hard
+
 "chromatic@npm:^6.18.0":
   version: 6.24.1
   resolution: "chromatic@npm:6.24.1"
@@ -24276,6 +24307,13 @@ __metadata:
   version: 2.0.3
   resolution: "comma-separated-tokens@npm:2.0.3"
   checksum: 10c0/91f90f1aae320f1755d6957ef0b864fe4f54737f3313bd95e0802686ee2ca38bff1dd381964d00ae5db42912dd1f4ae5c2709644e82706ffc6f6842a813cdd67
+  languageName: node
+  linkType: hard
+
+"command-exists-promise@npm:^2.0.2":
+  version: 2.0.2
+  resolution: "command-exists-promise@npm:2.0.2"
+  checksum: 10c0/42a3dfcaa45bbb8ccd0d1c6eb4e4242217fa0e21651943a302e4fac948a8ea331147499e6bfd48458cbdc4928ff73d3978632ff6a2b365d2df591d77af14bb46
   languageName: node
   linkType: hard
 
@@ -37529,7 +37567,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minipass@npm:^5.0.0 || ^6.0.2 || ^7.0.0, minipass@npm:^7.0.2, minipass@npm:^7.0.3, minipass@npm:^7.1.2":
+"minipass@npm:^5.0.0 || ^6.0.2 || ^7.0.0, minipass@npm:^7.0.2, minipass@npm:^7.0.3, minipass@npm:^7.0.4, minipass@npm:^7.1.2":
   version: 7.1.2
   resolution: "minipass@npm:7.1.2"
   checksum: 10c0/b0fd20bb9fb56e5fa9a8bfac539e8915ae07430a619e4b86ff71f5fc757ef3924b23b2c4230393af1eda647ed3d75739e4e0acb250a6b1eb277cf7f8fe449557
@@ -37543,6 +37581,16 @@ __metadata:
     minipass: "npm:^3.0.0"
     yallist: "npm:^4.0.0"
   checksum: 10c0/64fae024e1a7d0346a1102bb670085b17b7f95bf6cfdf5b128772ec8faf9ea211464ea4add406a3a6384a7d87a0cd1a96263692134323477b4fb43659a6cab78
+  languageName: node
+  linkType: hard
+
+"minizlib@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "minizlib@npm:3.0.1"
+  dependencies:
+    minipass: "npm:^7.0.4"
+    rimraf: "npm:^5.0.5"
+  checksum: 10c0/82f8bf70da8af656909a8ee299d7ed3b3372636749d29e105f97f20e88971be31f5ed7642f2e898f00283b68b701cc01307401cdc209b0efc5dd3818220e5093
   languageName: node
   linkType: hard
 
@@ -37590,6 +37638,15 @@ __metadata:
   bin:
     mkdirp: dist/cjs/src/bin.js
   checksum: 10c0/96f551c651dd8f5f9435d53df1a7b9bfc553be769ee6da5192c37c1f303a376ef1c6996f96913d4a8d357060451d4526a346031d1919f92c58806a5fa3cd8dfe
+  languageName: node
+  linkType: hard
+
+"mkdirp@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "mkdirp@npm:3.0.1"
+  bin:
+    mkdirp: dist/cjs/src/bin.js
+  checksum: 10c0/9f2b975e9246351f5e3a40dcfac99fcd0baa31fbfab615fe059fb11e51f10e4803c63de1f384c54d656e4db31d000e4767e9ef076a22e12a641357602e31d57d
   languageName: node
   linkType: hard
 
@@ -38013,6 +38070,7 @@ __metadata:
     "@blocknote/react": "npm:^0.22.0"
     "@blocknote/server-util": "npm:0.17.1"
     "@codesandbox/sandpack-react": "npm:^2.13.5"
+    "@crowdin/cli": "npm:^4.6.1"
     "@crxjs/vite-plugin": "npm:^1.0.14"
     "@dagrejs/dagre": "npm:^1.1.2"
     "@emotion/react": "npm:^11.11.1"
@@ -38623,7 +38681,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-fetch@npm:^2, node-fetch@npm:^2.0.0, node-fetch@npm:^2.6.1, node-fetch@npm:^2.6.12, node-fetch@npm:^2.6.7, node-fetch@npm:^2.6.9":
+"node-fetch@npm:2.7.0, node-fetch@npm:^2, node-fetch@npm:^2.0.0, node-fetch@npm:^2.6.1, node-fetch@npm:^2.6.12, node-fetch@npm:^2.6.7, node-fetch@npm:^2.6.9":
   version: 2.7.0
   resolution: "node-fetch@npm:2.7.0"
   dependencies:
@@ -46310,6 +46368,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tar@npm:^7.4.3":
+  version: 7.4.3
+  resolution: "tar@npm:7.4.3"
+  dependencies:
+    "@isaacs/fs-minipass": "npm:^4.0.0"
+    chownr: "npm:^3.0.0"
+    minipass: "npm:^7.1.2"
+    minizlib: "npm:^3.0.1"
+    mkdirp: "npm:^3.0.1"
+    yallist: "npm:^5.0.0"
+  checksum: 10c0/d4679609bb2a9b48eeaf84632b6d844128d2412b95b6de07d53d8ee8baf4ca0857c9331dfa510390a0727b550fd543d4d1a10995ad86cdf078423fbb8d99831d
+  languageName: node
+  linkType: hard
+
 "telejson@npm:^7.2.0":
   version: 7.2.0
   resolution: "telejson@npm:7.2.0"
@@ -50154,6 +50226,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"yallist@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "yallist@npm:5.0.0"
+  checksum: 10c0/a499c81ce6d4a1d260d4ea0f6d49ab4da09681e32c3f0472dee16667ed69d01dae63a3b81745a24bd78476ec4fcf856114cb4896ace738e01da34b2c42235416
+  languageName: node
+  linkType: hard
+
 "yaml-ast-parser@npm:^0.0.43":
   version: 0.0.43
   resolution: "yaml-ast-parser@npm:0.0.43"
@@ -50257,6 +50336,16 @@ __metadata:
     buffer-crc32: "npm:~0.2.3"
     fd-slicer: "npm:~1.1.0"
   checksum: 10c0/f265002af7541b9ec3589a27f5fb8f11cf348b53cc15e2751272e3c062cd73f3e715bc72d43257de71bbaecae446c3f1b14af7559e8ab0261625375541816422
+  languageName: node
+  linkType: hard
+
+"yauzl@npm:^3.2.0":
+  version: 3.2.0
+  resolution: "yauzl@npm:3.2.0"
+  dependencies:
+    buffer-crc32: "npm:~0.2.3"
+    pend: "npm:~1.2.0"
+  checksum: 10c0/7b40b3dc46b95761a2a764391d257a11f494d365875af73a1b48fe16d4bd103dd178612e60168d12a0e59a8ba4f6411a15a5e8871d5a5f78255d6cc1ce39ee62
   languageName: node
   linkType: hard
 
