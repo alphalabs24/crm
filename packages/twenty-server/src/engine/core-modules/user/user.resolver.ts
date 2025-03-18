@@ -11,7 +11,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 import crypto from 'crypto';
 
-import { GraphQLJSONObject } from 'graphql-type-json';
+import { GraphQLJSON, GraphQLJSONObject } from 'graphql-type-json';
 import { FileUpload, GraphQLUpload } from 'graphql-upload';
 import {
   PermissionsOnAllObjectRecords,
@@ -172,13 +172,13 @@ export class UserResolver {
     @AuthWorkspace() workspace: Workspace,
     @Args({ name: 'key', type: () => String })
     key: string,
-    @Args({ name: 'value', type: () => String })
-    value: string,
+    @Args({ name: 'value', type: () => GraphQLJSON })
+    value: any,
   ): Promise<Record<string, any>> {
     const userVarUpdateAllowList = [...nestermindUserVars] as string[];
 
     if (!userVarUpdateAllowList.includes(key)) {
-      throw new BadRequestException(`User var ${key} not found`);
+      throw new BadRequestException(`User var key ${key} not allowed`);
     }
 
     await this.userVarService.set({
