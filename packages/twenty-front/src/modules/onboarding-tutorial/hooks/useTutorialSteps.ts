@@ -26,7 +26,6 @@ export const useTutorialSteps = (): TutorialStepsType => {
   const keyValueStore = useKeyValueStore();
   const { showTutorial } = useTutorial();
 
-  // TODO: create a recoil state that caches this more efficiently
   const steps: TutorialSteps = useMemo(() => {
     return TUTORIAL_ONBOARDING_STEPS.filter((step) => !step.hidden).reduce(
       (acc, step) => ({
