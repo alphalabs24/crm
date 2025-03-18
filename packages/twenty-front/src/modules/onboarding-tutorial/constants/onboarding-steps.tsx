@@ -62,6 +62,5 @@ export const TUTORIAL_ONBOARDING_STEPS: TutorialOnboardingStepData[] = [
     title: <Trans>Completed all steps</Trans>,
     description: <Trans>Completed all steps</Trans>,
     Icon: IconCheck,
-    hidden: true,
   },
 ];
