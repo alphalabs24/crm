@@ -2,26 +2,29 @@ import {
   TUTORIAL_ONBOARDING_STEPS,
   TutorialOnboardingStepData,
 } from '@/onboarding-tutorial/constants/onboarding-steps';
-import { TutorialStatus } from '@/onboarding-tutorial/types/tutorialStatus';
+import { useTutorial } from '@/onboarding-tutorial/contexts/TutorialProvider';
 import { useKeyValueStore } from '@/onboarding/hooks/useKeyValueStore';
 import { useMemo } from 'react';
+import { UserTutorialTask } from 'twenty-shared';
 
 type TutorialStep = {
   // static step data
   step: TutorialOnboardingStepData;
   // dynamic step data
   completed: boolean;
+  action: () => void;
 };
 
-type TutorialSteps = Record<TutorialStatus, TutorialStep>;
+type TutorialSteps = Record<UserTutorialTask, TutorialStep>;
 
 type TutorialStepsType = {
   steps: TutorialSteps;
-  setAsCompleted: (step: TutorialStatus) => void;
+  setAsCompleted: (step: UserTutorialTask) => void;
 };
 
 export const useTutorialSteps = (): TutorialStepsType => {
   const keyValueStore = useKeyValueStore();
+  const { showTutorial } = useTutorial();
 
   // TODO: create a recoil state that caches this more efficiently
   const steps: TutorialSteps = useMemo(() => {
@@ -30,20 +33,17 @@ export const useTutorialSteps = (): TutorialStepsType => {
         ...acc,
         [step.id]: {
           step,
-          completed:
-            // TODO remove this dummy state
-            step.id === TutorialStatus.TUTORIAL_PLATFORM_SETUP
-              ? true
-              : keyValueStore.getValueByKey(step.id) || false,
+          action: () => showTutorial(step.id),
+          completed: keyValueStore.getValueByKey(step.id) || false,
         },
       }),
       {} as TutorialSteps,
     );
-  }, [keyValueStore]);
+  }, [keyValueStore, showTutorial]);
 
   return {
     steps,
-    setAsCompleted: (step: TutorialStatus) => {
+    setAsCompleted: (step: UserTutorialTask) => {
       keyValueStore.setValueByKey(step, true);
     },
   };

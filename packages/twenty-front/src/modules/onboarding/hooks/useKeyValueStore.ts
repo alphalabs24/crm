@@ -1,11 +1,22 @@
+import { currentUserState } from '@/auth/states/currentUserState';
+import { useRecoilValue } from 'recoil';
+import { useSetUserVarMutation } from '~/generated/graphql';
+
 export const useKeyValueStore = () => {
+  const currentUser = useRecoilValue(currentUserState);
+  const [setUserVar] = useSetUserVarMutation();
+
   const getValueByKey = (key: string) => {
-    // TODO: Implement this
-    return null;
+    return currentUser?.userVars[key];
   };
 
   const setValueByKey = (key: string, value: string | boolean | number) => {
-    // TODO: Implement this
+    setUserVar({
+      variables: {
+        key,
+        value,
+      },
+    });
   };
 
   return { getValueByKey, setValueByKey };

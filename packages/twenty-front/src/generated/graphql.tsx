@@ -1,5 +1,5 @@
-import * as Apollo from '@apollo/client';
 import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -797,6 +797,7 @@ export type Mutation = {
   resendWorkspaceInvitation: SendInvitationsOutput;
   runWorkflowVersion: WorkflowRun;
   sendInvitations: SendInvitationsOutput;
+  setUserVar: Scalars['JSONObject'];
   signUp: SignUpOutput;
   skipSyncEmailOnboardingStep: OnboardingStepSuccess;
   track: Analytics;
@@ -993,6 +994,12 @@ export type MutationSendInvitationsArgs = {
 };
 
 
+export type MutationSetUserVarArgs = {
+  key: Scalars['String'];
+  value: Scalars['JSON'];
+};
+
+
 export type MutationSignUpArgs = {
   captchaToken?: InputMaybe<Scalars['String']>;
   email: Scalars['String'];
@@ -1167,12 +1174,12 @@ export type ObjectIndexMetadatasConnection = {
 
 /** Onboarding status */
 export enum OnboardingStatus {
+  COMPLETED = 'COMPLETED',
+  INVITE_TEAM = 'INVITE_TEAM',
   PLAN_REQUIRED = 'PLAN_REQUIRED',
-  WORKSPACE_ACTIVATION = 'WORKSPACE_ACTIVATION',
   PROFILE_CREATION = 'PROFILE_CREATION',
   SYNC_EMAIL = 'SYNC_EMAIL',
-  INVITE_TEAM = 'INVITE_TEAM',
-  COMPLETED = 'COMPLETED',
+  WORKSPACE_ACTIVATION = 'WORKSPACE_ACTIVATION'
 }
 
 export type OnboardingStepSuccess = {
@@ -2372,6 +2379,14 @@ export type DeleteUserAccountMutationVariables = Exact<{ [key: string]: never; }
 
 
 export type DeleteUserAccountMutation = { __typename?: 'Mutation', deleteUser: { __typename?: 'User', id: any } };
+
+export type SetUserVarMutationVariables = Exact<{
+  key: Scalars['String'];
+  value: Scalars['JSON'];
+}>;
+
+
+export type SetUserVarMutation = { __typename?: 'Mutation', setUserVar: any };
 
 export type UploadProfilePictureMutationVariables = Exact<{
   file: Scalars['Upload'];
@@ -4444,6 +4459,38 @@ export function useDeleteUserAccountMutation(baseOptions?: Apollo.MutationHookOp
 export type DeleteUserAccountMutationHookResult = ReturnType<typeof useDeleteUserAccountMutation>;
 export type DeleteUserAccountMutationResult = Apollo.MutationResult<DeleteUserAccountMutation>;
 export type DeleteUserAccountMutationOptions = Apollo.BaseMutationOptions<DeleteUserAccountMutation, DeleteUserAccountMutationVariables>;
+export const SetUserVarDocument = gql`
+    mutation SetUserVar($key: String!, $value: JSON!) {
+  setUserVar(key: $key, value: $value)
+}
+    `;
+export type SetUserVarMutationFn = Apollo.MutationFunction<SetUserVarMutation, SetUserVarMutationVariables>;
+
+/**
+ * __useSetUserVarMutation__
+ *
+ * To run a mutation, you first call `useSetUserVarMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSetUserVarMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [setUserVarMutation, { data, loading, error }] = useSetUserVarMutation({
+ *   variables: {
+ *      key: // value for 'key'
+ *      value: // value for 'value'
+ *   },
+ * });
+ */
+export function useSetUserVarMutation(baseOptions?: Apollo.MutationHookOptions<SetUserVarMutation, SetUserVarMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SetUserVarMutation, SetUserVarMutationVariables>(SetUserVarDocument, options);
+      }
+export type SetUserVarMutationHookResult = ReturnType<typeof useSetUserVarMutation>;
+export type SetUserVarMutationResult = Apollo.MutationResult<SetUserVarMutation>;
+export type SetUserVarMutationOptions = Apollo.BaseMutationOptions<SetUserVarMutation, SetUserVarMutationVariables>;
 export const UploadProfilePictureDocument = gql`
     mutation UploadProfilePicture($file: Upload!) {
   uploadProfilePicture(file: $file)

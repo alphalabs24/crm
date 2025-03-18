@@ -11,6 +11,7 @@ import { PromiseRejectionEffect } from '@/error-handler/components/PromiseReject
 import { ApolloMetadataClientProvider } from '@/object-metadata/components/ApolloMetadataClientProvider';
 import { ObjectMetadataItemsGater } from '@/object-metadata/components/ObjectMetadataItemsGater';
 import { ObjectMetadataItemsProvider } from '@/object-metadata/components/ObjectMetadataItemsProvider';
+import { TutorialProvider } from '@/onboarding-tutorial/contexts/TutorialProvider';
 import { PrefetchDataProvider } from '@/prefetch/components/PrefetchDataProvider';
 import { DialogManager } from '@/ui/feedback/dialog-manager/components/DialogManager';
 import { DialogManagerScope } from '@/ui/feedback/dialog-manager/scopes/DialogManagerScope';
@@ -47,17 +48,19 @@ export const AppRouterProviders = () => {
                       <PrefetchDataProvider>
                         <UserThemeProviderEffect />
                         <SnackBarProvider>
-                          <DialogManagerScope dialogManagerScopeId="dialog-manager">
-                            <DialogManager>
-                              <StrictMode>
-                                <PromiseRejectionEffect />
-                                <GotoHotkeysEffectsProvider />
-                                <PageTitle title={pageTitle} />
-                                <PageFavicon />
-                                <Outlet />
-                              </StrictMode>
-                            </DialogManager>
-                          </DialogManagerScope>
+                          <TutorialProvider>
+                            <DialogManagerScope dialogManagerScopeId="dialog-manager">
+                              <DialogManager>
+                                <StrictMode>
+                                  <PromiseRejectionEffect />
+                                  <GotoHotkeysEffectsProvider />
+                                  <PageTitle title={pageTitle} />
+                                  <PageFavicon />
+                                  <Outlet />
+                                </StrictMode>
+                              </DialogManager>
+                            </DialogManagerScope>
+                          </TutorialProvider>
                         </SnackBarProvider>
                         <MainContextStoreProvider />
                       </PrefetchDataProvider>
