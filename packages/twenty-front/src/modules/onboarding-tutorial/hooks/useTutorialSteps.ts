@@ -28,7 +28,7 @@ export const useTutorialSteps = (): TutorialStepsType => {
 
   // TODO: create a recoil state that caches this more efficiently
   const steps: TutorialSteps = useMemo(() => {
-    return TUTORIAL_ONBOARDING_STEPS.reduce(
+    return TUTORIAL_ONBOARDING_STEPS.filter((step) => !step.hidden).reduce(
       (acc, step) => ({
         ...acc,
         [step.id]: {
