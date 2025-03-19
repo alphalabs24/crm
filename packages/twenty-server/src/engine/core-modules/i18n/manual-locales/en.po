@@ -19,7 +19,7 @@ msgstr "Publisher"
 msgid "Agencies"
 msgstr "Publishers"
 
-# field description "Contact Person (Visible On Publication)" of agency
+# field description "Contact Person (Visible On Publication)" of field agencyReference on agency
 msgid "Contact Person (Visible On Publication)"
 msgstr "Contact Person (Visible On Publication)"
 
@@ -75,10 +75,6 @@ msgstr "Assignee"
 msgid "Available From"
 msgstr "Available From"
 
-# field description "In kg" of property
-msgid "In kg"
-msgstr "In kg"
-
 # field "carryingCapacityCrane" of property
 msgid "Carrying Capacity Crane"
 msgstr "Carrying Capacity Crane"
@@ -87,13 +83,13 @@ msgstr "Carrying Capacity Crane"
 msgid "In kg"
 msgstr "In kg"
 
+# field description "In kg" of field carryingCapacityCrane on property
+msgid "In kg"
+msgstr "In kg"
+
 # field "carryingCapacityElevator" of property
 msgid "Carrying Capacity Elevator"
 msgstr "Carrying Capacity Elevator"
-
-# field description "In kg" of property
-msgid "In kg"
-msgstr "In kg"
 
 # field description "In kg" of property
 msgid "In kg"
@@ -111,7 +107,7 @@ msgstr "Ceiling Height"
 msgid "Height of room in meters"
 msgstr "Height of room in meters"
 
-# field description "Height of room in meters" of property
+# field description "Height of room in meters" of field ceilingHeight on property
 msgid "Height of room in meters"
 msgstr "Height of room in meters"
 
@@ -151,7 +147,7 @@ msgstr "Hall Height"
 msgid "Height of hall in meters"
 msgstr "Height of hall in meters"
 
-# field description "Height of hall in meters" of property
+# field description "Height of hall in meters" of field hallHeight on property
 msgid "Height of hall in meters"
 msgstr "Height of hall in meters"
 
@@ -179,7 +175,7 @@ msgstr "Maximal Floor Loading"
 msgid "kg/m2"
 msgstr "kg/m2"
 
-# field description "kg/m2" of property
+# field description "kg/m2" of field maximalFloorLoading on property
 msgid "kg/m2"
 msgstr "kg/m2"
 

@@ -51,12 +51,15 @@ FROM (
   FROM "metadata"."objectMetadata" om
     LEFT JOIN "metadata"."fieldMetadata" fm ON fm."objectMetadataId" = om.id
   WHERE om."workspaceId" = 'da3d12fd-7243-415a-a326-c0719ab571f2'
-    AND om."nameSingular" IN ('property',
-    -- we currently avoid publications because its mainly duplicates from properties
-    --'publication',
-    'buyerLead','agency')
+    AND om."nameSingular" IN (
+      'property',
+      -- we currently avoid publications because its mainly duplicates from properties
+      --'publication',
+      'buyerLead',
+      'agency'
+    )
     AND fm."isSystem" = FALSE
-    -- ignore list because the id already exist
+    -- ignore list because the label already exist in the translations
     -- change the label in the db (including migrations) if you want to change them
     AND fm."label" NOT IN (
       'Agency',
@@ -104,6 +107,49 @@ FROM (
       'Movies',
       'Pictures'
       )
+
+  UNION ALL
+
+  SELECT
+    om.id as object_id,
+    om."nameSingular" as object_name,
+    fm.id as field_id,
+    fm."name" as field_name,
+    CONCAT(
+      '# field description "', fm.description, '" of field ', fm."name", ' on ', om."nameSingular", E'\n',
+      'msgid "', fm.description, '"', E'\n',
+      'msgstr "', fm.description, '"', E'\n'
+      ) as translations
+  FROM "metadata"."objectMetadata" om
+    LEFT JOIN "metadata"."fieldMetadata" fm ON fm."objectMetadataId" = om.id
+  WHERE om."workspaceId" = 'da3d12fd-7243-415a-a326-c0719ab571f2'
+    AND om."nameSingular" IN (
+      'property',
+      -- we currently avoid publications because its mainly duplicates from properties
+      --'publication',
+      'buyerLead',
+      'agency'
+    )
+    AND fm."isSystem" = FALSE
+
+    -- description specific
+    AND TRIM(fm.description) != ''
+    -- ignore list because the description already exist in the translations
+    -- change the description in the db (including migrations) if you want to change them
+    AND fm.description NOT IN (
+      'array of {filename:'''',title:'''',description:'''',url:''''}',
+      'array of {filename:'''',title:'''',description'''',url:''''}',
+      'Attachments tied to the {label}',
+      'Creation date',
+      'Date when the record was deleted',
+      'Last time the record was changed',
+      'Name',
+      'Notes tied to the {label}',
+      'Tasks tied to the {label}',
+      'The creator of the record'
+      )
+    -- handling duplicates within this dataset
+    AND NOT (fm.description = 'In kg' AND fm."name" = 'carryingCapacityElevator')
 
 ) as subquery
 ORDER BY object_name, COALESCE(field_name, '')
