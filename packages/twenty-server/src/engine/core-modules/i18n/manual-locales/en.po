@@ -35,17 +35,41 @@ msgstr "Publication"
 msgid "Publications"
 msgstr "Publications"
 
+msgid "Documents"
+msgstr "Documents"
+
+msgid "array of {filename:‘’,title:‘’,description:’’,url:’’}"
+msgstr "array of {filename:‘’,title:‘’,description:’’,url:’’}"
+
 msgid "Plot Subtype"
 msgstr "Plot Subtype"
 
-msgid "Timeline Activities"
-msgstr "Timeline Activities"
+msgid "Agency Reference"
+msgstr "Agency Reference"
+
+msgid "Contact Person (Visible On Publication)"
+msgstr "Contact Person (Visible On Publication)"
+
+msgid "Pictures"
+msgstr "Pictures"
+
+msgid "array of {filename:'',title:'',description:'',url:''}"
+msgstr "array of {filename:'',title:'',description:'',url:''}"
+
+msgid "Search vector"
+msgstr "Search vector"
+
+msgid "Field used for full-text search"
+msgstr "Field used for full-text search"
+
+msgid "Notes"
+msgstr "Notes"
+
+msgid "Notes tied to the {label}"
+msgstr "Notes tied to the {label}"
 
 msgid "Property Subtype"
 msgstr "Property Subtype"
-
-msgid "Creation date"
-msgstr "Creation date"
 
 msgid "Selling Price"
 msgstr "Selling Price"
@@ -53,38 +77,56 @@ msgstr "Selling Price"
 msgid "Features"
 msgstr "Features"
 
-msgid "Name"
-msgstr "Name"
-
 msgid "Person"
 msgstr "Person"
 
 msgid "Stage"
 msgstr "Stage"
 
+msgid "Attachments"
+msgstr "Attachments"
+
+msgid "Attachments tied to the {label}"
+msgstr "Attachments tied to the {label}"
+
 msgid "Assignee"
 msgstr "Assignee"
 
-msgid "Last update"
-msgstr "Last update"
+msgid "Documents"
+msgstr "Documents"
+
+msgid "array of {filename:'',title:'',description'',url:''}"
+msgstr "array of {filename:'',title:'',description'',url:''}"
 
 msgid "Virtual Tour"
 msgstr "Virtual Tour"
 
+msgid "Tasks"
+msgstr "Tasks"
+
+msgid "Tasks tied to the {label}"
+msgstr "Tasks tied to the {label}"
+
 msgid "Seller"
 msgstr "Seller"
-
-msgid "Search vector"
-msgstr "Search vector"
 
 msgid "Properties"
 msgstr "Properties"
 
-msgid "Tasks"
-msgstr "Tasks"
+msgid "Movies"
+msgstr "Movies"
+
+msgid "array of {filename:‘’,title:‘’,description:’’,url:’’}"
+msgstr "array of {filename:‘’,title:‘’,description:’’,url:’’}"
 
 msgid "Agency"
 msgstr "Agency"
+
+msgid "Created by"
+msgstr "Created by"
+
+msgid "The creator of the record"
+msgstr "The creator of the record"
 
 msgid "Links"
 msgstr "Links"
@@ -92,14 +134,23 @@ msgstr "Links"
 msgid "Email"
 msgstr "Email"
 
+msgid "Timeline Activities"
+msgstr "Timeline Activities"
+
+msgid "Timeline Activities tied to the {label}"
+msgstr "Timeline Activities tied to the {label}"
+
+msgid "Carrying Capacity Elevator"
+msgstr "Carrying Capacity Elevator"
+
+msgid "In kg"
+msgstr "In kg"
+
 msgid "Agency Foreign Key"
 msgstr "Agency Foreign Key"
 
 msgid "Agriculture Subtype"
 msgstr "Agriculture Subtype"
-
-msgid "Pictures"
-msgstr "Pictures"
 
 msgid "Seller Foreign Key"
 msgstr "Seller Foreign Key"
@@ -107,14 +158,8 @@ msgstr "Seller Foreign Key"
 msgid "Surface"
 msgstr "Surface"
 
-msgid "Movies"
-msgstr "Movies"
-
 msgid "Rent Extra"
 msgstr "Rent Extra"
-
-msgid "Agency Reference"
-msgstr "Agency Reference"
 
 msgid "Person Foreign Key"
 msgstr "Person Foreign Key"
@@ -131,8 +176,11 @@ msgstr "Valuation"
 msgid "Email Template"
 msgstr "Email Template"
 
-msgid "Notes"
-msgstr "Notes"
+msgid "Creation date"
+msgstr "Creation date"
+
+msgid "Creation date"
+msgstr "Creation date"
 
 msgid "Rent Net"
 msgstr "Rent Net"
@@ -140,20 +188,17 @@ msgstr "Rent Net"
 msgid "Publication"
 msgstr "Publication"
 
-msgid "Id"
-msgstr "Id"
-
-msgid "Position"
-msgstr "Position"
-
 msgid "Publish Until"
 msgstr "Publish Until"
 
 msgid "Address"
 msgstr "Address"
 
-msgid "Documents"
-msgstr "Documents"
+msgid "Maximal Floor Loading"
+msgstr "Maximal Floor Loading"
+
+msgid "kg/m2"
+msgstr "kg/m2"
 
 msgid "Renovation Year"
 msgstr "Renovation Year"
@@ -170,20 +215,26 @@ msgstr "Gastronomy Subtype"
 msgid "Distances"
 msgstr "Distances"
 
-msgid "Attachments"
-msgstr "Attachments"
+msgid "Ceiling Height"
+msgstr "Ceiling Height"
+
+msgid "Height of room in meters"
+msgstr "Height of room in meters"
 
 msgid "Publication Foreign Key"
 msgstr "Publication Foreign Key"
 
-msgid "Carrying Capacity Crane"
-msgstr "Carrying Capacity Crane"
+msgid "Name"
+msgstr "Name"
+
+msgid "Name"
+msgstr "Name"
 
 msgid "Identifier"
 msgstr "Identifier"
 
 msgid "Number Of Floors"
-msgstr "Number of Floors"
+msgstr "Number Of Floors"
 
 msgid "Email Sender Foreign Key"
 msgstr "Email Sender Foreign Key"
@@ -194,9 +245,6 @@ msgstr "Ref Property"
 msgid "Buyer Leads"
 msgstr "Buyer Leads"
 
-msgid "Created by"
-msgstr "Created by"
-
 msgid "Industrial Subtype"
 msgstr "Industrial Subtype"
 
@@ -206,8 +254,11 @@ msgstr "Property Foreign Key"
 msgid "Email Sender"
 msgstr "Email Sender"
 
-msgid "Carrying Capacity Elevator"
-msgstr "Carrying Capacity Elevator"
+msgid "Pictures"
+msgstr "Pictures"
+
+msgid "array of {filename:‘’,title:‘’,description:’’,url:’’}"
+msgstr "array of {filename:‘’,title:‘’,description:’’,url:’’}"
 
 msgid "Description"
 msgstr "Description"
@@ -215,11 +266,11 @@ msgstr "Description"
 msgid "Hall Height"
 msgstr "Hall Height"
 
+msgid "Height of hall in meters"
+msgstr "Height of hall in meters"
+
 msgid "Property"
 msgstr "Property"
-
-msgid "Deleted at"
-msgstr "Deleted at"
 
 msgid "Email Template Foreign Key"
 msgstr "Email Template Foreign Key"
@@ -229,9 +280,6 @@ msgstr "Parking Subtype"
 
 msgid "Newhome Ftp User"
 msgstr "Newhome Ftp User"
-
-msgid "Maximal Floor Loading"
-msgstr "Maximal Floor Loading"
 
 msgid "Construction Year"
 msgstr "Construction Year"
@@ -245,14 +293,8 @@ msgstr "Rooms"
 msgid "Volume"
 msgstr "Volume"
 
-msgid "Ceiling Height"
-msgstr "Ceiling Height"
-
 msgid "House Subtype"
 msgstr "House Subtype"
-
-msgid "Favorites"
-msgstr "Favorites"
 
 msgid "Price Unit"
 msgstr "Price Unit"
@@ -260,8 +302,38 @@ msgstr "Price Unit"
 msgid "Offer Type"
 msgstr "Offer Type"
 
+msgid "Last update"
+msgstr "Last update"
+
+msgid "Last time the record was changed"
+msgstr "Last time the record was changed"
+
+msgid "Position"
+msgstr "Position"
+
+msgid "Position"
+msgstr "Position"
+
+msgid "Carrying Capacity Crane"
+msgstr "Carrying Capacity Crane"
+
+msgid "In kg"
+msgstr "In kg"
+
+msgid "Id"
+msgstr "Id"
+
+msgid "Id"
+msgstr "Id"
+
 msgid "Category"
 msgstr "Category"
+
+msgid "Deleted at"
+msgstr "Deleted at"
+
+msgid "Date when the record was deleted"
+msgstr "Date when the record was deleted"
 
 msgid "Assignee Foreign Key"
 msgstr "Assignee Foreign Key"
@@ -272,6 +344,12 @@ msgstr "Platform"
 msgid "Floor"
 msgstr "Floor"
 
+msgid "Favorites"
+msgstr "Favorites"
+
+msgid "Favorites tied to the {label}"
+msgstr "Favorites tied to the {label}"
+
 msgid "Available From"
 msgstr "Available From"
 
@@ -280,6 +358,12 @@ msgstr "Living Surface"
 
 msgid "Apartments"
 msgstr "Apartments"
+
+msgid "Movies"
+msgstr "Movies"
+
+msgid "array of {filename:'',title:'',description:'',url:''}"
+msgstr "array of {filename:'',title:'',description:'',url:''}"
 
 msgid "Publications"
 msgstr "Publications"
