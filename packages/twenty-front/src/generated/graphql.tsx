@@ -2400,6 +2400,11 @@ export type GetCurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetCurrentUserQuery = { __typename?: 'Query', currentUser: { __typename?: 'User', id: any, firstName: string, lastName: string, email: string, canImpersonate: boolean, supportUserHash?: string | null, onboardingStatus?: OnboardingStatus | null, userVars: any, analyticsTinybirdJwts?: { __typename?: 'AnalyticsTinybirdJwtMap', getWebhookAnalytics: string, getPageviewsAnalytics: string, getUsersAnalytics: string, getServerlessFunctionDuration: string, getServerlessFunctionSuccessRate: string, getServerlessFunctionErrorCount: string } | null, workspaceMember?: { __typename?: 'WorkspaceMember', id: any, colorScheme: string, avatarUrl?: string | null, locale?: string | null, userEmail: string, timeZone?: string | null, dateFormat?: WorkspaceMemberDateFormatEnum | null, timeFormat?: WorkspaceMemberTimeFormatEnum | null, name: { __typename?: 'FullName', firstName: string, lastName: string } } | null, workspaceMembers?: Array<{ __typename?: 'WorkspaceMember', id: any, colorScheme: string, avatarUrl?: string | null, locale?: string | null, userEmail: string, timeZone?: string | null, dateFormat?: WorkspaceMemberDateFormatEnum | null, timeFormat?: WorkspaceMemberTimeFormatEnum | null, name: { __typename?: 'FullName', firstName: string, lastName: string } }> | null, currentUserWorkspace?: { __typename?: 'UserWorkspace', settingsPermissions?: Array<SettingsFeatures> | null, objectRecordsPermissions?: Array<PermissionsOnAllObjectRecords> | null } | null, currentWorkspace?: { __typename?: 'Workspace', id: any, displayName?: string | null, logo?: string | null, inviteHash?: string | null, allowImpersonation: boolean, activationStatus: WorkspaceActivationStatus, isPublicInviteLinkEnabled: boolean, isGoogleAuthEnabled: boolean, isMicrosoftAuthEnabled: boolean, isPasswordAuthEnabled: boolean, subdomain: string, hasValidEnterpriseKey: boolean, customDomain?: string | null, metadataVersion: number, workspaceMembersCount?: number | null, workspaceUrls: { __typename?: 'workspaceUrls', subdomainUrl: string, customUrl?: string | null }, featureFlags?: Array<{ __typename?: 'FeatureFlag', id: any, key: FeatureFlagKey, value: boolean, workspaceId: string }> | null, currentBillingSubscription?: { __typename?: 'BillingSubscription', id: any, status: SubscriptionStatus, interval?: SubscriptionInterval | null } | null, billingSubscriptions: Array<{ __typename?: 'BillingSubscription', id: any, status: SubscriptionStatus }> } | null, workspaces: Array<{ __typename?: 'UserWorkspace', workspace?: { __typename?: 'Workspace', id: any, logo?: string | null, displayName?: string | null, subdomain: string, customDomain?: string | null, workspaceUrls: { __typename?: 'workspaceUrls', subdomainUrl: string, customUrl?: string | null } } | null }> } };
 
+export type GetCurrentUserKeyValueStoreQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetCurrentUserKeyValueStoreQuery = { __typename?: 'Query', currentUser: { __typename?: 'User', userVars: any } };
+
 export type ActivateWorkflowVersionMutationVariables = Exact<{
   workflowVersionId: Scalars['String'];
 }>;
@@ -4556,6 +4561,40 @@ export function useGetCurrentUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type GetCurrentUserQueryHookResult = ReturnType<typeof useGetCurrentUserQuery>;
 export type GetCurrentUserLazyQueryHookResult = ReturnType<typeof useGetCurrentUserLazyQuery>;
 export type GetCurrentUserQueryResult = Apollo.QueryResult<GetCurrentUserQuery, GetCurrentUserQueryVariables>;
+export const GetCurrentUserKeyValueStoreDocument = gql`
+    query GetCurrentUserKeyValueStore {
+  currentUser {
+    userVars
+  }
+}
+    `;
+
+/**
+ * __useGetCurrentUserKeyValueStoreQuery__
+ *
+ * To run a query within a React component, call `useGetCurrentUserKeyValueStoreQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCurrentUserKeyValueStoreQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCurrentUserKeyValueStoreQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetCurrentUserKeyValueStoreQuery(baseOptions?: Apollo.QueryHookOptions<GetCurrentUserKeyValueStoreQuery, GetCurrentUserKeyValueStoreQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCurrentUserKeyValueStoreQuery, GetCurrentUserKeyValueStoreQueryVariables>(GetCurrentUserKeyValueStoreDocument, options);
+      }
+export function useGetCurrentUserKeyValueStoreLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCurrentUserKeyValueStoreQuery, GetCurrentUserKeyValueStoreQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCurrentUserKeyValueStoreQuery, GetCurrentUserKeyValueStoreQueryVariables>(GetCurrentUserKeyValueStoreDocument, options);
+        }
+export type GetCurrentUserKeyValueStoreQueryHookResult = ReturnType<typeof useGetCurrentUserKeyValueStoreQuery>;
+export type GetCurrentUserKeyValueStoreLazyQueryHookResult = ReturnType<typeof useGetCurrentUserKeyValueStoreLazyQuery>;
+export type GetCurrentUserKeyValueStoreQueryResult = Apollo.QueryResult<GetCurrentUserKeyValueStoreQuery, GetCurrentUserKeyValueStoreQueryVariables>;
 export const ActivateWorkflowVersionDocument = gql`
     mutation ActivateWorkflowVersion($workflowVersionId: String!) {
   activateWorkflowVersion(workflowVersionId: $workflowVersionId)

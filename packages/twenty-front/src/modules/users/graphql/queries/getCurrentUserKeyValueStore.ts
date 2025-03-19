@@ -1,0 +1,15 @@
+import { gql } from '@apollo/client';
+
+export type GetCurrentUserKeyValueStoreQuery = {
+  currentUser: {
+    userVars: Record<string, string | boolean | number>;
+  } | null;
+};
+
+export const GET_CURRENT_USER_KEY_VALUE_STORE = gql`
+  query GetCurrentUserKeyValueStore {
+    currentUser {
+      userVars
+    }
+  }
+`;

@@ -12,7 +12,7 @@ import { SubMenuTopBarContainer } from '@/ui/layout/page/components/SubMenuTopBa
 import { useIsMobile } from '@/ui/utilities/responsive/hooks/useIsMobile';
 import styled from '@emotion/styled';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { H2Title, Section } from 'twenty-ui';
 import { getSettingsPath } from '~/utils/navigation/getSettingsPath';
 import { PublishersListCard } from './components/PublishersListCard';
@@ -38,9 +38,15 @@ export const SettingsPublishers = () => {
     objectNameSingular: CoreObjectNameSingular.Agency,
   });
 
+  const recordGqlFields = useMemo(() => {
+    if (!objectMetadataItem) return undefined;
+    return generateDepthOneRecordGqlFields({ objectMetadataItem });
+  }, [objectMetadataItem]);
+
   const { records: publishers, loading } = useFindManyRecords({
     objectNameSingular: CoreObjectNameSingular.Agency,
-    recordGqlFields: generateDepthOneRecordGqlFields({ objectMetadataItem }),
+    recordGqlFields,
+    skip: !objectMetadataItem,
   });
 
   const { deleteOneRecord } = useDeleteOneRecord({

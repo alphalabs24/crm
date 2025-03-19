@@ -1,3 +1,4 @@
+import { useAuth } from '@/auth/hooks/useAuth';
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import {
   TUTORIAL_ONBOARDING_STEPS,
@@ -45,6 +46,8 @@ const mapSingularToStep = (objectNameSingular?: CoreObjectNameSingular) => {
 export const useTutorialSteps = (): TutorialStepsType => {
   const keyValueStore = useKeyValueStore();
   const { showTutorial } = useTutorial();
+  // reload current user to get the latest onboarding status
+  const { loadCurrentUser } = useAuth();
 
   const steps: TutorialSteps = useMemo(() => {
     return TUTORIAL_ONBOARDING_STEPS.filter((step) => !step.hidden).reduce(
@@ -62,7 +65,7 @@ export const useTutorialSteps = (): TutorialStepsType => {
 
   return {
     steps,
-    setAsCompleted: ({
+    setAsCompleted: async ({
       step,
       objectNameSingular,
     }: {
@@ -72,7 +75,8 @@ export const useTutorialSteps = (): TutorialStepsType => {
       const stepToComplete = step || mapSingularToStep(objectNameSingular);
 
       if (stepToComplete) {
-        keyValueStore.setValueByKey(stepToComplete, true);
+        await keyValueStore.setValueByKey(stepToComplete, true);
+        await loadCurrentUser();
       }
     },
   };
