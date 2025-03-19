@@ -13,11 +13,11 @@ msgstr ""
 
 # object singular agency
 msgid "Agency"
-msgstr "Agency"
+msgstr "Publisher"
 
 # object plural agencies
 msgid "Agencies"
-msgstr "Agencies"
+msgstr "Publishers"
 
 # field "address" of agency
 msgid "Address"
@@ -25,255 +25,27 @@ msgstr "Address"
 
 # field "agencyReference" of agency
 msgid "Agency Reference"
-msgstr "Agency Reference"
+msgstr "Publisher Reference"
 
 # field description "Contact Person (Visible On Publication)" of agency
 msgid "Contact Person (Visible On Publication)"
 msgstr "Contact Person (Visible On Publication)"
 
-# field "attachments" of agency
-msgid "Attachments"
-msgstr "Attachments"
-
-# field description "Attachments tied to the {label}" of agency
-msgid "Attachments tied to the {label}"
-msgstr "Attachments tied to the {label}"
-
-# field "createdAt" of agency
-msgid "Creation date"
-msgstr "Creation date"
-
-# field description "Creation date" of agency
-msgid "Creation date"
-msgstr "Creation date"
-
-# field "createdBy" of agency
-msgid "Created by"
-msgstr "Created by"
-
-# field description "The creator of the record" of agency
-msgid "The creator of the record"
-msgstr "The creator of the record"
-
-# field "deletedAt" of agency
-msgid "Deleted at"
-msgstr "Deleted at"
-
-# field description "Date when the record was deleted" of agency
-msgid "Date when the record was deleted"
-msgstr "Date when the record was deleted"
-
-# field "email" of agency
-msgid "Email"
-msgstr "Email"
-
-# field "favorites" of agency
-msgid "Favorites"
-msgstr "Favorites"
-
-# field description "Favorites tied to the {label}" of agency
-msgid "Favorites tied to the {label}"
-msgstr "Favorites tied to the {label}"
-
-# field "id" of agency
-msgid "Id"
-msgstr "Id"
-
-# field description "Id" of agency
-msgid "Id"
-msgstr "Id"
-
-# field "identifier" of agency
-msgid "Identifier"
-msgstr "Identifier"
-
-# field "name" of agency
-msgid "Name"
-msgstr "Name"
-
-# field description "Name" of agency
-msgid "Name"
-msgstr "Name"
-
 # field "newhomeFtpPassword" of agency
 msgid "Newhome Ftp Password"
-msgstr "Newhome Ftp Password"
+msgstr "newhome FTP Password"
 
 # field "newhomeFtpUser" of agency
 msgid "Newhome Ftp User"
-msgstr "Newhome Ftp User"
-
-# field "noteTargets" of agency
-msgid "Notes"
-msgstr "Notes"
-
-# field description "Notes tied to the {label}" of agency
-msgid "Notes tied to the {label}"
-msgstr "Notes tied to the {label}"
-
-# field "phone" of agency
-msgid "Phone"
-msgstr "Phone"
-
-# field "position" of agency
-msgid "Position"
-msgstr "Position"
-
-# field description "Position" of agency
-msgid "Position"
-msgstr "Position"
-
-# field "properties" of agency
-msgid "Properties"
-msgstr "Properties"
-
-# field "publications" of agency
-msgid "Publications"
-msgstr "Publications"
-
-# field "searchVector" of agency
-msgid "Search vector"
-msgstr "Search vector"
-
-# field description "Field used for full-text search" of agency
-msgid "Field used for full-text search"
-msgstr "Field used for full-text search"
-
-# field "taskTargets" of agency
-msgid "Tasks"
-msgstr "Tasks"
-
-# field description "Tasks tied to the {label}" of agency
-msgid "Tasks tied to the {label}"
-msgstr "Tasks tied to the {label}"
-
-# field "timelineActivities" of agency
-msgid "Timeline Activities"
-msgstr "Timeline Activities"
-
-# field description "Timeline Activities tied to the {label}" of agency
-msgid "Timeline Activities tied to the {label}"
-msgstr "Timeline Activities tied to the {label}"
-
-# field "updatedAt" of agency
-msgid "Last update"
-msgstr "Last update"
-
-# field description "Last time the record was changed" of agency
-msgid "Last time the record was changed"
-msgstr "Last time the record was changed"
+msgstr "newhome FTP User"
 
 # object singular buyerLead
 msgid "Buyer Lead"
-msgstr "Buyer Lead"
+msgstr "Kaufanfrage"
 
 # object plural buyerLeads
 msgid "Buyer Leads"
-msgstr "Buyer Leads"
-
-# field "attachments" of buyerLead
-msgid "Attachments"
-msgstr "Attachments"
-
-# field description "Attachments tied to the {label}" of buyerLead
-msgid "Attachments tied to the {label}"
-msgstr "Attachments tied to the {label}"
-
-# field "createdAt" of buyerLead
-msgid "Creation date"
-msgstr "Creation date"
-
-# field description "Creation date" of buyerLead
-msgid "Creation date"
-msgstr "Creation date"
-
-# field "createdBy" of buyerLead
-msgid "Created by"
-msgstr "Created by"
-
-# field description "The creator of the record" of buyerLead
-msgid "The creator of the record"
-msgstr "The creator of the record"
-
-# field "deletedAt" of buyerLead
-msgid "Deleted at"
-msgstr "Deleted at"
-
-# field description "Date when the record was deleted" of buyerLead
-msgid "Date when the record was deleted"
-msgstr "Date when the record was deleted"
-
-# field "favorites" of buyerLead
-msgid "Favorites"
-msgstr "Favorites"
-
-# field description "Favorites tied to the {label}" of buyerLead
-msgid "Favorites tied to the {label}"
-msgstr "Favorites tied to the {label}"
-
-# field "id" of buyerLead
-msgid "Id"
-msgstr "Id"
-
-# field description "Id" of buyerLead
-msgid "Id"
-msgstr "Id"
-
-# field "name" of buyerLead
-msgid "Name"
-msgstr "Name"
-
-# field description "Name" of buyerLead
-msgid "Name"
-msgstr "Name"
-
-# field "noteTargets" of buyerLead
-msgid "Notes"
-msgstr "Notes"
-
-# field description "Notes tied to the {label}" of buyerLead
-msgid "Notes tied to the {label}"
-msgstr "Notes tied to the {label}"
-
-# field "person" of buyerLead
-msgid "Person"
-msgstr "Person"
-
-# field "personId" of buyerLead
-msgid "Person Foreign Key"
-msgstr "Person Foreign Key"
-
-# field "position" of buyerLead
-msgid "Position"
-msgstr "Position"
-
-# field description "Position" of buyerLead
-msgid "Position"
-msgstr "Position"
-
-# field "property" of buyerLead
-msgid "Property"
-msgstr "Property"
-
-# field "propertyId" of buyerLead
-msgid "Property Foreign Key"
-msgstr "Property Foreign Key"
-
-# field "publication" of buyerLead
-msgid "Publication"
-msgstr "Publication"
-
-# field "publicationId" of buyerLead
-msgid "Publication Foreign Key"
-msgstr "Publication Foreign Key"
-
-# field "searchVector" of buyerLead
-msgid "Search vector"
-msgstr "Search vector"
-
-# field description "Field used for full-text search" of buyerLead
-msgid "Field used for full-text search"
-msgstr "Field used for full-text search"
+msgstr "Kaufanfragen"
 
 # field "stage" of buyerLead
 msgid "Stage"
@@ -282,26 +54,6 @@ msgstr "Stage"
 # field "taskTargets" of buyerLead
 msgid "Tasks"
 msgstr "Tasks"
-
-# field description "Tasks tied to the {label}" of buyerLead
-msgid "Tasks tied to the {label}"
-msgstr "Tasks tied to the {label}"
-
-# field "timelineActivities" of buyerLead
-msgid "Timeline Activities"
-msgstr "Timeline Activities"
-
-# field description "Timeline Activities tied to the {label}" of buyerLead
-msgid "Timeline Activities tied to the {label}"
-msgstr "Timeline Activities tied to the {label}"
-
-# field "updatedAt" of buyerLead
-msgid "Last update"
-msgstr "Last update"
-
-# field description "Last time the record was changed" of buyerLead
-msgid "Last time the record was changed"
-msgstr "Last time the record was changed"
 
 # object singular property
 msgid "Property"
@@ -315,21 +67,13 @@ msgstr "Properties"
 msgid "Address"
 msgstr "Address"
 
-# field "agency" of property
-msgid "Agency"
-msgstr "Agency"
-
-# field "agencyId" of property
-msgid "Agency Foreign Key"
-msgstr "Agency Foreign Key"
-
 # field "agricultureSubtype" of property
 msgid "Agriculture Subtype"
 msgstr "Agriculture Subtype"
 
 # field "apartments" of property
 msgid "Apartments"
-msgstr "Apartments"
+msgstr "Number of Apartments"
 
 # field "apartmentSubtype" of property
 msgid "Apartment Subtype"
@@ -343,21 +87,9 @@ msgstr "Assignee"
 msgid "Assignee Foreign Key"
 msgstr "Assignee Foreign Key"
 
-# field "attachments" of property
-msgid "Attachments"
-msgstr "Attachments"
-
-# field description "Attachments tied to the {label}" of property
-msgid "Attachments tied to the {label}"
-msgstr "Attachments tied to the {label}"
-
 # field "availableFrom" of property
 msgid "Available From"
 msgstr "Available From"
-
-# field "buyerLeads" of property
-msgid "Buyer Leads"
-msgstr "Buyer Leads"
 
 # field "carryingCapacityCrane" of property
 msgid "Carrying Capacity Crane"
@@ -370,10 +102,6 @@ msgstr "In kg"
 # field "carryingCapacityElevator" of property
 msgid "Carrying Capacity Elevator"
 msgstr "Carrying Capacity Elevator"
-
-# field description "In kg" of property
-msgid "In kg"
-msgstr "In kg"
 
 # field "category" of property
 msgid "Category"
@@ -389,35 +117,7 @@ msgstr "Height of room in meters"
 
 # field "constructionYear" of property
 msgid "Construction Year"
-msgstr "Construction Year"
-
-# field "createdAt" of property
-msgid "Creation date"
-msgstr "Creation date"
-
-# field description "Creation date" of property
-msgid "Creation date"
-msgstr "Creation date"
-
-# field "createdBy" of property
-msgid "Created by"
-msgstr "Created by"
-
-# field description "The creator of the record" of property
-msgid "The creator of the record"
-msgstr "The creator of the record"
-
-# field "deletedAt" of property
-msgid "Deleted at"
-msgstr "Deleted at"
-
-# field description "Date when the record was deleted" of property
-msgid "Date when the record was deleted"
-msgstr "Date when the record was deleted"
-
-# field "description" of property
-msgid "Description"
-msgstr "Description"
+msgstr "Construction year"
 
 # field "distances" of property
 msgid "Distances"
@@ -433,31 +133,23 @@ msgstr "array of {filename:'',title:'',description'',url:''}"
 
 # field "emailSender" of property
 msgid "Email Sender"
-msgstr "Email Sender"
+msgstr "Auto-Respond Sender"
 
 # field "emailSenderId" of property
 msgid "Email Sender Foreign Key"
-msgstr "Email Sender Foreign Key"
+msgstr "Auto-Respond Sender Foreign Key"
 
 # field "emailTemplate" of property
 msgid "Email Template"
-msgstr "Email Template"
+msgstr "Auto-Respond Email Template"
 
 # field "emailTemplateId" of property
 msgid "Email Template Foreign Key"
-msgstr "Email Template Foreign Key"
-
-# field "favorites" of property
-msgid "Favorites"
-msgstr "Favorites"
-
-# field description "Favorites tied to the {label}" of property
-msgid "Favorites tied to the {label}"
-msgstr "Favorites tied to the {label}"
+msgstr "Auto-Respond Email Template Foreign Key"
 
 # field "features" of property
 msgid "Features"
-msgstr "Features"
+msgstr "Property Features"
 
 # field "floor" of property
 msgid "Floor"
@@ -478,14 +170,6 @@ msgstr "Height of hall in meters"
 # field "houseSubtype" of property
 msgid "House Subtype"
 msgstr "House Subtype"
-
-# field "id" of property
-msgid "Id"
-msgstr "Id"
-
-# field description "Id" of property
-msgid "Id"
-msgstr "Id"
 
 # field "industrialSubtype" of property
 msgid "Industrial Subtype"
@@ -515,25 +199,9 @@ msgstr "Movies"
 msgid "array of {filename:'',title:'',description:'',url:''}"
 msgstr "array of {filename:'',title:'',description:'',url:''}"
 
-# field "name" of property
-msgid "Name"
-msgstr "Name"
-
-# field description "Name" of property
-msgid "Name"
-msgstr "Name"
-
-# field "noteTargets" of property
-msgid "Notes"
-msgstr "Notes"
-
-# field description "Notes tied to the {label}" of property
-msgid "Notes tied to the {label}"
-msgstr "Notes tied to the {label}"
-
 # field "numberOfFloors" of property
 msgid "Number Of Floors"
-msgstr "Number Of Floors"
+msgstr "Number of Floors"
 
 # field "offerType" of property
 msgid "Offer Type"
@@ -555,14 +223,6 @@ msgstr "array of {filename:'',title:'',description:'',url:''}"
 msgid "Plot Subtype"
 msgstr "Plot Subtype"
 
-# field "position" of property
-msgid "Position"
-msgstr "Position"
-
-# field description "Position" of property
-msgid "Position"
-msgstr "Position"
-
 # field "priceUnit" of property
 msgid "Price Unit"
 msgstr "Price Unit"
@@ -571,37 +231,25 @@ msgstr "Price Unit"
 msgid "Property Subtype"
 msgstr "Property Subtype"
 
-# field "publications" of property
-msgid "Publications"
-msgstr "Publications"
-
 # field "refProperty" of property
 msgid "Ref Property"
-msgstr "Ref Property"
+msgstr "Property Reference"
 
 # field "renovationYear" of property
 msgid "Renovation Year"
-msgstr "Renovation Year"
+msgstr "Renovation year"
 
 # field "rentExtra" of property
 msgid "Rent Extra"
-msgstr "Rent Extra"
+msgstr "Additional Rent Currency"
 
 # field "rentNet" of property
 msgid "Rent Net"
-msgstr "Rent Net"
+msgstr "Net Rent Currency"
 
 # field "rooms" of property
 msgid "Rooms"
-msgstr "Rooms"
-
-# field "searchVector" of property
-msgid "Search vector"
-msgstr "Search vector"
-
-# field description "Field used for full-text search" of property
-msgid "Field used for full-text search"
-msgstr "Field used for full-text search"
+msgstr "Number of Rooms"
 
 # field "secondaryRoomsSubtype" of property
 msgid "Secondary Rooms Subtype"
@@ -619,37 +267,9 @@ msgstr "Seller Foreign Key"
 msgid "Selling Price"
 msgstr "Selling Price"
 
-# field "stage" of property
-msgid "Stage"
-msgstr "Stage"
-
 # field "surface" of property
 msgid "Surface"
 msgstr "Surface"
-
-# field "taskTargets" of property
-msgid "Tasks"
-msgstr "Tasks"
-
-# field description "Tasks tied to the {label}" of property
-msgid "Tasks tied to the {label}"
-msgstr "Tasks tied to the {label}"
-
-# field "timelineActivities" of property
-msgid "Timeline Activities"
-msgstr "Timeline Activities"
-
-# field description "Timeline Activities tied to the {label}" of property
-msgid "Timeline Activities tied to the {label}"
-msgstr "Timeline Activities tied to the {label}"
-
-# field "updatedAt" of property
-msgid "Last update"
-msgstr "Last update"
-
-# field description "Last time the record was changed" of property
-msgid "Last time the record was changed"
-msgstr "Last time the record was changed"
 
 # field "usableSurface" of property
 msgid "Usable Surface"
