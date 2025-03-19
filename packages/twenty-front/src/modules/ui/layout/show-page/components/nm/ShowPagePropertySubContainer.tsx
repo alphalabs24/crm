@@ -1,9 +1,19 @@
+import { useDeleteMessage } from '@/action-menu/actions/record-actions/single-record/hooks/useDeleteMessage';
 import { RecordShowRightDrawerActionMenu } from '@/action-menu/components/RecordShowRightDrawerActionMenu';
 import { ActivityTargetableObject } from '@/activities/types/ActivityTargetableEntity';
+import { tokenPairState } from '@/auth/states/tokenPairState';
+import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadataItem';
+import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { getLinkToShowPage } from '@/object-metadata/utils/getLinkToShowPage';
+import { useDeleteOneRecord } from '@/object-record/hooks/useDeleteOneRecord';
 import { isNewViewableRecordLoadingState } from '@/object-record/record-right-drawer/states/isNewViewableRecordLoading';
 import { CardComponents } from '@/object-record/record-show/components/CardComponents';
+import { useRecordShowPage } from '@/object-record/record-show/hooks/useRecordShowPage';
 import { RecordLayout } from '@/object-record/record-show/types/RecordLayout';
+import { SnackBarVariant } from '@/ui/feedback/snack-bar-manager/components/SnackBar';
+import { useSnackBar } from '@/ui/feedback/snack-bar-manager/hooks/useSnackBar';
+import { useDropdown } from '@/ui/layout/dropdown/hooks/useDropdown';
+import { ConfirmationModal } from '@/ui/layout/modal/components/ConfirmationModal';
 import { ModalRefType } from '@/ui/layout/modal/components/Modal';
 import { RightDrawerFooter } from '@/ui/layout/right-drawer/components/RightDrawerFooter';
 import { PublishModal } from '@/ui/layout/show-page/components/nm/PublishModal';
@@ -13,39 +23,29 @@ import { useTabList } from '@/ui/layout/tab/hooks/useTabList';
 import { useIsMobile } from '@/ui/utilities/responsive/hooks/useIsMobile';
 import styled from '@emotion/styled';
 import { useLingui } from '@lingui/react/macro';
+import axios from 'axios';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
+import { capitalize } from 'twenty-shared';
 import {
   Button,
   IconPencil,
-  IconUpload,
+  IconPlus,
   IconRefresh,
   IconTrash,
-  IconPlus,
+  IconUpload,
   MOBILE_VIEWPORT,
 } from 'twenty-ui';
-import { PublishDraftModal } from './PublishDraftModal';
-import axios from 'axios';
-import { useSnackBar } from '@/ui/feedback/snack-bar-manager/hooks/useSnackBar';
-import { SnackBarVariant } from '@/ui/feedback/snack-bar-manager/components/SnackBar';
-import { tokenPairState } from '@/auth/states/tokenPairState';
-import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
-import { useDropdown } from '@/ui/layout/dropdown/hooks/useDropdown';
-import { usePublicationsOfProperty } from '../../hooks/usePublicationsOfProperty';
-import { usePropertyAndPublicationDifferences } from '../../hooks/usePropertyAndPublicationDifferences';
-import { PropertyDifferencesModal } from './PropertyDifferencesModal';
-import { usePublicationValidation } from '../../hooks/usePublicationValidation';
-import { useDeleteOneRecord } from '@/object-record/hooks/useDeleteOneRecord';
-import { useRecordShowPage } from '@/object-record/record-show/hooks/useRecordShowPage';
-import { useDeleteProperty } from '../../hooks/useDeleteProperty';
-import { ConfirmationModal } from '@/ui/layout/modal/components/ConfirmationModal';
-import { capitalize } from 'twenty-shared';
-import { ActionDropdown } from './ActionDropdown';
-import { useDeleteMessage } from '@/action-menu/actions/record-actions/single-record/hooks/useDeleteMessage';
-import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadataItem';
-import { PlatformId } from './types/Platform';
 import { getEnv } from '~/utils/get-env';
+import { useDeleteProperty } from '../../hooks/useDeleteProperty';
+import { usePropertyAndPublicationDifferences } from '../../hooks/usePropertyAndPublicationDifferences';
+import { usePublicationsOfProperty } from '../../hooks/usePublicationsOfProperty';
+import { usePublicationValidation } from '../../hooks/usePublicationValidation';
+import { ActionDropdown } from './ActionDropdown';
+import { PropertyDifferencesModal } from './PropertyDifferencesModal';
+import { PublishDraftModal } from './PublishDraftModal';
+import { PlatformId } from './types/Platform';
 
 const StyledShowPageRightContainer = styled.div<{ isMobile: boolean }>`
   display: flex;
@@ -233,6 +233,7 @@ export const ShowPagePropertySubContainer = ({
   const syncPublications = async () => {
     try {
       setLoadingSync(true);
+      // TODO useNestermind
       const response = await axios.post(
         `${getEnv('REACT_APP_NESTERMIND_SERVER_BASE_URL') ?? 'http://api.localhost'}/properties/sync?id=${targetableObject.id}`,
         {},

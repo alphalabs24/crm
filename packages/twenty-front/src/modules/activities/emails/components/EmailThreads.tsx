@@ -20,12 +20,10 @@ import { getTimelineThreadsFromCompanyId } from '@/activities/emails/graphql/que
 import { getTimelineThreadsFromPersonId } from '@/activities/emails/graphql/queries/getTimelineThreadsFromPersonId';
 import { useCustomResolver } from '@/activities/hooks/useCustomResolver';
 import { ActivityTargetableObject } from '@/activities/types/ActivityTargetableEntity';
-import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
-import { TimelineThread, TimelineThreadsWithTotal } from '~/generated/graphql';
 import { useNestermind } from '@/api/hooks/useNestermind';
+import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { useCallback, useEffect, useState } from 'react';
-import { email } from '@/auth/hooks/__mocks__/useAuth';
-import { EmailThread } from '../types/EmailThread';
+import { TimelineThread, TimelineThreadsWithTotal } from '~/generated/graphql';
 
 const StyledContainer = styled.div`
   display: flex;
@@ -55,7 +53,7 @@ export const EmailThreads = ({
       ? [getTimelineThreadsFromPersonId, 'getTimelineThreadsFromPersonId']
       : [getTimelineThreadsFromCompanyId, 'getTimelineThreadsFromCompanyId'];
 
-  const { messages } = useNestermind();
+  const { messagesApi: messages } = useNestermind();
 
   const isPublication =
     targetableObject.targetObjectNameSingular ===

@@ -8,15 +8,16 @@ import {
 } from '@/ui/layout/show-page/components/nm/modal-components/ModalComponents';
 import { useLingui } from '@lingui/react/macro';
 import { forwardRef, PropsWithChildren } from 'react';
-import { Button, IconExchange } from 'twenty-ui';
+import { Button } from 'twenty-ui';
 
 type Props = {
   title: string;
+  icon: React.ReactNode;
   onClose: () => void;
 } & PropsWithChildren;
 
 export const TutorialModal = forwardRef<ModalRefType, Props>(
-  ({ onClose, children, title }, ref) => {
+  ({ onClose, children, title, icon }, ref) => {
     const { t } = useLingui();
 
     return (
@@ -27,14 +28,15 @@ export const TutorialModal = forwardRef<ModalRefType, Props>(
         isClosable
         closedOnMount
         padding="none"
+        size="large"
       >
         <StyledModalHeader>
           <StyledModalTitleContainer>
-            <IconExchange size={16} />
+            {icon}
             <StyledModalTitle>{title}</StyledModalTitle>
           </StyledModalTitleContainer>
           <StyledModalHeaderButtons>
-            <Button variant="tertiary" title={t`Skip`} onClick={onClose} />
+            <Button variant="tertiary" title={t`Close`} onClick={onClose} />
           </StyledModalHeaderButtons>
         </StyledModalHeader>
         <StyledModalContent>{children}</StyledModalContent>

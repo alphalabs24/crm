@@ -1,4 +1,5 @@
-import { tokenPairState } from '@/auth/states/tokenPairState';
+import { useNestermind } from '@/api/hooks/useNestermind';
+import { getLinkToShowPage } from '@/object-metadata/utils/getLinkToShowPage';
 import { useFindOneRecord } from '@/object-record/hooks/useFindOneRecord';
 import { SnackBarVariant } from '@/ui/feedback/snack-bar-manager/components/SnackBar';
 import { useSnackBar } from '@/ui/feedback/snack-bar-manager/hooks/useSnackBar';
@@ -8,9 +9,8 @@ import {
 } from '@/ui/layout/show-page/components/nm/types/Platform';
 import styled from '@emotion/styled';
 import { Trans, useLingui } from '@lingui/react/macro';
-import axios from 'axios';
 import { useState } from 'react';
-import { useRecoilValue } from 'recoil';
+import { Link } from 'react-router-dom';
 import {
   Button,
   CircularProgressBar,
@@ -18,10 +18,6 @@ import {
   IconExternalLink,
 } from 'twenty-ui';
 import { ValidationResult } from '../../../hooks/usePublicationValidation';
-import { getLinkToShowPage } from '@/object-metadata/utils/getLinkToShowPage';
-import { Link } from 'react-router-dom';
-import { getEnv } from '~/utils/get-env';
-import { useNestermind } from '@/api/hooks/useNestermind';
 
 const StyledPublishingProcess = styled.div`
   display: flex;
@@ -141,7 +137,7 @@ export const Publishing = ({
   });
 
   const {
-    properties: { syncPublications },
+    propertiesApi: { syncPublications },
   } = useNestermind();
 
   const publishDraft = async () => {

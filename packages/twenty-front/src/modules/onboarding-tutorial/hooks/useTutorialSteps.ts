@@ -1,3 +1,4 @@
+import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import {
   TUTORIAL_ONBOARDING_STEPS,
   TutorialOnboardingStepData,
@@ -19,7 +20,26 @@ type TutorialSteps = Record<UserTutorialTask, TutorialStep>;
 
 type TutorialStepsType = {
   steps: TutorialSteps;
-  setAsCompleted: (step: UserTutorialTask) => void;
+  setAsCompleted: ({
+    step,
+    objectNameSingular,
+  }: {
+    step?: UserTutorialTask;
+    objectNameSingular?: CoreObjectNameSingular;
+  }) => void;
+};
+
+const mapSingularToStep = (objectNameSingular?: CoreObjectNameSingular) => {
+  switch (objectNameSingular) {
+    case CoreObjectNameSingular.Property:
+      return UserTutorialTask.TUTORIAL_PROPERTY;
+    case CoreObjectNameSingular.Publication:
+      return UserTutorialTask.TUTORIAL_PUBLICATION;
+    case CoreObjectNameSingular.Agency:
+      return UserTutorialTask.TUTORIAL_PLATFORM_SETUP;
+    default:
+      return undefined;
+  }
 };
 
 export const useTutorialSteps = (): TutorialStepsType => {
@@ -42,8 +62,18 @@ export const useTutorialSteps = (): TutorialStepsType => {
 
   return {
     steps,
-    setAsCompleted: (step: UserTutorialTask) => {
-      keyValueStore.setValueByKey(step, true);
+    setAsCompleted: ({
+      step,
+      objectNameSingular,
+    }: {
+      step?: UserTutorialTask;
+      objectNameSingular?: CoreObjectNameSingular;
+    }) => {
+      const stepToComplete = step || mapSingularToStep(objectNameSingular);
+
+      if (stepToComplete) {
+        keyValueStore.setValueByKey(stepToComplete, true);
+      }
     },
   };
 };

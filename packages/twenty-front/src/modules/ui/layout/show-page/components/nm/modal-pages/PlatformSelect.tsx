@@ -1,28 +1,27 @@
-import {
-  PlatformId,
-  PLATFORMS,
-} from '@/ui/layout/show-page/components/nm/types/Platform';
-import { useTheme } from '@emotion/react';
-import styled from '@emotion/styled';
-import { Trans, useLingui } from '@lingui/react/macro';
+import { useNestermind } from '@/api/hooks/useNestermind';
 import { tokenPairState } from '@/auth/states/tokenPairState';
 import { getLinkToShowPage } from '@/object-metadata/utils/getLinkToShowPage';
 import { SnackBarVariant } from '@/ui/feedback/snack-bar-manager/components/SnackBar';
 import { useSnackBar } from '@/ui/feedback/snack-bar-manager/hooks/useSnackBar';
-import axios from 'axios';
+import {
+  PlatformId,
+  PLATFORMS,
+} from '@/ui/layout/show-page/components/nm/types/Platform';
+import { useColorScheme } from '@/ui/theme/hooks/useColorScheme';
+import { useTheme } from '@emotion/react';
+import styled from '@emotion/styled';
+import { useLingui } from '@lingui/react/macro';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import {
   Button,
   IconCheck,
+  IconLayoutGrid,
   IconWand,
   LARGE_DESKTOP_VIEWPORT,
-  IconLayoutGrid,
 } from 'twenty-ui';
 import { ValidationResult } from '../../../hooks/usePublicationValidation';
-import { useColorScheme } from '@/ui/theme/hooks/useColorScheme';
-import { getEnv } from '~/utils/get-env';
 const StyledPlatformSelectionContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -80,9 +79,8 @@ const StyledPlatformTypeActionsContainer = styled.div`
 `;
 
 const StyledPlatformTypeActions = styled.div`
-  display: flex;
-  gap: ${({ theme }) => theme.spacing(2)};
   align-items: center;
+  display: flex;
   gap: ${({ theme }) => theme.spacing(4)};
 `;
 
@@ -257,6 +255,7 @@ export const PlatformSelect = ({
   const { t } = useLingui();
   const [showError, setShowError] = useState(false);
   const { colorScheme } = useColorScheme();
+  const { propertiesApi: properties } = useNestermind();
   const realEstatePlatforms = Object.keys(PLATFORMS)
     .filter(
       (platform) => PLATFORMS[platform as PlatformId].type === 'real_estate',
@@ -289,16 +288,8 @@ export const PlatformSelect = ({
       }
       setLoading(true);
       // TODO: This will be changed to a loop that creates all drafts and consolidates them into one show page later. For now only newhome works anyway.
-      const response = await axios.post(
-        // TODO: Replace the selectedPlatforms with an actual enum of platforms from the backend once we have standard entities.
-        `${getEnv('REACT_APP_NESTERMIND_SERVER_BASE_URL') ?? 'http://api.localhost'}/properties/publish?id=${recordId}&platform=${selectedPlatforms?.[0].toUpperCase()}`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${tokenPair?.accessToken?.token}`,
-          },
-        },
-      );
+      const response = await properties.createPublicationDraft(recordId);
+
       if (response.status !== 201) {
         throw new Error('Failed to create draft, id was not returned');
       }

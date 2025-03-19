@@ -1,6 +1,8 @@
 import { tokenPairState } from '@/auth/states/tokenPairState';
+import { useTutorialSteps } from '@/onboarding-tutorial/hooks/useTutorialSteps';
 import axios from 'axios';
 import { useRecoilValue } from 'recoil';
+import { UserTutorialTask } from 'twenty-shared';
 import { getEnv } from '~/utils/get-env';
 
 /**
@@ -9,6 +11,7 @@ import { getEnv } from '~/utils/get-env';
  */
 export const useNestermind = () => {
   const tokenPair = useRecoilValue(tokenPairState);
+  const { setAsCompleted, steps } = useTutorialSteps();
   const baseUrl =
     getEnv('REACT_APP_NESTERMIND_SERVER_BASE_URL') ?? 'http://api.localhost';
 
@@ -29,7 +32,7 @@ export const useNestermind = () => {
     return api.delete(`/properties/delete?id=${propertyId}`);
   };
 
-  const uploadProperty = async (propertyId: string) => {
+  const createPublicationDraftFromProperty = async (propertyId: string) => {
     return api.post(`/properties/publish?id=${propertyId}`);
   };
 
@@ -52,7 +55,11 @@ export const useNestermind = () => {
   }: {
     publicationId: string;
   }) => {
-    return api.post(`/publications/upload?id=${publicationId}`);
+    const response = await api.post(`/publications/upload?id=${publicationId}`);
+    setAsCompleted({
+      step: UserTutorialTask.TUTORIAL_PUBLICATION,
+    });
+    return response;
   };
 
   const duplicatePublication = async ({
@@ -92,25 +99,25 @@ export const useNestermind = () => {
 
   return {
     api,
-    publications: {
+    publicationsApi: {
       publish: publishPublication,
       duplicate: duplicatePublication,
       delete: deletePublication,
       check: checkPublications,
     },
-    properties: {
+    propertiesApi: {
       syncPublications: syncPublicationsWithProperty,
       delete: deleteProperty,
-      upload: uploadProperty,
+      createPublicationDraft: createPublicationDraftFromProperty,
     },
-    health: {
+    healthApi: {
       check: checkHealth,
     },
-    setup: {
+    setupApi: {
       createEmailWebhook,
       createWorkspace,
     },
-    messages: {
+    messagesApi: {
       getRecordMessageThreads,
     },
   };

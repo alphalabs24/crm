@@ -18,31 +18,36 @@ const StyledPlatformBadge = styled.div<{
     ${({ theme, isActive }) =>
       isActive ? theme.border.color.strong : theme.border.color.light};
   border-radius: ${({ theme }) => theme.border.radius.sm};
-  padding: ${({ theme, variant }) =>
-    variant === 'small' ? theme.spacing(0.5) : theme.spacing(1)};
-  cursor: pointer;
+  height: ${({ variant }) => (variant === 'small' ? '20px' : '30px')};
+  width: ${({ variant }) => (variant === 'small' ? '60px' : '80px')};
+  justify-content: center;
+  align-items: center;
+  cursor: ${({ disabled }) => (disabled ? 'default' : 'pointer')};
   background: ${({ theme, disabled, dark }) =>
     disabled
       ? dark
-        ? theme.background.invertedPrimary
+        ? theme.background.transparent.lighter
         : theme.background.secondary
       : dark
-        ? theme.background.invertedPrimary
+        ? theme.background.transparent.lighter
         : theme.background.primary};
 
   &:hover {
     background: ${({ theme, disabled, dark }) =>
       disabled
         ? dark
-          ? theme.background.invertedPrimary
+          ? theme.background.transparent.lighter
           : theme.background.secondary
         : dark
-          ? theme.background.invertedPrimary
-          : theme.background.primary};
+          ? theme.background.transparent.medium
+          : theme.background.tertiary};
   }
 `;
 
-const StyledPlatformLogo = styled.img<{ variant: PlatformVariant }>`
+const StyledPlatformLogo = styled.img<{
+  variant: PlatformVariant;
+  dark?: boolean;
+}>`
   width: ${({ variant }) => (variant === 'small' ? '50px' : '70px')};
 `;
 
@@ -62,17 +67,17 @@ export const PlatformBadge = ({
   variant = 'default',
 }: PlatformBadgeProps) => {
   const { colorScheme } = useColorScheme();
+  const isDark = colorScheme === 'Dark';
+
   const platform =
-    platformId === 'NEWHOME'
-      ? PLATFORMS[PlatformId.Newhome]
-      : PLATFORMS[platformId];
+    PLATFORMS[platformId.toUpperCase() as keyof typeof PLATFORMS];
 
   return (
     <StyledPlatformBadge
       variant={variant}
       isActive={isActive}
       onClick={onClick}
-      dark={colorScheme === 'Dark'}
+      dark={isDark}
       disabled={!onClick}
     >
       {platform?.logo && (
@@ -80,6 +85,7 @@ export const PlatformBadge = ({
           variant={variant}
           src={platform.logo}
           alt={platform.name}
+          dark={isDark}
         />
       )}
     </StyledPlatformBadge>

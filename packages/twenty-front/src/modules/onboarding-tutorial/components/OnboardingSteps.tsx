@@ -8,7 +8,6 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { IconCircleCheck, IconCircleDashed } from 'twenty-ui';
-import { useIsMatchingLocation } from '~/hooks/useIsMatchingLocation';
 
 const StyledLink = styled(Link)`
   text-decoration: none;
@@ -98,13 +97,10 @@ const StyledIconContainer = styled.div`
 export const OnboardingSteps = () => {
   const theme = useTheme();
   const { steps } = useTutorialSteps();
-  const { isMatchingLocation } = useIsMatchingLocation();
 
   const isNavigationDrawerExpanded = useRecoilValue(
     isNavigationDrawerExpandedState,
   );
-
-  const isTutorialPage = isMatchingLocation(AppPath.Tutorial);
 
   const isIntermediate = isNavigationDrawerExpanded;
 
@@ -121,72 +117,70 @@ export const OnboardingSteps = () => {
 
   return (
     <AnimatePresence mode="wait">
-      {isTutorialPage ? null : (
-        <StyledLink to={AppPath.Tutorial}>
-          <StyledOnboardingStepsContainer
-            isNavigationDrawerExpanded={isNavigationDrawerExpanded}
-            animate={{
-              height: theme.spacing(10),
-              padding: isIntermediate ? theme.spacing(2) : theme.spacing(1),
-              opacity: 1,
-            }}
-            exit={{
-              height: theme.spacing(10),
-              padding: isIntermediate ? theme.spacing(2) : theme.spacing(1),
-              opacity: 0,
-            }}
-            initial={{
-              opacity: 0,
-            }}
-            transition={{
-              duration: 0.2,
-              ease: 'easeInOut',
-            }}
-          >
-            {isIntermediate ? (
-              <StyledProgressContainer
-                key="intermediate"
-                initial={{
-                  opacity: 0,
-                }}
-                animate={{
-                  opacity: 1,
-                }}
-                transition={{
-                  delay: 0.2,
-                  duration: 0.15,
-                  ease: 'easeInOut',
-                }}
-              >
-                <StyledOnboardingTitle $isIntermediate>
-                  First Steps on Nestermind
-                </StyledOnboardingTitle>
-                <StyledProgressIndicators>
-                  {Object.values(steps).map((step) => (
-                    <StyledProgressBar
-                      key={step.step.id}
-                      $isCompleted={step.completed}
-                    />
-                  ))}
-                </StyledProgressIndicators>
-              </StyledProgressContainer>
-            ) : (
-              <StyledCollapsedContainer>
-                <StyledCompactTitle key="collapsed">
-                  {completedSteps}/{totalSteps}
-                </StyledCompactTitle>
-                <StyledIconContainer>
-                  {completedSteps === totalSteps ? (
-                    <IconCircleCheck size={20} />
-                  ) : (
-                    <IconCircleDashed size={20} />
-                  )}
-                </StyledIconContainer>
-              </StyledCollapsedContainer>
-            )}
-          </StyledOnboardingStepsContainer>
-        </StyledLink>
-      )}
+      <StyledLink to={AppPath.Tutorial}>
+        <StyledOnboardingStepsContainer
+          isNavigationDrawerExpanded={isNavigationDrawerExpanded}
+          animate={{
+            height: theme.spacing(10),
+            padding: isIntermediate ? theme.spacing(2) : theme.spacing(1),
+            opacity: 1,
+          }}
+          exit={{
+            height: theme.spacing(10),
+            padding: isIntermediate ? theme.spacing(2) : theme.spacing(1),
+            opacity: 0,
+          }}
+          initial={{
+            opacity: 0,
+          }}
+          transition={{
+            duration: 0.2,
+            ease: 'easeInOut',
+          }}
+        >
+          {isIntermediate ? (
+            <StyledProgressContainer
+              key="intermediate"
+              initial={{
+                opacity: 0,
+              }}
+              animate={{
+                opacity: 1,
+              }}
+              transition={{
+                delay: 0.2,
+                duration: 0.15,
+                ease: 'easeInOut',
+              }}
+            >
+              <StyledOnboardingTitle $isIntermediate>
+                First Steps on Nestermind
+              </StyledOnboardingTitle>
+              <StyledProgressIndicators>
+                {Object.values(steps).map((step) => (
+                  <StyledProgressBar
+                    key={step.step.id}
+                    $isCompleted={step.completed}
+                  />
+                ))}
+              </StyledProgressIndicators>
+            </StyledProgressContainer>
+          ) : (
+            <StyledCollapsedContainer>
+              <StyledCompactTitle key="collapsed">
+                {completedSteps}/{totalSteps}
+              </StyledCompactTitle>
+              <StyledIconContainer>
+                {completedSteps === totalSteps ? (
+                  <IconCircleCheck size={20} />
+                ) : (
+                  <IconCircleDashed size={20} />
+                )}
+              </StyledIconContainer>
+            </StyledCollapsedContainer>
+          )}
+        </StyledOnboardingStepsContainer>
+      </StyledLink>
     </AnimatePresence>
   );
 };

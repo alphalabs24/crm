@@ -16,6 +16,17 @@ export enum PlatformId {
   SmartListing = 'SMART LISTING',
 }
 
+export type PublishablePlatforms =
+  | PlatformId.SwissMarketplaceGroup
+  | PlatformId.Newhome
+  | PlatformId.Comparis;
+
+export const PUBLISHABLE_PLATFORMS = [
+  PlatformId.SwissMarketplaceGroup,
+  PlatformId.Newhome,
+  PlatformId.Comparis,
+];
+
 export type Platform = {
   type: PlatformType;
   name: string;
@@ -25,6 +36,8 @@ export type Platform = {
   accountName?: string;
   isNew?: boolean;
   isBeta?: boolean;
+  backgroundColor?: string;
+  fieldsOnAgency?: string[];
 };
 
 export const PLATFORMS: { [key in PlatformId]: Platform } = {
@@ -33,7 +46,14 @@ export const PLATFORMS: { [key in PlatformId]: Platform } = {
     name: 'Newhome',
     description: <Trans>List your property conveniently to newhome.ch.</Trans>,
     isNew: true,
+    // eslint-disable-next-line @nx/workspace-no-hardcoded-colors
+    backgroundColor: '#97DDD2',
     logo: '/logos/newhome.png',
+    fieldsOnAgency: [
+      'newhomeFtpUser',
+      'newhomeFtpPassword',
+      'newhomePartnerId',
+    ],
   },
   [PlatformId.SocialMedia]: {
     type: 'social_media',
@@ -103,6 +123,7 @@ export const PLATFORMS: { [key in PlatformId]: Platform } = {
     name: 'Comparis',
     description: <Trans>List your property on Comparis.</Trans>,
     isBeta: true,
+    logo: '/logos/comparis.png',
   },
   [PlatformId.Flatfox]: {
     type: 'real_estate',
