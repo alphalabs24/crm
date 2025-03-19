@@ -19,10 +19,6 @@ msgstr "Publisher"
 msgid "Agencies"
 msgstr "Publishers"
 
-# field "address" of agency
-msgid "Address"
-msgstr "Address"
-
 # field "agencyReference" of agency
 msgid "Agency Reference"
 msgstr "Publisher Reference"
@@ -47,10 +43,6 @@ msgstr "Purchase Inquiry"
 msgid "Buyer Leads"
 msgstr "Purchase Inquiries"
 
-# field "stage" of buyerLead
-msgid "Stage"
-msgstr "Stage"
-
 # object singular property
 msgid "Property"
 msgstr "Property"
@@ -58,10 +50,6 @@ msgstr "Property"
 # object plural properties
 msgid "Properties"
 msgstr "Properties"
-
-# field "address" of property
-msgid "Address"
-msgstr "Address"
 
 # field "agricultureSubtype" of property
 msgid "Agriculture Subtype"
@@ -78,10 +66,6 @@ msgstr "Apartment Subtype"
 # field "assignee" of property
 msgid "Assignee"
 msgstr "Assignee"
-
-# field "assigneeId" of property
-msgid "Assignee Foreign Key"
-msgstr "Assignee Foreign Key"
 
 # field "availableFrom" of property
 msgid "Available From"
@@ -127,17 +111,9 @@ msgstr "Documents"
 msgid "Email Sender"
 msgstr "Auto-Respond Sender"
 
-# field "emailSenderId" of property
-msgid "Email Sender Foreign Key"
-msgstr "Auto-Respond Sender Foreign Key"
-
 # field "emailTemplate" of property
 msgid "Email Template"
 msgstr "Auto-Respond Email Template"
-
-# field "emailTemplateId" of property
-msgid "Email Template Foreign Key"
-msgstr "Auto-Respond Email Template Foreign Key"
 
 # field "features" of property
 msgid "Features"
@@ -242,10 +218,6 @@ msgstr "Secondary Rooms Subtype"
 # field "seller" of property
 msgid "Seller"
 msgstr "Seller"
-
-# field "sellerId" of property
-msgid "Seller Foreign Key"
-msgstr "Seller Foreign Key"
 
 # field "sellingPrice" of property
 msgid "Selling Price"

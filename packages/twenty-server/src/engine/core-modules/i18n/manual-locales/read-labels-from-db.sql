@@ -55,5 +55,51 @@ FROM (
     -- we currently avoid publications because its mainly duplicates from properties
     --'publication',
     'buyerLead','agency')
+    AND fm."isSystem" = FALSE
+    -- ignore list because the id already exist
+    -- change the label in the db (including migrations) if you want to change them
+    AND fm."label" NOT IN (
+      'Agency',
+      'Agencies',
+      'Property',
+      'Properties',
+      'Publication',
+      'Publications',
+      'Buyer Lead',
+      'Buyer Leads',
+      --
+      'Person',
+      'People',
+      'Person id (foreign key)',
+      'Company',
+      'Companies',
+      'Company id (foreign key)',
+      'Opportunity',
+      'Opportunities',
+      'Opportunity id (foreign key)',
+      'Task',
+      'Tasks',
+      'Task id (foreign key)',
+      'Note',
+      'Notes',
+      'Note id (foreign key)',
+      'Attachment',
+      'Attachments',
+      'Attachment id (foreign key)',
+      --
+      'Creation date',
+      'Created by',
+      'Deleted at',
+      'Identifier',
+      'Last update',
+      --
+      'Email',
+      'Name',
+      'Phone',
+      'Address',
+      'Description',
+      'Stage'
+      )
+
 ) as subquery
 ORDER BY object_name, COALESCE(field_name, '')
