@@ -83,6 +83,10 @@ msgstr "In kg"
 msgid "Carrying Capacity Elevator"
 msgstr "Carrying Capacity Elevator"
 
+# field description "In kg" of property
+msgid "In kg"
+msgstr "In kg"
+
 # field "category" of property
 msgid "Category"
 msgstr "Category"
@@ -102,10 +106,6 @@ msgstr "Construction year"
 # field "distances" of property
 msgid "Distances"
 msgstr "Distances"
-
-# field "documents" of property
-msgid "Documents"
-msgstr "Documents"
 
 # field "emailSender" of property
 msgid "Email Sender"
@@ -159,10 +159,6 @@ msgstr "Maximal Floor Loading"
 msgid "kg/m2"
 msgstr "kg/m2"
 
-# field "movies" of property
-msgid "Movies"
-msgstr "Movies"
-
 # field "numberOfFloors" of property
 msgid "Number Of Floors"
 msgstr "Number of Floors"
@@ -174,10 +170,6 @@ msgstr "Offer Type"
 # field "parkingSubtype" of property
 msgid "Parking Subtype"
 msgstr "Parking Subtype"
-
-# field "pictures" of property
-msgid "Pictures"
-msgstr "Pictures"
 
 # field "plotSubtype" of property
 msgid "Plot Subtype"

@@ -98,7 +98,11 @@ FROM (
       'Phone',
       'Address',
       'Description',
-      'Stage'
+      'Stage',
+      -- unused labels
+      'Documents',
+      'Movies',
+      'Pictures'
       )
 
 ) as subquery
