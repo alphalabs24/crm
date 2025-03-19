@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: nestermind-crm\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2025-03-18 11:59\n"
+"PO-Revision-Date: 2025-03-19 07:23\n"
 "Last-Translator: \n"
 "Language: it_IT\n"
 "Language-Team: Italian\n"
@@ -16,13 +16,276 @@ msgstr ""
 "X-Crowdin-File: /packages/twenty-server/src/engine/core-modules/i18n/manual-locales/en.po\n"
 "X-Crowdin-File-ID: 35\n"
 
+msgid "Agency"
+msgstr ""
+
+msgid "Agencies"
+msgstr ""
+
+msgid "Buyer Lead"
+msgstr ""
+
+msgid "Buyer Leads"
+msgstr ""
+
 msgid "Property"
+msgstr ""
+
+msgid "Properties"
 msgstr ""
 
 msgid "Publication"
 msgstr ""
 
-# nestermind standard objects translations
+msgid "Publications"
+msgstr ""
+
+msgid "Plot Subtype"
+msgstr ""
+
+msgid "Timeline Activities"
+msgstr ""
+
+msgid "Property Subtype"
+msgstr ""
+
+msgid "Creation date"
+msgstr ""
+
+msgid "Selling Price"
+msgstr ""
+
+msgid "Features"
+msgstr ""
+
+msgid "Name"
+msgstr ""
+
+msgid "Person"
+msgstr ""
+
+msgid "Stage"
+msgstr ""
+
+msgid "Assignee"
+msgstr ""
+
+msgid "Last update"
+msgstr ""
+
+msgid "Virtual Tour"
+msgstr ""
+
+msgid "Seller"
+msgstr ""
+
+msgid "Search vector"
+msgstr ""
+
+msgid "Properties"
+msgstr ""
+
+msgid "Tasks"
+msgstr ""
+
+msgid "Agency"
+msgstr ""
+
+msgid "Links"
+msgstr ""
+
+msgid "Email"
+msgstr ""
+
+msgid "Agency Foreign Key"
+msgstr ""
+
+msgid "Agriculture Subtype"
+msgstr ""
+
+msgid "Pictures"
+msgstr ""
+
+msgid "Seller Foreign Key"
+msgstr ""
+
+msgid "Surface"
+msgstr ""
+
+msgid "Movies"
+msgstr ""
+
+msgid "Rent Extra"
+msgstr ""
+
+msgid "Agency Reference"
+msgstr ""
+
+msgid "Person Foreign Key"
+msgstr ""
+
+msgid "Newhome Ftp Password"
+msgstr ""
+
+msgid "Usable Surface"
+msgstr ""
+
+msgid "Valuation"
+msgstr ""
+
+msgid "Email Template"
+msgstr ""
+
+msgid "Notes"
+msgstr ""
+
+msgid "Rent Net"
+msgstr ""
+
+msgid "Publication"
+msgstr ""
+
+msgid "Id"
+msgstr ""
+
+msgid "Position"
+msgstr ""
+
+msgid "Publish Until"
+msgstr ""
+
+msgid "Address"
+msgstr ""
+
+msgid "Documents"
+msgstr ""
+
+msgid "Renovation Year"
+msgstr ""
+
+msgid "Apartment Subtype"
+msgstr ""
+
+msgid "Secondary Rooms Subtype"
+msgstr ""
+
+msgid "Gastronomy Subtype"
+msgstr ""
+
+msgid "Distances"
+msgstr ""
+
+msgid "Attachments"
+msgstr ""
+
+msgid "Publication Foreign Key"
+msgstr ""
+
+msgid "Carrying Capacity Crane"
+msgstr ""
+
+msgid "Identifier"
+msgstr ""
+
+msgid "Number Of Floors"
+msgstr ""
+
+msgid "Email Sender Foreign Key"
+msgstr ""
+
+msgid "Ref Property"
+msgstr ""
+
+msgid "Buyer Leads"
+msgstr ""
+
+msgid "Created by"
+msgstr ""
+
+msgid "Industrial Subtype"
+msgstr ""
+
+msgid "Property Foreign Key"
+msgstr ""
+
+msgid "Email Sender"
+msgstr ""
+
+msgid "Carrying Capacity Elevator"
+msgstr ""
+
+msgid "Description"
+msgstr ""
+
+msgid "Hall Height"
+msgstr ""
+
+msgid "Property"
+msgstr ""
+
+msgid "Deleted at"
+msgstr ""
+
+msgid "Email Template Foreign Key"
+msgstr ""
+
+msgid "Parking Subtype"
+msgstr ""
+
+msgid "Newhome Ftp User"
+msgstr ""
+
+msgid "Maximal Floor Loading"
+msgstr ""
+
+msgid "Construction Year"
+msgstr ""
+
+msgid "Phone"
+msgstr ""
+
 msgid "Rooms"
+msgstr ""
+
+msgid "Volume"
+msgstr ""
+
+msgid "Ceiling Height"
+msgstr ""
+
+msgid "House Subtype"
+msgstr ""
+
+msgid "Favorites"
+msgstr ""
+
+msgid "Price Unit"
+msgstr ""
+
+msgid "Offer Type"
+msgstr ""
+
+msgid "Category"
+msgstr ""
+
+msgid "Assignee Foreign Key"
+msgstr ""
+
+msgid "Platform"
+msgstr ""
+
+msgid "Floor"
+msgstr ""
+
+msgid "Available From"
+msgstr ""
+
+msgid "Living Surface"
+msgstr ""
+
+msgid "Apartments"
+msgstr ""
+
+msgid "Publications"
 msgstr ""
 

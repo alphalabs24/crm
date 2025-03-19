@@ -11,12 +11,275 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
 
+msgid "Agency"
+msgstr "Agency"
+
+msgid "Agencies"
+msgstr "Agencies"
+
+msgid "Buyer Lead"
+msgstr "Buyer Lead"
+
+msgid "Buyer Leads"
+msgstr "Buyer Leads"
+
 msgid "Property"
 msgstr "Property"
+
+msgid "Properties"
+msgstr "Properties"
 
 msgid "Publication"
 msgstr "Publication"
 
-# nestermind standard objects translations
+msgid "Publications"
+msgstr "Publications"
+
+msgid "Plot Subtype"
+msgstr "Plot Subtype"
+
+msgid "Timeline Activities"
+msgstr "Timeline Activities"
+
+msgid "Property Subtype"
+msgstr "Property Subtype"
+
+msgid "Creation date"
+msgstr "Creation date"
+
+msgid "Selling Price"
+msgstr "Selling Price"
+
+msgid "Features"
+msgstr "Features"
+
+msgid "Name"
+msgstr "Name"
+
+msgid "Person"
+msgstr "Person"
+
+msgid "Stage"
+msgstr "Stage"
+
+msgid "Assignee"
+msgstr "Assignee"
+
+msgid "Last update"
+msgstr "Last update"
+
+msgid "Virtual Tour"
+msgstr "Virtual Tour"
+
+msgid "Seller"
+msgstr "Seller"
+
+msgid "Search vector"
+msgstr "Search vector"
+
+msgid "Properties"
+msgstr "Properties"
+
+msgid "Tasks"
+msgstr "Tasks"
+
+msgid "Agency"
+msgstr "Agency"
+
+msgid "Links"
+msgstr "Links"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Agency Foreign Key"
+msgstr "Agency Foreign Key"
+
+msgid "Agriculture Subtype"
+msgstr "Agriculture Subtype"
+
+msgid "Pictures"
+msgstr "Pictures"
+
+msgid "Seller Foreign Key"
+msgstr "Seller Foreign Key"
+
+msgid "Surface"
+msgstr "Surface"
+
+msgid "Movies"
+msgstr "Movies"
+
+msgid "Rent Extra"
+msgstr "Rent Extra"
+
+msgid "Agency Reference"
+msgstr "Agency Reference"
+
+msgid "Person Foreign Key"
+msgstr "Person Foreign Key"
+
+msgid "Newhome Ftp Password"
+msgstr "Newhome Ftp Password"
+
+msgid "Usable Surface"
+msgstr "Usable Surface"
+
+msgid "Valuation"
+msgstr "Valuation"
+
+msgid "Email Template"
+msgstr "Email Template"
+
+msgid "Notes"
+msgstr "Notes"
+
+msgid "Rent Net"
+msgstr "Rent Net"
+
+msgid "Publication"
+msgstr "Publication"
+
+msgid "Id"
+msgstr "Id"
+
+msgid "Position"
+msgstr "Position"
+
+msgid "Publish Until"
+msgstr "Publish Until"
+
+msgid "Address"
+msgstr "Address"
+
+msgid "Documents"
+msgstr "Documents"
+
+msgid "Renovation Year"
+msgstr "Renovation Year"
+
+msgid "Apartment Subtype"
+msgstr "Apartment Subtype"
+
+msgid "Secondary Rooms Subtype"
+msgstr "Secondary Rooms Subtype"
+
+msgid "Gastronomy Subtype"
+msgstr "Gastronomy Subtype"
+
+msgid "Distances"
+msgstr "Distances"
+
+msgid "Attachments"
+msgstr "Attachments"
+
+msgid "Publication Foreign Key"
+msgstr "Publication Foreign Key"
+
+msgid "Carrying Capacity Crane"
+msgstr "Carrying Capacity Crane"
+
+msgid "Identifier"
+msgstr "Identifier"
+
+msgid "Number Of Floors"
+msgstr "Number of Floors"
+
+msgid "Email Sender Foreign Key"
+msgstr "Email Sender Foreign Key"
+
+msgid "Ref Property"
+msgstr "Ref Property"
+
+msgid "Buyer Leads"
+msgstr "Buyer Leads"
+
+msgid "Created by"
+msgstr "Created by"
+
+msgid "Industrial Subtype"
+msgstr "Industrial Subtype"
+
+msgid "Property Foreign Key"
+msgstr "Property Foreign Key"
+
+msgid "Email Sender"
+msgstr "Email Sender"
+
+msgid "Carrying Capacity Elevator"
+msgstr "Carrying Capacity Elevator"
+
+msgid "Description"
+msgstr "Description"
+
+msgid "Hall Height"
+msgstr "Hall Height"
+
+msgid "Property"
+msgstr "Property"
+
+msgid "Deleted at"
+msgstr "Deleted at"
+
+msgid "Email Template Foreign Key"
+msgstr "Email Template Foreign Key"
+
+msgid "Parking Subtype"
+msgstr "Parking Subtype"
+
+msgid "Newhome Ftp User"
+msgstr "Newhome Ftp User"
+
+msgid "Maximal Floor Loading"
+msgstr "Maximal Floor Loading"
+
+msgid "Construction Year"
+msgstr "Construction Year"
+
+msgid "Phone"
+msgstr "Phone"
+
 msgid "Rooms"
 msgstr "Rooms"
+
+msgid "Volume"
+msgstr "Volume"
+
+msgid "Ceiling Height"
+msgstr "Ceiling Height"
+
+msgid "House Subtype"
+msgstr "House Subtype"
+
+msgid "Favorites"
+msgstr "Favorites"
+
+msgid "Price Unit"
+msgstr "Price Unit"
+
+msgid "Offer Type"
+msgstr "Offer Type"
+
+msgid "Category"
+msgstr "Category"
+
+msgid "Assignee Foreign Key"
+msgstr "Assignee Foreign Key"
+
+msgid "Platform"
+msgstr "Platform"
+
+msgid "Floor"
+msgstr "Floor"
+
+msgid "Available From"
+msgstr "Available From"
+
+msgid "Living Surface"
+msgstr "Living Surface"
+
+msgid "Apartments"
+msgstr "Apartments"
+
+msgid "Publications"
+msgstr "Publications"
