@@ -51,6 +51,9 @@ FROM (
   FROM "metadata"."objectMetadata" om
     LEFT JOIN "metadata"."fieldMetadata" fm ON fm."objectMetadataId" = om.id
   WHERE om."workspaceId" = 'da3d12fd-7243-415a-a326-c0719ab571f2'
-    AND om."nameSingular" IN ('property', 'publication','buyerLead','agency')
+    AND om."nameSingular" IN ('property',
+    -- we currently avoid publications because its mainly duplicates from properties
+    --'publication',
+    'buyerLead','agency')
 ) as subquery
 ORDER BY object_name, COALESCE(field_name, '')
