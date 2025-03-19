@@ -24,7 +24,7 @@ import {
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { isEqual } from 'date-fns';
+import isEqual from 'lodash.isequal';
 import {
   forwardRef,
   useCallback,
