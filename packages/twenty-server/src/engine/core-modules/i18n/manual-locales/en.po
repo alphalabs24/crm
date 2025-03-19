@@ -41,19 +41,15 @@ msgstr "newhome FTP User"
 
 # object singular buyerLead
 msgid "Buyer Lead"
-msgstr "Kaufanfrage"
+msgstr "Purchase Inquiry"
 
 # object plural buyerLeads
 msgid "Buyer Leads"
-msgstr "Kaufanfragen"
+msgstr "Purchase Inquiries"
 
 # field "stage" of buyerLead
 msgid "Stage"
 msgstr "Stage"
-
-# field "taskTargets" of buyerLead
-msgid "Tasks"
-msgstr "Tasks"
 
 # object singular property
 msgid "Property"
