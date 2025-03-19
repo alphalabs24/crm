@@ -4,6 +4,9 @@ import { useFindOneRecord } from '@/object-record/hooks/useFindOneRecord';
 import { useUpdateOneRecord } from '@/object-record/hooks/useUpdateOneRecord';
 import { emailSchema } from '@/object-record/record-field/validation-schemas/emailSchema';
 import { PlatformCredentialItem } from '@/publishers/components/PlatformCredentialItem';
+import { PlatformCredentialItemSkeleton } from '@/publishers/components/PlatformCredentialItemSkeleton';
+import { SnackBarVariant } from '@/ui/feedback/snack-bar-manager/components/SnackBar';
+import { useSnackBar } from '@/ui/feedback/snack-bar-manager/hooks/useSnackBar';
 import { TextInputV2 } from '@/ui/input/components/TextInputV2';
 import { Modal, ModalRefType } from '@/ui/layout/modal/components/Modal';
 import {
@@ -18,9 +21,19 @@ import {
   PUBLISHABLE_PLATFORMS,
   PublishablePlatforms,
 } from '@/ui/layout/show-page/components/nm/types/Platform';
+import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { forwardRef, useCallback, useEffect, useState } from 'react';
+import { isEqual } from 'date-fns';
+import {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import { Button, IconSettings } from 'twenty-ui';
 
 const StyledSectionTitle = styled.div`
@@ -46,54 +59,11 @@ const StyledInputContainer = styled.div`
   margin-bottom: ${({ theme }) => theme.spacing(4)};
 `;
 
-const StyledMultiInputContainer = styled.div`
-  box-sizing: border-box;
-  display: inline-flex;
-  flex-direction: column;
-  width: 100%;
-`;
-
-const StyledMultiInputWrapper = styled.div`
-  background-color: ${({ theme }) => theme.background.transparent.lighter};
-  border: 1px solid ${({ theme }) => theme.border.color.medium};
-  border-radius: ${({ theme }) => theme.border.radius.sm};
-  box-sizing: border-box;
-  min-height: 32px;
-  width: 100%;
-
-  &:focus-within {
-    border-color: ${({ theme }) => theme.color.blue};
-  }
-
-  & > div {
-    background-color: transparent;
-    border: none;
-    width: 100%;
-  }
-
-  & input {
-    background-color: transparent;
-    border: none;
-    color: ${({ theme }) => theme.font.color.primary};
-    font-family: ${({ theme }) => theme.font.family};
-    font-size: ${({ theme }) => theme.font.size.md};
-    font-weight: ${({ theme }) => theme.font.weight.regular};
-    height: 32px;
-    line-height: 32px;
-    padding: ${({ theme }) => theme.spacing(2)};
-    width: 100%;
-
-    &::placeholder {
-      color: ${({ theme }) => theme.font.color.light};
-      font-family: ${({ theme }) => theme.font.family};
-      font-weight: ${({ theme }) => theme.font.weight.medium};
-    }
-
-    &:focus {
-      outline: none;
-    }
-  }
-`;
+type InitialState = {
+  name: string;
+  email: string;
+  platformCredentials: Record<string, Record<string, string>>;
+};
 
 type Props = {
   onClose: () => void;
@@ -104,11 +74,16 @@ export const EditPublisherModal = forwardRef<ModalRefType, Props>(
   ({ onClose, publisherId }, ref) => {
     const { t } = useLingui();
     const [name, setName] = useState('');
+    const [nameError, setNameError] = useState('');
     const [email, setEmail] = useState('');
     const [emailError, setEmailError] = useState('');
     const [platformCredentials, setPlatformCredentials] = useState<
       Record<string, Record<string, string>>
     >({});
+
+    const initialStateRef = useRef<InitialState | null>(null);
+
+    const { enqueueSnackBar } = useSnackBar();
 
     const { record: agencyRecord, loading: loadingAgencyRecord } =
       useFindOneRecord({
@@ -125,10 +100,15 @@ export const EditPublisherModal = forwardRef<ModalRefType, Props>(
       objectNameSingular: CoreObjectNameSingular.Agency,
     });
 
+    const theme = useTheme();
+
     useEffect(() => {
       if (agencyRecord) {
-        setName(agencyRecord.name || '');
-        setEmail(agencyRecord.emailPrimaryEmail || '');
+        const newName = agencyRecord.name || '';
+        const newEmail =
+          agencyRecord.email?.primaryEmail ||
+          agencyRecord.emailPrimaryEmail ||
+          '';
 
         // Initialize platform credentials from agency record
         const credentials: Record<string, Record<string, string>> = {};
@@ -137,13 +117,62 @@ export const EditPublisherModal = forwardRef<ModalRefType, Props>(
           if (platform.fieldsOnAgency) {
             credentials[platformId] = {};
             platform.fieldsOnAgency.forEach((field) => {
-              credentials[platformId][field] = agencyRecord[field] || '';
+              credentials[platformId][field.name] =
+                agencyRecord[field.name] || '';
             });
           }
         });
+
+        setName(newName);
+        setEmail(newEmail);
         setPlatformCredentials(credentials);
+
+        // Store initial state for existing publisher
+        initialStateRef.current = {
+          name: newName,
+          email: newEmail,
+          platformCredentials: credentials,
+        };
+      } else if (!publisherId) {
+        // Initialize empty state for new publisher
+        setName('');
+        setEmail('');
+        setPlatformCredentials({});
+
+        initialStateRef.current = {
+          name: '',
+          email: '',
+          platformCredentials: {},
+        };
       }
-    }, [agencyRecord]);
+    }, [agencyRecord, publisherId]);
+
+    const hasChanges = useMemo(() => {
+      // For new publishers, require at least a name
+      if (!publisherId) {
+        return name.trim() !== '';
+      }
+
+      if (!initialStateRef.current) return false;
+
+      const currentState: InitialState = {
+        name,
+        email,
+        platformCredentials,
+      };
+
+      return !isEqual(currentState, initialStateRef.current);
+    }, [name, email, platformCredentials, publisherId]);
+
+    const handleNameChange = useCallback(
+      (value: string) => {
+        setName(value);
+        if (nameError) {
+          setNameError('');
+        }
+      },
+      [nameError],
+    );
 
     const handleEmailChange = useCallback(
       (value: string) => {
@@ -157,7 +186,34 @@ export const EditPublisherModal = forwardRef<ModalRefType, Props>(
       [t],
     );
 
+    const validateFields = () => {
+      let isValid = true;
+
+      if (!name.trim()) {
+        setNameError(t`Name is required`);
+        isValid = false;
+      }
+
+      if (email && !emailSchema.safeParse(email).success) {
+        setEmailError(t`Please enter a valid email address`);
+        isValid = false;
+      }
+
+      return isValid;
+    };
+
+    const closeModal = () => {
+      setName('');
+      setEmail('');
+      setPlatformCredentials({});
+      onClose();
+    };
+
     const handleSave = async () => {
+      if (!validateFields()) {
+        return;
+      }
+
       try {
         const allCredentials = Object.values(platformCredentials).reduce(
           (acc, credentials) => ({ ...acc, ...credentials }),
@@ -181,9 +237,15 @@ export const EditPublisherModal = forwardRef<ModalRefType, Props>(
           await createOneRecord(recordData);
         }
 
-        onClose();
+        enqueueSnackBar(t`Credentials saved successfully`, {
+          variant: SnackBarVariant.Success,
+        });
+
+        closeModal();
       } catch (error) {
-        console.error('Error saving publisher:', error);
+        enqueueSnackBar(t`Error saving publisher`, {
+          variant: SnackBarVariant.Error,
+        });
       }
     };
 
@@ -202,13 +264,11 @@ export const EditPublisherModal = forwardRef<ModalRefType, Props>(
     };
 
     const isLoading = loadingAgencyRecord || creatingAgencyRecord;
-    const canSave =
-      name.trim() !== '' && (!email || emailSchema.safeParse(email).success);
 
     return (
       <Modal
         ref={ref}
-        onClose={onClose}
+        onClose={closeModal}
         isClosable
         closedOnMount
         padding="none"
@@ -220,36 +280,48 @@ export const EditPublisherModal = forwardRef<ModalRefType, Props>(
             <StyledModalTitle>{t`Configure Publisher`}</StyledModalTitle>
           </StyledModalTitleContainer>
           <StyledModalHeaderButtons>
-            <Button variant="tertiary" title={t`Cancel`} onClick={onClose} />
+            <Button variant="tertiary" title={t`Cancel`} onClick={closeModal} />
             <Button
               title={t`Save`}
               onClick={handleSave}
               accent="blue"
-              disabled={!canSave || isLoading}
+              disabled={isLoading || !hasChanges}
             />
           </StyledModalHeaderButtons>
         </StyledModalHeader>
         <StyledModalContent>
-          {loadingAgencyRecord ? (
-            <div>Loading...</div>
-          ) : (
-            <>
-              <StyledSection>
-                <StyledSectionTitle>
-                  <Trans>Publisher Details</Trans>
-                </StyledSectionTitle>
-                <StyledSectionDescription>
-                  <Trans>
-                    Configure your publisher profile information that will be
-                    used across all platforms.
-                  </Trans>
-                </StyledSectionDescription>
-                <StyledInputContainer>
+          <StyledSection>
+            <StyledSectionTitle>
+              <Trans>Publisher Details</Trans>
+            </StyledSectionTitle>
+            <StyledSectionDescription>
+              <Trans>
+                Configure your publisher profile information that will be used
+                across all platforms.
+              </Trans>
+            </StyledSectionDescription>
+            <StyledInputContainer>
+              {loadingAgencyRecord ? (
+                <SkeletonTheme
+                  baseColor={theme.background.tertiary}
+                  highlightColor={theme.background.transparent.lighter}
+                  borderRadius={theme.border.radius.sm}
+                >
+                  <div style={{ width: '100%' }}>
+                    <Skeleton height={36} />
+                  </div>
+                  <div style={{ width: '100%' }}>
+                    <Skeleton height={36} />
+                  </div>
+                </SkeletonTheme>
+              ) : (
+                <>
                   <TextInputV2
                     label={t`Name`}
                     value={name}
-                    onChange={setName}
+                    onChange={handleNameChange}
                     placeholder={t`Enter publisher name`}
+                    error={nameError}
                     fullWidth
                     required
                   />
@@ -261,41 +333,49 @@ export const EditPublisherModal = forwardRef<ModalRefType, Props>(
                     error={emailError}
                     fullWidth
                   />
-                </StyledInputContainer>
-              </StyledSection>
+                </>
+              )}
+            </StyledInputContainer>
+          </StyledSection>
 
-              <StyledSection>
-                <StyledSectionTitle>
-                  <Trans>Platform Credentials</Trans>
-                </StyledSectionTitle>
-                <StyledSectionDescription>
-                  <Trans>
-                    Set up your credentials for each platforms where you want to
-                    publish your listings.
-                  </Trans>
-                </StyledSectionDescription>
-                {Object.entries(PLATFORMS)
-                  .filter(([key]) =>
-                    PUBLISHABLE_PLATFORMS.includes(key as PublishablePlatforms),
-                  )
-                  .map(([key, platform]) => (
-                    <PlatformCredentialItem
-                      key={key}
-                      platformId={key as PublishablePlatforms}
-                      platform={platform}
-                      values={platformCredentials[key] || {}}
-                      onChange={(fieldName: string, value: string) =>
-                        handlePlatformCredentialChange(
-                          key as PublishablePlatforms,
-                          fieldName,
-                          value,
-                        )
-                      }
-                    />
-                  ))}
-              </StyledSection>
-            </>
-          )}
+          <StyledSection>
+            <StyledSectionTitle>
+              <Trans>Platform Credentials</Trans>
+            </StyledSectionTitle>
+            <StyledSectionDescription>
+              <Trans>
+                Set up your credentials for each platforms where you want to
+                publish your listings.
+              </Trans>
+            </StyledSectionDescription>
+            {loadingAgencyRecord ? (
+              <>
+                <PlatformCredentialItemSkeleton />
+                <PlatformCredentialItemSkeleton />
+                <PlatformCredentialItemSkeleton />
+              </>
+            ) : (
+              Object.entries(PLATFORMS)
+                .filter(([key]) =>
+                  PUBLISHABLE_PLATFORMS.includes(key as PublishablePlatforms),
+                )
+                .map(([key, platform]) => (
+                  <PlatformCredentialItem
+                    key={key}
+                    platformId={key as PublishablePlatforms}
+                    platform={platform}
+                    values={platformCredentials[key] || {}}
+                    onChange={(fieldName: string, value: string) =>
+                      handlePlatformCredentialChange(
+                        key as PublishablePlatforms,
+                        fieldName,
+                        value,
+                      )
+                    }
+                  />
+                ))
+            )}
+          </StyledSection>
         </StyledModalContent>
       </Modal>
     );

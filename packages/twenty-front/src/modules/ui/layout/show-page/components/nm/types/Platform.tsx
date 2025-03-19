@@ -27,6 +27,13 @@ export const PUBLISHABLE_PLATFORMS = [
   PlatformId.Comparis,
 ];
 
+export type PlatformField = {
+  name: string;
+  helpText?: React.ReactNode;
+  action?: () => void;
+  type?: 'text' | 'password';
+};
+
 export type Platform = {
   type: PlatformType;
   name: string;
@@ -37,7 +44,7 @@ export type Platform = {
   isNew?: boolean;
   isBeta?: boolean;
   backgroundColor?: string;
-  fieldsOnAgency?: string[];
+  fieldsOnAgency?: PlatformField[];
 };
 
 export const PLATFORMS: { [key in PlatformId]: Platform } = {
@@ -50,9 +57,34 @@ export const PLATFORMS: { [key in PlatformId]: Platform } = {
     backgroundColor: '#97DDD2',
     logo: '/logos/newhome.png',
     fieldsOnAgency: [
-      'newhomeFtpUser',
-      'newhomeFtpPassword',
-      'newhomePartnerId',
+      {
+        name: 'newhomeFtpUser',
+        helpText: (
+          <Trans>
+            Your FTP username can be found under "Import interfaces" on
+            MyNewhome.
+          </Trans>
+        ),
+      },
+      {
+        name: 'newhomeFtpPassword',
+        helpText: (
+          <Trans>
+            Your FTP password can be found under "Import interfaces" on
+            MyNewhome.
+          </Trans>
+        ),
+        type: 'password',
+      },
+      {
+        name: 'newhomePartnerId',
+        helpText: (
+          <Trans>
+            Your Partner ID is displayed in your MyNewhome dashboard under
+            "Integration of ads on your own website" under Short name.
+          </Trans>
+        ),
+      },
     ],
   },
   [PlatformId.SocialMedia]: {

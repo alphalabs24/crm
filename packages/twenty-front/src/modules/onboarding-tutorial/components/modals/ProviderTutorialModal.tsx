@@ -1,12 +1,14 @@
 import { TutorialModal } from '@/onboarding-tutorial/components/modals/TutorialModal';
 import { useLocale } from '@/onboarding-tutorial/hooks/useLocale';
-import { usePublishers } from '@/publishers/contexts/PublisherContext';
+import { SettingsPath } from '@/types/SettingsPath';
 import { ModalRefType } from '@/ui/layout/modal/components/Modal';
 import styled from '@emotion/styled';
 import { Trans, useLingui } from '@lingui/react/macro';
 import { forwardRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { APP_LOCALES } from 'twenty-shared';
 import { Button, IconBuilding } from 'twenty-ui';
+import { getSettingsPath } from '~/utils/navigation/getSettingsPath';
 
 const StyledModalText = styled.div`
   color: ${({ theme }) => theme.font.color.secondary};
@@ -67,11 +69,11 @@ export const ProviderTutorialModal = forwardRef<ModalRefType, Props>(
   ({ onClose }, ref) => {
     const locale = useLocale();
     const { t } = useLingui();
-    const { openModalForPublisher } = usePublishers();
+    const navigate = useNavigate();
 
     const editPublisher = () => {
       onClose();
-      openModalForPublisher();
+      navigate(getSettingsPath(SettingsPath.Platforms));
     };
 
     return (

@@ -155,6 +155,20 @@ export const PageChangeEffect = () => {
         });
         break;
       }
+      case isMatchingLocation(SettingsPath.Platforms, AppBasePath.Settings): {
+        setHotkeyScope(PageHotkeyScope.Settings, {
+          goto: true,
+          keyboardShortcutMenu: true,
+        });
+        break;
+      }
+      case isMatchingLocation(AppPath.Tutorial): {
+        setHotkeyScope(PageHotkeyScope.Tutorial, {
+          goto: true,
+          keyboardShortcutMenu: true,
+        });
+        break;
+      }
       case isMatchingLocation(
         SettingsPath.WorkspaceMembersPage,
         AppBasePath.Settings,

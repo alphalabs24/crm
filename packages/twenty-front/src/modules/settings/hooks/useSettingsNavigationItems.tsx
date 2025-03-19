@@ -15,6 +15,7 @@ import {
   IconRocket,
   IconServer,
   IconSettings,
+  IconShare,
   IconUserCircle,
   IconUsers,
 } from 'twenty-ui';
@@ -112,6 +113,12 @@ const useSettingsNavigationItems = (): SettingsNavigationSection[] => {
           path: SettingsPath.WorkspaceMembersPage,
           Icon: IconUsers,
           isHidden: !permissionMap[SettingsFeatures.WORKSPACE_USERS],
+        },
+        {
+          label: t`Platforms`,
+          path: SettingsPath.Platforms,
+          Icon: IconShare,
+          isHidden: !permissionMap[SettingsFeatures.WORKSPACE],
         },
         {
           label: t`Billing`,

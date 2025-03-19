@@ -274,6 +274,12 @@ const SettingsRoleEdit = lazy(() =>
   })),
 );
 
+const SettingsPublishers = lazy(() =>
+  import('~/pages/settings/publishers/SettingsPublishers').then((module) => ({
+    default: module.SettingsPublishers,
+  })),
+);
+
 type SettingsRoutesProps = {
   isFunctionSettingsEnabled?: boolean;
   isAdminPageEnabled?: boolean;
@@ -312,6 +318,7 @@ export const SettingsRoutes = ({
         path={SettingsPath.WorkspaceMembersPage}
         element={<SettingsWorkspaceMembers />}
       />
+      <Route path={SettingsPath.Platforms} element={<SettingsPublishers />} />
       <Route
         element={
           <SettingsProtectedRouteWrapper
