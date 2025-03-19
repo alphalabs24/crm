@@ -123,10 +123,6 @@ msgstr "Distances"
 msgid "Documents"
 msgstr "Documents"
 
-# field description "array of {filename:'',title:'',description'',url:''}" of property
-msgid "array of {filename:'',title:'',description'',url:''}"
-msgstr "array of {filename:'',title:'',description'',url:''}"
-
 # field "emailSender" of property
 msgid "Email Sender"
 msgstr "Auto-Respond Sender"
@@ -191,10 +187,6 @@ msgstr "kg/m2"
 msgid "Movies"
 msgstr "Movies"
 
-# field description "array of {filename:'',title:'',description:'',url:''}" of property
-msgid "array of {filename:'',title:'',description:'',url:''}"
-msgstr "array of {filename:'',title:'',description:'',url:''}"
-
 # field "numberOfFloors" of property
 msgid "Number Of Floors"
 msgstr "Number of Floors"
@@ -210,10 +202,6 @@ msgstr "Parking Subtype"
 # field "pictures" of property
 msgid "Pictures"
 msgstr "Pictures"
-
-# field description "array of {filename:'',title:'',description:'',url:''}" of property
-msgid "array of {filename:'',title:'',description:'',url:''}"
-msgstr "array of {filename:'',title:'',description:'',url:''}"
 
 # field "plotSubtype" of property
 msgid "Plot Subtype"

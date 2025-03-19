@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: nestermind-crm\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2025-03-19 15:21\n"
+"PO-Revision-Date: 2025-03-19 16:12\n"
 "Last-Translator: \n"
 "Language: de_DE\n"
 "Language-Team: German\n"
@@ -16,360 +16,283 @@ msgstr ""
 "X-Crowdin-File: /packages/twenty-server/src/engine/core-modules/i18n/manual-locales/en.po\n"
 "X-Crowdin-File-ID: 35\n"
 
+# object singular agency
 msgid "Agency"
-msgstr ""
+msgstr "Anbieter"
 
+# object plural agencies
 msgid "Agencies"
-msgstr ""
+msgstr "Anbieter"
 
+# field "address" of agency
+msgid "Address"
+msgstr "Adresse"
+
+# field "agencyReference" of agency
+msgid "Agency Reference"
+msgstr "Anbieterreferenz"
+
+# field description "Contact Person (Visible On Publication)" of agency
+msgid "Contact Person (Visible On Publication)"
+msgstr "Kontaktperson (Bei Publikation sichtbar)"
+
+# field "newhomeFtpPassword" of agency
+msgid "Newhome Ftp Password"
+msgstr "newhome FTP Passwort"
+
+# field "newhomeFtpUser" of agency
+msgid "Newhome Ftp User"
+msgstr "newhome FTP Username"
+
+# object singular buyerLead
 msgid "Buyer Lead"
-msgstr ""
+msgstr "Kaufanfrage"
 
+# object plural buyerLeads
 msgid "Buyer Leads"
-msgstr ""
+msgstr "Kaufanfragen"
 
+# field "stage" of buyerLead
+msgid "Stage"
+msgstr "Status"
+
+# object singular property
 msgid "Property"
 msgstr "Objekt"
 
+# object plural properties
 msgid "Properties"
-msgstr ""
+msgstr "Objekte"
 
-msgid "Publication"
-msgstr "Veröffentlichung"
-
-msgid "Publications"
-msgstr ""
-
-msgid "Documents"
-msgstr ""
-
-msgid "array of {filename:‘’,title:‘’,description:’’,url:’’}"
-msgstr ""
-
-msgid "Plot Subtype"
-msgstr ""
-
-msgid "Agency Reference"
-msgstr ""
-
-msgid "Contact Person (Visible On Publication)"
-msgstr ""
-
-msgid "Pictures"
-msgstr ""
-
-msgid "array of {filename:'',title:'',description:'',url:''}"
-msgstr ""
-
-msgid "Search vector"
-msgstr ""
-
-msgid "Field used for full-text search"
-msgstr ""
-
-msgid "Notes"
-msgstr ""
-
-msgid "Notes tied to the {label}"
-msgstr ""
-
-msgid "Property Subtype"
-msgstr ""
-
-msgid "Selling Price"
-msgstr ""
-
-msgid "Features"
-msgstr ""
-
-msgid "Person"
-msgstr ""
-
-msgid "Stage"
-msgstr ""
-
-msgid "Attachments"
-msgstr ""
-
-msgid "Attachments tied to the {label}"
-msgstr ""
-
-msgid "Assignee"
-msgstr ""
-
-msgid "Documents"
-msgstr ""
-
-msgid "array of {filename:'',title:'',description'',url:''}"
-msgstr ""
-
-msgid "Virtual Tour"
-msgstr ""
-
-msgid "Tasks"
-msgstr ""
-
-msgid "Tasks tied to the {label}"
-msgstr ""
-
-msgid "Seller"
-msgstr ""
-
-msgid "Properties"
-msgstr ""
-
-msgid "Movies"
-msgstr ""
-
-msgid "array of {filename:‘’,title:‘’,description:’’,url:’’}"
-msgstr ""
-
-msgid "Agency"
-msgstr ""
-
-msgid "Created by"
-msgstr ""
-
-msgid "The creator of the record"
-msgstr ""
-
-msgid "Links"
-msgstr ""
-
-msgid "Email"
-msgstr ""
-
-msgid "Timeline Activities"
-msgstr ""
-
-msgid "Timeline Activities tied to the {label}"
-msgstr ""
-
-msgid "Carrying Capacity Elevator"
-msgstr ""
-
-msgid "In kg"
-msgstr ""
-
-msgid "Agency Foreign Key"
-msgstr ""
-
-msgid "Agriculture Subtype"
-msgstr ""
-
-msgid "Seller Foreign Key"
-msgstr ""
-
-msgid "Surface"
-msgstr ""
-
-msgid "Rent Extra"
-msgstr ""
-
-msgid "Person Foreign Key"
-msgstr ""
-
-msgid "Newhome Ftp Password"
-msgstr ""
-
-msgid "Usable Surface"
-msgstr ""
-
-msgid "Valuation"
-msgstr ""
-
-msgid "Email Template"
-msgstr ""
-
-msgid "Creation date"
-msgstr ""
-
-msgid "Creation date"
-msgstr ""
-
-msgid "Rent Net"
-msgstr ""
-
-msgid "Publication"
-msgstr ""
-
-msgid "Publish Until"
-msgstr ""
-
+# field "address" of property
 msgid "Address"
-msgstr ""
+msgstr "Adresse"
 
-msgid "Maximal Floor Loading"
-msgstr ""
+# field "agricultureSubtype" of property
+msgid "Agriculture Subtype"
+msgstr "Landstücktyp"
 
-msgid "kg/m2"
-msgstr ""
+# field "apartments" of property
+msgid "Apartments"
+msgstr "Anzahl Wohnungen"
 
-msgid "Renovation Year"
-msgstr ""
-
+# field "apartmentSubtype" of property
 msgid "Apartment Subtype"
-msgstr ""
+msgstr "Wohnungstyp"
 
-msgid "Secondary Rooms Subtype"
-msgstr ""
+# field "assignee" of property
+msgid "Assignee"
+msgstr "Zugewiesener Makler"
 
-msgid "Gastronomy Subtype"
-msgstr ""
+# field "assigneeId" of property
+msgid "Assignee Foreign Key"
+msgstr "Foreign Key des zugewiesenen Maklers"
 
-msgid "Distances"
-msgstr ""
+# field "availableFrom" of property
+msgid "Available From"
+msgstr "Verfügbar ab"
 
-msgid "Ceiling Height"
-msgstr ""
-
-msgid "Height of room in meters"
-msgstr ""
-
-msgid "Publication Foreign Key"
-msgstr ""
-
-msgid "Name"
-msgstr ""
-
-msgid "Name"
-msgstr ""
-
-msgid "Identifier"
-msgstr ""
-
-msgid "Number Of Floors"
-msgstr "Anzahl Stockwerke"
-
-msgid "Email Sender Foreign Key"
-msgstr ""
-
-msgid "Ref Property"
-msgstr ""
-
-msgid "Buyer Leads"
-msgstr ""
-
-msgid "Industrial Subtype"
-msgstr ""
-
-msgid "Property Foreign Key"
-msgstr ""
-
-msgid "Email Sender"
-msgstr ""
-
-msgid "Pictures"
-msgstr ""
-
-msgid "array of {filename:‘’,title:‘’,description:’’,url:’’}"
-msgstr ""
-
-msgid "Description"
-msgstr ""
-
-msgid "Hall Height"
-msgstr ""
-
-msgid "Height of hall in meters"
-msgstr ""
-
-msgid "Property"
-msgstr ""
-
-msgid "Email Template Foreign Key"
-msgstr ""
-
-msgid "Parking Subtype"
-msgstr ""
-
-msgid "Newhome Ftp User"
-msgstr ""
-
-msgid "Construction Year"
-msgstr ""
-
-msgid "Phone"
-msgstr ""
-
-msgid "Rooms"
-msgstr "Zimmer"
-
-msgid "Volume"
-msgstr ""
-
-msgid "House Subtype"
-msgstr ""
-
-msgid "Price Unit"
-msgstr ""
-
-msgid "Offer Type"
-msgstr ""
-
-msgid "Last update"
-msgstr ""
-
-msgid "Last time the record was changed"
-msgstr ""
-
-msgid "Position"
-msgstr ""
-
-msgid "Position"
-msgstr ""
-
+# field "carryingCapacityCrane" of property
 msgid "Carrying Capacity Crane"
-msgstr ""
+msgstr "Tragekapazität des Hebekrans"
 
+# field description "In kg" of property
 msgid "In kg"
-msgstr ""
+msgstr "in kg"
 
-msgid "Id"
-msgstr ""
+# field "carryingCapacityElevator" of property
+msgid "Carrying Capacity Elevator"
+msgstr "Tragekapazität des Lifts"
 
-msgid "Id"
-msgstr ""
-
+# field "category" of property
 msgid "Category"
 msgstr "Kategorie"
 
-msgid "Deleted at"
-msgstr ""
+# field "ceilingHeight" of property
+msgid "Ceiling Height"
+msgstr "Raumhöhe"
 
-msgid "Date when the record was deleted"
-msgstr ""
+# field description "Height of room in meters" of property
+msgid "Height of room in meters"
+msgstr "Die Höhe des Raumes in Metern"
 
-msgid "Assignee Foreign Key"
-msgstr ""
+# field "constructionYear" of property
+msgid "Construction Year"
+msgstr "Baujahr"
 
-msgid "Platform"
-msgstr ""
+# field "distances" of property
+msgid "Distances"
+msgstr "Entfernungen"
 
+# field "documents" of property
+msgid "Documents"
+msgstr "Dokumente"
+
+# field description "array of {filename:'',title:'',description'',url:''}" of property
+msgid "array of {filename:'',title:'',description'',url:''}"
+msgstr "Liste von { filename: ' ', title: ' ', description: ' ', url: ' ' }"
+
+# field "emailSender" of property
+msgid "Email Sender"
+msgstr "Sender der automatischen Anfrageantwort (E-Mail)"
+
+# field "emailSenderId" of property
+msgid "Email Sender Foreign Key"
+msgstr "Foreign Key des Senders der automatischen Anfrageantwort (E-Mail)"
+
+# field "emailTemplate" of property
+msgid "Email Template"
+msgstr "E-Mail-Vorlage für die automatische Anfrageantwort"
+
+# field "emailTemplateId" of property
+msgid "Email Template Foreign Key"
+msgstr "Foreign Key der E-Mail-Vorlage für die automatische Anfrageantwort"
+
+# field "features" of property
+msgid "Features"
+msgstr "Objekteigenschaften"
+
+# field "floor" of property
 msgid "Floor"
-msgstr ""
+msgstr "Stockwerk"
 
-msgid "Favorites"
-msgstr ""
+# field "gastronomySubtype" of property
+msgid "Gastronomy Subtype"
+msgstr "Gastronomietyp"
 
-msgid "Favorites tied to the {label}"
-msgstr ""
+# field "hallHeight" of property
+msgid "Hall Height"
+msgstr "Ganghöhe"
 
-msgid "Available From"
-msgstr ""
+# field description "Height of hall in meters" of property
+msgid "Height of hall in meters"
+msgstr "Die Höhe des Gangs in Metern"
 
+# field "houseSubtype" of property
+msgid "House Subtype"
+msgstr "Haustyp"
+
+# field "industrialSubtype" of property
+msgid "Industrial Subtype"
+msgstr "Industrietyp"
+
+# field "links" of property
+msgid "Links"
+msgstr "Links"
+
+# field "livingSurface" of property
 msgid "Living Surface"
-msgstr ""
+msgstr "Wohnfläche"
 
-msgid "Apartments"
-msgstr ""
+# field "maximalFloorLoading" of property
+msgid "Maximal Floor Loading"
+msgstr "Maximale Bodenbeladung"
 
+# field description "kg/m2" of property
+msgid "kg/m2"
+msgstr "kg/m2"
+
+# field "movies" of property
 msgid "Movies"
-msgstr ""
+msgstr "Videos"
 
+# field description "array of {filename:'',title:'',description:'',url:''}" of property
 msgid "array of {filename:'',title:'',description:'',url:''}"
-msgstr ""
+msgstr "Liste von { filename: ' ', title: ' ', description: ' ', url: ' ' }"
 
+# field "numberOfFloors" of property
+msgid "Number Of Floors"
+msgstr "Anzahl Stockwerke"
+
+# field "offerType" of property
+msgid "Offer Type"
+msgstr "Angebotsart"
+
+# field "parkingSubtype" of property
+msgid "Parking Subtype"
+msgstr "Parkplatztyp"
+
+# field "pictures" of property
+msgid "Pictures"
+msgstr "Bilder"
+
+# field description "array of {filename:'',title:'',description:'',url:''}" of property
+msgid "array of {filename:'',title:'',description:'',url:''}"
+msgstr "Liste von { filename: ' ', title: ' ', description: ' ', url: ' ' }"
+
+# field "plotSubtype" of property
+msgid "Plot Subtype"
+msgstr "Grundstücktyp"
+
+# field "priceUnit" of property
+msgid "Price Unit"
+msgstr "Preiseinheit"
+
+# field "propertySubtype" of property
+msgid "Property Subtype"
+msgstr "Objekttyp"
+
+# field "refProperty" of property
+msgid "Ref Property"
+msgstr "Objekt-Referenz"
+
+# field "renovationYear" of property
+msgid "Renovation Year"
+msgstr "Renovationsjahr"
+
+# field "rentExtra" of property
+msgid "Rent Extra"
+msgstr "Nebenkosten"
+
+# field "rentNet" of property
+msgid "Rent Net"
+msgstr "Nettomiete"
+
+# field "rooms" of property
+msgid "Rooms"
+msgstr "Zimmer"
+
+# field "secondaryRoomsSubtype" of property
+msgid "Secondary Rooms Subtype"
+msgstr "Sekundärraum Kategorie"
+
+# field "seller" of property
+msgid "Seller"
+msgstr "Verkäufer"
+
+# field "sellerId" of property
+msgid "Seller Foreign Key"
+msgstr "Foreign Key des Verkäufers"
+
+# field "sellingPrice" of property
+msgid "Selling Price"
+msgstr "Verkaufspreis"
+
+# field "surface" of property
+msgid "Surface"
+msgstr "Fläche"
+
+# field "usableSurface" of property
+msgid "Usable Surface"
+msgstr "Nutzbare Fläche"
+
+# field "valuation" of property
+msgid "Valuation"
+msgstr "Bewertung"
+
+# field "virtualTour" of property
+msgid "Virtual Tour"
+msgstr "Virtuelle Tour"
+
+# field "volume" of property
+msgid "Volume"
+msgstr "Volumen"
+
+# object singular publication
+msgid "Publication"
+msgstr "Publikation"
+
+# object plural publications
 msgid "Publications"
-msgstr ""
+msgstr "Publikationen"
 
