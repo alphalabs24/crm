@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: nestermind-crm\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2025-03-19 07:45\n"
+"PO-Revision-Date: 2025-03-19 15:21\n"
 "Last-Translator: \n"
 "Language: it_IT\n"
 "Language-Team: Italian\n"
@@ -40,16 +40,40 @@ msgstr ""
 msgid "Publications"
 msgstr ""
 
+msgid "Documents"
+msgstr ""
+
+msgid "array of {filename:‘’,title:‘’,description:’’,url:’’}"
+msgstr ""
+
 msgid "Plot Subtype"
 msgstr ""
 
-msgid "Timeline Activities"
+msgid "Agency Reference"
+msgstr ""
+
+msgid "Contact Person (Visible On Publication)"
+msgstr ""
+
+msgid "Pictures"
+msgstr ""
+
+msgid "array of {filename:'',title:'',description:'',url:''}"
+msgstr ""
+
+msgid "Search vector"
+msgstr ""
+
+msgid "Field used for full-text search"
+msgstr ""
+
+msgid "Notes"
+msgstr ""
+
+msgid "Notes tied to the {label}"
 msgstr ""
 
 msgid "Property Subtype"
-msgstr ""
-
-msgid "Creation date"
 msgstr ""
 
 msgid "Selling Price"
@@ -58,37 +82,55 @@ msgstr ""
 msgid "Features"
 msgstr ""
 
-msgid "Name"
-msgstr ""
-
 msgid "Person"
 msgstr ""
 
 msgid "Stage"
 msgstr ""
 
+msgid "Attachments"
+msgstr ""
+
+msgid "Attachments tied to the {label}"
+msgstr ""
+
 msgid "Assignee"
 msgstr ""
 
-msgid "Last update"
+msgid "Documents"
+msgstr ""
+
+msgid "array of {filename:'',title:'',description'',url:''}"
 msgstr ""
 
 msgid "Virtual Tour"
 msgstr ""
 
-msgid "Seller"
+msgid "Tasks"
 msgstr ""
 
-msgid "Search vector"
+msgid "Tasks tied to the {label}"
+msgstr ""
+
+msgid "Seller"
 msgstr ""
 
 msgid "Properties"
 msgstr ""
 
-msgid "Tasks"
+msgid "Movies"
+msgstr ""
+
+msgid "array of {filename:‘’,title:‘’,description:’’,url:’’}"
 msgstr ""
 
 msgid "Agency"
+msgstr ""
+
+msgid "Created by"
+msgstr ""
+
+msgid "The creator of the record"
 msgstr ""
 
 msgid "Links"
@@ -97,13 +139,22 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
+msgid "Timeline Activities"
+msgstr ""
+
+msgid "Timeline Activities tied to the {label}"
+msgstr ""
+
+msgid "Carrying Capacity Elevator"
+msgstr ""
+
+msgid "In kg"
+msgstr ""
+
 msgid "Agency Foreign Key"
 msgstr ""
 
 msgid "Agriculture Subtype"
-msgstr ""
-
-msgid "Pictures"
 msgstr ""
 
 msgid "Seller Foreign Key"
@@ -112,13 +163,7 @@ msgstr ""
 msgid "Surface"
 msgstr ""
 
-msgid "Movies"
-msgstr ""
-
 msgid "Rent Extra"
-msgstr ""
-
-msgid "Agency Reference"
 msgstr ""
 
 msgid "Person Foreign Key"
@@ -136,7 +181,10 @@ msgstr ""
 msgid "Email Template"
 msgstr ""
 
-msgid "Notes"
+msgid "Creation date"
+msgstr ""
+
+msgid "Creation date"
 msgstr ""
 
 msgid "Rent Net"
@@ -145,19 +193,16 @@ msgstr ""
 msgid "Publication"
 msgstr ""
 
-msgid "Id"
-msgstr ""
-
-msgid "Position"
-msgstr ""
-
 msgid "Publish Until"
 msgstr ""
 
 msgid "Address"
 msgstr ""
 
-msgid "Documents"
+msgid "Maximal Floor Loading"
+msgstr ""
+
+msgid "kg/m2"
 msgstr ""
 
 msgid "Renovation Year"
@@ -175,13 +220,19 @@ msgstr ""
 msgid "Distances"
 msgstr ""
 
-msgid "Attachments"
+msgid "Ceiling Height"
+msgstr ""
+
+msgid "Height of room in meters"
 msgstr ""
 
 msgid "Publication Foreign Key"
 msgstr ""
 
-msgid "Carrying Capacity Crane"
+msgid "Name"
+msgstr ""
+
+msgid "Name"
 msgstr ""
 
 msgid "Identifier"
@@ -199,9 +250,6 @@ msgstr ""
 msgid "Buyer Leads"
 msgstr ""
 
-msgid "Created by"
-msgstr ""
-
 msgid "Industrial Subtype"
 msgstr ""
 
@@ -211,7 +259,10 @@ msgstr ""
 msgid "Email Sender"
 msgstr ""
 
-msgid "Carrying Capacity Elevator"
+msgid "Pictures"
+msgstr ""
+
+msgid "array of {filename:‘’,title:‘’,description:’’,url:’’}"
 msgstr ""
 
 msgid "Description"
@@ -220,10 +271,10 @@ msgstr ""
 msgid "Hall Height"
 msgstr ""
 
-msgid "Property"
+msgid "Height of hall in meters"
 msgstr ""
 
-msgid "Deleted at"
+msgid "Property"
 msgstr ""
 
 msgid "Email Template Foreign Key"
@@ -233,9 +284,6 @@ msgid "Parking Subtype"
 msgstr ""
 
 msgid "Newhome Ftp User"
-msgstr ""
-
-msgid "Maximal Floor Loading"
 msgstr ""
 
 msgid "Construction Year"
@@ -250,13 +298,7 @@ msgstr ""
 msgid "Volume"
 msgstr ""
 
-msgid "Ceiling Height"
-msgstr ""
-
 msgid "House Subtype"
-msgstr ""
-
-msgid "Favorites"
 msgstr ""
 
 msgid "Price Unit"
@@ -265,7 +307,37 @@ msgstr ""
 msgid "Offer Type"
 msgstr ""
 
+msgid "Last update"
+msgstr ""
+
+msgid "Last time the record was changed"
+msgstr ""
+
+msgid "Position"
+msgstr ""
+
+msgid "Position"
+msgstr ""
+
+msgid "Carrying Capacity Crane"
+msgstr ""
+
+msgid "In kg"
+msgstr ""
+
+msgid "Id"
+msgstr ""
+
+msgid "Id"
+msgstr ""
+
 msgid "Category"
+msgstr ""
+
+msgid "Deleted at"
+msgstr ""
+
+msgid "Date when the record was deleted"
 msgstr ""
 
 msgid "Assignee Foreign Key"
@@ -277,6 +349,12 @@ msgstr ""
 msgid "Floor"
 msgstr ""
 
+msgid "Favorites"
+msgstr ""
+
+msgid "Favorites tied to the {label}"
+msgstr ""
+
 msgid "Available From"
 msgstr ""
 
@@ -284,6 +362,12 @@ msgid "Living Surface"
 msgstr ""
 
 msgid "Apartments"
+msgstr ""
+
+msgid "Movies"
+msgstr ""
+
+msgid "array of {filename:'',title:'',description:'',url:''}"
 msgstr ""
 
 msgid "Publications"
