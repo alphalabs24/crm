@@ -29,6 +29,7 @@ export const TutorialProvider = ({
   const [activeModal, setActiveModal] = useState<
     UserTutorialTask | UserTutorialExplanation | null
   >(null);
+
   const tutorialModalRef = useRef<ModalRefType>(null);
   const emailTutorialModalRef = useRef<ModalRefType>(null);
   const inquiryTutorialModalRef = useRef<ModalRefType>(null);

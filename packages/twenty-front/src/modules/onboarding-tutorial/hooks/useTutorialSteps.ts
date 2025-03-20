@@ -4,6 +4,8 @@ import {
   TutorialOnboardingStepData,
 } from '@/onboarding-tutorial/constants/onboarding-steps';
 import { useTutorial } from '@/onboarding-tutorial/contexts/TutorialProvider';
+import { useTutorialSnackbar } from '@/onboarding-tutorial/contexts/TutorialSnackbarProvider';
+import { isTutorialTask } from '@/onboarding-tutorial/utils/isTutorialTask';
 import { useKeyValueStore } from '@/onboarding/hooks/useKeyValueStore';
 import { useMemo } from 'react';
 import { UserTutorialExplanation, UserTutorialTask } from 'twenty-shared';
@@ -47,7 +49,7 @@ const mapSingularToStep = (objectNameSingular?: CoreObjectNameSingular) => {
 export const useTutorialSteps = (): TutorialStepsType => {
   const keyValueStore = useKeyValueStore();
   const { showTutorial } = useTutorial();
-  // reload current user to get the latest onboarding status
+  const { showSnackbar } = useTutorialSnackbar();
 
   const steps: TutorialSteps = useMemo(() => {
     return TUTORIAL_ONBOARDING_STEPS.filter((step) => !step.hidden).reduce(
@@ -76,7 +78,16 @@ export const useTutorialSteps = (): TutorialStepsType => {
 
       if (stepToComplete) {
         try {
-          await keyValueStore.setValueByKey(stepToComplete, true);
+          const status = await keyValueStore.setValueByKey(
+            stepToComplete,
+            true,
+          );
+
+          if (status === 'success' && isTutorialTask(stepToComplete)) {
+            // TODO this is not shown for the publisher tutorial for some reason
+            // Check why showSnackbar is an empty function (e.g. provider not initialized??)
+            showSnackbar(stepToComplete);
+          }
         } catch (error) {
           console.error(
             'Error setting step as completed for step: ',

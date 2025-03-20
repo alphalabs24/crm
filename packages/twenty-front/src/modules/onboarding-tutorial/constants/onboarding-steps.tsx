@@ -13,6 +13,7 @@ export type TutorialOnboardingStepData = {
   id: UserTutorialTask;
   title: string | ReactNode;
   description: string | ReactNode;
+  successMessage: string | ReactNode;
   Icon: (props: TablerIconsProps) => ReactElement;
   hidden?: boolean;
   requires?: UserTutorialTask[];
@@ -28,6 +29,7 @@ export const TUTORIAL_ONBOARDING_STEPS: TutorialOnboardingStepData[] = [
         Setup your platform credentials in order to publish your properties.
       </Trans>
     ),
+    successMessage: <Trans>Platform credentials setup successfully</Trans>,
     Icon: IconAbc,
   },
   {
@@ -38,6 +40,7 @@ export const TUTORIAL_ONBOARDING_STEPS: TutorialOnboardingStepData[] = [
         Connect your email in order to synchronize your inbox with nestermind.
       </Trans>
     ),
+    successMessage: <Trans>Email connected successfully</Trans>,
     Icon: IconMail,
   },
   {
@@ -49,6 +52,7 @@ export const TUTORIAL_ONBOARDING_STEPS: TutorialOnboardingStepData[] = [
         to publish.
       </Trans>
     ),
+    successMessage: <Trans>Property created successfully</Trans>,
     Icon: IconHome,
   },
   {
@@ -57,6 +61,7 @@ export const TUTORIAL_ONBOARDING_STEPS: TutorialOnboardingStepData[] = [
     description: (
       <Trans>Create a publication draft and publish it to a platform.</Trans>
     ),
+    successMessage: <Trans>Publication created successfully</Trans>,
     Icon: IconHomeShare,
     requires: [UserTutorialTask.TUTORIAL_PROPERTY],
   },

@@ -6,6 +6,8 @@ import {
 } from '~/generated/graphql';
 import { keyValueStoreState } from '../states/keyValueStoreState';
 
+type KeyValueStoreWriteStatus = 'success' | 'no-change';
+
 export const useKeyValueStore = () => {
   const [setUserVar] = useSetUserVarMutation();
   const { data, error } = useGetCurrentUserKeyValueStoreQuery({
@@ -31,10 +33,10 @@ export const useKeyValueStore = () => {
   const setValueByKey = async (
     key: string,
     value: string | boolean | number,
-  ) => {
+  ): Promise<KeyValueStoreWriteStatus> => {
     // Only update if value is different from current value
     if (keyValueStore[key] === value) {
-      return;
+      return 'no-change';
     }
     // Update Recoil state immediately for optimistic updates
     setKeyValueStore((prev) => ({ ...prev, [key]: value }));
@@ -64,6 +66,7 @@ export const useKeyValueStore = () => {
           });
         },
       });
+      return 'success';
     } catch (error) {
       // Revert optimistic update on error
       setKeyValueStore((prev) => {

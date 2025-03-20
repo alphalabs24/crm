@@ -12,6 +12,7 @@ import { ApolloMetadataClientProvider } from '@/object-metadata/components/Apoll
 import { ObjectMetadataItemsGater } from '@/object-metadata/components/ObjectMetadataItemsGater';
 import { ObjectMetadataItemsProvider } from '@/object-metadata/components/ObjectMetadataItemsProvider';
 import { TutorialProvider } from '@/onboarding-tutorial/contexts/TutorialProvider';
+import { TutorialSnackbarProvider } from '@/onboarding-tutorial/contexts/TutorialSnackbarProvider';
 import { PrefetchDataProvider } from '@/prefetch/components/PrefetchDataProvider';
 import { PublishersProvider } from '@/publishers/contexts/PublisherContext';
 import { DialogManager } from '@/ui/feedback/dialog-manager/components/DialogManager';
@@ -50,19 +51,21 @@ export const AppRouterProviders = () => {
                         <UserThemeProviderEffect />
                         <SnackBarProvider>
                           <PublishersProvider>
-                            <TutorialProvider>
-                              <DialogManagerScope dialogManagerScopeId="dialog-manager">
-                                <DialogManager>
-                                  <StrictMode>
-                                    <PromiseRejectionEffect />
-                                    <GotoHotkeysEffectsProvider />
-                                    <PageTitle title={pageTitle} />
-                                    <PageFavicon />
-                                    <Outlet />
-                                  </StrictMode>
-                                </DialogManager>
-                              </DialogManagerScope>
-                            </TutorialProvider>
+                            <TutorialSnackbarProvider>
+                              <TutorialProvider>
+                                <DialogManagerScope dialogManagerScopeId="dialog-manager">
+                                  <DialogManager>
+                                    <StrictMode>
+                                      <PromiseRejectionEffect />
+                                      <GotoHotkeysEffectsProvider />
+                                      <PageTitle title={pageTitle} />
+                                      <PageFavicon />
+                                      <Outlet />
+                                    </StrictMode>
+                                  </DialogManager>
+                                </DialogManagerScope>
+                              </TutorialProvider>
+                            </TutorialSnackbarProvider>
                           </PublishersProvider>
                         </SnackBarProvider>
                         <MainContextStoreProvider />
