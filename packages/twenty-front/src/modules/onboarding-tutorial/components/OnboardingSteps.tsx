@@ -2,11 +2,12 @@ import { useTutorialSteps } from '@/onboarding-tutorial/hooks/useTutorialSteps';
 import { AppPath } from '@/types/AppPath';
 import { NAV_DRAWER_WIDTHS } from '@/ui/navigation/navigation-drawer/constants/NavDrawerWidths';
 import { isNavigationDrawerExpandedState } from '@/ui/navigation/states/isNavigationDrawerExpanded';
+import { useIsMobile } from '@/ui/utilities/responsive/hooks/useIsMobile';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { IconCircleCheck, IconCircleDashed } from 'twenty-ui';
 
 const StyledLink = styled(Link)`
@@ -97,12 +98,16 @@ const StyledIconContainer = styled.div`
 export const OnboardingSteps = () => {
   const theme = useTheme();
   const { steps } = useTutorialSteps();
+  const isMobile = useIsMobile();
 
-  const isNavigationDrawerExpanded = useRecoilValue(
-    isNavigationDrawerExpandedState,
-  );
+  const [isNavigationDrawerExpanded, setIsNavigationDrawerExpanded] =
+    useRecoilState(isNavigationDrawerExpandedState);
 
-  const isIntermediate = isNavigationDrawerExpanded;
+  const handleTutorialClick = () => {
+    if (isMobile) {
+      setIsNavigationDrawerExpanded(false);
+    }
+  };
 
   const completedSteps = Object.values(steps).filter(
     (step) => step.completed,
@@ -117,17 +122,21 @@ export const OnboardingSteps = () => {
 
   return (
     <AnimatePresence mode="wait">
-      <StyledLink to={AppPath.Tutorial}>
+      <StyledLink to={AppPath.Tutorial} onClick={handleTutorialClick}>
         <StyledOnboardingStepsContainer
           isNavigationDrawerExpanded={isNavigationDrawerExpanded}
           animate={{
             height: theme.spacing(10),
-            padding: isIntermediate ? theme.spacing(2) : theme.spacing(1),
+            padding: isNavigationDrawerExpanded
+              ? theme.spacing(2)
+              : theme.spacing(1),
             opacity: 1,
           }}
           exit={{
             height: theme.spacing(10),
-            padding: isIntermediate ? theme.spacing(2) : theme.spacing(1),
+            padding: isNavigationDrawerExpanded
+              ? theme.spacing(2)
+              : theme.spacing(1),
             opacity: 0,
           }}
           initial={{
@@ -138,7 +147,7 @@ export const OnboardingSteps = () => {
             ease: 'easeInOut',
           }}
         >
-          {isIntermediate ? (
+          {isNavigationDrawerExpanded ? (
             <StyledProgressContainer
               key="intermediate"
               initial={{

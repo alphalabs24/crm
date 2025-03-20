@@ -8,9 +8,9 @@ import { keyValueStoreState } from '../states/keyValueStoreState';
 
 export const useKeyValueStore = () => {
   const [setUserVar] = useSetUserVarMutation();
-  // TODO Check why the whole page reloads on creating a new agency
   const { data, error } = useGetCurrentUserKeyValueStoreQuery({
-    fetchPolicy: 'cache-first', // Only fetch from network if not in cache
+    fetchPolicy: 'cache-and-network',
+    nextFetchPolicy: 'cache-first',
   });
   const [keyValueStore, setKeyValueStore] = useRecoilState(keyValueStoreState);
 
@@ -41,6 +41,23 @@ export const useKeyValueStore = () => {
         variables: {
           key,
           value,
+        },
+        update: (cache, { data: mutationData }) => {
+          if (!mutationData) return;
+
+          // Update only the userVars field in the cache
+          cache.modify({
+            id: cache.identify({
+              __typename: 'User',
+              id: data?.currentUser?.id,
+            }),
+            fields: {
+              userVars: (existing) => ({
+                ...existing,
+                [key]: value,
+              }),
+            },
+          });
         },
       });
     } catch (error) {

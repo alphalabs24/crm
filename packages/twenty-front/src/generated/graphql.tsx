@@ -2403,7 +2403,7 @@ export type GetCurrentUserQuery = { __typename?: 'Query', currentUser: { __typen
 export type GetCurrentUserKeyValueStoreQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetCurrentUserKeyValueStoreQuery = { __typename?: 'Query', currentUser: { __typename?: 'User', userVars: any } };
+export type GetCurrentUserKeyValueStoreQuery = { __typename?: 'Query', currentUser: { __typename?: 'User', id: any, userVars: any } };
 
 export type ActivateWorkflowVersionMutationVariables = Exact<{
   workflowVersionId: Scalars['String'];
@@ -4564,6 +4564,7 @@ export type GetCurrentUserQueryResult = Apollo.QueryResult<GetCurrentUserQuery, 
 export const GetCurrentUserKeyValueStoreDocument = gql`
     query GetCurrentUserKeyValueStore {
   currentUser {
+    id
     userVars
   }
 }

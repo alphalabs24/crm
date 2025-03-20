@@ -76,7 +76,6 @@ export const useTutorialSteps = (): TutorialStepsType => {
 
       if (stepToComplete) {
         await keyValueStore.setValueByKey(stepToComplete, true);
-        await loadCurrentUser();
       }
     },
   };
