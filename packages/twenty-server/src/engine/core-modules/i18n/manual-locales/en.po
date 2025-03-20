@@ -1,0 +1,240 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language: \n"
+"Language-Team: \n"
+"Content-Type: \n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+# object singular agency
+msgid "Agency"
+msgstr "Agency"
+
+# object plural agencies
+msgid "Agencies"
+msgstr "Agencies"
+
+# field description "Contact Person (Visible On Publication)" of agencyReference on agency
+msgid "Contact Person (Visible On Publication)"
+msgstr "Contact Person (Visible On Publication)"
+
+# field "agencyReference" of agency
+msgid "Agency Reference"
+msgstr "Agency Reference"
+
+# field "newhomeFtpPassword" of agency
+msgid "Newhome Ftp Password"
+msgstr "Newhome Ftp Password"
+
+# field "newhomeFtpUser" of agency
+msgid "Newhome Ftp User"
+msgstr "Newhome Ftp User"
+
+# object singular buyerLead
+msgid "Buyer Lead"
+msgstr "Buyer Lead"
+
+# object plural buyerLeads
+msgid "Buyer Leads"
+msgstr "Buyer Leads"
+
+# object singular property
+msgid "Property"
+msgstr "Property"
+
+# object plural properties
+msgid "Properties"
+msgstr "Properties"
+
+# field "agricultureSubtype" of property
+msgid "Agriculture Subtype"
+msgstr "Agriculture Subtype"
+
+# field "apartments" of property
+msgid "Apartments"
+msgstr "Apartments"
+
+# field "apartmentSubtype" of property
+msgid "Apartment Subtype"
+msgstr "Apartment Subtype"
+
+# field "assignee" of property
+msgid "Assignee"
+msgstr "Assignee"
+
+# field "availableFrom" of property
+msgid "Available From"
+msgstr "Available From"
+
+# field "carryingCapacityCrane" of property
+msgid "Carrying Capacity Crane"
+msgstr "Carrying Capacity Crane"
+
+# field description "In kg" of carryingCapacityCrane on property
+msgid "In kg"
+msgstr "In kg"
+
+# field "carryingCapacityElevator" of property
+msgid "Carrying Capacity Elevator"
+msgstr "Carrying Capacity Elevator"
+
+# field "category" of property
+msgid "Category"
+msgstr "Category"
+
+# field "ceilingHeight" of property
+msgid "Ceiling Height"
+msgstr "Ceiling Height"
+
+# field description "Height of room in meters" of ceilingHeight on property
+msgid "Height of room in meters"
+msgstr "Height of room in meters"
+
+# field "constructionYear" of property
+msgid "Construction Year"
+msgstr "Construction Year"
+
+# field "distances" of property
+msgid "Distances"
+msgstr "Distances"
+
+# field "emailSender" of property
+msgid "Email Sender"
+msgstr "Email Sender"
+
+# field "emailTemplate" of property
+msgid "Email Template"
+msgstr "Email Template"
+
+# field "features" of property
+msgid "Features"
+msgstr "Features"
+
+# field "floor" of property
+msgid "Floor"
+msgstr "Floor"
+
+# field "gastronomySubtype" of property
+msgid "Gastronomy Subtype"
+msgstr "Gastronomy Subtype"
+
+# field "hallHeight" of property
+msgid "Hall Height"
+msgstr "Hall Height"
+
+# field description "Height of hall in meters" of hallHeight on property
+msgid "Height of hall in meters"
+msgstr "Height of hall in meters"
+
+# field "houseSubtype" of property
+msgid "House Subtype"
+msgstr "House Subtype"
+
+# field "industrialSubtype" of property
+msgid "Industrial Subtype"
+msgstr "Industrial Subtype"
+
+# field "links" of property
+msgid "Links"
+msgstr "Links"
+
+# field "livingSurface" of property
+msgid "Living Surface"
+msgstr "Living Surface"
+
+# field "maximalFloorLoading" of property
+msgid "Maximal Floor Loading"
+msgstr "Maximal Floor Loading"
+
+# field description "kg/m2" of maximalFloorLoading on property
+msgid "kg/m2"
+msgstr "kg/m2"
+
+# field "numberOfFloors" of property
+msgid "Number Of Floors"
+msgstr "Number Of Floors"
+
+# field "offerType" of property
+msgid "Offer Type"
+msgstr "Offer Type"
+
+# field "parkingSubtype" of property
+msgid "Parking Subtype"
+msgstr "Parking Subtype"
+
+# field "plotSubtype" of property
+msgid "Plot Subtype"
+msgstr "Plot Subtype"
+
+# field "priceUnit" of property
+msgid "Price Unit"
+msgstr "Price Unit"
+
+# field "propertySubtype" of property
+msgid "Property Subtype"
+msgstr "Property Subtype"
+
+# field "refProperty" of property
+msgid "Ref Property"
+msgstr "Ref Property"
+
+# field "renovationYear" of property
+msgid "Renovation Year"
+msgstr "Renovation Year"
+
+# field "rentExtra" of property
+msgid "Rent Extra"
+msgstr "Rent Extra"
+
+# field "rentNet" of property
+msgid "Rent Net"
+msgstr "Rent Net"
+
+# field "rooms" of property
+msgid "Rooms"
+msgstr "Rooms"
+
+# field "secondaryRoomsSubtype" of property
+msgid "Secondary Rooms Subtype"
+msgstr "Secondary Rooms Subtype"
+
+# field "seller" of property
+msgid "Seller"
+msgstr "Seller"
+
+# field "sellingPrice" of property
+msgid "Selling Price"
+msgstr "Selling Price"
+
+# field "surface" of property
+msgid "Surface"
+msgstr "Surface"
+
+# field "usableSurface" of property
+msgid "Usable Surface"
+msgstr "Usable Surface"
+
+# field "valuation" of property
+msgid "Valuation"
+msgstr "Valuation"
+
+# field "virtualTour" of property
+msgid "Virtual Tour"
+msgstr "Virtual Tour"
+
+# field "volume" of property
+msgid "Volume"
+msgstr "Volume"
+
+# object singular publication
+msgid "Publication"
+msgstr "Publication"
+
+# object plural publications
+msgid "Publications"
+msgstr "Publications"
