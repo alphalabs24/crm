@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: nestermind-crm\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2025-03-19 16:13\n"
+"PO-Revision-Date: 2025-03-19 18:14\n"
 "Last-Translator: \n"
 "Language: fr_FR\n"
 "Language-Team: French\n"
@@ -24,8 +24,8 @@ msgstr ""
 msgid "Agencies"
 msgstr ""
 
-# field "address" of agency
-msgid "Address"
+# field description "Contact Person (Visible On Publication)" of field agencyReference on agency
+msgid "Contact Person (Visible On Publication)"
 msgstr ""
 
 # field "agencyReference" of agency
@@ -52,20 +52,12 @@ msgstr ""
 msgid "Buyer Leads"
 msgstr ""
 
-# field "stage" of buyerLead
-msgid "Stage"
-msgstr ""
-
 # object singular property
 msgid "Property"
 msgstr ""
 
 # object plural properties
 msgid "Properties"
-msgstr ""
-
-# field "address" of property
-msgid "Address"
 msgstr ""
 
 # field "agricultureSubtype" of property
@@ -84,10 +76,6 @@ msgstr ""
 msgid "Assignee"
 msgstr ""
 
-# field "assigneeId" of property
-msgid "Assignee Foreign Key"
-msgstr ""
-
 # field "availableFrom" of property
 msgid "Available From"
 msgstr ""
@@ -100,8 +88,16 @@ msgstr ""
 msgid "In kg"
 msgstr ""
 
+# field description "In kg" of field carryingCapacityCrane on property
+msgid "In kg"
+msgstr ""
+
 # field "carryingCapacityElevator" of property
 msgid "Carrying Capacity Elevator"
+msgstr ""
+
+# field description "In kg" of property
+msgid "In kg"
 msgstr ""
 
 # field "category" of property
@@ -116,6 +112,10 @@ msgstr ""
 msgid "Height of room in meters"
 msgstr ""
 
+# field description "Height of room in meters" of field ceilingHeight on property
+msgid "Height of room in meters"
+msgstr ""
+
 # field "constructionYear" of property
 msgid "Construction Year"
 msgstr ""
@@ -124,28 +124,12 @@ msgstr ""
 msgid "Distances"
 msgstr ""
 
-# field "documents" of property
-msgid "Documents"
-msgstr ""
-
-# field description "array of {filename:'',title:'',description'',url:''}" of property
-msgid "array of {filename:'',title:'',description'',url:''}"
-msgstr ""
-
 # field "emailSender" of property
 msgid "Email Sender"
 msgstr ""
 
-# field "emailSenderId" of property
-msgid "Email Sender Foreign Key"
-msgstr ""
-
 # field "emailTemplate" of property
 msgid "Email Template"
-msgstr ""
-
-# field "emailTemplateId" of property
-msgid "Email Template Foreign Key"
 msgstr ""
 
 # field "features" of property
@@ -165,6 +149,10 @@ msgid "Hall Height"
 msgstr ""
 
 # field description "Height of hall in meters" of property
+msgid "Height of hall in meters"
+msgstr ""
+
+# field description "Height of hall in meters" of field hallHeight on property
 msgid "Height of hall in meters"
 msgstr ""
 
@@ -192,12 +180,8 @@ msgstr ""
 msgid "kg/m2"
 msgstr ""
 
-# field "movies" of property
-msgid "Movies"
-msgstr ""
-
-# field description "array of {filename:'',title:'',description:'',url:''}" of property
-msgid "array of {filename:'',title:'',description:'',url:''}"
+# field description "kg/m2" of field maximalFloorLoading on property
+msgid "kg/m2"
 msgstr ""
 
 # field "numberOfFloors" of property
@@ -210,14 +194,6 @@ msgstr ""
 
 # field "parkingSubtype" of property
 msgid "Parking Subtype"
-msgstr ""
-
-# field "pictures" of property
-msgid "Pictures"
-msgstr ""
-
-# field description "array of {filename:'',title:'',description:'',url:''}" of property
-msgid "array of {filename:'',title:'',description:'',url:''}"
 msgstr ""
 
 # field "plotSubtype" of property
@@ -260,10 +236,6 @@ msgstr ""
 msgid "Seller"
 msgstr ""
 
-# field "sellerId" of property
-msgid "Seller Foreign Key"
-msgstr ""
-
 # field "sellingPrice" of property
 msgid "Selling Price"
 msgstr ""
@@ -294,5 +266,12 @@ msgstr ""
 
 # object plural publications
 msgid "Publications"
+msgstr ""
+
+# views
+msgid "Active Properties"
+msgstr ""
+
+msgid "All Publications"
 msgstr ""
 

@@ -13,11 +13,11 @@ msgstr ""
 
 # object singular agency
 msgid "Agency"
-msgstr "Publisher"
+msgstr "Agency"
 
 # object plural agencies
 msgid "Agencies"
-msgstr "Publishers"
+msgstr "Agencies"
 
 # field description "Contact Person (Visible On Publication)" of agencyReference on agency
 msgid "Contact Person (Visible On Publication)"
@@ -25,23 +25,23 @@ msgstr "Contact Person (Visible On Publication)"
 
 # field "agencyReference" of agency
 msgid "Agency Reference"
-msgstr "Publisher Reference"
+msgstr "Agency Reference"
 
 # field "newhomeFtpPassword" of agency
 msgid "Newhome Ftp Password"
-msgstr "newhome FTP Password"
+msgstr "Newhome Ftp Password"
 
 # field "newhomeFtpUser" of agency
 msgid "Newhome Ftp User"
-msgstr "newhome FTP User"
+msgstr "Newhome Ftp User"
 
 # object singular buyerLead
 msgid "Buyer Lead"
-msgstr "Purchase Inquiry"
+msgstr "Buyer Lead"
 
 # object plural buyerLeads
 msgid "Buyer Leads"
-msgstr "Purchase Inquiries"
+msgstr "Buyer Leads"
 
 # object singular property
 msgid "Property"
@@ -57,7 +57,7 @@ msgstr "Agriculture Subtype"
 
 # field "apartments" of property
 msgid "Apartments"
-msgstr "Number of Apartments"
+msgstr "Apartments"
 
 # field "apartmentSubtype" of property
 msgid "Apartment Subtype"
@@ -97,7 +97,7 @@ msgstr "Height of room in meters"
 
 # field "constructionYear" of property
 msgid "Construction Year"
-msgstr "Construction year"
+msgstr "Construction Year"
 
 # field "distances" of property
 msgid "Distances"
@@ -105,15 +105,15 @@ msgstr "Distances"
 
 # field "emailSender" of property
 msgid "Email Sender"
-msgstr "Auto-Respond Sender"
+msgstr "Email Sender"
 
 # field "emailTemplate" of property
 msgid "Email Template"
-msgstr "Auto-Respond Email Template"
+msgstr "Email Template"
 
 # field "features" of property
 msgid "Features"
-msgstr "Property Features"
+msgstr "Features"
 
 # field "floor" of property
 msgid "Floor"
@@ -157,7 +157,7 @@ msgstr "kg/m2"
 
 # field "numberOfFloors" of property
 msgid "Number Of Floors"
-msgstr "Number of Floors"
+msgstr "Number Of Floors"
 
 # field "offerType" of property
 msgid "Offer Type"
@@ -181,23 +181,23 @@ msgstr "Property Subtype"
 
 # field "refProperty" of property
 msgid "Ref Property"
-msgstr "Property Reference"
+msgstr "Ref Property"
 
 # field "renovationYear" of property
 msgid "Renovation Year"
-msgstr "Renovation year"
+msgstr "Renovation Year"
 
 # field "rentExtra" of property
 msgid "Rent Extra"
-msgstr "Additional Rent Currency"
+msgstr "Rent Extra"
 
 # field "rentNet" of property
 msgid "Rent Net"
-msgstr "Net Rent Currency"
+msgstr "Rent Net"
 
 # field "rooms" of property
 msgid "Rooms"
-msgstr "Number of Rooms"
+msgstr "Rooms"
 
 # field "secondaryRoomsSubtype" of property
 msgid "Secondary Rooms Subtype"

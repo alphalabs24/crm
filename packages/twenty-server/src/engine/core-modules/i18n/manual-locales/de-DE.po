@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: nestermind-crm\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2025-03-19 16:12\n"
+"PO-Revision-Date: 2025-03-20 07:53\n"
 "Last-Translator: \n"
 "Language: de_DE\n"
 "Language-Team: German\n"
@@ -24,9 +24,9 @@ msgstr "Anbieter"
 msgid "Agencies"
 msgstr "Anbieter"
 
-# field "address" of agency
-msgid "Address"
-msgstr "Adresse"
+# field description "Contact Person (Visible On Publication)" of field agencyReference on agency
+msgid "Contact Person (Visible On Publication)"
+msgstr "Kontaktperson (Auf Publikation sichtbar)"
 
 # field "agencyReference" of agency
 msgid "Agency Reference"
@@ -34,7 +34,7 @@ msgstr "Anbieterreferenz"
 
 # field description "Contact Person (Visible On Publication)" of agency
 msgid "Contact Person (Visible On Publication)"
-msgstr "Kontaktperson (Bei Publikation sichtbar)"
+msgstr "Kontaktperson (Auf Publikation sichtbar)"
 
 # field "newhomeFtpPassword" of agency
 msgid "Newhome Ftp Password"
@@ -52,10 +52,6 @@ msgstr "Kaufanfrage"
 msgid "Buyer Leads"
 msgstr "Kaufanfragen"
 
-# field "stage" of buyerLead
-msgid "Stage"
-msgstr "Status"
-
 # object singular property
 msgid "Property"
 msgstr "Objekt"
@@ -63,10 +59,6 @@ msgstr "Objekt"
 # object plural properties
 msgid "Properties"
 msgstr "Objekte"
-
-# field "address" of property
-msgid "Address"
-msgstr "Adresse"
 
 # field "agricultureSubtype" of property
 msgid "Agriculture Subtype"
@@ -84,10 +76,6 @@ msgstr "Wohnungstyp"
 msgid "Assignee"
 msgstr "Zugewiesener Makler"
 
-# field "assigneeId" of property
-msgid "Assignee Foreign Key"
-msgstr "Foreign Key des zugewiesenen Maklers"
-
 # field "availableFrom" of property
 msgid "Available From"
 msgstr "Verfügbar ab"
@@ -100,9 +88,17 @@ msgstr "Tragekapazität des Hebekrans"
 msgid "In kg"
 msgstr "in kg"
 
+# field description "In kg" of field carryingCapacityCrane on property
+msgid "In kg"
+msgstr "in kg"
+
 # field "carryingCapacityElevator" of property
 msgid "Carrying Capacity Elevator"
 msgstr "Tragekapazität des Lifts"
+
+# field description "In kg" of property
+msgid "In kg"
+msgstr "in kg"
 
 # field "category" of property
 msgid "Category"
@@ -116,6 +112,10 @@ msgstr "Raumhöhe"
 msgid "Height of room in meters"
 msgstr "Die Höhe des Raumes in Metern"
 
+# field description "Height of room in meters" of field ceilingHeight on property
+msgid "Height of room in meters"
+msgstr "Die Höhe des Raumes in Metern"
+
 # field "constructionYear" of property
 msgid "Construction Year"
 msgstr "Baujahr"
@@ -124,29 +124,13 @@ msgstr "Baujahr"
 msgid "Distances"
 msgstr "Entfernungen"
 
-# field "documents" of property
-msgid "Documents"
-msgstr "Dokumente"
-
-# field description "array of {filename:'',title:'',description'',url:''}" of property
-msgid "array of {filename:'',title:'',description'',url:''}"
-msgstr "Liste von { filename: ' ', title: ' ', description: ' ', url: ' ' }"
-
 # field "emailSender" of property
 msgid "Email Sender"
 msgstr "Sender der automatischen Anfrageantwort (E-Mail)"
 
-# field "emailSenderId" of property
-msgid "Email Sender Foreign Key"
-msgstr "Foreign Key des Senders der automatischen Anfrageantwort (E-Mail)"
-
 # field "emailTemplate" of property
 msgid "Email Template"
 msgstr "E-Mail-Vorlage für die automatische Anfrageantwort"
-
-# field "emailTemplateId" of property
-msgid "Email Template Foreign Key"
-msgstr "Foreign Key der E-Mail-Vorlage für die automatische Anfrageantwort"
 
 # field "features" of property
 msgid "Features"
@@ -165,6 +149,10 @@ msgid "Hall Height"
 msgstr "Ganghöhe"
 
 # field description "Height of hall in meters" of property
+msgid "Height of hall in meters"
+msgstr "Die Höhe des Gangs in Metern"
+
+# field description "Height of hall in meters" of field hallHeight on property
 msgid "Height of hall in meters"
 msgstr "Die Höhe des Gangs in Metern"
 
@@ -192,13 +180,9 @@ msgstr "Maximale Bodenbeladung"
 msgid "kg/m2"
 msgstr "kg/m2"
 
-# field "movies" of property
-msgid "Movies"
-msgstr "Videos"
-
-# field description "array of {filename:'',title:'',description:'',url:''}" of property
-msgid "array of {filename:'',title:'',description:'',url:''}"
-msgstr "Liste von { filename: ' ', title: ' ', description: ' ', url: ' ' }"
+# field description "kg/m2" of field maximalFloorLoading on property
+msgid "kg/m2"
+msgstr "kg/m2"
 
 # field "numberOfFloors" of property
 msgid "Number Of Floors"
@@ -211,14 +195,6 @@ msgstr "Angebotsart"
 # field "parkingSubtype" of property
 msgid "Parking Subtype"
 msgstr "Parkplatztyp"
-
-# field "pictures" of property
-msgid "Pictures"
-msgstr "Bilder"
-
-# field description "array of {filename:'',title:'',description:'',url:''}" of property
-msgid "array of {filename:'',title:'',description:'',url:''}"
-msgstr "Liste von { filename: ' ', title: ' ', description: ' ', url: ' ' }"
 
 # field "plotSubtype" of property
 msgid "Plot Subtype"
@@ -260,10 +236,6 @@ msgstr "Sekundärraum Kategorie"
 msgid "Seller"
 msgstr "Verkäufer"
 
-# field "sellerId" of property
-msgid "Seller Foreign Key"
-msgstr "Foreign Key des Verkäufers"
-
 # field "sellingPrice" of property
 msgid "Selling Price"
 msgstr "Verkaufspreis"
@@ -295,4 +267,11 @@ msgstr "Publikation"
 # object plural publications
 msgid "Publications"
 msgstr "Publikationen"
+
+# views
+msgid "Active Properties"
+msgstr "Aktive Objekte"
+
+msgid "All Publications"
+msgstr "Alle Publikationen"
 
