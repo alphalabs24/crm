@@ -5,6 +5,7 @@ import { isNavigationDrawerExpandedState } from '@/ui/navigation/states/isNaviga
 import { useIsMobile } from '@/ui/utilities/responsive/hooks/useIsMobile';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
+import { Trans } from '@lingui/react/macro';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
@@ -163,7 +164,7 @@ export const OnboardingSteps = () => {
               }}
             >
               <StyledOnboardingTitle $isIntermediate>
-                First Steps on nestermind
+                <Trans>First steps on nestermind</Trans>
               </StyledOnboardingTitle>
               <StyledProgressIndicators>
                 {Object.values(steps).map((step) => (

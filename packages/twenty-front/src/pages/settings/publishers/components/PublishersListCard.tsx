@@ -12,7 +12,7 @@ import { TableHeader } from '@/ui/layout/table/components/TableHeader';
 import { TableRow } from '@/ui/layout/table/components/TableRow';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
-import { useLingui } from '@lingui/react/macro';
+import { Trans, useLingui } from '@lingui/react/macro';
 import {
     Button,
     IconChevronRight,
@@ -134,8 +134,12 @@ export const PublishersListCard = ({
     <>
       <Table>
         <StyledTableRow>
-          <TableHeader>Name</TableHeader>
-          <TableHeader>Platforms</TableHeader>
+          <TableHeader>
+            <Trans>Name</Trans>
+          </TableHeader>
+          <TableHeader>
+            <Trans>Platforms</Trans>
+          </TableHeader>
           <TableHeader></TableHeader>
           <TableHeader></TableHeader>
         </StyledTableRow>

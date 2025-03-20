@@ -4,6 +4,7 @@ import { useFilteredObjectMetadataItems } from '@/object-metadata/hooks/useFilte
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { isObjectMetadataReadOnly } from '@/object-metadata/utils/isObjectMetadataReadOnly';
 import { CreatePropertyModal } from '@/object-record/record-index/components/CreatePropertyModal';
+import { ObjectRecordTutorialButton } from '@/object-record/record-index/components/ObjectRecordTutorialButton';
 import { RecordIndexPageKanbanAddButton } from '@/object-record/record-index/components/RecordIndexPageKanbanAddButton';
 import { RecordIndexPageTableAddButton } from '@/object-record/record-index/components/RecordIndexPageTableAddButton';
 import { useRecordIndexContextOrThrow } from '@/object-record/record-index/contexts/RecordIndexContext';
@@ -18,12 +19,49 @@ import { useSetHotkeyScope } from '@/ui/utilities/hotkey/hooks/useSetHotkeyScope
 import { useRecoilComponentValueV2 } from '@/ui/utilities/state/component-state/hooks/useRecoilComponentValueV2';
 import { ViewType } from '@/views/types/ViewType';
 import { useIsFeatureEnabled } from '@/workspace/hooks/useIsFeatureEnabled';
+import { css, keyframes } from '@emotion/react';
+import styled from '@emotion/styled';
 import { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { capitalize, isDefined } from 'twenty-shared';
 import { useIcons } from 'twenty-ui';
 import { FeatureFlagKey } from '~/generated/graphql';
+
+const createPulseAnimation = (color: string) => keyframes`
+  0% {
+    box-shadow: 0 0 0 0 ${color};
+  }
+  70% {
+    box-shadow: 0 0 0 10px transparent;
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+`;
+
+const StyledTutorialButton = styled.button<{ pulseColor: string }>`
+  align-items: center;
+  background-color: ${({ theme }) => theme.color.blue};
+  border: none;
+  border-radius: ${({ theme }) => theme.border.radius.md};
+  color: ${({ theme }) => theme.background.primary};
+  cursor: pointer;
+  display: flex;
+  font-size: ${({ theme }) => theme.font.size.sm};
+  font-weight: ${({ theme }) => theme.font.weight.medium};
+  gap: ${({ theme }) => theme.spacing(2)};
+  margin-left: ${({ theme }) => theme.spacing(3)};
+  padding: ${({ theme }) => theme.spacing(1)} ${({ theme }) => theme.spacing(2)};
+  animation: ${({ pulseColor }) => css`
+    ${createPulseAnimation(pulseColor)} 2s infinite
+  `};
+  transition: all 0.1s ease-in-out;
+
+  &:hover {
+    filter: brightness(0.9);
+  }
+`;
 
 export const RecordIndexPageHeader = ({
   recordTableId,
@@ -56,7 +94,6 @@ export const RecordIndexPageHeader = ({
       setHotkeyScope(ModalHotkeyScope.CreateProperty);
       modalRef.current?.open();
       setHasHandledCreateParam(true);
-      // Remove the create param from URL after handling it
       searchParams.delete('create');
       setSearchParams(searchParams);
     }
@@ -106,11 +143,16 @@ export const RecordIndexPageHeader = ({
     objectMetadataItem?.labelPlural ?? capitalize(objectNamePlural);
 
   return (
-    <PageHeader title={pageHeaderTitle} Icon={Icon}>
+    <PageHeader
+      title={pageHeaderTitle}
+      Icon={Icon}
+      tutorialButton={
+        <ObjectRecordTutorialButton
+          objectNameSingular={objectNameSingular as CoreObjectNameSingular}
+        />
+      }
+    >
       {shouldDisplayAddButton &&
-        /**
-         * TODO: Logic between Table and Kanban should be merged here when we move some states to record-index
-         */
         (isPublication ? null : isProperty ? (
           <PageAddButton
             onClick={() => {
@@ -134,14 +176,16 @@ export const RecordIndexPageHeader = ({
           <PageHeaderOpenCommandMenuButton />
         </>
       )}
-      <CreatePropertyModal
-        ref={modalRef}
-        onClose={() => {
-          modalRef.current?.close();
-          setHasHandledCreateParam(false);
-        }}
-        objectNameSingular={objectNameSingular}
-      />
+      {isProperty && (
+        <CreatePropertyModal
+          ref={modalRef}
+          onClose={() => {
+            modalRef.current?.close();
+            setHasHandledCreateParam(false);
+          }}
+          objectNameSingular={objectNameSingular}
+        />
+      )}
     </PageHeader>
   );
 };

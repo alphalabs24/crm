@@ -1,27 +1,40 @@
 import { TutorialPageHeader } from '@/onboarding-tutorial/components/TutorialPageHeader';
 import { useTutorialSteps } from '@/onboarding-tutorial/hooks/useTutorialSteps';
+import { PageBody } from '@/ui/layout/page/components/PageBody';
 import { PageContainer } from '@/ui/layout/page/components/PageContainer';
+import { PageTitle } from '@/ui/utilities/page-title/components/PageTitle';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Trans, useLingui } from '@lingui/react/macro';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import { IconChevronRight, IconCircleCheck, IconCircleDashed } from 'twenty-ui';
+import {
+  IconChevronRight,
+  IconCircleCheck,
+  IconCircleDashed,
+  IconLock,
+  MOBILE_VIEWPORT,
+} from 'twenty-ui';
 
 const StyledHeader = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(2)};
   text-align: left;
+  max-width: ${({ theme }) => theme.spacing(400)};
 `;
 
 const StyledMaxWidthContainer = styled.div`
   align-self: center;
-  max-width: ${({ theme }) => theme.spacing(400)};
+  max-width: ${({ theme }) => theme.spacing(200)};
   margin: 0 ${({ theme }) => theme.spacing(4)};
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(10)};
+  gap: ${({ theme }) => theme.spacing(8)};
+  padding: ${({ theme }) => theme.spacing(4)} 0;
+
+  @media only screen and (min-width: ${MOBILE_VIEWPORT}px) {
+    padding: ${({ theme }) => theme.spacing(10)};
+  }
 `;
 
 const StyledCenter = styled.div`
@@ -49,6 +62,7 @@ const StyledProgressContainer = styled.div`
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(2)};
   width: 100%;
+  margin-bottom: ${({ theme }) => theme.spacing(6)};
 `;
 
 const StyledProgressBar = styled.div`
@@ -90,7 +104,10 @@ const StyledStepsContainer = styled.div`
   width: 100%;
 `;
 
-const StyledStepCard = styled(motion.button)<{ $isCompleted: boolean }>`
+const StyledStepCard = styled(motion.button)<{
+  $isCompleted: boolean;
+  $isDisabled: boolean;
+}>`
   align-items: center;
   background-color: ${({ theme }) => theme.background.primary};
   border: none;
@@ -100,18 +117,27 @@ const StyledStepCard = styled(motion.button)<{ $isCompleted: boolean }>`
       : `${theme.spacing(1)} solid ${theme.color.blue}`};
   border-radius: ${({ theme }) => theme.border.radius.md};
   box-shadow: ${({ theme }) => theme.boxShadow.light};
+  cursor: ${({ $isDisabled }) => ($isDisabled ? 'not-allowed' : 'pointer')};
   display: flex;
   flex: 1;
   justify-content: space-between;
+  opacity: ${({ $isDisabled }) => ($isDisabled ? 0.6 : 1)};
   padding: ${({ theme }) => theme.spacing(3)} ${({ theme }) => theme.spacing(4)};
   width: 100%;
   text-align: left;
 `;
 
-const StyledIconContainer = styled.div<{ $isCompleted: boolean }>`
+const StyledIconContainer = styled.div<{
+  $isCompleted: boolean;
+  $isDisabled?: boolean;
+}>`
   align-items: center;
-  color: ${({ theme, $isCompleted }) =>
-    $isCompleted ? theme.color.green : theme.color.blue};
+  color: ${({ theme, $isCompleted, $isDisabled }) =>
+    $isDisabled
+      ? theme.font.color.tertiary
+      : $isCompleted
+        ? theme.color.green
+        : theme.color.blue};
   display: flex;
   justify-content: center;
   margin-right: ${({ theme }) => theme.spacing(3)};
@@ -178,87 +204,106 @@ export const Tutorial = () => {
 
   return (
     <PageContainer>
+      <PageTitle title={'Learn about nestermind'} />
       <TutorialPageHeader />
-      <StyledMaxWidthContainer>
-        <StyledHeader>
-          <StyledTitle>
-            <Trans>nestermind</Trans>
-          </StyledTitle>
-          <StyledSubtitle>
-            <Trans>
-              Complete these steps to get started with Nestermind and make the
-              most of your CRM experience.
-            </Trans>
-          </StyledSubtitle>
-        </StyledHeader>
 
+      <PageBody>
         <StyledCenter>
-          <StyledProgressContainer>
-            <StyledProgressTextContainer>
-              <StyledProgressText>
-                {completedSteps}/{totalSteps}
-              </StyledProgressText>
-              <StyledProgressText>
-                {Math.round(progressPercentage)}% complete
-              </StyledProgressText>
-            </StyledProgressTextContainer>
-            <StyledProgressBar>
-              <StyledProgressFill $progress={progressPercentage} />
-            </StyledProgressBar>
-          </StyledProgressContainer>
+          <StyledMaxWidthContainer>
+            <StyledHeader>
+              <StyledTitle>
+                <Trans>First steps on nestermind</Trans>
+              </StyledTitle>
+              <StyledSubtitle>
+                <Trans>
+                  Complete these steps to get started with nestermind and make
+                  the most of your CRM experience.
+                </Trans>
+              </StyledSubtitle>
+            </StyledHeader>
 
-          <StyledStepsContainer>
-            {Object.values(steps).map((step, index) => (
-              <StyledStepCard
-                key={step.step.id}
-                $isCompleted={step.completed}
-                onClick={step.action}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{
-                  opacity: 1,
-                  y: 0,
-                  transition: { delay: index * 0.1 },
-                }}
-                whileHover={
-                  blockHover
-                    ? {}
-                    : {
-                        boxShadow: theme.boxShadow.strong,
-                        transform: 'translateY(-2px)',
-                        cursor: 'pointer',
-                      }
-                }
-                transition={{ duration: 0.3 }}
-              >
-                <StyledStepLeft>
-                  <StyledIconContainer $isCompleted={step.completed}>
-                    {step.completed ? (
-                      <IconCircleCheck size={28} />
-                    ) : (
-                      <IconCircleDashed size={28} />
-                    )}
-                  </StyledIconContainer>
-                  <StyledStepContent>
-                    <StyledStepTitle>{step.step.title}</StyledStepTitle>
-                    <StyledStepDescription>
-                      {step.step.description}
-                    </StyledStepDescription>
-                    <StyledStepStatus $isCompleted={step.completed}>
-                      {step.completed ? t`Completed` : t`In progress`}
-                    </StyledStepStatus>
-                  </StyledStepContent>
-                </StyledStepLeft>
-                <StyledStepRight>
-                  <IconChevronRight
-                    size={20}
-                    color={theme.font.color.tertiary}
-                  />
-                </StyledStepRight>
-              </StyledStepCard>
-            ))}
-          </StyledStepsContainer>
+            <StyledStepsContainer>
+              <StyledProgressContainer>
+                <StyledProgressTextContainer>
+                  <StyledProgressText>
+                    {completedSteps}/{totalSteps}
+                  </StyledProgressText>
+                  <StyledProgressText>
+                    {Math.round(progressPercentage)}% complete
+                  </StyledProgressText>
+                </StyledProgressTextContainer>
+                <StyledProgressBar>
+                  <StyledProgressFill $progress={progressPercentage} />
+                </StyledProgressBar>
+              </StyledProgressContainer>
+              {Object.values(steps).map((step, index) => {
+                const isDisabled =
+                  step.step.requires?.some(
+                    (requiredStep) => !steps[requiredStep]?.completed,
+                  ) ?? false;
+
+                return (
+                  <StyledStepCard
+                    key={step.step.id}
+                    $isCompleted={step.completed}
+                    $isDisabled={isDisabled}
+                    onClick={isDisabled ? undefined : step.action}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{
+                      opacity: 1,
+                      y: 0,
+                      transition: { delay: index * 0.1 },
+                    }}
+                    whileHover={
+                      blockHover || isDisabled
+                        ? {}
+                        : {
+                            boxShadow: theme.boxShadow.strong,
+                            transform: 'translateY(-2px)',
+                          }
+                    }
+                    transition={{ duration: 0.3 }}
+                  >
+                    <StyledStepLeft>
+                      <StyledIconContainer
+                        $isCompleted={step.completed}
+                        $isDisabled={isDisabled}
+                      >
+                        {step.completed ? (
+                          <IconCircleCheck size={28} />
+                        ) : isDisabled ? (
+                          <IconLock size={28} />
+                        ) : (
+                          <IconCircleDashed size={28} />
+                        )}
+                      </StyledIconContainer>
+                      <StyledStepContent>
+                        <StyledStepTitle>{step.step.title}</StyledStepTitle>
+                        <StyledStepDescription>
+                          {step.step.description}
+                        </StyledStepDescription>
+                        <StyledStepStatus $isCompleted={step.completed}>
+                          {step.completed
+                            ? t`Completed`
+                            : isDisabled
+                              ? t`Complete previous steps first`
+                              : t`In progress`}
+                        </StyledStepStatus>
+                      </StyledStepContent>
+                    </StyledStepLeft>
+                    <StyledStepRight>
+                      <IconChevronRight
+                        size={20}
+                        color={theme.font.color.tertiary}
+                      />
+                    </StyledStepRight>
+                  </StyledStepCard>
+                );
+              })}
+            </StyledStepsContainer>
+          </StyledMaxWidthContainer>
         </StyledCenter>
-      </StyledMaxWidthContainer>
+      </PageBody>
     </PageContainer>
   );
 };

@@ -6,7 +6,7 @@ import {
 import { useTutorial } from '@/onboarding-tutorial/contexts/TutorialProvider';
 import { useKeyValueStore } from '@/onboarding/hooks/useKeyValueStore';
 import { useMemo } from 'react';
-import { UserTutorialTask } from 'twenty-shared';
+import { UserTutorialExplanation, UserTutorialTask } from 'twenty-shared';
 
 type TutorialStep = {
   // static step data
@@ -24,7 +24,7 @@ type TutorialStepsType = {
     step,
     objectNameSingular,
   }: {
-    step?: UserTutorialTask;
+    step?: UserTutorialTask | UserTutorialExplanation;
     objectNameSingular?: CoreObjectNameSingular;
   }) => void;
 };
@@ -37,6 +37,8 @@ const mapSingularToStep = (objectNameSingular?: CoreObjectNameSingular) => {
       return UserTutorialTask.TUTORIAL_PUBLICATION;
     case CoreObjectNameSingular.Agency:
       return UserTutorialTask.TUTORIAL_PLATFORM_SETUP;
+    case CoreObjectNameSingular.BuyerLead:
+      return UserTutorialExplanation.TUTORIAL_BUYER_LEADS;
     default:
       return undefined;
   }
@@ -67,7 +69,7 @@ export const useTutorialSteps = (): TutorialStepsType => {
       step,
       objectNameSingular,
     }: {
-      step?: UserTutorialTask;
+      step?: UserTutorialTask | UserTutorialExplanation;
       objectNameSingular?: CoreObjectNameSingular;
     }) => {
       const stepToComplete = step || mapSingularToStep(objectNameSingular);

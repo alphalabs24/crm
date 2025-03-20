@@ -62,6 +62,7 @@ const StyledTitleContainer = styled.div`
   margin-left: ${({ theme }) => theme.spacing(1)};
   width: 100%;
   overflow: hidden;
+  align-items: center;
 `;
 
 const StyledTopBarIconStyledTitleContainer = styled.div`
@@ -101,6 +102,7 @@ type PageHeaderProps = {
   navigateToNextRecord?: () => void;
   Icon?: IconComponent;
   children?: ReactNode;
+  tutorialButton?: ReactNode;
 };
 
 export const PageHeader = ({
@@ -112,6 +114,7 @@ export const PageHeader = ({
   navigateToNextRecord,
   Icon,
   children,
+  tutorialButton,
 }: PageHeaderProps) => {
   const isMobile = useIsMobile();
   const theme = useTheme();
@@ -167,6 +170,8 @@ export const PageHeader = ({
               ) : (
                 title
               )}
+
+              {tutorialButton}
             </StyledTitleContainer>
           )}
         </StyledTopBarIconStyledTitleContainer>

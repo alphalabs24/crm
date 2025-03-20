@@ -1,14 +1,16 @@
 import { CoreObjectNamePlural } from '@/object-metadata/types/CoreObjectNamePlural';
 import { EmailTutorialModal } from '@/onboarding-tutorial/components/modals/EmailTutorialModal';
+import { InquiryTutorialModal } from '@/onboarding-tutorial/components/modals/InquiryTutorialModal';
 import { ProviderTutorialModal } from '@/onboarding-tutorial/components/modals/PublisherTutorialModal';
+import { useTutorialSteps } from '@/onboarding-tutorial/hooks/useTutorialSteps';
 import { AppPath } from '@/types/AppPath';
 import { ModalRefType } from '@/ui/layout/modal/components/Modal';
 import { createContext, useContext, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { UserTutorialTask } from 'twenty-shared';
+import { UserTutorialExplanation, UserTutorialTask } from 'twenty-shared';
 
 type TutorialContextType = {
-  showTutorial: (step: UserTutorialTask) => void;
+  showTutorial: (step: UserTutorialTask | UserTutorialExplanation) => void;
   isTutorialOpen: boolean;
 };
 
@@ -23,9 +25,13 @@ export const TutorialProvider = ({
   children: React.ReactNode;
 }) => {
   const [isTutorialOpen, setIsTutorialOpen] = useState(false);
-  const [activeModal, setActiveModal] = useState<UserTutorialTask | null>(null);
+  const { setAsCompleted } = useTutorialSteps();
+  const [activeModal, setActiveModal] = useState<
+    UserTutorialTask | UserTutorialExplanation | null
+  >(null);
   const tutorialModalRef = useRef<ModalRefType>(null);
   const emailTutorialModalRef = useRef<ModalRefType>(null);
+  const inquiryTutorialModalRef = useRef<ModalRefType>(null);
   const navigate = useNavigate();
 
   const showProviderTutorial = () => {
@@ -42,6 +48,13 @@ export const TutorialProvider = ({
     }, 100);
   };
 
+  const showInquiryTutorial = () => {
+    setActiveModal(UserTutorialExplanation.TUTORIAL_BUYER_LEADS);
+    setTimeout(() => {
+      inquiryTutorialModalRef.current?.open();
+    }, 100);
+  };
+
   const showPropertyTutorial = () => {
     const path = AppPath.RecordIndexPage.replace(
       ':objectNamePlural',
@@ -50,7 +63,7 @@ export const TutorialProvider = ({
     navigate(`${path}?create=true`);
   };
 
-  const showTutorial = (step: UserTutorialTask) => {
+  const showTutorial = (step: UserTutorialTask | UserTutorialExplanation) => {
     setIsTutorialOpen(true);
 
     switch (step) {
@@ -59,6 +72,9 @@ export const TutorialProvider = ({
         break;
       case UserTutorialTask.TUTORIAL_EMAIL:
         showEmailTutorial();
+        break;
+      case UserTutorialExplanation.TUTORIAL_BUYER_LEADS:
+        showInquiryTutorial();
         break;
       case UserTutorialTask.TUTORIAL_PROPERTY:
         showPropertyTutorial();
@@ -83,6 +99,14 @@ export const TutorialProvider = ({
     emailTutorialModalRef.current?.close();
   };
 
+  const onCloseInquiryTutorial = () => {
+    reset();
+    inquiryTutorialModalRef.current?.close();
+    setAsCompleted({
+      step: UserTutorialExplanation.TUTORIAL_BUYER_LEADS,
+    });
+  };
+
   return (
     <TutorialContext.Provider value={{ isTutorialOpen, showTutorial }}>
       {children}
@@ -96,6 +120,12 @@ export const TutorialProvider = ({
         <ProviderTutorialModal
           ref={tutorialModalRef}
           onClose={onCloseTutorial}
+        />
+      )}
+      {activeModal === UserTutorialExplanation.TUTORIAL_BUYER_LEADS && (
+        <InquiryTutorialModal
+          ref={inquiryTutorialModalRef}
+          onClose={onCloseInquiryTutorial}
         />
       )}
     </TutorialContext.Provider>

@@ -56,7 +56,7 @@ const StyledSection = styled.div`
 const StyledInputContainer = styled.div`
   display: flex;
   gap: ${({ theme }) => theme.spacing(4)};
-  margin-bottom: ${({ theme }) => theme.spacing(4)};
+  margin-bottom: ${({ theme }) => theme.spacing(1)};
 `;
 
 type InitialState = {
@@ -296,8 +296,8 @@ export const EditPublisherModal = forwardRef<ModalRefType, Props>(
             </StyledSectionTitle>
             <StyledSectionDescription>
               <Trans>
-                Configure your publisher profile information that will be used
-                across all platforms.
+                Configure your publisher credentials that will be used across
+                all platforms.
               </Trans>
             </StyledSectionDescription>
             <StyledInputContainer>
@@ -336,6 +336,12 @@ export const EditPublisherModal = forwardRef<ModalRefType, Props>(
                 </>
               )}
             </StyledInputContainer>
+            <StyledSectionDescription>
+              <Trans>
+                Name and Email are internally used by nestermind to identify the
+                publisher.
+              </Trans>
+            </StyledSectionDescription>
           </StyledSection>
 
           <StyledSection>

@@ -3,7 +3,6 @@ import { ReactElement, ReactNode } from 'react';
 import { UserTutorialTask } from 'twenty-shared';
 import {
   IconAbc,
-  IconCheck,
   IconHome,
   IconHomeShare,
   IconMail,
@@ -16,6 +15,7 @@ export type TutorialOnboardingStepData = {
   description: string | ReactNode;
   Icon: (props: TablerIconsProps) => ReactElement;
   hidden?: boolean;
+  requires?: UserTutorialTask[];
 };
 
 // These are the visible steps in the onboarding tutorial component
@@ -53,14 +53,11 @@ export const TUTORIAL_ONBOARDING_STEPS: TutorialOnboardingStepData[] = [
   },
   {
     id: UserTutorialTask.TUTORIAL_PUBLICATION,
-    title: <Trans>Create your first publication</Trans>,
-    description: <Trans>Publish your first property to a platform.</Trans>,
+    title: <Trans>Publish your first property</Trans>,
+    description: (
+      <Trans>Create a publication draft and publish it to a platform.</Trans>
+    ),
     Icon: IconHomeShare,
-  },
-  {
-    id: UserTutorialTask.TUTORIAL_COMPLETED,
-    title: <Trans>Completed all steps</Trans>,
-    description: <Trans>Completed all steps</Trans>,
-    Icon: IconCheck,
+    requires: [UserTutorialTask.TUTORIAL_PROPERTY],
   },
 ];

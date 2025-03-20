@@ -106,8 +106,9 @@ export const EmailTutorialModal = forwardRef<ModalRefType, Props>(
             <StyledModalText>
               <Trans>
                 nestermind automatically recognizes relevant contacts and
-                converts them into CRM people. Through granular settings, you
-                can specify which types of emails should be considered.
+                converts them into people in your CRM. Through granular
+                settings, you can specify which types of emails should be
+                considered.
               </Trans>
             </StyledModalText>
           </div>

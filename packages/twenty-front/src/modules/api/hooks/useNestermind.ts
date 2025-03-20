@@ -11,7 +11,7 @@ import { getEnv } from '~/utils/get-env';
  */
 export const useNestermind = () => {
   const tokenPair = useRecoilValue(tokenPairState);
-  const { setAsCompleted, steps } = useTutorialSteps();
+  const { setAsCompleted } = useTutorialSteps();
   const baseUrl =
     getEnv('REACT_APP_NESTERMIND_SERVER_BASE_URL') ?? 'http://api.localhost';
 

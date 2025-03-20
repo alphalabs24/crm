@@ -2,6 +2,7 @@ import { RecordIndexContextProvider } from '@/object-record/record-index/context
 
 import { ActionMenuComponentInstanceContext } from '@/action-menu/states/contexts/ActionMenuComponentInstanceContext';
 import { getActionMenuIdFromRecordIndexId } from '@/action-menu/utils/getActionMenuIdFromRecordIndexId';
+import { MAIN_CONTEXT_STORE_INSTANCE_ID } from '@/context-store/constants/MainContextStoreInstanceId';
 import { useContextStoreObjectMetadataItemOrThrow } from '@/context-store/hooks/useContextStoreObjectMetadataItemOrThrow';
 import { contextStoreCurrentViewIdComponentState } from '@/context-store/states/contextStoreCurrentViewIdComponentState';
 import { lastShowPageRecordIdState } from '@/object-record/record-field/states/lastShowPageRecordId';
@@ -17,9 +18,8 @@ import { PageTitle } from '@/ui/utilities/page-title/components/PageTitle';
 import { useRecoilComponentValueV2 } from '@/ui/utilities/state/component-state/hooks/useRecoilComponentValueV2';
 import { ViewComponentInstanceContext } from '@/views/states/contexts/ViewComponentInstanceContext';
 import styled from '@emotion/styled';
-import { useRecoilCallback, useRecoilValue } from 'recoil';
+import { useRecoilCallback } from 'recoil';
 import { capitalize } from 'twenty-shared';
-import { MAIN_CONTEXT_STORE_INSTANCE_ID } from '@/context-store/constants/MainContextStoreInstanceId';
 
 const StyledIndexContainer = styled.div`
   display: flex;
