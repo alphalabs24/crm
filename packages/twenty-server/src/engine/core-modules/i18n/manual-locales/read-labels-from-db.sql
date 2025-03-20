@@ -37,16 +37,7 @@ FROM (
     CONCAT(
       '# field "', fm."name", '" of ', om."nameSingular", E'\n',
       'msgid "', fm."label", '"', E'\n',
-      'msgstr "', fm."label", '"', E'\n',
-      CASE WHEN TRIM(fm.description) != '' THEN
-          CONCAT(
-            E'\n',
-            '# field description "', fm.description, '" of ', om."nameSingular", E'\n',
-            'msgid "', fm.description, '"', E'\n',
-            'msgstr "', fm.description, '"', E'\n'
-            )
-        ELSE NULL
-      END
+      'msgstr "', fm."label", '"', E'\n'
       ) as translations
   FROM "metadata"."objectMetadata" om
     LEFT JOIN "metadata"."fieldMetadata" fm ON fm."objectMetadataId" = om.id
@@ -116,7 +107,7 @@ FROM (
     fm.id as field_id,
     fm."name" as field_name,
     CONCAT(
-      '# field description "', fm.description, '" of field ', fm."name", ' on ', om."nameSingular", E'\n',
+      '# field description "', fm.description, '" of ', fm."name", ' on ', om."nameSingular", E'\n',
       'msgid "', fm.description, '"', E'\n',
       'msgstr "', fm.description, '"', E'\n'
       ) as translations
