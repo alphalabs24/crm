@@ -182,7 +182,7 @@ export const Tutorial = () => {
       <StyledMaxWidthContainer>
         <StyledHeader>
           <StyledTitle>
-            <Trans>First Steps on Nestermind</Trans>
+            <Trans>nestermind</Trans>
           </StyledTitle>
           <StyledSubtitle>
             <Trans>

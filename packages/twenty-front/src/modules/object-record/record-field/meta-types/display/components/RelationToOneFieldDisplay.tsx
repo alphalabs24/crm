@@ -25,7 +25,7 @@ export const RelationToOneFieldDisplay = () => {
         isPublication(recordChipData.objectNameSingular) &&
         fieldValue.platform ? (
           <PlatformBadge
-            platformId={fieldValue.platform.toUpperCase()}
+            platformId={fieldValue.platform?.toUpperCase()}
             variant="small"
           />
         ) : undefined

@@ -22,7 +22,7 @@ const StyledPlatformBadge = styled.div<{
   width: ${({ variant }) => (variant === 'small' ? '60px' : '80px')};
   justify-content: center;
   align-items: center;
-  cursor: ${({ disabled }) => (disabled ? 'default' : 'pointer')};
+  cursor: ${({ disabled }) => (disabled ? 'unset' : 'pointer')};
   background: ${({ theme, disabled, dark }) =>
     disabled
       ? dark
@@ -70,7 +70,11 @@ export const PlatformBadge = ({
   const isDark = colorScheme === 'Dark';
 
   const platform =
-    PLATFORMS[platformId.toUpperCase() as keyof typeof PLATFORMS];
+    PLATFORMS[platformId?.toUpperCase() as keyof typeof PLATFORMS];
+
+  if (!platform) {
+    return null;
+  }
 
   return (
     <StyledPlatformBadge

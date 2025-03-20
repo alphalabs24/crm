@@ -1,3 +1,9 @@
-import { userTutorialTasks } from './UserTutorialTask';
+import {
+    userTutorialExplanations,
+    userTutorialTasks,
+} from './UserTutorialTask';
 
-export const nestermindUserVars = [...userTutorialTasks];
+export const nestermindUserVars = [
+  ...userTutorialTasks,
+  ...userTutorialExplanations,
+];

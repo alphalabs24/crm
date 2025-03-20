@@ -163,7 +163,7 @@ export const OnboardingSteps = () => {
               }}
             >
               <StyledOnboardingTitle $isIntermediate>
-                First Steps on Nestermind
+                First Steps on nestermind
               </StyledOnboardingTitle>
               <StyledProgressIndicators>
                 {Object.values(steps).map((step) => (

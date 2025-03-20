@@ -32,6 +32,10 @@ export const useKeyValueStore = () => {
     key: string,
     value: string | boolean | number,
   ) => {
+    // Only update if value is different from current value
+    if (keyValueStore[key] === value) {
+      return;
+    }
     // Update Recoil state immediately for optimistic updates
     setKeyValueStore((prev) => ({ ...prev, [key]: value }));
 

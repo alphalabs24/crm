@@ -1,12 +1,12 @@
 import { TutorialModal } from '@/onboarding-tutorial/components/modals/TutorialModal';
 import { useLocale } from '@/onboarding-tutorial/hooks/useLocale';
+import { mapLocaleToImageSuffix } from '@/onboarding-tutorial/utils/mapLocaleToImageSuffix';
 import { SettingsPath } from '@/types/SettingsPath';
 import { ModalRefType } from '@/ui/layout/modal/components/Modal';
 import styled from '@emotion/styled';
 import { Trans, useLingui } from '@lingui/react/macro';
 import { forwardRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { APP_LOCALES } from 'twenty-shared';
 import { Button, IconBuilding } from 'twenty-ui';
 import { getSettingsPath } from '~/utils/navigation/getSettingsPath';
 
@@ -45,21 +45,6 @@ const StyledImageAligner = styled.div`
   display: flex;
   justify-content: center;
 `;
-
-const mapLocaleToImageSuffix = (locale: string) => {
-  switch (locale) {
-    case APP_LOCALES.en:
-      return 'en';
-    case APP_LOCALES['de-DE']:
-      return 'de';
-    case APP_LOCALES['fr-FR']:
-      return 'fr';
-    case APP_LOCALES['it-IT']:
-      return 'it';
-    default:
-      return 'en';
-  }
-};
 
 type Props = {
   onClose: () => void;

@@ -1,7 +1,7 @@
+import { Modal } from '@/ui/layout/modal/components/Modal';
 import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
-import { LARGE_DESKTOP_VIEWPORT } from 'twenty-ui';
-import { Modal } from '@/ui/layout/modal/components/Modal';
+import { MOBILE_VIEWPORT } from 'twenty-ui';
 
 export const StyledModalContainer = styled.div<{ adaptiveHeight?: boolean }>`
   display: flex;
@@ -20,9 +20,10 @@ export const StyledModalContent = styled(motion.div)`
   padding: ${({ theme }) => theme.spacing(4)};
   height: 100%;
   flex: 1;
+  padding-bottom: ${({ theme }) => theme.spacing(20)};
 
-  @media only screen and (min-width: ${LARGE_DESKTOP_VIEWPORT}px) {
-    padding: ${({ theme }) => theme.spacing(4)};
+  @media only screen and (min-width: ${MOBILE_VIEWPORT}px) {
+    padding-bottom: ${({ theme }) => theme.spacing(4)};
   }
 `;
 

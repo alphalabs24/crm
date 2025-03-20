@@ -6,10 +6,20 @@ export enum UserTutorialTask {
   TUTORIAL_COMPLETED = 'TUTORIAL_COMPLETED',
 }
 
+export enum UserTutorialExplanation {
+  TUTORIAL_BUYER_LEADS = 'TUTORIAL_BUYER_LEADS',
+  TUTORIAL_PUBLICATION_SYNC = 'TUTORIAL_PUBLICATION_SYNC',
+}
+
 export const userTutorialTasks = [
   UserTutorialTask.TUTORIAL_PLATFORM_SETUP,
   UserTutorialTask.TUTORIAL_EMAIL,
   UserTutorialTask.TUTORIAL_PROPERTY,
   UserTutorialTask.TUTORIAL_PUBLICATION,
   UserTutorialTask.TUTORIAL_COMPLETED,
+] as string[];
+
+export const userTutorialExplanations = [
+  UserTutorialExplanation.TUTORIAL_BUYER_LEADS,
+  UserTutorialExplanation.TUTORIAL_PUBLICATION_SYNC,
 ] as string[];

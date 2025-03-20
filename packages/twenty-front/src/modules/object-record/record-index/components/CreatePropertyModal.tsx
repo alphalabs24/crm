@@ -1,3 +1,4 @@
+import { getLinkToShowPage } from '@/object-metadata/utils/getLinkToShowPage';
 import { useCreateOneRecord } from '@/object-record/hooks/useCreateOneRecord';
 import { useFindManyRecords } from '@/object-record/hooks/useFindManyRecords';
 import { FieldAddressValue } from '@/object-record/record-field/types/FieldMetadata';
@@ -99,7 +100,9 @@ export const CreatePropertyModal = forwardRef<
     onClose();
     setPropertyName('');
 
-    navigate(`/${objectNameSingular}/${record?.id}/edit`);
+    navigate(
+      `${getLinkToShowPage(objectNameSingular, { id: record?.id })}/edit`,
+    );
   };
 
   return (
