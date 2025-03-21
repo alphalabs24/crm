@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: nestermind-crm\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2025-03-20 16:05\n"
+"PO-Revision-Date: 2025-03-21 09:14\n"
 "Last-Translator: \n"
 "Language: it_IT\n"
 "Language-Team: Italian\n"
@@ -26,7 +26,7 @@ msgstr ""
 
 # field description "Contact Person (Visible On Publication)" of agencyReference on agency
 msgid "Contact Person (Visible On Publication)"
-msgstr ""
+msgstr "Persona di contatto (Visibile sulla Pubblicazione)"
 
 # field "agencyReference" of agency
 msgid "Agency Reference"

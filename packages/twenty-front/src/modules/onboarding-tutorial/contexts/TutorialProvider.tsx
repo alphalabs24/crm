@@ -1,6 +1,7 @@
 import { CoreObjectNamePlural } from '@/object-metadata/types/CoreObjectNamePlural';
 import { EmailTutorialModal } from '@/onboarding-tutorial/components/modals/EmailTutorialModal';
 import { InquiryTutorialModal } from '@/onboarding-tutorial/components/modals/InquiryTutorialModal';
+import { PublicationSyncTutorialModal } from '@/onboarding-tutorial/components/modals/PublicationSyncTutorialModal';
 import { ProviderTutorialModal } from '@/onboarding-tutorial/components/modals/PublisherTutorialModal';
 import { useTutorialSteps } from '@/onboarding-tutorial/hooks/useTutorialSteps';
 import { AppPath } from '@/types/AppPath';
@@ -33,6 +34,7 @@ export const TutorialProvider = ({
   const tutorialModalRef = useRef<ModalRefType>(null);
   const emailTutorialModalRef = useRef<ModalRefType>(null);
   const inquiryTutorialModalRef = useRef<ModalRefType>(null);
+  const publicationSyncTutorialModalRef = useRef<ModalRefType>(null);
   const navigate = useNavigate();
 
   const showProviderTutorial = () => {
@@ -56,6 +58,13 @@ export const TutorialProvider = ({
     }, 100);
   };
 
+  const showPublicationSyncTutorial = () => {
+    setActiveModal(UserTutorialExplanation.TUTORIAL_PUBLICATION_SYNC);
+    setTimeout(() => {
+      publicationSyncTutorialModalRef.current?.open();
+    }, 100);
+  };
+
   const showPropertyTutorial = () => {
     const path = AppPath.RecordIndexPage.replace(
       ':objectNamePlural',
@@ -76,6 +85,9 @@ export const TutorialProvider = ({
         break;
       case UserTutorialExplanation.TUTORIAL_BUYER_LEADS:
         showInquiryTutorial();
+        break;
+      case UserTutorialExplanation.TUTORIAL_PUBLICATION_SYNC:
+        showPublicationSyncTutorial();
         break;
       case UserTutorialTask.TUTORIAL_PROPERTY:
         showPropertyTutorial();
@@ -108,6 +120,14 @@ export const TutorialProvider = ({
     });
   };
 
+  const onClosePublicationSyncTutorial = () => {
+    reset();
+    publicationSyncTutorialModalRef.current?.close();
+    setAsCompleted({
+      step: UserTutorialExplanation.TUTORIAL_PUBLICATION_SYNC,
+    });
+  };
+
   return (
     <TutorialContext.Provider value={{ isTutorialOpen, showTutorial }}>
       {children}
@@ -127,6 +147,12 @@ export const TutorialProvider = ({
         <InquiryTutorialModal
           ref={inquiryTutorialModalRef}
           onClose={onCloseInquiryTutorial}
+        />
+      )}
+      {activeModal === UserTutorialExplanation.TUTORIAL_PUBLICATION_SYNC && (
+        <PublicationSyncTutorialModal
+          ref={publicationSyncTutorialModalRef}
+          onClose={onClosePublicationSyncTutorial}
         />
       )}
     </TutorialContext.Provider>

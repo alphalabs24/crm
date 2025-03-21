@@ -1069,6 +1069,10 @@ msgstr "Earliest"
 msgid "Earliest date"
 msgstr "Earliest date"
 
+#: src/modules/onboarding-tutorial/components/modals/PublicationSyncTutorialModal.tsx
+msgid "Easy Synchronization"
+msgstr "Easy Synchronization"
+
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/Publishing.tsx
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
@@ -1618,6 +1622,10 @@ msgstr "Latest date"
 #: src/modules/object-record/record-show/components/nm/AISuite.tsx
 msgid "Lead Insights"
 msgstr "Lead Insights"
+
+#: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
+msgid "Learn more"
+msgstr "Learn more"
 
 #: src/pages/settings/profile/appearance/components/SettingsExperience.tsx
 msgid "Light"
@@ -2232,6 +2240,10 @@ msgstr "Publication Draft"
 msgid "Publication Draft created successfully"
 msgstr "Publication Draft created successfully"
 
+#: src/modules/onboarding-tutorial/components/modals/PublicationSyncTutorialModal.tsx
+msgid "Publication Synchronization"
+msgstr "Publication Synchronization"
+
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/Publishing.tsx
 msgid "Publish"
@@ -2706,6 +2718,10 @@ msgstr "The name of your organization"
 msgid "The page you're seeking is either gone or never was. Let's get you back on track"
 msgstr "The page you're seeking is either gone or never was. Let's get you back on track"
 
+#: src/modules/onboarding-tutorial/components/modals/PublicationSyncTutorialModal.tsx
+msgid "The synchronization ensures that titles, descriptions, prices, images and other relevant information are updated across all platforms - without having to manually edit each publication."
+msgstr "The synchronization ensures that titles, descriptions, prices, images and other relevant information are updated across all platforms - without having to manually edit each publication."
+
 #: src/pages/settings/data-model/SettingsObjectFieldEdit.tsx
 #: src/pages/settings/data-model/SettingsObjectNewField/SettingsObjectNewFieldConfigure.tsx
 msgid "The values of this field"
@@ -2734,6 +2750,10 @@ msgstr "This action cannot be undone. This will permanently delete your entire w
 #: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
 msgid "This includes the following platforms: ImmoScout24, Homegate, and more."
 msgstr "This includes the following platforms: ImmoScout24, Homegate, and more."
+
+#: src/modules/onboarding-tutorial/components/modals/PublicationSyncTutorialModal.tsx
+msgid "This keeps your property presentation always up-to-date and saves you valuable time!"
+msgstr "This keeps your property presentation always up-to-date and saves you valuable time!"
 
 #: src/pages/settings/roles/components/RoleAssignmentConfirmationModalSubtitle.tsx
 msgid "This member will be unassigned from this role."
@@ -2868,6 +2888,10 @@ msgstr "User is not logged in"
 msgid "Values"
 msgstr "Values"
 
+#: src/modules/onboarding-tutorial/components/modals/PublicationSyncTutorialModal.tsx
+msgid "Verstanden"
+msgstr "Verstanden"
+
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 #~ msgid "Vietnamese"
 #~ msgstr "Vietnamese"
@@ -2943,6 +2967,10 @@ msgstr "When the API key will expire."
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
 msgid "When the key will be disabled"
 msgstr "When the key will be disabled"
+
+#: src/modules/onboarding-tutorial/components/modals/PublicationSyncTutorialModal.tsx
+msgid "When you make changes to a property's master data, you can quickly and easily transfer these to your publications. All drafts and already published objects can be synchronized with a single click, ensuring that current data is displayed correctly everywhere."
+msgstr "When you make changes to a property's master data, you can quickly and easily transfer these to your publications. All drafts and already published objects can be synchronized with a single click, ensuring that current data is displayed correctly everywhere."
 
 #: src/pages/onboarding/CreateProfile.tsx
 msgid "Why is this required?"

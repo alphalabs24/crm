@@ -1,32 +1,34 @@
-import styled from '@emotion/styled';
-import { useLingui } from '@lingui/react/macro';
-import { forwardRef, useEffect, useState, useRef } from 'react';
+import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadataItem';
+import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
+import { isLabelIdentifierField } from '@/object-metadata/utils/isLabelIdentifierField';
+import { useFindOneRecord } from '@/object-record/hooks/useFindOneRecord';
+import { FieldDisplay } from '@/object-record/record-field/components/FieldDisplay';
+import { FieldContext } from '@/object-record/record-field/contexts/FieldContext';
+import { PlatformBadge } from '@/object-record/record-show/components/nm/publication/PlatformBadge';
+import { RecordValueSetterEffect } from '@/object-record/record-store/components/RecordValueSetterEffect';
+import { RecordFieldValueSelectorContextProvider } from '@/object-record/record-store/contexts/RecordFieldValueSelectorContext';
+import { recordStoreFamilyState } from '@/object-record/record-store/states/recordStoreFamilyState';
+import { useTutorial } from '@/onboarding-tutorial/contexts/TutorialProvider';
 import { Modal, ModalRefType } from '@/ui/layout/modal/components/Modal';
+import styled from '@emotion/styled';
+import { Trans, useLingui } from '@lingui/react/macro';
+import { forwardRef, useEffect, useRef, useState } from 'react';
+import Skeleton from 'react-loading-skeleton';
+import { useSetRecoilState } from 'recoil';
+import { UserTutorialExplanation } from 'twenty-shared';
+import {
+  Button,
+  IconExchange,
+  IconHelpCircle,
+  IconHomeShare,
+  IconRefresh,
+  MOBILE_VIEWPORT,
+  useIcons,
+} from 'twenty-ui';
 import {
   PropertyPublicationDifference,
   PublicationDifferences,
 } from '../../hooks/usePropertyAndPublicationDifferences';
-import {
-  IconExchange,
-  Button,
-  IconRefresh,
-  useIcons,
-  IconHomeShare,
-  MOBILE_VIEWPORT,
-} from 'twenty-ui';
-import { FieldDisplay } from '@/object-record/record-field/components/FieldDisplay';
-import { FieldContext } from '@/object-record/record-field/contexts/FieldContext';
-import { isLabelIdentifierField } from '@/object-metadata/utils/isLabelIdentifierField';
-import { RecordFieldValueSelectorContextProvider } from '@/object-record/record-store/contexts/RecordFieldValueSelectorContext';
-import { RecordValueSetterEffect } from '@/object-record/record-store/components/RecordValueSetterEffect';
-import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadataItem';
-import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
-import { useSetRecoilState } from 'recoil';
-import { recordStoreFamilyState } from '@/object-record/record-store/states/recordStoreFamilyState';
-import { useFindOneRecord } from '@/object-record/hooks/useFindOneRecord';
-import { PlatformId, PLATFORMS } from './types/Platform';
-import { PlatformBadge } from '@/object-record/record-show/components/nm/publication/PlatformBadge';
-import Skeleton from 'react-loading-skeleton';
 import {
   StyledModalContainer,
   StyledModalContent,
@@ -35,6 +37,7 @@ import {
   StyledModalTitle,
   StyledModalTitleContainer,
 } from './modal-components/ModalComponents';
+import { PlatformId, PLATFORMS } from './types/Platform';
 
 const StyledDifferenceItem = styled.div`
   background: ${({ theme }) => theme.background.primary};
@@ -83,16 +86,22 @@ const StyledArrowContainer = styled.div`
 `;
 
 const StyledModalDescription = styled.div`
+  align-items: center;
   color: ${({ theme }) => theme.font.color.tertiary};
+  display: flex;
   font-size: ${({ theme }) => theme.font.size.md};
   padding: 0 ${({ theme }) => theme.spacing(2)}
     ${({ theme }) => theme.spacing(4)};
 `;
 
 const StyledModalTopTitle = styled.div`
+  align-items: center;
+  display: flex;
   font-size: ${({ theme }) => theme.font.size.lg};
   font-weight: ${({ theme }) => theme.font.weight.semiBold};
   padding: 0 ${({ theme }) => theme.spacing(2)};
+  gap: ${({ theme }) => theme.spacing(1)};
+  justify-content: space-between;
 `;
 
 const StyledColumnHeaders = styled.div`
@@ -155,7 +164,6 @@ const StyledPublicationTab = styled.button<{ isActive: boolean }>`
   display: flex;
   align-items: center;
   gap: ${({ theme }) => theme.spacing(2)};
-
   border-radius: ${({ theme }) => theme.border.radius.sm};
   border: none;
   background: ${({ theme, isActive }) =>
@@ -176,10 +184,7 @@ const StyledPublicationTab = styled.button<{ isActive: boolean }>`
   }
 
   ${({ isActive, theme }) =>
-    isActive &&
-    `
-    box-shadow: ${theme.boxShadow.light};
-  `}
+    isActive && `box-shadow: ${theme.boxShadow.light};`}
 `;
 
 const StyledDiffCount = styled.span`
@@ -228,6 +233,22 @@ const StyledTabsContainer = styled.div`
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(4)};
   padding: ${({ theme }) => theme.spacing(2)} 0;
+`;
+
+const StyledHelpButton = styled.button`
+  align-items: center;
+  background: none;
+  border: none;
+  color: ${({ theme }) => theme.font.color.secondary};
+  display: inline-flex;
+  font-size: ${({ theme }) => theme.font.size.md};
+  padding: 0;
+  gap: ${({ theme }) => theme.spacing(1)};
+
+  &:hover {
+    color: ${({ theme }) => theme.font.color.primary};
+    cursor: pointer;
+  }
 `;
 
 type PropertyDifferencesModalProps = {
@@ -411,6 +432,7 @@ export const PropertyDifferencesModal = forwardRef<
   PropertyDifferencesModalProps
 >(({ differences, onClose, onSync, propertyRecordId }, ref) => {
   const { t } = useLingui();
+  const { showTutorial } = useTutorial();
   const [activePublicationIndex, setActivePublicationIndex] = useState(0);
   const tabsContainerRef = useRef<HTMLDivElement>(null);
   const activeTabRef = useRef<HTMLButtonElement>(null);
@@ -459,7 +481,17 @@ export const PropertyDifferencesModal = forwardRef<
         </StyledModalHeader>
 
         <StyledModalContent>
-          <StyledModalTopTitle>{t`Sync Drafts with Property`}</StyledModalTopTitle>
+          <StyledModalTopTitle>
+            {t`Sync Drafts with Property`}
+            <StyledHelpButton
+              onClick={() =>
+                showTutorial(UserTutorialExplanation.TUTORIAL_PUBLICATION_SYNC)
+              }
+            >
+              <IconHelpCircle size={16} />
+              <Trans>Learn more</Trans>
+            </StyledHelpButton>
+          </StyledModalTopTitle>
           <StyledModalDescription>
             {t`Review differences between your property and its publication drafts. Syncing will update the publication drafts with the current property values.`}
           </StyledModalDescription>
