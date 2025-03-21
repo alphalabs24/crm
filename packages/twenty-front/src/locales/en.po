@@ -385,6 +385,10 @@ msgstr "Are you sure you want to delete this {objectNameSingularCapitalized}?"
 msgid "Are you sure you want to delete this {objectNameSingularCapitalized}? <0>All it's publications will be deleted as well.</0>"
 msgstr "Are you sure you want to delete this {objectNameSingularCapitalized}? <0>All it's publications will be deleted as well.</0>"
 
+#: src/pages/settings/email-templates/SettingsEmailTemplates.tsx
+msgid "Are you sure you want to delete this email template? This cannot be undone."
+msgstr "Are you sure you want to delete this email template? This cannot be undone."
+
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
 #~ msgid "Are you sure you want to delete this property and all it's publications?"
 #~ msgstr "Are you sure you want to delete this property and all it's publications?"
@@ -734,6 +738,10 @@ msgstr "Count not empty"
 msgid "Count unique values"
 msgstr "Count unique values"
 
+#: src/pages/settings/email-templates/SettingsEmailTemplateNew.tsx
+msgid "Create a new email template."
+msgstr "Create a new email template."
+
 #: src/modules/onboarding-tutorial/constants/onboarding-steps.tsx
 msgid "Create a publication draft and publish it to a platform."
 msgstr "Create a publication draft and publish it to a platform."
@@ -762,6 +770,10 @@ msgstr "Create profile"
 #: src/pages/settings/roles/SettingsRoles.tsx
 msgid "Create Role"
 msgstr "Create Role"
+
+#: src/pages/settings/email-templates/components/EmailTemplatesListCard.tsx
+msgid "Create Template"
+msgstr "Create Template"
 
 #: src/pages/settings/developers/SettingsDevelopers.tsx
 msgid "Create Webhook"
@@ -885,6 +897,7 @@ msgstr "Deactivate Workflow"
 msgid "Define the name and description of your object"
 msgstr "Define the name and description of your object"
 
+#: src/pages/settings/email-templates/SettingsEmailTemplates.tsx
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
@@ -922,6 +935,10 @@ msgstr "Delete account and all the associated data"
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
 msgid "Delete API key"
 msgstr "Delete API key"
+
+#: src/pages/settings/email-templates/SettingsEmailTemplates.tsx
+msgid "Delete email template"
+msgstr "Delete email template"
 
 #: src/pages/settings/publishers/SettingsPublishers.tsx
 #: src/pages/settings/publishers/SettingsPublishers.tsx
@@ -1104,6 +1121,10 @@ msgstr "Edit Image"
 msgid "Edit payment method, see your invoices and more"
 msgstr "Edit payment method, see your invoices and more"
 
+#: src/pages/settings/email-templates/SettingsEmailTemplateDetail.tsx
+msgid "Edit your email template."
+msgstr "Edit your email template."
+
 #: src/pages/settings/SettingsWorkspace.tsx
 msgid "Edit your subdomain name or set a custom domain."
 msgstr "Edit your subdomain name or set a custom domain."
@@ -1129,6 +1150,16 @@ msgstr "Email integration"
 msgid "Email or domain is already in blocklist"
 msgstr "Email or domain is already in blocklist"
 
+#: src/pages/settings/email-templates/SettingsEmailTemplates.tsx
+#: src/pages/settings/email-templates/SettingsEmailTemplates.tsx
+#: src/modules/settings/hooks/useSettingsNavigationItems.tsx
+msgid "Email Settings"
+msgstr "Email Settings"
+
+#: src/pages/settings/email-templates/components/EmailTemplateForm.tsx
+msgid "Email subject"
+msgstr "Email subject"
+
 #: src/modules/onboarding-tutorial/components/modals/EmailTutorialModal.tsx
 msgid "Email Synchronization"
 msgstr "Email Synchronization"
@@ -1137,9 +1168,19 @@ msgstr "Email Synchronization"
 msgid "Email Synchronization with nestermind"
 msgstr "Email Synchronization with nestermind"
 
-#: src/modules/record-edit/components/custom/PropertyEmailsFormInput.tsx
+#: src/pages/settings/email-templates/SettingsEmailTemplateNew.tsx
+#: src/pages/settings/email-templates/SettingsEmailTemplateDetail.tsx
+#: src/pages/settings/email-templates/SettingsEmailTemplateDetail.tsx
+#: src/pages/settings/email-templates/SettingsEmailTemplateDetail.tsx
+#: src/pages/settings/email-templates/components/EmailTemplateSelect.tsx
 msgid "Email Template"
 msgstr "Email Template"
+
+#: src/pages/settings/email-templates/SettingsEmailTemplates.tsx
+#: src/pages/settings/email-templates/SettingsEmailTemplateNew.tsx
+#: src/pages/settings/email-templates/SettingsEmailTemplateDetail.tsx
+msgid "Email Templates"
+msgstr "Email Templates"
 
 #: src/pages/settings/accounts/SettingsAccountsEmails.tsx
 #: src/pages/settings/accounts/SettingsAccountsEmails.tsx
@@ -1669,6 +1710,7 @@ msgid "Listings"
 msgstr "Listings"
 
 #: src/pages/settings/publishers/components/PublishersListCard.tsx
+#: src/pages/settings/email-templates/components/EmailTemplatesListCard.tsx
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
 #: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
 #: src/modules/object-record/record-show/components/nm/AISuite.tsx
@@ -1694,6 +1736,10 @@ msgstr "Manage Members"
 #: src/pages/settings/SettingsWorkspaceMembers.tsx
 msgid "Manage the members of your space here"
 msgstr "Manage the members of your space here"
+
+#: src/pages/settings/email-templates/SettingsEmailTemplates.tsx
+msgid "Manage your email templates for properties and publications."
+msgstr "Manage your email templates for properties and publications."
 
 #: src/pages/settings/accounts/SettingsAccounts.tsx
 msgid "Manage your internet accounts."
@@ -1770,6 +1816,7 @@ msgstr "Move right"
 #: src/pages/settings/roles/components/RolePermissionsObjectsTableHeader.tsx
 #: src/pages/settings/roles/components/RoleAssignmentTableHeader.tsx
 #: src/pages/settings/publishers/components/PublishersListCard.tsx
+#: src/pages/settings/email-templates/components/EmailTemplatesListCard.tsx
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeysNew.tsx
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
 #: src/pages/settings/data-model/SettingsObjectFieldTable.tsx
@@ -1888,6 +1935,12 @@ msgstr "New record"
 #~ msgid "New Role"
 #~ msgstr "New Role"
 
+#: src/pages/settings/email-templates/SettingsEmailTemplateNew.tsx
+#: src/pages/settings/email-templates/SettingsEmailTemplateNew.tsx
+#: src/pages/settings/email-templates/components/EmailTemplatesListCard.tsx
+msgid "New Template"
+msgstr "New Template"
+
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhooksNew.tsx
 #~ msgid "New Webhook"
 #~ msgstr "New Webhook"
@@ -1896,12 +1949,20 @@ msgstr "New record"
 msgid "No connected account"
 msgstr "No connected account"
 
+#: src/pages/settings/email-templates/components/EmailTemplatesListCard.tsx
+msgid "No content"
+msgstr "No content"
+
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "No description"
 msgstr "No description"
+
+#: src/pages/settings/email-templates/components/EmailTemplatesListCard.tsx
+msgid "No email templates configured yet"
+msgstr "No email templates configured yet"
 
 #: src/modules/ui/layout/show-page/components/nm/ShowPageImageBanner.tsx
 msgid "No images available"
@@ -1958,6 +2019,10 @@ msgstr "No Results"
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
 msgid "No similar properties found"
 msgstr "No similar properties found"
+
+#: src/pages/settings/email-templates/components/EmailTemplateSelect.tsx
+msgid "No template"
+msgstr "No template"
 
 #: src/modules/object-record/record-table/empty-state/utils/getEmptyStateTitle.ts
 msgid "No workflow runs yet"
@@ -2168,6 +2233,7 @@ msgstr "Prefill"
 msgid "Prefill Property"
 msgstr "Prefill Property"
 
+#: src/pages/settings/email-templates/components/EmailTemplatesListCard.tsx
 #: src/modules/settings/data-model/objects/forms/components/SettingsDataModelObjectSettingsFormCard.tsx
 #: src/modules/settings/data-model/components/SettingsDataModelPreviewFormCard.tsx
 msgid "Preview"
@@ -2457,6 +2523,10 @@ msgstr "See versions"
 msgid "See versions history"
 msgstr "See versions history"
 
+#: src/pages/settings/email-templates/components/EmailTemplateSelect.tsx
+msgid "Select a template"
+msgstr "Select a template"
+
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx
 msgid "Select the events you wish to send to this endpoint"
 msgstr "Select the events you wish to send to this endpoint"
@@ -2605,6 +2675,10 @@ msgstr "Subdomain can not be longer than 30 characters"
 #: src/pages/settings/workspace/SettingsDomain.tsx
 msgid "Subdomain can not be shorter than 3 characters"
 msgstr "Subdomain can not be shorter than 3 characters"
+
+#: src/pages/settings/email-templates/components/EmailTemplateForm.tsx
+msgid "Subject"
+msgstr "Subject"
 
 #: src/pages/settings/SettingsBilling.tsx
 msgid "Subscription has been switched {to}"
@@ -3001,6 +3075,9 @@ msgstr "Workflow cannot be tested"
 #: src/pages/settings/roles/SettingsRoles.tsx
 #: src/pages/settings/publishers/SettingsPublishers.tsx
 #: src/pages/settings/integrations/SettingsIntegrations.tsx
+#: src/pages/settings/email-templates/SettingsEmailTemplates.tsx
+#: src/pages/settings/email-templates/SettingsEmailTemplateNew.tsx
+#: src/pages/settings/email-templates/SettingsEmailTemplateDetail.tsx
 #: src/pages/settings/developers/SettingsDevelopers.tsx
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeysNew.tsx
@@ -3054,6 +3131,10 @@ msgstr "yes"
 #: src/modules/object-record/record-table/empty-state/components/RecordTableEmptyStateReadOnly.tsx
 msgid "You are not allowed to create records in this object"
 msgstr "You are not allowed to create records in this object"
+
+#: src/pages/settings/email-templates/components/EmailTemplateSelect.tsx
+msgid "You can edit email templates in Settings → Email Templates"
+msgstr "You can edit email templates in Settings → Email Templates"
 
 #: src/pages/settings/SettingsBilling.tsx
 msgid "You will be charged immediately for the full year."
