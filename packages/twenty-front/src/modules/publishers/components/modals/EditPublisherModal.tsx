@@ -194,7 +194,7 @@ export const EditPublisherModal = forwardRef<ModalRefType, Props>(
         isValid = false;
       }
 
-      if (email && !emailSchema.safeParse(email).success) {
+      if (!name.trim() || !emailSchema.safeParse(email).success) {
         setEmailError(t`Please enter a valid email address`);
         isValid = false;
       }
@@ -332,6 +332,7 @@ export const EditPublisherModal = forwardRef<ModalRefType, Props>(
                     placeholder={t`Enter email`}
                     error={emailError}
                     fullWidth
+                    required
                   />
                 </>
               )}
