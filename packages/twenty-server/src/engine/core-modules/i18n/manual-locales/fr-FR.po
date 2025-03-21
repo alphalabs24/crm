@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: nestermind-crm\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2025-03-19 18:14\n"
+"PO-Revision-Date: 2025-03-20 16:05\n"
 "Last-Translator: \n"
 "Language: fr_FR\n"
 "Language-Team: French\n"
@@ -24,16 +24,12 @@ msgstr ""
 msgid "Agencies"
 msgstr ""
 
-# field description "Contact Person (Visible On Publication)" of field agencyReference on agency
+# field description "Contact Person (Visible On Publication)" of agencyReference on agency
 msgid "Contact Person (Visible On Publication)"
 msgstr ""
 
 # field "agencyReference" of agency
 msgid "Agency Reference"
-msgstr ""
-
-# field description "Contact Person (Visible On Publication)" of agency
-msgid "Contact Person (Visible On Publication)"
 msgstr ""
 
 # field "newhomeFtpPassword" of agency
@@ -84,20 +80,12 @@ msgstr ""
 msgid "Carrying Capacity Crane"
 msgstr ""
 
-# field description "In kg" of property
-msgid "In kg"
-msgstr ""
-
-# field description "In kg" of field carryingCapacityCrane on property
+# field description "In kg" of carryingCapacityCrane on property
 msgid "In kg"
 msgstr ""
 
 # field "carryingCapacityElevator" of property
 msgid "Carrying Capacity Elevator"
-msgstr ""
-
-# field description "In kg" of property
-msgid "In kg"
 msgstr ""
 
 # field "category" of property
@@ -108,11 +96,7 @@ msgstr ""
 msgid "Ceiling Height"
 msgstr ""
 
-# field description "Height of room in meters" of property
-msgid "Height of room in meters"
-msgstr ""
-
-# field description "Height of room in meters" of field ceilingHeight on property
+# field description "Height of room in meters" of ceilingHeight on property
 msgid "Height of room in meters"
 msgstr ""
 
@@ -148,11 +132,7 @@ msgstr ""
 msgid "Hall Height"
 msgstr ""
 
-# field description "Height of hall in meters" of property
-msgid "Height of hall in meters"
-msgstr ""
-
-# field description "Height of hall in meters" of field hallHeight on property
+# field description "Height of hall in meters" of hallHeight on property
 msgid "Height of hall in meters"
 msgstr ""
 
@@ -176,11 +156,7 @@ msgstr ""
 msgid "Maximal Floor Loading"
 msgstr ""
 
-# field description "kg/m2" of property
-msgid "kg/m2"
-msgstr ""
-
-# field description "kg/m2" of field maximalFloorLoading on property
+# field description "kg/m2" of maximalFloorLoading on property
 msgid "kg/m2"
 msgstr ""
 
@@ -266,12 +242,5 @@ msgstr ""
 
 # object plural publications
 msgid "Publications"
-msgstr ""
-
-# views
-msgid "Active Properties"
-msgstr ""
-
-msgid "All Publications"
 msgstr ""
 
