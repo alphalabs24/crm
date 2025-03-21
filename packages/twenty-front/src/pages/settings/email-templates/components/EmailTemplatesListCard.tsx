@@ -34,7 +34,7 @@ const StyledTableRow = styled(TableRow)`
   grid-template-columns: 150px 1fr 28px 28px;
   @media (max-width: ${MOBILE_VIEWPORT}px) {
     width: 100%;
-    grid-template-columns: 200px 1fr 28px 28px;
+    grid-template-columns: 8fr 12fr 28px 28px;
   }
 `;
 
