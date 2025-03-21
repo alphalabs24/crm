@@ -7,12 +7,12 @@ import { ClipboardEvent } from 'react';
 
 import { BLOCK_SCHEMA } from '@/activities/blocks/constants/Schema';
 import { getSlashMenu } from '@/activities/blocks/utils/getSlashMenu';
+import { ActivityRichTextEditorPlaceholderButtonBar } from '@/activities/components/ActivityRichTextEditorPlaceholderButtonBar';
 import { CustomSideMenu } from '@/ui/input/editor/components/CustomSideMenu';
 import {
   CustomSlashMenu,
   SuggestionItem,
 } from '@/ui/input/editor/components/CustomSlashMenu';
-import { ActivityRichTextEditorPlaceholderButtonBar } from '@/activities/components/ActivityRichTextEditorPlaceholderButtonBar';
 
 interface EmailBlockEditorProps {
   editor: typeof BLOCK_SCHEMA.BlockNoteEditor;
@@ -22,6 +22,10 @@ interface EmailBlockEditorProps {
   onChange?: () => void;
   readonly?: boolean;
 }
+
+const Padder = styled.div`
+  padding: ${({ theme }) => theme.spacing(2)};
+`;
 
 const StyledEditor = styled.div`
   width: 100%;
@@ -151,7 +155,11 @@ export const EmailBlockEditor = ({
 
   return (
     <StyledEditor>
-      <ActivityRichTextEditorPlaceholderButtonBar editor={editor} />
+      <ActivityRichTextEditorPlaceholderButtonBar
+        editor={editor}
+        readonly={readonly}
+      />
+
       <BlockNoteView
         onFocus={handleFocus}
         onBlur={handleBlur}

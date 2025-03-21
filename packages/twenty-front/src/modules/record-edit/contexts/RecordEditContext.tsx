@@ -7,7 +7,9 @@ import {
 import { Note } from '@/activities/types/Note';
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { ObjectMetadataItem } from '@/object-metadata/types/ObjectMetadataItem';
+import { useAttachRelatedRecordFromRecord } from '@/object-record/hooks/useAttachRelatedRecordFromRecord';
 import { useDestroyOneRecord } from '@/object-record/hooks/useDestroyOneRecord';
+import { useDetachRelatedRecordFromRecord } from '@/object-record/hooks/useDetachRelatedRecordFromRecord';
 import { useUpdateOneRecord } from '@/object-record/hooks/useUpdateOneRecord';
 import { ObjectRecord } from '@/object-record/types/ObjectRecord';
 import {
@@ -49,11 +51,6 @@ export type RecordEditPropertyDocument = {
   fileName?: string;
 };
 
-export type RecordEditPropertyEmail = {
-  id: string;
-  template: Note;
-};
-
 export type RecordEditContextType = {
   objectMetadataItem: ObjectMetadataItem;
   updateField: (update: FieldUpdate) => void;
@@ -84,11 +81,8 @@ export type RecordEditContextType = {
     documentId: string,
     updates: Partial<RecordEditPropertyDocument>,
   ) => void;
-  emailTemplate: RecordEditPropertyEmail | null;
-  emailTemplateSubject: string;
-  setEmailTemplate: (emailTemplate: RecordEditPropertyEmail) => void;
-  updateEmailTemplateSubject: (emailTemplateSubject: string) => void;
-  setEmailTemplateSubject: (emailTemplateSubject: string) => void;
+  emailTemplate: Note | null;
+  setEmailTemplate: (template: Note | null) => void;
 };
 
 export const RecordEditContext = createContext<RecordEditContextType | null>(
@@ -114,22 +108,51 @@ export const RecordEditProvider = ({
     [],
   );
 
-  const [emailTemplate, setEmailTemplate] =
-    useState<RecordEditPropertyEmail | null>(null);
-  const [emailTemplateSubject, setEmailTemplateSubject] = useState<string>('');
+  // Track both current and previous email template
+  const [emailTemplate, setEmailTemplate] = useState<Note | null>(null);
+  const [previousEmailTemplate, setPreviousEmailTemplate] =
+    useState<Note | null>(null);
+
+  // Update previous template when current template changes
+  const handleSetEmailTemplate = useCallback((template: Note | null) => {
+    setEmailTemplate(template);
+    setIsDirty(true);
+  }, []);
 
   // Record Handling
   const { updateOneRecord } = useUpdateOneRecord({
     objectNameSingular: objectNameSingular ?? '',
   });
 
+  // Email Template Relations
+  const { updateOneRecordAndAttachRelations: attachTemplateToProperty } =
+    useAttachRelatedRecordFromRecord({
+      recordObjectNameSingular: CoreObjectNameSingular.Note,
+      fieldNameOnRecordObject: 'templateForProperties',
+    });
+
+  const { updateOneRecordAndAttachRelations: attachTemplateToPublication } =
+    useAttachRelatedRecordFromRecord({
+      recordObjectNameSingular: CoreObjectNameSingular.Note,
+      fieldNameOnRecordObject: 'templateForPublications',
+    });
+
+  const { updateOneRecordAndDetachRelations: detachTemplateFromProperty } =
+    useDetachRelatedRecordFromRecord({
+      recordObjectNameSingular: CoreObjectNameSingular.Note,
+      fieldNameOnRecordObject: 'templateForProperties',
+    });
+
+  const { updateOneRecordAndDetachRelations: detachTemplateFromPublication } =
+    useDetachRelatedRecordFromRecord({
+      recordObjectNameSingular: CoreObjectNameSingular.Note,
+      fieldNameOnRecordObject: 'templateForPublications',
+    });
+
   // Attachment Handling
   const { uploadAttachmentFile } = useUploadAttachmentFile();
   const { updateOneRecord: updateOneAttachment } = useUpdateOneRecord({
     objectNameSingular: CoreObjectNameSingular.Attachment,
-  });
-  const { updateOneRecord: updateOneNote } = useUpdateOneRecord({
-    objectNameSingular: CoreObjectNameSingular.Note,
   });
   const { destroyOneRecord: destroyOneAttachment } = useDestroyOneRecord({
     objectNameSingular: CoreObjectNameSingular.Attachment,
@@ -266,25 +289,10 @@ export const RecordEditProvider = ({
     );
   }, [attachmentDocuments]);
 
-  // Email Template Handling
-  const resetEmailTemplate = useCallback(() => {
-    setEmailTemplate(null);
-    setEmailTemplateSubject('');
-  }, []);
-
-  const updateEmailTemplateSubject = useCallback(
-    (emailTemplateSubject: string) => {
-      setEmailTemplateSubject(emailTemplateSubject);
-      setIsDirty(true);
-    },
-    [],
-  );
-
   const resetFields = useCallback(() => {
     setFieldUpdates({});
-    resetEmailTemplate();
     setIsDirty(false);
-  }, [resetEmailTemplate]);
+  }, []);
 
   // This is used to block the user from leaving the page if there are unsaved changes
   useBlocker(({ currentLocation, nextLocation }) => {
@@ -394,6 +402,37 @@ export const RecordEditProvider = ({
         updateOneRecordInput: updatedFields,
       });
 
+      // Handle email template relations
+      if (previousEmailTemplate) {
+        // Detach the previous template based on the record type
+        if (objectNameSingular === CoreObjectNameSingular.Property) {
+          await detachTemplateFromProperty({
+            recordId: previousEmailTemplate.id,
+            relatedRecordId: objectRecordId ?? '',
+          });
+        } else if (objectNameSingular === CoreObjectNameSingular.Publication) {
+          await detachTemplateFromPublication({
+            recordId: previousEmailTemplate.id,
+            relatedRecordId: objectRecordId ?? '',
+          });
+        }
+      }
+
+      // Attach new template if it exists
+      if (emailTemplate) {
+        if (objectNameSingular === CoreObjectNameSingular.Property) {
+          await attachTemplateToProperty({
+            recordId: emailTemplate.id,
+            relatedRecordId: objectRecordId ?? '',
+          });
+        } else if (objectNameSingular === CoreObjectNameSingular.Publication) {
+          await attachTemplateToPublication({
+            recordId: emailTemplate.id,
+            relatedRecordId: objectRecordId ?? '',
+          });
+        }
+      }
+
       // First delete removed images
       await Promise.all(
         attachmentsToDelete.map((attachment: Attachment) => {
@@ -465,21 +504,21 @@ export const RecordEditProvider = ({
         orderIndex++;
       }
 
-      // Update email template
-      // TODO check what if emailTemplate is undefined
-      if (emailTemplate) {
-        await updateOneNote({
-          idToUpdate: emailTemplate.id,
-          updateOneRecordInput: {
-            title: emailTemplateSubject,
-          },
-        });
-      }
-
       setLoading(false);
       resetFields();
     }
   };
+
+  // Initialize email template from the record when loaded
+  useEffect(() => {
+    if (initialRecord) {
+      // Assuming the template relation is loaded with the record
+      // You might need to adjust this based on your actual data structure
+      const initialTemplate = initialRecord.emailTemplate ?? null;
+      setEmailTemplate(initialTemplate);
+      setPreviousEmailTemplate(initialTemplate);
+    }
+  }, [initialRecord]);
 
   useEffect(() => {
     resetImages();
@@ -511,10 +550,7 @@ export const RecordEditProvider = ({
         refreshPropertyDocumentUrls,
         updatePropertyDocument,
         emailTemplate,
-        emailTemplateSubject,
-        setEmailTemplate,
-        updateEmailTemplateSubject,
-        setEmailTemplateSubject,
+        setEmailTemplate: handleSetEmailTemplate,
       }}
     >
       {children}

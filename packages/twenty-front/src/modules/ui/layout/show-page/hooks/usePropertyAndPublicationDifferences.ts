@@ -1,10 +1,9 @@
-import { ObjectRecord } from '@/object-record/types/ObjectRecord';
-import { useMemo } from 'react';
-import deepEqual from 'deep-equal';
-import { useFieldMetadataItem } from '@/object-metadata/hooks/useFieldMetadataItem';
 import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadataItem';
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { FieldMetadataItem } from '@/object-metadata/types/FieldMetadataItem';
+import { ObjectRecord } from '@/object-record/types/ObjectRecord';
+import deepEqual from 'deep-equal';
+import { useMemo } from 'react';
 
 // These keys are ignored when comparing
 const doNotCompareKeys = [

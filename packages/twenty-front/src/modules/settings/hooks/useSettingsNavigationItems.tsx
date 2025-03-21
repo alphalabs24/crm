@@ -121,6 +121,12 @@ const useSettingsNavigationItems = (): SettingsNavigationSection[] => {
           isHidden: !permissionMap[SettingsFeatures.WORKSPACE],
         },
         {
+          label: t`Email Settings`,
+          path: SettingsPath.EmailTemplates,
+          Icon: IconMail,
+          isHidden: !permissionMap[SettingsFeatures.WORKSPACE],
+        },
+        {
           label: t`Billing`,
           path: SettingsPath.Billing,
           Icon: IconCurrencyDollar,

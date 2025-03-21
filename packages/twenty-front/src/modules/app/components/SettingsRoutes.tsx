@@ -280,6 +280,22 @@ const SettingsPublishers = lazy(() =>
   })),
 );
 
+const SettingsEmailTemplates = lazy(() =>
+  import('~/pages/settings/email-templates/SettingsEmailTemplates').then(
+    (module) => ({
+      default: module.SettingsEmailTemplates,
+    }),
+  ),
+);
+
+const SettingsEmailTemplateDetail = lazy(() =>
+  import('~/pages/settings/email-templates/SettingsEmailTemplateDetail').then(
+    (module) => ({
+      default: module.SettingsEmailTemplateDetail,
+    }),
+  ),
+);
+
 type SettingsRoutesProps = {
   isFunctionSettingsEnabled?: boolean;
   isAdminPageEnabled?: boolean;
@@ -437,6 +453,18 @@ export const SettingsRoutes = ({
       >
         <Route path={SettingsPath.Lab} element={<SettingsLab />} />
       </Route>
+      <Route
+        path={SettingsPath.EmailTemplates}
+        element={<SettingsEmailTemplates />}
+      />
+      <Route
+        path={SettingsPath.EmailTemplateDetail}
+        element={<SettingsEmailTemplateDetail />}
+      />
+      <Route
+        path={SettingsPath.EmailTemplateEdit}
+        element={<SettingsEmailTemplateDetail />}
+      />
     </Routes>
   </Suspense>
 );
