@@ -9,9 +9,10 @@ import { TableRow } from '@/ui/layout/table/components/TableRow';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Trans, useLingui } from '@lingui/react/macro';
+import { useNavigate } from 'react-router-dom';
 import {
     Button,
-    IconPencil,
+    IconChevronRight,
     IconPlus,
     IconTrash,
     MOBILE_VIEWPORT,
@@ -29,10 +30,11 @@ const StyledTableBody = styled(TableBody)`
 `;
 
 const StyledTableRow = styled(TableRow)`
-  grid-template-columns: 200px 1fr 80px;
+  cursor: pointer;
+  grid-template-columns: 150px 1fr 28px 28px;
   @media (max-width: ${MOBILE_VIEWPORT}px) {
     width: 100%;
-    grid-template-columns: 200px 1fr 80px;
+    grid-template-columns: 200px 1fr 28px 28px;
   }
 `;
 
@@ -51,28 +53,20 @@ const StyledPreviewTableCell = styled(TableCell)`
   font-size: ${({ theme }) => theme.font.size.sm};
 `;
 
-const StyledActionTableCell = styled(TableCell)`
-  display: flex;
-  justify-content: flex-end;
-  gap: ${({ theme }) => theme.spacing(2)};
-  padding-right: ${({ theme }) => theme.spacing(1)};
+const StyledIconTableCell = styled(TableCell)`
+  justify-content: center;
+  padding: 0 ${({ theme }) => theme.spacing(1)};
 `;
 
-const StyledIconButton = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  background: none;
-  cursor: pointer;
-  padding: 0;
+const StyledIconChevronRight = styled(IconChevronRight)`
   color: ${({ theme }) => theme.font.color.tertiary};
+`;
+
+const StyledDeleteButton = styled(IconTrash)`
+  color: ${({ theme }) => theme.font.color.tertiary};
+  cursor: pointer;
 
   &:hover {
-    color: ${({ theme }) => theme.font.color.secondary};
-  }
-
-  &.delete:hover {
     color: ${({ theme }) => theme.color.red};
   }
 `;
@@ -108,6 +102,7 @@ export const EmailTemplatesListCard = ({
 }: EmailTemplatesListCardProps) => {
   const { t } = useLingui();
   const theme = useTheme();
+  const navigate = useNavigate();
 
   const { createOneRecord } = useCreateOneRecord({
     objectNameSingular: CoreObjectNameSingular.Note,
@@ -121,10 +116,20 @@ export const EmailTemplatesListCard = ({
     });
 
     if (newTemplate?.id) {
-      window.location.href = getSettingsPath(SettingsPath.EmailTemplateEdit, {
-        emailTemplateId: newTemplate.id,
-      });
+      navigate(
+        getSettingsPath(SettingsPath.EmailTemplateEdit, {
+          emailTemplateId: newTemplate.id,
+        }),
+      );
     }
+  };
+
+  const handleEditTemplate = (templateId: string) => {
+    navigate(
+      getSettingsPath(SettingsPath.EmailTemplateEdit, {
+        emailTemplateId: templateId,
+      }),
+    );
   };
 
   return (
@@ -132,11 +137,12 @@ export const EmailTemplatesListCard = ({
       <Table>
         <StyledTableRow>
           <TableHeader>
-            <Trans>Name</Trans>
+            <Trans>Subject</Trans>
           </TableHeader>
           <TableHeader>
             <Trans>Preview</Trans>
           </TableHeader>
+          <TableHeader></TableHeader>
           <TableHeader></TableHeader>
         </StyledTableRow>
         {loading ? (
@@ -146,37 +152,31 @@ export const EmailTemplatesListCard = ({
         ) : (
           <StyledTableBody>
             {emailTemplates.map((template) => (
-              <StyledTableRow key={template.id}>
+              <StyledTableRow
+                key={template.id}
+                onClick={() => handleEditTemplate(template.id)}
+              >
                 <StyledNameTableCell>{template.title}</StyledNameTableCell>
                 <StyledPreviewTableCell>
                   {template.body || template.bodyV2?.markdown || t`No content`}
                 </StyledPreviewTableCell>
-                <StyledActionTableCell>
-                  <StyledIconButton
-                    onClick={() => {
-                      window.location.href = getSettingsPath(
-                        SettingsPath.EmailTemplateEdit,
-                        {
-                          emailTemplateId: template.id,
-                        },
-                      );
-                    }}
-                  >
-                    <IconPencil
-                      size={theme.icon.size.md}
-                      stroke={theme.icon.stroke.sm}
-                    />
-                  </StyledIconButton>
-                  <StyledIconButton
-                    className="delete"
-                    onClick={() => onDeleteClick(template.id)}
-                  >
-                    <IconTrash
-                      size={theme.icon.size.md}
-                      stroke={theme.icon.stroke.sm}
-                    />
-                  </StyledIconButton>
-                </StyledActionTableCell>
+                <StyledIconTableCell
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onDeleteClick(template.id);
+                  }}
+                >
+                  <StyledDeleteButton
+                    size={theme.icon.size.md}
+                    stroke={theme.icon.stroke.sm}
+                  />
+                </StyledIconTableCell>
+                <StyledIconTableCell>
+                  <StyledIconChevronRight
+                    size={theme.icon.size.md}
+                    stroke={theme.icon.stroke.sm}
+                  />
+                </StyledIconTableCell>
               </StyledTableRow>
             ))}
           </StyledTableBody>

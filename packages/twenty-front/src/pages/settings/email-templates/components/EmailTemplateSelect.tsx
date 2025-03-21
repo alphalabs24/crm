@@ -15,7 +15,6 @@ const StyledContainer = styled.div`
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(1)};
   position: relative;
-  width: 100%;
 `;
 
 const StyledDropdownButton = styled.button`
@@ -31,7 +30,6 @@ const StyledDropdownButton = styled.button`
   height: 32px;
   justify-content: space-between;
   padding: ${({ theme }) => theme.spacing(1)} ${({ theme }) => theme.spacing(2)};
-  width: 100%;
 
   &:hover {
     background: ${({ theme }) => theme.background.tertiary};
