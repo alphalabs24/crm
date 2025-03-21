@@ -18,9 +18,7 @@ import { PageBody } from '@/ui/layout/page/components/PageBody';
 import { PageContainer } from '@/ui/layout/page/components/PageContainer';
 import { PAGE_BAR_MIN_HEIGHT } from '@/ui/layout/page/components/PageHeader';
 import { PageTitle } from '@/ui/utilities/page-title/components/PageTitle';
-import { useIsFeatureEnabled } from '@/workspace/hooks/useIsFeatureEnabled';
 import styled from '@emotion/styled';
-import { FeatureFlagKey } from '~/generated/graphql';
 
 const StyledHeader = styled.div`
   align-items: center;
@@ -60,17 +58,11 @@ export const RecordEditPage = () => {
     objectRecordId,
     pageTitle,
     pageName,
-    isFavorite,
     record,
     objectMetadataItem,
-    handleFavoriteButtonClick,
   } = useRecordShowPage(
     parameters.objectNameSingular ?? '',
     parameters.objectRecordId ?? '',
-  );
-
-  const isCommandMenuV2Enabled = useIsFeatureEnabled(
-    FeatureFlagKey.IsCommandMenuV2Enabled,
   );
 
   const { labelIdentifierFieldMetadataItem } =

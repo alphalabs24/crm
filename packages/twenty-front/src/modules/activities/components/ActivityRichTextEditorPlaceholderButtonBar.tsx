@@ -4,6 +4,7 @@ import {
   AppTooltip,
   IconFile,
   IconFileText,
+  IconHome,
   IconMailShare,
   IconUser,
   TooltipDelay,
@@ -75,12 +76,17 @@ const PLACEHOLDERS = [
     icon: <IconMailShare size={16} />,
   },
   {
-    label: 'Insert Property Flyer',
+    label: 'Insert Object Name',
+    placeholder: '{{object_name}}',
+    icon: <IconHome size={16} />,
+  },
+  {
+    label: 'Insert Object Flyer',
     placeholder: '{{link_to_flyer}}',
     icon: <IconFile size={16} />,
   },
   {
-    label: 'Insert Property Documentation',
+    label: 'Insert Object Documentation',
     placeholder: '{{link_to_documentation}}',
     icon: <IconFileText size={16} />,
   },

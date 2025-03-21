@@ -104,6 +104,19 @@ export const useNestermind = () => {
     );
   };
 
+  // Email templates routes
+  const sendTestEmailPublication = async ({
+    publicationId,
+    toEmail,
+  }: {
+    publicationId: string;
+    toEmail: string;
+  }) => {
+    return api.post(
+      `/email-sender/test-autoresponse?publicationId=${publicationId}&email=${toEmail}`,
+    );
+  };
+
   return {
     api,
     publicationsApi: {
@@ -111,6 +124,7 @@ export const useNestermind = () => {
       duplicate: duplicatePublication,
       delete: deletePublication,
       check: checkPublications,
+      sendTestEmail: sendTestEmailPublication,
     },
     propertiesApi: {
       syncPublications: syncPublicationsWithProperty,

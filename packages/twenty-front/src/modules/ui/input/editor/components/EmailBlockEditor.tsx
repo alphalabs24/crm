@@ -23,10 +23,6 @@ interface EmailBlockEditorProps {
   readonly?: boolean;
 }
 
-const Padder = styled.div`
-  padding: ${({ theme }) => theme.spacing(2)};
-`;
-
 const StyledEditor = styled.div`
   width: 100%;
 
