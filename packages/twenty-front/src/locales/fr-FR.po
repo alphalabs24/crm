@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: nestermind-crm\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-03-21 08:48\n"
+"PO-Revision-Date: 2025-03-21 10:46\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -1074,6 +1074,10 @@ msgstr "Le plus tôt"
 msgid "Earliest date"
 msgstr "Date la plus ancienne"
 
+#: src/modules/onboarding-tutorial/components/modals/PublicationSyncTutorialModal.tsx
+msgid "Easy Synchronization"
+msgstr ""
+
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/Publishing.tsx
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
@@ -1490,7 +1494,8 @@ msgid "Inactive"
 msgstr "Inactif"
 
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
-msgid "Increase your reach and target potential buyers and tenants through\n"
+msgid ""
+"Increase your reach and target potential buyers and tenants through\n"
 "            the largest real estate platforms. Choose the platforms you want to\n"
 "            publish on."
 msgstr ""
@@ -1618,6 +1623,10 @@ msgstr "Dernière date"
 
 #: src/modules/object-record/record-show/components/nm/AISuite.tsx
 msgid "Lead Insights"
+msgstr ""
+
+#: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
+msgid "Learn more"
 msgstr ""
 
 #: src/pages/settings/profile/appearance/components/SettingsExperience.tsx
@@ -2233,6 +2242,10 @@ msgstr ""
 msgid "Publication Draft created successfully"
 msgstr ""
 
+#: src/modules/onboarding-tutorial/components/modals/PublicationSyncTutorialModal.tsx
+msgid "Publication Synchronization"
+msgstr ""
+
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/Publishing.tsx
 msgid "Publish"
@@ -2707,6 +2720,10 @@ msgstr "Le nom de votre organisation"
 msgid "The page you're seeking is either gone or never was. Let's get you back on track"
 msgstr "La page que vous recherchez a disparu ou n'a jamais existé. Revenons sur la bonne voie"
 
+#: src/modules/onboarding-tutorial/components/modals/PublicationSyncTutorialModal.tsx
+msgid "The synchronization ensures that titles, descriptions, prices, images and other relevant information are updated across all platforms - without having to manually edit each publication."
+msgstr ""
+
 #: src/pages/settings/data-model/SettingsObjectFieldEdit.tsx
 #: src/pages/settings/data-model/SettingsObjectNewField/SettingsObjectNewFieldConfigure.tsx
 msgid "The values of this field"
@@ -2734,6 +2751,10 @@ msgstr "Cette action est irréversible. Cela supprimera définitivement l'ensemb
 
 #: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
 msgid "This includes the following platforms: ImmoScout24, Homegate, and more."
+msgstr ""
+
+#: src/modules/onboarding-tutorial/components/modals/PublicationSyncTutorialModal.tsx
+msgid "This keeps your property presentation always up-to-date and saves you valuable time!"
 msgstr ""
 
 #: src/pages/settings/roles/components/RoleAssignmentConfirmationModalSubtitle.tsx
@@ -2869,6 +2890,10 @@ msgstr "L'utilisateur n'est pas connecté"
 msgid "Values"
 msgstr "Valeurs"
 
+#: src/modules/onboarding-tutorial/components/modals/PublicationSyncTutorialModal.tsx
+msgid "Verstanden"
+msgstr ""
+
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 #~ msgid "Vietnamese"
 #~ msgstr "Vietnamese"
@@ -2945,6 +2970,10 @@ msgstr "Date d'expiration de la clé API."
 msgid "When the key will be disabled"
 msgstr "Quand la clé sera désactivée"
 
+#: src/modules/onboarding-tutorial/components/modals/PublicationSyncTutorialModal.tsx
+msgid "When you make changes to a property's master data, you can quickly and easily transfer these to your publications. All drafts and already published objects can be synchronized with a single click, ensuring that current data is displayed correctly everywhere."
+msgstr ""
+
 #: src/pages/onboarding/CreateProfile.tsx
 msgid "Why is this required?"
 msgstr ""
@@ -3002,7 +3031,8 @@ msgid "Workspace name"
 msgstr "Nom de l'espace de travail"
 
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/ContentCustomize.tsx
-msgid "Write a compelling description that highlights the key features of\n"
+msgid ""
+"Write a compelling description that highlights the key features of\n"
 "            your property"
 msgstr ""
 
@@ -3068,4 +3098,3 @@ msgstr "Votre espace de travail"
 #: src/pages/settings/SettingsBilling.tsx
 msgid "Your workspace will be disabled"
 msgstr "Votre espace de travail sera désactivé"
-

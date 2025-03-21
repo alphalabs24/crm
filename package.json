@@ -371,7 +371,7 @@
     "i18n:fix-po": "find packages -name '*.po' -exec sed -i'' -E ':a;N;$!ba;s/\\n\"$/\"/g;s/msgstr \"([^\"]*)\\n([^\"]*)\"/msgstr \"\\1\\\\n\\2\"/g' {} +",
     "translate:push": "crowdin upload sources && crowdin upload translations",
     "translate:pull": "crowdin download",
-    "translate": "yarn translate:extract && yarn translate:pull && yarn translate:compile && yarn translate:push"
+    "translate": "yarn translate:pull && yarn translate:extract &&  yarn translate:compile && yarn translate:push"
   },
   "workspaces": {
     "packages": [
