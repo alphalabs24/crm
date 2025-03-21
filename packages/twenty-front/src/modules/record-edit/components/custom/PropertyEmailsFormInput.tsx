@@ -1,19 +1,16 @@
 import styled from '@emotion/styled';
 
-import { useEmailTemplateContextOrThrow } from '@/record-edit/contexts/EmailTemplateContext';
-import { ActivityRichTextEditor } from '@/activities/components/ActivityRichTextEditor';
-import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
-import { TextInputV2 } from '@/ui/input/components/TextInputV2';
-import { useRecordEdit } from '@/record-edit/contexts/RecordEditContext';
-import { EmailTemplateSetDefaultValuesEffect } from '../EmailTemplateSetDefaultValuesEffect';
-import { Trans, useLingui } from '@lingui/react/macro';
 import { EmailFormRichTextEditor } from '@/activities/components/EmailFormRichTextEditor';
-import { Button } from '@ui/input/button/components/Button';
-import { useCreateActivityInDB } from '@/activities/hooks/useCreateActivityInDB';
+import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { useCreateOneRecord } from '@/object-record/hooks/useCreateOneRecord';
-import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadataItem';
-import { v4 } from 'uuid';
 import { useUpdateOneRecord } from '@/object-record/hooks/useUpdateOneRecord';
+import { useEmailTemplateContextOrThrow } from '@/record-edit/contexts/EmailTemplateContext';
+import { useRecordEdit } from '@/record-edit/contexts/RecordEditContext';
+import { TextInputV2 } from '@/ui/input/components/TextInputV2';
+import { Trans } from '@lingui/react/macro';
+import { Button } from '@ui/input/button/components/Button';
+import { v4 } from 'uuid';
+import { EmailTemplateSetDefaultValuesEffect } from '../EmailTemplateSetDefaultValuesEffect';
 
 const StyledContainer = styled.div`
   display: flex;
@@ -67,10 +64,12 @@ export const PropertyEmailsFormInput = ({ loading }: { loading?: boolean }) => {
     const createRecordPayload: {
       id: string;
       title: string;
+      isTemplate: boolean;
       [key: string]: any;
     } = {
       id: newRecordId,
       title: '',
+      isTemplate: true,
     };
 
     await createOneRecord(createRecordPayload);

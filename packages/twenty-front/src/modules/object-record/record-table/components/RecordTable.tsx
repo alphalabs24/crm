@@ -90,7 +90,10 @@ export const RecordTable = ({ readonly }: { readonly?: boolean }) => {
           <StyledTable ref={tableBodyRef}>
             <RecordTableHeader />
             {!hasRecordGroups ? (
-              <RecordTableNoRecordGroupBody readonly={readonly} />
+              <RecordTableNoRecordGroupBody
+                readonly={readonly}
+                objectNameSingular={objectNameSingular}
+              />
             ) : (
               <RecordTableRecordGroupsBody readonly={readonly} />
             )}
