@@ -1,4 +1,12 @@
 export enum FeatureFlagKey {
+  // nestermind feature flags
+  IsSavePublishEnabled = 'IS_SAVE_PUBLISH_ENABLED',
+  IsDomainGeneralSettingsEnabled = 'IS_DOMAIN_GENERAL_SETTINGS_ENABLED',
+  IsDataModelSettingsEnabled = 'IS_DATA_MODEL_SETTINGS_ENABLED',
+  IsIntegrationSettingsEnabled = 'IS_INTEGRATION_SETTINGS_ENABLED',
+  IsAdvancedSettingsEnabled = 'IS_ADVANCED_SETTINGS_ENABLED',
+  IsLaborSettingsEnabled = 'IS_LABOR_SETTINGS_ENABLED',
+  // feature flags from upstream
   IsEventObjectEnabled = 'IS_EVENT_OBJECT_ENABLED',
   IsAirtableIntegrationEnabled = 'IS_AIRTABLE_INTEGRATION_ENABLED',
   IsPostgreSQLIntegrationEnabled = 'IS_POSTGRESQL_INTEGRATION_ENABLED',
