@@ -137,7 +137,7 @@ export const Publishing = ({
   });
 
   const {
-    propertiesApi: { syncPublications },
+    publicationsApi: { publish },
   } = useNestermind();
 
   const publishDraft = async () => {
@@ -148,7 +148,7 @@ export const Publishing = ({
       }
       setIsLoading(true);
 
-      const response = await syncPublications(recordId);
+      const response = await publish({ publicationId: recordId });
 
       if (response.status !== 201) {
         throw new Error('Failed to publish');

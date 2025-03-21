@@ -15,27 +15,35 @@ export const PublishersProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
+  // This is a workaround to avoid the modal crashing the page when user logs out.
+  const [showModal, setShowModal] = useState(false);
   const [publisherId, setPublisherId] = useState<string | undefined>(undefined);
   const ref = useRef<ModalRefType>(null);
 
   const openModalForPublisher = (publisherId?: string) => {
     setPublisherId(publisherId);
-    ref.current?.open();
+    setShowModal(true);
+    setTimeout(() => {
+      ref.current?.open();
+    }, 50);
   };
 
   const closePublisherModal = () => {
     setPublisherId(undefined);
+    setShowModal(false);
     ref.current?.close();
   };
 
   return (
     <PublisherContext.Provider value={{ openModalForPublisher }}>
       {children}
-      <EditPublisherModal
-        ref={ref}
-        onClose={closePublisherModal}
-        publisherId={publisherId}
-      />
+      {showModal && (
+        <EditPublisherModal
+          ref={ref}
+          onClose={closePublisherModal}
+          publisherId={publisherId}
+        />
+      )}
     </PublisherContext.Provider>
   );
 };

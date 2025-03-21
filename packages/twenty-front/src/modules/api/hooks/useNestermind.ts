@@ -1,5 +1,6 @@
 import { tokenPairState } from '@/auth/states/tokenPairState';
 import { useTutorialSteps } from '@/onboarding-tutorial/hooks/useTutorialSteps';
+import { PlatformId } from '@/ui/layout/show-page/components/nm/types/Platform';
 import axios from 'axios';
 import { useRecoilValue } from 'recoil';
 import { UserTutorialTask } from 'twenty-shared';
@@ -32,8 +33,13 @@ export const useNestermind = () => {
     return api.delete(`/properties/delete?id=${propertyId}`);
   };
 
-  const createPublicationDraftFromProperty = async (propertyId: string) => {
-    return api.post(`/properties/publish?id=${propertyId}`);
+  const createPublicationDraftFromProperty = async (
+    propertyId: string,
+    platform: PlatformId,
+  ) => {
+    return api.post(
+      `/properties/publish?id=${propertyId}&platform=${platform}`,
+    );
   };
 
   // Health check
@@ -55,7 +61,8 @@ export const useNestermind = () => {
   }: {
     publicationId: string;
   }) => {
-    const response = await api.post(`/publications/upload?id=${publicationId}`);
+    // TODO: Change this to upload endpoint once we have a sync from platform function!
+    const response = await api.post(`/publications/add?id=${publicationId}`);
     setAsCompleted({
       step: UserTutorialTask.TUTORIAL_PUBLICATION,
     });

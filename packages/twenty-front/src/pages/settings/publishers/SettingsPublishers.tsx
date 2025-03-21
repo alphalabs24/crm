@@ -72,6 +72,11 @@ export const SettingsPublishers = () => {
     }
   };
 
+  // Return null if metadata is not available (e.g., during logout)
+  if (!objectMetadataItem) {
+    return null;
+  }
+
   return (
     <>
       <SubMenuTopBarContainer

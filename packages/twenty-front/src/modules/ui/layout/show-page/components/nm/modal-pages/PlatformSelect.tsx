@@ -287,8 +287,14 @@ export const PlatformSelect = ({
         return;
       }
       setLoading(true);
+      if (!selectedPlatforms || selectedPlatforms.length === 0) {
+        throw new Error('No platform selected');
+      }
       // TODO: This will be changed to a loop that creates all drafts and consolidates them into one show page later. For now only newhome works anyway.
-      const response = await properties.createPublicationDraft(recordId);
+      const response = await properties.createPublicationDraft(
+        recordId,
+        selectedPlatforms[0],
+      );
 
       if (response.status !== 201) {
         throw new Error('Failed to create draft, id was not returned');

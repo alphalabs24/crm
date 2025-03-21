@@ -10,6 +10,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { IconCircleCheck, IconCircleDashed } from 'twenty-ui';
+import { useTutorialSnackbar } from '../contexts/TutorialSnackbarProvider';
 
 const StyledLink = styled(Link)`
   text-decoration: none;
@@ -100,6 +101,7 @@ export const OnboardingSteps = () => {
   const theme = useTheme();
   const { steps } = useTutorialSteps();
   const isMobile = useIsMobile();
+  const { isVisible } = useTutorialSnackbar();
 
   const [isNavigationDrawerExpanded, setIsNavigationDrawerExpanded] =
     useRecoilState(isNavigationDrawerExpandedState);
@@ -117,7 +119,7 @@ export const OnboardingSteps = () => {
 
   const hasCompletedAllSteps = completedSteps === totalSteps;
 
-  if (hasCompletedAllSteps) {
+  if (hasCompletedAllSteps || isVisible) {
     return null;
   }
 

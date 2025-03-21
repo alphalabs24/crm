@@ -10,13 +10,14 @@ import { isFieldCellSupported } from '@/object-record/utils/isFieldCellSupported
 import { ShowPagePropertySummaryCard } from '@/ui/layout/show-page/components/nm/ShowPagePropertySummaryCard';
 import { ShowPageSummaryCardSkeletonLoader } from '@/ui/layout/show-page/components/ShowPageSummaryCardSkeletonLoader';
 
-import { useIsMobile } from '@/ui/utilities/responsive/hooks/useIsMobile';
-import styled from '@emotion/styled';
-import { Modal, ModalRefType } from '@/ui/layout/modal/components/Modal';
 import { FieldMetadataItem } from '@/object-metadata/types/FieldMetadataItem';
 import { PlatformBadge } from '@/object-record/record-show/components/nm/publication/PlatformBadge';
+import { CATEGORY_SUBTYPES } from '@/record-edit/constants/CategorySubtypes';
+import { Modal, ModalRefType } from '@/ui/layout/modal/components/Modal';
 import { ModalHotkeyScope } from '@/ui/layout/modal/components/types/ModalHotkeyScope';
 import { PlatformId } from '@/ui/layout/show-page/components/nm/types/Platform';
+import { useIsMobile } from '@/ui/utilities/responsive/hooks/useIsMobile';
+import styled from '@emotion/styled';
 import { Trans, useLingui } from '@lingui/react/macro';
 import groupBy from 'lodash.groupby';
 import { useCallback, useMemo, useRef, useState } from 'react';
@@ -35,7 +36,6 @@ import {
 } from 'twenty-ui';
 import { FieldMetadataType } from '~/generated/graphql';
 import { useSubcategoryByCategory } from '../../hooks/useSubcategoryByCategory';
-import { CATEGORY_SUBTYPES } from '@/record-edit/constants/CategorySubtypes';
 
 const StyledFormBorder = styled.div`
   border: 1px solid ${({ theme }) => theme.border.color.light};
@@ -278,6 +278,7 @@ export const ObjectOverview = ({
       ...stage,
       'category',
       subType,
+      'refProperty',
       'priceUnit',
       ...finances,
       'valuation',

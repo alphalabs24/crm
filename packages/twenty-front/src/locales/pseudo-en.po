@@ -97,6 +97,10 @@ msgstr ""
 msgid "3 videos have been generated and added to your carousel"
 msgstr ""
 
+#: src/modules/onboarding-tutorial/constants/onboarding-steps.tsx
+msgid "A property in nestermind holds the master data about a property you want to publish."
+msgstr ""
+
 #: src/pages/onboarding/CreateWorkspace.tsx
 msgid "A shared environment where you will be able to manage your customer relations with your team."
 msgstr ""
@@ -193,6 +197,10 @@ msgstr ""
 msgid "Add object"
 msgstr ""
 
+#: src/pages/settings/publishers/components/PublishersListCard.tsx
+msgid "Add Publisher"
+msgstr ""
+
 #: src/modules/settings/security/components/SettingsSSOIdentitiesProvidersListCard.tsx
 msgid "Add SSO Identity Provider"
 msgstr ""
@@ -281,6 +289,10 @@ msgstr ""
 
 #: src/modules/object-record/record-show/record-detail-section/components/RecordDetailRelationSection.tsx
 msgid "All ({relationRecordsCount})"
+msgstr ""
+
+#: src/modules/onboarding-tutorial/components/modals/InquiryTutorialModal.tsx
+msgid "All emails related to the inquiry are stored here. Additionally, you can store files, notes, and other details directly on the inquiry – <0>everything in one place</0> and specifically related to this connection. This is how nestermind ensures that you can manage inquiries in a structured way and no important information is lost."
 msgstr ""
 
 #: src/pages/settings/roles/SettingsRoles.tsx
@@ -381,6 +393,10 @@ msgstr ""
 #~ msgid "Are you sure you want to delete this publication?"
 #~ msgstr ""
 
+#: src/pages/settings/publishers/SettingsPublishers.tsx
+msgid "Are you sure you want to delete this publisher? This action cannot be undone."
+msgstr ""
+
 #: src/modules/object-record/object-sort-dropdown/components/ObjectSortDropdownButton.tsx
 #: src/modules/object-record/object-sort-dropdown/components/ObjectSortDropdownButton.tsx
 msgid "Ascending"
@@ -424,6 +440,14 @@ msgstr ""
 
 #: src/pages/auth/Authorize.tsx
 msgid "Authorize"
+msgstr ""
+
+#: src/modules/onboarding-tutorial/components/modals/EmailTutorialModal.tsx
+msgid "Automatic creation of Inquiries"
+msgstr ""
+
+#: src/modules/onboarding-tutorial/components/modals/EmailTutorialModal.tsx
+msgid "Automatic Synchronization of People and Emails"
 msgstr ""
 
 #. placeholder {0}: images.length
@@ -484,11 +508,11 @@ msgstr ""
 #: src/modules/ui/layout/show-page/components/nm/PublishModal.tsx
 #: src/modules/ui/layout/show-page/components/nm/PublishDraftModal.tsx
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
-#: src/modules/ui/layout/show-page/components/nm/DeleteConfirmationModal.tsx
 #: src/modules/ui/layout/modal/components/ConfirmationModal.tsx
 #: src/modules/settings/components/SaveAndCancelButtons/CancelButton.tsx
 #: src/modules/record-edit/components/custom/ImageEditModal.tsx
 #: src/modules/record-edit/components/custom/DocumentEditModal.tsx
+#: src/modules/publishers/components/modals/EditPublisherModal.tsx
 #: src/modules/object-record/record-show/components/nm/VideoGenerationModal.tsx
 #: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
 msgid "Cancel"
@@ -556,12 +580,16 @@ msgstr ""
 #~ msgid "Click to select files"
 #~ msgstr ""
 
-#: src/modules/ui/feedback/snack-bar-manager/components/SnackBar.tsx
-#~ msgid "Close"
-#~ msgstr ""
+#: src/modules/onboarding-tutorial/components/modals/TutorialModal.tsx
+msgid "Close"
+msgstr ""
 
 #: src/modules/ui/layout/page-header/components/PageHeaderOpenCommandMenuButton.tsx
 msgid "Close command menu"
+msgstr ""
+
+#: src/modules/publishers/components/PlatformCredentialItem.tsx
+msgid "Coming soon"
 msgstr ""
 
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
@@ -571,6 +599,18 @@ msgstr ""
 
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
 msgid "Compare Changes"
+msgstr ""
+
+#: src/pages/onboarding/tutorial.tsx
+msgid "Complete previous steps first"
+msgstr ""
+
+#: src/pages/onboarding/tutorial.tsx
+msgid "Complete these steps to get started with nestermind and make the most of your CRM experience."
+msgstr ""
+
+#: src/pages/onboarding/tutorial.tsx
+msgid "Completed"
 msgstr ""
 
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
@@ -589,8 +629,16 @@ msgstr ""
 msgid "Configure how dates are displayed across the app"
 msgstr ""
 
+#: src/modules/publishers/components/modals/EditPublisherModal.tsx
+msgid "Configure Publisher"
+msgstr ""
+
 #: src/modules/settings/accounts/components/SettingsAccountsSettingsSection.tsx
 msgid "Configure your emails and calendar settings."
+msgstr ""
+
+#: src/modules/publishers/components/modals/EditPublisherModal.tsx
+msgid "Configure your publisher credentials that will be used across all platforms."
 msgstr ""
 
 #: src/pages/settings/roles/components/RoleAssignmentConfirmationModal.tsx
@@ -607,6 +655,14 @@ msgstr ""
 
 #: src/modules/settings/accounts/components/SettingsAccountsListEmptyStateCard.tsx
 msgid "Connect with Microsoft"
+msgstr ""
+
+#: src/modules/onboarding-tutorial/constants/onboarding-steps.tsx
+msgid "Connect your email"
+msgstr ""
+
+#: src/modules/onboarding-tutorial/constants/onboarding-steps.tsx
+msgid "Connect your email in order to synchronize your inbox with nestermind."
 msgstr ""
 
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/ContentCustomize.tsx
@@ -678,6 +734,10 @@ msgstr ""
 msgid "Count unique values"
 msgstr ""
 
+#: src/modules/onboarding-tutorial/constants/onboarding-steps.tsx
+msgid "Create a publication draft and publish it to a platform."
+msgstr ""
+
 #: src/modules/object-record/record-table/empty-state/utils/getEmptyStateSubTitle.ts
 msgid "Create a workflow and return here to view its versions"
 msgstr ""
@@ -707,6 +767,10 @@ msgstr ""
 msgid "Create Webhook"
 msgstr ""
 
+#: src/modules/onboarding-tutorial/constants/onboarding-steps.tsx
+msgid "Create your first property"
+msgstr ""
+
 #: src/modules/object-record/record-table/empty-state/utils/getEmptyStateSubTitle.ts
 msgid "Create your first publication from a property"
 msgstr ""
@@ -717,6 +781,10 @@ msgstr ""
 
 #: src/pages/onboarding/CreateWorkspace.tsx
 msgid "Create your workspace"
+msgstr ""
+
+#: src/modules/publishers/components/modals/EditPublisherModal.tsx
+msgid "Credentials saved successfully"
 msgstr ""
 
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
@@ -820,7 +888,6 @@ msgstr ""
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
-#: src/modules/ui/layout/show-page/components/nm/DeleteConfirmationModal.tsx
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 #: src/modules/action-menu/components/__stories__/RightDrawerActionMenuDropdown.stories.tsx
@@ -854,6 +921,11 @@ msgstr ""
 
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
 msgid "Delete API key"
+msgstr ""
+
+#: src/pages/settings/publishers/SettingsPublishers.tsx
+#: src/pages/settings/publishers/SettingsPublishers.tsx
+msgid "Delete Publisher"
 msgstr ""
 
 #: src/modules/action-menu/actions/record-actions/constants/DefaultActionsConfigV2.ts
@@ -1037,7 +1109,12 @@ msgstr ""
 #: src/pages/settings/SettingsProfile.tsx
 #: src/pages/settings/roles/components/RoleAssignmentTableHeader.tsx
 #: src/pages/auth/PasswordReset.tsx
+#: src/modules/publishers/components/modals/EditPublisherModal.tsx
 msgid "Email"
+msgstr ""
+
+#: src/modules/onboarding-tutorial/constants/onboarding-steps.tsx
+msgid "Email connected successfully"
 msgstr ""
 
 #: src/pages/onboarding/ChooseYourPlan.tsx
@@ -1046,6 +1123,14 @@ msgstr ""
 
 #: src/modules/settings/accounts/components/SettingsAccountsBlocklistInput.tsx
 msgid "Email or domain is already in blocklist"
+msgstr ""
+
+#: src/modules/onboarding-tutorial/components/modals/EmailTutorialModal.tsx
+msgid "Email Synchronization"
+msgstr ""
+
+#: src/modules/onboarding-tutorial/components/modals/EmailTutorialModal.tsx
+msgid "Email Synchronization with nestermind"
 msgstr ""
 
 #: src/modules/record-edit/components/custom/PropertyEmailsFormInput.tsx
@@ -1089,6 +1174,14 @@ msgstr ""
 msgid "Enter document name"
 msgstr ""
 
+#: src/modules/publishers/components/modals/EditPublisherModal.tsx
+msgid "Enter email"
+msgstr ""
+
+#: src/modules/publishers/components/modals/EditPublisherModal.tsx
+msgid "Enter publisher name"
+msgstr ""
+
 #: src/pages/settings/security/SettingsSecurity.tsx
 msgid "Enterprise"
 msgstr ""
@@ -1097,12 +1190,20 @@ msgstr ""
 msgid "Error deleting api key: {err}"
 msgstr ""
 
+#: src/pages/settings/publishers/SettingsPublishers.tsx
+msgid "Error deleting publisher"
+msgstr ""
+
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
 msgid "Error regenerating api key: {err}"
 msgstr ""
 
 #: src/modules/record-edit/components/RecordEditContainer.tsx
 msgid "Error saving {objectNameSingular}"
+msgstr ""
+
+#: src/modules/publishers/components/modals/EditPublisherModal.tsx
+msgid "Error saving publisher"
 msgstr ""
 
 #: src/pages/settings/SettingsBilling.tsx
@@ -1224,6 +1325,12 @@ msgstr ""
 
 #: src/pages/onboarding/CreateProfile.tsx
 msgid "First Name"
+msgstr ""
+
+#: src/pages/onboarding/tutorial.tsx
+#: src/modules/onboarding-tutorial/components/TutorialPageHeader.tsx
+#: src/modules/onboarding-tutorial/components/OnboardingSteps.tsx
+msgid "First steps on nestermind"
 msgstr ""
 
 #: src/modules/auth/sign-in-up/components/SignInUpWorkspaceScopeForm.tsx
@@ -1368,6 +1475,10 @@ msgstr ""
 msgid "If you’ve lost this key, you can regenerate it, but be aware that any script using this key will need to be updated. Please type\"{confirmationValue}\" to confirm."
 msgstr ""
 
+#: src/pages/onboarding/tutorial.tsx
+msgid "In progress"
+msgstr ""
+
 #: src/pages/settings/data-model/SettingsObjects.tsx
 #: src/pages/settings/data-model/SettingsObjectFieldTable.tsx
 msgid "Inactive"
@@ -1397,12 +1508,25 @@ msgstr ""
 msgid "Input must be in camel case and cannot start with a number"
 msgstr ""
 
+#: src/modules/onboarding-tutorial/components/modals/InquiryTutorialModal.tsx
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
 msgid "Inquiries"
 msgstr ""
 
+#: src/modules/onboarding-tutorial/components/modals/InquiryTutorialModal.tsx
+msgid "Inquiries are the central connection between interested parties and property listings. They are <0>automatically created</0> when an inquiry about a property is received and are <1>directly linked</1> to the relevant property, the specific publication, and the inquiring person."
+msgstr ""
+
+#: src/modules/onboarding-tutorial/components/modals/InquiryTutorialModal.tsx
+msgid "Inquiries in nestermind"
+msgstr ""
+
 #: src/pages/settings/data-model/constants/SettingsObjectTableMetadata.ts
 msgid "Instances"
+msgstr ""
+
+#: src/modules/publishers/components/PlatformCredentialItem.tsx
+msgid "Integration Coming Soon"
 msgstr ""
 
 #: src/pages/settings/integrations/SettingsIntegrations.tsx
@@ -1533,6 +1657,7 @@ msgstr ""
 msgid "Listings"
 msgstr ""
 
+#: src/pages/settings/publishers/components/PublishersListCard.tsx
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
 #: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
 #: src/modules/object-record/record-show/components/nm/AISuite.tsx
@@ -1561,6 +1686,10 @@ msgstr ""
 
 #: src/pages/settings/accounts/SettingsAccounts.tsx
 msgid "Manage your internet accounts."
+msgstr ""
+
+#: src/pages/settings/publishers/SettingsPublishers.tsx
+msgid "Manage your publishers and their platform credentials."
 msgstr ""
 
 #: src/pages/settings/SettingsBilling.tsx
@@ -1629,6 +1758,7 @@ msgstr ""
 #: src/pages/settings/roles/components/RolePermissionsSettingsTableHeader.tsx
 #: src/pages/settings/roles/components/RolePermissionsObjectsTableHeader.tsx
 #: src/pages/settings/roles/components/RoleAssignmentTableHeader.tsx
+#: src/pages/settings/publishers/components/PublishersListCard.tsx
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeysNew.tsx
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
 #: src/pages/settings/data-model/SettingsObjectFieldTable.tsx
@@ -1636,7 +1766,12 @@ msgstr ""
 #: src/pages/settings/data-model/constants/SettingsObjectTableMetadata.ts
 #: src/pages/onboarding/CreateProfile.tsx
 #: src/modules/settings/workspace/components/NameField.tsx
+#: src/modules/publishers/components/modals/EditPublisherModal.tsx
 msgid "Name"
+msgstr ""
+
+#: src/modules/publishers/components/modals/EditPublisherModal.tsx
+msgid "Name and Email are internally used by nestermind to identify the publisher."
 msgstr ""
 
 #: src/pages/onboarding/CreateWorkspace.tsx
@@ -1645,6 +1780,10 @@ msgstr ""
 
 #: src/modules/settings/data-model/object-details/components/tabs/ObjectSettings.tsx
 msgid "Name in both singular (e.g., 'Invoice') and plural (e.g., 'Invoices') forms."
+msgstr ""
+
+#: src/modules/publishers/components/modals/EditPublisherModal.tsx
+msgid "Name is required"
 msgstr ""
 
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeysNew.tsx
@@ -1680,6 +1819,10 @@ msgstr ""
 
 #: src/modules/action-menu/actions/record-actions/constants/WorkflowActionsConfig.ts
 msgid "Navigate to previous workflow"
+msgstr ""
+
+#: src/modules/onboarding-tutorial/components/modals/EmailTutorialModal.tsx
+msgid "nestermind automatically recognizes relevant contacts and converts them into people in your CRM. Through granular settings, you can specify which types of emails should be considered."
 msgstr ""
 
 #: src/pages/settings/data-model/SettingsNewObject.tsx
@@ -1779,6 +1922,10 @@ msgstr ""
 
 #: src/modules/object-record/record-table/empty-state/utils/getEmptyStateTitle.ts
 msgid "No publications yet"
+msgstr ""
+
+#: src/pages/settings/publishers/components/PublishersListCard.tsx
+msgid "No publishers configured yet"
 msgstr ""
 
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
@@ -1936,6 +2083,27 @@ msgstr ""
 msgid "Platform"
 msgstr ""
 
+#: src/modules/publishers/components/modals/EditPublisherModal.tsx
+#: src/modules/onboarding-tutorial/components/modals/PublisherTutorialModal.tsx
+msgid "Platform Credentials"
+msgstr ""
+
+#: src/modules/onboarding-tutorial/constants/onboarding-steps.tsx
+msgid "Platform credentials setup successfully"
+msgstr ""
+
+#: src/pages/settings/publishers/SettingsPublishers.tsx
+#: src/pages/settings/publishers/SettingsPublishers.tsx
+#: src/pages/settings/publishers/components/PublishersListCard.tsx
+#: src/modules/settings/hooks/useSettingsNavigationItems.tsx
+msgid "Platforms"
+msgstr ""
+
+#: src/modules/publishers/components/modals/EditPublisherModal.tsx
+#: src/modules/publishers/components/modals/EditPublisherModal.tsx
+msgid "Please enter a valid email address"
+msgstr ""
+
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx
 msgid "Please enter a valid URL"
 msgstr ""
@@ -2016,6 +2184,10 @@ msgstr ""
 #~ msgid "Property"
 #~ msgstr ""
 
+#: src/modules/onboarding-tutorial/constants/onboarding-steps.tsx
+msgid "Property created successfully"
+msgstr ""
+
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Property Documents"
 msgstr ""
@@ -2044,6 +2216,10 @@ msgstr ""
 #~ msgid "Publication completion -"
 #~ msgstr ""
 
+#: src/modules/onboarding-tutorial/constants/onboarding-steps.tsx
+msgid "Publication created successfully"
+msgstr ""
+
 #: src/modules/ui/layout/show-page/components/nm/PublishModal.tsx
 msgid "Publication Draft"
 msgstr ""
@@ -2056,6 +2232,22 @@ msgstr ""
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/Publishing.tsx
 msgid "Publish"
+msgstr ""
+
+#: src/modules/onboarding-tutorial/constants/onboarding-steps.tsx
+msgid "Publish your first property"
+msgstr ""
+
+#: src/pages/settings/publishers/SettingsPublishers.tsx
+msgid "Publisher deleted successfully"
+msgstr ""
+
+#: src/modules/publishers/components/modals/EditPublisherModal.tsx
+msgid "Publisher Details"
+msgstr ""
+
+#: src/pages/settings/publishers/SettingsPublishers.tsx
+msgid "Publishers"
 msgstr ""
 
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/Publishing.tsx
@@ -2169,6 +2361,7 @@ msgstr ""
 #: src/modules/record-edit/components/RecordEditContainer.tsx
 #: src/modules/record-edit/components/custom/ImageEditModal.tsx
 #: src/modules/record-edit/components/custom/DocumentEditModal.tsx
+#: src/modules/publishers/components/modals/EditPublisherModal.tsx
 msgid "Save"
 msgstr ""
 
@@ -2295,6 +2488,10 @@ msgstr ""
 msgid "Set the name of your subdomain"
 msgstr ""
 
+#: src/modules/publishers/components/modals/EditPublisherModal.tsx
+msgid "Set up your credentials for each platforms where you want to publish your listings."
+msgstr ""
+
 #: src/pages/settings/roles/SettingsRoleEdit.tsx
 #: src/pages/settings/roles/components/RolePermissions.tsx
 #: src/pages/settings/data-model/SettingsObjectDetailPage.tsx
@@ -2306,6 +2503,22 @@ msgstr ""
 
 #: src/pages/settings/roles/components/RolePermissions.tsx
 msgid "Settings permissions"
+msgstr ""
+
+#: src/modules/onboarding-tutorial/components/modals/PublisherTutorialModal.tsx
+msgid "Setup Credentials"
+msgstr ""
+
+#: src/modules/onboarding-tutorial/components/modals/EmailTutorialModal.tsx
+msgid "Setup Email Sync"
+msgstr ""
+
+#: src/modules/onboarding-tutorial/constants/onboarding-steps.tsx
+msgid "Setup your platform credentials"
+msgstr ""
+
+#: src/modules/onboarding-tutorial/constants/onboarding-steps.tsx
+msgid "Setup your platform credentials in order to publish your properties."
 msgstr ""
 
 #: src/pages/settings/SettingsWorkspaceMembers.tsx
@@ -2433,6 +2646,10 @@ msgstr ""
 
 #: src/modules/settings/data-model/objects/forms/components/SettingsDataModelObjectAboutForm.tsx
 msgid "Synchronize Objects Labels and API Names"
+msgstr ""
+
+#: src/modules/onboarding-tutorial/components/modals/EmailTutorialModal.tsx
+msgid "Synchronized email threads are stored directly with the respective people in the CRM. This allows you to track the entire history of communication at any time. You can also individually set whether you want to see only the subject lines or the full email text in nestermind."
 msgstr ""
 
 #: src/pages/settings/profile/appearance/components/SettingsExperience.tsx
@@ -2573,6 +2790,10 @@ msgstr ""
 #~ msgid "Ukrainian"
 #~ msgstr ""
 
+#: src/modules/onboarding-tutorial/components/modals/InquiryTutorialModal.tsx
+msgid "Understood"
+msgstr ""
+
 #: src/pages/settings/data-model/SettingsObjectIndexTable.tsx
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationShortLabel.ts
 msgid "Unique"
@@ -2700,6 +2921,18 @@ msgstr ""
 msgid "Welcome to {workspaceName}"
 msgstr ""
 
+#: src/modules/onboarding-tutorial/components/modals/InquiryTutorialModal.tsx
+msgid "What are inquiries created for?"
+msgstr ""
+
+#: src/modules/object-record/record-index/components/ObjectRecordTutorialButton.tsx
+msgid "What is an inquiry?"
+msgstr ""
+
+#: src/modules/onboarding-tutorial/components/modals/EmailTutorialModal.tsx
+msgid "When an inquiry comes through a real estate portal, nestermind automatically creates a CRM inquiry. This stores not only the inquiry details but also the entire email history specifically related to interest in a particular publication."
+msgstr ""
+
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeysNew.tsx
 msgid "When the API key will expire."
 msgstr ""
@@ -2710,6 +2943,18 @@ msgstr ""
 
 #: src/pages/onboarding/CreateProfile.tsx
 msgid "Why is this required?"
+msgstr ""
+
+#: src/modules/onboarding-tutorial/components/modals/EmailTutorialModal.tsx
+msgid "With email synchronization in nestermind, you can seamlessly connect your emails and calendar events with the CRM. Microsoft, Outlook, and IMAP are supported, allowing you to efficiently manage your communication in nestermind – regardless of which email service you use."
+msgstr ""
+
+#: src/modules/onboarding-tutorial/components/modals/EmailTutorialModal.tsx
+msgid "With email synchronization in nestermind, your communication stays structured, efficient, and fully integrated."
+msgstr ""
+
+#: src/modules/onboarding-tutorial/components/modals/PublisherTutorialModal.tsx
+msgid "With Nestermind, you can set up provider details to efficiently manage the publication of your properties on various platforms. The provider entity stores the required access credentials for each platform publication so you can reuse them for each listing."
 msgstr ""
 
 #: src/modules/workflow/components/RecordShowPageWorkflowHeader.tsx
@@ -2723,6 +2968,7 @@ msgstr ""
 #: src/pages/settings/workspace/SettingsDomain.tsx
 #: src/pages/settings/security/SettingsSecurity.tsx
 #: src/pages/settings/roles/SettingsRoles.tsx
+#: src/pages/settings/publishers/SettingsPublishers.tsx
 #: src/pages/settings/integrations/SettingsIntegrations.tsx
 #: src/pages/settings/developers/SettingsDevelopers.tsx
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx
@@ -2784,12 +3030,24 @@ msgstr ""
 msgid "Your credit balance will be used to pay the monthly bills."
 msgstr ""
 
+#: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
+msgid "Your FTP password can be found under \"Import interfaces\" on MyNewhome."
+msgstr ""
+
+#: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
+msgid "Your FTP username can be found under \"Import interfaces\" on MyNewhome."
+msgstr ""
+
 #: src/pages/settings/SettingsProfile.tsx
 msgid "Your name as it will be displayed"
 msgstr ""
 
 #: src/pages/onboarding/CreateProfile.tsx
 msgid "Your name as it will be displayed on the app"
+msgstr ""
+
+#: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
+msgid "Your Partner ID is displayed in your MyNewhome dashboard under \"Integration of ads on your own website\" under Short name."
 msgstr ""
 
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx

@@ -1,7 +1,10 @@
 import { TUTORIAL_ONBOARDING_STEPS } from '@/onboarding-tutorial/constants/onboarding-steps';
 import { useKeyValueStore } from '@/onboarding/hooks/useKeyValueStore';
+import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
-import { motion } from 'framer-motion';
+import { motion, useAnimation } from 'framer-motion';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import ConfettiExplosion from 'react-confetti-explosion';
 import { UserTutorialExplanation, UserTutorialTask } from 'twenty-shared';
 
 const StyledSnackbarContainer = styled(motion.div)`
@@ -10,6 +13,14 @@ const StyledSnackbarContainer = styled(motion.div)`
   left: ${({ theme }) => theme.spacing(4)};
   width: 280px;
   z-index: 9999;
+`;
+
+const StyledConfettiContainer = styled.div`
+  position: fixed;
+  bottom: ${({ theme }) => theme.spacing(26)};
+  left: ${({ theme }) => theme.spacing(36)};
+  pointer-events: none;
+  z-index: 100000;
 `;
 
 const StyledOnboardingStepsContainer = styled(motion.div)`
@@ -21,7 +32,7 @@ const StyledOnboardingStepsContainer = styled(motion.div)`
   flex-direction: column;
   justify-content: center;
   overflow: hidden;
-  padding: ${({ theme }) => theme.spacing(2)};
+  padding: ${({ theme }) => theme.spacing(4)} ${({ theme }) => theme.spacing(2)};
   position: relative;
   color: ${({ theme }) => theme.font.color.tertiary};
   user-select: none;
@@ -73,12 +84,32 @@ export const TutorialStepCompletedSnackbar = ({
   step,
   onComplete,
 }: TutorialStepCompletedSnackbarProps) => {
+  const theme = useTheme();
   const { getValueByKey } = useKeyValueStore();
   const stepData = TUTORIAL_ONBOARDING_STEPS.find((s) => s.id === step);
   const totalSteps = TUTORIAL_ONBOARDING_STEPS.length;
   const currentStepIndex = TUTORIAL_ONBOARDING_STEPS.findIndex(
     (s) => s.id === step,
   );
+  const [showConfetti, setShowConfetti] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const controls = useAnimation();
+
+  const handleFillComplete = useCallback(() => {
+    setShowConfetti(true);
+    controls.start({
+      scale: [1, 1.05, 1],
+      transition: { duration: 0.4, ease: 'easeInOut' },
+    });
+    setTimeout(() => {
+      setShowConfetti(false);
+      onComplete();
+    }, 2000);
+  }, [controls, onComplete]);
+
+  useEffect(() => {
+    return () => setShowConfetti(false);
+  }, []);
 
   if (!stepData) return null;
 
@@ -89,70 +120,86 @@ export const TutorialStepCompletedSnackbar = ({
   };
 
   return (
-    <StyledSnackbarContainer
-      initial={{ opacity: 0, x: -20, y: 20 }}
-      animate={{ opacity: 1, x: 0, y: 0 }}
-      exit={{ opacity: 0, x: -20, y: 20 }}
-      transition={{
-        type: 'spring',
-        stiffness: 300,
-        damping: 30,
-        duration: 0.5,
-      }}
-    >
-      <StyledOnboardingStepsContainer>
-        <StyledProgressContainer
-          initial={{
-            opacity: 0,
-          }}
-          animate={{
-            opacity: 1,
-          }}
-          transition={{
-            duration: 0.15,
-            ease: 'easeInOut',
-          }}
-          onAnimationComplete={() => {
-            setTimeout(() => {
-              onComplete();
-            }, 5000);
-          }}
-        >
-          <StyledOnboardingTitle>
-            {stepData.successMessage}
-          </StyledOnboardingTitle>
-          <StyledProgressIndicators>
-            {Array.from({ length: totalSteps }).map((_, index) => (
-              <StyledProgressBar
-                key={index}
-                $isCompleted={
-                  isStepCompleted(TUTORIAL_ONBOARDING_STEPS[index].id) &&
-                  index !== currentStepIndex
-                }
-              >
-                {isStepCompleted(TUTORIAL_ONBOARDING_STEPS[index].id) &&
-                  index !== currentStepIndex && (
+    <>
+      {showConfetti && (
+        <StyledConfettiContainer>
+          <ConfettiExplosion
+            force={0.2}
+            duration={1500}
+            particleCount={35}
+            width={300}
+            height={300}
+            particleSize={5}
+            colors={[
+              theme.color.blue40,
+              theme.color.blue50,
+              theme.color.blue60,
+            ]}
+          />
+        </StyledConfettiContainer>
+      )}
+      <StyledSnackbarContainer
+        ref={containerRef}
+        initial={{ opacity: 0, x: -20, y: 20 }}
+        animate={{ opacity: 1, x: 0, y: 0 }}
+        exit={{ opacity: 0, x: -20, y: 20 }}
+        transition={{
+          type: 'spring',
+          stiffness: 300,
+          damping: 30,
+          duration: 0.5,
+        }}
+      >
+        <StyledOnboardingStepsContainer animate={controls}>
+          <StyledProgressContainer
+            initial={{
+              opacity: 0,
+            }}
+            animate={{
+              opacity: 1,
+            }}
+            transition={{
+              duration: 0.15,
+              ease: 'easeInOut',
+            }}
+          >
+            <StyledOnboardingTitle>
+              {stepData.successMessage}
+            </StyledOnboardingTitle>
+            <StyledProgressIndicators>
+              {Array.from({ length: totalSteps }).map((_, index) => (
+                <StyledProgressBar
+                  key={index}
+                  $isCompleted={
+                    isStepCompleted(TUTORIAL_ONBOARDING_STEPS[index].id) &&
+                    index !== currentStepIndex
+                  }
+                >
+                  {isStepCompleted(TUTORIAL_ONBOARDING_STEPS[index].id) &&
+                    index !== currentStepIndex && (
+                      <StyledProgressBarFill
+                        initial={false}
+                        animate={{ width: '100%' }}
+                      />
+                    )}
+                  {index === currentStepIndex && (
                     <StyledProgressBarFill
-                      initial={false}
+                      initial={{ width: '0%' }}
                       animate={{ width: '100%' }}
+                      transition={{
+                        duration: 0.6,
+                        delay: 1.5,
+                        ease: 'easeOut',
+                      }}
+                      onAnimationComplete={handleFillComplete}
                     />
                   )}
-                {index === currentStepIndex && (
-                  <StyledProgressBarFill
-                    initial={{ width: '0%' }}
-                    animate={{ width: '100%' }}
-                    transition={{
-                      duration: 0.6,
-                      delay: 1.5,
-                      ease: 'easeOut',
-                    }}
-                  />
-                )}
-              </StyledProgressBar>
-            ))}
-          </StyledProgressIndicators>
-        </StyledProgressContainer>
-      </StyledOnboardingStepsContainer>
-    </StyledSnackbarContainer>
+                </StyledProgressBar>
+              ))}
+            </StyledProgressIndicators>
+          </StyledProgressContainer>
+        </StyledOnboardingStepsContainer>
+      </StyledSnackbarContainer>
+    </>
   );
 };

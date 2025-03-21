@@ -50,9 +50,9 @@ export const AppRouterProviders = () => {
                       <PrefetchDataProvider>
                         <UserThemeProviderEffect />
                         <SnackBarProvider>
-                          <PublishersProvider>
-                            <TutorialSnackbarProvider>
-                              <TutorialProvider>
+                          <TutorialSnackbarProvider>
+                            <TutorialProvider>
+                              <PublishersProvider>
                                 <DialogManagerScope dialogManagerScopeId="dialog-manager">
                                   <DialogManager>
                                     <StrictMode>
@@ -64,9 +64,9 @@ export const AppRouterProviders = () => {
                                     </StrictMode>
                                   </DialogManager>
                                 </DialogManagerScope>
-                              </TutorialProvider>
-                            </TutorialSnackbarProvider>
-                          </PublishersProvider>
+                              </PublishersProvider>
+                            </TutorialProvider>
+                          </TutorialSnackbarProvider>
                         </SnackBarProvider>
                         <MainContextStoreProvider />
                       </PrefetchDataProvider>
