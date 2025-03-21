@@ -1,5 +1,6 @@
 export enum FeatureFlagKey {
   // nestermind feature flags
+  IsSavePublishEnabled = 'IS_SAVE_PUBLISH_ENABLED',
   IsDomainGeneralSettingsEnabled = 'IS_DOMAIN_GENERAL_SETTINGS_ENABLED',
   IsDataModelSettingsEnabled = 'IS_DATA_MODEL_SETTINGS_ENABLED',
   IsIntegrationSettingsEnabled = 'IS_INTEGRATION_SETTINGS_ENABLED',
