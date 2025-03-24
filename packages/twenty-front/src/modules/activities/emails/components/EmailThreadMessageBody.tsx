@@ -20,9 +20,15 @@ export const EmailThreadMessageBody = ({
   body,
   isDisplayed,
 }: EmailThreadMessageBodyProps) => {
+  // check if body is html
+  const isHtml = /<([a-z]+)[\s>]|&[a-z]+;/i.test(body);
   return (
     <AnimatedEaseInOut isOpen={isDisplayed} duration="fast">
-      <StyledThreadMessageBody>{body}</StyledThreadMessageBody>
+      {isHtml ? (
+        <StyledThreadMessageBody dangerouslySetInnerHTML={{ __html: body }} />
+      ) : (
+        <StyledThreadMessageBody>{body}</StyledThreadMessageBody>
+      )}
     </AnimatedEaseInOut>
   );
 };
