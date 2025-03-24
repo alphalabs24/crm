@@ -117,6 +117,18 @@ export const useNestermind = () => {
     );
   };
 
+  const sendTestEmailProperty = async ({
+    propertyId,
+    toEmail,
+  }: {
+    propertyId: string;
+    toEmail: string;
+  }) => {
+    return api.post(
+      `/email-sender/test-autoresponse?propertyId=${propertyId}&email=${toEmail}`,
+    );
+  };
+
   return {
     api,
     publicationsApi: {
@@ -130,6 +142,7 @@ export const useNestermind = () => {
       syncPublications: syncPublicationsWithProperty,
       delete: deleteProperty,
       createPublicationDraft: createPublicationDraftFromProperty,
+      sendTestEmail: sendTestEmailProperty,
     },
     healthApi: {
       check: checkHealth,

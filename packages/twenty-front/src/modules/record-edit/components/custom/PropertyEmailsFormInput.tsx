@@ -10,7 +10,7 @@ import { useSnackBar } from '@/ui/feedback/snack-bar-manager/hooks/useSnackBar';
 import { TextInputV2 } from '@/ui/input/components/TextInputV2';
 import { useLingui } from '@lingui/react/macro';
 import { useCallback, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useResolvedPath } from 'react-router-dom';
 import { Button, IconSend } from 'twenty-ui';
 import { EmailTemplateSelect } from '~/pages/settings/email-templates/components/EmailTemplateSelect';
 
@@ -40,11 +40,12 @@ const StyledTestEmailContainer = styled.div`
 export const PropertyEmailsFormInput = ({ loading }: { loading?: boolean }) => {
   const { setEmailTemplate, emailTemplate } = useRecordEdit();
   const { objectRecordId } = useParams();
+  const { pathname } = useResolvedPath('');
   const [testEmail, setTestEmail] = useState('');
   const [emailError, setEmailError] = useState('');
   const { t } = useLingui();
 
-  const { publicationsApi } = useNestermind();
+  const { publicationsApi, propertiesApi } = useNestermind();
   const { enqueueSnackBar } = useSnackBar();
 
   const handleEmailChange = useCallback(
@@ -65,10 +66,18 @@ export const PropertyEmailsFormInput = ({ loading }: { loading?: boolean }) => {
       return;
     }
     try {
-      await publicationsApi.sendTestEmail({
-        publicationId: objectRecordId ?? '',
-        toEmail: testEmail,
-      });
+      // TODO distinguish if record is property or publication better
+      if (pathname.split('/')[2] === 'property') {
+        await propertiesApi.sendTestEmail({
+          propertyId: objectRecordId ?? '',
+          toEmail: testEmail,
+        });
+      } else {
+        await publicationsApi.sendTestEmail({
+          publicationId: objectRecordId ?? '',
+          toEmail: testEmail,
+        });
+      }
 
       enqueueSnackBar(t`Test email sent successfully`, {
         variant: SnackBarVariant.Success,
