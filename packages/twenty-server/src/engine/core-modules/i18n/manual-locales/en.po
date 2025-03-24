@@ -35,6 +35,10 @@ msgstr "newhome FTP Password"
 msgid "Newhome Ftp User"
 msgstr "newhome FTP User"
 
+# field "newhomePartnerId" of agency
+msgid "Newhome Partner ID"
+msgstr "Newhome Partner ID"
+
 # object singular buyerLead
 msgid "Buyer Lead"
 msgstr "Purchase Inquiry"
@@ -87,13 +91,13 @@ msgstr "Carrying Capacity Elevator"
 msgid "Category"
 msgstr "Category"
 
-# field "ceilingHeight" of property
-msgid "Ceiling Height"
-msgstr "Ceiling Height"
-
 # field description "Height of room in meters" of ceilingHeight on property
 msgid "Height of room in meters"
 msgstr "Height of room in meters"
+
+# field "ceilingHeight" of property
+msgid "Ceiling Height"
+msgstr "Ceiling Height"
 
 # field "constructionYear" of property
 msgid "Construction Year"
@@ -123,13 +127,13 @@ msgstr "Floor"
 msgid "Gastronomy Subtype"
 msgstr "Gastronomy Subtype"
 
-# field "hallHeight" of property
-msgid "Hall Height"
-msgstr "Hall Height"
-
 # field description "Height of hall in meters" of hallHeight on property
 msgid "Height of hall in meters"
 msgstr "Height of hall in meters"
+
+# field "hallHeight" of property
+msgid "Hall Height"
+msgstr "Hall Height"
 
 # field "houseSubtype" of property
 msgid "House Subtype"
@@ -147,13 +151,17 @@ msgstr "Links"
 msgid "Living Surface"
 msgstr "Living Surface"
 
+# field description "kg/m2" of maximalFloorLoading on property
+msgid "kg/m2"
+msgstr "kg/m2"
+
 # field "maximalFloorLoading" of property
 msgid "Maximal Floor Loading"
 msgstr "Maximal Floor Loading"
 
-# field description "kg/m2" of maximalFloorLoading on property
-msgid "kg/m2"
-msgstr "kg/m2"
+# field "messageParticipations" of property
+msgid "Message Participations"
+msgstr "Message Participations"
 
 # field "numberOfFloors" of property
 msgid "Number Of Floors"

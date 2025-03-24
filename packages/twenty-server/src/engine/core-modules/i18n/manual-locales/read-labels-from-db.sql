@@ -98,6 +98,9 @@ FROM (
       'Movies',
       'Pictures'
       )
+    -- handling duplicates within this dataset
+    AND NOT (fm.label = 'Message Participations' AND om."nameSingular" = 'buyerLead') -- we translate the label from property
+    AND NOT (fm.label = 'Message Participations' AND om."nameSingular" = 'publication') -- we translate the label from property
 
   UNION ALL
 
