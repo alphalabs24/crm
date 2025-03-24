@@ -38,7 +38,7 @@ export const SettingsEmailTemplates = () => {
 
   const { records: emailTemplates, loading } = useFindManyRecords({
     objectNameSingular: CoreObjectNameSingular.Note,
-    filter: { isTemplate: { eq: true } },
+    filter: { type: { eq: 'EmailTemplate' } },
     recordGqlFields,
     skip: !objectMetadataItem,
   });

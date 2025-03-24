@@ -26,7 +26,7 @@ const emptyEmailTemplate: Note = {
 };
 
 type NoteWithTemplate = Note & {
-  isTemplate: boolean;
+  type: string;
 };
 
 export const SettingsEmailTemplateNew = () => {
@@ -44,7 +44,7 @@ export const SettingsEmailTemplateNew = () => {
     try {
       const newTemplate = await createOneRecord({
         title: subject,
-        isTemplate: true,
+        type: 'EmailTemplate',
       });
 
       if (newTemplate?.id) {

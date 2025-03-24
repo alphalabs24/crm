@@ -11,11 +11,11 @@ import styled from '@emotion/styled';
 import { Trans, useLingui } from '@lingui/react/macro';
 import { useNavigate } from 'react-router-dom';
 import {
-    Button,
-    IconChevronRight,
-    IconPlus,
-    IconTrash,
-    MOBILE_VIEWPORT,
+  Button,
+  IconChevronRight,
+  IconPlus,
+  IconTrash,
+  MOBILE_VIEWPORT,
 } from 'twenty-ui';
 import { getSettingsPath } from '~/utils/navigation/getSettingsPath';
 
@@ -111,7 +111,7 @@ export const EmailTemplatesListCard = ({
   const handleCreateTemplate = async () => {
     const newTemplate = await createOneRecord({
       title: t`New Template`,
-      isTemplate: true,
+      type: 'EmailTemplate',
       body: '',
     });
 

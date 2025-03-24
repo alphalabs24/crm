@@ -28,7 +28,7 @@ export const RecordTableNoRecordGroupRows = ({
       return allRecordIds;
     }
     return records
-      .filter((record) => !record.isTemplate)
+      .filter((record) => record.type !== 'EmailTemplate')
       .map((record) => record.id);
   }, [objectNameSingular, records, allRecordIds]);
 
