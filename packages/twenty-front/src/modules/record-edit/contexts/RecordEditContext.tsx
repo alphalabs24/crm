@@ -128,25 +128,25 @@ export const RecordEditProvider = ({
   const { updateOneRecordAndAttachRelations: attachTemplateToProperty } =
     useAttachRelatedRecordFromRecord({
       recordObjectNameSingular: CoreObjectNameSingular.Note,
-      fieldNameOnRecordObject: 'templateForProperties',
+      fieldNameOnRecordObject: 'emailTemplateForProperties',
     });
 
   const { updateOneRecordAndAttachRelations: attachTemplateToPublication } =
     useAttachRelatedRecordFromRecord({
       recordObjectNameSingular: CoreObjectNameSingular.Note,
-      fieldNameOnRecordObject: 'templateForPublications',
+      fieldNameOnRecordObject: 'emailTemplateForPublications',
     });
 
   const { updateOneRecordAndDetachRelations: detachTemplateFromProperty } =
     useDetachRelatedRecordFromRecord({
       recordObjectNameSingular: CoreObjectNameSingular.Note,
-      fieldNameOnRecordObject: 'templateForProperties',
+      fieldNameOnRecordObject: 'emailTemplateForProperties',
     });
 
   const { updateOneRecordAndDetachRelations: detachTemplateFromPublication } =
     useDetachRelatedRecordFromRecord({
       recordObjectNameSingular: CoreObjectNameSingular.Note,
-      fieldNameOnRecordObject: 'templateForPublications',
+      fieldNameOnRecordObject: 'emailTemplateForPublications',
     });
 
   // Attachment Handling
