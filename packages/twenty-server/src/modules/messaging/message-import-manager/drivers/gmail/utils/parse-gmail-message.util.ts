@@ -1,5 +1,6 @@
 import assert from 'assert';
 
+import { sanitize } from 'dompurify';
 import addressparser from 'addressparser';
 import { gmail_v1 } from 'googleapis';
 
@@ -25,7 +26,7 @@ export const parseGmailMessage = (message: gmail_v1.Schema$Message) => {
   assert(internalDate, 'Internal date is missing');
 
   const bodyData = getBodyData(message);
-  const text = bodyData ? Buffer.from(bodyData, 'base64').toString() : '';
+  const text = sanitize(bodyData) || '';
 
   const attachments = getAttachmentData(message);
 

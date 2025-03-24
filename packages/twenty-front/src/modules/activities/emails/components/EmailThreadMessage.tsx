@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
+
+import DOMPurify from 'dompurify';
 
 import { EmailThreadMessageBody } from '@/activities/emails/components/EmailThreadMessageBody';
 import { EmailThreadMessageBodyPreview } from '@/activities/emails/components/EmailThreadMessageBodyPreview';
@@ -43,6 +45,9 @@ export const EmailThreadMessage = ({
   isExpanded = false,
 }: EmailThreadMessageProps) => {
   const [isOpen, setIsOpen] = useState(isExpanded);
+  const purify = DOMPurify(window);
+
+  const sanitizedBody = useMemo(() => purify.sanitize(body), [body, purify]);
 
   const receivers = participants.filter(
     (participant) => participant.role !== 'from',
@@ -63,9 +68,9 @@ export const EmailThreadMessage = ({
       </StyledThreadMessageHeader>
       <StyledThreadMessageBody>
         {isOpen ? (
-          <EmailThreadMessageBody body={body} isDisplayed />
+          <EmailThreadMessageBody body={sanitizedBody} isDisplayed />
         ) : (
-          <EmailThreadMessageBodyPreview body={body} />
+          <EmailThreadMessageBodyPreview body={sanitizedBody} />
         )}
       </StyledThreadMessageBody>
     </StyledThreadMessage>
