@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: nestermind-crm\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2025-03-21 09:14\n"
+"PO-Revision-Date: 2025-03-24 17:50\n"
 "Last-Translator: \n"
 "Language: it_IT\n"
 "Language-Team: Italian\n"
@@ -18,229 +18,229 @@ msgstr ""
 
 # object singular agency
 msgid "Agency"
-msgstr ""
+msgstr "Agenzia"
 
 # object plural agencies
 msgid "Agencies"
-msgstr ""
+msgstr "Agenzie"
 
 # field description "Contact Person (Visible On Publication)" of agencyReference on agency
 msgid "Contact Person (Visible On Publication)"
-msgstr "Persona di contatto (Visibile sulla Pubblicazione)"
+msgstr "Persona di contatto (visibile sulla pubblicazione)"
 
 # field "agencyReference" of agency
 msgid "Agency Reference"
-msgstr ""
+msgstr "Riferimento dell'agenzia"
 
 # field "newhomeFtpPassword" of agency
 msgid "Newhome Ftp Password"
-msgstr ""
+msgstr "Newhome Ftp Password"
 
 # field "newhomeFtpUser" of agency
 msgid "Newhome Ftp User"
-msgstr ""
+msgstr "Newhome Ftp Utente"
 
 # object singular buyerLead
 msgid "Buyer Lead"
-msgstr ""
+msgstr "Richiesta di acquisto"
 
 # object plural buyerLeads
 msgid "Buyer Leads"
-msgstr ""
+msgstr "Richieste di acquisto"
 
 # object singular property
 msgid "Property"
-msgstr ""
+msgstr "Oggetto"
 
 # object plural properties
 msgid "Properties"
-msgstr ""
+msgstr "Oggetti"
 
 # field "agricultureSubtype" of property
 msgid "Agriculture Subtype"
-msgstr ""
+msgstr "Tipologia di terreno"
 
 # field "apartments" of property
 msgid "Apartments"
-msgstr ""
+msgstr "Numero di appartamenti"
 
 # field "apartmentSubtype" of property
 msgid "Apartment Subtype"
-msgstr ""
+msgstr "Tipologia di appartamento"
 
 # field "assignee" of property
 msgid "Assignee"
-msgstr ""
+msgstr "Agente immobiliare assegnato"
 
 # field "availableFrom" of property
 msgid "Available From"
-msgstr ""
+msgstr "Disponibile dal"
 
 # field "carryingCapacityCrane" of property
 msgid "Carrying Capacity Crane"
-msgstr ""
+msgstr "Capacità di trasporto della gru"
 
 # field description "In kg" of carryingCapacityCrane on property
 msgid "In kg"
-msgstr ""
+msgstr "in kg"
 
 # field "carryingCapacityElevator" of property
 msgid "Carrying Capacity Elevator"
-msgstr ""
+msgstr "Capacità di trasporto dell'ascensore"
 
 # field "category" of property
 msgid "Category"
-msgstr ""
+msgstr "Categoria"
 
 # field "ceilingHeight" of property
 msgid "Ceiling Height"
-msgstr ""
+msgstr "Altezza delle stanze"
 
 # field description "Height of room in meters" of ceilingHeight on property
 msgid "Height of room in meters"
-msgstr ""
+msgstr "Altezza delle stanze in metri"
 
 # field "constructionYear" of property
 msgid "Construction Year"
-msgstr ""
+msgstr "Anno di costruzione"
 
 # field "distances" of property
 msgid "Distances"
-msgstr ""
+msgstr "Distanze"
 
 # field "emailSender" of property
 msgid "Email Sender"
-msgstr ""
+msgstr "Mittente della risposta automatica alla richiesta (E-Mail)"
 
 # field "emailTemplate" of property
 msgid "Email Template"
-msgstr ""
+msgstr "Modello E-mail per le risposte automatiche"
 
 # field "features" of property
 msgid "Features"
-msgstr ""
+msgstr "Caratteristiche dell'oggetto"
 
 # field "floor" of property
 msgid "Floor"
-msgstr ""
+msgstr "Piano"
 
 # field "gastronomySubtype" of property
 msgid "Gastronomy Subtype"
-msgstr ""
+msgstr "Tipo di ristorazione"
 
 # field "hallHeight" of property
 msgid "Hall Height"
-msgstr ""
+msgstr "Altezza del corridoio"
 
 # field description "Height of hall in meters" of hallHeight on property
 msgid "Height of hall in meters"
-msgstr ""
+msgstr "Altezza del corridoio in metri"
 
 # field "houseSubtype" of property
 msgid "House Subtype"
-msgstr ""
+msgstr "Tipologia di casa"
 
 # field "industrialSubtype" of property
 msgid "Industrial Subtype"
-msgstr ""
+msgstr "Tipologia di industria"
 
 # field "links" of property
 msgid "Links"
-msgstr ""
+msgstr "Links"
 
 # field "livingSurface" of property
 msgid "Living Surface"
-msgstr ""
+msgstr "Superficie abitabile"
 
 # field "maximalFloorLoading" of property
 msgid "Maximal Floor Loading"
-msgstr ""
+msgstr "Carico massimo per piano"
 
 # field description "kg/m2" of maximalFloorLoading on property
 msgid "kg/m2"
-msgstr ""
+msgstr "kg/m2"
 
 # field "numberOfFloors" of property
 msgid "Number Of Floors"
-msgstr ""
+msgstr "Numero di piani"
 
 # field "offerType" of property
 msgid "Offer Type"
-msgstr ""
+msgstr "Tipologia di offerta"
 
 # field "parkingSubtype" of property
 msgid "Parking Subtype"
-msgstr ""
+msgstr "Tipologia di parcheggio"
 
 # field "plotSubtype" of property
 msgid "Plot Subtype"
-msgstr ""
+msgstr "Tipologia di terreno"
 
 # field "priceUnit" of property
 msgid "Price Unit"
-msgstr ""
+msgstr "Prezzo per unità"
 
 # field "propertySubtype" of property
 msgid "Property Subtype"
-msgstr ""
+msgstr "Tipologia di proprietà"
 
 # field "refProperty" of property
 msgid "Ref Property"
-msgstr ""
+msgstr "Riferimento della proprietà"
 
 # field "renovationYear" of property
 msgid "Renovation Year"
-msgstr ""
+msgstr "Anno di ristrutturazione"
 
 # field "rentExtra" of property
 msgid "Rent Extra"
-msgstr ""
+msgstr "Spese accessorie"
 
 # field "rentNet" of property
 msgid "Rent Net"
-msgstr ""
+msgstr "Affitto netto"
 
 # field "rooms" of property
 msgid "Rooms"
-msgstr ""
+msgstr "Camere"
 
 # field "secondaryRoomsSubtype" of property
 msgid "Secondary Rooms Subtype"
-msgstr ""
+msgstr "Categoria di locale secondario"
 
 # field "seller" of property
 msgid "Seller"
-msgstr ""
+msgstr "Venditore"
 
 # field "sellingPrice" of property
 msgid "Selling Price"
-msgstr ""
+msgstr "Prezzo di vendita"
 
 # field "surface" of property
 msgid "Surface"
-msgstr ""
+msgstr "Superficie"
 
 # field "usableSurface" of property
 msgid "Usable Surface"
-msgstr ""
+msgstr "Superficie utile"
 
 # field "valuation" of property
 msgid "Valuation"
-msgstr ""
+msgstr "Valutazione"
 
 # field "virtualTour" of property
 msgid "Virtual Tour"
-msgstr ""
+msgstr "Tour virtuale"
 
 # field "volume" of property
 msgid "Volume"
-msgstr ""
+msgstr "Volumi"
 
 # object singular publication
 msgid "Publication"
-msgstr ""
+msgstr "Pubblicazione"
 
 # object plural publications
 msgid "Publications"
-msgstr ""
+msgstr "Pubblicazioni"
 

@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: nestermind-crm\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2025-03-21 09:14\n"
+"PO-Revision-Date: 2025-03-24 17:50\n"
 "Last-Translator: \n"
 "Language: de_DE\n"
 "Language-Team: German\n"
@@ -34,11 +34,11 @@ msgstr "Anbieterreferenz"
 
 # field "newhomeFtpPassword" of agency
 msgid "Newhome Ftp Password"
-msgstr "newhome FTP Passwort"
+msgstr "Newhome Ftp Passwort"
 
 # field "newhomeFtpUser" of agency
 msgid "Newhome Ftp User"
-msgstr "newhome FTP Username"
+msgstr "Newhome Ftp Username"
 
 # object singular buyerLead
 msgid "Buyer Lead"

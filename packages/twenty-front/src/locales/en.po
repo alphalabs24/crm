@@ -1335,6 +1335,10 @@ msgstr "Export view"
 msgid "Export Workflows"
 msgstr "Export Workflows"
 
+#: src/modules/record-edit/components/custom/PropertyEmailsFormInput.tsx
+msgid "Failed to send test email"
+msgstr "Failed to send test email"
+
 #: src/modules/favorites/components/CurrentWorkspaceMemberFavoritesFolders.tsx
 msgid "Favorites"
 msgstr "Favorites"
@@ -1816,7 +1820,6 @@ msgstr "Move right"
 #: src/pages/settings/roles/components/RolePermissionsObjectsTableHeader.tsx
 #: src/pages/settings/roles/components/RoleAssignmentTableHeader.tsx
 #: src/pages/settings/publishers/components/PublishersListCard.tsx
-#: src/pages/settings/email-templates/components/EmailTemplatesListCard.tsx
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeysNew.tsx
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
 #: src/pages/settings/data-model/SettingsObjectFieldTable.tsx
@@ -2175,6 +2178,8 @@ msgstr "Platform credentials setup successfully"
 msgid "Platforms"
 msgstr "Platforms"
 
+#: src/modules/record-edit/components/custom/PropertyEmailsFormInput.tsx
+#: src/modules/record-edit/components/custom/PropertyEmailsFormInput.tsx
 #: src/modules/publishers/components/modals/EditPublisherModal.tsx
 #: src/modules/publishers/components/modals/EditPublisherModal.tsx
 msgid "Please enter a valid email address"
@@ -2676,6 +2681,7 @@ msgstr "Subdomain can not be longer than 30 characters"
 msgid "Subdomain can not be shorter than 3 characters"
 msgstr "Subdomain can not be shorter than 3 characters"
 
+#: src/pages/settings/email-templates/components/EmailTemplatesListCard.tsx
 #: src/pages/settings/email-templates/components/EmailTemplateForm.tsx
 msgid "Subject"
 msgstr "Subject"
@@ -2761,6 +2767,10 @@ msgstr "Terms of Service"
 #: src/modules/action-menu/actions/record-actions/constants/WorkflowActionsConfig.ts
 msgid "Test"
 msgstr "Test"
+
+#: src/modules/record-edit/components/custom/PropertyEmailsFormInput.tsx
+msgid "Test email sent successfully"
+msgstr "Test email sent successfully"
 
 #: src/modules/action-menu/actions/record-actions/constants/WorkflowActionsConfig.ts
 msgid "Test Workflow"

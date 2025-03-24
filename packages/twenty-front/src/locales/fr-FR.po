@@ -1340,6 +1340,10 @@ msgstr "Exporter la vue"
 msgid "Export Workflows"
 msgstr "Exporter les workflows"
 
+#: src/modules/record-edit/components/custom/PropertyEmailsFormInput.tsx
+msgid "Failed to send test email"
+msgstr ""
+
 #: src/modules/favorites/components/CurrentWorkspaceMemberFavoritesFolders.tsx
 msgid "Favorites"
 msgstr "Favoris"
@@ -1818,7 +1822,6 @@ msgstr "Déplacer à droite"
 #: src/pages/settings/roles/components/RolePermissionsObjectsTableHeader.tsx
 #: src/pages/settings/roles/components/RoleAssignmentTableHeader.tsx
 #: src/pages/settings/publishers/components/PublishersListCard.tsx
-#: src/pages/settings/email-templates/components/EmailTemplatesListCard.tsx
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeysNew.tsx
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
 #: src/pages/settings/data-model/SettingsObjectFieldTable.tsx
@@ -2177,6 +2180,8 @@ msgstr ""
 msgid "Platforms"
 msgstr ""
 
+#: src/modules/record-edit/components/custom/PropertyEmailsFormInput.tsx
+#: src/modules/record-edit/components/custom/PropertyEmailsFormInput.tsx
 #: src/modules/publishers/components/modals/EditPublisherModal.tsx
 #: src/modules/publishers/components/modals/EditPublisherModal.tsx
 msgid "Please enter a valid email address"
@@ -2678,6 +2683,7 @@ msgstr "Le sous-domaine ne peut pas dépasser 30 caractères"
 msgid "Subdomain can not be shorter than 3 characters"
 msgstr "Le sous-domaine ne peut pas être inférieur à 3 caractères"
 
+#: src/pages/settings/email-templates/components/EmailTemplatesListCard.tsx
 #: src/pages/settings/email-templates/components/EmailTemplateForm.tsx
 msgid "Subject"
 msgstr ""
@@ -2762,6 +2768,10 @@ msgstr "Conditions d'utilisation"
 #: src/modules/workflow/components/RecordShowPageWorkflowHeader.tsx
 #: src/modules/action-menu/actions/record-actions/constants/WorkflowActionsConfig.ts
 msgid "Test"
+msgstr ""
+
+#: src/modules/record-edit/components/custom/PropertyEmailsFormInput.tsx
+msgid "Test email sent successfully"
 msgstr ""
 
 #: src/modules/action-menu/actions/record-actions/constants/WorkflowActionsConfig.ts
