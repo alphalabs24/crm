@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: nestermind-crm\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2025-03-21 09:14\n"
+"PO-Revision-Date: 2025-03-24 18:05\n"
 "Last-Translator: \n"
 "Language: fr_FR\n"
 "Language-Team: French\n"
@@ -38,6 +38,10 @@ msgstr ""
 
 # field "newhomeFtpUser" of agency
 msgid "Newhome Ftp User"
+msgstr ""
+
+# field "newhomePartnerId" of agency
+msgid "Newhome Partner ID"
 msgstr ""
 
 # object singular buyerLead
@@ -92,12 +96,12 @@ msgstr ""
 msgid "Category"
 msgstr ""
 
-# field "ceilingHeight" of property
-msgid "Ceiling Height"
-msgstr ""
-
 # field description "Height of room in meters" of ceilingHeight on property
 msgid "Height of room in meters"
+msgstr ""
+
+# field "ceilingHeight" of property
+msgid "Ceiling Height"
 msgstr ""
 
 # field "constructionYear" of property
@@ -128,12 +132,12 @@ msgstr ""
 msgid "Gastronomy Subtype"
 msgstr ""
 
-# field "hallHeight" of property
-msgid "Hall Height"
-msgstr ""
-
 # field description "Height of hall in meters" of hallHeight on property
 msgid "Height of hall in meters"
+msgstr ""
+
+# field "hallHeight" of property
+msgid "Hall Height"
 msgstr ""
 
 # field "houseSubtype" of property
@@ -152,12 +156,16 @@ msgstr ""
 msgid "Living Surface"
 msgstr ""
 
+# field description "kg/m2" of maximalFloorLoading on property
+msgid "kg/m2"
+msgstr ""
+
 # field "maximalFloorLoading" of property
 msgid "Maximal Floor Loading"
 msgstr ""
 
-# field description "kg/m2" of maximalFloorLoading on property
-msgid "kg/m2"
+# field "messageParticipations" of property
+msgid "Message Participations"
 msgstr ""
 
 # field "numberOfFloors" of property

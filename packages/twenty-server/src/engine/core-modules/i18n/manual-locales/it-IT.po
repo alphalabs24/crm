@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: nestermind-crm\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2025-03-24 17:50\n"
+"PO-Revision-Date: 2025-03-24 18:05\n"
 "Last-Translator: \n"
 "Language: it_IT\n"
 "Language-Team: Italian\n"
@@ -34,11 +34,15 @@ msgstr "Riferimento dell'agenzia"
 
 # field "newhomeFtpPassword" of agency
 msgid "Newhome Ftp Password"
-msgstr "Newhome Ftp Password"
+msgstr "Newhome FTP Password"
 
 # field "newhomeFtpUser" of agency
 msgid "Newhome Ftp User"
-msgstr "Newhome Ftp Utente"
+msgstr "Newhome FTP Utente"
+
+# field "newhomePartnerId" of agency
+msgid "Newhome Partner ID"
+msgstr ""
 
 # object singular buyerLead
 msgid "Buyer Lead"
@@ -92,13 +96,13 @@ msgstr "Capacità di trasporto dell'ascensore"
 msgid "Category"
 msgstr "Categoria"
 
-# field "ceilingHeight" of property
-msgid "Ceiling Height"
-msgstr "Altezza delle stanze"
-
 # field description "Height of room in meters" of ceilingHeight on property
 msgid "Height of room in meters"
 msgstr "Altezza delle stanze in metri"
+
+# field "ceilingHeight" of property
+msgid "Ceiling Height"
+msgstr "Altezza delle stanze"
 
 # field "constructionYear" of property
 msgid "Construction Year"
@@ -128,13 +132,13 @@ msgstr "Piano"
 msgid "Gastronomy Subtype"
 msgstr "Tipo di ristorazione"
 
-# field "hallHeight" of property
-msgid "Hall Height"
-msgstr "Altezza del corridoio"
-
 # field description "Height of hall in meters" of hallHeight on property
 msgid "Height of hall in meters"
 msgstr "Altezza del corridoio in metri"
+
+# field "hallHeight" of property
+msgid "Hall Height"
+msgstr "Altezza del corridoio"
 
 # field "houseSubtype" of property
 msgid "House Subtype"
@@ -152,13 +156,17 @@ msgstr "Links"
 msgid "Living Surface"
 msgstr "Superficie abitabile"
 
+# field description "kg/m2" of maximalFloorLoading on property
+msgid "kg/m2"
+msgstr "kg/m2"
+
 # field "maximalFloorLoading" of property
 msgid "Maximal Floor Loading"
 msgstr "Carico massimo per piano"
 
-# field description "kg/m2" of maximalFloorLoading on property
-msgid "kg/m2"
-msgstr "kg/m2"
+# field "messageParticipations" of property
+msgid "Message Participations"
+msgstr ""
 
 # field "numberOfFloors" of property
 msgid "Number Of Floors"
