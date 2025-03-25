@@ -77,23 +77,23 @@ export class WorkspaceManagerService {
         schemaName,
       );
 
-    let defaultMetadataWorkspaceId = this.environmentService.get(
+    let defaultWorkspaceId = this.environmentService.get(
       'DEFAULT_METADATA_WORKSPACE_ID',
     );
 
     if (
-      defaultMetadataWorkspaceId &&
+      defaultWorkspaceId &&
       !(await this.workspaceDataSourceService.checkSchemaExists(
-        defaultMetadataWorkspaceId,
+        defaultWorkspaceId,
       ))
     ) {
-      defaultMetadataWorkspaceId = '';
+      defaultWorkspaceId = '';
     }
 
     await this.workspaceSyncMetadataService.synchronize({
       workspaceId,
       dataSourceId: dataSourceMetadata.id,
-      defaultMetadataWorkspaceId,
+      defaultWorkspaceId,
     });
 
     const permissionsEnabled =
@@ -103,7 +103,7 @@ export class WorkspaceManagerService {
       await this.initPermissions({ workspaceId, userId });
     }
 
-    if (!defaultMetadataWorkspaceId) {
+    if (!defaultWorkspaceId) {
       await this.prefillWorkspaceWithStandardObjects(
         dataSourceMetadata,
         workspaceId,
@@ -112,7 +112,7 @@ export class WorkspaceManagerService {
       await this.prefillWorkspaceWithDefaultWorkspaceData(
         dataSourceMetadata,
         workspaceId,
-        defaultMetadataWorkspaceId,
+        defaultWorkspaceId,
       );
     }
   }
@@ -207,7 +207,7 @@ export class WorkspaceManagerService {
   private async prefillWorkspaceWithDefaultWorkspaceData(
     dataSourceMetadata: DataSourceEntity,
     workspaceId: string,
-    defaultMetadataWorkspaceId: string,
+    defaultWorkspaceId: string,
   ) {
     const workspaceDataSource =
       await this.workspaceDataSourceService.connectToWorkspaceDataSource(
@@ -228,7 +228,7 @@ export class WorkspaceManagerService {
     // see: typeorm.service.ts, connectToDataSource method, isMultiDatasourceEnabled = false
     const defaultWorkspaceDataSource =
       await this.workspaceDataSourceService.connectToWorkspaceDataSource(
-        defaultMetadataWorkspaceId,
+        defaultWorkspaceId,
       );
 
     if (!defaultWorkspaceDataSource) {
@@ -237,12 +237,12 @@ export class WorkspaceManagerService {
 
     const defaultWorkspaceDataSourceMetadata =
       await this.dataSourceService.getLastDataSourceMetadataFromWorkspaceIdOrFail(
-        defaultMetadataWorkspaceId,
+        defaultWorkspaceId,
       );
 
     const defaultWorkspaceObjectMetadata =
       await this.objectMetadataService.findManyWithinWorkspace(
-        defaultMetadataWorkspaceId,
+        defaultWorkspaceId,
         {
           where: {
             isCustom: false,
