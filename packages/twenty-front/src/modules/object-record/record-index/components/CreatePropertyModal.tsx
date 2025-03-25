@@ -7,6 +7,7 @@ import { TextInputV2 } from '@/ui/input/components/TextInputV2';
 import { Modal, ModalRefType } from '@/ui/layout/modal/components/Modal';
 import { ModalHotkeyScope } from '@/ui/layout/modal/components/types/ModalHotkeyScope';
 import styled from '@emotion/styled';
+import { Trans, useLingui } from '@lingui/react/macro';
 import { forwardRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { isDefined } from 'twenty-shared';
@@ -62,6 +63,7 @@ export const CreatePropertyModal = forwardRef<
   const { records } = useFindManyRecords({
     objectNameSingular,
   });
+  const { t } = useLingui();
   const navigate = useNavigate();
   const [propertyName, setPropertyName] = useState('');
   const [address, setAddress] = useState<FieldAddressValue>({
@@ -118,12 +120,14 @@ export const CreatePropertyModal = forwardRef<
       <StyledModalHeader>
         <StyledModalTitleContainer>
           <IconPlus size={16} />
-          <StyledModalTitle>Create new property</StyledModalTitle>
+          <StyledModalTitle>
+            <Trans>Create new property</Trans>
+          </StyledModalTitle>
         </StyledModalTitleContainer>
         <StyledModalHeaderButtons>
-          <Button variant="tertiary" title="Cancel" onClick={onClose} />
+          <Button variant="tertiary" title={t`Cancel`} onClick={onClose} />
           <Button
-            title="Create"
+            title={t`Create`}
             onClick={handleCreate}
             accent="blue"
             disabled={!propertyName.trim()}
@@ -133,7 +137,7 @@ export const CreatePropertyModal = forwardRef<
 
       <StyledModalContent>
         <StyledDescription>
-          Enter the address of the new property
+          <Trans>Enter the address of the new property</Trans>
         </StyledDescription>
         <AddressInput
           listenToOutsideClick={false}
@@ -155,11 +159,13 @@ export const CreatePropertyModal = forwardRef<
           address.addressCountry !== '') ||
           propertyName) && (
           <>
-            <StyledDescription>Enter a name for the property</StyledDescription>
+            <StyledDescription>
+              <Trans>Enter a name for the property</Trans>
+            </StyledDescription>
             <TextInputV2
               value={propertyName}
               onChange={(text) => setPropertyName(text)}
-              placeholder="Property name"
+              placeholder={t`Property name`}
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
                   if (isDefined(propertyName)) {

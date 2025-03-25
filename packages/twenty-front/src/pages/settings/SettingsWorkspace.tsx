@@ -11,10 +11,15 @@ import { ToggleImpersonate } from '@/settings/workspace/components/ToggleImperso
 import { WorkspaceLogoUploader } from '@/settings/workspace/components/WorkspaceLogoUploader';
 import { SettingsPath } from '@/types/SettingsPath';
 import { SubMenuTopBarContainer } from '@/ui/layout/page/components/SubMenuTopBarContainer';
+import { useIsFeatureEnabled } from '@/workspace/hooks/useIsFeatureEnabled';
+import { FeatureFlagKey } from '~/generated/graphql';
 import { getSettingsPath } from '~/utils/navigation/getSettingsPath';
 
 export const SettingsWorkspace = () => {
   const isMultiWorkspaceEnabled = useRecoilValue(isMultiWorkspaceEnabledState);
+  const isDomainSettingsEnabled = useIsFeatureEnabled(
+    FeatureFlagKey.IsDomainGeneralSettingsEnabled,
+  );
   const { t } = useLingui();
 
   return (
@@ -37,7 +42,7 @@ export const SettingsWorkspace = () => {
           <H2Title title={t`Name`} description={t`Name of your workspace`} />
           <NameField />
         </Section>
-        {isMultiWorkspaceEnabled && (
+        {isMultiWorkspaceEnabled && isDomainSettingsEnabled && (
           <>
             <Section>
               <H2Title

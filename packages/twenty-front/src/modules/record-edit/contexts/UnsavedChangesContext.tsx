@@ -78,7 +78,6 @@ const UnsavedChangesModal = forwardRef<ModalRefType, UnsavedChangesModalProps>(
         isClosable
         closedOnMount
         padding="none"
-        size="small"
       >
         <StyledModalHeader>
           <StyledModalTitleContainer>
@@ -141,7 +140,6 @@ const ActionModal = forwardRef<ModalRefType, ModalConfig>(
         isClosable
         closedOnMount
         padding="none"
-        size="small"
       >
         <StyledModalHeader>
           <StyledModalTitleContainer>

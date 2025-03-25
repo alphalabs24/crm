@@ -22,7 +22,7 @@ import {
 
 import { SettingsPath } from '@/types/SettingsPath';
 import { SettingsFeatures } from 'twenty-shared';
-import { FeatureFlagKey } from '~/generated-metadata/graphql';
+import { FeatureFlagKey } from '~/generated/graphql';
 
 import { currentUserState } from '@/auth/states/currentUserState';
 import { billingState } from '@/client-config/states/billingState';
@@ -30,6 +30,7 @@ import { labPublicFeatureFlagsState } from '@/client-config/states/labPublicFeat
 import { useSettingsPermissionMap } from '@/settings/roles/hooks/useSettingsPermissionMap';
 import { NavigationDrawerItemIndentationLevel } from '@/ui/navigation/navigation-drawer/components/NavigationDrawerItem';
 import { useFeatureFlagsMap } from '@/workspace/hooks/useFeatureFlagsMap';
+import { useIsFeatureEnabled } from '@/workspace/hooks/useIsFeatureEnabled';
 import { t } from '@lingui/core/macro';
 import { useRecoilValue } from 'recoil';
 
@@ -59,6 +60,17 @@ const useSettingsNavigationItems = (): SettingsNavigationSection[] => {
   const currentUser = useRecoilValue(currentUserState);
   const isAdminEnabled = currentUser?.canImpersonate ?? false;
   const labPublicFeatureFlags = useRecoilValue(labPublicFeatureFlagsState);
+  const isDataModelSettingsEnabled = useIsFeatureEnabled(
+    FeatureFlagKey.IsDataModelSettingsEnabled,
+  );
+
+  const isIntegrationSettingsEnabled = useIsFeatureEnabled(
+    FeatureFlagKey.IsIntegrationSettingsEnabled,
+  );
+
+  const isLaborSettingsEnabled = useIsFeatureEnabled(
+    FeatureFlagKey.IsLaborSettingsEnabled,
+  );
 
   const featureFlags = useFeatureFlagsMap();
   const permissionMap = useSettingsPermissionMap();
@@ -145,13 +157,17 @@ const useSettingsNavigationItems = (): SettingsNavigationSection[] => {
           label: t`Data model`,
           path: SettingsPath.Objects,
           Icon: IconHierarchy2,
-          isHidden: !permissionMap[SettingsFeatures.DATA_MODEL],
+          isHidden:
+            !permissionMap[SettingsFeatures.DATA_MODEL] ||
+            !isDataModelSettingsEnabled,
         },
         {
           label: t`Integrations`,
           path: SettingsPath.Integrations,
           Icon: IconApps,
-          isHidden: !permissionMap[SettingsFeatures.API_KEYS_AND_WEBHOOKS],
+          isHidden:
+            !permissionMap[SettingsFeatures.API_KEYS_AND_WEBHOOKS] ||
+            !isIntegrationSettingsEnabled,
         },
         {
           label: t`Security`,
@@ -197,12 +213,15 @@ const useSettingsNavigationItems = (): SettingsNavigationSection[] => {
           Icon: IconFlask,
           isHidden:
             !labPublicFeatureFlags.length ||
-            !permissionMap[SettingsFeatures.WORKSPACE],
+            !permissionMap[SettingsFeatures.WORKSPACE] ||
+            !isLaborSettingsEnabled,
         },
         {
           label: t`Releases`,
           path: SettingsPath.Releases,
           Icon: IconRocket,
+          // TODO: Create nestermind releases page!
+          isHidden: true,
         },
       ],
     },
