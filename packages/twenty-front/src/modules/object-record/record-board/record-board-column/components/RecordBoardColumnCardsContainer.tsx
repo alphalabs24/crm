@@ -52,6 +52,10 @@ export const RecordBoardColumnCardsContainer = ({
   const { columnDefinition } = useContext(RecordBoardColumnContext);
   const { objectMetadataItem } = useContext(RecordBoardContext);
 
+  const isPublicationOrProperty =
+    objectMetadataItem.nameSingular === CoreObjectNameSingular.Publication ||
+    objectMetadataItem.nameSingular === CoreObjectNameSingular.Property;
+
   const columnId = columnDefinition.id;
 
   const isRecordIndexBoardColumnLoading = useRecoilValue(
@@ -151,11 +155,13 @@ export const RecordBoardColumnCardsContainer = ({
                 position="last"
               />
             )}
-            <StyledNewButtonContainer>
-              <RecordBoardColumnNewRecordButton
-                columnId={columnDefinition.id}
-              />
-            </StyledNewButtonContainer>
+            {!isPublicationOrProperty && (
+              <StyledNewButtonContainer>
+                <RecordBoardColumnNewRecordButton
+                  columnId={columnDefinition.id}
+                />
+              </StyledNewButtonContainer>
+            )}
           </div>
         )}
       </Draggable>

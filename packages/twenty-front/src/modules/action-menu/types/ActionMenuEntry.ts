@@ -17,6 +17,7 @@ export enum ActionMenuEntryScope {
 }
 
 export type ActionMenuEntry = {
+  id?: string;
   type: ActionMenuEntryType;
   scope: ActionMenuEntryScope;
   key: string;

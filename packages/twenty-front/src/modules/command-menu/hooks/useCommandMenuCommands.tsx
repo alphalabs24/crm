@@ -12,9 +12,11 @@ import {
   CommandScope,
   CommandType,
 } from '@/command-menu/types/Command';
+import { CoreObjectNamePlural } from '@/object-metadata/types/CoreObjectNamePlural';
 import { useRecoilComponentValueV2 } from '@/ui/utilities/state/component-state/hooks/useRecoilComponentValueV2';
 import { useIsFeatureEnabled } from '@/workspace/hooks/useIsFeatureEnabled';
 import { i18n } from '@lingui/core';
+import { useParams } from 'react-router-dom';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { IconSparkles } from 'twenty-ui';
 import { useDebounce } from 'use-debounce';
@@ -47,6 +49,10 @@ export const useCommandMenuCommands = () => {
   const copilotCommands: Command[] = isCopilotEnabled ? [copilotCommand] : [];
 
   const navigateCommands = Object.values(COMMAND_MENU_NAVIGATE_COMMANDS);
+  const { objectNamePlural } = useParams();
+  const isPropertyOrPublication =
+    objectNamePlural === CoreObjectNamePlural.Property ||
+    objectNamePlural === CoreObjectNamePlural.Publication;
 
   const actionRecordSelectionCommands: Command[] = actionMenuEntries
     ?.filter(
@@ -68,7 +74,10 @@ export const useCommandMenuCommands = () => {
     ?.filter(
       (actionMenuEntry) =>
         actionMenuEntry.type === ActionMenuEntryType.Standard &&
-        actionMenuEntry.scope === ActionMenuEntryScope.Object,
+        actionMenuEntry.scope === ActionMenuEntryScope.Object &&
+        // Filter out the add button for properties and publications
+        (!isPropertyOrPublication ||
+          actionMenuEntry.key !== 'create-new-record-no-selection'),
     )
     ?.map((actionMenuEntry) => ({
       id: actionMenuEntry.key,

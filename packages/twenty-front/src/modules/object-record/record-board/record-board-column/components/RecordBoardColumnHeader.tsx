@@ -99,6 +99,10 @@ export const RecordBoardColumnHeader = () => {
   );
 
   const hasObjectReadOnlyPermission = useHasObjectReadOnlyPermission();
+  const isPublication =
+    objectMetadataItem.nameSingular === CoreObjectNameSingular.Publication;
+  const isProperty =
+    objectMetadataItem.nameSingular === CoreObjectNameSingular.Property;
 
   const { isOpportunitiesCompanyFieldDisabled } =
     useIsOpportunitiesCompanyFieldDisabled();
@@ -149,13 +153,17 @@ export const RecordBoardColumnHeader = () => {
                   Icon={IconDotsVertical}
                   onClick={handleBoardColumnMenuOpen}
                 />
-                {!hasObjectReadOnlyPermission && (
-                  <LightIconButton
-                    accent="tertiary"
-                    Icon={IconPlus}
-                    onClick={() => handleNewButtonClick('first', isOpportunity)}
-                  />
-                )}
+                {!hasObjectReadOnlyPermission &&
+                  !isPublication &&
+                  !isProperty && (
+                    <LightIconButton
+                      accent="tertiary"
+                      Icon={IconPlus}
+                      onClick={() =>
+                        handleNewButtonClick('first', isOpportunity)
+                      }
+                    />
+                  )}
               </StyledHeaderActions>
             )}
           </StyledRightContainer>
