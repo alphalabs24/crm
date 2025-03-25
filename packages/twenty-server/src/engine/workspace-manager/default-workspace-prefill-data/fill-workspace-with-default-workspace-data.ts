@@ -2,17 +2,30 @@ import { DataSource, EntityManager } from 'typeorm';
 
 import { ObjectMetadataEntity } from 'src/engine/metadata-modules/object-metadata/object-metadata.entity';
 import { createNewWorkspaceFavoritesFromDefaultWorkspaceFavorites } from 'src/engine/workspace-manager/default-workspace-prefill-data/favorites/create-new-workspace-favorites-from-default-workspace-favorites';
+import { createNewWorkspaceFeatureFlagsFromDefaultWorkspaceFeatureFlags } from 'src/engine/workspace-manager/default-workspace-prefill-data/feature-flags/create-new-workspace-feature-flags-from-default-workspace-feature-flags';
 import { createNewWorkspaceViewsFromDefaultWorkspaceViews } from 'src/engine/workspace-manager/default-workspace-prefill-data/views/create-new-workspace-views-from-default-workspace-views';
 import { getStandardObjectWorkspaceViews } from 'src/engine/workspace-manager/default-workspace-prefill-data/views/get-workspace-views';
+import { createNewWorkspaceWebhooksFromDefaultWorkspaceWebhooks } from 'src/engine/workspace-manager/default-workspace-prefill-data/webhooks/create-new-workspace-webhooks-from-default-workspace-webhooks';
 
-export const defaultWorkspacePrefillData = async (
-  workspaceDataSource: DataSource,
-  schemaName: string,
-  objectMetadata: ObjectMetadataEntity[],
-  defaultWorkspaceDataSource: DataSource,
-  defaultWorkspaceDataSourceSchemaName: string,
-  defaultWorkspaceObjectMetadata: ObjectMetadataEntity[],
-) => {
+export const fillWorkspaceWithDefaultWorkspaceData = async ({
+  workspaceId,
+  workspaceDataSource,
+  schemaName,
+  objectMetadata,
+  defaultWorkspaceId,
+  defaultWorkspaceDataSource,
+  defaultWorkspaceDataSourceSchemaName,
+  defaultWorkspaceObjectMetadata,
+}: {
+  workspaceId: string;
+  workspaceDataSource: DataSource;
+  schemaName: string;
+  objectMetadata: ObjectMetadataEntity[];
+  defaultWorkspaceId: string;
+  defaultWorkspaceDataSource: DataSource;
+  defaultWorkspaceDataSourceSchemaName: string;
+  defaultWorkspaceObjectMetadata: ObjectMetadataEntity[];
+}) => {
   // Create reverse lookup maps (dwMetadataId -> standardId)
   const dwMetadataIdToStandardIdMap = createMetadataIdToStandardIdMap(
     defaultWorkspaceObjectMetadata,
@@ -59,6 +72,18 @@ export const defaultWorkspacePrefillData = async (
         schemaName,
         defaultWorkspaceDataSourceSchemaName,
       );
+
+      await createNewWorkspaceWebhooksFromDefaultWorkspaceWebhooks(
+        entityManager,
+        schemaName,
+        defaultWorkspaceDataSourceSchemaName,
+      );
+
+      await createNewWorkspaceFeatureFlagsFromDefaultWorkspaceFeatureFlags({
+        entityManager,
+        newWorkspaceId: workspaceId,
+        defaultWorkspaceId,
+      });
     },
   );
 };

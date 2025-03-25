@@ -130,7 +130,7 @@ export class WorkspaceSyncFieldMetadataService {
       FieldMetadataEntity<FieldMetadataType | 'default'>
     >,
   ): Promise<void> {
-    const defaultMetadataWorkspaceId = context.defaultMetadataWorkspaceId;
+    const defaultMetadataWorkspaceId = context.defaultWorkspaceId;
     // Create standard field metadata map
     const standardObjectStandardFieldMetadataMap =
       this.standardFieldFactory.create(
