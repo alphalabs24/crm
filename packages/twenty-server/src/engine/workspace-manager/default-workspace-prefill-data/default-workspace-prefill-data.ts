@@ -5,6 +5,7 @@ import { createNewWorkspaceFavoritesFromDefaultWorkspaceFavorites } from 'src/en
 import { createNewWorkspaceViewsFromDefaultWorkspaceViews } from 'src/engine/workspace-manager/default-workspace-prefill-data/views/create-new-workspace-views-from-default-workspace-views';
 import { getStandardObjectWorkspaceViews } from 'src/engine/workspace-manager/default-workspace-prefill-data/views/get-workspace-views';
 import { createNewWorkspaceWebhooksFromDefaultWorkspaceWebhooks } from 'src/engine/workspace-manager/default-workspace-prefill-data/webhooks/create-new-workspace-webhooks-from-default-workspace-webhooks';
+import { createNewWorkspaceFeatureFlagsFromDefaultWorkspaceFeatureFlags } from 'src/engine/workspace-manager/default-workspace-prefill-data/feature-flags/create-new-workspace-feature-flags-from-default-workspace-feature-flags';
 
 export const defaultWorkspacePrefillData = async (
   workspaceDataSource: DataSource,
@@ -65,6 +66,12 @@ export const defaultWorkspacePrefillData = async (
         entityManager,
         schemaName,
         defaultWorkspaceDataSourceSchemaName,
+      );
+
+      await createNewWorkspaceFeatureFlagsFromDefaultWorkspaceFeatureFlags(
+        entityManager,
+        defaultWorkspaceId,
+        newWorkspaceId,
       );
     },
   );
