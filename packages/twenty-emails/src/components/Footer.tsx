@@ -1,3 +1,4 @@
+import { t } from '@lingui/core/macro';
 import { Column, Row } from '@react-email/components';
 import { Link } from 'src/components/Link';
 import { ShadowText } from 'src/components/ShadowText';
@@ -9,46 +10,37 @@ export const Footer = () => {
         <Column>
           <ShadowText>
             <Link
-              href="https://twenty.com/"
-              value="Website"
-              aria-label="Visit Twenty's website"
+              href="https://nestermind.com/"
+              value={t`Website`}
+              aria-label={t`Visit nestermind's website`}
             />
           </ShadowText>
         </Column>
         <Column>
           <ShadowText>
             <Link
-              href="https://github.com/twentyhq/twenty"
-              value="Github"
-              aria-label="Visit Twenty's GitHub repository"
+              href="https://www.nestermind.com/academy"
+              value={t`Academy`}
+              aria-label={t`Visit nestermind's academy`}
             />
           </ShadowText>
         </Column>
         <Column>
           <ShadowText>
             <Link
-              href="https://twenty.com/user-guide"
-              value="User guide"
-              aria-label="Read Twenty's user guide"
-            />
-          </ShadowText>
-        </Column>
-        <Column>
-          <ShadowText>
-            <Link
-              href="https://docs.twenty.com/"
-              value="Developers"
-              aria-label="Visit Twenty's developer documentation"
+              href="https://www.linkedin.com/company/nestermind"
+              value={t`Follow us`}
+              aria-label={t`Follow us on Linkedin`}
             />
           </ShadowText>
         </Column>
       </Row>
       <ShadowText>
-        Twenty.com Public Benefit Corporation
+        Nestermind AG
         <br />
-        2261 Market Street #5275
+        Schaffhauserstrasse 78
         <br />
-        San Francisco, CA 94114
+        8057 Zürich, Switzerland
       </ShadowText>
     </>
   );
