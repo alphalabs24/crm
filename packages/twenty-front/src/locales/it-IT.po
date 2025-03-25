@@ -8,7 +8,7 @@ msgstr ""
 "Language: it\n"
 "Project-Id-Version: nestermind-crm\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-03-25 13:57\n"
+"PO-Revision-Date: 2025-03-25 15:58\n"
 "Last-Translator: \n"
 "Language-Team: Italian\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -886,8 +886,8 @@ msgid "Date and time"
 msgstr "Data e ora"
 
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
-msgid "Days Published"
-msgstr ""
+#~ msgid "Days Published"
+#~ msgstr "Days Published"
 
 #: src/pages/settings/data-model/SettingsObjectFieldEdit.tsx
 #: src/modules/workflow/components/RecordShowPageWorkflowHeader.tsx
@@ -1074,6 +1074,10 @@ msgstr ""
 #~ msgid "Drag & drop images here, or click to select files"
 #~ msgstr "Drag & drop images here, or click to select files"
 
+#: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
+msgid "Drag and drop your file here, or click to browse"
+msgstr ""
+
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Drop documents here"
 msgstr ""
@@ -1083,11 +1087,19 @@ msgstr ""
 msgid "Drop images here"
 msgstr ""
 
+#: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
+msgid "Drop the file here"
+msgstr ""
+
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 #~ msgid "Drop the files here..."
 #~ msgstr "Drop the files here..."
+
+#: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
+msgid "Drop your file to start analyzing"
+msgstr ""
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 #~ msgid "Dutch"
@@ -1595,7 +1607,6 @@ msgid "Input must be in camel case and cannot start with a number"
 msgstr "L'input deve essere in camel case e non può iniziare con un numero"
 
 #: src/modules/onboarding-tutorial/components/modals/InquiryTutorialModal.tsx
-#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
 msgid "Inquiries"
 msgstr ""
 
@@ -2010,8 +2021,8 @@ msgid "No images available"
 msgstr ""
 
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
-msgid "No inquiries yet"
-msgstr ""
+#~ msgid "No inquiries yet"
+#~ msgstr "No inquiries yet"
 
 #: src/pages/settings/roles/components/RoleAssignment.tsx
 #~ msgid "No members assigned to this role yet"
@@ -2058,8 +2069,8 @@ msgid "No Results"
 msgstr "Nessun risultato"
 
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
-msgid "No similar properties found"
-msgstr ""
+#~ msgid "No similar properties found"
+#~ msgstr "No similar properties found"
 
 #: src/pages/settings/email-templates/components/EmailTemplateSelect.tsx
 msgid "No template"
@@ -2268,7 +2279,6 @@ msgstr "Plurale"
 #~ msgstr "Portuguese (Portugal)"
 
 #: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
-#: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
 msgid "Prefill"
 msgstr ""
 
@@ -2283,12 +2293,12 @@ msgid "Preview"
 msgstr "Anteprima"
 
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
-msgid "Price History"
-msgstr ""
+#~ msgid "Price History"
+#~ msgstr "Price History"
 
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
-msgid "Price history chart coming soon"
-msgstr ""
+#~ msgid "Price history chart coming soon"
+#~ msgstr "Price history chart coming soon"
 
 #: src/modules/auth/sign-in-up/components/FooterNote.tsx
 msgid "Privacy Policy"
@@ -2395,8 +2405,8 @@ msgid "Receive an email containing password update link"
 msgstr "Ricevi un'e-mail contenente il link per l'aggiornamento della password"
 
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
-msgid "Recent Inquiries"
-msgstr ""
+#~ msgid "Recent Inquiries"
+#~ msgstr "Recent Inquiries"
 
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
 #~ msgid "Recent Visitors"
@@ -2451,6 +2461,14 @@ msgstr "Rimuovere {workspaceMemberName}?"
 #: src/modules/action-menu/actions/record-actions/constants/DefaultActionsConfigV1.ts
 msgid "Remove from favorites"
 msgstr "Rimuovi dai preferiti"
+
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+msgid "Reporting"
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+msgid "Reporting coming soon"
+msgstr ""
 
 #: src/pages/auth/PasswordReset.tsx
 msgid "Reset Password"
@@ -2686,8 +2704,8 @@ msgid "Sign up"
 msgstr "Registrati"
 
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
-msgid "Similar Properties"
-msgstr ""
+#~ msgid "Similar Properties"
+#~ msgstr "Similar Properties"
 
 #: src/modules/auth/sign-in-up/components/SignInUpWithSSO.tsx
 msgid "Single sign-on (SSO)"
@@ -2715,8 +2733,8 @@ msgid "SSO"
 msgstr ""
 
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
-msgid "Status"
-msgstr ""
+#~ msgid "Status"
+#~ msgstr "Status"
 
 #: src/pages/settings/workspace/SettingsSubdomain.tsx
 msgid "Subdomain"
@@ -2986,6 +3004,10 @@ msgstr ""
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Upload"
 msgstr "Carica"
+
+#: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
+msgid "Upload a file"
+msgstr ""
 
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Upload Documents"

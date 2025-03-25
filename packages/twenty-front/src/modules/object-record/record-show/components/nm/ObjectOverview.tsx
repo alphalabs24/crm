@@ -11,11 +11,9 @@ import { ShowPagePropertySummaryCard } from '@/ui/layout/show-page/components/nm
 import { ShowPageSummaryCardSkeletonLoader } from '@/ui/layout/show-page/components/ShowPageSummaryCardSkeletonLoader';
 
 import { FieldMetadataItem } from '@/object-metadata/types/FieldMetadataItem';
-import { PlatformBadge } from '@/object-record/record-show/components/nm/publication/PlatformBadge';
 import { CATEGORY_SUBTYPES } from '@/record-edit/constants/CategorySubtypes';
 import { Modal, ModalRefType } from '@/ui/layout/modal/components/Modal';
 import { ModalHotkeyScope } from '@/ui/layout/modal/components/types/ModalHotkeyScope';
-import { PlatformId } from '@/ui/layout/show-page/components/nm/types/Platform';
 import { useIsMobile } from '@/ui/utilities/responsive/hooks/useIsMobile';
 import styled from '@emotion/styled';
 import { Trans, useLingui } from '@lingui/react/macro';
@@ -400,7 +398,7 @@ export const ObjectOverview = ({
               <StyledTitle>
                 <Trans>{overviewLabel} Overview</Trans>
               </StyledTitle>
-              <StyledButtonContainer>
+              {/*<StyledButtonContainer>
                 {!isPublication ? (
                   isInRightDrawer ? null : (
                     <Button
@@ -418,6 +416,7 @@ export const ObjectOverview = ({
                   />
                 )}
               </StyledButtonContainer>
+              */}
             </StyledHeader>
             <StyledContent>
               <ShowPagePropertySummaryCard
@@ -597,12 +596,12 @@ export const ObjectOverview = ({
               <StyledDropZoneContent>
                 <StyledUploadIcon size={32} />
                 <StyledUploadTitle>
-                  {isDragActive ? 'Drop the file here' : 'Upload a file'}
+                  {isDragActive ? t`Drop the file here` : t`Upload a file`}
                 </StyledUploadTitle>
                 <StyledUploadSubTitle>
                   {isDragActive
-                    ? 'Drop your file to start analyzing'
-                    : 'Drag and drop your file here, or click to browse'}
+                    ? t`Drop your file to start analyzing`
+                    : t`Drag and drop your file here, or click to browse`}
                 </StyledUploadSubTitle>
               </StyledDropZoneContent>
             </StyledDropZoneContainer>

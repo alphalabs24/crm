@@ -129,6 +129,13 @@ export const useNestermind = () => {
     );
   };
 
+  // Metrics routes
+  const calculatePublicationMetrics = async (publicationIds: string[]) => {
+    return api.post(`/metrics/publications`, {
+      ids: publicationIds,
+    });
+  };
+
   return {
     api,
     publicationsApi: {
@@ -153,6 +160,9 @@ export const useNestermind = () => {
     },
     messagesApi: {
       getRecordMessageThreads,
+    },
+    metricsApi: {
+      calculatePublicationMetrics,
     },
   };
 };

@@ -1,23 +1,16 @@
 import { ActivityTargetableObject } from '@/activities/types/ActivityTargetableEntity';
-import { StatusBadge } from '@/object-record/record-show/components/nm/publication/StatusBadge';
 import { useRecordShowContainerData } from '@/object-record/record-show/hooks/useRecordShowContainerData';
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Trans, useLingui } from '@lingui/react/macro';
-
 import { useMemo } from 'react';
 import {
-  IconBuildingSkyscraper,
-  IconUsers,
+  IconChartBar,
   LARGE_DESKTOP_VIEWPORT,
   MOBILE_VIEWPORT,
-  IconCalendarStats,
-  IconChartBar,
-  IconMessageCircle2,
 } from 'twenty-ui';
 import { ObjectOverview } from './ObjectOverview';
 import { CompletionProgress } from './publication/CompletionProgress';
-import { KPICard } from './publication/KPICard';
-import { css } from '@emotion/react';
 
 const StyledContentContainer = styled.div<{ isInRightDrawer?: boolean }>`
   display: flex;
@@ -83,6 +76,10 @@ const StyledSectionContent = styled.div`
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(3)};
   padding: ${({ theme }) => theme.spacing(4)};
+`;
+
+const StyledComingSoonText = styled.div`
+  color: ${({ theme }) => theme.font.color.secondary};
 `;
 
 const StyledKPIGrid = styled.div`
@@ -178,70 +175,80 @@ export const PublicationDetails = ({
   }
 
   return (
-    <StyledContentContainer isInRightDrawer={isInRightDrawer}>
-      <ObjectOverview
-        targetableObject={targetableObject}
-        isInRightDrawer={isInRightDrawer}
-        isNewRightDrawerItemLoading={false}
-        isPublication
-      />
-      <StyledRightContentContainer isInRightDrawer={isInRightDrawer}>
-        <StyledProgressContainer>
-          <CompletionProgress percentage={definedValuePercentage} />
-        </StyledProgressContainer>
-        <StyledKPIGrid>
-          <KPICard
-            label={t`Inquiries`}
-            value={publication.metrics?.inquiries || 0}
-            icon={<IconMessageCircle2 size={16} />}
-          />
-          <KPICard
-            label={t`Days Published`}
-            value={publication.metrics?.daysPublished || 0}
-            icon={<IconCalendarStats size={16} />}
-          />
-          <KPICard
-            label={t`Status`}
-            value={<StatusBadge status={publication.stage} />}
-            icon={<IconBuildingSkyscraper size={16} />}
-          />
-        </StyledKPIGrid>
-        <StyledSection>
-          <StyledSectionTitle>
-            <IconMessageCircle2 size={16} />
-            {t`Recent Inquiries`}
-          </StyledSectionTitle>
-          <StyledSectionContent>
-            <StyledEmptyTable>{t`No inquiries yet`}</StyledEmptyTable>
-          </StyledSectionContent>
-        </StyledSection>
-
-        <StyledTwoColumns>
+    <>
+      <StyledContentContainer isInRightDrawer={isInRightDrawer}>
+        <ObjectOverview
+          targetableObject={targetableObject}
+          isInRightDrawer={isInRightDrawer}
+          isNewRightDrawerItemLoading={false}
+          isPublication
+        />
+        <StyledRightContentContainer isInRightDrawer={isInRightDrawer}>
+          <StyledProgressContainer>
+            <CompletionProgress percentage={definedValuePercentage} />
+          </StyledProgressContainer>
           <StyledSection>
             <StyledSectionTitle>
               <IconChartBar size={16} />
-              {t`Price History`}
+              {t`Reporting`}
             </StyledSectionTitle>
             <StyledSectionContent>
-              <StyledChartPlaceholder>
-                {t`Price history chart coming soon`}
-              </StyledChartPlaceholder>
+              <StyledComingSoonText>
+                <Trans>Reporting coming soon</Trans>
+              </StyledComingSoonText>
             </StyledSectionContent>
           </StyledSection>
 
+          {/*<StyledKPIGrid>
+            <KPICard
+              label={t`Inquiries`}
+              value={publicationMetrics.contacts}
+              icon={<IconMessageCircle2 size={16} />}
+            />
+            <KPICard
+              label={t`Status`}
+              value={<StatusBadge status={publication.stage} />}
+              icon={<IconBuildingSkyscraper size={16} />}
+            />
+          </StyledKPIGrid>
           <StyledSection>
             <StyledSectionTitle>
-              <IconBuildingSkyscraper size={16} />
-              {t`Similar Properties`}
+              <IconMessageCircle2 size={16} />
+              {t`Recent Inquiries`}
             </StyledSectionTitle>
             <StyledSectionContent>
-              <StyledEmptyTable>
-                {t`No similar properties found`}
-              </StyledEmptyTable>
+              <StyledEmptyTable>{t`No inquiries yet`}</StyledEmptyTable>
             </StyledSectionContent>
           </StyledSection>
-        </StyledTwoColumns>
-      </StyledRightContentContainer>
-    </StyledContentContainer>
+
+          <StyledTwoColumns>
+            <StyledSection>
+              <StyledSectionTitle>
+                <IconChartBar size={16} />
+                {t`Price History`}
+              </StyledSectionTitle>
+              <StyledSectionContent>
+                <StyledChartPlaceholder>
+                  {t`Price history chart coming soon`}
+                </StyledChartPlaceholder>
+              </StyledSectionContent>
+            </StyledSection>
+
+            <StyledSection>
+              <StyledSectionTitle>
+                <IconBuildingSkyscraper size={16} />
+                {t`Similar Properties`}
+              </StyledSectionTitle>
+              <StyledSectionContent>
+                <StyledEmptyTable>
+                  {t`No similar properties found`}
+                </StyledEmptyTable>
+              </StyledSectionContent>
+            </StyledSection>
+          </StyledTwoColumns>
+          */}
+        </StyledRightContentContainer>
+      </StyledContentContainer>
+    </>
   );
 };
