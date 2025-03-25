@@ -27,7 +27,7 @@ import { PETS_METADATA_SEEDS } from 'src/engine/seeder/metadata-seeds/pets-metad
 import { SURVEY_RESULTS_METADATA_SEEDS } from 'src/engine/seeder/metadata-seeds/survey-results-metadata-seeds';
 import { SeederService } from 'src/engine/seeder/seeder.service';
 import { WorkspaceDataSourceService } from 'src/engine/workspace-datasource/workspace-datasource.service';
-import { fillWorkspaceWithDefaultWorkspaceData } from 'src/engine/workspace-manager/default-workspace-prefill-data/default-workspace-prefill-data';
+import { fillWorkspaceWithDefaultWorkspaceData } from 'src/engine/workspace-manager/default-workspace-prefill-data/fill-workspace-with-default-workspace-data';
 import { seedWorkspaceWithDemoData } from 'src/engine/workspace-manager/demo-objects-prefill-data/seed-workspace-with-demo-data';
 import { standardObjectsPrefillData } from 'src/engine/workspace-manager/standard-objects-prefill-data/standard-objects-prefill-data';
 import { WorkspaceSyncMetadataService } from 'src/engine/workspace-manager/workspace-sync-metadata/workspace-sync-metadata.service';
