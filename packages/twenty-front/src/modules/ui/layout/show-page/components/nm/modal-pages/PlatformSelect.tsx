@@ -1,6 +1,7 @@
 import { useNestermind } from '@/api/hooks/useNestermind';
-import { tokenPairState } from '@/auth/states/tokenPairState';
+import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { getLinkToShowPage } from '@/object-metadata/utils/getLinkToShowPage';
+import { useFindOneRecord } from '@/object-record/hooks/useFindOneRecord';
 import { SnackBarVariant } from '@/ui/feedback/snack-bar-manager/components/SnackBar';
 import { useSnackBar } from '@/ui/feedback/snack-bar-manager/hooks/useSnackBar';
 import {
@@ -11,17 +12,19 @@ import { useColorScheme } from '@/ui/theme/hooks/useColorScheme';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useLingui } from '@lingui/react/macro';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
 import {
   Button,
+  IconAlertCircle,
+  IconAlertTriangle,
   IconCheck,
   IconLayoutGrid,
   IconWand,
   LARGE_DESKTOP_VIEWPORT,
 } from 'twenty-ui';
 import { ValidationResult } from '../../../hooks/usePublicationValidation';
+
 const StyledPlatformSelectionContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -212,24 +215,22 @@ const StyledPlatformLogoImage = styled.img`
   width: 100%;
 `;
 
-const StyledValidationDetails = styled.div`
-  color: ${({ theme }) => theme.font.color.danger};
+const StyledValidationDetails = styled.div<{ variant?: 'warning' }>`
+  color: ${({ theme, variant }) =>
+    variant === 'warning' ? theme.font.color.warning : theme.font.color.danger};
   font-size: ${({ theme }) => theme.font.size.sm};
   display: flex;
   align-items: center;
-  gap: ${({ theme }) => theme.spacing(2)};
+  gap: ${({ theme }) => theme.spacing(1.5)};
 `;
 
-const StyledEditLink = styled(Link)`
-  color: ${({ theme }) => theme.font.color.primary};
+const StyledEditLink = styled(Link)<{ variant?: 'warning' }>`
+  color: ${({ theme, variant }) =>
+    variant === 'warning'
+      ? theme.font.color.warning
+      : theme.font.color.primary};
   font-size: ${({ theme }) => theme.font.size.sm};
 `;
-
-// TODO: Remove this once we have the actual type form standard graphql
-type Agency = {
-  id: string;
-  name: string;
-};
 
 type PlatformSelectProps = {
   handlePlatformSelect: (platform: PlatformId) => void;
@@ -249,13 +250,23 @@ export const PlatformSelect = ({
 }: PlatformSelectProps) => {
   const navigate = useNavigate();
   const theme = useTheme();
-  const tokenPair = useRecoilValue(tokenPairState);
   const { enqueueSnackBar } = useSnackBar();
   const [loading, setLoading] = useState(false);
   const { t } = useLingui();
   const [showError, setShowError] = useState(false);
   const { colorScheme } = useColorScheme();
   const { propertiesApi: properties } = useNestermind();
+
+  const { record } = useFindOneRecord({
+    objectNameSingular: CoreObjectNameSingular.Property,
+    objectRecordId: recordId,
+  });
+
+  const hasEmailTemplate = useMemo(
+    () => Boolean(record?.emailTemplateId),
+    [record?.emailTemplateId],
+  );
+
   const realEstatePlatforms = Object.keys(PLATFORMS)
     .filter(
       (platform) => PLATFORMS[platform as PlatformId].type === 'real_estate',
@@ -400,16 +411,31 @@ export const PlatformSelect = ({
         </StyledPlatformGrid>
         <StyledPlatformTypeActionsContainer>
           <StyledPlatformTypeActions>
-            {showError && (
+            {showError ? (
               <StyledValidationDetails>
+                <IconAlertTriangle size={16} />
                 {validationDetails?.message}
                 <StyledEditLink
-                  to={`${getLinkToShowPage('property', { id: recordId })}/edit`}
+                  to={`${getLinkToShowPage('property', { id: recordId })}/edit#property-overview`}
                 >
                   {t`Edit`}
                 </StyledEditLink>
               </StyledValidationDetails>
+            ) : (
+              !hasEmailTemplate && (
+                <StyledValidationDetails variant="warning">
+                  <IconAlertCircle size={16} />
+                  {t`You have no email template set for this property.`}{' '}
+                  <StyledEditLink
+                    to={`${getLinkToShowPage('property', { id: recordId })}/edit#property-emails`}
+                    variant="warning"
+                  >
+                    {t`Edit`}
+                  </StyledEditLink>
+                </StyledValidationDetails>
+              )
             )}
+
             <Button
               variant="primary"
               accent="blue"
