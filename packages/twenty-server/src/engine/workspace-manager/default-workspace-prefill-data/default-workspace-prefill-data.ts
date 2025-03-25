@@ -7,7 +7,7 @@ import { createNewWorkspaceViewsFromDefaultWorkspaceViews } from 'src/engine/wor
 import { getStandardObjectWorkspaceViews } from 'src/engine/workspace-manager/default-workspace-prefill-data/views/get-workspace-views';
 import { createNewWorkspaceWebhooksFromDefaultWorkspaceWebhooks } from 'src/engine/workspace-manager/default-workspace-prefill-data/webhooks/create-new-workspace-webhooks-from-default-workspace-webhooks';
 
-export const defaultWorkspacePrefillData = async ({
+export const fillWorkspaceWithDefaultWorkspaceData = async ({
   workspaceId,
   workspaceDataSource,
   schemaName,
