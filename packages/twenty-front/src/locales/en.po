@@ -521,6 +521,7 @@ msgstr "Calendars"
 #: src/modules/publishers/components/modals/EditPublisherModal.tsx
 #: src/modules/object-record/record-show/components/nm/VideoGenerationModal.tsx
 #: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
+#: src/modules/object-record/record-index/components/CreatePropertyModal.tsx
 msgid "Cancel"
 msgstr "Cancel"
 
@@ -744,6 +745,10 @@ msgstr "Count not empty"
 msgid "Count unique values"
 msgstr "Count unique values"
 
+#: src/modules/object-record/record-index/components/CreatePropertyModal.tsx
+msgid "Create"
+msgstr "Create"
+
 #: src/pages/settings/email-templates/SettingsEmailTemplateNew.tsx
 msgid "Create a new email template."
 msgstr "Create a new email template."
@@ -763,6 +768,10 @@ msgstr "Create API key"
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
 msgid "Create Draft"
 msgstr "Create Draft"
+
+#: src/modules/object-record/record-index/components/CreatePropertyModal.tsx
+msgid "Create new property"
+msgstr "Create new property"
 
 #: src/modules/action-menu/actions/record-actions/constants/WorkflowActionsConfig.ts
 #: src/modules/action-menu/actions/record-actions/constants/DefaultActionsConfigV2.ts
@@ -1221,6 +1230,10 @@ msgstr "English"
 msgid "Enjoy a {withCreditCardTrialPeriodDuration}-days free trial"
 msgstr "Enjoy a {withCreditCardTrialPeriodDuration}-days free trial"
 
+#: src/modules/object-record/record-index/components/CreatePropertyModal.tsx
+msgid "Enter a name for the property"
+msgstr "Enter a name for the property"
+
 #: src/modules/record-edit/components/custom/DocumentEditModal.tsx
 msgid "Enter document name"
 msgstr "Enter document name"
@@ -1236,6 +1249,10 @@ msgstr "Enter publisher name"
 #: src/modules/record-edit/components/custom/PropertyEmailsFormInput.tsx
 msgid "Enter test email address"
 msgstr "Enter test email address"
+
+#: src/modules/object-record/record-index/components/CreatePropertyModal.tsx
+msgid "Enter the address of the new property"
+msgstr "Enter the address of the new property"
 
 #: src/pages/settings/security/SettingsSecurity.tsx
 msgid "Enterprise"
@@ -2303,6 +2320,10 @@ msgstr "Property Flyer"
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 msgid "Property Images"
 msgstr "Property Images"
+
+#: src/modules/object-record/record-index/components/CreatePropertyModal.tsx
+msgid "Property name"
+msgstr "Property name"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 msgid "Pseudo-English"

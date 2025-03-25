@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: nestermind-crm\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-03-25 10:36\n"
+"PO-Revision-Date: 2025-03-25 12:57\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -526,6 +526,7 @@ msgstr "Calendriers"
 #: src/modules/publishers/components/modals/EditPublisherModal.tsx
 #: src/modules/object-record/record-show/components/nm/VideoGenerationModal.tsx
 #: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
+#: src/modules/object-record/record-index/components/CreatePropertyModal.tsx
 msgid "Cancel"
 msgstr "Annuler"
 
@@ -749,6 +750,10 @@ msgstr "Compter les non vides"
 msgid "Count unique values"
 msgstr "Compter les valeurs uniques"
 
+#: src/modules/object-record/record-index/components/CreatePropertyModal.tsx
+msgid "Create"
+msgstr ""
+
 #: src/pages/settings/email-templates/SettingsEmailTemplateNew.tsx
 msgid "Create a new email template."
 msgstr ""
@@ -767,6 +772,10 @@ msgstr "Créer une clé API"
 
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
 msgid "Create Draft"
+msgstr ""
+
+#: src/modules/object-record/record-index/components/CreatePropertyModal.tsx
+msgid "Create new property"
 msgstr ""
 
 #: src/modules/action-menu/actions/record-actions/constants/WorkflowActionsConfig.ts
@@ -1226,6 +1235,10 @@ msgstr "Anglais"
 msgid "Enjoy a {withCreditCardTrialPeriodDuration}-days free trial"
 msgstr "Profitez d'un essai gratuit de {withCreditCardTrialPeriodDuration} jours"
 
+#: src/modules/object-record/record-index/components/CreatePropertyModal.tsx
+msgid "Enter a name for the property"
+msgstr ""
+
 #: src/modules/record-edit/components/custom/DocumentEditModal.tsx
 msgid "Enter document name"
 msgstr ""
@@ -1240,6 +1253,10 @@ msgstr ""
 
 #: src/modules/record-edit/components/custom/PropertyEmailsFormInput.tsx
 msgid "Enter test email address"
+msgstr ""
+
+#: src/modules/object-record/record-index/components/CreatePropertyModal.tsx
+msgid "Enter the address of the new property"
 msgstr ""
 
 #: src/pages/settings/security/SettingsSecurity.tsx
@@ -2304,6 +2321,10 @@ msgstr ""
 
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 msgid "Property Images"
+msgstr ""
+
+#: src/modules/object-record/record-index/components/CreatePropertyModal.tsx
+msgid "Property name"
 msgstr ""
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx

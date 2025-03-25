@@ -13,6 +13,10 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#: src/components/Footer.tsx
+msgid "Academy"
+msgstr ""
+
 #: src/emails/send-invite-link.email.tsx
 msgid "Accept invite"
 msgstr ""
@@ -37,9 +41,21 @@ msgstr ""
 msgid "Dear {userName}"
 msgstr ""
 
-#: src/emails/send-invite-link.email.tsx
-msgid "has invited you to join a workspace called "
+#: src/components/Footer.tsx
+msgid "Follow us"
 msgstr ""
+
+#: src/components/Footer.tsx
+msgid "Follow us on Linkedin"
+msgstr ""
+
+#: src/emails/send-invite-link.email.tsx
+msgid "has invited you to join a workspace called"
+msgstr ""
+
+#: src/emails/send-invite-link.email.tsx
+#~ msgid "has invited you to join a workspace called "
+#~ msgstr ""
 
 #: src/emails/password-update-notify.email.tsx
 msgid "Hello"
@@ -62,8 +78,12 @@ msgid "It appears that your workspace <0>{workspaceDisplayName}</0> has been sus
 msgstr ""
 
 #: src/emails/send-invite-link.email.tsx
-msgid "Join your team on Twenty"
+msgid "Join your team on nestermind"
 msgstr ""
+
+#: src/emails/send-invite-link.email.tsx
+#~ msgid "Join your team on Twenty"
+#~ msgstr ""
 
 #: src/emails/password-update-notify.email.tsx
 msgid "Password updated"
@@ -79,6 +99,10 @@ msgstr ""
 
 #: src/emails/send-email-verification-link.email.tsx
 msgid "Thanks for registering for an account on Twenty! Before we get started, we just need to confirm that this is you. Click above to verify your email address."
+msgstr ""
+
+#: src/components/WhatIsTwenty.tsx
+msgid "The AI real estate software for innovative agents."
 msgstr ""
 
 #: src/emails/warn-suspended-workspace.email.tsx
@@ -107,6 +131,22 @@ msgstr ""
 
 #: src/emails/send-email-verification-link.email.tsx
 msgid "Verify Email"
+msgstr ""
+
+#: src/components/Footer.tsx
+msgid "Visit nestermind's academy"
+msgstr ""
+
+#: src/components/Footer.tsx
+msgid "Visit nestermind's website"
+msgstr ""
+
+#: src/components/Footer.tsx
+msgid "Website"
+msgstr ""
+
+#: src/components/WhatIsTwenty.tsx
+msgid "What is nestermind?"
 msgstr ""
 
 #: src/emails/clean-suspended-workspace.email.tsx

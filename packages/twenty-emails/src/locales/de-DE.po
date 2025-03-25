@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: nestermind-crm\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-03-25 08:53\n"
+"PO-Revision-Date: 2025-03-25 12:53\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -17,6 +17,10 @@ msgstr ""
 "X-Crowdin-Language: de\n"
 "X-Crowdin-File: /packages/twenty-emails/src/locales/en.po\n"
 "X-Crowdin-File-ID: 18\n"
+
+#: src/components/Footer.tsx
+msgid "Academy"
+msgstr ""
 
 #: src/emails/send-invite-link.email.tsx
 msgid "Accept invite"
@@ -42,9 +46,21 @@ msgstr "Mit Twenty verbinden"
 msgid "Dear {userName}"
 msgstr "Sehr geehrte/r {userName}"
 
+#: src/components/Footer.tsx
+msgid "Follow us"
+msgstr ""
+
+#: src/components/Footer.tsx
+msgid "Follow us on Linkedin"
+msgstr ""
+
 #: src/emails/send-invite-link.email.tsx
-msgid "has invited you to join a workspace called "
-msgstr "hat Sie eingeladen, einem Workspace namens "
+msgid "has invited you to join a workspace called"
+msgstr ""
+
+#: src/emails/send-invite-link.email.tsx
+#~ msgid "has invited you to join a workspace called "
+#~ msgstr "has invited you to join a workspace called "
 
 #: src/emails/password-update-notify.email.tsx
 msgid "Hello"
@@ -67,8 +83,12 @@ msgid "It appears that your workspace <0>{workspaceDisplayName}</0> has been sus
 msgstr "Es scheint, dass Ihr Workspace <0>{workspaceDisplayName}</0> seit {daysSinceInactive} Tagen gesperrt ist."
 
 #: src/emails/send-invite-link.email.tsx
-msgid "Join your team on Twenty"
-msgstr "Treten Sie Ihrem Team auf Twenty bei"
+msgid "Join your team on nestermind"
+msgstr ""
+
+#: src/emails/send-invite-link.email.tsx
+#~ msgid "Join your team on Twenty"
+#~ msgstr "Join your team on Twenty"
 
 #: src/emails/password-update-notify.email.tsx
 msgid "Password updated"
@@ -85,6 +105,10 @@ msgstr "Setzen Sie Ihr Passwort zurück 🗝"
 #: src/emails/send-email-verification-link.email.tsx
 msgid "Thanks for registering for an account on Twenty! Before we get started, we just need to confirm that this is you. Click above to verify your email address."
 msgstr "Vielen Dank für Ihre Registrierung bei Twenty! Bevor wir beginnen, müssen wir nur bestätigen, dass Sie es sind. Klicken Sie oben, um Ihre E-Mail-Adresse zu verifizieren."
+
+#: src/components/WhatIsTwenty.tsx
+msgid "The AI real estate software for innovative agents."
+msgstr ""
 
 #: src/emails/warn-suspended-workspace.email.tsx
 msgid "The workspace will be deactivated in {remainingDays} {dayOrDays}, and all its data will be deleted."
@@ -113,6 +137,22 @@ msgstr "Aktualisieren Sie Ihr Abonnement"
 #: src/emails/send-email-verification-link.email.tsx
 msgid "Verify Email"
 msgstr "E-Mail verifizieren"
+
+#: src/components/Footer.tsx
+msgid "Visit nestermind's academy"
+msgstr ""
+
+#: src/components/Footer.tsx
+msgid "Visit nestermind's website"
+msgstr ""
+
+#: src/components/Footer.tsx
+msgid "Website"
+msgstr ""
+
+#: src/components/WhatIsTwenty.tsx
+msgid "What is nestermind?"
+msgstr ""
 
 #: src/emails/clean-suspended-workspace.email.tsx
 msgid "Your workspace <0>{workspaceDisplayName}</0> has been deleted as your subscription expired {daysSinceInactive} days ago."

@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: nestermind-crm\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-03-25 10:36\n"
+"PO-Revision-Date: 2025-03-25 12:57\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -526,6 +526,7 @@ msgstr "Kalender"
 #: src/modules/publishers/components/modals/EditPublisherModal.tsx
 #: src/modules/object-record/record-show/components/nm/VideoGenerationModal.tsx
 #: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
+#: src/modules/object-record/record-index/components/CreatePropertyModal.tsx
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -749,6 +750,10 @@ msgstr "Nicht leere zählen"
 msgid "Count unique values"
 msgstr "Eindeutige Werte zählen"
 
+#: src/modules/object-record/record-index/components/CreatePropertyModal.tsx
+msgid "Create"
+msgstr "Erstellen"
+
 #: src/pages/settings/email-templates/SettingsEmailTemplateNew.tsx
 msgid "Create a new email template."
 msgstr "Neue E-Mail-Vorlage erstellen."
@@ -768,6 +773,10 @@ msgstr "API-Schlüssel erstellen"
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
 msgid "Create Draft"
 msgstr "Entwurf erstellen"
+
+#: src/modules/object-record/record-index/components/CreatePropertyModal.tsx
+msgid "Create new property"
+msgstr "Neues Objekt erstellen"
 
 #: src/modules/action-menu/actions/record-actions/constants/WorkflowActionsConfig.ts
 #: src/modules/action-menu/actions/record-actions/constants/DefaultActionsConfigV2.ts
@@ -1226,6 +1235,10 @@ msgstr "Englisch"
 msgid "Enjoy a {withCreditCardTrialPeriodDuration}-days free trial"
 msgstr "Genießen Sie eine {withCreditCardTrialPeriodDuration}-tägige kostenlose Testphase"
 
+#: src/modules/object-record/record-index/components/CreatePropertyModal.tsx
+msgid "Enter a name for the property"
+msgstr "Gib einen Namen für das Objekt ein"
+
 #: src/modules/record-edit/components/custom/DocumentEditModal.tsx
 msgid "Enter document name"
 msgstr "Dokumentnamen eingeben"
@@ -1241,6 +1254,10 @@ msgstr "Anbietername eingeben"
 #: src/modules/record-edit/components/custom/PropertyEmailsFormInput.tsx
 msgid "Enter test email address"
 msgstr "Test E-Mail-Adresse eingeben"
+
+#: src/modules/object-record/record-index/components/CreatePropertyModal.tsx
+msgid "Enter the address of the new property"
+msgstr "Gib die Adresse des neuen Objekts ein"
 
 #: src/pages/settings/security/SettingsSecurity.tsx
 msgid "Enterprise"
@@ -2308,6 +2325,10 @@ msgstr "Flyer"
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 msgid "Property Images"
 msgstr "Objektbilder"
+
+#: src/modules/object-record/record-index/components/CreatePropertyModal.tsx
+msgid "Property name"
+msgstr "Objektname"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 msgid "Pseudo-English"
