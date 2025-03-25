@@ -1,10 +1,14 @@
 import { EntityManager } from 'typeorm';
 
-export async function createNewWorkspaceFeatureFlagsFromDefaultWorkspaceFeatureFlags(
-  entityManager: EntityManager,
-  defaultWorkspaceId: string,
-  newWorkspaceId: string,
-) {
+export async function createNewWorkspaceFeatureFlagsFromDefaultWorkspaceFeatureFlags({
+  entityManager,
+  newWorkspaceId,
+  defaultWorkspaceId,
+}: {
+  entityManager: EntityManager;
+  newWorkspaceId: string;
+  defaultWorkspaceId: string;
+}) {
   const dwFeatureFlags = await entityManager
     .createQueryBuilder()
     .select(['key', 'value'])

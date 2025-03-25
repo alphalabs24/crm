@@ -255,14 +255,17 @@ export class WorkspaceManagerService {
         },
       );
 
-    await defaultWorkspacePrefillData(
+    await defaultWorkspacePrefillData({
+      workspaceId,
       workspaceDataSource,
-      dataSourceMetadata.schema,
-      createdObjectMetadata,
+      schemaName: dataSourceMetadata.schema,
+      objectMetadata: createdObjectMetadata,
+      defaultWorkspaceId: defaultWorkspaceId,
       defaultWorkspaceDataSource,
-      defaultWorkspaceDataSourceMetadata.schema,
+      defaultWorkspaceDataSourceSchemaName:
+        defaultWorkspaceDataSourceMetadata.schema,
       defaultWorkspaceObjectMetadata,
-    );
+    });
   }
 
   /**
