@@ -69,9 +69,9 @@ const StyledDropdownItem = styled.button<{ isSelected?: boolean }>`
 `;
 
 const StyledLabel = styled.div`
-  color: ${({ theme }) => theme.font.color.secondary};
-  font-size: ${({ theme }) => theme.font.size.xs};
-  font-weight: ${({ theme }) => theme.font.weight.medium};
+  color: ${({ theme }) => theme.font.color.primary};
+  font-size: ${({ theme }) => theme.font.size.sm};
+  font-weight: ${({ theme }) => theme.font.weight.regular};
   margin-bottom: ${({ theme }) => theme.spacing(1)};
 `;
 

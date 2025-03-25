@@ -107,7 +107,7 @@ export const PublicationSyncTutorialModal = forwardRef<ModalRefType, Props>(
           </StyledModalText>
 
           <StyledModalButtonContainer>
-            <Button title={t`Verstanden`} accent="blue" onClick={onClose} />
+            <Button title={t`Understood`} accent="blue" onClick={onClose} />
           </StyledModalButtonContainer>
         </StyledModalContentContainer>
       </TutorialModal>
