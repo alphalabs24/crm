@@ -1108,6 +1108,7 @@ msgstr "Easy Synchronization"
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/Publishing.tsx
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Edit"
 msgstr "Edit"
@@ -2948,6 +2949,7 @@ msgstr "Type anything"
 #~ msgid "Ukrainian"
 #~ msgstr "Ukrainian"
 
+#: src/modules/onboarding-tutorial/components/modals/PublicationSyncTutorialModal.tsx
 #: src/modules/onboarding-tutorial/components/modals/InquiryTutorialModal.tsx
 msgid "Understood"
 msgstr "Understood"
@@ -3029,8 +3031,8 @@ msgid "Values"
 msgstr "Values"
 
 #: src/modules/onboarding-tutorial/components/modals/PublicationSyncTutorialModal.tsx
-msgid "Verstanden"
-msgstr "Verstanden"
+#~ msgid "Verstanden"
+#~ msgstr "Verstanden"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 #~ msgid "Vietnamese"
@@ -3205,6 +3207,10 @@ msgstr "You are not allowed to create records in this object"
 #: src/pages/settings/email-templates/components/EmailTemplateSelect.tsx
 msgid "You can edit email templates in Settings → Email Templates"
 msgstr "You can edit email templates in Settings → Email Templates"
+
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
+msgid "You have no email template set for this property."
+msgstr "You have no email template set for this property."
 
 #: src/modules/record-edit/components/custom/PropertyEmailsFormInput.tsx
 msgid "You have unsaved changes. Please save before sending the test email."

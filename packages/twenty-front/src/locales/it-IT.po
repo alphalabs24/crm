@@ -8,7 +8,7 @@ msgstr ""
 "Language: it\n"
 "Project-Id-Version: nestermind-crm\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-03-25 12:57\n"
+"PO-Revision-Date: 2025-03-25 13:57\n"
 "Last-Translator: \n"
 "Language-Team: Italian\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -1112,6 +1112,7 @@ msgstr ""
 
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/Publishing.tsx
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Edit"
@@ -2950,6 +2951,7 @@ msgstr "Digita qualsiasi cosa"
 #~ msgid "Ukrainian"
 #~ msgstr "Ukrainian"
 
+#: src/modules/onboarding-tutorial/components/modals/PublicationSyncTutorialModal.tsx
 #: src/modules/onboarding-tutorial/components/modals/InquiryTutorialModal.tsx
 msgid "Understood"
 msgstr ""
@@ -3031,8 +3033,8 @@ msgid "Values"
 msgstr "Valori"
 
 #: src/modules/onboarding-tutorial/components/modals/PublicationSyncTutorialModal.tsx
-msgid "Verstanden"
-msgstr ""
+#~ msgid "Verstanden"
+#~ msgstr "Verstanden"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 #~ msgid "Vietnamese"
@@ -3204,6 +3206,10 @@ msgstr ""
 
 #: src/pages/settings/email-templates/components/EmailTemplateSelect.tsx
 msgid "You can edit email templates in Settings → Email Templates"
+msgstr ""
+
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
+msgid "You have no email template set for this property."
 msgstr ""
 
 #: src/modules/record-edit/components/custom/PropertyEmailsFormInput.tsx

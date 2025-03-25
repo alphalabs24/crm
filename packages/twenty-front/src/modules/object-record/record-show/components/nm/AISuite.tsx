@@ -1,10 +1,11 @@
 import { useAttachments } from '@/activities/files/hooks/useAttachments';
 import { ActivityTargetableObject } from '@/activities/types/ActivityTargetableEntity';
 import { useRecordShowContainerData } from '@/object-record/record-show/hooks/useRecordShowContainerData';
-import { Modal, ModalRefType } from '@/ui/layout/modal/components/Modal';
+import { ModalRefType } from '@/ui/layout/modal/components/Modal';
 import styled from '@emotion/styled';
 import { Trans, useLingui } from '@lingui/react/macro';
 
+import { useTheme } from '@emotion/react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   Button,
@@ -15,7 +16,6 @@ import {
   ProgressBar,
 } from 'twenty-ui';
 import { VideoGenerationModal } from './VideoGenerationModal';
-import { css, useTheme } from '@emotion/react';
 
 const StyledContainer = styled.div`
   display: flex;

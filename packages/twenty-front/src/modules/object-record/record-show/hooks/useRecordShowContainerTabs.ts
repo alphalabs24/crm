@@ -12,14 +12,13 @@ import { useRecoilValue } from 'recoil';
 import {
   IconCalendarEvent,
   IconCheckbox,
+  IconLayoutDashboard,
   IconList,
   IconMail,
   IconNotes,
   IconPrinter,
   IconSettings,
-  IconSparkles,
   IconTimelineEvent,
-  IconLayoutDashboard,
 } from 'twenty-ui';
 import { FieldMetadataType } from '~/generated-metadata/graphql';
 import { FeatureFlagKey } from '~/generated/graphql';
@@ -69,6 +68,7 @@ export const useRecordShowContainerTabs = (
             ifRelationsMissing: [],
           },
         },
+        /* Reuse this once we have actual functionality:
         aiSuite: {
           title: 'AI Suite',
           position: 1,
@@ -82,7 +82,7 @@ export const useRecordShowContainerTabs = (
             ifRequiredObjectsInactive: [],
             ifRelationsMissing: [],
           },
-        },
+        },*/
         fields: null,
       },
     },
