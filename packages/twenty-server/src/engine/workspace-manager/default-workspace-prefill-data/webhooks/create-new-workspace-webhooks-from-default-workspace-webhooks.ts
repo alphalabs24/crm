@@ -7,7 +7,7 @@ export async function createNewWorkspaceWebhooksFromDefaultWorkspaceWebhooks(
 ) {
   const dwWebhooks = await entityManager
     .createQueryBuilder()
-    .select(['id', 'targetUrl', 'secret', 'operations', 'description'])
+    .select(['id', '"targetUrl"', 'secret', 'operations', 'description'])
     .from(`${defaultWorkspaceDataSourceSchemaName}.webhook`, 'w')
     .where('w."deletedAt" IS NULL')
     .execute();

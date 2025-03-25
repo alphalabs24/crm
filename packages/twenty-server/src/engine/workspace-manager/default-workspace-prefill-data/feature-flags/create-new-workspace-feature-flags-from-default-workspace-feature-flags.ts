@@ -14,7 +14,9 @@ export async function createNewWorkspaceFeatureFlagsFromDefaultWorkspaceFeatureF
     .select(['key', 'value'])
     .addSelect(`'${newWorkspaceId}'`, 'workspaceId')
     .from(`core.featureFlag`, 'ff')
-    .where('ff."workspaceId" = :workspaceId', { defaultWorkspaceId })
+    .where('ff."workspaceId" = :id', {
+      id: defaultWorkspaceId,
+    })
     .execute();
 
   await entityManager
