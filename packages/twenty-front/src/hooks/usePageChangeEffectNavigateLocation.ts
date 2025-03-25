@@ -99,7 +99,6 @@ export const usePageChangeEffectNavigateLocation = () => {
     isMatchingOnboardingRoute &&
     isLoggedIn
   ) {
-    return defaultHomePagePath;
     // after onboarding is completed, we want to redirect to the tutorial
     return AppPath.Tutorial;
   }
