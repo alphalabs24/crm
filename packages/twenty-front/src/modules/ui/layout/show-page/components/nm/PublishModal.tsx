@@ -8,7 +8,7 @@ import { forwardRef, useState } from 'react';
 import { Button, IconUpload, LARGE_DESKTOP_VIEWPORT } from 'twenty-ui';
 
 import { Publishing } from '@/ui/layout/show-page/components/nm/modal-pages/Publishing';
-import { PlatformId, PLATFORMS } from './types/Platform';
+import { PlatformId } from './types/Platform';
 import { ValidationResult } from '../../hooks/usePublicationValidation';
 import { useLingui } from '@lingui/react/macro';
 import { PlatformBadge } from '@/object-record/record-show/components/nm/publication/PlatformBadge';

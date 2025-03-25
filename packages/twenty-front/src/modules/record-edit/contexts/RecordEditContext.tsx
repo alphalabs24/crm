@@ -21,7 +21,7 @@ import {
   useMemo,
   useState,
 } from 'react';
-import { useBlocker, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { isDefined } from 'twenty-shared';
 
 type FieldUpdate = {
@@ -238,7 +238,7 @@ export const RecordEditProvider = ({
       }));
       setIsDirty(true);
     },
-    [],
+    [setIsDirty],
   );
 
   const addPropertyImage = useCallback((image: RecordEditPropertyImage) => {
@@ -293,24 +293,6 @@ export const RecordEditProvider = ({
     setFieldUpdates({});
     setIsDirty(false);
   }, []);
-
-  // This is used to block the user from leaving the page if there are unsaved changes
-  useBlocker(({ currentLocation, nextLocation }) => {
-    // If there are no unsaved changes or the user is navigating to the same page, don't block
-    if (!isDirty || nextLocation.pathname.includes(currentLocation.pathname))
-      return false;
-
-    const confirmLeave = window.confirm(
-      'You have unsaved changes. Are you sure you want to leave?',
-    );
-
-    if (confirmLeave) {
-      resetFields();
-      return false; // Allow navigation
-    }
-
-    return true; // Block navigation
-  });
 
   const [propertyDocuments, setPropertyDocuments] = useState<
     RecordEditPropertyDocument[]

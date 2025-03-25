@@ -1,7 +1,8 @@
 import styled from '@emotion/styled';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadataItem';
+import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { getLinkToShowPage } from '@/object-metadata/utils/getLinkToShowPage';
 import { isNewViewableRecordLoadingState } from '@/object-record/record-right-drawer/states/isNewViewableRecordLoading';
 import { useRecordShowPage } from '@/object-record/record-show/hooks/useRecordShowPage';
@@ -18,11 +19,7 @@ import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { isDefined } from 'twenty-shared';
 import { Button, LARGE_DESKTOP_VIEWPORT, MOBILE_VIEWPORT } from 'twenty-ui';
-import { useMemo } from 'react';
-import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
-import { FieldDefinition } from '@/object-record/record-field/types/FieldDefinition';
 import { RecordEditContainerContext } from '../contexts/RecordEditContainerContext';
-import { useNotes } from '@/activities/notes/hooks/useNotes';
 
 export const EDIT_CONTAINER_WIDTH = 1440;
 

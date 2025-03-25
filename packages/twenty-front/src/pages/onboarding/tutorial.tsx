@@ -217,7 +217,7 @@ export const Tutorial = () => {
               <StyledSubtitle>
                 <Trans>
                   Complete these steps to get started with nestermind and make
-                  the most of your CRM experience.
+                  the most of your experience.
                 </Trans>
               </StyledSubtitle>
             </StyledHeader>

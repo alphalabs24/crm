@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: nestermind-crm\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-03-24 18:05\n"
+"PO-Revision-Date: 2025-03-25 10:36\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -519,6 +519,8 @@ msgstr "Kalender"
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
 #: src/modules/ui/layout/modal/components/ConfirmationModal.tsx
 #: src/modules/settings/components/SaveAndCancelButtons/CancelButton.tsx
+#: src/modules/record-edit/contexts/UnsavedChangesContext.tsx
+#: src/modules/record-edit/contexts/UnsavedChangesContext.tsx
 #: src/modules/record-edit/components/custom/ImageEditModal.tsx
 #: src/modules/record-edit/components/custom/DocumentEditModal.tsx
 #: src/modules/publishers/components/modals/EditPublisherModal.tsx
@@ -615,8 +617,12 @@ msgid "Complete previous steps first"
 msgstr "Vervollständige zuerst die vorherigen Schritte"
 
 #: src/pages/onboarding/tutorial.tsx
-msgid "Complete these steps to get started with nestermind and make the most of your CRM experience."
-msgstr "Führe diese Schritte aus, um mit nestermind loszulegen und das Beste aus deinem CRM-Erlebnis zu machen."
+#~ msgid "Complete these steps to get started with nestermind and make the most of your CRM experience."
+#~ msgstr "Complete these steps to get started with nestermind and make the most of your CRM experience."
+
+#: src/pages/onboarding/tutorial.tsx
+msgid "Complete these steps to get started with nestermind and make the most of your experience."
+msgstr "Führe diese Schritte aus, um mit nestermind loszulegen und das Beste aus deinem Erlebnis zu machen."
 
 #: src/pages/onboarding/tutorial.tsx
 msgid "Completed"
@@ -1232,6 +1238,10 @@ msgstr "E-Mail-Adresse eingeben"
 msgid "Enter publisher name"
 msgstr "Anbietername eingeben"
 
+#: src/modules/record-edit/components/custom/PropertyEmailsFormInput.tsx
+msgid "Enter test email address"
+msgstr "Test E-Mail-Adresse eingeben"
+
 #: src/pages/settings/security/SettingsSecurity.tsx
 msgid "Enterprise"
 msgstr "Unternehmen"
@@ -1340,9 +1350,13 @@ msgstr "Ansicht exportieren"
 msgid "Export Workflows"
 msgstr "Workflows exportieren"
 
+#: src/modules/record-edit/contexts/UnsavedChangesContext.tsx
+msgid "Failed to save changes"
+msgstr "Änderungen konnten nicht gespeichert werden"
+
 #: src/modules/record-edit/components/custom/PropertyEmailsFormInput.tsx
 msgid "Failed to send test email"
-msgstr ""
+msgstr "Fehler beim Senden der Test-E-Mail"
 
 #: src/modules/favorites/components/CurrentWorkspaceMemberFavoritesFolders.tsx
 msgid "Favorites"
@@ -1676,6 +1690,10 @@ msgstr "Lead Einblicke"
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
 msgid "Learn more"
 msgstr "Erfahre mehr"
+
+#: src/modules/record-edit/contexts/UnsavedChangesContext.tsx
+msgid "Leave without saving"
+msgstr "Ohne Speichern verlassen"
 
 #: src/pages/settings/profile/appearance/components/SettingsExperience.tsx
 msgid "Light"
@@ -2456,6 +2474,14 @@ msgstr "Führen Sie einen Workflow aus und kehren Sie zurück, um die Ausführun
 msgid "Save"
 msgstr "Speichern"
 
+#: src/modules/record-edit/contexts/UnsavedChangesContext.tsx
+msgid "Save & Leave"
+msgstr "Speichern und verlassen"
+
+#: src/modules/record-edit/components/custom/PropertyEmailsFormInput.tsx
+msgid "Save and send"
+msgstr "Speichern und senden"
+
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 msgid "Scroll left"
 msgstr "Nach links scrollen"
@@ -2552,6 +2578,10 @@ msgstr "Bevorzugte Sprache auswählen"
 #: src/pages/settings/SettingsWorkspaceMembers.tsx
 msgid "Send an invite email to your team"
 msgstr "Einladung per E-Mail an Ihr Team senden"
+
+#: src/modules/record-edit/components/custom/PropertyEmailsFormInput.tsx
+msgid "Send Test"
+msgstr "Test senden"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 #~ msgid "Serbian (Cyrillic)"
@@ -2775,7 +2805,7 @@ msgstr "Test"
 
 #: src/modules/record-edit/components/custom/PropertyEmailsFormInput.tsx
 msgid "Test email sent successfully"
-msgstr ""
+msgstr "Test-E-Mail erfolgreich gesendet"
 
 #: src/modules/action-menu/actions/record-actions/constants/WorkflowActionsConfig.ts
 msgid "Test Workflow"
@@ -2922,6 +2952,11 @@ msgstr "Unbegrenzte Kontakte"
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/Publishing.tsx
 msgid "Unpublished"
 msgstr "Unveröffentlicht"
+
+#: src/modules/record-edit/contexts/UnsavedChangesContext.tsx
+#: src/modules/record-edit/components/custom/PropertyEmailsFormInput.tsx
+msgid "Unsaved Changes"
+msgstr "Ungespeicherte Änderungen"
 
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
 msgid "Updated"
@@ -3074,7 +3109,11 @@ msgid "With email synchronization in nestermind, your communication stays struct
 msgstr "Mit der E-Mail-Synchronisation in nestermind bleibt deine Kommunikation strukturiert, effizient und vollständig integriert."
 
 #: src/modules/onboarding-tutorial/components/modals/PublisherTutorialModal.tsx
-msgid "With Nestermind, you can set up provider details to efficiently manage the publication of your properties on various platforms. The provider entity stores the required access credentials for each platform publication so you can reuse them for each listing."
+#~ msgid "With Nestermind, you can set up provider details to efficiently manage the publication of your properties on various platforms. The provider entity stores the required access credentials for each platform publication so you can reuse them for each listing."
+#~ msgstr "With Nestermind, you can set up provider details to efficiently manage the publication of your properties on various platforms. The provider entity stores the required access credentials for each platform publication so you can reuse them for each listing."
+
+#: src/modules/onboarding-tutorial/components/modals/PublisherTutorialModal.tsx
+msgid "With nestermind, you can set up publisher details to efficiently manage the publication of your properties on various platforms. The publisher entity stores the required access credentials for each platform publication so you can reuse them for each listing."
 msgstr "Mit nestermind kannst Du die Anbieter-Details festlegen, um die Veröffentlichung Deiner Immobilien auf verschiedenen Plattformen effizient zu verwalten. Ein Anbieter speichert die erforderlichen Zugangsdaten für jede Plattform-Publikation damit Du sie für jede Veröffentlichung wiederverwenden kannst."
 
 #: src/modules/workflow/components/RecordShowPageWorkflowHeader.tsx
@@ -3150,6 +3189,14 @@ msgstr "Sie sind nicht berechtigt, Einträge in diesem Objekt zu erstellen"
 #: src/pages/settings/email-templates/components/EmailTemplateSelect.tsx
 msgid "You can edit email templates in Settings → Email Templates"
 msgstr "E-Mail-Vorlagen können in Einstellungen → E-Mail-Vorlagen bearbeitet werden"
+
+#: src/modules/record-edit/components/custom/PropertyEmailsFormInput.tsx
+msgid "You have unsaved changes. Please save before sending the test email."
+msgstr "Sie haben ungespeicherte Änderungen. Bitte speichern Sie vor dem Senden der Test-E-Mail."
+
+#: src/modules/record-edit/contexts/UnsavedChangesContext.tsx
+msgid "You have unsaved changes. What would you like to do?"
+msgstr "Du hast ungespeicherte Änderungen. Was möchtest Du tun?"
 
 #: src/pages/settings/SettingsBilling.tsx
 msgid "You will be charged immediately for the full year."

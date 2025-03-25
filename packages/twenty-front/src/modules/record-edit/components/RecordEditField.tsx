@@ -1,3 +1,4 @@
+import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { FieldMetadataItem } from '@/object-metadata/types/FieldMetadataItem';
 import { ObjectMetadataItem } from '@/object-metadata/types/ObjectMetadataItem';
 import { formatFieldMetadataItemAsColumnDefinition } from '@/object-metadata/utils/formatFieldMetadataItemAsColumnDefinition';
@@ -13,11 +14,10 @@ import styled from '@emotion/styled';
 import { isNull } from '@sniptt/guards';
 import { useMemo } from 'react';
 import { isDefined } from 'twenty-shared';
-import { PropertyImageFormInput } from './custom/PropertyImageFormInput';
+import { EmailTemplateContextProvider } from '../contexts/EmailTemplateContext';
 import { PropertyDocumentFormInput } from './custom/PropertyDocumentFormInput';
 import { PropertyEmailsFormInput } from './custom/PropertyEmailsFormInput';
-import { EmailTemplateContextProvider } from '../contexts/EmailTemplateContext';
-import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
+import { PropertyImageFormInput } from './custom/PropertyImageFormInput';
 
 const StyledFieldContainer = styled.div<{ isHorizontal?: boolean }>`
   display: flex;
