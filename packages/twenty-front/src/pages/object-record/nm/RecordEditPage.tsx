@@ -14,6 +14,7 @@ import { RecordFieldValueSelectorContextProvider } from '@/object-record/record-
 import { RecordEditContainer } from '@/record-edit/components/RecordEditContainer';
 import { EDIT_SECTIONS_TABS } from '@/record-edit/constants/EditSectionTabs';
 import { RecordEditProvider } from '@/record-edit/contexts/RecordEditContext';
+import { UnsavedChangesProvider } from '@/record-edit/contexts/UnsavedChangesContext';
 import { PageBody } from '@/ui/layout/page/components/PageBody';
 import { PageContainer } from '@/ui/layout/page/components/PageContainer';
 import { PAGE_BAR_MIN_HEIGHT } from '@/ui/layout/page/components/PageHeader';
@@ -38,13 +39,6 @@ const StyledLeftContainer = styled.div`
   flex-direction: row;
   gap: ${({ theme }) => theme.spacing(2)};
   width: 100%;
-`;
-
-const StyledRightContainer = styled.div`
-  align-items: center;
-  display: flex;
-  flex-direction: row;
-  gap: ${({ theme }) => theme.spacing(2)};
 `;
 
 export const RecordEditPage = () => {
@@ -91,33 +85,35 @@ export const RecordEditPage = () => {
                 initialRecord={record ?? null}
                 objectMetadataItem={objectMetadataItem}
               >
-                <PageContainer>
-                  <PageTitle title={pageTitle} />
-                  <StyledHeader>
-                    <StyledLeftContainer>
-                      <RecordShowPropertyBreadcrumb
-                        objectNameSingular={objectNameSingular}
-                        objectRecordId={objectRecordId}
-                        objectLabelPlural={objectMetadataItem.labelPlural}
-                        labelIdentifierFieldMetadataItem={
-                          labelIdentifierFieldMetadataItem
-                        }
-                        suffix="Edit"
-                      />
-                    </StyledLeftContainer>
-                  </StyledHeader>
-                  <PageBody>
-                    <TimelineActivityContext.Provider
-                      value={{ labelIdentifierValue: pageName }}
-                    >
-                      <RecordEditContainer
-                        objectNameSingular={objectNameSingular}
-                        recordId={objectRecordId}
-                        tabs={EDIT_SECTIONS_TABS}
-                      />
-                    </TimelineActivityContext.Provider>
-                  </PageBody>
-                </PageContainer>
+                <UnsavedChangesProvider>
+                  <PageContainer>
+                    <PageTitle title={pageTitle} />
+                    <StyledHeader>
+                      <StyledLeftContainer>
+                        <RecordShowPropertyBreadcrumb
+                          objectNameSingular={objectNameSingular}
+                          objectRecordId={objectRecordId}
+                          objectLabelPlural={objectMetadataItem.labelPlural}
+                          labelIdentifierFieldMetadataItem={
+                            labelIdentifierFieldMetadataItem
+                          }
+                          suffix="Edit"
+                        />
+                      </StyledLeftContainer>
+                    </StyledHeader>
+                    <PageBody>
+                      <TimelineActivityContext.Provider
+                        value={{ labelIdentifierValue: pageName }}
+                      >
+                        <RecordEditContainer
+                          objectNameSingular={objectNameSingular}
+                          recordId={objectRecordId}
+                          tabs={EDIT_SECTIONS_TABS}
+                        />
+                      </TimelineActivityContext.Provider>
+                    </PageBody>
+                  </PageContainer>
+                </UnsavedChangesProvider>
               </RecordEditProvider>
             </ActionMenuComponentInstanceContext.Provider>
           </ContextStoreComponentInstanceContext.Provider>

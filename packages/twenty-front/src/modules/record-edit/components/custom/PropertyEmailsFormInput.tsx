@@ -5,12 +5,13 @@ import { useNestermind } from '@/api/hooks/useNestermind';
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { emailSchema } from '@/object-record/record-field/validation-schemas/emailSchema';
 import { useRecordEdit } from '@/record-edit/contexts/RecordEditContext';
+import { useUnsavedChanges } from '@/record-edit/contexts/UnsavedChangesContext';
 import { SnackBarVariant } from '@/ui/feedback/snack-bar-manager/components/SnackBar';
 import { useSnackBar } from '@/ui/feedback/snack-bar-manager/hooks/useSnackBar';
 import { TextInputV2 } from '@/ui/input/components/TextInputV2';
 import { useLingui } from '@lingui/react/macro';
 import { useCallback, useState } from 'react';
-import { useParams, useResolvedPath } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Button, IconSend } from 'twenty-ui';
 import { EmailTemplateSelect } from '~/pages/settings/email-templates/components/EmailTemplateSelect';
 
@@ -38,11 +39,13 @@ const StyledTestEmailContainer = styled.div`
 `;
 
 export const PropertyEmailsFormInput = ({ loading }: { loading?: boolean }) => {
-  const { setEmailTemplate, emailTemplate } = useRecordEdit();
-  const { objectRecordId } = useParams();
-  const { pathname } = useResolvedPath('');
+  const { setEmailTemplate, emailTemplate, isDirty, saveRecord } =
+    useRecordEdit();
+  const { openActionModal } = useUnsavedChanges();
+  const { objectRecordId, objectNameSingular } = useParams();
   const [testEmail, setTestEmail] = useState('');
   const [emailError, setEmailError] = useState('');
+  const [isSending, setIsSending] = useState(false);
   const { t } = useLingui();
 
   const { publicationsApi, propertiesApi } = useNestermind();
@@ -60,14 +63,10 @@ export const PropertyEmailsFormInput = ({ loading }: { loading?: boolean }) => {
     [t],
   );
 
-  const handleSendTestEmail = async () => {
-    if (!testEmail || !emailSchema.safeParse(testEmail).success) {
-      setEmailError(t`Please enter a valid email address`);
-      return;
-    }
+  const sendTestEmail = async () => {
     try {
-      // TODO distinguish if record is property or publication better
-      if (pathname.split('/')[2] === 'property') {
+      setIsSending(true);
+      if (objectNameSingular === CoreObjectNameSingular.Property) {
         await propertiesApi.sendTestEmail({
           propertyId: objectRecordId ?? '',
           toEmail: testEmail,
@@ -86,11 +85,41 @@ export const PropertyEmailsFormInput = ({ loading }: { loading?: boolean }) => {
       enqueueSnackBar(t`Failed to send test email`, {
         variant: SnackBarVariant.Error,
       });
+    } finally {
+      setIsSending(false);
+    }
+  };
+
+  const handleSendTestEmail = async () => {
+    if (!testEmail || !emailSchema.safeParse(testEmail).success) {
+      setEmailError(t`Please enter a valid email address`);
+      return;
+    }
+
+    if (isDirty) {
+      openActionModal({
+        title: t`Unsaved Changes`,
+        message: t`You have unsaved changes. Please save before sending the test email.`,
+        actions: [
+          {
+            label: t`Save and send`,
+            onClick: async () => {
+              await saveRecord();
+              await sendTestEmail();
+            },
+            variant: 'secondary',
+            accent: 'blue',
+            disabled: isSending,
+          },
+        ],
+      });
+    } else {
+      await sendTestEmail();
     }
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter' && testEmail && !emailError) {
+    if (event.key === 'Enter' && testEmail && !emailError && !isSending) {
       handleSendTestEmail();
     }
   };
@@ -112,16 +141,17 @@ export const PropertyEmailsFormInput = ({ loading }: { loading?: boolean }) => {
               value={testEmail}
               onChange={handleEmailChange}
               onKeyDown={handleKeyDown}
-              placeholder="Enter test email address"
+              placeholder={t`Enter test email address`}
               error={emailError}
               fullWidth
+              disabled={isSending}
             />
             <Button
               Icon={IconSend}
-              title="Send Test"
+              title={t`Send Test`}
               variant="secondary"
               onClick={handleSendTestEmail}
-              disabled={!testEmail || !!emailError}
+              disabled={!testEmail || !!emailError || isSending}
             />
           </StyledTestEmailContainer>
           <StyledEmailPreviewContainer>

@@ -79,9 +79,9 @@ export const ProviderTutorialModal = forwardRef<ModalRefType, Props>(
           </StyledImageAligner>
           <StyledModalText>
             <Trans>
-              With Nestermind, you can set up provider details to efficiently
+              With nestermind, you can set up publisher details to efficiently
               manage the publication of your properties on various platforms.
-              The provider entity stores the required access credentials for
+              The publisher entity stores the required access credentials for
               each platform publication so you can reuse them for each listing.
             </Trans>
           </StyledModalText>

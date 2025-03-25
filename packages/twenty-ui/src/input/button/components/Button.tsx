@@ -133,7 +133,6 @@ const StyledButton = styled('button', {
               background: ${!inverted
                 ? theme.color.blue
                 : theme.background.primary};
-              opacity: ${disabled ? 0.65 : 1};
               border-color: ${!inverted
                 ? focus
                   ? theme.color.blue
@@ -149,7 +148,7 @@ const StyledButton = styled('button', {
                 : 'none'};
               color: ${!inverted ? theme.grayScale.gray0 : theme.color.blue};
               ${disabled
-                ? ''
+                ? 'opacity: 0.65;'
                 : css`
                     &:hover {
                       background: ${!inverted
@@ -183,7 +182,7 @@ const StyledButton = styled('button', {
                 : 'none'};
               color: ${!inverted ? theme.background.primary : theme.color.red};
               ${disabled
-                ? ''
+                ? 'opacity: 0.65;'
                 : css`
                     &:hover {
                       background: ${!inverted
@@ -287,6 +286,7 @@ const StyledButton = styled('button', {
           case 'blue':
             return css`
               background: transparent;
+              opacity: ${disabled ? 0.65 : 1};
               border-color: ${!inverted
                 ? variant === 'secondary'
                   ? focus
@@ -373,6 +373,7 @@ const StyledButton = styled('button', {
                     : 'transparent'
                   : theme.background.transparent.medium};
               }
+              opacity: ${disabled ? 0.65 : 1};
             `;
           case 'orange':
             return css`

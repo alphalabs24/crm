@@ -9,7 +9,7 @@ import { TableRow } from '@/ui/layout/table/components/TableRow';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   Button,
   IconChevronRight,
@@ -30,7 +30,6 @@ const StyledTableBody = styled(TableBody)`
 `;
 
 const StyledTableRow = styled(TableRow)`
-  cursor: pointer;
   grid-template-columns: 150px 1fr 28px 28px;
   @media (max-width: ${MOBILE_VIEWPORT}px) {
     width: 100%;
@@ -124,14 +123,6 @@ export const EmailTemplatesListCard = ({
     }
   };
 
-  const handleEditTemplate = (templateId: string) => {
-    navigate(
-      getSettingsPath(SettingsPath.EmailTemplateEdit, {
-        emailTemplateId: templateId,
-      }),
-    );
-  };
-
   return (
     <>
       <Table>
@@ -152,32 +143,44 @@ export const EmailTemplatesListCard = ({
         ) : (
           <StyledTableBody>
             {emailTemplates.map((template) => (
-              <StyledTableRow
-                key={template.id}
-                onClick={() => handleEditTemplate(template.id)}
+              <Link
+                to={getSettingsPath(SettingsPath.EmailTemplateEdit, {
+                  emailTemplateId: template.id,
+                })}
+                style={{ textDecoration: 'none' }}
               >
-                <StyledNameTableCell>{template.title}</StyledNameTableCell>
-                <StyledPreviewTableCell>
-                  {template.body || template.bodyV2?.markdown || t`No content`}
-                </StyledPreviewTableCell>
-                <StyledIconTableCell
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onDeleteClick(template.id);
+                <StyledTableRow
+                  key={template.id}
+                  onClick={() => {
+                    // Empty callback shows the inbuilt hover background
                   }}
                 >
-                  <StyledDeleteButton
-                    size={theme.icon.size.md}
-                    stroke={theme.icon.stroke.sm}
-                  />
-                </StyledIconTableCell>
-                <StyledIconTableCell>
-                  <StyledIconChevronRight
-                    size={theme.icon.size.md}
-                    stroke={theme.icon.stroke.sm}
-                  />
-                </StyledIconTableCell>
-              </StyledTableRow>
+                  <StyledNameTableCell>{template.title}</StyledNameTableCell>
+                  <StyledPreviewTableCell>
+                    {template.body ||
+                      template.bodyV2?.markdown ||
+                      t`No content`}
+                  </StyledPreviewTableCell>
+                  <StyledIconTableCell
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      e.preventDefault();
+                      onDeleteClick(template.id);
+                    }}
+                  >
+                    <StyledDeleteButton
+                      size={theme.icon.size.md}
+                      stroke={theme.icon.stroke.sm}
+                    />
+                  </StyledIconTableCell>
+                  <StyledIconTableCell>
+                    <StyledIconChevronRight
+                      size={theme.icon.size.md}
+                      stroke={theme.icon.stroke.sm}
+                    />
+                  </StyledIconTableCell>
+                </StyledTableRow>
+              </Link>
             ))}
           </StyledTableBody>
         )}
