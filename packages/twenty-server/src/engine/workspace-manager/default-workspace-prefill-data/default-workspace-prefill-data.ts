@@ -4,6 +4,7 @@ import { ObjectMetadataEntity } from 'src/engine/metadata-modules/object-metadat
 import { createNewWorkspaceFavoritesFromDefaultWorkspaceFavorites } from 'src/engine/workspace-manager/default-workspace-prefill-data/favorites/create-new-workspace-favorites-from-default-workspace-favorites';
 import { createNewWorkspaceViewsFromDefaultWorkspaceViews } from 'src/engine/workspace-manager/default-workspace-prefill-data/views/create-new-workspace-views-from-default-workspace-views';
 import { getStandardObjectWorkspaceViews } from 'src/engine/workspace-manager/default-workspace-prefill-data/views/get-workspace-views';
+import { createNewWorkspaceWebhooksFromDefaultWorkspaceWebhooks } from 'src/engine/workspace-manager/default-workspace-prefill-data/webhooks/create-new-workspace-webhooks-from-default-workspace-webhooks';
 
 export const defaultWorkspacePrefillData = async (
   workspaceDataSource: DataSource,
@@ -55,6 +56,12 @@ export const defaultWorkspacePrefillData = async (
       );
 
       await createNewWorkspaceFavoritesFromDefaultWorkspaceFavorites(
+        entityManager,
+        schemaName,
+        defaultWorkspaceDataSourceSchemaName,
+      );
+
+      await createNewWorkspaceWebhooksFromDefaultWorkspaceWebhooks(
         entityManager,
         schemaName,
         defaultWorkspaceDataSourceSchemaName,
