@@ -34,11 +34,13 @@ export const useUploadAttachmentFile = () => {
     orderIndex?: number,
     fileName?: string,
     description?: string,
+    isPublic?: boolean,
   ) => {
     const result = await uploadFile({
       variables: {
         file,
         fileFolder: FileFolder.Attachment,
+        isPublic,
       },
     });
 

@@ -29,6 +29,7 @@ export class LocalDriver implements StorageDriver {
     name: string;
     folder: string;
     mimeType: string | undefined;
+    isPublic: boolean;
   }): Promise<void> {
     const filePath = join(
       `${this.options.storagePath}/`,

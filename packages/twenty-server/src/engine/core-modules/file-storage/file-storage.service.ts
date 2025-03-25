@@ -19,6 +19,7 @@ export class FileStorageService implements StorageDriver {
     name: string;
     folder: string;
     mimeType: string | undefined;
+    isPublic?: boolean;
   }): Promise<void> {
     return this.driver.write(params);
   }

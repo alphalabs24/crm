@@ -471,6 +471,12 @@ export const RecordEditProvider = ({
             },
           });
         } else if (isDefined(document.file)) {
+          const isPublic =
+            document.type === 'PropertyDocumentation' ||
+            document.type === 'PropertyFlyer';
+
+          console.log('----IS PUBLIC FRONTEND', isPublic);
+
           await uploadAttachmentFile(
             document.file,
             {
@@ -481,6 +487,7 @@ export const RecordEditProvider = ({
             orderIndex,
             document.fileName,
             document.description,
+            isPublic,
           );
         }
         orderIndex++;

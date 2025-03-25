@@ -56,7 +56,9 @@ export class S3Driver implements StorageDriver {
     name: string;
     folder: string;
     mimeType: string | undefined;
+    isPublic?: boolean;
   }): Promise<void> {
+    console.log('Writing file to S3 in driver', params);
     await this.createBucket({
       Bucket: this.bucketName,
     });
@@ -66,9 +68,14 @@ export class S3Driver implements StorageDriver {
       Body: params.file,
       ContentType: params.mimeType,
       Bucket: this.bucketName,
+      ACL: params.isPublic ? 'public-read' : 'private',
     });
 
-    await this.s3Client.send(command);
+    console.log('Sending command to S3', command);
+
+    const res = await this.s3Client.send(command);
+
+    console.log('Response from S3', res);
   }
 
   private async emptyS3Directory(folderPath) {
@@ -173,6 +180,7 @@ export class S3Driver implements StorageDriver {
           CopySource: `${this.bucketName}/${fromKey}`,
           Bucket: this.bucketName,
           Key: toKey,
+          MetadataDirective: 'COPY',
         }),
       );
 
@@ -391,6 +399,8 @@ export class S3Driver implements StorageDriver {
     const exist = await this.checkBucketExists({
       Bucket: args.Bucket,
     });
+
+    console.log('Bucket exists:', exist);
 
     if (exist) {
       return;

@@ -8,6 +8,7 @@ export interface StorageDriver {
     name: string;
     folder: string;
     mimeType: string | undefined;
+    isPublic?: boolean;
   }): Promise<void>;
   move(params: {
     from: { folderPath: string; filename: string };

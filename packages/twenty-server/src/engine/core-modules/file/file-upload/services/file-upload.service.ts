@@ -24,17 +24,28 @@ export class FileUploadService {
     filename,
     mimeType,
     folder,
+    isPublic,
   }: {
     file: Buffer | Uint8Array | string;
     filename: string;
     mimeType: string | undefined;
     folder: string;
+    isPublic?: boolean;
   }) {
+    console.log('Writing file to S3', {
+      file,
+      filename,
+      mimeType,
+      folder,
+      isPublic,
+    });
+
     await this.fileStorage.write({
       file,
       name: filename,
       mimeType,
       folder,
+      isPublic,
     });
   }
 
@@ -63,12 +74,14 @@ export class FileUploadService {
     mimeType,
     fileFolder,
     workspaceId,
+    isPublic = false,
   }: {
     file: Buffer | Uint8Array | string;
     filename: string;
     mimeType: string | undefined;
     fileFolder: FileFolder;
     workspaceId: string;
+    isPublic?: boolean;
   }) {
     const ext = filename.split('.')?.[1];
     const id = uuidV4();
@@ -80,6 +93,7 @@ export class FileUploadService {
       filename: name,
       mimeType,
       folder,
+      isPublic,
     });
 
     const signedPayload = await this.fileService.encodeFileToken({
@@ -99,12 +113,14 @@ export class FileUploadService {
     mimeType,
     fileFolder,
     workspaceId,
+    isPublic,
   }: {
     file: Buffer | Uint8Array | string;
     filename: string;
     mimeType: string | undefined;
     fileFolder: FileFolder;
     workspaceId: string;
+    isPublic?: boolean;
   }) {
     const ext = filename.split('.')?.[1];
     const id = uuidV4();
@@ -139,6 +155,7 @@ export class FileUploadService {
           filename: `${cropSizes[index]}/${name}`,
           mimeType,
           folder,
+          isPublic,
         });
       }),
     );
