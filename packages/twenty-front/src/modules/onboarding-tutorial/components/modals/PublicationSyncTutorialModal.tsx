@@ -2,13 +2,14 @@ import { TutorialModal } from '@/onboarding-tutorial/components/modals/TutorialM
 import { useLocale } from '@/onboarding-tutorial/hooks/useLocale';
 import { mapLocaleToImageSuffix } from '@/onboarding-tutorial/utils/mapLocaleToImageSuffix';
 import { ModalRefType } from '@/ui/layout/modal/components/Modal';
+import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Trans, useLingui } from '@lingui/react/macro';
 import { forwardRef } from 'react';
 import { Button, IconRefresh } from 'twenty-ui';
 
-const StyledModalText = styled.div`
-  color: ${({ theme }) => theme.font.color.secondary};
+const StyledModalText = styled.div<{ color?: string }>`
+  color: ${({ theme, color }) => color ?? theme.font.color.secondary};
   font-size: ${({ theme }) => theme.font.size.lg};
 `;
 
@@ -58,7 +59,7 @@ export const PublicationSyncTutorialModal = forwardRef<ModalRefType, Props>(
   ({ onClose }, ref) => {
     const locale = useLocale();
     const { t } = useLingui();
-
+    const theme = useTheme();
     return (
       <TutorialModal
         icon={<IconRefresh size={16} />}
@@ -84,9 +85,8 @@ export const PublicationSyncTutorialModal = forwardRef<ModalRefType, Props>(
               <Trans>
                 When you make changes to a property's master data, you can
                 quickly and easily transfer these to your publications. All
-                drafts and already published objects can be synchronized with a
-                single click, ensuring that current data is displayed correctly
-                everywhere.
+                draft publications can be synchronized with a single click,
+                ensuring that current data is displayed correctly everywhere.
               </Trans>
             </StyledModalText>
           </div>
@@ -95,7 +95,7 @@ export const PublicationSyncTutorialModal = forwardRef<ModalRefType, Props>(
             <Trans>
               The synchronization ensures that titles, descriptions, prices,
               images and other relevant information are updated across all
-              platforms - without having to manually edit each publication.
+              platforms - without having to manually edit each draft.
             </Trans>
           </StyledModalText>
 
@@ -105,7 +105,6 @@ export const PublicationSyncTutorialModal = forwardRef<ModalRefType, Props>(
               you valuable time!
             </Trans>
           </StyledModalText>
-
           <StyledModalButtonContainer>
             <Button title={t`Understood`} accent="blue" onClick={onClose} />
           </StyledModalButtonContainer>

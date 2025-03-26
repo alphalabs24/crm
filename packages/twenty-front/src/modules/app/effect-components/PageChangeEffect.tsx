@@ -172,6 +172,16 @@ export const PageChangeEffect = () => {
         });
         break;
       }
+      case isMatchingLocation(
+        SettingsPath.EmailTemplateEdit,
+        AppBasePath.Settings,
+      ): {
+        setHotkeyScope(PageHotkeyScope.Settings, {
+          goto: false,
+          keyboardShortcutMenu: true,
+        });
+        break;
+      }
       case isMatchingLocation(AppPath.Tutorial): {
         setHotkeyScope(PageHotkeyScope.Tutorial, {
           goto: true,

@@ -73,11 +73,13 @@ export const SingleRecordSelectMenuItemsWithSearch = ({
     <>
       {dropdownPlacement?.includes('end') && (
         <>
-          {isDefined(onCreate) && !hasObjectReadOnlyPermission && (
-            <DropdownMenuItemsContainer scrollable={false}>
-              {createNewButton}
-            </DropdownMenuItemsContainer>
-          )}
+          {isDefined(onCreate) &&
+            !BLOCKED_OBJECTS_FROM_CREATION.includes(objectNameSingular) &&
+            !hasObjectReadOnlyPermission && (
+              <DropdownMenuItemsContainer scrollable={false}>
+                {createNewButton}
+              </DropdownMenuItemsContainer>
+            )}
           {records.recordsToSelect.length > 0 && <DropdownMenuSeparator />}
           {shouldDisplayDropdownMenuItems && (
             <SingleRecordSelectMenuItems
