@@ -70,6 +70,7 @@ const StyledSuggestion = styled.div<{ isHighlighted: boolean }>`
   cursor: pointer;
   padding: ${({ theme }) => theme.spacing(2)};
   transition: all 0.1s ease-in-out;
+  color: ${({ theme }) => theme.font.color.primary};
 
   &:hover {
     background: ${({ theme }) => theme.background.transparent.light};
