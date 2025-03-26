@@ -1,3 +1,4 @@
+import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCallback, useState } from 'react';
@@ -5,19 +6,19 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { Key } from 'ts-key-enum';
 import {
-  H2Title,
-  MainButton,
-  IconInfoCircle,
-  Checkbox,
   AppTooltip,
+  Checkbox,
+  H2Title,
+  IconInfoCircle,
+  MainButton,
   TooltipDelay,
 } from 'twenty-ui';
 import { z } from 'zod';
-import { useTheme } from '@emotion/react';
 
 import { SubTitle } from '@/auth/components/SubTitle';
 import { Title } from '@/auth/components/Title';
 import { currentWorkspaceMemberState } from '@/auth/states/currentWorkspaceMemberState';
+import { tokenPairState } from '@/auth/states/tokenPairState';
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { useUpdateOneRecord } from '@/object-record/hooks/useUpdateOneRecord';
 import { useOnboardingStatus } from '@/onboarding/hooks/useOnboardingStatus';
@@ -30,10 +31,9 @@ import { TextInputV2 } from '@/ui/input/components/TextInputV2';
 import { useScopedHotkeys } from '@/ui/utilities/hotkey/hooks/useScopedHotkeys';
 import { WorkspaceMember } from '@/workspace-member/types/WorkspaceMember';
 import { Trans, useLingui } from '@lingui/react/macro';
+import axios from 'axios';
 import { isDefined } from 'twenty-shared';
 import { OnboardingStatus } from '~/generated/graphql';
-import axios from 'axios';
-import { tokenPairState } from '@/auth/states/tokenPairState';
 import { getEnv } from '~/utils/get-env';
 
 const StyledContentContainer = styled.div`
@@ -190,7 +190,7 @@ export const CreateProfile = () => {
   useScopedHotkeys(
     Key.Enter,
     () => {
-      if (isEditingMode) {
+      if (isEditingMode && dataAccessChecked && isValid) {
         onSubmit(getValues());
       }
     },

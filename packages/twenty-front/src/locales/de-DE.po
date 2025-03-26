@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: nestermind-crm\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-03-25 15:58\n"
+"PO-Revision-Date: 2025-03-26 08:26\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -100,7 +100,7 @@ msgstr "24h ({hour24Label})"
 
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/ContentCustomize.tsx
 msgid "3 videos have been generated and added to your carousel"
-msgstr "3 Videos wurden generiert und Ihrem Karussell hinzugefügt"
+msgstr "3 Videos wurden generiert und Deinem Karussell hinzugefügt"
 
 #: src/modules/onboarding-tutorial/constants/onboarding-steps.tsx
 msgid "A property in nestermind holds the master data about a property you want to publish."
@@ -108,7 +108,7 @@ msgstr "Ein Objekt in nestermind enthält die Stammdaten über eine Immobilie, d
 
 #: src/pages/onboarding/CreateWorkspace.tsx
 msgid "A shared environment where you will be able to manage your customer relations with your team."
-msgstr "Eine gemeinsame Umgebung, in der Sie Ihre Kundenbeziehungen zusammen mit Ihrem Team verwalten können."
+msgstr "Eine gemeinsame Umgebung, in der Du Deine Kundenbeziehungen zusammen mit Deinem Team verwalten kannst."
 
 #: src/pages/settings/roles/components/RolePermissions.tsx
 msgid "Ability to interact with each object"
@@ -163,7 +163,7 @@ msgstr "Aktiv"
 
 #: src/pages/settings/developers/SettingsDevelopers.tsx
 msgid "Active API keys created by you or your team."
-msgstr "Aktive API-Schlüssel, die von Ihnen oder Ihrem Team erstellt wurden."
+msgstr "Aktive API-Schlüssel, die von Dir oder Deinem Team erstellt wurden."
 
 #: src/modules/ui/layout/page/components/PageAddButton.tsx
 msgid "Add"
@@ -1739,7 +1739,7 @@ msgstr "Gib Deine Immobilie bequem auf newhome.ch auf."
 
 #: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
 msgid "List your property on Comparis."
-msgstr "Publizieren Sie Ihre Immobilie auf Comparis"
+msgstr "Publiziere Deine Immobilie auf Comparis."
 
 #: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
 msgid "List your property on Facebook."
@@ -2377,7 +2377,7 @@ msgstr "Veröffentlichen"
 
 #: src/modules/onboarding-tutorial/constants/onboarding-steps.tsx
 msgid "Publish your first property"
-msgstr "Veröffentlichen Sie Ihr erstes Objekt"
+msgstr "Veröffentliche Dein erstes Objekt"
 
 #: src/pages/settings/publishers/SettingsPublishers.tsx
 msgid "Publisher deleted successfully"
@@ -2609,7 +2609,7 @@ msgstr "Wählen Sie die Ereignisse aus, die Sie an diesen Endpunkt senden möcht
 
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
 msgid "Select where you want to publish your property listing"
-msgstr "Wählen Sie aus, wo Sie Ihre Immobilie veröffentlichen möchten"
+msgstr "Wähle aus, wo Du Deine Immobilie veröffentlichen möchtest"
 
 #: src/pages/settings/profile/appearance/components/SettingsExperience.tsx
 msgid "Select your preferred language"
@@ -2684,7 +2684,7 @@ msgstr "Plattform-Zugangsdaten einrichten"
 
 #: src/modules/onboarding-tutorial/constants/onboarding-steps.tsx
 msgid "Setup your platform credentials in order to publish your properties."
-msgstr "Richte Deine Plattform-Zugangsdaten ein, um Ihre Objekte zu veröffentlichen."
+msgstr "Richte Deine Plattform-Zugangsdaten ein, um Deine Objekte zu veröffentlichen."
 
 #: src/pages/settings/SettingsWorkspaceMembers.tsx
 msgid "Share this link to invite users to join your workspace"

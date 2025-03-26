@@ -30,8 +30,12 @@ msgid "Confirm your email address"
 msgstr "Confirm your email address"
 
 #: src/emails/password-update-notify.email.tsx
-msgid "Connect to Twenty"
-msgstr "Connect to Twenty"
+msgid "Connect to nestermind"
+msgstr "Connect to nestermind"
+
+#: src/emails/password-update-notify.email.tsx
+#~ msgid "Connect to Twenty"
+#~ msgstr "Connect to Twenty"
 
 #: src/emails/password-update-notify.email.tsx
 #~ msgid "Dear"
@@ -66,12 +70,20 @@ msgid "If you did not initiate this change, please contact your workspace owner 
 msgstr "If you did not initiate this change, please contact your workspace owner immediately."
 
 #: src/emails/warn-suspended-workspace.email.tsx
-msgid "If you wish to continue using Twenty, please update your subscription within the next {remainingDays} {dayOrDays}."
-msgstr "If you wish to continue using Twenty, please update your subscription within the next {remainingDays} {dayOrDays}."
+msgid "If you wish to continue using nestermind, please update your subscription within the next {remainingDays} {dayOrDays}."
+msgstr "If you wish to continue using nestermind, please update your subscription within the next {remainingDays} {dayOrDays}."
+
+#: src/emails/warn-suspended-workspace.email.tsx
+#~ msgid "If you wish to continue using Twenty, please update your subscription within the next {remainingDays} {dayOrDays}."
+#~ msgstr "If you wish to continue using Twenty, please update your subscription within the next {remainingDays} {dayOrDays}."
 
 #: src/emails/clean-suspended-workspace.email.tsx
-msgid "If you wish to use Twenty again, you can create a new workspace."
-msgstr "If you wish to use Twenty again, you can create a new workspace."
+msgid "If you wish to use nestermind again, you can create a new workspace."
+msgstr "If you wish to use nestermind again, you can create a new workspace."
+
+#: src/emails/clean-suspended-workspace.email.tsx
+#~ msgid "If you wish to use Twenty again, you can create a new workspace."
+#~ msgstr "If you wish to use Twenty again, you can create a new workspace."
 
 #: src/emails/warn-suspended-workspace.email.tsx
 msgid "It appears that your workspace <0>{workspaceDisplayName}</0> has been suspended for {daysSinceInactive} days."
@@ -98,8 +110,12 @@ msgid "Reset your password 🗝"
 msgstr "Reset your password 🗝"
 
 #: src/emails/send-email-verification-link.email.tsx
-msgid "Thanks for registering for an account on Twenty! Before we get started, we just need to confirm that this is you. Click above to verify your email address."
-msgstr "Thanks for registering for an account on Twenty! Before we get started, we just need to confirm that this is you. Click above to verify your email address."
+msgid "Thanks for registering for an account on nestermind! Before we get started, we just need to confirm that this is you. Click above to verify your email address."
+msgstr "Thanks for registering for an account on nestermind! Before we get started, we just need to confirm that this is you. Click above to verify your email address."
+
+#: src/emails/send-email-verification-link.email.tsx
+#~ msgid "Thanks for registering for an account on Twenty! Before we get started, we just need to confirm that this is you. Click above to verify your email address."
+#~ msgstr "Thanks for registering for an account on Twenty! Before we get started, we just need to confirm that this is you. Click above to verify your email address."
 
 #: src/components/WhatIsTwenty.tsx
 msgid "The AI real estate software for innovative agents."
