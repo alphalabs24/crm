@@ -169,7 +169,7 @@ export const PlatformCredentialItem = ({
     <StyledItemContainer>
       <StyledHeader onClick={() => setIsExpanded(!isExpanded)}>
         <StyledLeftContent>
-          <PlatformBadge platformId={platformId} variant="small" />
+          <PlatformBadge platformId={platformId} size="small" />
           <StyledPlatformName>{platform.name}</StyledPlatformName>
         </StyledLeftContent>
         <StyledHeaderRight>
