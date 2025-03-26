@@ -1,4 +1,5 @@
 import { ActivityTargetableObject } from '@/activities/types/ActivityTargetableEntity';
+import { StatusBadge } from '@/object-record/record-show/components/nm/publication/StatusBadge';
 import { useRecordShowContainerData } from '@/object-record/record-show/hooks/useRecordShowContainerData';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
@@ -15,7 +16,7 @@ import { CompletionProgress } from './publication/CompletionProgress';
 const StyledContentContainer = styled.div<{ isInRightDrawer?: boolean }>`
   display: flex;
   gap: ${({ theme }) => theme.spacing(2)};
-  flex-wrap: wrap;
+  flex-wrap: wrap-reverse;
   width: 100%;
 
   @media (min-width: ${LARGE_DESKTOP_VIEWPORT}px) {
@@ -187,6 +188,15 @@ export const PublicationDetails = ({
           <StyledProgressContainer>
             <CompletionProgress percentage={definedValuePercentage} />
           </StyledProgressContainer>
+          <StyledSection>
+            <StyledSectionTitle>
+              <IconChartBar size={16} />
+              {t`Status`}
+            </StyledSectionTitle>
+            <StyledSectionContent>
+              <StatusBadge status={publication.stage} />
+            </StyledSectionContent>
+          </StyledSection>
           <StyledSection>
             <StyledSectionTitle>
               <IconChartBar size={16} />
