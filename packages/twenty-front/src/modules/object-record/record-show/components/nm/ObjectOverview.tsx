@@ -272,10 +272,9 @@ export const ObjectOverview = ({
       finances.push('rentNet', 'rentExtra');
     }
 
-    const stage = isPublication ? [] : ['stage'];
     // construct correct overview fields to show
     const base = [
-      ...stage,
+      'stage',
       'category',
       subType,
       'refProperty',
@@ -292,7 +291,7 @@ export const ObjectOverview = ({
     ];
 
     return base;
-  }, [isPublication, recordFromStore?.priceUnit, subType]);
+  }, [recordFromStore?.priceUnit, subType]);
 
   const isDefinedInRecord = (field: string) => {
     return (
