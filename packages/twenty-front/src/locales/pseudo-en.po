@@ -1600,6 +1600,8 @@ msgid "Input must be in camel case and cannot start with a number"
 msgstr ""
 
 #: src/modules/onboarding-tutorial/components/modals/InquiryTutorialModal.tsx
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+#: src/modules/object-record/record-show/components/nm/publication/ContactsByStageChart.tsx
 msgid "Inquiries"
 msgstr ""
 
@@ -2000,6 +2002,10 @@ msgstr ""
 msgid "No connected account"
 msgstr ""
 
+#: src/modules/object-record/record-show/components/nm/publication/ContactsByStageChart.tsx
+#~ msgid "No contacts data available"
+#~ msgstr ""
+
 #: src/pages/settings/email-templates/components/EmailTemplatesListCard.tsx
 msgid "No content"
 msgstr ""
@@ -2017,6 +2023,11 @@ msgstr ""
 
 #: src/modules/ui/layout/show-page/components/nm/ShowPageImageBanner.tsx
 msgid "No images available"
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+#: src/modules/object-record/record-show/components/nm/publication/ContactsByStageChart.tsx
+msgid "No inquiries data available yet"
 msgstr ""
 
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx

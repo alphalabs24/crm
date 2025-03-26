@@ -1603,6 +1603,8 @@ msgid "Input must be in camel case and cannot start with a number"
 msgstr "Input must be in camel case and cannot start with a number"
 
 #: src/modules/onboarding-tutorial/components/modals/InquiryTutorialModal.tsx
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+#: src/modules/object-record/record-show/components/nm/publication/ContactsByStageChart.tsx
 msgid "Inquiries"
 msgstr "Inquiries"
 
@@ -2003,6 +2005,10 @@ msgstr "New Template"
 msgid "No connected account"
 msgstr "No connected account"
 
+#: src/modules/object-record/record-show/components/nm/publication/ContactsByStageChart.tsx
+#~ msgid "No contacts data available"
+#~ msgstr "No contacts data available"
+
 #: src/pages/settings/email-templates/components/EmailTemplatesListCard.tsx
 msgid "No content"
 msgstr "No content"
@@ -2021,6 +2027,11 @@ msgstr "No email templates configured yet"
 #: src/modules/ui/layout/show-page/components/nm/ShowPageImageBanner.tsx
 msgid "No images available"
 msgstr "No images available"
+
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+#: src/modules/object-record/record-show/components/nm/publication/ContactsByStageChart.tsx
+msgid "No inquiries data available yet"
+msgstr "No inquiries data available yet"
 
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
 #~ msgid "No inquiries yet"

@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: nestermind-crm\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-03-26 12:58\n"
+"PO-Revision-Date: 2025-03-26 15:52\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -1608,6 +1608,8 @@ msgid "Input must be in camel case and cannot start with a number"
 msgstr "Die Eingabe muss im CamelCase-Format sein und darf nicht mit einer Zahl beginnen"
 
 #: src/modules/onboarding-tutorial/components/modals/InquiryTutorialModal.tsx
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+#: src/modules/object-record/record-show/components/nm/publication/ContactsByStageChart.tsx
 msgid "Inquiries"
 msgstr "Anfragen"
 
@@ -2008,6 +2010,10 @@ msgstr "Neue Vorlage"
 msgid "No connected account"
 msgstr "Kein verbundenes Konto"
 
+#: src/modules/object-record/record-show/components/nm/publication/ContactsByStageChart.tsx
+#~ msgid "No contacts data available"
+#~ msgstr "Keine Kontaktdaten verfügbar"
+
 #: src/pages/settings/email-templates/components/EmailTemplatesListCard.tsx
 msgid "No content"
 msgstr "Kein Inhalt"
@@ -2026,6 +2032,11 @@ msgstr "Noch keine E-Mail-Vorlagen konfiguriert"
 #: src/modules/ui/layout/show-page/components/nm/ShowPageImageBanner.tsx
 msgid "No images available"
 msgstr "Keine Bilder verfügbar"
+
+#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+#: src/modules/object-record/record-show/components/nm/publication/ContactsByStageChart.tsx
+msgid "No inquiries data available yet"
+msgstr "Es sind noch keine Daten für Anfragen verfügbar"
 
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
 #~ msgid "No inquiries yet"

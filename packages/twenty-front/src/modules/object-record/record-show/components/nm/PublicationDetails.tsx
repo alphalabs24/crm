@@ -1,15 +1,17 @@
 import { ActivityTargetableObject } from '@/activities/types/ActivityTargetableEntity';
+import { ContactsByStageChart } from '@/object-record/record-show/components/nm/publication/ContactsByStageChart';
 import { StatusBadge } from '@/object-record/record-show/components/nm/publication/StatusBadge';
 import { useRecordShowContainerData } from '@/object-record/record-show/hooks/useRecordShowContainerData';
+import { publicationMetricsState } from '@/object-record/record-show/states/publicationMetricsState';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Trans, useLingui } from '@lingui/react/macro';
 import { useMemo } from 'react';
+import { useRecoilValue } from 'recoil';
 import {
   IconBuildingSkyscraper,
   IconChartBar,
   LARGE_DESKTOP_VIEWPORT,
-  MOBILE_VIEWPORT,
 } from 'twenty-ui';
 import { ObjectOverview } from './ObjectOverview';
 import { CompletionProgress } from './publication/CompletionProgress';
@@ -60,6 +62,7 @@ const StyledSection = styled.div`
   border: 1px solid ${({ theme }) => theme.border.color.light};
   border-radius: ${({ theme }) => theme.border.radius.sm};
   width: 100%;
+  overflow: hidden;
 `;
 
 const StyledSectionTitle = styled.div`
@@ -74,21 +77,19 @@ const StyledSectionTitle = styled.div`
 `;
 
 const StyledSectionContent = styled.div`
+  background: ${({ theme }) => theme.background.primary};
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(3)};
   padding: ${({ theme }) => theme.spacing(4)};
 `;
 
-const StyledComingSoonText = styled.div`
-  color: ${({ theme }) => theme.font.color.secondary};
+const StyledChartContainer = styled.div`
+  padding: ${({ theme }) => theme.spacing(2)};
 `;
 
-const StyledKPIGrid = styled.div`
-  display: grid;
-  gap: ${({ theme }) => theme.spacing(3)};
-  width: 100%;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+const StyledComingSoonText = styled.div`
+  color: ${({ theme }) => theme.font.color.secondary};
 `;
 
 const StyledEmptyTable = styled.div`
@@ -102,27 +103,11 @@ const StyledEmptyTable = styled.div`
   width: 100%;
 `;
 
-const StyledChartPlaceholder = styled.div`
-  align-items: center;
-  background: ${({ theme }) => theme.background.secondary};
+const StyledProgressContainer = styled.div`
+  background: ${({ theme }) => theme.background.primary};
+  border: 1px solid ${({ theme }) => theme.border.color.light};
   border-radius: ${({ theme }) => theme.border.radius.sm};
-  color: ${({ theme }) => theme.font.color.light};
-  display: flex;
-  font-size: ${({ theme }) => theme.font.size.sm};
-  height: 200px;
-  justify-content: center;
-  width: 100%;
-`;
-
-const StyledTwoColumns = styled.div`
-  display: grid;
-  gap: ${({ theme }) => theme.spacing(4)};
-  grid-template-columns: 1fr;
-  width: 100%;
-
-  @media (min-width: ${MOBILE_VIEWPORT}px) {
-    grid-template-columns: 2fr 1fr;
-  }
+  padding: 0 ${({ theme }) => theme.spacing(4)};
 `;
 
 const StyledLoadingContainer = styled.div`
@@ -132,12 +117,6 @@ const StyledLoadingContainer = styled.div`
   justify-content: center;
   padding: ${({ theme }) => theme.spacing(8)};
   width: 100%;
-`;
-
-const StyledProgressContainer = styled.div`
-  border: 1px solid ${({ theme }) => theme.border.color.light};
-  border-radius: ${({ theme }) => theme.border.radius.sm};
-  padding: 0 ${({ theme }) => theme.spacing(4)};
 `;
 
 type PublicationDetailsProps = {
@@ -155,6 +134,10 @@ export const PublicationDetails = ({
   isInRightDrawer,
 }: PublicationDetailsProps) => {
   const { t } = useLingui();
+  const publicationMetrics = useRecoilValue(
+    publicationMetricsState(targetableObject.id),
+  );
+
   const { recordFromStore: publication, recordLoading } =
     useRecordShowContainerData({
       objectNameSingular: targetableObject.targetObjectNameSingular,
@@ -168,6 +151,7 @@ export const PublicationDetails = ({
     return (definedValues.length / Object.keys(publication ?? {}).length) * 100;
   }, [publication]);
 
+  // TODO: Add a skeleton loader here
   if (recordLoading || !publication) {
     return (
       <StyledLoadingContainer>
@@ -201,6 +185,25 @@ export const PublicationDetails = ({
           <StyledSection>
             <StyledSectionTitle>
               <IconChartBar size={16} />
+              {t`Inquiries`}
+            </StyledSectionTitle>
+            <StyledSectionContent>
+              {publicationMetrics?.contactsByStage ? (
+                <StyledChartContainer>
+                  <ContactsByStageChart
+                    contactsByStage={publicationMetrics.contactsByStage}
+                  />
+                </StyledChartContainer>
+              ) : (
+                <StyledEmptyTable>
+                  <Trans>No inquiries data available yet</Trans>
+                </StyledEmptyTable>
+              )}
+            </StyledSectionContent>
+          </StyledSection>
+          <StyledSection>
+            <StyledSectionTitle>
+              <IconChartBar size={16} />
               {t`Reporting`}
             </StyledSectionTitle>
             <StyledSectionContent>
@@ -209,55 +212,6 @@ export const PublicationDetails = ({
               </StyledComingSoonText>
             </StyledSectionContent>
           </StyledSection>
-
-          {/*<StyledKPIGrid>
-            <KPICard
-              label={t`Inquiries`}
-              value={publicationMetrics.contacts}
-              icon={<IconMessageCircle2 size={16} />}
-            />
-            <KPICard
-              label={t`Status`}
-              value={<StatusBadge status={publication.stage} />}
-              icon={<IconBuildingSkyscraper size={16} />}
-            />
-          </StyledKPIGrid>
-          <StyledSection>
-            <StyledSectionTitle>
-              <IconMessageCircle2 size={16} />
-              {t`Recent Inquiries`}
-            </StyledSectionTitle>
-            <StyledSectionContent>
-              <StyledEmptyTable>{t`No inquiries yet`}</StyledEmptyTable>
-            </StyledSectionContent>
-          </StyledSection>
-
-          <StyledTwoColumns>
-            <StyledSection>
-              <StyledSectionTitle>
-                <IconChartBar size={16} />
-                {t`Price History`}
-              </StyledSectionTitle>
-              <StyledSectionContent>
-                <StyledChartPlaceholder>
-                  {t`Price history chart coming soon`}
-                </StyledChartPlaceholder>
-              </StyledSectionContent>
-            </StyledSection>
-
-            <StyledSection>
-              <StyledSectionTitle>
-                <IconBuildingSkyscraper size={16} />
-                {t`Similar Properties`}
-              </StyledSectionTitle>
-              <StyledSectionContent>
-                <StyledEmptyTable>
-                  {t`No similar properties found`}
-                </StyledEmptyTable>
-              </StyledSectionContent>
-            </StyledSection>
-          </StyledTwoColumns>
-          */}
         </StyledRightContentContainer>
       </StyledContentContainer>
     </>

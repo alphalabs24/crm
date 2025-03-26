@@ -38,6 +38,7 @@ import { FieldMetadataType } from '~/generated/graphql';
 import { useSubcategoryByCategory } from '../../hooks/useSubcategoryByCategory';
 
 const StyledFormBorder = styled.div`
+  background: ${({ theme }) => theme.background.primary};
   border: 1px solid ${({ theme }) => theme.border.color.light};
   border-radius: ${({ theme }) => theme.border.radius.sm};
   margin: ${({ theme }) => theme.spacing(4)};
