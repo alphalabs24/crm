@@ -1,4 +1,5 @@
 import { Trans } from '@lingui/react/macro';
+import { ColorScheme } from 'twenty-ui';
 
 export type PlatformType = 'social_media' | 'real_estate' | 'smart_listing';
 
@@ -34,11 +35,18 @@ export type PlatformField = {
   type?: 'text' | 'password';
 };
 
+export type PlatformLocaleKey = 'en' | 'de-DE' | 'fr-FR' | 'it-IT';
+export type PlatformLogo = {
+  [key in PlatformLocaleKey]?: {
+    [key in ColorScheme]?: string;
+  };
+};
+
 export type Platform = {
   type: PlatformType;
   name: string;
   description: React.ReactNode;
-  logo?: string;
+  logo?: PlatformLogo;
   isConnected?: boolean;
   accountName?: string;
   isNew?: boolean;
@@ -55,7 +63,24 @@ export const PLATFORMS: { [key in PlatformId]: Platform } = {
     isNew: true,
     // eslint-disable-next-line @nx/workspace-no-hardcoded-colors
     backgroundColor: '#97DDD2',
-    logo: '/logos/newhome.png',
+    logo: {
+      en: {
+        Dark: '/logos/newhome/newhome_dark_EN.png',
+        Light: '/logos/newhome/newhome_EN.png',
+      },
+      'de-DE': {
+        Dark: '/logos/newhome/newhome_dark_DE.png',
+        Light: '/logos/newhome/newhome_DE.png',
+      },
+      'fr-FR': {
+        Dark: '/logos/newhome/newhome_dark_FR.png',
+        Light: '/logos/newhome/newhome_FR.png',
+      },
+      'it-IT': {
+        Dark: '/logos/newhome/newhome_dark_IT.png',
+        Light: '/logos/newhome/newhome_IT.png',
+      },
+    },
     fieldsOnAgency: [
       {
         name: 'newhomeFtpUser',
@@ -99,14 +124,24 @@ export const PLATFORMS: { [key in PlatformId]: Platform } = {
     ),
 
     isConnected: true,
-    logo: '/logos/socials.png',
+    logo: {
+      en: {
+        Dark: '/logos/socials.png',
+        Light: '/logos/socials.png',
+      },
+    },
     accountName: '@nester.mind',
     isBeta: true,
   },
   [PlatformId.SwissMarketplaceGroup]: {
     type: 'real_estate',
     name: 'Swiss Marketplace Group',
-    logo: '/logos/smg.png',
+    logo: {
+      en: {
+        Dark: '/logos/smg.png',
+        Light: '/logos/smg.png',
+      },
+    },
     description: (
       <Trans>
         This includes the following platforms: ImmoScout24, Homegate, and more.
@@ -155,7 +190,12 @@ export const PLATFORMS: { [key in PlatformId]: Platform } = {
     name: 'Comparis',
     description: <Trans>List your property on Comparis.</Trans>,
     isBeta: true,
-    logo: '/logos/comparis.png',
+    logo: {
+      en: {
+        Dark: '/logos/comparis.png',
+        Light: '/logos/comparis.png',
+      },
+    },
   },
   [PlatformId.Flatfox]: {
     type: 'real_estate',

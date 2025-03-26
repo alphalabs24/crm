@@ -11,9 +11,11 @@ import { ShowPagePropertySummaryCard } from '@/ui/layout/show-page/components/nm
 import { ShowPageSummaryCardSkeletonLoader } from '@/ui/layout/show-page/components/ShowPageSummaryCardSkeletonLoader';
 
 import { FieldMetadataItem } from '@/object-metadata/types/FieldMetadataItem';
+import { PlatformBadge } from '@/object-record/record-show/components/nm/publication/PlatformBadge';
 import { CATEGORY_SUBTYPES } from '@/record-edit/constants/CategorySubtypes';
 import { Modal, ModalRefType } from '@/ui/layout/modal/components/Modal';
 import { ModalHotkeyScope } from '@/ui/layout/modal/components/types/ModalHotkeyScope';
+import { PlatformId } from '@/ui/layout/show-page/components/nm/types/Platform';
 import { useIsMobile } from '@/ui/utilities/responsive/hooks/useIsMobile';
 import styled from '@emotion/styled';
 import { Trans, useLingui } from '@lingui/react/macro';
@@ -398,25 +400,14 @@ export const ObjectOverview = ({
               <StyledTitle>
                 <Trans>{overviewLabel} Overview</Trans>
               </StyledTitle>
-              {/*<StyledButtonContainer>
-                {!isPublication ? (
-                  isInRightDrawer ? null : (
-                    <Button
-                      size="small"
-                      title={t`Prefill`}
-                      Icon={IconSparkles}
-                      accent="purple"
-                      onClick={openModal}
-                    />
-                  )
-                ) : (
+              <StyledButtonContainer>
+                {isPublication ? (
                   <PlatformBadge
                     platformId={recordFromStore.platform ?? PlatformId.Newhome}
                     isActive
                   />
-                )}
+                ) : null}
               </StyledButtonContainer>
-              */}
             </StyledHeader>
             <StyledContent>
               <ShowPagePropertySummaryCard

@@ -2,6 +2,7 @@ import { TutorialPageHeader } from '@/onboarding-tutorial/components/TutorialPag
 import { useTutorialSteps } from '@/onboarding-tutorial/hooks/useTutorialSteps';
 import { PageBody } from '@/ui/layout/page/components/PageBody';
 import { PageContainer } from '@/ui/layout/page/components/PageContainer';
+import { useColorScheme } from '@/ui/theme/hooks/useColorScheme';
 import { PageTitle } from '@/ui/utilities/page-title/components/PageTitle';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
@@ -9,6 +10,7 @@ import { Trans, useLingui } from '@lingui/react/macro';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import {
+  ColorScheme,
   IconChevronRight,
   IconCircleCheck,
   IconCircleDashed,
@@ -107,10 +109,14 @@ const StyledStepsContainer = styled.div`
 const StyledStepCard = styled(motion.button)<{
   $isCompleted: boolean;
   $isDisabled: boolean;
+  colorScheme?: ColorScheme;
 }>`
   align-items: center;
   background-color: ${({ theme }) => theme.background.primary};
-  border: none;
+  border: ${({ colorScheme, theme }) =>
+    colorScheme === 'Light'
+      ? 'none'
+      : `1px solid ${theme.border.color.medium}`};
   border-left: ${({ theme, $isCompleted }) =>
     $isCompleted
       ? `${theme.spacing(1)} solid ${theme.color.green}`
@@ -186,6 +192,7 @@ const StyledStepStatus = styled.div<{ $isCompleted: boolean }>`
 export const Tutorial = () => {
   const { steps } = useTutorialSteps();
   const theme = useTheme();
+  const { colorScheme } = useColorScheme();
   const [blockHover, setBlockHover] = useState(true);
   const completedSteps = Object.values(steps).filter(
     (step) => step.completed,
@@ -244,6 +251,7 @@ export const Tutorial = () => {
 
                 return (
                   <StyledStepCard
+                    colorScheme={colorScheme}
                     key={step.step.id}
                     $isCompleted={step.completed}
                     $isDisabled={isDisabled}

@@ -94,7 +94,7 @@ export const RelationFromManyFieldDisplay = ({
                 isPublication(objectNameSingular) ? (
                   <PlatformBadge
                     platformId={record.platform?.toUpperCase()}
-                    variant="small"
+                    size="small"
                   />
                 ) : undefined
               }

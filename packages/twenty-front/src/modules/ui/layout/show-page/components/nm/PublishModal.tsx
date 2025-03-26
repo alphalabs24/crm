@@ -7,11 +7,11 @@ import { motion } from 'framer-motion';
 import { forwardRef, useState } from 'react';
 import { Button, IconUpload, LARGE_DESKTOP_VIEWPORT } from 'twenty-ui';
 
-import { Publishing } from '@/ui/layout/show-page/components/nm/modal-pages/Publishing';
-import { PlatformId } from './types/Platform';
-import { ValidationResult } from '../../hooks/usePublicationValidation';
-import { useLingui } from '@lingui/react/macro';
 import { PlatformBadge } from '@/object-record/record-show/components/nm/publication/PlatformBadge';
+import { Publishing } from '@/ui/layout/show-page/components/nm/modal-pages/Publishing';
+import { useLingui } from '@lingui/react/macro';
+import { ValidationResult } from '../../hooks/usePublicationValidation';
+import { PlatformId } from './types/Platform';
 
 const StyledModalContent = styled(motion.div)`
   background: ${({ theme }) => theme.background.secondary};
@@ -103,7 +103,7 @@ export const PublishModal = forwardRef<ModalRefType, PublishModalProps>(
           <Publishing
             recordId={targetableObject.id}
             renderPlatformIcon={() => (
-              <PlatformBadge platformId={platformId} variant="small" />
+              <PlatformBadge platformId={platformId} size="small" />
             )}
             selectedPlatform={platformId}
             validationDetails={validationDetails}

@@ -34,6 +34,7 @@ const StyledTopBarIconStyledTitleContainer = styled.div`
   flex-direction: row;
   width: 100%;
   overflow: hidden;
+  color: ${({ theme }) => theme.font.color.primary};
 `;
 
 const StyledHeader = styled.div`

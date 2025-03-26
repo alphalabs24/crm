@@ -2,8 +2,8 @@ import { PlatformBadge } from '@/object-record/record-show/components/nm/publica
 import { ObjectRecord } from '@/object-record/types/ObjectRecord';
 import { usePublishers } from '@/publishers/contexts/PublisherContext';
 import {
-    PLATFORMS,
-    PUBLISHABLE_PLATFORMS,
+  PLATFORMS,
+  PUBLISHABLE_PLATFORMS,
 } from '@/ui/layout/show-page/components/nm/types/Platform';
 import { Table } from '@/ui/layout/table/components/Table';
 import { TableBody } from '@/ui/layout/table/components/TableBody';
@@ -14,11 +14,11 @@ import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Trans, useLingui } from '@lingui/react/macro';
 import {
-    Button,
-    IconChevronRight,
-    IconPlus,
-    IconTrash,
-    MOBILE_VIEWPORT,
+  Button,
+  IconChevronRight,
+  IconPlus,
+  IconTrash,
+  MOBILE_VIEWPORT,
 } from 'twenty-ui';
 
 const StyledTableBody = styled(TableBody)`
@@ -170,7 +170,7 @@ export const PublishersListCard = ({
                       <PlatformBadge
                         key={platformId}
                         platformId={platformId}
-                        variant="small"
+                        size="small"
                       />
                     ))}
                   </StyledPlatformBadges>

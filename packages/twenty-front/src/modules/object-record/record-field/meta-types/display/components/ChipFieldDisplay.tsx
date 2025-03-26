@@ -49,7 +49,8 @@ export const ChipFieldDisplay = () => {
         isPublication(objectNameSingular) ? (
           <PlatformBadge
             platformId={recordValue.platform?.toUpperCase()}
-            variant="small"
+            size="small"
+            variant="no-background"
           />
         ) : undefined
       }
@@ -61,7 +62,8 @@ export const ChipFieldDisplay = () => {
       LeftCustomComponent={
         <PlatformBadge
           platformId={recordValue.platform?.toUpperCase()}
-          variant="small"
+          size="small"
+          variant="no-background"
         />
       }
     />

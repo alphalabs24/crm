@@ -26,7 +26,7 @@ export const RelationToOneFieldDisplay = () => {
         fieldValue.platform ? (
           <PlatformBadge
             platformId={fieldValue.platform?.toUpperCase()}
-            variant="small"
+            size="small"
           />
         ) : undefined
       }

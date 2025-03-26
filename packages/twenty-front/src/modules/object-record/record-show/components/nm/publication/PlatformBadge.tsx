@@ -1,11 +1,14 @@
+import { useLocale } from '@/onboarding-tutorial/hooks/useLocale';
 import {
   PLATFORMS,
   PlatformId,
+  PlatformLocaleKey,
 } from '@/ui/layout/show-page/components/nm/types/Platform';
 import { useColorScheme } from '@/ui/theme/hooks/useColorScheme';
 import styled from '@emotion/styled';
 
 const StyledPlatformBadge = styled.div<{
+  size: PlatformSize;
   variant: PlatformVariant;
   isActive?: boolean;
   disabled?: boolean;
@@ -15,59 +18,75 @@ const StyledPlatformBadge = styled.div<{
   display: flex;
   gap: ${({ theme }) => theme.spacing(2)};
   border: 1px solid
-    ${({ theme, isActive }) =>
-      isActive ? theme.border.color.strong : theme.border.color.light};
+    ${({ theme, isActive, variant }) =>
+      variant === 'no-background'
+        ? 'transparent'
+        : isActive
+          ? theme.border.color.strong
+          : theme.border.color.light};
   border-radius: ${({ theme }) => theme.border.radius.sm};
-  height: ${({ variant }) => (variant === 'small' ? '20px' : '30px')};
-  width: ${({ variant }) => (variant === 'small' ? '60px' : '80px')};
+  height: ${({ size }) => (size === 'small' ? '20px' : '30px')};
+  width: ${({ size }) => (size === 'small' ? '60px' : '80px')};
   justify-content: center;
   align-items: center;
   cursor: ${({ disabled }) => (disabled ? 'unset' : 'pointer')};
-  background: ${({ theme, disabled, dark }) =>
+  background: ${({ theme, disabled, dark, variant }) =>
     disabled
-      ? dark
-        ? theme.background.transparent.lighter
-        : theme.background.secondary
-      : dark
-        ? theme.background.transparent.lighter
-        : theme.background.primary};
-
-  &:hover {
-    background: ${({ theme, disabled, dark }) =>
-      disabled
-        ? dark
+      ? variant === 'no-background'
+        ? 'transparent'
+        : dark
           ? theme.background.transparent.lighter
           : theme.background.secondary
+      : variant === 'no-background'
+        ? 'transparent'
         : dark
-          ? theme.background.transparent.medium
-          : theme.background.tertiary};
+          ? theme.background.transparent.lighter
+          : theme.background.primary};
+
+  &:hover {
+    background: ${({ theme, disabled, dark, variant }) =>
+      disabled
+        ? variant === 'no-background'
+          ? 'transparent'
+          : dark
+            ? theme.background.transparent.lighter
+            : theme.background.secondary
+        : variant === 'no-background'
+          ? 'transparent'
+          : dark
+            ? theme.background.transparent.medium
+            : theme.background.tertiary};
   }
 `;
 
 const StyledPlatformLogo = styled.img<{
-  variant: PlatformVariant;
+  size: PlatformSize;
   dark?: boolean;
 }>`
-  width: ${({ variant }) => (variant === 'small' ? '50px' : '70px')};
+  width: ${({ size }) => (size === 'small' ? '50px' : '70px')};
 `;
 
 type PlatformBadgeProps = {
   platformId: PlatformId;
   isActive?: boolean;
   onClick?: () => void;
+  size?: PlatformSize;
   variant?: PlatformVariant;
 };
 
-type PlatformVariant = 'default' | 'small';
+type PlatformSize = 'default' | 'small';
+type PlatformVariant = 'default' | 'no-background';
 
 export const PlatformBadge = ({
   platformId,
   isActive,
   onClick,
+  size = 'default',
   variant = 'default',
 }: PlatformBadgeProps) => {
   const { colorScheme } = useColorScheme();
   const isDark = colorScheme === 'Dark';
+  const locale = useLocale();
 
   const platform =
     PLATFORMS[platformId?.toUpperCase() as keyof typeof PLATFORMS];
@@ -78,6 +97,7 @@ export const PlatformBadge = ({
 
   return (
     <StyledPlatformBadge
+      size={size}
       variant={variant}
       isActive={isActive}
       onClick={onClick}
@@ -86,8 +106,11 @@ export const PlatformBadge = ({
     >
       {platform?.logo && (
         <StyledPlatformLogo
-          variant={variant}
-          src={platform.logo}
+          size={size}
+          src={
+            platform.logo[locale as PlatformLocaleKey]?.[colorScheme] ??
+            platform.logo.en?.Light
+          }
           alt={platform.name}
           dark={isDark}
         />
