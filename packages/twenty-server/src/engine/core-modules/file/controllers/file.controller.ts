@@ -2,11 +2,13 @@ import {
   Controller,
   Get,
   Param,
+  Query,
   Req,
   Res,
   UseFilters,
   UseGuards,
 } from '@nestjs/common';
+import fi from 'date-fns/esm/locale/fi/index';
 
 import { Response } from 'express';
 
@@ -29,16 +31,75 @@ import { FileService } from 'src/engine/core-modules/file/services/file.service'
 
 @Controller('files')
 @UseFilters(FileApiExceptionFilter)
-@UseGuards(FilePathGuard)
 export class FileController {
   constructor(private readonly fileService: FileService) {}
 
+  @Get('public/*/:filename')
+  async getPublicFile(
+    @Param() params: string[],
+    @Res() res: Response,
+    @Query() query: any,
+  ) {
+    console.log('test');
+    // const filepath = params[0].split('public/')[1];
+
+    const folderPath = checkFilePath(params[0]);
+    const filename = checkFilename(params['filename']);
+    const workspaceId = query.workspaceId;
+
+    console.log('workspaceId:', workspaceId);
+    console.log('folderPath:', filename);
+    console.log('filename:', filename);
+
+    if (!workspaceId) {
+      throw new FileException(
+        'Unauthorized: missing workspaceId',
+        FileExceptionCode.UNAUTHENTICATED,
+      );
+    }
+
+    try {
+      const fileStream = await this.fileService.getFileStream(
+        folderPath,
+        filename,
+        workspaceId,
+        // wen n pblic im path
+      );
+
+      fileStream.on('error', () => {
+        throw new FileException(
+          'Error streaming file from storage',
+          FileExceptionCode.INTERNAL_SERVER_ERROR,
+        );
+      });
+
+      fileStream.pipe(res);
+    } catch (error) {
+      if (
+        error instanceof FileStorageException &&
+        error.code === FileStorageExceptionCode.FILE_NOT_FOUND
+      ) {
+        throw new FileException(
+          'File not found',
+          FileExceptionCode.FILE_NOT_FOUND,
+        );
+      }
+
+      throw new FileException(
+        `Error retrieving file: ${error.message}`,
+        FileExceptionCode.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  @UseGuards(FilePathGuard)
   @Get('*/:filename')
   async getFile(
     @Param() params: string[],
     @Res() res: Response,
     @Req() req: Request,
   ) {
+    console.log('test2');
     const folderPath = checkFilePath(params[0]);
     const filename = checkFilename(params['filename']);
 

@@ -15,21 +15,22 @@ import { resolveAbsolutePath } from 'src/utils/resolve-absolute-path';
 export const fileStorageModuleFactory = async (
   environmentService: EnvironmentService,
 ): Promise<FileStorageModuleOptions> => {
-  const driverType = environmentService.get('STORAGE_TYPE');
+  const driverType = 's3';
 
   switch (driverType) {
-    case StorageDriverType.Local: {
-      const storagePath = environmentService.get('STORAGE_LOCAL_PATH');
+    // case StorageDriverType.Local: {
+    //   const storagePath = environmentService.get('STORAGE_LOCAL_PATH');
 
-      return {
-        type: StorageDriverType.Local,
-        options: {
-          storagePath: resolveAbsolutePath(storagePath),
-        },
-      };
-    }
+    //   return {
+    //     type: StorageDriverType.Local,
+    //     options: {
+    //       storagePath: resolveAbsolutePath(storagePath),
+    //     },
+    //   };
+    // }
     case StorageDriverType.S3: {
       const bucketName = environmentService.get('STORAGE_S3_NAME');
+      const bucketNamePublic = environmentService.get('STORAGE_S3_NAME_PUBLIC');
       const endpoint = environmentService.get('STORAGE_S3_ENDPOINT');
       const region = environmentService.get('STORAGE_S3_REGION');
       const accessKeyId = environmentService.get('STORAGE_S3_ACCESS_KEY_ID');
@@ -41,6 +42,7 @@ export const fileStorageModuleFactory = async (
         type: StorageDriverType.S3,
         options: {
           bucketName: bucketName ?? '',
+          bucketNamePublic: bucketNamePublic ?? '',
           endpoint: endpoint,
           credentials: accessKeyId
             ? {
