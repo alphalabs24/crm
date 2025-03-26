@@ -2,6 +2,7 @@ import { useNestermind } from '@/api/hooks/useNestermind';
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { getLinkToShowPage } from '@/object-metadata/utils/getLinkToShowPage';
 import { useFindOneRecord } from '@/object-record/hooks/useFindOneRecord';
+import { PlatformBadge } from '@/object-record/record-show/components/nm/publication/PlatformBadge';
 import { SnackBarVariant } from '@/ui/feedback/snack-bar-manager/components/SnackBar';
 import { useSnackBar } from '@/ui/feedback/snack-bar-manager/hooks/useSnackBar';
 import {
@@ -373,16 +374,10 @@ export const PlatformSelect = ({
                 >
                   <StyledPlatformCardContent>
                     <StyledPlatformIconContainer>
-                      <StyledPlatformLogo dark={colorScheme === 'Dark'}>
-                        {platform.logo ? (
-                          <StyledPlatformLogoImage
-                            src={platform.logo}
-                            alt={platform.name}
-                          />
-                        ) : (
-                          platform.name.slice(0, 2)
-                        )}
-                      </StyledPlatformLogo>
+                      <PlatformBadge
+                        platformId={platform.id}
+                        variant="no-background"
+                      />
                     </StyledPlatformIconContainer>
                     <StyledPlatformInfo>
                       <StyledPlatformName comingSoon={platform.isBeta}>
@@ -456,9 +451,10 @@ export const PlatformSelect = ({
               {socialMediaPlatform.name}
               <StyledPlatformIconContainer width={50}>
                 <StyledPlatformLogo>
-                  <StyledPlatformLogoImage
-                    src={socialMediaPlatform.logo}
-                    alt={socialMediaPlatform.name}
+                  <PlatformBadge
+                    platformId={PlatformId.SocialMedia}
+                    size="small"
+                    variant="no-background"
                   />
                 </StyledPlatformLogo>
               </StyledPlatformIconContainer>
