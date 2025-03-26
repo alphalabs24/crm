@@ -18,6 +18,7 @@ import { useSetRecoilState } from 'recoil';
 import { UserTutorialExplanation } from 'twenty-shared';
 import {
   Button,
+  IconAlertCircle,
   IconExchange,
   IconHelpCircle,
   IconHomeShare,
@@ -86,12 +87,22 @@ const StyledArrowContainer = styled.div`
 `;
 
 const StyledModalDescription = styled.div`
-  align-items: center;
+  justify-content: center;
   color: ${({ theme }) => theme.font.color.tertiary};
   display: flex;
+  flex-direction: column;
   font-size: ${({ theme }) => theme.font.size.md};
   padding: 0 ${({ theme }) => theme.spacing(2)}
     ${({ theme }) => theme.spacing(4)};
+`;
+
+const StyledModalWarningText = styled.div`
+  align-items: center;
+  color: ${({ theme }) => theme.font.color.warning};
+  display: flex;
+  font-size: ${({ theme }) => theme.font.size.sm};
+  gap: ${({ theme }) => theme.spacing(1.5)};
+  padding: 0 ${({ theme }) => theme.spacing(2)};
 `;
 
 const StyledModalTopTitle = styled.div`
@@ -495,7 +506,6 @@ export const PropertyDifferencesModal = forwardRef<
           <StyledModalDescription>
             {t`Review differences between your property and its publication drafts. Syncing will update the publication drafts with the current property values.`}
           </StyledModalDescription>
-
           <StyledTabsContainer>
             <StyledPublicationTabs ref={tabsContainerRef}>
               {differences.map((publicationDiff, index) => (
@@ -507,6 +517,8 @@ export const PropertyDifferencesModal = forwardRef<
                 >
                   <StyledPlatformIcon platform={publicationDiff.platform}>
                     <PlatformBadge
+                      size="small"
+                      variant="no-background"
                       platformId={
                         (publicationDiff.platform as PlatformId) ??
                         PlatformId.Newhome
@@ -531,6 +543,13 @@ export const PropertyDifferencesModal = forwardRef<
               }
             />
           )}
+          <StyledModalWarningText>
+            <IconAlertCircle size={12} />
+            <Trans>
+              Keep in mind that only nestermind drafts will be synchronized. You
+              will need to publish the drafts manually after synchronization.
+            </Trans>
+          </StyledModalWarningText>
         </StyledModalContent>
       </StyledModalContainer>
     </Modal>

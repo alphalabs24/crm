@@ -1,4 +1,5 @@
 import { useObjectRecordMultiSelectScopedStates } from '@/activities/hooks/useObjectRecordMultiSelectScopedStates';
+import { BLOCKED_OBJECTS_FROM_CREATION } from '@/object-record/constants/BlockedObjects';
 import { MultipleObjectRecordOnClickOutsideEffect } from '@/object-record/relation-picker/components/MultipleObjectRecordOnClickOutsideEffect';
 import { MultipleObjectRecordSelectItem } from '@/object-record/relation-picker/components/MultipleObjectRecordSelectItem';
 import { MULTI_OBJECT_RECORD_SELECT_SELECTABLE_LIST_ID } from '@/object-record/relation-picker/constants/MultiObjectRecordSelectSelectableListId';
@@ -39,11 +40,13 @@ export const MultiRecordSelect = ({
   onSubmit,
   onCreate,
   dropdownPlacement,
+  objectNameSingular,
 }: {
   onChange?: (changedRecordForSelectId: string) => void;
   onSubmit?: () => void;
   onCreate?: ((searchInput?: string) => void) | (() => void);
   dropdownPlacement?: Placement | null;
+  objectNameSingular: string;
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const setHotkeyScope = useSetHotkeyScope();
@@ -100,6 +103,10 @@ export const MultiRecordSelect = ({
     [setSearchFilter],
   );
 
+  // don't allow creation of blocked objects
+  const isBlockedObject =
+    BLOCKED_OBJECTS_FROM_CREATION.includes(objectNameSingular);
+
   // TODO: refactor this in a separate component
   const results = (
     <DropdownMenuItemsContainer hasMaxHeight>
@@ -147,11 +154,13 @@ export const MultiRecordSelect = ({
       <DropdownMenu ref={containerRef} data-select-disable width={200}>
         {dropdownPlacement?.includes('end') && (
           <>
-            {isDefined(onCreate) && !hasObjectReadOnlyPermission && (
-              <DropdownMenuItemsContainer scrollable={false}>
-                {createNewButton}
-              </DropdownMenuItemsContainer>
-            )}
+            {isDefined(onCreate) &&
+              !hasObjectReadOnlyPermission &&
+              !isBlockedObject && (
+                <DropdownMenuItemsContainer scrollable={false}>
+                  {createNewButton}
+                </DropdownMenuItemsContainer>
+              )}
             <DropdownMenuSeparator />
             {objectRecordsIdsMultiSelect?.length > 0 && results}
             {recordMultiSelectIsLoading && !recordPickerSearchFilter && (
@@ -184,7 +193,7 @@ export const MultiRecordSelect = ({
             {objectRecordsIdsMultiSelect?.length > 0 && (
               <DropdownMenuSeparator />
             )}
-            {isDefined(onCreate) && (
+            {isDefined(onCreate) && !isBlockedObject && (
               <DropdownMenuItemsContainer scrollable={false}>
                 {createNewButton}
               </DropdownMenuItemsContainer>

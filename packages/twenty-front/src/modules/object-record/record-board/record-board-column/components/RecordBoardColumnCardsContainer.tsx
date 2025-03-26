@@ -4,6 +4,7 @@ import { useContext } from 'react';
 import { useRecoilValue } from 'recoil';
 
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
+import { isPropertyOrPublication } from '@/object-metadata/utils/isPropertyOrPublication';
 import { RecordBoardContext } from '@/object-record/record-board/contexts/RecordBoardContext';
 import { RecordBoardColumnCardContainerSkeletonLoader } from '@/object-record/record-board/record-board-column/components/RecordBoardColumnCardContainerSkeletonLoader';
 import { RecordBoardColumnCardsMemo } from '@/object-record/record-board/record-board-column/components/RecordBoardColumnCardsMemo';
@@ -51,10 +52,6 @@ export const RecordBoardColumnCardsContainer = ({
 }: RecordBoardColumnCardsContainerProps) => {
   const { columnDefinition } = useContext(RecordBoardColumnContext);
   const { objectMetadataItem } = useContext(RecordBoardContext);
-
-  const isPublicationOrProperty =
-    objectMetadataItem.nameSingular === CoreObjectNameSingular.Publication ||
-    objectMetadataItem.nameSingular === CoreObjectNameSingular.Property;
 
   const columnId = columnDefinition.id;
 
@@ -155,7 +152,7 @@ export const RecordBoardColumnCardsContainer = ({
                 position="last"
               />
             )}
-            {!isPublicationOrProperty && (
+            {!isPropertyOrPublication(objectMetadataItem.nameSingular) && (
               <StyledNewButtonContainer>
                 <RecordBoardColumnNewRecordButton
                   columnId={columnDefinition.id}

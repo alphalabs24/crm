@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: nestermind-crm\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-03-26 08:26\n"
+"PO-Revision-Date: 2025-03-26 12:58\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -755,8 +755,8 @@ msgid "Create"
 msgstr ""
 
 #: src/pages/settings/email-templates/SettingsEmailTemplateNew.tsx
-msgid "Create a new email template."
-msgstr ""
+#~ msgid "Create a new email template."
+#~ msgstr "Create a new email template."
 
 #: src/modules/onboarding-tutorial/constants/onboarding-steps.tsx
 msgid "Create a publication draft and publish it to a platform."
@@ -1201,7 +1201,6 @@ msgstr ""
 msgid "Email Synchronization with nestermind"
 msgstr ""
 
-#: src/pages/settings/email-templates/SettingsEmailTemplateNew.tsx
 #: src/pages/settings/email-templates/SettingsEmailTemplateDetail.tsx
 #: src/pages/settings/email-templates/SettingsEmailTemplateDetail.tsx
 #: src/pages/settings/email-templates/SettingsEmailTemplateDetail.tsx
@@ -1210,7 +1209,6 @@ msgid "Email Template"
 msgstr ""
 
 #: src/pages/settings/email-templates/SettingsEmailTemplates.tsx
-#: src/pages/settings/email-templates/SettingsEmailTemplateNew.tsx
 #: src/pages/settings/email-templates/SettingsEmailTemplateDetail.tsx
 msgid "Email Templates"
 msgstr ""
@@ -1685,6 +1683,14 @@ msgstr "Italien"
 #~ msgid "Japanese"
 #~ msgstr "Japanese"
 
+#: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
+msgid "Keep in mind that only nestermind drafts will be synchronized. You will need to publish the drafts manually after synchronization."
+msgstr ""
+
+#: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
+#~ msgid "Keep in mind that only nestermind drafts will be synchronized. You will need to publish the drafts manually again after synchronization."
+#~ msgstr "Keep in mind that only nestermind drafts will be synchronized. You will need to publish the drafts manually again after synchronization."
+
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 #~ msgid "Korean"
 #~ msgstr "Korean"
@@ -1987,8 +1993,6 @@ msgstr "Nouvel enregistrement"
 #~ msgid "New Role"
 #~ msgstr "New Role"
 
-#: src/pages/settings/email-templates/SettingsEmailTemplateNew.tsx
-#: src/pages/settings/email-templates/SettingsEmailTemplateNew.tsx
 #: src/pages/settings/email-templates/components/EmailTemplatesListCard.tsx
 msgid "New Template"
 msgstr ""
@@ -2733,8 +2737,8 @@ msgid "SSO"
 msgstr ""
 
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
-#~ msgid "Status"
-#~ msgstr "Status"
+msgid "Status"
+msgstr ""
 
 #: src/pages/settings/workspace/SettingsSubdomain.tsx
 msgid "Subdomain"
@@ -2875,8 +2879,12 @@ msgid "The page you're seeking is either gone or never was. Let's get you back o
 msgstr "La page que vous recherchez a disparu ou n'a jamais existé. Revenons sur la bonne voie"
 
 #: src/modules/onboarding-tutorial/components/modals/PublicationSyncTutorialModal.tsx
-msgid "The synchronization ensures that titles, descriptions, prices, images and other relevant information are updated across all platforms - without having to manually edit each publication."
+msgid "The synchronization ensures that titles, descriptions, prices, images and other relevant information are updated across all platforms - without having to manually edit each draft."
 msgstr ""
+
+#: src/modules/onboarding-tutorial/components/modals/PublicationSyncTutorialModal.tsx
+#~ msgid "The synchronization ensures that titles, descriptions, prices, images and other relevant information are updated across all platforms - without having to manually edit each publication."
+#~ msgstr "The synchronization ensures that titles, descriptions, prices, images and other relevant information are updated across all platforms - without having to manually edit each publication."
 
 #: src/pages/settings/data-model/SettingsObjectFieldEdit.tsx
 #: src/pages/settings/data-model/SettingsObjectNewField/SettingsObjectNewFieldConfigure.tsx
@@ -3135,8 +3143,12 @@ msgid "When the key will be disabled"
 msgstr "Quand la clé sera désactivée"
 
 #: src/modules/onboarding-tutorial/components/modals/PublicationSyncTutorialModal.tsx
-msgid "When you make changes to a property's master data, you can quickly and easily transfer these to your publications. All drafts and already published objects can be synchronized with a single click, ensuring that current data is displayed correctly everywhere."
+msgid "When you make changes to a property's master data, you can quickly and easily transfer these to your publications. All draft publications can be synchronized with a single click, ensuring that current data is displayed correctly everywhere."
 msgstr ""
+
+#: src/modules/onboarding-tutorial/components/modals/PublicationSyncTutorialModal.tsx
+#~ msgid "When you make changes to a property's master data, you can quickly and easily transfer these to your publications. All drafts and already published objects can be synchronized with a single click, ensuring that current data is displayed correctly everywhere."
+#~ msgstr "When you make changes to a property's master data, you can quickly and easily transfer these to your publications. All drafts and already published objects can be synchronized with a single click, ensuring that current data is displayed correctly everywhere."
 
 #: src/pages/onboarding/CreateProfile.tsx
 msgid "Why is this required?"
@@ -3172,7 +3184,6 @@ msgstr "Le workflow ne peut pas être testé"
 #: src/pages/settings/publishers/SettingsPublishers.tsx
 #: src/pages/settings/integrations/SettingsIntegrations.tsx
 #: src/pages/settings/email-templates/SettingsEmailTemplates.tsx
-#: src/pages/settings/email-templates/SettingsEmailTemplateNew.tsx
 #: src/pages/settings/email-templates/SettingsEmailTemplateDetail.tsx
 #: src/pages/settings/developers/SettingsDevelopers.tsx
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx

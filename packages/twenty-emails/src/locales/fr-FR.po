@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: nestermind-crm\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-03-26 08:26\n"
+"PO-Revision-Date: 2025-03-26 12:48\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -40,7 +40,7 @@ msgstr ""
 
 #: src/emails/password-update-notify.email.tsx
 #~ msgid "Connect to Twenty"
-#~ msgstr "Connectez-vous à Twenty"
+#~ msgstr "Connect to Twenty"
 
 #: src/emails/password-update-notify.email.tsx
 #~ msgid "Dear"
@@ -80,7 +80,7 @@ msgstr ""
 
 #: src/emails/warn-suspended-workspace.email.tsx
 #~ msgid "If you wish to continue using Twenty, please update your subscription within the next {remainingDays} {dayOrDays}."
-#~ msgstr "Pour continuer à utiliser Twenty, veuillez mettre à jour votre abonnement dans les {remainingDays} {dayOrDays}."
+#~ msgstr "If you wish to continue using Twenty, please update your subscription within the next {remainingDays} {dayOrDays}."
 
 #: src/emails/clean-suspended-workspace.email.tsx
 msgid "If you wish to use nestermind again, you can create a new workspace."
@@ -88,7 +88,7 @@ msgstr ""
 
 #: src/emails/clean-suspended-workspace.email.tsx
 #~ msgid "If you wish to use Twenty again, you can create a new workspace."
-#~ msgstr "Pour réutiliser Twenty, vous pouvez créer un nouvel espace de travail."
+#~ msgstr "If you wish to use Twenty again, you can create a new workspace."
 
 #: src/emails/warn-suspended-workspace.email.tsx
 msgid "It appears that your workspace <0>{workspaceDisplayName}</0> has been suspended for {daysSinceInactive} days."
@@ -120,7 +120,7 @@ msgstr ""
 
 #: src/emails/send-email-verification-link.email.tsx
 #~ msgid "Thanks for registering for an account on Twenty! Before we get started, we just need to confirm that this is you. Click above to verify your email address."
-#~ msgstr "Merci de vous être inscrit sur Twenty ! Avant de commencer, nous devons confirmer votre identité. Cliquez ci-dessus pour vérifier votre adresse e-mail."
+#~ msgstr "Thanks for registering for an account on Twenty! Before we get started, we just need to confirm that this is you. Click above to verify your email address."
 
 #: src/components/WhatIsTwenty.tsx
 msgid "The AI real estate software for innovative agents."
