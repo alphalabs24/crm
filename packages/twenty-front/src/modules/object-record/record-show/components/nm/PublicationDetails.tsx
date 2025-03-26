@@ -6,6 +6,7 @@ import styled from '@emotion/styled';
 import { Trans, useLingui } from '@lingui/react/macro';
 import { useMemo } from 'react';
 import {
+  IconBuildingSkyscraper,
   IconChartBar,
   LARGE_DESKTOP_VIEWPORT,
   MOBILE_VIEWPORT,
@@ -190,7 +191,7 @@ export const PublicationDetails = ({
           </StyledProgressContainer>
           <StyledSection>
             <StyledSectionTitle>
-              <IconChartBar size={16} />
+              <IconBuildingSkyscraper size={16} />
               {t`Status`}
             </StyledSectionTitle>
             <StyledSectionContent>
