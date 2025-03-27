@@ -480,10 +480,6 @@ const FieldDetailItem = ({
       return `${value} m²`;
     }
 
-    if (fieldName === 'numberOfFloors') {
-      return `${value} ${value === 1 ? 'floor' : 'floors'}`;
-    }
-
     if (fieldName === 'volume') {
       return `${value} m³`;
     }
