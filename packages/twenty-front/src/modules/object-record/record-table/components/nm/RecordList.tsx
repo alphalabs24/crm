@@ -38,6 +38,7 @@ import {
     IconMap,
     IconPencil,
     IconPhoto,
+    LARGE_DESKTOP_VIEWPORT,
     MOBILE_VIEWPORT,
     useIsMobile,
 } from 'twenty-ui';
@@ -180,6 +181,7 @@ const StyledContentContainer = styled.div`
   overflow: hidden;
   padding: ${({ theme }) => theme.spacing(0.5)};
   max-width: 350px;
+  min-width: 200px;
 
   margin-bottom: ${({ theme }) => theme.spacing(2)};
 
@@ -315,6 +317,13 @@ const StyledRightSection = styled.div`
   display: flex;
   gap: ${({ theme }) => theme.spacing(2)};
   justify-content: flex-end;
+
+  @media only screen and (min-width: ${MOBILE_VIEWPORT}px) {
+    flex-direction: column;
+  }
+  @media only screen and (min-width: ${LARGE_DESKTOP_VIEWPORT}px) {
+    flex-direction: row;
+  }
 `;
 
 const StyledMiddleSection = styled.div`
