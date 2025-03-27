@@ -476,8 +476,16 @@ const FieldDetailItem = ({
   const formattedValue = useMemo(() => {
     if (value === undefined || value === null) return '';
 
-    if (fieldName === 'surface') {
+    if (fieldName === 'surface' || fieldName === 'livingSurface') {
       return `${value} m²`;
+    }
+
+    if (fieldName === 'numberOfFloors') {
+      return `${value} ${value === 1 ? 'floor' : 'floors'}`;
+    }
+
+    if (fieldName === 'volume') {
+      return `${value} m³`;
     }
 
     return String(value);
@@ -615,8 +623,7 @@ const getDisplayPriorityFields = (record: any) => {
   return [
     'surface',
     'rooms',
-    'surface',
-    'living surface',
+    'livingSurface',
     'numberOfFloors',
     'volume',
     'category',
