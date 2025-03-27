@@ -71,11 +71,6 @@ const StyledEmptyStateIcon = styled.div`
   width: 64px;
 `;
 
-const StyledEmptyStateText = styled.div`
-  font-size: ${({ theme }) => theme.font.size.lg};
-  font-weight: ${({ theme }) => theme.font.weight.medium};
-`;
-
 const StyledCard = styled(motion.div)<{ isSelected?: boolean }>`
   background: ${({ theme, isSelected }) =>
     isSelected ? theme.background.secondary : theme.background.primary};
@@ -143,12 +138,21 @@ const StyledSelectionIndicator = styled(motion.div)<{ isSelected?: boolean }>`
   pointer-events: none;
   position: relative;
   z-index: 2;
+  position: absolute;
+  right: ${({ theme }) => theme.spacing(3)};
+  top: ${({ theme }) => theme.spacing(3)};
+
+  @media only screen and (min-width: ${MOBILE_VIEWPORT}px) {
+    position: relative;
+    right: unset;
+    top: unset;
+  }
 `;
 
 const StyledSelectionCircle = styled.div<{ isSelected?: boolean }>`
   align-items: center;
   background: ${({ theme, isSelected }) =>
-    isSelected ? theme.color.blue : theme.background.primary};
+    isSelected ? theme.color.blue : theme.background.transparent.light};
   border: 2px solid
     ${({ theme, isSelected }) =>
       isSelected ? theme.color.blue : theme.border.color.strong};
@@ -731,10 +735,10 @@ const RecordListItem = ({
 
   const priorityFields = useMemo(() => {
     if (!record) return [];
-    return getDisplayPriorityFields(record).filter(
-      (field) => record[field] !== undefined && record[field] !== null,
-    );
-  }, [record]);
+    return getDisplayPriorityFields(record)
+      .filter((field) => record[field] !== undefined && record[field] !== null)
+      .slice(0, isMobile ? 5 : 10);
+  }, [isMobile, record]);
 
   // Format price for display
   const formattedPrice = useMemo(() => {
@@ -770,12 +774,11 @@ const RecordListItem = ({
       data-selectable-id={recordId}
     >
       <StyledSelectionIndicator
-        initial={{ x: -40, width: 0 }}
+        initial={{ x: -40, width: 0, opacity: 0 }}
         animate={{
-          y: 2,
-          x: isMobile ? 4 : isSelected ? 4 : -40,
-          width: isMobile ? 45 : isSelected ? 45 : 0,
-          opacity: isMobile ? (isSelected ? 1 : 0) : 1,
+          x: isSelected ? 4 : -40,
+          width: isSelected ? 45 : 0,
+          opacity: isSelected ? 1 : 0,
         }}
         transition={{ type: 'spring', stiffness: 400, damping: 25 }}
       >
