@@ -276,8 +276,8 @@ msgstr "Advanced:"
 #~ msgstr "Afrikaans"
 
 #: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
-msgid "Agency Credentials"
-msgstr "Agency Credentials"
+#~ msgid "Agency Credentials"
+#~ msgstr "Agency Credentials"
 
 #: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
 msgid "Agriculture Subtype"
@@ -607,6 +607,10 @@ msgstr "Coming Soon"
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
 msgid "Compare Changes"
 msgstr "Compare Changes"
+
+#: src/modules/object-record/record-table/components/nm/RecordList.tsx
+msgid "Complete ({percentage}%)"
+msgstr "Complete ({percentage}%)"
 
 #: src/pages/onboarding/tutorial.tsx
 msgid "Complete previous steps first"
@@ -1521,6 +1525,10 @@ msgstr "Get your subscription"
 msgid "Global"
 msgstr "Global"
 
+#: src/modules/object-record/record-table/components/nm/RecordList.tsx
+msgid "Good Enough ({percentage}%)"
+msgstr "Good Enough ({percentage}%)"
+
 #: src/pages/settings/SettingsWorkspace.tsx
 msgid "Grant Twenty support temporary access to your workspace so we can troubleshoot problems or recover content on your behalf. You can revoke access at any time."
 msgstr "Grant Twenty support temporary access to your workspace so we can troubleshoot problems or recover content on your behalf. You can revoke access at any time."
@@ -1619,6 +1627,10 @@ msgstr "Inquiries in nestermind"
 #: src/pages/settings/data-model/constants/SettingsObjectTableMetadata.ts
 msgid "Instances"
 msgstr "Instances"
+
+#: src/modules/object-record/record-table/components/nm/RecordList.tsx
+msgid "Insufficient Details ({percentage}%)"
+msgstr "Insufficient Details ({percentage}%)"
 
 #: src/modules/publishers/components/PlatformCredentialItem.tsx
 msgid "Integration Coming Soon"
@@ -1771,6 +1783,7 @@ msgstr "Listings"
 #: src/pages/settings/publishers/components/PublishersListCard.tsx
 #: src/pages/settings/email-templates/components/EmailTemplatesListCard.tsx
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+#: src/modules/object-record/record-show/components/nm/PropertyDetails.tsx
 #: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
 #: src/modules/object-record/record-show/components/nm/AISuite.tsx
 msgid "Loading..."
@@ -2389,6 +2402,10 @@ msgstr "Publish"
 msgid "Publish your first property"
 msgstr "Publish your first property"
 
+#: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
+msgid "Publisher Credentials"
+msgstr "Publisher Credentials"
+
 #: src/pages/settings/publishers/SettingsPublishers.tsx
 msgid "Publisher deleted successfully"
 msgstr "Publisher deleted successfully"
@@ -2707,6 +2724,10 @@ msgstr "Should changing a field's label also change the API name?"
 #: src/modules/settings/data-model/objects/forms/components/SettingsDataModelObjectAboutForm.tsx
 msgid "Should changing an object's label also change the API?"
 msgstr "Should changing an object's label also change the API?"
+
+#: src/modules/object-record/record-table/components/nm/RecordList.tsx
+msgid "Show Details"
+msgstr "Show Details"
 
 #: src/modules/auth/sign-in-up/components/SignInUpWithCredentials.tsx
 msgid "Sign in"

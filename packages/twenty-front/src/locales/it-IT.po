@@ -8,7 +8,7 @@ msgstr ""
 "Language: it\n"
 "Project-Id-Version: nestermind-crm\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-03-26 15:52\n"
+"PO-Revision-Date: 2025-03-27 15:43\n"
 "Last-Translator: \n"
 "Language-Team: Italian\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -204,7 +204,7 @@ msgstr "Aggiungi oggetto"
 
 #: src/pages/settings/publishers/components/PublishersListCard.tsx
 msgid "Add Publisher"
-msgstr ""
+msgstr "Aggiungi servizio"
 
 #: src/modules/settings/security/components/SettingsSSOIdentitiesProvidersListCard.tsx
 msgid "Add SSO Identity Provider"
@@ -281,8 +281,8 @@ msgstr ""
 #~ msgstr "Afrikaans"
 
 #: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
-msgid "Agency Credentials"
-msgstr ""
+#~ msgid "Agency Credentials"
+#~ msgstr "Agency Credentials"
 
 #: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
 msgid "Agriculture Subtype"
@@ -485,7 +485,7 @@ msgstr "Lista di blocco"
 
 #: src/modules/activities/components/ActivityRichTextEditorPlaceholderButtonBar.tsx
 msgid "Body"
-msgstr ""
+msgstr "Corpo"
 
 #: src/pages/onboarding/ChooseYourPlan.tsx
 msgid "Book a Call"
@@ -613,6 +613,10 @@ msgstr ""
 msgid "Compare Changes"
 msgstr ""
 
+#: src/modules/object-record/record-table/components/nm/RecordList.tsx
+msgid "Complete ({percentage}%)"
+msgstr ""
+
 #: src/pages/onboarding/tutorial.tsx
 msgid "Complete previous steps first"
 msgstr ""
@@ -655,7 +659,7 @@ msgstr "Configura le impostazioni di e-mail e calendario."
 
 #: src/modules/publishers/components/modals/EditPublisherModal.tsx
 msgid "Configure your publisher credentials that will be used across all platforms."
-msgstr ""
+msgstr "Configura le tue credenziali per la pubblicazione, valide su tutte le piattaforme."
 
 #: src/pages/settings/roles/components/RoleAssignmentConfirmationModal.tsx
 msgid "Confirm"
@@ -793,7 +797,7 @@ msgstr "Crea Ruolo"
 
 #: src/pages/settings/email-templates/components/EmailTemplatesListCard.tsx
 msgid "Create Template"
-msgstr ""
+msgstr "Crea un modello"
 
 #: src/pages/settings/developers/SettingsDevelopers.tsx
 msgid "Create Webhook"
@@ -958,7 +962,7 @@ msgstr "Elimina chiave API"
 
 #: src/pages/settings/email-templates/SettingsEmailTemplates.tsx
 msgid "Delete email template"
-msgstr ""
+msgstr "Elimina il modello email"
 
 #: src/pages/settings/publishers/SettingsPublishers.tsx
 #: src/pages/settings/publishers/SettingsPublishers.tsx
@@ -1156,7 +1160,7 @@ msgstr "Modifica il metodo di pagamento, visualizza le fatture e altro"
 
 #: src/pages/settings/email-templates/SettingsEmailTemplateDetail.tsx
 msgid "Edit your email template."
-msgstr ""
+msgstr "Modifica il tuo modello email"
 
 #: src/pages/settings/SettingsWorkspace.tsx
 msgid "Edit your subdomain name or set a custom domain."
@@ -1169,7 +1173,7 @@ msgstr "Modifica il nome del sottodominio o imposta un dominio personalizzato."
 #: src/pages/auth/PasswordReset.tsx
 #: src/modules/publishers/components/modals/EditPublisherModal.tsx
 msgid "Email"
-msgstr ""
+msgstr "E-Mail"
 
 #: src/modules/onboarding-tutorial/constants/onboarding-steps.tsx
 msgid "Email connected successfully"
@@ -1187,11 +1191,11 @@ msgstr "L'e-mail o il dominio è già presente nella lista di blocco"
 #: src/pages/settings/email-templates/SettingsEmailTemplates.tsx
 #: src/modules/settings/hooks/useSettingsNavigationItems.tsx
 msgid "Email Settings"
-msgstr ""
+msgstr "Impostazioni Email"
 
 #: src/pages/settings/email-templates/components/EmailTemplateForm.tsx
 msgid "Email subject"
-msgstr ""
+msgstr "Soggetto Email"
 
 #: src/modules/onboarding-tutorial/components/modals/EmailTutorialModal.tsx
 msgid "Email Synchronization"
@@ -1206,12 +1210,12 @@ msgstr ""
 #: src/pages/settings/email-templates/SettingsEmailTemplateDetail.tsx
 #: src/pages/settings/email-templates/components/EmailTemplateSelect.tsx
 msgid "Email Template"
-msgstr ""
+msgstr "Modello Email"
 
 #: src/pages/settings/email-templates/SettingsEmailTemplates.tsx
 #: src/pages/settings/email-templates/SettingsEmailTemplateDetail.tsx
 msgid "Email Templates"
-msgstr ""
+msgstr "Modelli Email"
 
 #: src/pages/settings/accounts/SettingsAccountsEmails.tsx
 #: src/pages/settings/accounts/SettingsAccountsEmails.tsx
@@ -1256,11 +1260,11 @@ msgstr ""
 
 #: src/modules/publishers/components/modals/EditPublisherModal.tsx
 msgid "Enter email"
-msgstr ""
+msgstr "Inserisci l'email"
 
 #: src/modules/publishers/components/modals/EditPublisherModal.tsx
 msgid "Enter publisher name"
-msgstr ""
+msgstr "Inserisci il nome del responsabile della pubblicazione"
 
 #: src/modules/record-edit/components/custom/PropertyEmailsFormInput.tsx
 msgid "Enter test email address"
@@ -1526,6 +1530,10 @@ msgstr "Ottieni il tuo abbonamento"
 msgid "Global"
 msgstr "Globale"
 
+#: src/modules/object-record/record-table/components/nm/RecordList.tsx
+msgid "Good Enough ({percentage}%)"
+msgstr ""
+
 #: src/pages/settings/SettingsWorkspace.tsx
 msgid "Grant Twenty support temporary access to your workspace so we can troubleshoot problems or recover content on your behalf. You can revoke access at any time."
 msgstr "Concedi al supporto Twenty l'accesso temporaneo al tuo spazio di lavoro per risolvere problemi o recuperare contenuti per tuo conto. Puoi revocare l'accesso in qualsiasi momento."
@@ -1621,6 +1629,10 @@ msgstr ""
 #: src/pages/settings/data-model/constants/SettingsObjectTableMetadata.ts
 msgid "Instances"
 msgstr "Istanze"
+
+#: src/modules/object-record/record-table/components/nm/RecordList.tsx
+msgid "Insufficient Details ({percentage}%)"
+msgstr ""
 
 #: src/modules/publishers/components/PlatformCredentialItem.tsx
 msgid "Integration Coming Soon"
@@ -1773,10 +1785,11 @@ msgstr "Annunci"
 #: src/pages/settings/publishers/components/PublishersListCard.tsx
 #: src/pages/settings/email-templates/components/EmailTemplatesListCard.tsx
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+#: src/modules/object-record/record-show/components/nm/PropertyDetails.tsx
 #: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
 #: src/modules/object-record/record-show/components/nm/AISuite.tsx
 msgid "Loading..."
-msgstr ""
+msgstr "Sta caricando..."
 
 #: src/pages/onboarding/ChooseYourPlan.tsx
 msgid "Log out"
@@ -1800,7 +1813,7 @@ msgstr "Gestisci qui i membri del tuo spazio"
 
 #: src/pages/settings/email-templates/SettingsEmailTemplates.tsx
 msgid "Manage your email templates for properties and publications."
-msgstr ""
+msgstr "Gestisci i tuoi modelli di email per immobili e pubblicazioni."
 
 #: src/pages/settings/accounts/SettingsAccounts.tsx
 msgid "Manage your internet accounts."
@@ -1808,7 +1821,7 @@ msgstr "Gestisci i tuoi account Internet."
 
 #: src/pages/settings/publishers/SettingsPublishers.tsx
 msgid "Manage your publishers and their platform credentials."
-msgstr ""
+msgstr "Gestisci i tuoi servizi e le tue credenziali di accesso."
 
 #: src/pages/settings/SettingsBilling.tsx
 msgid "Manage your subscription"
@@ -1890,7 +1903,7 @@ msgstr "Nome"
 
 #: src/modules/publishers/components/modals/EditPublisherModal.tsx
 msgid "Name and Email are internally used by nestermind to identify the publisher."
-msgstr ""
+msgstr "Nome ed e-mail vengono utilizzati internamente da nestermind per identificare chi pubblica i contenuti."
 
 #: src/pages/onboarding/CreateWorkspace.tsx
 msgid "Name can not be empty"
@@ -1997,7 +2010,7 @@ msgstr "Nuovo record"
 
 #: src/pages/settings/email-templates/components/EmailTemplatesListCard.tsx
 msgid "New Template"
-msgstr ""
+msgstr "Nuovo modello"
 
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhooksNew.tsx
 #~ msgid "New Webhook"
@@ -2009,7 +2022,7 @@ msgstr "Nessun account collegato"
 
 #: src/modules/object-record/record-show/components/nm/publication/ContactsByStageChart.tsx
 #~ msgid "No contacts data available"
-#~ msgstr ""
+#~ msgstr "No contacts data available"
 
 #: src/pages/settings/email-templates/components/EmailTemplatesListCard.tsx
 msgid "No content"
@@ -2024,7 +2037,7 @@ msgstr ""
 
 #: src/pages/settings/email-templates/components/EmailTemplatesListCard.tsx
 msgid "No email templates configured yet"
-msgstr ""
+msgstr "Non ci sono ancora modelli email configurati"
 
 #: src/modules/ui/layout/show-page/components/nm/ShowPageImageBanner.tsx
 msgid "No images available"
@@ -2065,7 +2078,7 @@ msgstr ""
 
 #: src/pages/settings/publishers/components/PublishersListCard.tsx
 msgid "No publishers configured yet"
-msgstr ""
+msgstr "Nessun servizio configurato al momento."
 
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
 #~ msgid "No recent visitors yet"
@@ -2229,7 +2242,7 @@ msgstr ""
 #: src/modules/publishers/components/modals/EditPublisherModal.tsx
 #: src/modules/onboarding-tutorial/components/modals/PublisherTutorialModal.tsx
 msgid "Platform Credentials"
-msgstr ""
+msgstr "Credenziali della Piattaforma"
 
 #: src/modules/onboarding-tutorial/constants/onboarding-steps.tsx
 msgid "Platform credentials setup successfully"
@@ -2240,7 +2253,7 @@ msgstr ""
 #: src/pages/settings/publishers/components/PublishersListCard.tsx
 #: src/modules/settings/hooks/useSettingsNavigationItems.tsx
 msgid "Platforms"
-msgstr ""
+msgstr "Piattaforme"
 
 #: src/modules/record-edit/components/custom/PropertyEmailsFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyEmailsFormInput.tsx
@@ -2391,13 +2404,17 @@ msgstr ""
 msgid "Publish your first property"
 msgstr ""
 
+#: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
+msgid "Publisher Credentials"
+msgstr ""
+
 #: src/pages/settings/publishers/SettingsPublishers.tsx
 msgid "Publisher deleted successfully"
 msgstr ""
 
 #: src/modules/publishers/components/modals/EditPublisherModal.tsx
 msgid "Publisher Details"
-msgstr ""
+msgstr "Dettagli del responsabile della pubblicazione"
 
 #: src/pages/settings/publishers/SettingsPublishers.tsx
 msgid "Publishers"
@@ -2417,7 +2434,7 @@ msgstr ""
 
 #: src/modules/settings/profile/components/ChangePassword.tsx
 msgid "Receive an email containing password update link"
-msgstr "Ricevi un'e-mail contenente il link per l'aggiornamento della password"
+msgstr "Ricevi un'email contenente il link per l'aggiornamento della password3"
 
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
 #~ msgid "Recent Inquiries"
@@ -2524,15 +2541,15 @@ msgstr "Esegui un workflow e torna qui per visualizzare le esecuzioni"
 #: src/modules/record-edit/components/custom/DocumentEditModal.tsx
 #: src/modules/publishers/components/modals/EditPublisherModal.tsx
 msgid "Save"
-msgstr ""
+msgstr "Salva"
 
 #: src/modules/record-edit/contexts/UnsavedChangesContext.tsx
 msgid "Save & Leave"
-msgstr ""
+msgstr "Salva ed esci"
 
 #: src/modules/record-edit/components/custom/PropertyEmailsFormInput.tsx
 msgid "Save and send"
-msgstr ""
+msgstr "Salva e invia"
 
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 msgid "Scroll left"
@@ -2667,7 +2684,7 @@ msgstr "Imposta il nome del sottodominio"
 
 #: src/modules/publishers/components/modals/EditPublisherModal.tsx
 msgid "Set up your credentials for each platforms where you want to publish your listings."
-msgstr ""
+msgstr "Configura le tue credenziali per ogni piattaforma su cui desideri pubblicare i tuoi annunci."
 
 #: src/pages/settings/roles/SettingsRoleEdit.tsx
 #: src/pages/settings/roles/components/RolePermissions.tsx
@@ -2709,6 +2726,10 @@ msgstr "Cambiare l'etichetta di un campo deve cambiare anche il nome dell'API?"
 #: src/modules/settings/data-model/objects/forms/components/SettingsDataModelObjectAboutForm.tsx
 msgid "Should changing an object's label also change the API?"
 msgstr "Cambiare l'etichetta di un oggetto deve cambiare anche il nome dell'API?"
+
+#: src/modules/object-record/record-table/components/nm/RecordList.tsx
+msgid "Show Details"
+msgstr ""
 
 #: src/modules/auth/sign-in-up/components/SignInUpWithCredentials.tsx
 msgid "Sign in"
@@ -2771,7 +2792,7 @@ msgstr "Il sottodominio non può essere più corto di 3 caratteri"
 #: src/pages/settings/email-templates/components/EmailTemplatesListCard.tsx
 #: src/pages/settings/email-templates/components/EmailTemplateForm.tsx
 msgid "Subject"
-msgstr ""
+msgstr "Soggetto"
 
 #: src/pages/settings/SettingsBilling.tsx
 msgid "Subscription has been switched {to}"

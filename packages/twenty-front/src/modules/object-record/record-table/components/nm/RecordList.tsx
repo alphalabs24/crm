@@ -61,16 +61,6 @@ const StyledEmptyContainer = styled.div`
   justify-content: center;
 `;
 
-const StyledEmptyStateIcon = styled.div`
-  align-items: center;
-  background-color: ${({ theme }) => theme.background.tertiary};
-  border-radius: 50%;
-  display: flex;
-  height: 64px;
-  justify-content: center;
-  width: 64px;
-`;
-
 const StyledCard = styled(motion.div)<{ isSelected?: boolean }>`
   background: ${({ theme, isSelected }) =>
     isSelected ? theme.background.secondary : theme.background.primary};

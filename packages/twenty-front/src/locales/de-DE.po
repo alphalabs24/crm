@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: nestermind-crm\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-03-26 15:52\n"
+"PO-Revision-Date: 2025-03-27 15:43\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -281,8 +281,8 @@ msgstr "Erweitert:"
 #~ msgstr "Afrikaans"
 
 #: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
-msgid "Agency Credentials"
-msgstr "Agentur-Zugangsdaten"
+#~ msgid "Agency Credentials"
+#~ msgstr "Agency Credentials"
 
 #: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
 msgid "Agriculture Subtype"
@@ -612,6 +612,10 @@ msgstr "Bald Verfügbar"
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
 msgid "Compare Changes"
 msgstr "Änderungen vergleichen"
+
+#: src/modules/object-record/record-table/components/nm/RecordList.tsx
+msgid "Complete ({percentage}%)"
+msgstr "Vollständig ({percentage}%)"
 
 #: src/pages/onboarding/tutorial.tsx
 msgid "Complete previous steps first"
@@ -1526,6 +1530,10 @@ msgstr "Abonnement abschließen"
 msgid "Global"
 msgstr "Global"
 
+#: src/modules/object-record/record-table/components/nm/RecordList.tsx
+msgid "Good Enough ({percentage}%)"
+msgstr "Gut genug ({percentage}%)"
+
 #: src/pages/settings/SettingsWorkspace.tsx
 msgid "Grant Twenty support temporary access to your workspace so we can troubleshoot problems or recover content on your behalf. You can revoke access at any time."
 msgstr "Gewähren Sie dem Twenty-Support vorübergehend Zugang zu Ihrem Arbeitsbereich, damit wir Probleme beheben oder Inhalte in Ihrem Namen wiederherstellen können. Sie können den Zugriff jederzeit widerrufen."
@@ -1624,6 +1632,10 @@ msgstr "Anfragen in nestermind"
 #: src/pages/settings/data-model/constants/SettingsObjectTableMetadata.ts
 msgid "Instances"
 msgstr "Instanzen"
+
+#: src/modules/object-record/record-table/components/nm/RecordList.tsx
+msgid "Insufficient Details ({percentage}%)"
+msgstr "Unzureichende Details ({percentage}%)"
 
 #: src/modules/publishers/components/PlatformCredentialItem.tsx
 msgid "Integration Coming Soon"
@@ -1776,6 +1788,7 @@ msgstr "Auflistungen"
 #: src/pages/settings/publishers/components/PublishersListCard.tsx
 #: src/pages/settings/email-templates/components/EmailTemplatesListCard.tsx
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+#: src/modules/object-record/record-show/components/nm/PropertyDetails.tsx
 #: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
 #: src/modules/object-record/record-show/components/nm/AISuite.tsx
 msgid "Loading..."
@@ -2012,7 +2025,7 @@ msgstr "Kein verbundenes Konto"
 
 #: src/modules/object-record/record-show/components/nm/publication/ContactsByStageChart.tsx
 #~ msgid "No contacts data available"
-#~ msgstr "Keine Kontaktdaten verfügbar"
+#~ msgstr "No contacts data available"
 
 #: src/pages/settings/email-templates/components/EmailTemplatesListCard.tsx
 msgid "No content"
@@ -2394,6 +2407,10 @@ msgstr "Veröffentlichen"
 msgid "Publish your first property"
 msgstr "Veröffentliche Dein erstes Objekt"
 
+#: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
+msgid "Publisher Credentials"
+msgstr "Anbieter Zugangsdaten"
+
 #: src/pages/settings/publishers/SettingsPublishers.tsx
 msgid "Publisher deleted successfully"
 msgstr "Anbieter erfolgreich gelöscht"
@@ -2712,6 +2729,10 @@ msgstr "Sollte die Änderung einer Feldbezeichnung auch den API-Namen ändern?"
 #: src/modules/settings/data-model/objects/forms/components/SettingsDataModelObjectAboutForm.tsx
 msgid "Should changing an object's label also change the API?"
 msgstr "Sollte die Änderung eines Objektnamens auch den API-Namen ändern?"
+
+#: src/modules/object-record/record-table/components/nm/RecordList.tsx
+msgid "Show Details"
+msgstr "Details anzeigen"
 
 #: src/modules/auth/sign-in-up/components/SignInUpWithCredentials.tsx
 msgid "Sign in"

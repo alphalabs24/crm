@@ -276,8 +276,8 @@ msgstr ""
 #~ msgstr ""
 
 #: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
-msgid "Agency Credentials"
-msgstr ""
+#~ msgid "Agency Credentials"
+#~ msgstr ""
 
 #: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
 msgid "Agriculture Subtype"
@@ -606,6 +606,10 @@ msgstr ""
 
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
 msgid "Compare Changes"
+msgstr ""
+
+#: src/modules/object-record/record-table/components/nm/RecordList.tsx
+msgid "Complete ({percentage}%)"
 msgstr ""
 
 #: src/pages/onboarding/tutorial.tsx
@@ -1521,6 +1525,10 @@ msgstr ""
 msgid "Global"
 msgstr ""
 
+#: src/modules/object-record/record-table/components/nm/RecordList.tsx
+msgid "Good Enough ({percentage}%)"
+msgstr ""
+
 #: src/pages/settings/SettingsWorkspace.tsx
 msgid "Grant Twenty support temporary access to your workspace so we can troubleshoot problems or recover content on your behalf. You can revoke access at any time."
 msgstr ""
@@ -1615,6 +1623,10 @@ msgstr ""
 
 #: src/pages/settings/data-model/constants/SettingsObjectTableMetadata.ts
 msgid "Instances"
+msgstr ""
+
+#: src/modules/object-record/record-table/components/nm/RecordList.tsx
+msgid "Insufficient Details ({percentage}%)"
 msgstr ""
 
 #: src/modules/publishers/components/PlatformCredentialItem.tsx
@@ -1768,6 +1780,7 @@ msgstr ""
 #: src/pages/settings/publishers/components/PublishersListCard.tsx
 #: src/pages/settings/email-templates/components/EmailTemplatesListCard.tsx
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+#: src/modules/object-record/record-show/components/nm/PropertyDetails.tsx
 #: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
 #: src/modules/object-record/record-show/components/nm/AISuite.tsx
 msgid "Loading..."
@@ -2386,6 +2399,10 @@ msgstr ""
 msgid "Publish your first property"
 msgstr ""
 
+#: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
+msgid "Publisher Credentials"
+msgstr ""
+
 #: src/pages/settings/publishers/SettingsPublishers.tsx
 msgid "Publisher deleted successfully"
 msgstr ""
@@ -2703,6 +2720,10 @@ msgstr ""
 
 #: src/modules/settings/data-model/objects/forms/components/SettingsDataModelObjectAboutForm.tsx
 msgid "Should changing an object's label also change the API?"
+msgstr ""
+
+#: src/modules/object-record/record-table/components/nm/RecordList.tsx
+msgid "Show Details"
 msgstr ""
 
 #: src/modules/auth/sign-in-up/components/SignInUpWithCredentials.tsx
