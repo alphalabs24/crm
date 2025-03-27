@@ -1,7 +1,9 @@
+import { isPublicAttachmentType } from 'twenty-shared';
+
 import { QueryResultGetterHandlerInterface } from 'src/engine/api/graphql/workspace-query-runner/factories/query-result-getters/interfaces/query-result-getter-handler.interface';
 
-import { FileService } from 'src/engine/core-modules/file/services/file.service';
 import { AttachmentWorkspaceEntity } from 'src/modules/attachment/standard-objects/attachment.workspace-entity';
+import { FileService } from 'src/engine/core-modules/file/services/file.service';
 
 export class AttachmentQueryResultGetterHandler
   implements QueryResultGetterHandlerInterface
@@ -21,9 +23,17 @@ export class AttachmentQueryResultGetterHandler
       workspaceId: workspaceId,
     });
 
+    const isPublic = isPublicAttachmentType(attachment.type);
+
+    const queryParams = !isPublic
+      ? `token=${signedPayload}`
+      : `workspaceId=${workspaceId}`;
+
+    const fullPath = `${process.env.SERVER_URL}/files/${attachment.fullPath}?${queryParams}`;
+
     return {
       ...attachment,
-      fullPath: `${process.env.SERVER_URL}/files/${attachment.fullPath}?token=${signedPayload}`,
+      fullPath,
     };
   }
 }

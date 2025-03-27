@@ -22,7 +22,7 @@ import {
   useState,
 } from 'react';
 import { useParams } from 'react-router-dom';
-import { isDefined } from 'twenty-shared';
+import { isDefined, isPublicAttachmentType } from 'twenty-shared';
 
 type FieldUpdate = {
   fieldName: string;
@@ -471,6 +471,8 @@ export const RecordEditProvider = ({
             },
           });
         } else if (isDefined(document.file)) {
+          const isPublic = isPublicAttachmentType(document.type);
+
           await uploadAttachmentFile(
             document.file,
             {
@@ -481,6 +483,7 @@ export const RecordEditProvider = ({
             orderIndex,
             document.fileName,
             document.description,
+            isPublic,
           );
         }
         orderIndex++;

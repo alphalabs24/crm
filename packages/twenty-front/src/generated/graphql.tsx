@@ -1075,12 +1075,14 @@ export type MutationUpdateWorkspaceMemberRoleArgs = {
 export type MutationUploadFileArgs = {
   file: Scalars['Upload'];
   fileFolder?: InputMaybe<FileFolder>;
+  isPublic?: InputMaybe<Scalars['Boolean']>;
 };
 
 
 export type MutationUploadImageArgs = {
   file: Scalars['Upload'];
   fileFolder?: InputMaybe<FileFolder>;
+  isPublic?: InputMaybe<Scalars['Boolean']>;
 };
 
 
@@ -2110,6 +2112,7 @@ export type TrackMutation = { __typename?: 'Mutation', track: { __typename?: 'An
 export type UploadFileMutationVariables = Exact<{
   file: Scalars['Upload'];
   fileFolder?: InputMaybe<FileFolder>;
+  isPublic?: InputMaybe<Scalars['Boolean']>;
 }>;
 
 
@@ -2939,8 +2942,8 @@ export type TrackMutationHookResult = ReturnType<typeof useTrackMutation>;
 export type TrackMutationResult = Apollo.MutationResult<TrackMutation>;
 export type TrackMutationOptions = Apollo.BaseMutationOptions<TrackMutation, TrackMutationVariables>;
 export const UploadFileDocument = gql`
-    mutation uploadFile($file: Upload!, $fileFolder: FileFolder) {
-  uploadFile(file: $file, fileFolder: $fileFolder)
+    mutation uploadFile($file: Upload!, $fileFolder: FileFolder, $isPublic: Boolean) {
+  uploadFile(file: $file, fileFolder: $fileFolder, isPublic: $isPublic)
 }
     `;
 export type UploadFileMutationFn = Apollo.MutationFunction<UploadFileMutation, UploadFileMutationVariables>;
@@ -2960,6 +2963,7 @@ export type UploadFileMutationFn = Apollo.MutationFunction<UploadFileMutation, U
  *   variables: {
  *      file: // value for 'file'
  *      fileFolder: // value for 'fileFolder'
+ *      isPublic: // value for 'isPublic'
  *   },
  * });
  */
