@@ -36,6 +36,7 @@ import {
     IconCheck,
     IconEye,
     IconMap,
+    IconPencil,
     IconPhoto,
     MOBILE_VIEWPORT,
     useIsMobile,
@@ -310,8 +311,8 @@ const StyledCompletionStatus = styled.div<{ level: 'low' | 'medium' | 'high' }>`
 `;
 
 const StyledRightSection = styled.div`
-  display: flex;
   align-items: flex-end;
+  display: flex;
   gap: ${({ theme }) => theme.spacing(2)};
   justify-content: flex-end;
 `;
@@ -872,6 +873,13 @@ const RecordListItem = ({
         )}
       </StyledMiddleSection>
       <StyledRightSection>
+        <Button
+          title={t`Edit`}
+          Icon={IconPencil}
+          size="small"
+          variant="secondary"
+          onClick={handleViewDetails}
+        />
         <Button
           title={t`Show Details`}
           Icon={IconEye}
