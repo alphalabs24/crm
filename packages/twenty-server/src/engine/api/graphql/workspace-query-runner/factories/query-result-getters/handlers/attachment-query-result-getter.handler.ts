@@ -1,5 +1,6 @@
 import { QueryResultGetterHandlerInterface } from 'src/engine/api/graphql/workspace-query-runner/factories/query-result-getters/interfaces/query-result-getter-handler.interface';
 
+import { isPublicAttachmentType } from 'src/engine/api/graphql/graphql-query-runner/helpers/attachement-type.helpers';
 import { FileService } from 'src/engine/core-modules/file/services/file.service';
 import { AttachmentWorkspaceEntity } from 'src/modules/attachment/standard-objects/attachment.workspace-entity';
 
@@ -21,20 +22,13 @@ export class AttachmentQueryResultGetterHandler
       workspaceId: workspaceId,
     });
 
-    const isPublic =
-      attachment.type == 'PropertyDocumentation' ||
-      attachment.type == 'PropertyFlyer';
+    const isPublic = isPublicAttachmentType(attachment.type);
 
-    if (isPublic) {
-      return {
-        ...attachment,
-        fullPath: `${process.env.SERVER_URL}/files/${attachment.fullPath}?workspaceId=${workspaceId}`,
-      };
-    }
+    const fullPath = `${process.env.SERVER_URL}/files/${attachment.fullPath}?${!isPublic ? `token=${signedPayload}` : `workspaceId=${workspaceId}`}`;
 
     return {
       ...attachment,
-      fullPath: `${process.env.SERVER_URL}/files/${attachment.fullPath}?token=${signedPayload}`,
+      fullPath,
     };
   }
 }

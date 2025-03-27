@@ -40,6 +40,7 @@ export class FileController {
     @Res() res: Response,
     @Query() query: any,
   ) {
+    // "public" gets filtered out by controller and is reattached after sanitization
     const folderPath = checkFilePath(params[0]) + '/public';
     const filename = checkFileNamePublic(params['filename']);
     const workspaceId = query.workspaceId;

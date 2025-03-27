@@ -7,6 +7,7 @@ import {
 import { Note } from '@/activities/types/Note';
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { ObjectMetadataItem } from '@/object-metadata/types/ObjectMetadataItem';
+import { isPublicAttachmentType } from '@/object-metadata/utils/attachmentTypeHelper';
 import { useAttachRelatedRecordFromRecord } from '@/object-record/hooks/useAttachRelatedRecordFromRecord';
 import { useDestroyOneRecord } from '@/object-record/hooks/useDestroyOneRecord';
 import { useDetachRelatedRecordFromRecord } from '@/object-record/hooks/useDetachRelatedRecordFromRecord';
@@ -471,9 +472,7 @@ export const RecordEditProvider = ({
             },
           });
         } else if (isDefined(document.file)) {
-          const isPublic =
-            document.type === 'PropertyDocumentation' ||
-            document.type === 'PropertyFlyer';
+          const isPublic = isPublicAttachmentType(document.type);
 
           await uploadAttachmentFile(
             document.file,

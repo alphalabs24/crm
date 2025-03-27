@@ -18,6 +18,13 @@ export const computePathWithoutToken = (attachmentPath: string): string => {
   return attachmentPath.replace(/\?token=[^&]*$/, '');
 };
 
+export const computePublicPath = (attachmentPath: string): string => {
+  const pathWithoutToken = computePathWithoutToken(attachmentPath);
+
+  const [folder, filename] = pathWithoutToken.split('/');
+  return folder + '/public/' + filename;
+};
+
 export const useUploadAttachmentFile = () => {
   const currentWorkspaceMember = useRecoilValue(currentWorkspaceMemberState);
   const [uploadFile] = useUploadFileMutation();
@@ -54,17 +61,12 @@ export const useUploadAttachmentFile = () => {
       nameSingular: targetableObject.targetObjectNameSingular,
     });
 
-    let fullPath = computePathWithoutToken(attachmentPath);
-
-    if (isPublic && fullPath.startsWith('attachment/')) {
-      const [folder, filename] = fullPath.split('/');
-      fullPath = folder + '/public/' + filename;
-    }
-
     const attachmentToCreate = {
       authorId: currentWorkspaceMember?.id,
       name: fileName ?? file.name,
-      fullPath,
+      fullPath: !isPublic
+        ? computePathWithoutToken(attachmentPath)
+        : computePublicPath(attachmentPath),
       type: fileType ?? getFileType(file.name),
       [targetableObjectFieldIdName]: targetableObject.id,
       createdAt: new Date().toISOString(),
