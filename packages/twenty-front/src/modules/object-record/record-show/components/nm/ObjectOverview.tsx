@@ -4,6 +4,11 @@ import { getLinkToShowPage } from '@/object-metadata/utils/getLinkToShowPage';
 import { FieldContext } from '@/object-record/record-field/contexts/FieldContext';
 import { RecordInlineEntry } from '@/object-record/record-inline-cell/components/nm/RecordInlineEntry';
 import { InlineCellHotkeyScope } from '@/object-record/record-inline-cell/types/InlineCellHotkeyScope';
+import {
+  StyledButtonContainer,
+  StyledFormBorder,
+  StyledLoadingContainer,
+} from '@/object-record/record-show/components/ui/PropertyDetailsCardComponents';
 import { useRecordShowContainerActions } from '@/object-record/record-show/hooks/useRecordShowContainerActions';
 import { useRecordShowContainerData } from '@/object-record/record-show/hooks/useRecordShowContainerData';
 import { isFieldCellSupported } from '@/object-record/utils/isFieldCellSupported';
@@ -31,26 +36,9 @@ import {
   IconSparkles,
   IconUpload,
   IconX,
-  LARGE_DESKTOP_VIEWPORT,
-  MOBILE_VIEWPORT,
 } from 'twenty-ui';
 import { FieldMetadataType } from '~/generated/graphql';
 import { useSubcategoryByCategory } from '../../hooks/useSubcategoryByCategory';
-
-const StyledFormBorder = styled.div`
-  background: ${({ theme }) => theme.background.primary};
-  border: 1px solid ${({ theme }) => theme.border.color.light};
-  border-radius: ${({ theme }) => theme.border.radius.sm};
-  margin: ${({ theme }) => theme.spacing(4)};
-
-  @media only screen and (min-width: ${MOBILE_VIEWPORT}px) {
-    width: 100%;
-  }
-
-  @media (min-width: ${LARGE_DESKTOP_VIEWPORT}px) {
-    max-width: 800px;
-  }
-`;
 
 const StyledHeader = styled.div`
   align-items: center;
@@ -76,11 +64,6 @@ const StyledBottomBorder = styled.div`
 
 const StyledContent = styled.div`
   padding: ${({ theme }) => theme.spacing(2)};
-`;
-
-const StyledButtonContainer = styled.div`
-  display: flex;
-  gap: ${({ theme }) => theme.spacing(2)};
 `;
 
 const StyledModalContent = styled(Modal.Content)`
@@ -387,28 +370,30 @@ export const ObjectOverview = ({
   if (isNewRightDrawerItemLoading || !isDefined(recordFromStore)) {
     return <ShowPageSummaryCardSkeletonLoader />;
   }
+
+  const platformBadge = isPublication ? (
+    <PlatformBadge
+      platformId={recordFromStore.platform ?? PlatformId.Newhome}
+      isActive
+    />
+  ) : null;
+
   return (
     <>
       <StyledFormBorder>
         {recordLoading ? (
-          // TODO: Add skeleton loader
-          <div>
+          <StyledLoadingContainer>
             <Trans>Loading...</Trans>
-          </div>
+          </StyledLoadingContainer>
         ) : (
           <>
             <StyledHeader>
               <StyledTitle>
                 <Trans>{overviewLabel} Overview</Trans>
               </StyledTitle>
-              <StyledButtonContainer>
-                {isPublication ? (
-                  <PlatformBadge
-                    platformId={recordFromStore.platform ?? PlatformId.Newhome}
-                    isActive
-                  />
-                ) : null}
-              </StyledButtonContainer>
+              {platformBadge && (
+                <StyledButtonContainer>{platformBadge}</StyledButtonContainer>
+              )}
             </StyledHeader>
             <StyledContent>
               <ShowPagePropertySummaryCard

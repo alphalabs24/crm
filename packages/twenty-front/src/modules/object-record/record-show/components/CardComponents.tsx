@@ -7,7 +7,7 @@ import { TimelineActivities } from '@/activities/timeline-activities/components/
 import { ActivityTargetableObject } from '@/activities/types/ActivityTargetableEntity';
 import { FieldsCard } from '@/object-record/record-show/components/FieldsCard';
 import { AISuite } from '@/object-record/record-show/components/nm/AISuite';
-import { ObjectOverview } from '@/object-record/record-show/components/nm/ObjectOverview';
+import { PropertyDetails } from '@/object-record/record-show/components/nm/PropertyDetails';
 import { PublicationDetails } from '@/object-record/record-show/components/nm/PublicationDetails';
 
 import { CardType } from '@/object-record/record-show/types/CardType';
@@ -105,7 +105,7 @@ export const CardComponents: Record<CardType, CardComponentType> = {
   ),
 
   [CardType.OverviewCard]: ({ targetableObject, isInRightDrawer }) => (
-    <ObjectOverview
+    <PropertyDetails
       targetableObject={targetableObject}
       isInRightDrawer={isInRightDrawer}
     />

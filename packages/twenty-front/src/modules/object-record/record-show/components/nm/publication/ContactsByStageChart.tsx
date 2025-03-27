@@ -8,6 +8,7 @@ import {
   Legend,
   Tooltip,
 } from 'chart.js';
+import { useEffect } from 'react';
 import { Pie } from 'react-chartjs-2';
 import { IconMessageCircle2 } from 'twenty-ui';
 
@@ -30,16 +31,18 @@ const StyledChartContentContainer = styled.div`
 `;
 
 const StyledPieWrapper = styled.div`
+  align-items: center;
   display: flex;
   flex-direction: column;
-  position: relative;
+  justify-content: center;
+  width: 60%;
 `;
 
 const StyledKPICardOverlay = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
+  width: 60%;
   height: 100%;
   display: flex;
   align-items: center;
@@ -85,7 +88,7 @@ const StyledLegendContainer = styled.div`
   justify-content: center;
   overflow-y: auto;
   padding-left: ${({ theme }) => theme.spacing(2)};
-  width: 50%;
+  width: 40%;
 `;
 
 const StyledLegendItem = styled.div`
@@ -168,6 +171,16 @@ export const ContactsByStageChart = ({
 }: ContactsByStageChartProps) => {
   const theme = useTheme();
 
+  // Clean up tooltip element when component unmounts
+  useEffect(() => {
+    return () => {
+      const tooltipEl = document.getElementById('chartjs-tooltip');
+      if (tooltipEl) {
+        tooltipEl.parentNode?.removeChild(tooltipEl);
+      }
+    };
+  }, []);
+
   // Map theme colors for easy access
   const themeColors: Record<ColorKey, string> = {
     green: theme.tag.background.green,
@@ -234,32 +247,39 @@ export const ContactsByStageChart = ({
       tooltip: {
         enabled: false, // Disable default tooltip
         external: ({ chart, tooltip }) => {
+          // If tooltip isn't shown, hide the element
+          if (tooltip.opacity === 0) {
+            const existingTooltip = document.getElementById('chartjs-tooltip');
+            if (existingTooltip) {
+              existingTooltip.style.display = 'none';
+            }
+            return;
+          }
+
           let tooltipEl = document.getElementById('chartjs-tooltip');
 
           // Create the tooltip element if it doesn't exist
           if (!tooltipEl) {
             tooltipEl = document.createElement('div');
             tooltipEl.id = 'chartjs-tooltip';
-            document.body.appendChild(tooltipEl);
             tooltipEl.style.background = theme.background.primary;
             tooltipEl.style.borderRadius = '4px';
             tooltipEl.style.color = theme.font.color.secondary;
             tooltipEl.style.opacity = '0';
             tooltipEl.style.pointerEvents = 'none';
-            tooltipEl.style.position = 'absolute';
-            tooltipEl.style.transform = 'translate(-50%, 0)';
+            tooltipEl.style.position = 'fixed'; // Use fixed instead of absolute
             tooltipEl.style.transition = 'all .1s ease';
-            tooltipEl.style.zIndex = '10'; // Ensure it's on top
+            tooltipEl.style.zIndex = '10000'; // Very high to ensure on top
             tooltipEl.style.border = `1px solid ${theme.border.color.light}`;
             tooltipEl.style.padding = theme.spacing(1);
             tooltipEl.style.boxShadow = theme.boxShadow.light;
+            tooltipEl.style.fontSize = theme.font.size.xs;
+            tooltipEl.style.maxWidth = '200px';
+            document.body.appendChild(tooltipEl);
           }
 
-          // Hide if no tooltip
-          if (tooltip.opacity === 0) {
-            tooltipEl.style.opacity = '0';
-            return;
-          }
+          // Make sure tooltip is visible
+          tooltipEl.style.display = 'block';
 
           // Set Text
           if (tooltip.body) {
@@ -281,16 +301,42 @@ export const ContactsByStageChart = ({
             `;
           }
 
-          // Position tooltip
-          const position = chart.canvas.getBoundingClientRect();
+          // Calculate viewport-safe position for tooltip
+          const viewportWidth = window.innerWidth;
+          const viewportHeight = window.innerHeight;
 
-          // Use tooltip's caretX and caretY for positioning
+          // Get position based on mouse/touch position
+          const rect = chart.canvas.getBoundingClientRect();
+
+          // Get tooltip dimensions
+          const tooltipWidth = tooltipEl.offsetWidth;
+          const tooltipHeight = tooltipEl.offsetHeight;
+
+          // Calculate tooltip coordinates - convert chart relative coords to viewport coords
+          let top = rect.top + tooltip.caretY;
+          let left = rect.left + tooltip.caretX;
+
+          // Keep the tooltip within the viewport boundaries
+          if (left + tooltipWidth > viewportWidth - 10) {
+            left = viewportWidth - tooltipWidth - 10;
+          }
+
+          if (left < 10) {
+            left = 10;
+          }
+
+          if (top + tooltipHeight > viewportHeight - 10) {
+            top = viewportHeight - tooltipHeight - 10;
+          }
+
+          if (top < 10) {
+            top = 10;
+          }
+
+          // Set position
           tooltipEl.style.opacity = '1';
-          tooltipEl.style.left =
-            position.left + window.pageXOffset + tooltip.caretX + 'px';
-          tooltipEl.style.top =
-            position.top + window.pageYOffset + tooltip.caretY + 'px';
-          tooltipEl.style.fontSize = theme.font.size.xs;
+          tooltipEl.style.left = left + 'px';
+          tooltipEl.style.top = top + 'px';
         },
       },
     },
