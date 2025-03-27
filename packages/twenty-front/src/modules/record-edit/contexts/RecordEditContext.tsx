@@ -7,7 +7,6 @@ import {
 import { Note } from '@/activities/types/Note';
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { ObjectMetadataItem } from '@/object-metadata/types/ObjectMetadataItem';
-import { isPublicAttachmentType } from '@/object-metadata/utils/attachmentTypeHelper';
 import { useAttachRelatedRecordFromRecord } from '@/object-record/hooks/useAttachRelatedRecordFromRecord';
 import { useDestroyOneRecord } from '@/object-record/hooks/useDestroyOneRecord';
 import { useDetachRelatedRecordFromRecord } from '@/object-record/hooks/useDetachRelatedRecordFromRecord';
@@ -23,7 +22,7 @@ import {
   useState,
 } from 'react';
 import { useParams } from 'react-router-dom';
-import { isDefined } from 'twenty-shared';
+import { isDefined, isPublicAttachmentType } from 'twenty-shared';
 
 type FieldUpdate = {
   fieldName: string;

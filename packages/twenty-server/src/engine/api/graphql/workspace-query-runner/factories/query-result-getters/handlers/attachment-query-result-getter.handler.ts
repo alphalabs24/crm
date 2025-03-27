@@ -1,8 +1,9 @@
+import { isPublicAttachmentType } from 'twenty-shared';
+
 import { QueryResultGetterHandlerInterface } from 'src/engine/api/graphql/workspace-query-runner/factories/query-result-getters/interfaces/query-result-getter-handler.interface';
 
-import { isPublicAttachmentType } from 'src/engine/api/graphql/graphql-query-runner/helpers/attachement-type.helpers';
-import { FileService } from 'src/engine/core-modules/file/services/file.service';
 import { AttachmentWorkspaceEntity } from 'src/modules/attachment/standard-objects/attachment.workspace-entity';
+import { FileService } from 'src/engine/core-modules/file/services/file.service';
 
 export class AttachmentQueryResultGetterHandler
   implements QueryResultGetterHandlerInterface
