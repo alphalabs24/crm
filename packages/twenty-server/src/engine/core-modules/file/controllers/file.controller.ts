@@ -41,17 +41,9 @@ export class FileController {
     @Res() res: Response,
     @Query() query: any,
   ) {
-    console.log('entering test', params, query);
-    // const filepath = params[0].split('public/')[1];
-
-    // do another check file that is less strict
     const folderPath = checkFilePath(params[0]) + '/public';
     const filename = checkFileNamePublic(params['filename']);
     const workspaceId = query.workspaceId;
-
-    console.log('workspaceId:', workspaceId);
-    console.log('folderPath:', folderPath);
-    console.log('filename:', filename);
 
     if (!workspaceId) {
       throw new FileException(

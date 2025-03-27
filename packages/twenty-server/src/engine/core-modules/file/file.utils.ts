@@ -35,10 +35,6 @@ export const checkFilePath = (filePath: string): string => {
   return sanitizedFilePath;
 };
 
-export const checkFilepathPublic = (filepath: string) => {
-  console.log(filepath);
-};
-
 export const checkFilename = (filename: string) => {
   const sanitizedFilename = basename(filename.replace(/\0/g, ''));
 
@@ -55,7 +51,6 @@ export const checkFilename = (filename: string) => {
 };
 
 export const checkFileNamePublic = (filename: string) => {
-  // check if filene is of form uuid.fileextension
   const [uuid, extension] = filename.split('.');
 
   if (!isUUID(uuid) || !extension || extension.length > 4) {
