@@ -723,6 +723,16 @@ const RecordListItem = ({
     }
   };
 
+  const handleEdit = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (record) {
+      const path = getLinkToShowPage(objectNameSingular, record);
+      if (path) {
+        navigate(path + '/edit');
+      }
+    }
+  };
+
   const handleTitleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (record) {
@@ -887,7 +897,7 @@ const RecordListItem = ({
           Icon={IconPencil}
           size="small"
           variant="secondary"
-          onClick={handleViewDetails}
+          onClick={handleEdit}
         />
         <Button
           title={t`Show Details`}
