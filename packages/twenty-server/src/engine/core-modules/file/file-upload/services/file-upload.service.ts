@@ -65,7 +65,7 @@ export class FileUploadService {
     mimeType,
     fileFolder,
     workspaceId,
-    isPublic = false,
+    isPublic,
   }: {
     file: Buffer | Uint8Array | string;
     filename: string;
