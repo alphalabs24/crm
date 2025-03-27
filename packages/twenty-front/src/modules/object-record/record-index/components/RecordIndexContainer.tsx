@@ -79,6 +79,7 @@ export const RecordIndexContainer = () => {
                 recordTableId={recordIndexId}
                 viewBarId={recordIndexId}
               />
+
               <RecordIndexTableContainerEffect />
             </>
           )}

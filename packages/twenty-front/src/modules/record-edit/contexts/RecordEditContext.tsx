@@ -434,17 +434,19 @@ export const RecordEditProvider = ({
             },
           });
         } else if (isDefined(image.file)) {
-          await uploadAttachmentFile(
-            image.file,
-            {
-              id: objectRecordId ?? '',
-              targetObjectNameSingular: objectNameSingular ?? '',
-            },
-            'PropertyImage',
-            orderIndex,
-            image.fileName,
-            image.description,
-          );
+          if (isDefined(objectRecordId) && isDefined(objectNameSingular)) {
+            await uploadAttachmentFile(
+              image.file,
+              {
+                id: objectRecordId,
+                targetObjectNameSingular: objectNameSingular,
+              },
+              'PropertyImage',
+              orderIndex,
+              image.fileName,
+              image.description,
+            );
+          }
         }
         orderIndex++;
       }
