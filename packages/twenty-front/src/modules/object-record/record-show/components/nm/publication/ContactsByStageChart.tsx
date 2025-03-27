@@ -35,14 +35,14 @@ const StyledPieWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 60%;
+  width: 50%;
 `;
 
 const StyledKPICardOverlay = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  width: 60%;
+  width: 50%;
   height: 100%;
   display: flex;
   align-items: center;

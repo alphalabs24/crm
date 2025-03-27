@@ -1,42 +1,46 @@
 import { useAttachments } from '@/activities/files/hooks/useAttachments';
 import { currentWorkspaceMemberState } from '@/auth/states/currentWorkspaceMemberState';
+import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadataItem';
 import { getLinkToShowPage } from '@/object-metadata/utils/getLinkToShowPage';
 import { useLazyLoadRecordIndexTable } from '@/object-record/record-index/hooks/useLazyLoadRecordIndexTable';
 import { recordIndexAllRecordIdsComponentSelector } from '@/object-record/record-index/states/selectors/recordIndexAllRecordIdsComponentSelector';
 import { PlatformBadge } from '@/object-record/record-show/components/nm/publication/PlatformBadge';
+import { StatusBadge } from '@/object-record/record-show/components/nm/publication/StatusBadge';
 import { useRecordShowContainerData } from '@/object-record/record-show/hooks/useRecordShowContainerData';
 import { RECORD_TABLE_CLICK_OUTSIDE_LISTENER_ID } from '@/object-record/record-table/constants/RecordTableClickOutsideListenerId';
 import { useRecordTableContextOrThrow } from '@/object-record/record-table/contexts/RecordTableContext';
+import { RecordTableEmptyState } from '@/object-record/record-table/empty-state/components/RecordTableEmptyState';
 import { useRecordTable } from '@/object-record/record-table/hooks/useRecordTable';
 import { isRecordTableInitialLoadingComponentState } from '@/object-record/record-table/states/isRecordTableInitialLoadingComponentState';
 import { hasPendingRecordComponentSelector } from '@/object-record/record-table/states/selectors/hasPendingRecordComponentSelector';
 import { selectedRowIdsComponentSelector } from '@/object-record/record-table/states/selectors/selectedRowIdsComponentSelector';
+import { calculateCompletionLevel } from '@/object-record/utils/calculateCompletionLevel';
 import { DragSelect } from '@/ui/utilities/drag-select/components/DragSelect';
 import { useClickOutsideListener } from '@/ui/utilities/pointer-event/hooks/useClickOutsideListener';
 import { useRecoilComponentValueV2 } from '@/ui/utilities/state/component-state/hooks/useRecoilComponentValueV2';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
-import { Trans, useLingui } from '@lingui/react/macro';
+import { useLingui } from '@lingui/react/macro';
 import { isNull } from '@sniptt/guards';
+import { useIcons } from '@ui/display/icon/hooks/useIcons';
 import { format } from 'date-fns';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import {
     Button,
-    IconBuildingSkyscraper,
-    IconCalendar,
+    IconAlertTriangle,
     IconCheck,
     IconEye,
-    IconHome,
-    IconLoader,
     IconMap,
     IconPhoto,
-    IconRuler,
-    IconSearch,
-    IconUsers,
+    MOBILE_VIEWPORT,
+    useIsMobile,
 } from 'twenty-ui';
+import { formatAmount } from '~/utils/format/formatAmount';
 
 const StyledListContainer = styled.div`
   display: flex;
@@ -72,40 +76,46 @@ const StyledEmptyStateText = styled.div`
   font-weight: ${({ theme }) => theme.font.weight.medium};
 `;
 
-const StyledLoadingContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: ${({ theme }) => theme.spacing(2)};
-  height: 200px;
-  color: ${({ theme }) => theme.font.color.secondary};
-`;
-
 const StyledCard = styled(motion.div)<{ isSelected?: boolean }>`
   background: ${({ theme, isSelected }) =>
-    isSelected
-      ? theme.background.transparent.lighter
-      : theme.background.primary};
+    isSelected ? theme.background.secondary : theme.background.primary};
 
   border-radius: ${({ theme }) => theme.border.radius.md};
-  border: 1px solid
+  border: 2px solid
     ${({ theme, isSelected }) =>
-      isSelected ? theme.border.color.medium : theme.border.color.light};
+      isSelected ? theme.border.color.blue : theme.border.color.light};
   cursor: pointer;
   display: flex;
   overflow: hidden;
   padding: ${({ theme }) => theme.spacing(1.5)};
   position: relative;
-  min-height: 120px;
-  height: 120px;
+  flex-direction: column;
+
+  min-height: 400px;
+
+  @media only screen and (min-width: ${MOBILE_VIEWPORT}px) {
+    min-height: 120px;
+    height: 120px;
+    flex-direction: row;
+
+    border: 1px solid
+      ${({ theme, isSelected }) =>
+        isSelected ? theme.border.color.medium : theme.border.color.light};
+  }
 `;
 
 const StyledImageSection = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
-  margin-right: ${({ theme }) => theme.spacing(2)};
+  margin-bottom: ${({ theme }) => theme.spacing(2)};
+  max-height: 150px;
+
+  @media only screen and (min-width: ${MOBILE_VIEWPORT}px) {
+    margin-right: ${({ theme }) => theme.spacing(2)};
+    max-height: unset;
+    margin-bottom: 0;
+  }
 `;
 
 const StyledImageContainer = styled.div`
@@ -146,49 +156,66 @@ const StyledSelectionCircle = styled.div<{ isSelected?: boolean }>`
   box-shadow: ${({ theme }) => theme.boxShadow.strong};
   color: white;
   display: flex;
-  height: 24px;
+  height: 20px;
   justify-content: center;
-  width: 24px;
+  width: 20px;
 `;
 
 const StyledStageTag = styled.div`
-  background: ${({ theme }) => theme.background.primary};
-  border-radius: ${({ theme }) => theme.border.radius.sm};
-  bottom: ${({ theme }) => theme.spacing(1)};
+  top: ${({ theme }) => theme.spacing(2)};
   box-shadow: ${({ theme }) => theme.boxShadow.strong};
-  color: ${({ theme }) => theme.font.color.secondary};
-  font-size: ${({ theme }) => theme.font.size.xs};
-  font-weight: ${({ theme }) => theme.font.weight.medium};
-  left: 50%;
-  max-width: 110px;
-  overflow: hidden;
-  padding: ${({ theme }) => `${theme.spacing(0.5)} ${theme.spacing(1.5)}`};
+  left: ${({ theme }) => theme.spacing(2)};
   position: absolute;
-  text-overflow: ellipsis;
-  transform: translateX(-50%);
   white-space: nowrap;
   z-index: 1;
+
+  @media only screen and (min-width: ${MOBILE_VIEWPORT}px) {
+    left: 50%;
+    bottom: ${({ theme }) => theme.spacing(2)};
+    top: unset;
+    transform: translateX(-50%);
+  }
 `;
 
 const StyledContentContainer = styled.div`
   display: flex;
   flex-direction: column;
-  flex: 1;
   min-width: 0;
   justify-content: space-between;
   overflow: hidden;
+  padding: ${({ theme }) => theme.spacing(0.5)};
+  max-width: 350px;
+
+  margin-bottom: ${({ theme }) => theme.spacing(2)};
+
+  @media only screen and (min-width: ${MOBILE_VIEWPORT}px) {
+    flex: 0.5;
+  }
+`;
+
+const StyledUpperContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(1)};
+`;
+
+const StyledLowerContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(1)};
+  margin-top: ${({ theme }) => theme.spacing(1.5)};
 `;
 
 const StyledDate = styled.div`
   color: ${({ theme }) => theme.font.color.tertiary};
   font-size: ${({ theme }) => theme.font.size.xs};
-  margin-bottom: ${({ theme }) => theme.spacing(0.5)};
+  margin-bottom: ${({ theme }) => theme.spacing(0)};
 `;
 
 const StyledHeaderContainer = styled.div`
   display: flex;
   flex-direction: column;
-  margin-bottom: ${({ theme }) => theme.spacing(1)};
+  gap: ${({ theme }) => theme.spacing(0.5)};
 `;
 
 const StyledTitleContainer = styled.div`
@@ -206,6 +233,7 @@ const StyledTitle = styled.a`
   text-overflow: ellipsis;
   cursor: pointer;
   text-decoration: none;
+  line-height: 1.4;
 
   &:hover {
     color: ${({ theme }) => theme.color.blue};
@@ -217,7 +245,7 @@ const StyledLocationContainer = styled.div`
   display: flex;
   align-items: center;
   gap: ${({ theme }) => theme.spacing(1)};
-  margin-top: ${({ theme }) => theme.spacing(0.5)};
+  margin-top: ${({ theme }) => theme.spacing(0.25)};
 `;
 
 const StyledAddress = styled.div`
@@ -226,20 +254,22 @@ const StyledAddress = styled.div`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  line-height: 1.3;
 `;
 
 const StyledDetails = styled.div`
   display: flex;
   flex-direction: row;
-  gap: ${({ theme }) => theme.spacing(2)};
+  gap: ${({ theme }) => theme.spacing(4)};
   font-size: ${({ theme }) => theme.font.size.xs};
-  margin-bottom: ${({ theme }) => theme.spacing(0.5)};
+  margin-bottom: ${({ theme }) => theme.spacing(0)};
+  padding: ${({ theme }) => theme.spacing(0, 0.5)};
+  flex-wrap: wrap;
 `;
 
 const StyledDetailItem = styled.div`
   display: flex;
   flex-direction: column;
-  flex: 1;
   min-width: 0;
 `;
 
@@ -264,20 +294,11 @@ const StyledDetailValue = styled.span`
   color: ${({ theme }) => theme.font.color.secondary};
 `;
 
-const StyledIconContainer = styled.div`
-  align-items: center;
-  color: ${({ theme }) => theme.font.color.tertiary};
-  display: flex;
-  flex-shrink: 0;
-  justify-content: center;
-  width: 14px;
-`;
-
 const StyledFooterContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: ${({ theme }) => theme.spacing(1)};
+  margin-top: ${({ theme }) => theme.spacing(0.5)};
 `;
 
 const StyledCompletionStatus = styled.div<{ level: 'low' | 'medium' | 'high' }>`
@@ -296,13 +317,97 @@ const StyledCompletionStatus = styled.div<{ level: 'low' | 'medium' | 'high' }>`
 
 const StyledRightSection = styled.div`
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   gap: ${({ theme }) => theme.spacing(2)};
+  justify-content: flex-end;
+`;
+
+const StyledMiddleSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(1)};
+  flex: 1;
 `;
 
 const StyledPlatformBadgeContainer = styled.div`
   margin-right: ${({ theme }) => theme.spacing(1)};
 `;
+
+// Create styled components for skeleton loader
+const StyledSkeletonCard = styled.div`
+  border: 1px solid ${({ theme }) => theme.border.color.light};
+  border-radius: ${({ theme }) => theme.border.radius.md};
+  display: flex;
+  padding: ${({ theme }) => theme.spacing(1.5)};
+  position: relative;
+`;
+
+const StyledSkeletonImageSection = styled.div`
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  margin-right: ${({ theme }) => theme.spacing(2)};
+  position: relative;
+  background-color: ${({ theme }) => theme.background.tertiary};
+  border-radius: ${({ theme }) => theme.border.radius.sm};
+  position: relative;
+`;
+
+const StyledSkeletonContentSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  padding: ${({ theme }) => theme.spacing(0.5, 0)};
+  justify-content: center;
+`;
+
+const StyledSkeletonUpperSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(2)};
+`;
+
+// Create a skeleton card loader component
+const RecordListSkeletonCard = () => {
+  const theme = useTheme();
+
+  return (
+    <SkeletonTheme
+      baseColor={theme.background.tertiary}
+      highlightColor={theme.background.transparent.lighter}
+      borderRadius={theme.border.radius.sm}
+    >
+      <StyledSkeletonCard>
+        <StyledSkeletonImageSection />
+        <StyledSkeletonContentSection>
+          <StyledSkeletonUpperSection>
+            <Skeleton width={80} height={12} />
+            <Skeleton width="30%" height={24} />
+            <Skeleton width="50%" height={20} />
+            <Skeleton width="50%" height={30} />
+          </StyledSkeletonUpperSection>
+        </StyledSkeletonContentSection>
+      </StyledSkeletonCard>
+    </SkeletonTheme>
+  );
+};
+
+// Create a skeleton loader for the list
+const RecordListSkeletonLoader = () => {
+  const skeletonItems = Array.from({ length: 10 }).map((_, index) => ({
+    id: `skeleton-item-${index}`,
+  }));
+
+  return (
+    <>
+      {skeletonItems.map(({ id }) => (
+        <RecordListSkeletonCard key={id} />
+      ))}
+    </>
+  );
+};
 
 // This component is similar to RecordTableNoRecordGroupBodyEffect
 // It ensures records are loaded when the component mounts
@@ -337,6 +442,66 @@ const RecordListDataLoaderEffect = () => {
   }, [records, totalCount, setRecordTableData, loading]);
 
   return null;
+};
+
+// Create a new component for field detail display
+type FieldDetailItemProps = {
+  fieldName: string;
+  value: any;
+  objectNameSingular: string;
+};
+
+const FieldDetailItem = ({
+  fieldName,
+  value,
+  objectNameSingular,
+}: FieldDetailItemProps) => {
+  const { getIcon } = useIcons();
+
+  // Get object metadata using the useObjectMetadataItem hook
+  const { objectMetadataItem } = useObjectMetadataItem({
+    objectNameSingular,
+  });
+
+  // Find the field metadata for this field name
+  const fieldMetadata = useMemo(() => {
+    return objectMetadataItem.fields.find((field) => field.name === fieldName);
+  }, [fieldName, objectMetadataItem]);
+
+  // Format the value based on field type
+  const formattedValue = useMemo(() => {
+    if (value === undefined || value === null) return '';
+
+    if (fieldName === 'surface') {
+      return `${value} m²`;
+    }
+
+    return String(value);
+  }, [fieldName, value]);
+
+  // Get the icon based on field metadata
+  const Icon = useMemo(() => {
+    // Get icon from field metadata
+    if (fieldMetadata?.icon) {
+      return getIcon(fieldMetadata.icon);
+    }
+
+    return null;
+  }, [fieldMetadata, getIcon]);
+
+  if (!value) return null;
+
+  return (
+    <StyledDetailItem>
+      <StyledDetailIcon>
+        {Icon && <Icon size={14} />}
+        <StyledDetailLabel>
+          {fieldMetadata?.label || fieldName}
+        </StyledDetailLabel>
+      </StyledDetailIcon>
+      <StyledDetailValue>{formattedValue}</StyledDetailValue>
+    </StyledDetailItem>
+  );
 };
 
 export const RecordList = () => {
@@ -375,15 +540,12 @@ export const RecordList = () => {
     allRecordIds.length === 0 &&
     !hasPendingRecord;
 
-  // Return loading message when loading
+  // Return skeleton loader when loading
   if (isRecordTableInitialLoading) {
     return (
       <StyledListContainer ref={listContainerRef}>
         <RecordListDataLoaderEffect />
-        <StyledLoadingContainer>
-          <IconLoader size={24} />
-          <Trans>Loading records...</Trans>
-        </StyledLoadingContainer>
+        <RecordListSkeletonLoader />
       </StyledListContainer>
     );
   }
@@ -392,14 +554,7 @@ export const RecordList = () => {
     return (
       <StyledListContainer ref={listContainerRef}>
         <RecordListDataLoaderEffect />
-        <StyledEmptyContainer>
-          <StyledEmptyStateIcon>
-            <IconSearch size={32} />
-          </StyledEmptyStateIcon>
-          <StyledEmptyStateText>
-            <Trans>No records found</Trans>
-          </StyledEmptyStateText>
-        </StyledEmptyContainer>
+        <RecordTableEmptyState />
       </StyledListContainer>
     );
   }
@@ -442,57 +597,63 @@ type RecordListItemProps = {
   onSelect: (selected: boolean) => void;
 };
 
-const calculateCompletionLevel = (record: any) => {
-  if (!record) return { level: 'low' as const, percentage: 0 };
-
-  // Fields to check for completeness
-  const fields = [
-    'name',
-    'description',
-    'address',
-    'surface',
-    'rooms',
-    'category',
-    'priceUnit',
-    'sellingPrice',
-    'rentNet',
-    'floor',
-    'constructionYear',
-    'renovationYear',
-    'features',
-    'volume',
-    'refProperty',
-    'platform',
-  ];
-
-  // Count how many fields are filled
-  const filledFields = fields.filter((field) => {
-    const value = record[field];
-    return (
-      value !== undefined &&
-      value !== null &&
-      (typeof value !== 'string' || value.trim() !== '')
-    );
-  }).length;
-
-  const percentage = Math.round((filledFields / fields.length) * 100);
-
-  if (percentage < 40) return { level: 'low' as const, percentage };
-  if (percentage < 75) return { level: 'medium' as const, percentage };
-  return { level: 'high' as const, percentage };
-};
-
+// Update the getDisplayPriorityFields function
 const getDisplayPriorityFields = (record: any) => {
   // Check if it's a publication by looking for publication-specific fields
   const isPublication = record.platform !== undefined;
 
+  let extra: string[] = [];
   if (isPublication) {
-    return ['category', 'platform'];
+    extra = ['platform'];
   }
 
   // Use property priority fields
-  return ['surface', 'rooms', 'category', 'floor'];
+  return [
+    'surface',
+    'rooms',
+    'surface',
+    'living surface',
+    'numberOfFloors',
+    'volume',
+    'category',
+    'refProperty',
+    'floor',
+    'constructionYear',
+    'renovationYear',
+    ...extra,
+  ];
 };
+
+// Add a new function to format price display
+const formatPrice = (price: any) => {
+  if (!price || !price?.amountMicros) return null;
+
+  const amount = price?.amountMicros / 1000000;
+  const currency = price?.currencyCode || 'EUR';
+
+  return `${formatAmount(amount)} ${currency}`;
+};
+
+// Create a styled component for price display
+const StyledPriceContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing(1)};
+  margin-top: ${({ theme }) => theme.spacing(1)};
+  text-decoration: underline;
+`;
+
+const StyledPrice = styled.span`
+  color: ${({ theme }) => theme.font.color.primary};
+  font-size: ${({ theme }) => theme.font.size.lg};
+  font-weight: ${({ theme }) => theme.font.weight.semiBold};
+`;
+
+const StyledRentalLabel = styled.span`
+  font-size: ${({ theme }) => theme.font.size.xs};
+  color: ${({ theme }) => theme.font.color.tertiary};
+  margin-left: ${({ theme }) => theme.spacing(0.5)};
+`;
 
 const RecordListItem = ({
   recordId,
@@ -502,6 +663,7 @@ const RecordListItem = ({
 }: RecordListItemProps) => {
   const theme = useTheme();
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
   const { t } = useLingui();
 
   const { recordFromStore: record } = useRecordShowContainerData({
@@ -530,11 +692,12 @@ const RecordListItem = ({
   );
 
   const completionLabel = useMemo(() => {
+    const percentage = completionInfo.percentage;
     if (completionInfo.level === 'low')
-      return t`Insufficient (${completionInfo.percentage}%)`;
+      return t`Insufficient Details (${percentage}%)`;
     if (completionInfo.level === 'medium')
-      return t`Satisfactory (${completionInfo.percentage}%)`;
-    return t`Complete (${completionInfo.percentage}%)`;
+      return t`Good Enough (${percentage}%)`;
+    return t`Complete (${percentage}%)`;
   }, [completionInfo, t]);
 
   const createdAtFormatted = useMemo(() => {
@@ -566,69 +729,32 @@ const RecordListItem = ({
     }
   };
 
-  const displayedDetails = useMemo(() => {
+  const priorityFields = useMemo(() => {
     if (!record) return [];
+    return getDisplayPriorityFields(record).filter(
+      (field) => record[field] !== undefined && record[field] !== null,
+    );
+  }, [record]);
 
-    // Get priority fields based on record type
-    const priorityFields = getDisplayPriorityFields(record);
+  // Format price for display
+  const formattedPrice = useMemo(() => {
+    if (!record) return null;
 
-    return priorityFields
-      .filter((field) => record[field] !== undefined && record[field] !== null)
-      .slice(0, 2) // Limit to 2 details
-      .map((field) => {
-        let icon;
-        const label = field.charAt(0).toUpperCase() + field.slice(1);
+    const rent = record.rentNet;
+    const price = record.sellingPrice;
 
-        switch (field) {
-          case 'surface':
-            icon = <IconRuler size={14} />;
-            return {
-              field,
-              icon,
-              label,
-              value: `${record[field]} m²`,
-            };
-          case 'rooms':
-            icon = <IconUsers size={14} />;
-            return {
-              field,
-              icon,
-              label,
-              value: record[field],
-            };
-          case 'category':
-            icon = <IconBuildingSkyscraper size={14} />;
-            return {
-              field,
-              icon,
-              label,
-              value: record[field],
-            };
-          case 'floor':
-            icon = <IconHome size={14} />;
-            return {
-              field,
-              icon,
-              label,
-              value: record[field],
-            };
-          case 'platform':
-            icon = <IconCalendar size={14} />;
-            return {
-              field,
-              icon,
-              label,
-              value: record[field],
-            };
-          default:
-            return {
-              field,
-              icon: null,
-              label,
-              value: record[field],
-            };
-        }
-      });
+    if (rent?.amountMicros) {
+      return formatPrice(rent);
+    }
+    if (price?.amountMicros) {
+      return formatPrice(price);
+    }
+    return null;
+  }, [record]);
+
+  // Check if it's a rental property
+  const isRental = useMemo(() => {
+    return record?.category === 'Rental';
   }, [record]);
 
   if (!record) return null;
@@ -646,8 +772,10 @@ const RecordListItem = ({
       <StyledSelectionIndicator
         initial={{ x: -40, width: 0 }}
         animate={{
-          x: isSelected ? 4 : -40,
-          width: isSelected ? 45 : 0,
+          y: 2,
+          x: isMobile ? 4 : isSelected ? 4 : -40,
+          width: isMobile ? 45 : isSelected ? 45 : 0,
+          opacity: isMobile ? (isSelected ? 1 : 0) : 1,
         }}
         transition={{ type: 'spring', stiffness: 400, damping: 25 }}
       >
@@ -671,74 +799,94 @@ const RecordListItem = ({
               }}
             />
           )}
-          {record.stage && <StyledStageTag>{record.stage}</StyledStageTag>}
+          {record.stage && (
+            <StyledStageTag>
+              <StatusBadge status={record.stage} size="small" />
+            </StyledStageTag>
+          )}
         </StyledImageContainer>
       </StyledImageSection>
 
       <StyledContentContainer>
-        <StyledDate>{createdAtFormatted}</StyledDate>
+        <StyledUpperContentContainer>
+          <StyledHeaderContainer>
+            <StyledDate>{createdAtFormatted}</StyledDate>
+            <StyledTitleContainer>
+              <StyledTitle onClick={handleTitleClick}>
+                {record.name}
+              </StyledTitle>
+              {record.platform && (
+                <StyledPlatformBadgeContainer>
+                  <PlatformBadge
+                    platformId={record.platform}
+                    size="small"
+                    variant="no-background"
+                  />
+                </StyledPlatformBadgeContainer>
+              )}
+            </StyledTitleContainer>
 
-        <StyledHeaderContainer>
-          <StyledTitleContainer>
-            <StyledTitle onClick={handleTitleClick}>{record.name}</StyledTitle>
-            {record.platform && (
-              <StyledPlatformBadgeContainer>
-                <PlatformBadge
-                  platformId={record.platform}
-                  size="small"
-                  variant="no-background"
-                />
-              </StyledPlatformBadgeContainer>
+            {record.address && (
+              <StyledLocationContainer>
+                <IconMap size={12} color={theme.font.color.tertiary} />
+                <StyledAddress>
+                  {[
+                    record.address.addressStreet1,
+                    record.address.addressCity,
+                    record.address.addressPostcode,
+                  ]
+                    .filter(Boolean)
+                    .join(', ')}
+                </StyledAddress>
+              </StyledLocationContainer>
             )}
-          </StyledTitleContainer>
 
-          {record.address && (
-            <StyledLocationContainer>
-              <IconMap size={12} color={theme.font.color.tertiary} />
-              <StyledAddress>
-                {[
-                  record.address.addressStreet1,
-                  record.address.addressCity,
-                  record.address.addressPostcode,
-                ]
-                  .filter(Boolean)
-                  .join(', ')}
-              </StyledAddress>
-            </StyledLocationContainer>
-          )}
-        </StyledHeaderContainer>
+            {/* Display price information if available */}
+            {formattedPrice && (
+              <StyledPriceContainer>
+                <StyledPrice>{formattedPrice}</StyledPrice>
+                {isRental && <StyledRentalLabel>/month</StyledRentalLabel>}
+              </StyledPriceContainer>
+            )}
+          </StyledHeaderContainer>
+        </StyledUpperContentContainer>
 
-        <StyledDetails>
-          {displayedDetails.map((detail, index) => (
-            <StyledDetailItem key={index}>
-              <StyledDetailIcon>
-                {detail.icon}
-                <StyledDetailLabel>{detail.label}</StyledDetailLabel>
-              </StyledDetailIcon>
-              <StyledDetailValue>{detail.value}</StyledDetailValue>
-            </StyledDetailItem>
-          ))}
-        </StyledDetails>
-
-        <StyledFooterContainer>
-          <StyledCompletionStatus level={completionInfo.level}>
-            {completionInfo.level === 'low' && <IconCalendar size={14} />}
-            {completionInfo.level === 'medium' && <IconCalendar size={14} />}
-            {completionInfo.level === 'high' && <IconCheck size={14} />}
-            {completionLabel}
-          </StyledCompletionStatus>
-
-          <StyledRightSection>
-            <Button
-              title={t`Show Details`}
-              Icon={IconEye}
-              size="small"
-              variant="secondary"
-              onClick={handleViewDetails}
-            />
-          </StyledRightSection>
-        </StyledFooterContainer>
+        <StyledLowerContentContainer>
+          <StyledFooterContainer>
+            <StyledCompletionStatus level={completionInfo.level}>
+              {completionInfo.level === 'low' && (
+                <IconAlertTriangle size={14} />
+              )}
+              {completionInfo.level === 'medium' && <IconCheck size={14} />}
+              {completionInfo.level === 'high' && <IconCheck size={14} />}
+              {completionLabel}
+            </StyledCompletionStatus>
+          </StyledFooterContainer>
+        </StyledLowerContentContainer>
       </StyledContentContainer>
+      <StyledMiddleSection>
+        {priorityFields.length > 0 && (
+          <StyledDetails>
+            {priorityFields.map((fieldName) => (
+              <FieldDetailItem
+                key={fieldName}
+                fieldName={fieldName}
+                value={record[fieldName]}
+                objectNameSingular={objectNameSingular}
+              />
+            ))}
+          </StyledDetails>
+        )}
+      </StyledMiddleSection>
+      <StyledRightSection>
+        <Button
+          title={t`Show Details`}
+          Icon={IconEye}
+          size="small"
+          variant="secondary"
+          onClick={handleViewDetails}
+        />
+      </StyledRightSection>
     </StyledCard>
   );
 };

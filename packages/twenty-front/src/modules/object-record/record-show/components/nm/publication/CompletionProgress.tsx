@@ -1,9 +1,13 @@
+import { ObjectRecord } from '@/object-record/types/ObjectRecord';
+import {
+  calculateCompletionLevel,
+  CompletionLevel,
+} from '@/object-record/utils/calculateCompletionLevel';
 import styled from '@emotion/styled';
 import { t } from '@lingui/core/macro';
 import {
   IconAlertCircle,
   IconCheck,
-  IconInfoCircle,
   IconChecklist,
   MOBILE_VIEWPORT,
 } from 'twenty-ui';
@@ -65,11 +69,14 @@ const StyledProgressBar = styled.div`
   position: relative;
 `;
 
-const StyledProgressFill = styled.div<{ percentage: number }>`
-  background: ${({ theme, percentage }) =>
-    percentage < 50
+const StyledProgressFill = styled.div<{
+  level: CompletionLevel;
+  percentage: number;
+}>`
+  background: ${({ theme, level }) =>
+    level === 'low'
       ? theme.color.yellow
-      : percentage < 80
+      : level === 'medium'
         ? theme.color.blue
         : theme.color.green50};
   border-radius: ${({ theme }) => theme.border.radius.pill};
@@ -78,11 +85,11 @@ const StyledProgressFill = styled.div<{ percentage: number }>`
   width: ${({ percentage }) => percentage}%;
 `;
 
-const StyledPercentage = styled.div<{ percentage: number }>`
-  color: ${({ theme, percentage }) =>
-    percentage < 50
+const StyledPercentage = styled.div<{ level: CompletionLevel }>`
+  color: ${({ theme, level }) =>
+    level === 'low'
       ? theme.color.yellow
-      : percentage < 80
+      : level === 'medium'
         ? theme.color.blue
         : theme.color.green50};
   font-size: ${({ theme }) => theme.font.size.md};
@@ -90,36 +97,41 @@ const StyledPercentage = styled.div<{ percentage: number }>`
 `;
 
 type CompletionProgressProps = {
-  percentage: number;
+  record: ObjectRecord;
 };
 
-export const CompletionProgress = ({ percentage }: CompletionProgressProps) => (
-  <StyledProgressContainer>
-    <StyledProgressHeader>
-      <StyledProgressTitle>
-        <StyledProgressTitleText>
-          <IconChecklist size={16} />
-          {t`Publication completion`}
-        </StyledProgressTitleText>
-        <StyledProgressWithIcon>
-          {percentage < 80 ? (
-            <IconAlertCircle size={16} />
-          ) : (
-            <IconCheck size={16} />
-          )}
-          {percentage < 80
-            ? t`Add more details to improve your listing`
-            : t`Looking good!`}
-        </StyledProgressWithIcon>
-      </StyledProgressTitle>
-    </StyledProgressHeader>
-    <StyledProgressBarContainer>
-      <StyledProgressBar>
-        <StyledProgressFill percentage={percentage} />
-      </StyledProgressBar>
-      <StyledPercentage percentage={percentage}>
-        {Math.round(percentage)}%
-      </StyledPercentage>
-    </StyledProgressBarContainer>
-  </StyledProgressContainer>
-);
+export const CompletionProgress = ({ record }: CompletionProgressProps) => {
+  const completionInfo = calculateCompletionLevel(record);
+  const { level, percentage } = completionInfo;
+
+  return (
+    <StyledProgressContainer>
+      <StyledProgressHeader>
+        <StyledProgressTitle>
+          <StyledProgressTitleText>
+            <IconChecklist size={16} />
+            {t`Publication completion`}
+          </StyledProgressTitleText>
+          <StyledProgressWithIcon>
+            {level !== 'high' ? (
+              <IconAlertCircle size={16} />
+            ) : (
+              <IconCheck size={16} />
+            )}
+            {level !== 'high'
+              ? t`Add more details to improve your listing`
+              : t`Looking good!`}
+          </StyledProgressWithIcon>
+        </StyledProgressTitle>
+      </StyledProgressHeader>
+      <StyledProgressBarContainer>
+        <StyledProgressBar>
+          <StyledProgressFill level={level} percentage={percentage} />
+        </StyledProgressBar>
+        <StyledPercentage level={level}>
+          {Math.round(percentage)}%
+        </StyledPercentage>
+      </StyledProgressBarContainer>
+    </StyledProgressContainer>
+  );
+};

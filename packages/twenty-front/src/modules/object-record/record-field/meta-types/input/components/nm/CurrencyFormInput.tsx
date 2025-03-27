@@ -107,14 +107,7 @@ export const CurrencyFormInput = ({
         value: newCurrencyValue,
       });
     },
-    [
-      currencyCode,
-      draftValue?.amount,
-      fieldDefinition,
-      fieldName,
-      setDraftValue,
-      updateField,
-    ],
+    [currencyCode, draftValue?.amount, fieldName, setDraftValue, updateField],
   );
 
   const handleEnter = (newValue: string) => {

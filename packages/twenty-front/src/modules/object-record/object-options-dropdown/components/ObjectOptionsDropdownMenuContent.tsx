@@ -16,6 +16,7 @@ import { useObjectNamePluralFromSingular } from '@/object-metadata/hooks/useObje
 import { useHandleToggleTrashColumnFilter } from '@/object-record/record-index/hooks/useHandleToggleTrashColumnFilter';
 
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
+import { isPropertyOrPublication } from '@/object-metadata/utils/isPropertyOrPublication';
 import { useObjectOptionsForBoard } from '@/object-record/object-options-dropdown/hooks/useObjectOptionsForBoard';
 import { useOptionsDropdown } from '@/object-record/object-options-dropdown/hooks/useOptionsDropdown';
 import { recordGroupFieldMetadataComponentState } from '@/object-record/record-group/states/recordGroupFieldMetadataComponentState';
@@ -98,30 +99,41 @@ export const ObjectOptionsDropdownMenuContent = () => {
     objectMetadataItem.nameSingular !== CoreObjectNameSingular.Note &&
     objectMetadataItem.nameSingular !== CoreObjectNameSingular.Task;
 
+  // Check if the object is a property or publication
+  const isPropertyOrPub = isPropertyOrPublication(
+    objectMetadataItem.nameSingular,
+  );
+
   return (
     <>
       <DropdownMenuHeader StartIcon={CurrentViewIcon ?? IconList}>
         {currentView?.name}
       </DropdownMenuHeader>
 
-      <DropdownMenuItemsContainer scrollable={false}>
-        <MenuItem
-          onClick={() => onContentChange('viewSettings')}
-          LeftIcon={IconLayout}
-          text="View settings"
-          hasSubMenu
-        />
-      </DropdownMenuItemsContainer>
-      <DropdownMenuSeparator />
+      {!isPropertyOrPub && (
+        <>
+          <DropdownMenuItemsContainer scrollable={false}>
+            <MenuItem
+              onClick={() => onContentChange('viewSettings')}
+              LeftIcon={IconLayout}
+              text="View settings"
+              hasSubMenu
+            />
+          </DropdownMenuItemsContainer>
+          <DropdownMenuSeparator />
+        </>
+      )}
 
       <DropdownMenuItemsContainer scrollable={false}>
-        <MenuItem
-          onClick={() => onContentChange('fields')}
-          LeftIcon={IconTag}
-          text="Fields"
-          contextualText={`${visibleBoardFields.length} shown`}
-          hasSubMenu
-        />
+        {!isPropertyOrPub && (
+          <MenuItem
+            onClick={() => onContentChange('fields')}
+            LeftIcon={IconTag}
+            text="Fields"
+            contextualText={`${visibleBoardFields.length} shown`}
+            hasSubMenu
+          />
+        )}
 
         <div id="group-by-menu-item">
           <MenuItem

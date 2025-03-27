@@ -5,9 +5,36 @@ import { SectionContent } from '@/record-edit/types/EditSectionTypes';
 export const AMENITIES_SECTION_CONTENT: SectionContent[] = [
   {
     title: 'Building Details',
-    width: 'half',
+    width: 'twoThirds',
     groups: [
       PropertyCategoryGroup,
+
+      {
+        isHorizontal: true,
+        fields: [
+          { name: 'rooms', type: 'input', fieldWidth: 120 },
+          { name: 'surface', type: 'input', fieldWidth: 120 },
+          { name: 'livingSurface', type: 'input', fieldWidth: 120 },
+          {
+            name: 'floor',
+            type: 'input',
+            fieldWidth: 80,
+            conditionFields: ['category'],
+            conditionValues: [
+              'apartment',
+              'industrial_objects',
+              'gastronomy',
+              'parking_space',
+            ],
+          },
+          {
+            name: 'ceilingHeight',
+            type: 'input',
+            fieldWidth: 120,
+          },
+          { name: 'hallHeight', type: 'input', fieldWidth: 120 },
+        ],
+      },
       {
         isHorizontal: true,
         fields: [
@@ -29,38 +56,14 @@ export const AMENITIES_SECTION_CONTENT: SectionContent[] = [
           },
         ],
       },
-      {
-        isHorizontal: true,
-        fields: [
-          {
-            name: 'floor',
-            type: 'input',
-            fieldWidth: 80,
-            conditionFields: ['category'],
-            conditionValues: [
-              'apartment',
-              'industrial_objects',
-              'gastronomy',
-              'parking_space',
-            ],
-          },
-          {
-            name: 'ceilingHeight',
-            type: 'input',
-            fieldWidth: 120,
-          },
-          { name: 'hallHeight', type: 'input', fieldWidth: 120 },
-        ],
-      },
     ],
   },
 
   {
     title: 'Technical Specifications',
-    width: 'half',
+    width: 'third',
     groups: [
       {
-        isHorizontal: true,
         fields: [
           { name: 'maximalFloorLoading', type: 'input', fieldWidth: 160 },
           { name: 'carryingCapacityCrane', type: 'input', fieldWidth: 160 },
