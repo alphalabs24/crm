@@ -54,10 +54,17 @@ export const useUploadAttachmentFile = () => {
       nameSingular: targetableObject.targetObjectNameSingular,
     });
 
+    let fullPath = computePathWithoutToken(attachmentPath);
+
+    if (isPublic && fullPath.startsWith('attachment/')) {
+      const [folder, filename] = fullPath.split('/');
+      fullPath = folder + '/public/' + filename;
+    }
+
     const attachmentToCreate = {
       authorId: currentWorkspaceMember?.id,
       name: fileName ?? file.name,
-      fullPath: computePathWithoutToken(attachmentPath),
+      fullPath,
       type: fileType ?? getFileType(file.name),
       [targetableObjectFieldIdName]: targetableObject.id,
       createdAt: new Date().toISOString(),

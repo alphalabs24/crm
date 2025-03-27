@@ -40,11 +40,17 @@ export class FileUploadService {
       isPublic,
     });
 
+    let folderPath = folder;
+
+    if (isPublic) {
+      folderPath = folder + '/public';
+    }
+
     await this.fileStorage.write({
       file,
       name: filename,
       mimeType,
-      folder,
+      folder: folderPath,
       isPublic,
     });
   }

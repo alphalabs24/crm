@@ -343,14 +343,6 @@ export class EnvironmentVariables {
 
   @EnvironmentVariablesMetadata({
     group: EnvironmentVariablesGroup.StorageConfig,
-    description: 'S3 bucket name for public storage when using S3 storage type',
-  })
-  @ValidateIf((env) => env.STORAGE_TYPE === StorageDriverType.S3)
-  @IsString()
-  STORAGE_S3_NAME_PUBLIC: string;
-
-  @EnvironmentVariablesMetadata({
-    group: EnvironmentVariablesGroup.StorageConfig,
     description: 'S3 endpoint for storage when using S3 storage type',
   })
   @ValidateIf((env) => env.STORAGE_TYPE === StorageDriverType.S3)

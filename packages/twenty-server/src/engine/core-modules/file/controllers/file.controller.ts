@@ -22,6 +22,7 @@ import {
   FileExceptionCode,
 } from 'src/engine/core-modules/file/file.exception';
 import {
+  checkFileNamePublic,
   checkFilePath,
   checkFilename,
 } from 'src/engine/core-modules/file/file.utils';
@@ -34,21 +35,22 @@ import { FileService } from 'src/engine/core-modules/file/services/file.service'
 export class FileController {
   constructor(private readonly fileService: FileService) {}
 
-  @Get('public/*/:filename')
+  @Get('*/public/:filename')
   async getPublicFile(
     @Param() params: string[],
     @Res() res: Response,
     @Query() query: any,
   ) {
-    console.log('test');
+    console.log('entering test', params, query);
     // const filepath = params[0].split('public/')[1];
 
-    const folderPath = checkFilePath(params[0]);
-    const filename = checkFilename(params['filename']);
+    // do another check file that is less strict
+    const folderPath = checkFilePath(params[0]) + '/public';
+    const filename = checkFileNamePublic(params['filename']);
     const workspaceId = query.workspaceId;
 
     console.log('workspaceId:', workspaceId);
-    console.log('folderPath:', filename);
+    console.log('folderPath:', folderPath);
     console.log('filename:', filename);
 
     if (!workspaceId) {
@@ -99,9 +101,12 @@ export class FileController {
     @Res() res: Response,
     @Req() req: Request,
   ) {
-    console.log('test2');
+    console.log('ent test2,', params);
     const folderPath = checkFilePath(params[0]);
     const filename = checkFilename(params['filename']);
+
+    console.log('folderPath:', folderPath);
+    console.log('filename:', filename);
 
     const workspaceId = (req as any)?.workspaceId;
 

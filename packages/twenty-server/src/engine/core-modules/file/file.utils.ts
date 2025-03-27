@@ -3,6 +3,7 @@ import { BadRequestException } from '@nestjs/common';
 import { basename } from 'path';
 
 import { KebabCase } from 'type-fest';
+import { isUUID } from 'class-validator';
 
 import { settings } from 'src/engine/constants/settings';
 import { kebabCase } from 'src/utils/kebab-case';
@@ -34,6 +35,10 @@ export const checkFilePath = (filePath: string): string => {
   return sanitizedFilePath;
 };
 
+export const checkFilepathPublic = (filepath: string) => {
+  console.log(filepath);
+};
+
 export const checkFilename = (filename: string) => {
   const sanitizedFilename = basename(filename.replace(/\0/g, ''));
 
@@ -47,4 +52,15 @@ export const checkFilename = (filename: string) => {
   }
 
   return basename(sanitizedFilename);
+};
+
+export const checkFileNamePublic = (filename: string) => {
+  // check if filene is of form uuid.fileextension
+  const [uuid, extension] = filename.split('.');
+
+  if (!isUUID(uuid) || !extension || extension.length > 4) {
+    throw new BadRequestException(`Filename is not allowed`);
+  }
+
+  return filename;
 };

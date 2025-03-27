@@ -36,11 +36,9 @@ export interface S3DriverOptions extends S3ClientConfig {
 export class S3Driver implements StorageDriver {
   private s3Client: S3;
   private bucketName: string;
-  private bucketNamePublic: string;
 
   constructor(options: S3DriverOptions) {
-    const { bucketName, bucketNamePublic, region, endpoint, ...s3Options } =
-      options;
+    const { bucketName, region, endpoint, ...s3Options } = options;
 
     if (!bucketName || !region) {
       return;
@@ -48,7 +46,6 @@ export class S3Driver implements StorageDriver {
 
     this.s3Client = new S3({ ...s3Options, region, endpoint });
     this.bucketName = bucketName;
-    this.bucketNamePublic = bucketNamePublic;
   }
 
   public get client(): S3 {
@@ -62,7 +59,6 @@ export class S3Driver implements StorageDriver {
     mimeType: string | undefined;
     isPublic?: boolean;
   }): Promise<void> {
-    console.log('Writing file to S3 in driver', params);
     const exists = await this.checkBucketExists({
       Bucket: this.bucketName,
     });
@@ -72,41 +68,14 @@ export class S3Driver implements StorageDriver {
       throw new Error(`Bucket ${this.bucketName} does not exist`);
     }
 
-    if (params.isPublic) {
-      const existsPublic = await this.checkBucketExists({
-        Bucket: this.bucketNamePublic,
-      });
+    const command = new PutObjectCommand({
+      Key: `${params.folder}/${params.name}`,
+      Body: params.file,
+      ContentType: params.mimeType,
+      Bucket: this.bucketName,
+    });
 
-      if (!existsPublic) {
-        throw new Error(`Bucket ${this.bucketNamePublic} does not exist`);
-      }
-    }
-
-    let command;
-
-    if (params.isPublic) {
-      console.log('Creating public object');
-      command = new PutObjectCommand({
-        Key: `${params.folder}/${params.name}`,
-        Body: params.file,
-        ContentType: params.mimeType,
-        Bucket: this.bucketNamePublic,
-      });
-    } else {
-      console.log('Creating private object');
-      command = new PutObjectCommand({
-        Key: `${params.folder}/${params.name}`,
-        Body: params.file,
-        ContentType: params.mimeType,
-        Bucket: this.bucketName,
-      });
-    }
-
-    console.log('Sending command to S3', command);
-
-    const res = await this.s3Client.send(command);
-
-    console.log('Response from S3', res);
+    await this.s3Client.send(command);
   }
 
   private async emptyS3Directory(folderPath) {

@@ -30,7 +30,6 @@ export const fileStorageModuleFactory = async (
     // }
     case StorageDriverType.S3: {
       const bucketName = environmentService.get('STORAGE_S3_NAME');
-      const bucketNamePublic = environmentService.get('STORAGE_S3_NAME_PUBLIC');
       const endpoint = environmentService.get('STORAGE_S3_ENDPOINT');
       const region = environmentService.get('STORAGE_S3_REGION');
       const accessKeyId = environmentService.get('STORAGE_S3_ACCESS_KEY_ID');
@@ -42,7 +41,6 @@ export const fileStorageModuleFactory = async (
         type: StorageDriverType.S3,
         options: {
           bucketName: bucketName ?? '',
-          bucketNamePublic: bucketNamePublic ?? '',
           endpoint: endpoint,
           credentials: accessKeyId
             ? {

@@ -475,8 +475,6 @@ export const RecordEditProvider = ({
             document.type === 'PropertyDocumentation' ||
             document.type === 'PropertyFlyer';
 
-          console.log('----IS PUBLIC FRONTEND', isPublic);
-
           await uploadAttachmentFile(
             document.file,
             {

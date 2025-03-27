@@ -21,10 +21,16 @@ export class AttachmentQueryResultGetterHandler
       workspaceId: workspaceId,
     });
 
-    // is public = attachment.type == 'Flyer
-    // fullPath = `${process.env.SERVER_URL}/files/public/${attachment.fullPath}?workspaceId=${workspaceId}`
-    //
-    //
+    const isPublic =
+      attachment.type == 'PropertyDocumentation' ||
+      attachment.type == 'PropertyFlyer';
+
+    if (isPublic) {
+      return {
+        ...attachment,
+        fullPath: `${process.env.SERVER_URL}/files/${attachment.fullPath}?workspaceId=${workspaceId}`,
+      };
+    }
 
     return {
       ...attachment,
