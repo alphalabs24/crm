@@ -8,7 +8,6 @@ import {
   UseFilters,
   UseGuards,
 } from '@nestjs/common';
-import fi from 'date-fns/esm/locale/fi/index';
 
 import { Response } from 'express';
 
@@ -57,7 +56,6 @@ export class FileController {
         folderPath,
         filename,
         workspaceId,
-        // wen n pblic im path
       );
 
       fileStream.on('error', () => {
@@ -93,12 +91,8 @@ export class FileController {
     @Res() res: Response,
     @Req() req: Request,
   ) {
-    console.log('ent test2,', params);
     const folderPath = checkFilePath(params[0]);
     const filename = checkFilename(params['filename']);
-
-    console.log('folderPath:', folderPath);
-    console.log('filename:', filename);
 
     const workspaceId = (req as any)?.workspaceId;
 
