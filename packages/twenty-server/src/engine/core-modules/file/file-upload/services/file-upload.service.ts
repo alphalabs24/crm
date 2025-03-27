@@ -32,14 +32,6 @@ export class FileUploadService {
     folder: string;
     isPublic?: boolean;
   }) {
-    console.log('Writing file to S3', {
-      file,
-      filename,
-      mimeType,
-      folder,
-      isPublic,
-    });
-
     let folderPath = folder;
 
     if (isPublic) {
@@ -51,7 +43,6 @@ export class FileUploadService {
       name: filename,
       mimeType,
       folder: folderPath,
-      isPublic,
     });
   }
 

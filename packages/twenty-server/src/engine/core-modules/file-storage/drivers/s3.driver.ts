@@ -28,7 +28,6 @@ import {
 
 export interface S3DriverOptions extends S3ClientConfig {
   bucketName: string;
-  bucketNamePublic: string;
   endpoint?: string;
   region: string;
 }
@@ -57,16 +56,10 @@ export class S3Driver implements StorageDriver {
     name: string;
     folder: string;
     mimeType: string | undefined;
-    isPublic?: boolean;
   }): Promise<void> {
-    const exists = await this.checkBucketExists({
+    await this.createBucket({
       Bucket: this.bucketName,
     });
-
-    // fail if bucket does not exist
-    if (!exists) {
-      throw new Error(`Bucket ${this.bucketName} does not exist`);
-    }
 
     const command = new PutObjectCommand({
       Key: `${params.folder}/${params.name}`,
@@ -180,7 +173,6 @@ export class S3Driver implements StorageDriver {
           CopySource: `${this.bucketName}/${fromKey}`,
           Bucket: this.bucketName,
           Key: toKey,
-          MetadataDirective: 'COPY',
         }),
       );
 
