@@ -21,8 +21,11 @@ export const computePathWithoutToken = (attachmentPath: string): string => {
 export const computePublicPath = (attachmentPath: string): string => {
   const pathWithoutToken = computePathWithoutToken(attachmentPath);
 
-  const [folder, filename] = pathWithoutToken.split('/');
-  return folder + '/public/' + filename;
+  const splitPath = pathWithoutToken.split('/');
+
+  const path = splitPath.slice(0, splitPath.length - 1).join('/');
+
+  return path + '/public/' + splitPath[splitPath.length - 1];
 };
 
 export const useUploadAttachmentFile = () => {
