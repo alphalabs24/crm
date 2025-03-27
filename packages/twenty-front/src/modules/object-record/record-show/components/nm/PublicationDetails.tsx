@@ -11,6 +11,7 @@ import { useRecoilValue } from 'recoil';
 import {
   IconBuildingSkyscraper,
   IconChartBar,
+  IconMessageCircle2,
   LARGE_DESKTOP_VIEWPORT,
 } from 'twenty-ui';
 import { ObjectOverview } from './ObjectOverview';
@@ -184,7 +185,7 @@ export const PublicationDetails = ({
           </StyledSection>
           <StyledSection>
             <StyledSectionTitle>
-              <IconChartBar size={16} />
+              <IconMessageCircle2 size={16} />
               {t`Inquiries`}
             </StyledSectionTitle>
             <StyledSectionContent>
