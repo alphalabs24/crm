@@ -14,6 +14,8 @@ import { RecordUpdateContext } from '../contexts/EntityUpdateMutationHookContext
 import { useRecordTable } from '../hooks/useRecordTable';
 
 import { ActionBarHotkeyScope } from '@/action-menu/types/ActionBarHotKeyScope';
+import { isPropertyOrPublication } from '@/object-metadata/utils/isPropertyOrPublication';
+import { RecordList } from '@/object-record/record-table/components/nm/RecordList';
 import { RecordTableComponentInstance } from '@/object-record/record-table/components/RecordTableComponentInstance';
 import { RecordTableContextProvider } from '@/object-record/record-table/components/RecordTableContextProvider';
 import { TableHotkeyScope } from '@/object-record/record-table/types/TableHotkeyScope';
@@ -54,6 +56,8 @@ export const RecordTableWithWrappers = ({
     useRecordTable({
       recordTableId,
     });
+
+  const isRecordList = isPropertyOrPublication(objectNameSingular);
 
   const handleSelectAllRows = () => {
     setHasUserSelectedAllRows(true);
@@ -111,7 +115,11 @@ export const RecordTableWithWrappers = ({
               <StyledTableWithHeader>
                 <StyledTableContainer>
                   <StyledTableInternalContainer>
-                    <RecordTable readonly={readonly} />
+                    {isRecordList ? (
+                      <RecordList />
+                    ) : (
+                      <RecordTable readonly={readonly} />
+                    )}
                   </StyledTableInternalContainer>
                 </StyledTableContainer>
               </StyledTableWithHeader>

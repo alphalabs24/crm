@@ -14,7 +14,6 @@ import { publicationMetricsState } from '@/object-record/record-show/states/publ
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { useMemo } from 'react';
 import { useRecoilValue } from 'recoil';
 import {
   IconBuildingSkyscraper,
@@ -92,8 +91,6 @@ type PublicationDetailsProps = {
   isInRightDrawer?: boolean;
 };
 
-const fieldToIgnore = ['id', '__typename', 'createdAt', 'updatedAt', 'stage'];
-
 export const PublicationDetails = ({
   targetableObject,
   isInRightDrawer,
@@ -108,13 +105,6 @@ export const PublicationDetails = ({
       objectNameSingular: targetableObject.targetObjectNameSingular,
       objectRecordId: targetableObject.id,
     });
-
-  const definedValuePercentage = useMemo(() => {
-    const definedValues = Object.values(publication ?? {}).filter(
-      (value) => value !== null && !fieldToIgnore.includes(value),
-    );
-    return (definedValues.length / Object.keys(publication ?? {}).length) * 100;
-  }, [publication]);
 
   // TODO: Add a skeleton loader here
   if (recordLoading || !publication) {
@@ -138,7 +128,7 @@ export const PublicationDetails = ({
         </StyledLeftContentContainer>
         <StyledRightContentContainer isInRightDrawer={isInRightDrawer}>
           <StyledProgressContainer>
-            <CompletionProgress percentage={definedValuePercentage} />
+            <CompletionProgress record={publication} />
           </StyledProgressContainer>
 
           <Section

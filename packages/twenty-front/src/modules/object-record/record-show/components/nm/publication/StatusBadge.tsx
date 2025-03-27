@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-const StyledBadge = styled.div<{ status: string }>`
+const StyledBadge = styled.div<{ status: string; size: 'small' | 'medium' }>`
   align-items: center;
   background: ${({ theme, status }) => {
     switch (status.toLowerCase()) {
@@ -18,7 +18,8 @@ const StyledBadge = styled.div<{ status: string }>`
         return theme.tag.background.gray;
     }
   }};
-  border-radius: ${({ theme }) => theme.border.radius.sm};
+  border-radius: ${({ theme, size }) =>
+    size === 'small' ? theme.border.radius.xs : theme.border.radius.sm};
   color: ${({ theme, status }) => {
     switch (status.toLowerCase()) {
       case 'draft':
@@ -36,11 +37,14 @@ const StyledBadge = styled.div<{ status: string }>`
     }
   }};
   width: fit-content;
-  border-radius: ${({ theme }) => theme.border.radius.sm};
-  font-size: ${({ theme }) => theme.font.size.sm};
+  font-size: ${({ theme, size }) =>
+    size === 'small' ? theme.font.size.xs : theme.font.size.sm};
   font-weight: ${({ theme }) => theme.font.weight.medium};
   gap: ${({ theme }) => theme.spacing(1)};
-  padding: ${({ theme }) => `${theme.spacing(1)} ${theme.spacing(2)}`};
+  padding: ${({ theme, size }) =>
+    size === 'small'
+      ? `${theme.spacing(0.75)} ${theme.spacing(1.5)}`
+      : `${theme.spacing(1)} ${theme.spacing(2)}`};
 `;
 
 enum Status {
@@ -52,13 +56,21 @@ enum Status {
 }
 
 type StatusBadgeProps = {
-  status?: Status | null;
+  status?: Status | null | string;
+  size?: 'small' | 'medium';
 };
 
-export const StatusBadge = ({ status = Status.Draft }: StatusBadgeProps) => {
+export const StatusBadge = ({
+  status = Status.Draft,
+  size = 'medium',
+}: StatusBadgeProps) => {
   if (!status) {
     return null;
   }
 
-  return <StyledBadge status={status}>{status.toUpperCase()}</StyledBadge>;
+  return (
+    <StyledBadge status={status} size={size}>
+      {status.toUpperCase()}
+    </StyledBadge>
+  );
 };

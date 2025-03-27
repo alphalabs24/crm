@@ -1,7 +1,6 @@
-import { ReactNode, useMemo } from 'react';
 import { ObjectRecord } from '@/object-record/types/ObjectRecord';
-import { PublicationDifferences } from './usePropertyAndPublicationDifferences';
-import { Trans, useLingui } from '@lingui/react/macro';
+import { useLingui } from '@lingui/react/macro';
+import { ReactNode, useMemo } from 'react';
 
 export type ValidationResult = {
   isValid: boolean;
@@ -107,7 +106,7 @@ export const usePublicationValidation = ({
         !record.agency?.newhomeFtpUser ||
         !record.agency?.newhomeFtpPassword
       ) {
-        missingFields.push(t`Agency Credentials`);
+        missingFields.push(t`Publisher Credentials`);
       }
     }
 

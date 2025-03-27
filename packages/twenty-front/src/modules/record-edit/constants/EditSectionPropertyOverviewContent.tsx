@@ -58,12 +58,25 @@ export const OVERVIEW_SECTION_CONTENT: SectionContent[] = [
         fields: [
           { name: 'rooms', type: 'input', fieldWidth: 80 },
           { name: 'surface', type: 'input', fieldWidth: 120 },
+          { name: 'livingSurface', type: 'input', fieldWidth: 120 },
         ],
       },
       {
         isHorizontal: true,
         fields: [
           { name: 'volume', type: 'input', fieldWidth: 120 },
+          {
+            name: 'floor',
+            type: 'input',
+            fieldWidth: 80,
+            conditionFields: ['category'],
+            conditionValues: [
+              'apartment',
+              'industrial_objects',
+              'gastronomy',
+              'parking_space',
+            ],
+          },
           { name: 'numberOfFloors', type: 'input', fieldWidth: 150 },
         ],
       },

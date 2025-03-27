@@ -67,21 +67,6 @@ const StyledImageContainer = styled.div`
   }
 `;
 
-const StyledDropZoneContent = styled.div`
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(2)};
-  justify-content: center;
-  pointer-events: none;
-`;
-
-const StyledUploadTitle = styled.div`
-  color: ${({ theme }) => theme.font.color.primary};
-  font-size: ${({ theme }) => theme.font.size.lg};
-  font-weight: ${({ theme }) => theme.font.weight.medium};
-`;
-
 const StyledPlaceholderContainer = styled.div`
   align-items: center;
   background-color: ${({ theme }) => theme.background.tertiary};
