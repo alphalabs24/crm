@@ -24,7 +24,11 @@ export class AttachmentQueryResultGetterHandler
 
     const isPublic = isPublicAttachmentType(attachment.type);
 
-    const fullPath = `${process.env.SERVER_URL}/files/${attachment.fullPath}?${!isPublic ? `token=${signedPayload}` : `workspaceId=${workspaceId}`}`;
+    const queryParams = !isPublic
+      ? `token=${signedPayload}`
+      : `workspaceId=${workspaceId}`;
+
+    const fullPath = `${process.env.SERVER_URL}/files/${attachment.fullPath}?${queryParams}`;
 
     return {
       ...attachment,
