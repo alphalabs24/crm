@@ -95,9 +95,6 @@ export const AMENITIES_SECTION_CONTENT: SectionContent[] = [
           { name: 'assignee', type: 'field' },
         ],
       },
-      {
-        fields: [{ name: 'buyerLeads', type: 'field' }],
-      },
     ],
   },
   {

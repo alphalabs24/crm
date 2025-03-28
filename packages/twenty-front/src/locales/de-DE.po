@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: nestermind-crm\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-03-28 08:36\n"
+"PO-Revision-Date: 2025-03-28 08:52\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -772,7 +772,7 @@ msgstr "Erstellen"
 
 #: src/modules/onboarding-tutorial/constants/onboarding-steps.tsx
 msgid "Create a publication draft and publish it to a platform."
-msgstr "Erstellen Sie einen Veröffentlichungsentwurf und veröffentlichen Sie ihn auf einer Plattform."
+msgstr "Erstelle einen Veröffentlichungsentwurf und veröffentliche ihn auf einer Plattform."
 
 #: src/modules/object-record/record-table/empty-state/utils/getEmptyStateSubTitle.ts
 msgid "Create a workflow and return here to view its versions"
@@ -817,7 +817,7 @@ msgstr "Erstelle Dein erstes Objekt"
 
 #: src/modules/object-record/record-table/empty-state/utils/getEmptyStateSubTitle.ts
 msgid "Create your first publication from a property"
-msgstr "Erstellen Sie Ihre erste Publikation von einem Objekt aus"
+msgstr "Erstelle deine erste Publikation von einem Objekt aus"
 
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/ContentCustomize.tsx
 msgid "Create your Instagram post with a compelling description and media"
@@ -1577,7 +1577,7 @@ msgstr "Gut genug ({percentage}%)"
 
 #: src/pages/settings/SettingsWorkspace.tsx
 msgid "Grant Twenty support temporary access to your workspace so we can troubleshoot problems or recover content on your behalf. You can revoke access at any time."
-msgstr "Gewähren Sie dem Twenty-Support vorübergehend Zugang zu Ihrem Arbeitsbereich, damit wir Probleme beheben oder Inhalte in Ihrem Namen wiederherstellen können. Sie können den Zugriff jederzeit widerrufen."
+msgstr "Gewähre dem nestermind-Support vorübergehend Zugang zu deinem Arbeitsbereich, damit wir Probleme beheben oder Inhalte in deinem Namen wiederherstellen können. Du kannst den Zugriff jederzeit widerrufen."
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 #~ msgid "Greek"
