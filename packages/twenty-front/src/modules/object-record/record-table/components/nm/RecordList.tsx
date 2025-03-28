@@ -30,6 +30,7 @@ import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
+import { capitalize } from 'twenty-shared';
 import {
   Button,
   IconAlertTriangle,
@@ -51,16 +52,6 @@ const StyledListContainer = styled.div`
   padding: ${({ theme }) => theme.spacing(2)};
   overflow: auto;
   height: 100%;
-`;
-
-const StyledEmptyContainer = styled.div`
-  align-items: center;
-  color: ${({ theme }) => theme.font.color.light};
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(4)};
-  height: 300px;
-  justify-content: center;
 `;
 
 const StyledCard = styled(motion.div)<{ isSelected?: boolean }>`
@@ -484,6 +475,10 @@ const FieldDetailItem = ({
       return `${value} m³`;
     }
 
+    if (fieldName === 'category') {
+      return capitalize(value.toLowerCase());
+    }
+
     return String(value);
   }, [fieldName, value]);
 
@@ -610,13 +605,13 @@ const getDisplayPriorityFields = () => {
 
   // Use property priority fields
   return [
+    'refProperty',
+    'category',
     'surface',
     'rooms',
     'livingSurface',
     'numberOfFloors',
-    'volume',
-    'category',
-    'refProperty',
+    // 'volume',
     'floor',
     'constructionYear',
     'renovationYear',
@@ -732,7 +727,7 @@ const RecordListItem = ({
     if (!record) return [];
     return getDisplayPriorityFields()
       .filter((field) => record[field] !== undefined && record[field] !== null)
-      .slice(0, isMobile ? 5 : 10);
+      .slice(0, isMobile ? 5 : 8);
   }, [isMobile, record]);
 
   // Format price for display
