@@ -31,16 +31,16 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import {
-    Button,
-    IconAlertTriangle,
-    IconCheck,
-    IconEye,
-    IconMap,
-    IconPencil,
-    IconPhoto,
-    LARGE_DESKTOP_VIEWPORT,
-    MOBILE_VIEWPORT,
-    useIsMobile,
+  Button,
+  IconAlertTriangle,
+  IconCheck,
+  IconEye,
+  IconMap,
+  IconPencil,
+  IconPhoto,
+  LARGE_DESKTOP_VIEWPORT,
+  MOBILE_VIEWPORT,
+  useIsMobile,
 } from 'twenty-ui';
 import { formatAmount } from '~/utils/format/formatAmount';
 
@@ -605,15 +605,8 @@ type RecordListItemProps = {
   onSelect: (selected: boolean) => void;
 };
 
-// Update the getDisplayPriorityFields function
-const getDisplayPriorityFields = (record: any) => {
-  // Check if it's a publication by looking for publication-specific fields
-  const isPublication = record.platform !== undefined;
-
-  let extra: string[] = [];
-  if (isPublication) {
-    extra = ['platform'];
-  }
+const getDisplayPriorityFields = () => {
+  // Filter for publication-specific fields here if necessary
 
   // Use property priority fields
   return [
@@ -627,7 +620,6 @@ const getDisplayPriorityFields = (record: any) => {
     'floor',
     'constructionYear',
     'renovationYear',
-    ...extra,
   ];
 };
 
@@ -736,19 +728,9 @@ const RecordListItem = ({
     }
   };
 
-  const handleTitleClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (record) {
-      const path = getLinkToShowPage(objectNameSingular, record);
-      if (path) {
-        navigate(path);
-      }
-    }
-  };
-
   const priorityFields = useMemo(() => {
     if (!record) return [];
-    return getDisplayPriorityFields(record)
+    return getDisplayPriorityFields()
       .filter((field) => record[field] !== undefined && record[field] !== null)
       .slice(0, isMobile ? 5 : 10);
   }, [isMobile, record]);
@@ -831,7 +813,7 @@ const RecordListItem = ({
           <StyledHeaderContainer>
             <StyledDate>{createdAtFormatted}</StyledDate>
             <StyledTitleContainer>
-              <StyledTitle onClick={handleTitleClick}>
+              <StyledTitle onClick={handleViewDetails}>
                 {record.name}
               </StyledTitle>
               {record.platform && (

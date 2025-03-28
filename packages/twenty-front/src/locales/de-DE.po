@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: nestermind-crm\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-03-27 15:43\n"
+"PO-Revision-Date: 2025-03-28 08:36\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -459,6 +459,10 @@ msgstr "Automatische Erstellung von Anfragen"
 msgid "Automatic Synchronization of People and Emails"
 msgstr "Automatische Synchronisierung von Personen und E-Mails"
 
+#: src/modules/settings/accounts/components/SettingsAccountsMessageChannelDetails.tsx
+msgid "Automatically create People records when receiving or sending emails"
+msgstr "Personen beim Empfang oder Senden von E-Mails automatisch erstellen"
+
 #. placeholder {0}: images.length
 #: src/modules/object-record/record-show/components/nm/AISuite.tsx
 msgid "Available Assets ({0})"
@@ -693,6 +697,10 @@ msgstr "Verbunden"
 msgid "Connected accounts"
 msgstr "Verbundene Konten"
 
+#: src/modules/settings/accounts/components/SettingsAccountsMessageChannelDetails.tsx
+msgid "Contact auto-creation"
+msgstr "Auto-Erstellung von Kontakten"
+
 #: src/modules/command-menu/components/CommandMenu.tsx
 msgid "Context"
 msgstr "Kontext"
@@ -921,6 +929,10 @@ msgstr "Workflow deaktivieren"
 msgid "Define the name and description of your object"
 msgstr "Namen und Beschreibung des Objekts definieren"
 
+#: src/modules/settings/accounts/components/SettingsAccountsMessageChannelDetails.tsx
+msgid "Define what will be visible to other users in your workspace"
+msgstr "Definiere, was für andere Benutzer in deinem Arbeitsbereich sichtbar ist"
+
 #: src/pages/settings/email-templates/SettingsEmailTemplates.tsx
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
@@ -1005,6 +1017,10 @@ msgstr "Arbeitsbereich löschen"
 msgid "Delete your whole workspace"
 msgstr "Gesamten Arbeitsbereich löschen"
 
+#: src/modules/object-record/object-options-dropdown/components/ObjectOptionsDropdownMenuContent.tsx
+msgid "Deleted {objectNamePlural}"
+msgstr "Gelöschte {objectNamePlural}"
+
 #: src/modules/object-record/object-sort-dropdown/components/ObjectSortDropdownButton.tsx
 #: src/modules/object-record/object-sort-dropdown/components/ObjectSortDropdownButton.tsx
 msgid "Descending"
@@ -1060,6 +1076,18 @@ msgstr "Als relatives Datum anzeigen"
 #: src/pages/settings/workspace/SettingsDomain.tsx
 msgid "Domain"
 msgstr "Domäne"
+
+#: src/modules/settings/accounts/components/SettingsAccountsMessageAutoCreationCard.tsx
+msgid "Don’t auto-create contacts."
+msgstr "Kontakte nicht automatisch erstellen."
+
+#: src/modules/settings/accounts/components/SettingsAccountsMessageChannelDetails.tsx
+msgid "Don’t create contacts from/to Gmail, Outlook emails"
+msgstr "Keine Kontakte von/zu Gmail, Outlook E-Mails erstellen"
+
+#: src/modules/settings/accounts/components/SettingsAccountsMessageChannelDetails.tsx
+msgid "Don’t sync emails from team@ support@ noreply@..."
+msgstr "Synchronisieren Sie keine E-Mails von team@ support@ noreply@..."
 
 #: src/modules/ui/layout/show-page/components/nm/PublishModal.tsx
 msgid "Done"
@@ -1131,6 +1159,7 @@ msgstr "Einfache Synchronisierung"
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+#: src/modules/object-record/record-table/components/nm/RecordList.tsx
 msgid "Edit"
 msgstr "Bearbeiten"
 
@@ -1305,6 +1334,18 @@ msgstr "Fehler beim Wechseln des Abonnements {to}."
 #: src/pages/settings/developers/SettingsDevelopers.tsx
 msgid "Establish Webhook endpoints for notifications on asynchronous events."
 msgstr "Erstellen Sie Webhook-Endpunkte für Benachrichtigungen über asynchrone Ereignisse."
+
+#: src/modules/settings/accounts/components/SettingsAccountsMessageVisibilityCard.tsx
+msgid "Everything"
+msgstr "Alles"
+
+#: src/modules/settings/accounts/components/SettingsAccountsMessageChannelDetails.tsx
+msgid "Exclude group emails"
+msgstr "Gruppen-E-Mails ausschliessen"
+
+#: src/modules/settings/accounts/components/SettingsAccountsMessageChannelDetails.tsx
+msgid "Exclude non-professional emails"
+msgstr "Nicht berufliche E-Mails ausschliessen"
 
 #: src/modules/settings/accounts/components/SettingsAccountsBlocklistSection.tsx
 #~ msgid "Exclude the following people and domains from my email sync"
@@ -1578,6 +1619,10 @@ msgstr "Kennung"
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
 msgid "If you’ve lost this key, you can regenerate it, but be aware that any script using this key will need to be updated. Please type\"{confirmationValue}\" to confirm."
 msgstr "Wenn Sie diesen Schlüssel verloren haben, können Sie ihn neu generieren, aber beachten Sie, dass jedes Skript, das diesen Schlüssel verwendet, aktualisiert werden muss. Bitte geben Sie zur Bestätigung \"{confirmationValue}\" ein."
+
+#: src/modules/object-record/object-options-dropdown/components/ObjectOptionsDropdownMenuContent.tsx
+msgid "Import"
+msgstr "Importieren"
 
 #: src/pages/onboarding/tutorial.tsx
 msgid "In progress"
@@ -1858,6 +1903,10 @@ msgstr "Maximale Reichweite durch soziale Medien! Werben Sie Ihre Immobilie dire
 msgid "Members"
 msgstr "Mitglieder"
 
+#: src/modules/settings/accounts/components/SettingsAccountsMessageVisibilityCard.tsx
+msgid "Metadata"
+msgstr "Metadaten"
+
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationShortLabel.ts
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationLabel.ts
 msgid "Min"
@@ -2115,9 +2164,23 @@ msgstr "Noch keine Workflow-Ausführungen"
 msgid "No workflow versions yet"
 msgstr "Noch keine Workflow-Versionen"
 
+#: src/modules/settings/accounts/components/SettingsAccountsMessageAutoCreationCard.tsx
+msgid "None"
+msgstr "Keine"
+
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 #~ msgid "Norwegian"
 #~ msgstr "Norwegian"
+
+#: src/modules/object-record/object-options-dropdown/components/ObjectOptionsDropdownMenuContent.tsx
+#: src/modules/object-record/object-options-dropdown/components/ObjectOptionsDropdownMenuContent.tsx
+msgid "Not available for {objectNamePlural}"
+msgstr "Nicht verfügbar für {objectNamePlural}"
+
+#: src/modules/object-record/object-options-dropdown/components/ObjectOptionsDropdownMenuContent.tsx
+#: src/modules/object-record/object-options-dropdown/components/ObjectOptionsDropdownMenuContent.tsx
+msgid "Not available on Default View"
+msgstr "Nicht verfügbar in der Standardansicht"
 
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationShortLabel.ts
 msgid "Not empty"
@@ -2198,6 +2261,14 @@ msgstr "Das Passwort wurde aktualisiert"
 #: src/modules/settings/profile/components/ChangePassword.tsx
 msgid "Password reset link has been sent to the email"
 msgstr "Der Link zum Zurücksetzen des Passworts wurde an die E-Mail gesendet"
+
+#: src/modules/settings/accounts/components/SettingsAccountsMessageAutoCreationCard.tsx
+msgid "People I’ve sent emails to and received emails from."
+msgstr "Personen, mit denen ich E-Mails ausgetauscht habe."
+
+#: src/modules/settings/accounts/components/SettingsAccountsMessageAutoCreationCard.tsx
+msgid "People I’ve sent emails to."
+msgstr "Personen, an die ich E-Mails gesendet habe."
 
 #: src/modules/object-record/record-table/record-table-footer/components/RecordTableColumnAggregateFooterDropdownContent.tsx
 #: src/modules/object-record/record-board/record-board-column/components/RecordBoardColumnHeaderAggregateDropdownMenuContent.tsx
@@ -2655,6 +2726,14 @@ msgstr "Einladung per E-Mail an Ihr Team senden"
 msgid "Send Test"
 msgstr "Test senden"
 
+#: src/modules/settings/accounts/components/SettingsAccountsMessageAutoCreationCard.tsx
+msgid "Sent"
+msgstr "Versendet"
+
+#: src/modules/settings/accounts/components/SettingsAccountsMessageAutoCreationCard.tsx
+msgid "Sent and Received"
+msgstr "Versendet und empfangen"
+
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 #~ msgid "Serbian (Cyrillic)"
 #~ msgstr "Serbian (Cyrillic)"
@@ -2796,6 +2875,18 @@ msgstr "Die Subdomain darf nicht kürzer als 3 Zeichen sein"
 #: src/pages/settings/email-templates/components/EmailTemplateForm.tsx
 msgid "Subject"
 msgstr "Betreff"
+
+#: src/modules/settings/accounts/components/SettingsAccountsMessageVisibilityCard.tsx
+msgid "Subject and metadata"
+msgstr "Betreff und Metadaten"
+
+#: src/modules/settings/accounts/components/SettingsAccountsMessageVisibilityCard.tsx
+msgid "Subject and metadata will be shared with your team."
+msgstr "Betreff und Metadaten werden mit deinem Team geteilt."
+
+#: src/modules/settings/accounts/components/SettingsAccountsMessageVisibilityCard.tsx
+msgid "Subject, body and attachments will be shared with your team."
+msgstr "Betreff, Inhalt und Anhänge werden mit deinem Team geteilt."
 
 #: src/pages/settings/SettingsBilling.tsx
 msgid "Subscription has been switched {to}"
@@ -2978,6 +3069,10 @@ msgstr "Diese Rolle ist diesen Arbeitsbereichsmitgliedern zugewiesen."
 msgid "Time format"
 msgstr "Zeitformat"
 
+#: src/modules/settings/accounts/components/SettingsAccountsMessageVisibilityCard.tsx
+msgid "Timestamp and participants will be shared with your team."
+msgstr "Zeitpunkt und Teilnehmer werden mit deinem Team geteilt."
+
 #: src/pages/settings/SettingsBilling.tsx
 msgid "to monthly"
 msgstr "zu monatlich"
@@ -3116,6 +3211,10 @@ msgstr "Rechnungsdetails anzeigen"
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/Publishing.tsx
 msgid "View Publications"
 msgstr "Veröffentlichungen anzeigen"
+
+#: src/modules/settings/accounts/components/SettingsAccountsMessageChannelDetails.tsx
+msgid "Visibility"
+msgstr "Sichtbarkeit"
 
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
 #~ msgid "Visitor Activity"

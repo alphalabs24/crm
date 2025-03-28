@@ -32,6 +32,7 @@ import { DropdownMenuSeparator } from '@/ui/layout/dropdown/components/DropdownM
 import { useScopedHotkeys } from '@/ui/utilities/hotkey/hooks/useScopedHotkeys';
 import { useRecoilComponentValueV2 } from '@/ui/utilities/state/component-state/hooks/useRecoilComponentValueV2';
 import { useGetCurrentView } from '@/views/hooks/useGetCurrentView';
+import { useLingui } from '@lingui/react/macro';
 import { isDefined } from 'twenty-shared';
 
 export const ObjectOptionsDropdownMenuContent = () => {
@@ -42,6 +43,8 @@ export const ObjectOptionsDropdownMenuContent = () => {
     onContentChange,
     closeDropdown,
   } = useOptionsDropdown();
+
+  const { t } = useLingui();
 
   const { getIcon } = useIcons();
   const { currentViewWithCombinedFiltersAndSorts: currentView } =
@@ -57,9 +60,16 @@ export const ObjectOptionsDropdownMenuContent = () => {
     recordGroupFieldMetadataComponentState,
   );
 
+  // Check if the object is a property or publication
+  const isPropertyOrPub = isPropertyOrPublication(
+    objectMetadataItem.nameSingular,
+  );
+
   const isGroupByEnabled =
-    (isDefined(currentView?.viewGroups) && currentView.viewGroups.length > 0) ||
-    currentView?.key !== 'INDEX';
+    ((isDefined(currentView?.viewGroups) &&
+      currentView.viewGroups.length > 0) ||
+      currentView?.key !== 'INDEX') &&
+    !isPropertyOrPub;
 
   useScopedHotkeys(
     [Key.Escape],
@@ -99,11 +109,6 @@ export const ObjectOptionsDropdownMenuContent = () => {
     objectMetadataItem.nameSingular !== CoreObjectNameSingular.Note &&
     objectMetadataItem.nameSingular !== CoreObjectNameSingular.Task;
 
-  // Check if the object is a property or publication
-  const isPropertyOrPub = isPropertyOrPublication(
-    objectMetadataItem.nameSingular,
-  );
-
   return (
     <>
       <DropdownMenuHeader StartIcon={CurrentViewIcon ?? IconList}>
@@ -124,46 +129,54 @@ export const ObjectOptionsDropdownMenuContent = () => {
         </>
       )}
 
-      <DropdownMenuItemsContainer scrollable={false}>
-        {!isPropertyOrPub && (
-          <MenuItem
-            onClick={() => onContentChange('fields')}
-            LeftIcon={IconTag}
-            text="Fields"
-            contextualText={`${visibleBoardFields.length} shown`}
-            hasSubMenu
-          />
-        )}
+      {!isPropertyOrPub && (
+        <>
+          <DropdownMenuItemsContainer scrollable={false}>
+            <MenuItem
+              onClick={() => onContentChange('fields')}
+              LeftIcon={IconTag}
+              text="Fields"
+              contextualText={`${visibleBoardFields.length} shown`}
+              hasSubMenu
+            />
 
-        <div id="group-by-menu-item">
-          <MenuItem
-            onClick={() =>
-              isDefined(recordGroupFieldMetadata)
-                ? onContentChange('recordGroups')
-                : onContentChange('recordGroupFields')
-            }
-            LeftIcon={IconLayoutList}
-            text="Group by"
-            contextualText={
-              !isGroupByEnabled
-                ? 'Not available on Default View'
-                : recordGroupFieldMetadata?.label
-            }
-            hasSubMenu
-            disabled={!isGroupByEnabled}
-          />
-        </div>
-        {!isGroupByEnabled && (
-          <AppTooltip
-            anchorSelect={`#group-by-menu-item`}
-            content="Not available on Default View"
-            noArrow
-            place="bottom"
-            width="100%"
-          />
-        )}
-      </DropdownMenuItemsContainer>
-      <DropdownMenuSeparator />
+            <div id="group-by-menu-item">
+              <MenuItem
+                onClick={() =>
+                  isDefined(recordGroupFieldMetadata)
+                    ? onContentChange('recordGroups')
+                    : onContentChange('recordGroupFields')
+                }
+                LeftIcon={IconLayoutList}
+                text="Group by"
+                contextualText={
+                  !isGroupByEnabled
+                    ? isPropertyOrPub
+                      ? t`Not available for ${objectNamePlural}`
+                      : t`Not available on Default View`
+                    : recordGroupFieldMetadata?.label
+                }
+                hasSubMenu
+                disabled={!isGroupByEnabled}
+              />
+            </div>
+            {!isGroupByEnabled && (
+              <AppTooltip
+                anchorSelect={`#group-by-menu-item`}
+                content={
+                  isPropertyOrPub
+                    ? t`Not available for ${objectNamePlural}`
+                    : t`Not available on Default View`
+                }
+                noArrow
+                place="bottom"
+                width="100%"
+              />
+            )}
+          </DropdownMenuItemsContainer>
+          <DropdownMenuSeparator />
+        </>
+      )}
       <DropdownMenuItemsContainer>
         {canImportOrExport && (
           <>
@@ -178,7 +191,7 @@ export const ObjectOptionsDropdownMenuContent = () => {
                 openObjectRecordsSpreasheetImportDialog();
               }}
               LeftIcon={IconFileImport}
-              text="Import"
+              text={t`Import`}
             />
           </>
         )}
@@ -189,7 +202,7 @@ export const ObjectOptionsDropdownMenuContent = () => {
             closeDropdown();
           }}
           LeftIcon={IconRotate2}
-          text={`Deleted ${objectNamePlural}`}
+          text={t`Deleted ${objectNamePlural}`}
         />
       </DropdownMenuItemsContainer>
     </>
