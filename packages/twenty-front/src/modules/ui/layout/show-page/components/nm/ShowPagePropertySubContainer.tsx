@@ -1,6 +1,7 @@
 import { useDeleteMessage } from '@/action-menu/actions/record-actions/single-record/hooks/useDeleteMessage';
 import { RecordShowRightDrawerActionMenu } from '@/action-menu/components/RecordShowRightDrawerActionMenu';
 import { ActivityTargetableObject } from '@/activities/types/ActivityTargetableEntity';
+import { useNestermind } from '@/api/hooks/useNestermind';
 import { tokenPairState } from '@/auth/states/tokenPairState';
 import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadataItem';
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
@@ -23,13 +24,13 @@ import { useTabList } from '@/ui/layout/tab/hooks/useTabList';
 import { useIsMobile } from '@/ui/utilities/responsive/hooks/useIsMobile';
 import styled from '@emotion/styled';
 import { useLingui } from '@lingui/react/macro';
-import axios from 'axios';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { capitalize } from 'twenty-shared';
 import {
   Button,
+  IconCloudOff,
   IconPencil,
   IconPlus,
   IconRefresh,
@@ -37,7 +38,6 @@ import {
   IconUpload,
   MOBILE_VIEWPORT,
 } from 'twenty-ui';
-import { getEnv } from '~/utils/get-env';
 import { useDeleteProperty } from '../../hooks/useDeleteProperty';
 import { usePropertyAndPublicationDifferences } from '../../hooks/usePropertyAndPublicationDifferences';
 import { usePublicationsOfProperty } from '../../hooks/usePublicationsOfProperty';
@@ -119,6 +119,7 @@ export const ShowPagePropertySubContainer = ({
   const navigate = useNavigate();
   const [isDeleteRecordsModalOpen, setIsDeleteRecordsModalOpen] =
     useState(false);
+  const [isUnpublishModalOpen, setIsUnpublishModalOpen] = useState(false);
 
   const objectNameSingular = targetableObject.targetObjectNameSingular;
   const capitalizedObjectNameSingular = capitalize(objectNameSingular);
@@ -129,6 +130,9 @@ export const ShowPagePropertySubContainer = ({
   // Loading states
   const [loadingDraft, setLoadingDraft] = useState(false);
   const [loadingSync, setLoadingSync] = useState(false);
+  const [loadingUnpublish, setLoadingUnpublish] = useState(false);
+
+  const { propertiesApi, publicationsApi } = useNestermind();
 
   const dropdownId = `show-page-property-sub-container-dropdown-${targetableObject.id}`;
 
@@ -233,20 +237,7 @@ export const ShowPagePropertySubContainer = ({
   const syncPublications = async () => {
     try {
       setLoadingSync(true);
-      // TODO useNestermind
-      const response = await axios.post(
-        `${getEnv('REACT_APP_NESTERMIND_SERVER_BASE_URL') ?? 'http://api.localhost'}/properties/sync?id=${targetableObject.id}`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${tokenPair?.accessToken?.token}`,
-          },
-        },
-      );
-      if (response.status !== 201) {
-        throw new Error('Failed to create draft, id was not returned');
-      }
-
+      await propertiesApi.syncPublications(targetableObject.id);
       enqueueSnackBar(t`Your Publication Drafts were synced successfully`, {
         variant: SnackBarVariant.Success,
       });
@@ -266,18 +257,9 @@ export const ShowPagePropertySubContainer = ({
   const createDraftIfPublished = async () => {
     try {
       setLoadingDraft(true);
-      const response = await axios.post(
-        `${getEnv('REACT_APP_NESTERMIND_SERVER_BASE_URL') ?? 'http://api.localhost'}/publications/duplicate?id=${targetableObject.id}`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${tokenPair?.accessToken?.token}`,
-          },
-        },
-      );
-      if (response.status !== 201) {
-        throw new Error('Failed to create draft, id was not returned');
-      }
+      const response = await publicationsApi.duplicate({
+        publicationId: targetableObject.id,
+      });
 
       enqueueSnackBar(t`Publication Draft created successfully`, {
         variant: SnackBarVariant.Success,
@@ -296,6 +278,36 @@ export const ShowPagePropertySubContainer = ({
       });
     } finally {
       setLoadingDraft(false);
+    }
+  };
+
+  // Update handleUnpublish to show confirmation first
+  const handleUnpublish = () => {
+    setIsUnpublishModalOpen(true);
+    closeDropdown();
+  };
+
+  // New function to handle the actual unpublish action
+  const handleConfirmUnpublish = async () => {
+    try {
+      setLoadingUnpublish(true);
+      await publicationsApi.unpublish({
+        publicationId: targetableObject.id,
+      });
+
+      enqueueSnackBar(t`Publication unpublished successfully`, {
+        variant: SnackBarVariant.Success,
+      });
+
+      refetchPublications();
+      refetchRecord();
+    } catch (error: any) {
+      enqueueSnackBar(error?.message, {
+        variant: SnackBarVariant.Error,
+      });
+    } finally {
+      setLoadingUnpublish(false);
+      setIsUnpublishModalOpen(false);
     }
   };
 
@@ -359,8 +371,10 @@ export const ShowPagePropertySubContainer = ({
   };
 
   const showDeleteButton = useMemo(
-    () => !recordFromStore?.deletedAt,
-    [recordFromStore],
+    () =>
+      !recordFromStore?.deletedAt &&
+      (!isPublication || recordFromStore?.stage !== 'PUBLISHED'),
+    [isPublication, recordFromStore?.deletedAt, recordFromStore?.stage],
   );
 
   const showSyncButton = useMemo(
@@ -376,9 +390,26 @@ export const ShowPagePropertySubContainer = ({
     [differenceRecords?.length, recordFromStore?.deletedAt],
   );
 
+  const showUnpublishButton = useMemo(
+    () =>
+      isPublication &&
+      !recordFromStore?.deletedAt &&
+      recordFromStore?.stage === 'PUBLISHED',
+    [isPublication, recordFromStore?.deletedAt, recordFromStore?.stage],
+  );
+
   const showDropdown = useMemo(
-    () => showNewPublicationButton || showSyncButton || showDeleteButton,
-    [showNewPublicationButton, showSyncButton, showDeleteButton],
+    () =>
+      showNewPublicationButton ||
+      showSyncButton ||
+      showDeleteButton ||
+      showUnpublishButton,
+    [
+      showNewPublicationButton,
+      showSyncButton,
+      showDeleteButton,
+      showUnpublishButton,
+    ],
   );
 
   return (
@@ -431,6 +462,7 @@ export const ShowPagePropertySubContainer = ({
                         },
                       ]
                     : []),
+
                   ...(showDeleteButton
                     ? [
                         {
@@ -455,7 +487,13 @@ export const ShowPagePropertySubContainer = ({
                           title: t`Differences ${differenceLength}`,
                           onClick: () => differencesModalRef.current?.open(),
                         }
-                      : null
+                      : showUnpublishButton
+                        ? {
+                            title: t`Unpublish`,
+                            Icon: IconCloudOff,
+                            onClick: handleUnpublish,
+                          }
+                        : null
                 }
               />
             )}
@@ -507,6 +545,16 @@ export const ShowPagePropertySubContainer = ({
           handleConfirmDelete();
         }}
         deleteButtonText={t`Delete ${capitalizedObjectNameSingular}`}
+      />
+
+      <ConfirmationModal
+        isOpen={isUnpublishModalOpen}
+        setIsOpen={setIsUnpublishModalOpen}
+        title={t`Unpublish Publication`}
+        subtitle={t`Are you sure you want to unpublish this publication? This will remove it from the published platform and make it unavailable to potential clients. You can always publish it again later.`}
+        loading={loadingUnpublish}
+        onConfirmClick={handleConfirmUnpublish}
+        deleteButtonText={t`Unpublish`}
       />
     </>
   );

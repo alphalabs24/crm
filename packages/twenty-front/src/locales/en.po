@@ -401,6 +401,10 @@ msgstr "Are you sure you want to delete this email template? This cannot be undo
 msgid "Are you sure you want to delete this publisher? This action cannot be undone."
 msgstr "Are you sure you want to delete this publisher? This action cannot be undone."
 
+#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+msgid "Are you sure you want to unpublish this publication? This will remove it from the published platform and make it unavailable to potential clients. You can always publish it again later."
+msgstr "Are you sure you want to unpublish this publication? This will remove it from the published platform and make it unavailable to potential clients. You can always publish it again later."
+
 #: src/modules/object-record/object-sort-dropdown/components/ObjectSortDropdownButton.tsx
 #: src/modules/object-record/object-sort-dropdown/components/ObjectSortDropdownButton.tsx
 msgid "Ascending"
@@ -1149,6 +1153,7 @@ msgstr "Earliest date"
 msgid "Easy Synchronization"
 msgstr "Easy Synchronization"
 
+#: src/pages/settings/email-templates/components/EmailTemplateSelect.tsx
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/Publishing.tsx
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
@@ -1297,6 +1302,10 @@ msgstr "Enter test email address"
 #: src/modules/object-record/record-index/components/CreatePropertyModal.tsx
 msgid "Enter the address of the new property"
 msgstr "Enter the address of the new property"
+
+#: src/pages/auth/SignInUp.tsx
+msgid "Enter your email to create a new account or sign in"
+msgstr "Enter your email to create a new account or sign in"
 
 #: src/pages/settings/security/SettingsSecurity.tsx
 msgid "Enterprise"
@@ -1657,7 +1666,9 @@ msgstr "Input must be in camel case and cannot start with a number"
 
 #: src/modules/onboarding-tutorial/components/modals/InquiryTutorialModal.tsx
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+#: src/modules/object-record/record-show/components/nm/PropertyDetails.tsx
 #: src/modules/object-record/record-show/components/nm/publication/ContactsByStageChart.tsx
+#: src/modules/object-record/record-show/components/nm/property/ContactsByPlatformChart.tsx
 msgid "Inquiries"
 msgstr "Inquiries"
 
@@ -2091,7 +2102,9 @@ msgid "No images available"
 msgstr "No images available"
 
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+#: src/modules/object-record/record-show/components/nm/PropertyDetails.tsx
 #: src/modules/object-record/record-show/components/nm/publication/ContactsByStageChart.tsx
+#: src/modules/object-record/record-show/components/nm/property/ContactsByPlatformChart.tsx
 msgid "No inquiries data available yet"
 msgstr "No inquiries data available yet"
 
@@ -2465,6 +2478,10 @@ msgid "Publication Synchronization"
 msgstr "Publication Synchronization"
 
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+msgid "Publication unpublished successfully"
+msgstr "Publication unpublished successfully"
+
+#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/Publishing.tsx
 msgid "Publish"
 msgstr "Publish"
@@ -2564,10 +2581,12 @@ msgid "Remove from favorites"
 msgstr "Remove from favorites"
 
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+#: src/modules/object-record/record-show/components/nm/PropertyDetails.tsx
 msgid "Reporting"
 msgstr "Reporting"
 
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+#: src/modules/object-record/record-show/components/nm/PropertyDetails.tsx
 msgid "Reporting coming soon"
 msgstr "Reporting coming soon"
 
@@ -2758,6 +2777,10 @@ msgstr "Set the name of your custom domain and configure your DNS records."
 #: src/pages/settings/workspace/SettingsSubdomain.tsx
 msgid "Set the name of your subdomain"
 msgstr "Set the name of your subdomain"
+
+#: src/modules/record-edit/constants/EditSectionEmailsContent.tsx
+msgid "Set up an email template to send to interested buyers when they inquire about this property."
+msgstr "Set up an email template to send to interested buyers when they inquire about this property."
 
 #: src/modules/publishers/components/modals/EditPublisherModal.tsx
 msgid "Set up your credentials for each platforms where you want to publish your listings."
@@ -3119,6 +3142,15 @@ msgstr "Unknown error"
 #: src/pages/onboarding/ChooseYourPlan.tsx
 msgid "Unlimited contacts"
 msgstr "Unlimited contacts"
+
+#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+msgid "Unpublish"
+msgstr "Unpublish"
+
+#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+msgid "Unpublish Publication"
+msgstr "Unpublish Publication"
 
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/Publishing.tsx
 msgid "Unpublished"

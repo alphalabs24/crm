@@ -1,10 +1,20 @@
 import { ActivityTargetableObject } from '@/activities/types/ActivityTargetableEntity';
-import { StyledLoadingContainer } from '@/object-record/record-show/components/ui/PropertyDetailsCardComponents';
+import { ContactsByPlatformChart } from '@/object-record/record-show/components/nm/property/ContactsByPlatformChart';
+import {
+  Section,
+  StyledLoadingContainer,
+} from '@/object-record/record-show/components/ui/PropertyDetailsCardComponents';
 import { useRecordShowContainerData } from '@/object-record/record-show/hooks/useRecordShowContainerData';
+import { propertyPlatformMetricsState } from '@/object-record/record-show/states/propertyPlatformMetricsState';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import { Trans } from '@lingui/react/macro';
-import { LARGE_DESKTOP_VIEWPORT } from 'twenty-ui';
+import { Trans, useLingui } from '@lingui/react/macro';
+import { useRecoilValue } from 'recoil';
+import {
+  IconChartBar,
+  IconMessageCircle2,
+  LARGE_DESKTOP_VIEWPORT,
+} from 'twenty-ui';
 import { ObjectOverview } from './ObjectOverview';
 
 const StyledContentContainer = styled.div<{ isInRightDrawer?: boolean }>`
@@ -26,6 +36,24 @@ const StyledContentContainer = styled.div<{ isInRightDrawer?: boolean }>`
         width: 100%;
         padding: 0;
         flex-wrap: wrap;
+      `}
+  }
+`;
+
+const StyledRightContentContainer = styled.div<{ isInRightDrawer?: boolean }>`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(4)};
+
+  width: 100%;
+  @media (min-width: ${LARGE_DESKTOP_VIEWPORT}px) {
+    max-width: 900px;
+    padding: 0;
+    ${({ isInRightDrawer, theme }) =>
+      isInRightDrawer &&
+      css`
+        padding: 0 ${theme.spacing(4)};
+        width: 100%;
       `}
   }
 `;
@@ -60,11 +88,16 @@ export const PropertyDetails = ({
   targetableObject,
   isInRightDrawer,
 }: PropertyDetailsProps) => {
+  const { t } = useLingui();
   const { recordFromStore: property, recordLoading } =
     useRecordShowContainerData({
       objectNameSingular: targetableObject.targetObjectNameSingular,
       objectRecordId: targetableObject.id,
     });
+
+  const propertyPlatformMetrics = useRecoilValue(
+    propertyPlatformMetricsState(targetableObject.id),
+  );
 
   if (recordLoading || !property) {
     return (
@@ -84,6 +117,22 @@ export const PropertyDetails = ({
             isNewRightDrawerItemLoading={false}
           />
         </StyledLeftContentContainer>
+        <StyledRightContentContainer isInRightDrawer={isInRightDrawer}>
+          <Section title={t`Inquiries`} icon={<IconMessageCircle2 size={16} />}>
+            {propertyPlatformMetrics?.contactsByPlatform ? (
+              <ContactsByPlatformChart
+                contactsByPlatform={propertyPlatformMetrics.contactsByPlatform}
+                totalContacts={propertyPlatformMetrics.contacts}
+              />
+            ) : (
+              <Trans>No inquiries data available yet</Trans>
+            )}
+          </Section>
+
+          <Section title={t`Reporting`} icon={<IconChartBar size={16} />}>
+            <Trans>Reporting coming soon</Trans>
+          </Section>
+        </StyledRightContentContainer>
       </StyledContentContainer>
     </>
   );

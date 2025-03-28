@@ -13,6 +13,7 @@ export type FieldDefinition = {
   conditionFields?: string[];
   conditionValues?: string[];
   omitForPublication?: boolean;
+  showDescription?: boolean;
 };
 
 export type FieldGroup = {

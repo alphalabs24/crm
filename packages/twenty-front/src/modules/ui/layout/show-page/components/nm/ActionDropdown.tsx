@@ -1,22 +1,26 @@
 import { Dropdown } from '@/ui/layout/dropdown/components/Dropdown';
 import { DropdownMenuItemsContainer } from '@/ui/layout/dropdown/components/DropdownMenuItemsContainer';
+import { useDropdown } from '@/ui/layout/dropdown/hooks/useDropdown';
+import styled from '@emotion/styled';
 import { IconChevronDown } from '@ui/display/icon/components/TablerIcons';
 import { IconComponent } from '@ui/display/icon/types/IconComponent';
 import { Button } from '@ui/input/button/components/Button';
 import { IconButton } from '@ui/input/button/components/IconButton';
 import { useState } from 'react';
 import { MenuItem } from 'twenty-ui';
-import styled from '@emotion/styled';
-import { useDropdown } from '@/ui/layout/dropdown/hooks/useDropdown';
 
 const StyledContainer = styled.div`
   display: flex;
   flex-direction: row;
 `;
 
-const StyledPrimaryActionButton = styled(Button)`
-  border-bottom-right-radius: 0px;
-  border-top-right-radius: 0px;
+const StyledPrimaryActionButton = styled(Button)<{
+  hasSecondaryAction: boolean;
+}>`
+  border-bottom-right-radius: ${({ hasSecondaryAction, theme }) =>
+    hasSecondaryAction ? '0px' : theme.border.radius.sm};
+  border-top-right-radius: ${({ hasSecondaryAction, theme }) =>
+    hasSecondaryAction ? '0px' : theme.border.radius.sm};
 `;
 
 const StyledIconButton = styled(IconButton)`
@@ -58,35 +62,38 @@ export const ActionDropdown = ({
         accent={primaryAction.distructive ? 'danger' : 'blue'}
         onClick={primaryAction.onClick}
         size="small"
+        hasSecondaryAction={actions.length > 0}
       />
-      <Dropdown
-        dropdownId={dropdownId}
-        clickableComponent={
-          <StyledIconButton
-            Icon={IconChevronDown}
-            onClick={() => setShowingOptions(!showingOptions)}
-            size="small"
-            variant="primary"
-            accent="blue"
-          />
-        }
-        dropdownMenuWidth={160}
-        dropdownComponents={actions.map((action) => (
-          <DropdownMenuItemsContainer>
-            <MenuItem
-              text={action.title}
-              LeftIcon={action.Icon}
-              onClick={() => {
-                action.onClick();
-                closeDropdown();
-              }}
-              disabled={action.disabled}
-              accent={action.distructive ? 'danger' : 'default'}
+      {actions.length > 0 && (
+        <Dropdown
+          dropdownId={dropdownId}
+          clickableComponent={
+            <StyledIconButton
+              Icon={IconChevronDown}
+              onClick={() => setShowingOptions(!showingOptions)}
+              size="small"
+              variant="primary"
+              accent="blue"
             />
-          </DropdownMenuItemsContainer>
-        ))}
-        dropdownHotkeyScope={{ scope: dropdownId }}
-      />
+          }
+          dropdownMenuWidth={160}
+          dropdownComponents={actions.map((action) => (
+            <DropdownMenuItemsContainer>
+              <MenuItem
+                text={action.title}
+                LeftIcon={action.Icon}
+                onClick={() => {
+                  action.onClick();
+                  closeDropdown();
+                }}
+                disabled={action.disabled}
+                accent={action.distructive ? 'danger' : 'default'}
+              />
+            </DropdownMenuItemsContainer>
+          ))}
+          dropdownHotkeyScope={{ scope: dropdownId }}
+        />
+      )}
     </StyledContainer>
   );
 };

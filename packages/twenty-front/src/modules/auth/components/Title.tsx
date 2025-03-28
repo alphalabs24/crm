@@ -5,13 +5,17 @@ import { AnimatedEaseIn } from 'twenty-ui';
 type TitleProps = React.PropsWithChildren & {
   animate?: boolean;
   noMarginTop?: boolean;
+  noMarginBottom?: boolean;
 };
 
-const StyledTitle = styled.div<Pick<TitleProps, 'noMarginTop'>>`
+const StyledTitle = styled.div<
+  Pick<TitleProps, 'noMarginTop' | 'noMarginBottom'>
+>`
   color: ${({ theme }) => theme.font.color.primary};
   font-size: ${({ theme }) => theme.font.size.xl};
   font-weight: ${({ theme }) => theme.font.weight.semiBold};
-  margin-bottom: ${({ theme }) => theme.spacing(4)};
+  margin-bottom: ${({ theme, noMarginBottom }) =>
+    !noMarginBottom ? theme.spacing(4) : 0};
   margin-top: ${({ theme, noMarginTop }) =>
     !noMarginTop ? theme.spacing(4) : 0};
 `;
@@ -20,10 +24,11 @@ export const Title = ({
   children,
   animate = false,
   noMarginTop = false,
+  noMarginBottom = false,
 }: TitleProps) => {
   if (animate) {
     return (
-      <StyledTitle noMarginTop={noMarginTop}>
+      <StyledTitle noMarginTop={noMarginTop} noMarginBottom={noMarginBottom}>
         <AnimatedEaseIn>{children}</AnimatedEaseIn>
       </StyledTitle>
     );

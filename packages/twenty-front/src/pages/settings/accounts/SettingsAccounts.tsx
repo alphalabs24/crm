@@ -40,6 +40,7 @@ export const SettingsAccounts = () => {
     recordGqlFields: generateDepthOneRecordGqlFields({ objectMetadataItem }),
   });
 
+  // If there are accounts, set the tutorial step as completed
   useEffect(() => {
     if (accounts.length > 0) {
       setAsCompleted({

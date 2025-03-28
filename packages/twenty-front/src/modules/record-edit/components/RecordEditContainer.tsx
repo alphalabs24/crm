@@ -314,6 +314,7 @@ export const RecordEditContainer = ({
                   conditionValues: field.conditionValues,
                   omitForPublication: field.omitForPublication,
                   required: field.required,
+                  showDescription: field.showDescription,
                 }))
                 .filter(({ field }) => isDefined(field));
 
@@ -331,6 +332,7 @@ export const RecordEditContainer = ({
                       conditionValues,
                       omitForPublication,
                       required,
+                      showDescription,
                     }) => {
                       const conditionFields = conditionFieldNames?.map(
                         (conditionFieldName) =>
@@ -364,6 +366,7 @@ export const RecordEditContainer = ({
                           objectMetadataItem={objectMetadataItem}
                           record={record}
                           isRequired={required}
+                          showDescription={showDescription}
                           objectNameSingular={objectNameSingular}
                           loading={
                             loading ||

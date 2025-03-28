@@ -56,6 +56,7 @@ export const useNestermind = () => {
     return api.post('/setup/create-workspace');
   };
 
+  // Publication routes
   const publishPublication = async ({
     publicationId,
   }: {
@@ -89,6 +90,14 @@ export const useNestermind = () => {
     return api.get(
       `/publications/check?username=${username}&password=${password}`,
     );
+  };
+
+  const unpublishPublication = async ({
+    publicationId,
+  }: {
+    publicationId: string;
+  }) => {
+    return api.delete(`/publications/unpublish?id=${publicationId}`);
   };
 
   // Message routes
@@ -136,6 +145,12 @@ export const useNestermind = () => {
     });
   };
 
+  const calculatePropertyMetricsByPlatform = async (propertyIds: string[]) => {
+    return api.post(`/metrics/properties-platform`, {
+      ids: propertyIds,
+    });
+  };
+
   return {
     api,
     publicationsApi: {
@@ -144,6 +159,7 @@ export const useNestermind = () => {
       delete: deletePublication,
       check: checkPublications,
       sendTestEmail: sendTestEmailPublication,
+      unpublish: unpublishPublication,
     },
     propertiesApi: {
       syncPublications: syncPublicationsWithProperty,
@@ -163,6 +179,7 @@ export const useNestermind = () => {
     },
     metricsApi: {
       calculatePublicationMetrics,
+      calculatePropertyMetricsByPlatform,
     },
   };
 };

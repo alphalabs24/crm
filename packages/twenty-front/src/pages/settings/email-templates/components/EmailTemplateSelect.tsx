@@ -8,6 +8,7 @@ import { useDropdown } from '@/ui/layout/dropdown/hooks/useDropdown';
 import styled from '@emotion/styled';
 import { Trans, useLingui } from '@lingui/react/macro';
 import { useCallback, useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import { IconChevronDown } from 'twenty-ui';
 
 const StyledContainer = styled.div`
@@ -76,9 +77,22 @@ const StyledLabel = styled.div`
 `;
 
 const StyledDisclaimer = styled.div`
+  align-items: center;
   color: ${({ theme }) => theme.font.color.light};
+  display: flex;
   font-size: ${({ theme }) => theme.font.size.xs};
+  gap: ${({ theme }) => theme.spacing(1)};
   margin-top: ${({ theme }) => theme.spacing(1)};
+  flex-wrap: wrap;
+`;
+
+const StyledEditLink = styled(Link)`
+  color: ${({ theme }) => theme.font.color.light};
+  text-decoration: underline;
+
+  &:hover {
+    color: ${({ theme }) => theme.font.color.primary};
+  }
 `;
 
 type EmailTemplateSelectProps = {
@@ -167,6 +181,9 @@ export const EmailTemplateSelect = ({
         <Trans>
           You can edit email templates in Settings → Email Templates
         </Trans>
+        <StyledEditLink to="/settings/email-templates">
+          <Trans>Edit</Trans>
+        </StyledEditLink>
       </StyledDisclaimer>
     </StyledContainer>
   );

@@ -39,7 +39,7 @@ export const OVERVIEW_SECTION_CONTENT: SectionContent[] = [
         fields: [
           { name: 'agency', type: 'field', required: true },
           { name: 'seller', type: 'field' },
-          { name: 'assignee', type: 'field' },
+          { name: 'assignee', type: 'field', showDescription: true },
           { name: 'stage', type: 'field' },
         ],
       },

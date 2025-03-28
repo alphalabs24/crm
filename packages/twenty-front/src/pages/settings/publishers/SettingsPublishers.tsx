@@ -3,6 +3,7 @@ import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSi
 import { generateDepthOneRecordGqlFields } from '@/object-record/graphql/utils/generateDepthOneRecordGqlFields';
 import { useDeleteOneRecord } from '@/object-record/hooks/useDeleteOneRecord';
 import { useFindManyRecords } from '@/object-record/hooks/useFindManyRecords';
+import { useTutorialSteps } from '@/onboarding-tutorial/hooks/useTutorialSteps';
 import { SettingsPageContainer } from '@/settings/components/SettingsPageContainer';
 import { SettingsPath } from '@/types/SettingsPath';
 import { SnackBarVariant } from '@/ui/feedback/snack-bar-manager/components/SnackBar';
@@ -12,7 +13,8 @@ import { SubMenuTopBarContainer } from '@/ui/layout/page/components/SubMenuTopBa
 import { useIsMobile } from '@/ui/utilities/responsive/hooks/useIsMobile';
 import styled from '@emotion/styled';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { UserTutorialTask } from 'twenty-shared';
 import { H2Title, Section } from 'twenty-ui';
 import { getSettingsPath } from '~/utils/navigation/getSettingsPath';
 import { PublishersListCard } from './components/PublishersListCard';
@@ -28,6 +30,7 @@ export const SettingsPublishers = () => {
   const isMobile = useIsMobile();
   const { t } = useLingui();
   const { enqueueSnackBar } = useSnackBar();
+  const { setAsCompleted } = useTutorialSteps();
 
   const [publisherToDelete, setPublisherToDelete] = useState<string | null>(
     null,
@@ -71,6 +74,15 @@ export const SettingsPublishers = () => {
       setPublisherToDelete(null);
     }
   };
+
+  // If there are publishers, set the tutorial step as completed
+  useEffect(() => {
+    if (publishers.length > 0) {
+      setAsCompleted({
+        step: UserTutorialTask.TUTORIAL_EMAIL,
+      });
+    }
+  }, [publishers.length, setAsCompleted]);
 
   // Return null if metadata is not available (e.g., during logout)
   if (!objectMetadataItem) {
