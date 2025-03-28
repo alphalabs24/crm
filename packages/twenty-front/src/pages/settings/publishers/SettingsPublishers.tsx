@@ -79,7 +79,7 @@ export const SettingsPublishers = () => {
   useEffect(() => {
     if (publishers.length > 0) {
       setAsCompleted({
-        step: UserTutorialTask.TUTORIAL_EMAIL,
+        step: UserTutorialTask.TUTORIAL_PLATFORM_SETUP,
       });
     }
   }, [publishers.length, setAsCompleted]);

@@ -3,7 +3,7 @@ import { useKeyValueStore } from '@/onboarding/hooks/useKeyValueStore';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { motion, useAnimation } from 'framer-motion';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import ConfettiExplosion from 'react-confetti-explosion';
 import { UserTutorialExplanation, UserTutorialTask } from 'twenty-shared';
 
@@ -58,7 +58,8 @@ const StyledProgressIndicators = styled.div`
 `;
 
 const StyledProgressBar = styled(motion.div)<{ $isCompleted: boolean }>`
-  background-color: ${({ theme }) => theme.background.quaternary};
+  background-color: ${({ theme, $isCompleted }) =>
+    $isCompleted ? theme.color.blue : theme.background.quaternary};
   border-radius: ${({ theme }) => theme.border.radius.sm};
   flex: 1;
   height: ${({ theme }) => theme.spacing(1)};
@@ -88,9 +89,7 @@ export const TutorialStepCompletedSnackbar = ({
   const { getValueByKey } = useKeyValueStore();
   const stepData = TUTORIAL_ONBOARDING_STEPS.find((s) => s.id === step);
   const totalSteps = TUTORIAL_ONBOARDING_STEPS.length;
-  const currentStepIndex = TUTORIAL_ONBOARDING_STEPS.findIndex(
-    (s) => s.id === step,
-  );
+
   const [showConfetti, setShowConfetti] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const controls = useAnimation();
@@ -111,13 +110,19 @@ export const TutorialStepCompletedSnackbar = ({
     return () => setShowConfetti(false);
   }, []);
 
-  if (!stepData) return null;
+  const isStepCompleted = useCallback(
+    (stepId: UserTutorialTask | UserTutorialExplanation) => {
+      return getValueByKey(stepId) === true;
+    },
+    [getValueByKey],
+  );
 
-  const isStepCompleted = (
-    stepId: UserTutorialTask | UserTutorialExplanation,
-  ) => {
-    return getValueByKey(stepId) === true;
-  };
+  const completedCount = useMemo(() => {
+    return TUTORIAL_ONBOARDING_STEPS.filter((s) => isStepCompleted(s.id))
+      .length;
+  }, [isStepCompleted]);
+
+  if (!stepData) return null;
 
   return (
     <>
@@ -170,19 +175,9 @@ export const TutorialStepCompletedSnackbar = ({
               {Array.from({ length: totalSteps }).map((_, index) => (
                 <StyledProgressBar
                   key={index}
-                  $isCompleted={
-                    isStepCompleted(TUTORIAL_ONBOARDING_STEPS[index].id) &&
-                    index !== currentStepIndex
-                  }
+                  $isCompleted={index < completedCount - 1}
                 >
-                  {isStepCompleted(TUTORIAL_ONBOARDING_STEPS[index].id) &&
-                    index !== currentStepIndex && (
-                      <StyledProgressBarFill
-                        initial={false}
-                        animate={{ width: '100%' }}
-                      />
-                    )}
-                  {index === currentStepIndex && (
+                  {index === completedCount - 1 && (
                     <StyledProgressBarFill
                       initial={{ width: '0%' }}
                       animate={{ width: '100%' }}

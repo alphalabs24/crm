@@ -7,6 +7,7 @@ import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Trans } from '@lingui/react/macro';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { IconCircleCheck, IconCircleDashed } from 'twenty-ui';
@@ -103,6 +104,10 @@ export const OnboardingSteps = () => {
   const isMobile = useIsMobile();
   const { isVisible } = useTutorialSnackbar();
 
+  const completedCount = useMemo(() => {
+    return Object.values(steps).filter((step) => step.completed).length;
+  }, [steps]);
+
   const [isNavigationDrawerExpanded, setIsNavigationDrawerExpanded] =
     useRecoilState(isNavigationDrawerExpandedState);
 
@@ -169,10 +174,10 @@ export const OnboardingSteps = () => {
                 <Trans>First steps on nestermind</Trans>
               </StyledOnboardingTitle>
               <StyledProgressIndicators>
-                {Object.values(steps).map((step) => (
+                {Object.values(steps).map((step, index) => (
                   <StyledProgressBar
                     key={step.step.id}
-                    $isCompleted={step.completed}
+                    $isCompleted={index < completedCount}
                   />
                 ))}
               </StyledProgressIndicators>

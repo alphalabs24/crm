@@ -1,4 +1,7 @@
 import { CoreObjectNamePlural } from '@/object-metadata/types/CoreObjectNamePlural';
+import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
+import { getLinkToShowPage } from '@/object-metadata/utils/getLinkToShowPage';
+import { useFindManyRecords } from '@/object-record/hooks/useFindManyRecords';
 import { EmailTutorialModal } from '@/onboarding-tutorial/components/modals/EmailTutorialModal';
 import { InquiryTutorialModal } from '@/onboarding-tutorial/components/modals/InquiryTutorialModal';
 import { PublicationSyncTutorialModal } from '@/onboarding-tutorial/components/modals/PublicationSyncTutorialModal';
@@ -30,6 +33,10 @@ export const TutorialProvider = ({
   const [activeModal, setActiveModal] = useState<
     UserTutorialTask | UserTutorialExplanation | null
   >(null);
+
+  const { records: properties } = useFindManyRecords({
+    objectNameSingular: CoreObjectNameSingular.Property,
+  });
 
   const tutorialModalRef = useRef<ModalRefType>(null);
   const emailTutorialModalRef = useRef<ModalRefType>(null);
@@ -73,6 +80,17 @@ export const TutorialProvider = ({
     navigate(`${path}?create=true`);
   };
 
+  const showPublicationTutorial = () => {
+    const firstProperty = properties[0];
+    if (!firstProperty) {
+      return;
+    }
+    const path = getLinkToShowPage(CoreObjectNameSingular.Property, {
+      id: firstProperty.id,
+    });
+    navigate(path);
+  };
+
   const showTutorial = (step: UserTutorialTask | UserTutorialExplanation) => {
     setIsTutorialOpen(true);
 
@@ -91,6 +109,9 @@ export const TutorialProvider = ({
         break;
       case UserTutorialTask.TUTORIAL_PROPERTY:
         showPropertyTutorial();
+        break;
+      case UserTutorialTask.TUTORIAL_PUBLICATION:
+        showPublicationTutorial();
         break;
       default:
         break;
