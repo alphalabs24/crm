@@ -83,7 +83,7 @@ export const PLATFORMS: { [key in PlatformId]: Platform } = {
     },
     fieldsOnAgency: [
       {
-        name: 'newhomeFtpUser',
+        name: 'username',
         helpText: (
           <Trans>
             Your FTP username can be found under "Import interfaces" on
@@ -92,7 +92,7 @@ export const PLATFORMS: { [key in PlatformId]: Platform } = {
         ),
       },
       {
-        name: 'newhomeFtpPassword',
+        name: 'password',
         helpText: (
           <Trans>
             Your FTP password can be found under "Import interfaces" on
@@ -102,7 +102,7 @@ export const PLATFORMS: { [key in PlatformId]: Platform } = {
         type: 'password',
       },
       {
-        name: 'newhomePartnerId',
+        name: 'partnerId',
         helpText: (
           <Trans>
             Your Partner ID is displayed in your MyNewhome dashboard under
@@ -189,13 +189,34 @@ export const PLATFORMS: { [key in PlatformId]: Platform } = {
     type: 'real_estate',
     name: 'Comparis',
     description: <Trans>List your property on Comparis.</Trans>,
-    isBeta: true,
+    isNew: true,
     logo: {
       en: {
         Dark: '/logos/comparis.png',
         Light: '/logos/comparis.png',
       },
     },
+    fieldsOnAgency: [
+      {
+        name: 'username',
+        helpText: (
+          <Trans>
+            Your FTP username can be found under "Import interfaces" on
+            Comparis.
+          </Trans>
+        ),
+      },
+      {
+        name: 'password',
+        helpText: (
+          <Trans>
+            Your FTP password can be found under "Import interfaces" on
+            Comparis.
+          </Trans>
+        ),
+        type: 'password',
+      },
+    ],
   },
   [PlatformId.Flatfox]: {
     type: 'real_estate',
