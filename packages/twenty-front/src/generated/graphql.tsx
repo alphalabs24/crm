@@ -485,6 +485,7 @@ export enum FeatureFlagKey {
   IsIntegrationSettingsEnabled = 'IsIntegrationSettingsEnabled',
   IsJsonFilterEnabled = 'IsJsonFilterEnabled',
   IsLaborSettingsEnabled = 'IsLaborSettingsEnabled',
+  IsMultiPublisherEnabled = 'IsMultiPublisherEnabled',
   IsNewRelationEnabled = 'IsNewRelationEnabled',
   IsPermissionsEnabled = 'IsPermissionsEnabled',
   IsPostgreSQLIntegrationEnabled = 'IsPostgreSQLIntegrationEnabled',

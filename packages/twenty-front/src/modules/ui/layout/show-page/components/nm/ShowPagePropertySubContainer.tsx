@@ -2,7 +2,6 @@ import { useDeleteMessage } from '@/action-menu/actions/record-actions/single-re
 import { RecordShowRightDrawerActionMenu } from '@/action-menu/components/RecordShowRightDrawerActionMenu';
 import { ActivityTargetableObject } from '@/activities/types/ActivityTargetableEntity';
 import { useNestermind } from '@/api/hooks/useNestermind';
-import { tokenPairState } from '@/auth/states/tokenPairState';
 import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadataItem';
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { getLinkToShowPage } from '@/object-metadata/utils/getLinkToShowPage';
@@ -123,9 +122,6 @@ export const ShowPagePropertySubContainer = ({
 
   const objectNameSingular = targetableObject.targetObjectNameSingular;
   const capitalizedObjectNameSingular = capitalize(objectNameSingular);
-
-  // Token for API calls
-  const tokenPair = useRecoilValue(tokenPairState);
 
   // Loading states
   const [loadingDraft, setLoadingDraft] = useState(false);

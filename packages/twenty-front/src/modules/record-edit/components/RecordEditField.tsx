@@ -10,11 +10,13 @@ import { useRecordShowContainerActions } from '@/object-record/record-show/hooks
 import { ObjectRecord } from '@/object-record/types/ObjectRecord';
 import { useRecordEdit } from '@/record-edit/contexts/RecordEditContext';
 import { SectionFieldType } from '@/record-edit/types/EditSectionTypes';
+import { useIsFeatureEnabled } from '@/workspace/hooks/useIsFeatureEnabled';
 import styled from '@emotion/styled';
 import { isNull } from '@sniptt/guards';
 import { useMemo } from 'react';
 import { isDefined } from 'twenty-shared';
 import { AppTooltip, IconInfoCircle, TooltipDelay } from 'twenty-ui';
+import { FeatureFlagKey } from '~/generated/graphql';
 import { EmailTemplateContextProvider } from '../contexts/EmailTemplateContext';
 import { PropertyDocumentFormInput } from './custom/PropertyDocumentFormInput';
 import { PropertyEmailsFormInput } from './custom/PropertyEmailsFormInput';
@@ -87,6 +89,10 @@ export const RecordEditField = ({
     recordFromStore: record ?? null,
   });
 
+  const isMultiPublisherEnabled = useIsFeatureEnabled(
+    FeatureFlagKey.IsMultiPublisherEnabled,
+  );
+
   const { getUpdatedFields } = useRecordEdit();
 
   const fieldMetadataItem = useMemo(() => {
@@ -121,7 +127,12 @@ export const RecordEditField = ({
         ? true
         : undefined;
 
-  if (!isDefined(objectMetadataItem) || !isDefined(record)) {
+  if (
+    !isDefined(objectMetadataItem) ||
+    !isDefined(record) ||
+    // Hide agency field if multi-publisher is not enabled
+    (!isMultiPublisherEnabled && field.name === 'agency')
+  ) {
     return null;
   }
 

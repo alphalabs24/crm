@@ -15,6 +15,9 @@ import { isRecordTableInitialLoadingComponentState } from '@/object-record/recor
 import { hasPendingRecordComponentSelector } from '@/object-record/record-table/states/selectors/hasPendingRecordComponentSelector';
 import { selectedRowIdsComponentSelector } from '@/object-record/record-table/states/selectors/selectedRowIdsComponentSelector';
 import { calculateCompletionLevel } from '@/object-record/utils/calculateCompletionLevel';
+import { Dropdown } from '@/ui/layout/dropdown/components/Dropdown';
+import { DropdownMenuItemsContainer } from '@/ui/layout/dropdown/components/DropdownMenuItemsContainer';
+import { useDropdown } from '@/ui/layout/dropdown/hooks/useDropdown';
 import { DragSelect } from '@/ui/utilities/drag-select/components/DragSelect';
 import { useClickOutsideListener } from '@/ui/utilities/pointer-event/hooks/useClickOutsideListener';
 import { useRecoilComponentValueV2 } from '@/ui/utilities/state/component-state/hooks/useRecoilComponentValueV2';
@@ -22,6 +25,7 @@ import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useLingui } from '@lingui/react/macro';
 import { isNull } from '@sniptt/guards';
+import { IconDots, IconSquare } from '@tabler/icons-react';
 import { useIcons } from '@ui/display/icon/hooks/useIcons';
 import { format } from 'date-fns';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -40,6 +44,7 @@ import {
   IconPencil,
   IconPhoto,
   LARGE_DESKTOP_VIEWPORT,
+  MenuItem,
   MOBILE_VIEWPORT,
   useIsMobile,
 } from 'twenty-ui';
@@ -124,11 +129,13 @@ const StyledSelectionIndicator = styled(motion.div)<{ isSelected?: boolean }>`
   position: absolute;
   right: ${({ theme }) => theme.spacing(3)};
   top: ${({ theme }) => theme.spacing(3)};
+  justify-content: center;
 
   @media only screen and (min-width: ${MOBILE_VIEWPORT}px) {
     position: relative;
     right: unset;
     top: unset;
+    justify-content: flex-start;
   }
 `;
 
@@ -308,6 +315,7 @@ const StyledRightSection = styled.div`
   display: flex;
   gap: ${({ theme }) => theme.spacing(2)};
   justify-content: flex-end;
+  flex-wrap: wrap;
 
   @media only screen and (min-width: ${MOBILE_VIEWPORT}px) {
     flex-direction: column;
@@ -509,6 +517,8 @@ const FieldDetailItem = ({
 
 export const RecordList = () => {
   const { recordTableId, objectNameSingular } = useRecordTableContextOrThrow();
+  const navigate = useNavigate();
+
   const { setRowSelected, resetTableRowSelection } = useRecordTable({
     recordTableId,
   });
@@ -574,6 +584,17 @@ export const RecordList = () => {
               objectNameSingular={objectNameSingular}
               isSelected={selectedRowIds.includes(recordId)}
               onSelect={(selected) => setRowSelected(recordId, selected)}
+              onClick={() => {
+                if (selectedRowIds.includes(recordId)) {
+                  setRowSelected(recordId, false);
+                } else {
+                  navigate(
+                    getLinkToShowPage(objectNameSingular, {
+                      id: recordId,
+                    }),
+                  );
+                }
+              }}
             />
           ))}
         </AnimatePresence>
@@ -598,6 +619,7 @@ type RecordListItemProps = {
   objectNameSingular: string;
   isSelected?: boolean;
   onSelect: (selected: boolean) => void;
+  onClick: () => void;
 };
 
 const getDisplayPriorityFields = () => {
@@ -654,12 +676,14 @@ const RecordListItem = ({
   objectNameSingular,
   isSelected,
   onSelect,
+  onClick,
 }: RecordListItemProps) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   const { t } = useLingui();
-
+  const dropdownId = `record-list-item-dropdown-${recordId}`;
+  const { closeDropdown } = useDropdown(dropdownId);
   const { recordFromStore: record } = useRecordShowContainerData({
     objectNameSingular,
     objectRecordId: recordId,
@@ -700,7 +724,7 @@ const RecordListItem = ({
   }, [record?.createdAt]);
 
   const handleCardClick = () => {
-    onSelect(!isSelected);
+    onClick?.();
   };
 
   const handleViewDetails = (e: React.MouseEvent) => {
@@ -888,6 +912,33 @@ const RecordListItem = ({
           size="small"
           variant="secondary"
           onClick={handleViewDetails}
+        />
+        <Dropdown
+          dropdownId={dropdownId}
+          clickableComponent={
+            <Button
+              title={t`More`}
+              Icon={IconDots}
+              size="small"
+              variant="secondary"
+            />
+          }
+          dropdownMenuWidth={160}
+          dropdownComponents={[
+            <DropdownMenuItemsContainer>
+              <MenuItem
+                text={isSelected ? t`Selected` : t`Select`}
+                LeftIcon={isSelected ? IconCheck : IconSquare}
+                onClick={() => {
+                  onSelect(!isSelected);
+                  closeDropdown();
+                }}
+                disabled={false}
+                accent={isSelected ? 'active' : 'default'}
+              />
+            </DropdownMenuItemsContainer>,
+          ]}
+          dropdownHotkeyScope={{ scope: dropdownId }}
         />
       </StyledRightSection>
     </StyledCard>

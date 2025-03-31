@@ -10,9 +10,11 @@ import { TableBody } from '@/ui/layout/table/components/TableBody';
 import { TableCell } from '@/ui/layout/table/components/TableCell';
 import { TableHeader } from '@/ui/layout/table/components/TableHeader';
 import { TableRow } from '@/ui/layout/table/components/TableRow';
+import { useIsFeatureEnabled } from '@/workspace/hooks/useIsFeatureEnabled';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Trans, useLingui } from '@lingui/react/macro';
+import { useMemo } from 'react';
 import {
   Button,
   IconChevronRight,
@@ -20,6 +22,7 @@ import {
   IconTrash,
   MOBILE_VIEWPORT,
 } from 'twenty-ui';
+import { FeatureFlagKey } from '~/generated/graphql';
 
 const StyledTableBody = styled(TableBody)`
   border-bottom: 1px solid ${({ theme }) => theme.border.color.light};
@@ -114,10 +117,23 @@ export const PublishersListCard = ({
   onDeleteClick,
 }: PublishersListCardProps) => {
   const { t } = useLingui();
+  const isMultiPublisherEnabled = useIsFeatureEnabled(
+    FeatureFlagKey.IsMultiPublisherEnabled,
+  );
   const { openModalForPublisher } = usePublishers();
   const theme = useTheme();
 
+  const canCreateNewPublisher = useMemo(() => {
+    return (isMultiPublisherEnabled || publishers.length < 1) && !loading;
+  }, [isMultiPublisherEnabled, publishers.length, loading]);
+
+  const publishersToShow = useMemo(() => {
+    if (isMultiPublisherEnabled) return publishers;
+    return publishers.slice(0, 1);
+  }, [isMultiPublisherEnabled, publishers]);
+
   const handleAddPublisher = () => {
+    if (!canCreateNewPublisher) return;
     openModalForPublisher();
   };
 
@@ -145,11 +161,11 @@ export const PublishersListCard = ({
         </StyledTableRow>
         {loading ? (
           <StyledEmptyState>{t`Loading...`}</StyledEmptyState>
-        ) : !publishers.length ? (
+        ) : !publishersToShow.length ? (
           <StyledEmptyState>{t`No publishers configured yet`}</StyledEmptyState>
         ) : (
           <StyledTableBody>
-            {publishers.map((publisher) => (
+            {publishersToShow.map((publisher) => (
               <StyledTableRow
                 key={publisher.id}
                 onClick={() => openModalForPublisher(publisher.id)}
@@ -197,15 +213,17 @@ export const PublishersListCard = ({
           </StyledTableBody>
         )}
       </Table>
-      <StyledButtonContainer>
-        <Button
-          Icon={IconPlus}
-          title={t`Add Publisher`}
-          size="small"
-          variant="secondary"
-          onClick={handleAddPublisher}
-        />
-      </StyledButtonContainer>
+      {canCreateNewPublisher && (
+        <StyledButtonContainer>
+          <Button
+            Icon={IconPlus}
+            title={t`Add Publisher`}
+            size="small"
+            variant="secondary"
+            onClick={handleAddPublisher}
+          />
+        </StyledButtonContainer>
+      )}
     </>
   );
 };

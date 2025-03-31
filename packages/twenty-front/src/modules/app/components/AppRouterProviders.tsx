@@ -18,6 +18,7 @@ import { PublishersProvider } from '@/publishers/contexts/PublisherContext';
 import { DialogManager } from '@/ui/feedback/dialog-manager/components/DialogManager';
 import { DialogManagerScope } from '@/ui/feedback/dialog-manager/scopes/DialogManagerScope';
 import { SnackBarProvider } from '@/ui/feedback/snack-bar-manager/components/SnackBarProvider';
+import { RecordAutomationProvider } from '@/ui/layout/show-page/contexts/RecordAutomationProvider';
 import { UserThemeProviderEffect } from '@/ui/theme/components/AppThemeProvider';
 import { BaseThemeProvider } from '@/ui/theme/components/BaseThemeProvider';
 import { PageFavicon } from '@/ui/utilities/page-favicon/components/PageFavicon';
@@ -49,25 +50,27 @@ export const AppRouterProviders = () => {
                     <ObjectMetadataItemsGater>
                       <PrefetchDataProvider>
                         <NestermindDataProvider>
-                          <UserThemeProviderEffect />
-                          <SnackBarProvider>
-                            <TutorialProviders>
-                              <PublishersProvider>
-                                <DialogManagerScope dialogManagerScopeId="dialog-manager">
-                                  <DialogManager>
-                                    <StrictMode>
-                                      <PromiseRejectionEffect />
-                                      <GotoHotkeysEffectsProvider />
-                                      <PageTitle title={pageTitle} />
-                                      <PageFavicon />
-                                      <Outlet />
-                                    </StrictMode>
-                                  </DialogManager>
-                                </DialogManagerScope>
-                              </PublishersProvider>
-                            </TutorialProviders>
-                          </SnackBarProvider>
-                          <MainContextStoreProvider />
+                          <RecordAutomationProvider>
+                            <UserThemeProviderEffect />
+                            <SnackBarProvider>
+                              <TutorialProviders>
+                                <PublishersProvider>
+                                  <DialogManagerScope dialogManagerScopeId="dialog-manager">
+                                    <DialogManager>
+                                      <StrictMode>
+                                        <PromiseRejectionEffect />
+                                        <GotoHotkeysEffectsProvider />
+                                        <PageTitle title={pageTitle} />
+                                        <PageFavicon />
+                                        <Outlet />
+                                      </StrictMode>
+                                    </DialogManager>
+                                  </DialogManagerScope>
+                                </PublishersProvider>
+                              </TutorialProviders>
+                            </SnackBarProvider>
+                            <MainContextStoreProvider />
+                          </RecordAutomationProvider>
                         </NestermindDataProvider>
                       </PrefetchDataProvider>
                       <PageChangeEffect />

@@ -306,6 +306,7 @@ export const ObjectOverview = ({
 
   const isMobile = useIsMobile() || isInRightDrawer;
 
+  // Handle modal for prefill once we need it.
   const openModal = () => {
     modalRef.current?.open();
   };
@@ -424,7 +425,6 @@ export const ObjectOverview = ({
                       maxWidth: 200,
                       recoilScopeId: targetableObject.id + FieldMetadataitem.id,
                       isLabelIdentifier: false,
-
                       fieldDefinition:
                         formatFieldMetadataItemAsColumnDefinition({
                           field: FieldMetadataitem,
