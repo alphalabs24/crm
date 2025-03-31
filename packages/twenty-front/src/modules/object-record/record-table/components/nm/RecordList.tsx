@@ -55,8 +55,6 @@ const StyledListContainer = styled.div`
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(2)};
   padding: ${({ theme }) => theme.spacing(2)};
-  overflow: auto;
-  height: 100%;
 `;
 
 const StyledCard = styled(motion.div)<{ isSelected?: boolean }>`
