@@ -2,6 +2,7 @@ import { useInquiryPage } from '@/inquiries/contexts/InquiryPageContext';
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { RecordChip } from '@/object-record/components/RecordChip';
 import { PlatformBadge } from '@/object-record/record-show/components/nm/publication/PlatformBadge';
+import { ObjectRecord } from '@/object-record/types/ObjectRecord';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { isNonEmptyString } from '@sniptt/guards';
@@ -81,17 +82,7 @@ const StyledRelationshipSection = styled.div`
 
 type InquiryItemProps = {
   id: string;
-  inquiry: {
-    createdAt: string;
-    person: {
-      avatarUrl: string;
-      name: {
-        firstName: string;
-        lastName: string;
-      };
-    };
-    publication: any; // Using any as the publication structure matches required Record type
-  };
+  inquiry: ObjectRecord;
 };
 
 export const InquiryItem = ({ id, inquiry }: InquiryItemProps) => {

@@ -47,19 +47,22 @@ export const InquiryPageContextProvider = ({
 }: {
   children: ReactNode;
 }) => {
-  const { useQueries } = useNestermind();
+  const {
+    useQueries: { useRecordMessageThreads },
+  } = useNestermind();
   const [selectedInquiryId, setSelectedInquiryId] = useState<string | null>(
     null,
   );
   const [selectedInquiry, setSelectedInquiry] = useState<any | null>(null);
   const [isInquirySidebarOpen, setIsInquirySidebarOpen] = useState(false);
 
-  // Use Tanstack Query hook from the useNestermind hook
+  // Fetch the message threads for the selected inquiry
   const {
     data: messageThreads,
     isLoading: isLoadingMessageThreads,
     refetch: refreshMessageThreads,
-  } = useQueries.useRecordMessageThreads(
+    error: messageThreadsError,
+  } = useRecordMessageThreads(
     selectedInquiryId,
     CoreObjectNameSingular.BuyerLead,
     { enabled: !!selectedInquiryId },
@@ -97,6 +100,7 @@ export const InquiryPageContextProvider = ({
     closeInquirySidebar,
     toggleInquirySidebar,
     messageThreads: messageThreads || null,
+    messageThreadsError,
     isLoadingMessageThreads,
     selectedInquiry,
     setSelectedInquiry,

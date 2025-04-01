@@ -9,10 +9,10 @@ import {
   PlatformId,
   PLATFORMS,
 } from '@/ui/layout/show-page/components/nm/types/Platform';
-import { useColorScheme } from '@/ui/theme/hooks/useColorScheme';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useLingui } from '@lingui/react/macro';
+import { AxiosResponse } from 'axios';
 import { Dispatch, SetStateAction, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
@@ -212,10 +212,6 @@ const StyledSmartListingIcon = styled.div`
   padding: ${({ theme }) => theme.spacing(0.5)};
 `;
 
-const StyledPlatformLogoImage = styled.img`
-  width: 100%;
-`;
-
 const StyledValidationDetails = styled.div<{ variant?: 'warning' }>`
   color: ${({ theme, variant }) =>
     variant === 'warning' ? theme.font.color.warning : theme.font.color.danger};
@@ -252,11 +248,33 @@ export const PlatformSelect = ({
   const navigate = useNavigate();
   const theme = useTheme();
   const { enqueueSnackBar } = useSnackBar();
-  const [loading, setLoading] = useState(false);
   const { t } = useLingui();
   const [showError, setShowError] = useState(false);
-  const { colorScheme } = useColorScheme();
-  const { propertiesApi: properties } = useNestermind();
+  const { useMutations } = useNestermind();
+
+  const { mutate: createPublicationDraft, isPending } =
+    useMutations.useCreatePublicationDraft({
+      onSuccess: (response: AxiosResponse<string>) => {
+        enqueueSnackBar(t`Publication Draft created successfully`, {
+          variant: SnackBarVariant.Success,
+        });
+
+        const route = getLinkToShowPage('publication', {
+          id: response.data,
+        });
+
+        setTimeout(() => {
+          closeModal?.();
+        }, 1000);
+
+        navigate(route);
+      },
+      onError: (error: Error) => {
+        enqueueSnackBar(error?.message || t`Failed to create draft`, {
+          variant: SnackBarVariant.Error,
+        });
+      },
+    });
 
   const { record } = useFindOneRecord({
     objectNameSingular: CoreObjectNameSingular.Property,
@@ -290,48 +308,25 @@ export const PlatformSelect = ({
   };
 
   const createDraft = async () => {
-    try {
-      if (
-        validationDetails?.missingFields &&
-        validationDetails?.missingFields?.length > 0
-      ) {
-        setShowError(true);
-        return;
-      }
-      setLoading(true);
-      if (!selectedPlatforms || selectedPlatforms.length === 0) {
-        throw new Error('No platform selected');
-      }
-      // TODO: This will be changed to a loop that creates all drafts and consolidates them into one show page later. For now only newhome works anyway.
-      const response = await properties.createPublicationDraft(
-        recordId,
-        selectedPlatforms[0],
-      );
+    if (
+      validationDetails?.missingFields &&
+      validationDetails?.missingFields?.length > 0
+    ) {
+      setShowError(true);
+      return;
+    }
 
-      if (response.status !== 201) {
-        throw new Error('Failed to create draft, id was not returned');
-      }
-
-      enqueueSnackBar(t`Publication Draft created successfully`, {
-        variant: SnackBarVariant.Success,
-      });
-
-      const route = getLinkToShowPage('publication', {
-        id: response.data,
-      });
-
-      setTimeout(() => {
-        closeModal?.();
-      }, 1000);
-
-      navigate(route);
-    } catch (error: any) {
-      enqueueSnackBar(error?.message, {
+    if (!selectedPlatforms || selectedPlatforms.length === 0) {
+      enqueueSnackBar(t`No platform selected`, {
         variant: SnackBarVariant.Error,
       });
-    } finally {
-      setLoading(false);
+      return;
     }
+
+    createPublicationDraft({
+      propertyId: recordId,
+      platform: selectedPlatforms[0],
+    });
   };
 
   return (
@@ -437,7 +432,9 @@ export const PlatformSelect = ({
               title={t`Create Draft`}
               onClick={createDraft}
               disabled={
-                selectedPlatforms?.length === 0 || !selectedPlatforms || loading
+                selectedPlatforms?.length === 0 ||
+                !selectedPlatforms ||
+                isPending
               }
             />
           </StyledPlatformTypeActions>

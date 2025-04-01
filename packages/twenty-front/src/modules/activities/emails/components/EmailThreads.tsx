@@ -22,7 +22,6 @@ import { useCustomResolver } from '@/activities/hooks/useCustomResolver';
 import { ActivityTargetableObject } from '@/activities/types/ActivityTargetableEntity';
 import { useNestermind } from '@/api/hooks/useNestermind';
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
-import { useCallback, useEffect, useState } from 'react';
 import { TimelineThread, TimelineThreadsWithTotal } from '~/generated/graphql';
 
 const StyledContainer = styled.div`
@@ -53,7 +52,7 @@ export const EmailThreads = ({
       ? [getTimelineThreadsFromPersonId, 'getTimelineThreadsFromPersonId']
       : [getTimelineThreadsFromCompanyId, 'getTimelineThreadsFromCompanyId'];
 
-  const { messagesApi: messages } = useNestermind();
+  const { useQueries } = useNestermind();
 
   const isPublication =
     targetableObject.targetObjectNameSingular ===
@@ -67,35 +66,16 @@ export const EmailThreads = ({
     targetableObject.targetObjectNameSingular ===
     CoreObjectNameSingular.Property;
 
-  const [emailThreads, setEmailThreads] = useState<
-    TimelineThread[] | undefined
-  >(undefined);
-
-  const [emailThreadsLoading, setEmailThreadsLoading] = useState(false);
-
   const shouldGetAggregated = isPublication || isBuyerLead || isProperty;
 
-  const getMessagesAggregated = useCallback(async () => {
-    if (!shouldGetAggregated) return [];
-    try {
-      setEmailThreadsLoading(true);
-      const { data } = await messages.getRecordMessageThreads({
-        id: targetableObject.id,
-        objectNameSingular: targetableObject.targetObjectNameSingular,
-      });
-
-      setEmailThreads(data ?? []);
-    } catch (error) {
-      console.error('Error fetching email threads:', error);
-    } finally {
-      setEmailThreadsLoading(false);
-    }
-  }, [
-    messages,
-    shouldGetAggregated,
-    targetableObject.id,
-    targetableObject.targetObjectNameSingular,
-  ]);
+  const { data: emailThreads, isLoading: emailThreadsLoading } =
+    useQueries.useRecordMessageThreads(
+      shouldGetAggregated ? targetableObject.id : null,
+      shouldGetAggregated ? targetableObject.targetObjectNameSingular : null,
+      {
+        enabled: shouldGetAggregated,
+      },
+    );
 
   const { data, firstQueryLoading, isFetchingMore, fetchMoreRecords } =
     useCustomResolver<TimelineThreadsWithTotal>(
@@ -118,13 +98,7 @@ export const EmailThreads = ({
     }
   };
 
-  useEffect(() => {
-    if (!emailThreads) {
-      getMessagesAggregated();
-    }
-  }, [emailThreads, getMessagesAggregated]);
-
-  if (firstQueryLoading) {
+  if (firstQueryLoading || emailThreadsLoading) {
     return <SkeletonLoader />;
   }
 

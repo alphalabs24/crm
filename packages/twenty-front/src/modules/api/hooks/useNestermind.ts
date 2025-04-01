@@ -350,10 +350,11 @@ export const useNestermind = () => {
   ) => {
     return useQuery({
       queryKey: ['metrics', 'publications', publicationIds],
-      queryFn: () => {
+      queryFn: async () => {
         if (!publicationIds?.length)
           throw new Error('Publication IDs are required');
-        return calculatePublicationMetrics(publicationIds);
+        const response = await calculatePublicationMetrics(publicationIds);
+        return response;
       },
       ...options,
       enabled: !!publicationIds?.length && (options as any).enabled !== false,
@@ -375,92 +376,57 @@ export const useNestermind = () => {
   ) => {
     return useQuery({
       queryKey: ['metrics', 'properties-platform', propertyIds],
-      queryFn: () => {
+      queryFn: async () => {
         if (!propertyIds?.length) throw new Error('Property IDs are required');
-        return calculatePropertyMetricsByPlatform(propertyIds);
+        const response = await calculatePropertyMetricsByPlatform(propertyIds);
+        return response;
       },
       ...options,
       enabled: !!propertyIds?.length && (options as any).enabled !== false,
     });
   };
 
-  return useMemo(
-    () => ({
-      api,
-      // Original API methods: Try to not use these directly, use the hooks instead
-      publicationsApi: {
-        publish: publishPublication,
-        duplicate: duplicatePublication,
-        delete: deletePublication,
-        check: checkPublications,
-        sendTestEmail: sendTestEmailPublication,
-        unpublish: unpublishPublication,
-      },
-      propertiesApi: {
-        syncPublications: syncPublicationsWithProperty,
-        delete: deleteProperty,
-        createPublicationDraft: createPublicationDraftFromProperty,
-        sendTestEmail: sendTestEmailProperty,
-      },
-      healthApi: {
-        check: checkHealth,
-      },
-      setupApi: {
-        createEmailWebhook,
-        createWorkspace,
-      },
-      messagesApi: {
-        getRecordMessageThreads,
-      },
-      metricsApi: {
-        calculatePublicationMetrics,
-        calculatePropertyMetricsByPlatform,
-      },
-      // Tanstack Query hooks: Always use these if you don't know what you're doing
-      useQueries: {
-        useHealthCheck,
-        useCheckPublications,
-        useRecordMessageThreads,
-        usePublicationMetrics,
-        usePropertyMetricsByPlatform,
-      },
-      useMutations: {
-        useSyncPublicationsWithProperty,
-        useDeleteProperty,
-        useCreatePublicationDraft,
-        useCreateEmailWebhook,
-        useCreateWorkspace,
-        usePublishPublication,
-        useDuplicatePublication,
-        useDeletePublication,
-        useUnpublishPublication,
-        useSendTestEmailPublication,
-        useSendTestEmailProperty,
-      },
-    }),
-    [
-      api,
-      calculatePropertyMetricsByPlatform,
-      calculatePublicationMetrics,
-      checkHealth,
-      checkPublications,
+  // Just return the object directly without useMemo
+  return {
+    api,
+    // Original API methods: Try to not use these directly, use the hooks instead
+    publicationsApi: {
+      publish: publishPublication,
+      duplicate: duplicatePublication,
+      delete: deletePublication,
+      check: checkPublications,
+      sendTestEmail: sendTestEmailPublication,
+      unpublish: unpublishPublication,
+    },
+    propertiesApi: {
+      syncPublications: syncPublicationsWithProperty,
+      delete: deleteProperty,
+      createPublicationDraft: createPublicationDraftFromProperty,
+      sendTestEmail: sendTestEmailProperty,
+    },
+    healthApi: {
+      check: checkHealth,
+    },
+    setupApi: {
       createEmailWebhook,
-      createPublicationDraftFromProperty,
       createWorkspace,
-      deleteProperty,
-      deletePublication,
-      duplicatePublication,
+    },
+    messagesApi: {
       getRecordMessageThreads,
-      publishPublication,
-      sendTestEmailProperty,
-      sendTestEmailPublication,
-      syncPublicationsWithProperty,
-      unpublishPublication,
+    },
+    metricsApi: {
+      calculatePublicationMetrics,
+      calculatePropertyMetricsByPlatform,
+    },
+    // Tanstack Query hooks: Always use these if you don't know what you're doing
+    useQueries: {
       useHealthCheck,
       useCheckPublications,
       useRecordMessageThreads,
       usePublicationMetrics,
       usePropertyMetricsByPlatform,
+    },
+    useMutations: {
       useSyncPublicationsWithProperty,
       useDeleteProperty,
       useCreatePublicationDraft,
@@ -472,6 +438,6 @@ export const useNestermind = () => {
       useUnpublishPublication,
       useSendTestEmailPublication,
       useSendTestEmailProperty,
-    ],
-  );
+    },
+  };
 };

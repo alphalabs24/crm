@@ -16,7 +16,7 @@ import { initialI18nActivate } from '~/utils/i18n/initialI18nActivate';
 
 initialI18nActivate();
 
-// Create a client
+// Create a client for tanstack query
 const queryClient = new QueryClient();
 
 export const App = () => {
