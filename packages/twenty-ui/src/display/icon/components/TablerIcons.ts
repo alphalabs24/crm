@@ -59,7 +59,9 @@ export {
   IconClick,
   IconClockHour8,
   IconClockPlay,
-  IconClockShare, IconCloudOff, IconCode,
+  IconClockShare,
+  IconCloudOff,
+  IconCode,
   IconCodeCircle,
   IconCoins,
   IconColorSwatch,
@@ -287,7 +289,9 @@ export {
   IconVideo,
   IconWand,
   IconWorld,
-  IconX
+  IconX,
+  IconLayoutBottombarCollapse,
+  IconLayoutBottombarExpand,
 } from '@tabler/icons-react';
 
 export type { TablerIconsProps } from '@tabler/icons-react';

@@ -18,7 +18,6 @@ const StyledPageBody = styled(PageBody)`
 const StyledList = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(2)};
   padding: ${({ theme }) => theme.spacing(2)};
 `;
 

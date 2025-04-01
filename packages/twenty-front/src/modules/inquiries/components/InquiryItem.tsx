@@ -19,7 +19,7 @@ const StyledInquiryItem = styled.div<{ isLast: boolean }>`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(1)};
-  padding: ${({ theme }) => theme.spacing(3, 1)};
+  padding: ${({ theme }) => theme.spacing(4, 1)};
   position: relative;
   transition: all 0.2s ease-in-out;
 
