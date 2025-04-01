@@ -7,13 +7,14 @@ import {
   Button,
   IconChevronLeft,
   IconMessage,
-  IconPaperclip,
   IconUser,
   IconX,
 } from 'twenty-ui';
 import { getImageAbsoluteURI } from 'twenty-shared';
 import { format } from 'date-fns';
 import { REACT_APP_SERVER_BASE_URL } from '~/config';
+import { ReplyEditor } from './ReplyEditor';
+import { useInquiryPage } from '../../contexts/InquiryPageContext';
 
 const StyledConversationSection = styled.div`
   background: ${({ theme }) => theme.background.primary};
@@ -197,100 +198,11 @@ type MessageThread = {
   messages: Message[];
 };
 
-// Generate dummy message threads
-const generateDummyThreads = (inquiry: any): MessageThread[] => {
-  // Current user info (assuming it's a workspace member)
-  const currentUser = {
-    id: 'current-user',
-    name: 'You',
-    email: 'agent@nestermind.com',
-    isCurrentUser: true,
-  };
-
-  // Customer info from inquiry
-  const customer = {
-    id: inquiry?.person?.id || 'customer',
-    name: `${inquiry?.person?.name?.firstName || 'John'} ${inquiry?.person?.name?.lastName || 'Doe'}`,
-    email: inquiry?.person?.email || 'john.doe@example.com',
-    avatarUrl: inquiry?.person?.avatarUrl,
-    isCurrentUser: false,
-  };
-
-  // Generate dates
-  const now = new Date();
-  const yesterday = new Date(now);
-  yesterday.setDate(yesterday.getDate() - 1);
-  const twoDaysAgo = new Date(now);
-  twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
-
-  // Create dummy threads
-  return [
-    {
-      id: 'thread-1',
-      subject: `Inquiry about ${inquiry?.property?.name || 'the property'}`,
-      messages: [
-        {
-          id: 'msg-1',
-          sender: customer,
-          content: `Hi there, I'm interested in ${inquiry?.property?.name || 'this property'}. Could you please provide more information about its availability?`,
-          sentAt: twoDaysAgo,
-          isCurrentUser: false,
-        },
-        {
-          id: 'msg-2',
-          sender: currentUser,
-          content: `Hello ${customer.name},\n\nThank you for your interest in our property. It is currently available for viewing. When would you like to schedule a visit?`,
-          sentAt: yesterday,
-          isCurrentUser: true,
-        },
-        {
-          id: 'msg-3',
-          sender: customer,
-          content:
-            'I would love to see it this weekend if possible. Is Saturday morning available? Also, could you send me some more pictures of the kitchen and bathroom?',
-          sentAt: yesterday,
-          isCurrentUser: false,
-          attachments: [
-            {
-              id: 'att-1',
-              name: 'requirements.pdf',
-              size: '1.2 MB',
-            },
-          ],
-        },
-        {
-          id: 'msg-4',
-          sender: currentUser,
-          content: `Saturday morning at 10 AM works perfectly. I've attached some additional photos of the kitchen and bathroom for your reference.`,
-          sentAt: now,
-          isCurrentUser: true,
-          attachments: [
-            {
-              id: 'att-2',
-              name: 'kitchen.jpg',
-              size: '3.1 MB',
-            },
-            {
-              id: 'att-3',
-              name: 'bathroom.jpg',
-              size: '2.8 MB',
-            },
-          ],
-        },
-      ],
-    },
-  ];
-};
-
-type ConversationSectionProps = {
-  inquiry: any;
-  onClose: () => void;
-};
-
 // Format date to relative time (like "2 days ago", "Yesterday", "Just now")
-const formatDateToRelative = (date: Date): string => {
+const formatDateToRelative = (date: Date | string): string => {
+  const dateObj = typeof date === 'string' ? new Date(date) : date;
   const now = new Date();
-  const diffInMilliseconds = now.getTime() - date.getTime();
+  const diffInMilliseconds = now.getTime() - dateObj.getTime();
   const diffInHours = diffInMilliseconds / (1000 * 60 * 60);
   const diffInDays = diffInHours / 24;
 
@@ -305,8 +217,13 @@ const formatDateToRelative = (date: Date): string => {
   } else if (diffInDays < 7) {
     return `${Math.floor(diffInDays)} days ago`;
   } else {
-    return format(date, 'MMM d, yyyy');
+    return format(dateObj, 'MMM d, yyyy');
   }
+};
+
+type ConversationSectionProps = {
+  inquiry: any;
+  onClose: () => void;
 };
 
 export const ConversationSection = ({
@@ -314,11 +231,9 @@ export const ConversationSection = ({
   onClose,
 }: ConversationSectionProps) => {
   const theme = useTheme();
+  const { messageThreads, isLoadingMessageThreads } = useInquiryPage();
 
   if (!inquiry) return null;
-
-  // Generate dummy message threads based on the inquiry
-  const messageThreads = generateDummyThreads(inquiry);
 
   return (
     <StyledConversationSection>
@@ -357,62 +272,77 @@ export const ConversationSection = ({
         <Button Icon={IconX} variant="tertiary" onClick={onClose} />
       </StyledHeader>
       <StyledContent>
-        {messageThreads.map((thread) => (
-          <StyledThreadContainer key={thread.id}>
-            <StyledThreadHeader>
-              <StyledThreadSubject>{thread.subject}</StyledThreadSubject>
-            </StyledThreadHeader>
+        {isLoadingMessageThreads ? (
+          <div>
+            <Trans>Loading messages...</Trans>
+          </div>
+        ) : messageThreads && messageThreads.length > 0 ? (
+          messageThreads.map((thread) => (
+            <StyledThreadContainer key={thread.id}>
+              <StyledThreadHeader>
+                <StyledThreadSubject>
+                  {thread.subject || 'Inquiry'}
+                </StyledThreadSubject>
+              </StyledThreadHeader>
 
-            {thread.messages.map((message) => (
-              <StyledMessageContainer
-                key={message.id}
-                isCurrentUser={message.isCurrentUser}
-              >
-                <StyledMessageHeader isCurrentUser={message.isCurrentUser}>
-                  <Avatar
-                    type="rounded"
-                    avatarUrl={message.sender.avatarUrl}
-                    placeholder={message.sender.name}
-                  />
-                  <StyledMessageSender isCurrentUser={message.isCurrentUser}>
-                    <StyledSenderName>{message.sender.name}</StyledSenderName>
-                    <StyledMessageTime>
-                      {formatDateToRelative(message.sentAt)} -{' '}
-                      {message.sender.email}
-                    </StyledMessageTime>
-                  </StyledMessageSender>
-                </StyledMessageHeader>
+              {thread.messages.map((message) => {
+                const isCurrentUser = message.author?.displayName === 'You';
+                return (
+                  <StyledMessageContainer
+                    key={message.id}
+                    isCurrentUser={isCurrentUser}
+                  >
+                    <StyledMessageHeader isCurrentUser={isCurrentUser}>
+                      <Avatar
+                        type="rounded"
+                        placeholder={message.author?.displayName || 'Unknown'}
+                      />
+                      <StyledMessageSender isCurrentUser={isCurrentUser}>
+                        <StyledSenderName>
+                          {message.author?.displayName || 'Unknown'}
+                        </StyledSenderName>
+                        <StyledMessageTime>
+                          {formatDateToRelative(message.createdAt)}
+                        </StyledMessageTime>
+                      </StyledMessageSender>
+                    </StyledMessageHeader>
 
-                <StyledMessageContent isCurrentUser={message.isCurrentUser}>
-                  {message.content.split('\n').map((paragraph, index) => (
-                    <p key={index}>{paragraph}</p>
-                  ))}
-
-                  {message.attachments && message.attachments.length > 0 && (
-                    <StyledMessageAttachments>
-                      {message.attachments.map((attachment) => (
-                        <StyledAttachment key={attachment.id}>
-                          <IconPaperclip size={12} />
-                          {attachment.name} ({attachment.size})
-                        </StyledAttachment>
+                    <StyledMessageContent isCurrentUser={isCurrentUser}>
+                      {message.text.split('\n').map((paragraph, index) => (
+                        <p key={index}>{paragraph}</p>
                       ))}
-                    </StyledMessageAttachments>
-                  )}
-                </StyledMessageContent>
 
-                {!message.isCurrentUser && (
-                  <StyledReplyButton
-                    variant="secondary"
-                    size="small"
-                    title="Reply"
-                    Icon={IconMessage}
-                  />
-                )}
-              </StyledMessageContainer>
-            ))}
-          </StyledThreadContainer>
-        ))}
+                      {/* Message attachments would go here if available in the API */}
+                    </StyledMessageContent>
+
+                    {!isCurrentUser && (
+                      <StyledReplyButton
+                        variant="secondary"
+                        size="small"
+                        title="Reply"
+                        Icon={IconMessage}
+                      />
+                    )}
+                  </StyledMessageContainer>
+                );
+              })}
+            </StyledThreadContainer>
+          ))
+        ) : (
+          <div>
+            <Trans>No messages found for this inquiry.</Trans>
+          </div>
+        )}
       </StyledContent>
+      <ReplyEditor
+        subject={`Re: ${messageThreads?.[0]?.subject || 'Inquiry'}`}
+        recipientName={`${inquiry.person.name.firstName} ${inquiry.person.name.lastName}`}
+        recipientEmail={inquiry.person.email || ''}
+        onSend={(content) => {
+          console.log('Message sent:', content);
+          // Here you would typically call an API to send the email
+        }}
+      />
     </StyledConversationSection>
   );
 };
