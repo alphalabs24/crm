@@ -274,7 +274,7 @@ export const EditPublisherModal = forwardRef<ModalRefType, Props>(
               await updateCredentialRecord({
                 idToUpdate: newCredential.id,
                 updateOneRecordInput: {
-                  publisherId: agencyRecord?.id,
+                  agencyId: agencyRecord?.id,
                 },
               });
             } else if (newCredentials) {
