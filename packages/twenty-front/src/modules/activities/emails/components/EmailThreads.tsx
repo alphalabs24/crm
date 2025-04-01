@@ -83,7 +83,6 @@ export const EmailThreads = ({
         id: targetableObject.id,
         objectNameSingular: targetableObject.targetObjectNameSingular,
       });
-      console.log(data);
 
       setEmailThreads(data ?? []);
     } catch (error) {
