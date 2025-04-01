@@ -1,11 +1,11 @@
 import { useNestermind } from '@/api/hooks/useNestermind';
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import {
-    createContext,
-    ReactNode,
-    useCallback,
-    useContext,
-    useState,
+  createContext,
+  ReactNode,
+  useCallback,
+  useContext,
+  useState,
 } from 'react';
 import { TimelineThread } from '~/generated/graphql';
 

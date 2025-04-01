@@ -11,15 +11,15 @@ import { getImageAbsoluteURI } from 'twenty-shared';
 import { IconMessage, IconUser } from 'twenty-ui';
 import { REACT_APP_SERVER_BASE_URL } from '~/config';
 
-const StyledInquiryItem = styled.div`
+const StyledInquiryItem = styled.div<{ isLast: boolean }>`
   background-color: ${({ theme }) => theme.background.primary};
-  border: 1px solid ${({ theme }) => theme.border.color.light};
-  border-radius: ${({ theme }) => theme.border.radius.md};
+  border-bottom: ${({ isLast, theme }) =>
+    isLast ? 'none' : `1px solid ${theme.border.color.light}`};
   cursor: pointer;
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(1)};
-  padding: ${({ theme }) => theme.spacing(2)};
+  padding: ${({ theme }) => theme.spacing(3, 1)};
   position: relative;
   transition: all 0.2s ease-in-out;
 
@@ -83,9 +83,14 @@ const StyledRelationshipSection = styled.div`
 type InquiryItemProps = {
   id: string;
   inquiry: ObjectRecord;
+  isLast?: boolean;
 };
 
-export const InquiryItem = ({ id, inquiry }: InquiryItemProps) => {
+export const InquiryItem = ({
+  id,
+  inquiry,
+  isLast = false,
+}: InquiryItemProps) => {
   const theme = useTheme();
   const { createdAt, person, publication } = inquiry;
   const { openInquirySidebar, setSelectedInquiry } = useInquiryPage();
@@ -104,7 +109,7 @@ export const InquiryItem = ({ id, inquiry }: InquiryItemProps) => {
   };
 
   return (
-    <StyledInquiryItem onClick={handleInquiryClick}>
+    <StyledInquiryItem onClick={handleInquiryClick} isLast={isLast}>
       <StyledHeader>
         <StyledProfileSection>
           <StyledProfilePicture>

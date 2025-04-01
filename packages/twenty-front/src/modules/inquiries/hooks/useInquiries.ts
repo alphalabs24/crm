@@ -17,11 +17,13 @@ export const useInquiries = () => {
     return generateDepthOneRecordGqlFields({ objectMetadataItem });
   }, [objectMetadataItem]);
 
-  const { records } = useFindManyRecords({
-    objectNameSingular: CoreObjectNameSingular.BuyerLead,
-    recordGqlFields,
-    skip: !objectMetadataItem,
-  });
+  const { records, loading, fetchMoreRecords, totalCount } = useFindManyRecords(
+    {
+      objectNameSingular: CoreObjectNameSingular.BuyerLead,
+      recordGqlFields,
+      skip: !objectMetadataItem,
+    },
+  );
 
-  return { records };
+  return { records, loading, fetchMoreRecords, totalCount };
 };
