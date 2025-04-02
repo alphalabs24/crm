@@ -243,6 +243,13 @@ export const ObjectOverview = ({
 
   const subType = useSubcategoryByCategory(recordFromStore?.category);
 
+  const relationsToShow = useMemo(() => {
+    return relationFieldMetadataItems.filter(
+      // Add relation fields to hide here
+      (fieldMetadataItem) => fieldMetadataItem.name !== 'buyerLeads',
+    );
+  }, [relationFieldMetadataItems]);
+
   const rowsToShow = useMemo(() => {
     const finances = [];
 
@@ -305,11 +312,6 @@ export const ObjectOverview = ({
   });
 
   const isMobile = useIsMobile() || isInRightDrawer;
-
-  // Handle modal for prefill once we need it.
-  const openModal = () => {
-    modalRef.current?.open();
-  };
 
   const closeModal = useCallback(() => {
     modalRef.current?.close();
@@ -416,7 +418,7 @@ export const ObjectOverview = ({
                 isMobile={isMobile}
               />
 
-              {relationFieldMetadataItems?.map((FieldMetadataitem, index) => (
+              {relationsToShow?.map((FieldMetadataitem, index) => (
                 <>
                   <FieldContext.Provider
                     key={FieldMetadataitem.id + 'relation' + index}

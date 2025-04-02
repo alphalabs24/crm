@@ -1,27 +1,52 @@
 import { useInquiries } from '@/inquiries/hooks/useInquiries';
-import { ObjectRecord } from '@/object-record/types/ObjectRecord';
-import { PageBody } from '@/ui/layout/page/components/PageBody';
-import { ScrollWrapper } from '@/ui/utilities/scroll/components/ScrollWrapper';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
-import { useSearchParams } from 'react-router-dom';
-import { useInquiryPage } from '../contexts/InquiryPageContext';
 import { InquiryItem } from './InquiryItem';
+import { AppPath } from '@/types/AppPath';
+import { Link } from 'react-router-dom';
+import { Trans, useLingui } from '@lingui/react/macro';
+import { IconMessageCircle2 } from 'twenty-ui';
 
-const StyledPageBody = styled(PageBody)`
+const StyledSection = styled.div`
   display: flex;
   flex-direction: column;
-  flex: 1;
-  overflow: hidden;
+  gap: ${({ theme }) => theme.spacing(2)};
+`;
+
+const StyledSectionHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const StyledSectionTitle = styled.div`
+  align-items: center;
+  color: ${({ theme }) => theme.font.color.secondary};
+  display: flex;
+  font-size: ${({ theme }) => theme.font.size.md};
+  font-weight: ${({ theme }) => theme.font.weight.medium};
+  gap: ${({ theme }) => theme.spacing(2)};
+`;
+
+const StyledViewAll = styled(Link)`
+  color: ${({ theme }) => theme.color.blue};
+  font-size: ${({ theme }) => theme.font.size.sm};
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 const StyledList = styled.div`
   display: flex;
   flex-direction: column;
-  padding: ${({ theme }) => theme.spacing(2)};
+`;
+
+const UnstyledLink = styled(Link)`
+  text-decoration: none;
 `;
 
 const StyledEmptyState = styled.div`
@@ -110,72 +135,75 @@ const InquirySkeletonLoader = () => {
   );
 };
 
-export const InquiriesList = () => {
-  const { records, loading } = useInquiries();
-  const { openInquirySidebar, setSelectedInquiry } = useInquiryPage();
-  const [searchParams] = useSearchParams();
-  const id = searchParams.get('id');
+type InquiriesPreviewProps = {
+  publicationId?: string;
+  propertyId?: string;
+  maxItems?: number;
+};
 
-  const handleInquiryClick = useCallback(
-    (inquiry: ObjectRecord, id: string) => {
-      setSelectedInquiry(inquiry);
-      openInquirySidebar(id);
-    },
-    [setSelectedInquiry, openInquirySidebar],
-  );
-
-  // Open inquiry on load if ID is present in URL
-  useEffect(() => {
-    if (id && records.length > 0) {
-      const inquiry = records.find((record) => record.id === id);
-      if (inquiry) {
-        handleInquiryClick(inquiry, id);
-      }
-    }
-  }, [records, id, handleInquiryClick]);
+export const InquiriesPreview = ({
+  publicationId,
+  propertyId,
+  maxItems = 5,
+}: InquiriesPreviewProps) => {
+  const { t } = useLingui();
+  const { records, loading } = useInquiries({ publicationId, propertyId });
 
   const recordsWithPersonAndPublication = useMemo(() => {
-    return records.filter((record) => record.person && record.publication);
-  }, [records]);
+    return records
+      .filter((record) => record.person && record.publication)
+      .slice(0, maxItems);
+  }, [records, maxItems]);
 
   if (loading) {
     return (
-      <StyledPageBody>
-        <ScrollWrapper
-          componentInstanceId="inquiries-list"
-          contextProviderName="inquiriesList"
-        >
-          <InquirySkeletonLoader />
-        </ScrollWrapper>
-      </StyledPageBody>
+      <StyledSection>
+        <StyledSectionHeader>
+          <StyledSectionTitle>
+            <Trans>Latest Inquiries</Trans>
+          </StyledSectionTitle>
+        </StyledSectionHeader>
+        <InquirySkeletonLoader />
+      </StyledSection>
     );
   }
 
   if (recordsWithPersonAndPublication.length === 0) {
     return (
-      <StyledPageBody>
-        <StyledEmptyState>No inquiries found</StyledEmptyState>
-      </StyledPageBody>
+      <StyledSection>
+        <StyledSectionHeader>
+          <StyledSectionTitle>
+            <Trans>Latest Inquiries</Trans>
+          </StyledSectionTitle>
+        </StyledSectionHeader>
+        <StyledEmptyState>
+          <Trans>No inquiries found</Trans>
+        </StyledEmptyState>
+      </StyledSection>
     );
   }
 
   return (
-    <StyledPageBody>
-      <ScrollWrapper
-        componentInstanceId="inquiries-list"
-        contextProviderName="inquiriesList"
-      >
-        <StyledList>
-          {recordsWithPersonAndPublication.map((record, index) => (
+    <StyledSection>
+      <StyledSectionHeader>
+        <StyledSectionTitle>
+          <Trans>Latest Inquiries</Trans>
+        </StyledSectionTitle>
+        <StyledViewAll to={AppPath.RecordInquiriesPage}>
+          <Trans>View all</Trans>
+        </StyledViewAll>
+      </StyledSectionHeader>
+      <StyledList>
+        {recordsWithPersonAndPublication.map((record, index) => (
+          <UnstyledLink to={`${AppPath.RecordInquiriesPage}?id=${record.id}`}>
             <InquiryItem
               key={record.id}
               inquiry={record}
               isLast={index === recordsWithPersonAndPublication.length - 1}
-              onClick={() => handleInquiryClick(record, record.id)}
             />
-          ))}
-        </StyledList>
-      </ScrollWrapper>
-    </StyledPageBody>
+          </UnstyledLink>
+        ))}
+      </StyledList>
+    </StyledSection>
   );
 };

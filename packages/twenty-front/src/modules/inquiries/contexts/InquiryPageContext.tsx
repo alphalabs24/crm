@@ -1,5 +1,5 @@
-import { useNestermind } from '@/api/hooks/useNestermind';
-import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
+import { useThreadMessages } from '@/inquiries/hooks/useThreadMessages';
+import { ObjectRecord } from '@/object-record/types/ObjectRecord';
 import {
   createContext,
   ReactNode,
@@ -7,23 +7,6 @@ import {
   useContext,
   useState,
 } from 'react';
-import { TimelineThread } from '~/generated/graphql';
-
-// Define message type that extends TimelineThread
-type Message = {
-  id: string;
-  text: string;
-  receivedAt?: string;
-  createdAt: string;
-  author?: {
-    displayName?: string;
-  };
-};
-
-// Define extended thread type with messages
-export type ThreadWithMessages = TimelineThread & {
-  messages: Message[];
-};
 
 type InquiryContextValue = {
   selectedInquiryId: string | null;
@@ -31,11 +14,12 @@ type InquiryContextValue = {
   openInquirySidebar: (inquiryId: string) => void;
   closeInquirySidebar: () => void;
   toggleInquirySidebar: (inquiryId: string) => void;
-  messageThreads: ThreadWithMessages[] | null;
-  isLoadingMessageThreads: boolean;
+  messages: ObjectRecord[];
+  thread?: ObjectRecord;
+  isLoadingMessages: boolean;
   selectedInquiry: any | null;
   setSelectedInquiry: (inquiry: any) => void;
-  refreshMessageThreads: () => void;
+  refreshMessages: () => void;
 };
 
 const InquiryPageContext = createContext<InquiryContextValue | undefined>(
@@ -47,29 +31,13 @@ export const InquiryPageContextProvider = ({
 }: {
   children: ReactNode;
 }) => {
-  const {
-    useQueries: { useRecordMessageThreads },
-  } = useNestermind();
-  const [selectedInquiryId, setSelectedInquiryId] = useState<string | null>(
-    null,
-  );
   const [selectedInquiry, setSelectedInquiry] = useState<any | null>(null);
   const [isInquirySidebarOpen, setIsInquirySidebarOpen] = useState(false);
 
-  // Fetch the message threads for the selected inquiry
-  const {
-    data: messageThreads,
-    isLoading: isLoadingMessageThreads,
-    refetch: refreshMessageThreads,
-    error: messageThreadsError,
-  } = useRecordMessageThreads(
-    selectedInquiryId,
-    CoreObjectNameSingular.BuyerLead,
-    { enabled: !!selectedInquiryId },
-  );
+  const { messages, thread, threadLoading, messageChannelLoading } =
+    useThreadMessages(selectedInquiry?.messageThreads[0]?.id);
 
-  const openInquirySidebar = useCallback((inquiryId: string) => {
-    setSelectedInquiryId(inquiryId);
+  const openInquirySidebar = useCallback(() => {
     setIsInquirySidebarOpen(true);
   }, []);
 
@@ -79,14 +47,14 @@ export const InquiryPageContextProvider = ({
 
   const toggleInquirySidebar = useCallback(
     (inquiryId: string) => {
-      if (selectedInquiryId === inquiryId && isInquirySidebarOpen) {
+      if (selectedInquiry?.id === inquiryId && isInquirySidebarOpen) {
         closeInquirySidebar();
       } else {
-        openInquirySidebar(inquiryId);
+        openInquirySidebar();
       }
     },
     [
-      selectedInquiryId,
+      selectedInquiry?.id,
       isInquirySidebarOpen,
       openInquirySidebar,
       closeInquirySidebar,
@@ -94,17 +62,17 @@ export const InquiryPageContextProvider = ({
   );
 
   const contextValue = {
-    selectedInquiryId,
+    selectedInquiryId: selectedInquiry?.id,
     isInquirySidebarOpen,
     openInquirySidebar,
     closeInquirySidebar,
     toggleInquirySidebar,
-    messageThreads: messageThreads || null,
-    messageThreadsError,
-    isLoadingMessageThreads,
+    messages,
+    thread,
     selectedInquiry,
     setSelectedInquiry,
-    refreshMessageThreads,
+    refreshMessages: () => {},
+    isLoadingMessages: threadLoading || messageChannelLoading,
   };
 
   return (

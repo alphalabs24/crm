@@ -16,6 +16,7 @@ import {
   LARGE_DESKTOP_VIEWPORT,
 } from 'twenty-ui';
 import { ObjectOverview } from './ObjectOverview';
+import { InquiriesPreview } from '@/inquiries/components/InquiriesPreview';
 
 const StyledContentContainer = styled.div<{ isInRightDrawer?: boolean }>`
   display: flex;
@@ -118,7 +119,10 @@ export const PropertyDetails = ({
           />
         </StyledLeftContentContainer>
         <StyledRightContentContainer isInRightDrawer={isInRightDrawer}>
-          <Section title={t`Inquiries`} icon={<IconMessageCircle2 size={16} />}>
+          <Section
+            title={t`Inquiries Overview`}
+            icon={<IconMessageCircle2 size={16} />}
+          >
             {propertyPlatformMetrics?.contactsByPlatform ? (
               <ContactsByPlatformChart
                 contactsByPlatform={propertyPlatformMetrics.contactsByPlatform}
@@ -127,6 +131,7 @@ export const PropertyDetails = ({
             ) : (
               <Trans>No inquiries data available yet</Trans>
             )}
+            <InquiriesPreview propertyId={property.id} maxItems={5} />
           </Section>
 
           <Section title={t`Reporting`} icon={<IconChartBar size={16} />}>

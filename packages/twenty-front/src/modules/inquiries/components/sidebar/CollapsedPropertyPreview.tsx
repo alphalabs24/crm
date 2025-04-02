@@ -1,44 +1,42 @@
+import { useAttachments } from '@/activities/files/hooks/useAttachments';
+import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
-import { Button, IconLayoutBottombarExpand, IconPhoto } from 'twenty-ui';
+import { useMemo } from 'react';
+import { IconPhoto, MOBILE_VIEWPORT } from 'twenty-ui';
 import { formatAmount } from '~/utils/format/formatAmount';
 
-const StyledCollapsedPreview = styled.div`
+const StyledChipButton = styled.button`
   align-items: center;
   background: ${({ theme }) => theme.background.primary};
-  border-left: 1px solid ${({ theme }) => theme.border.color.light};
-  bottom: ${({ theme }) => theme.spacing(2)};
+  border: 1px solid ${({ theme }) => theme.border.color.light};
+  border-radius: ${({ theme }) => theme.border.radius.md};
+  cursor: pointer;
   display: flex;
   gap: ${({ theme }) => theme.spacing(2)};
-  padding: ${({ theme }) => theme.spacing(2)};
-  position: fixed;
-  right: ${({ theme }) => theme.spacing(2)};
-  width: 300px;
-  z-index: 2;
-`;
-
-const StyledImageContainer = styled.div`
-  aspect-ratio: 1;
-  background: ${({ theme }) => theme.background.tertiary};
-  border-radius: ${({ theme }) => theme.border.radius.sm};
-  display: flex;
-  height: 60px;
-  overflow: hidden;
+  padding: ${({ theme }) => theme.spacing(1.25, 3)};
   position: relative;
-  width: 60px;
+  transition: all 0.1s ease-in-out;
+  display: none;
+
+  &:hover {
+    background: ${({ theme }) => theme.background.tertiary};
+    border-color: ${({ theme }) => theme.border.color.medium};
+  }
+
+  &:active {
+    background: ${({ theme }) => theme.background.quaternary};
+  }
+
+  @media only screen and (min-width: ${MOBILE_VIEWPORT}px) {
+    display: flex;
+  }
 `;
 
-const StyledImage = styled.img`
-  height: 100%;
-  object-fit: cover;
-  width: 100%;
-`;
-
-const StyledInfo = styled.div`
+const StyledContent = styled.div`
+  align-items: flex-start;
   display: flex;
   flex-direction: column;
-  flex: 1;
-  gap: ${({ theme }) => theme.spacing(0.5)};
   min-width: 0;
 `;
 
@@ -46,17 +44,44 @@ const StyledPropertyName = styled.div`
   color: ${({ theme }) => theme.font.color.primary};
   font-size: ${({ theme }) => theme.font.size.sm};
   font-weight: ${({ theme }) => theme.font.weight.medium};
+  max-width: 180px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 `;
 
-const StyledPropertyPrice = styled.div`
+const StyledPropertyDetails = styled.div`
+  align-items: center;
   color: ${({ theme }) => theme.font.color.tertiary};
+  display: flex;
   font-size: ${({ theme }) => theme.font.size.xs};
+  gap: ${({ theme }) => theme.spacing(1)};
+`;
+
+const StyledDot = styled.div`
+  background-color: ${({ theme }) => theme.font.color.light};
+  border-radius: 50%;
+  height: 3px;
+  width: 3px;
+`;
+
+const StyledImageContainer = styled.div`
+  align-items: center;
+  aspect-ratio: 1;
+  width: 32px;
+  height: 32px;
+  background: ${({ theme }) => theme.background.tertiary};
+  border-radius: ${({ theme }) => theme.border.radius.md};
+  display: flex;
+  justify-content: center;
   overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  flex-shrink: 0;
+`;
+
+const StyledImage = styled.img`
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
 `;
 
 type CollapsedPropertyPreviewProps = {
@@ -70,6 +95,19 @@ export const CollapsedPropertyPreview = ({
 }: CollapsedPropertyPreviewProps) => {
   const theme = useTheme();
 
+  const { attachments = [] } = useAttachments({
+    id: property?.id,
+    targetObjectNameSingular: CoreObjectNameSingular.Property,
+  });
+
+  const propertyImages = useMemo(
+    () =>
+      attachments
+        .filter((attachment) => attachment.type === 'PropertyImage')
+        .sort((a, b) => a.orderIndex - b.orderIndex),
+    [attachments],
+  );
+
   if (!property) return null;
 
   const formattedPrice = property.rentNet?.amountMicros
@@ -78,35 +116,36 @@ export const CollapsedPropertyPreview = ({
       ? `${formatAmount(property.sellingPrice.amountMicros / 1000000)} ${property.sellingPrice.currencyCode}`
       : null;
 
+  const propertyType = property.type || 'Property';
+  const propertyLocation = property.location?.city || '';
+
   return (
-    <StyledCollapsedPreview>
+    <StyledChipButton onClick={onExpand}>
       <StyledImageContainer>
-        {property.images?.[0] ? (
-          <StyledImage src={property.images[0]} alt={property.name} />
+        {propertyImages[0] ? (
+          <StyledImage src={propertyImages[0].fullPath} alt={property.name} />
         ) : (
-          <IconPhoto
-            size={24}
-            color={theme.font.color.light}
-            style={{
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-            }}
-          />
+          <IconPhoto size={16} color={theme.font.color.light} />
         )}
       </StyledImageContainer>
-      <StyledInfo>
+      <StyledContent>
         <StyledPropertyName>{property.name}</StyledPropertyName>
-        {formattedPrice && (
-          <StyledPropertyPrice>{formattedPrice}</StyledPropertyPrice>
-        )}
-      </StyledInfo>
-      <Button
-        Icon={IconLayoutBottombarExpand}
-        variant="tertiary"
-        onClick={onExpand}
-      />
-    </StyledCollapsedPreview>
+        <StyledPropertyDetails>
+          {propertyType}
+          {propertyLocation && (
+            <>
+              <StyledDot />
+              {propertyLocation}
+            </>
+          )}
+          {formattedPrice && (
+            <>
+              <StyledDot />
+              {formattedPrice}
+            </>
+          )}
+        </StyledPropertyDetails>
+      </StyledContent>
+    </StyledChipButton>
   );
 };

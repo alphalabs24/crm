@@ -1,9 +1,7 @@
 import { useInquiryPage } from '@/inquiries/contexts/InquiryPageContext';
-import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useState } from 'react';
-import { LARGE_DESKTOP_VIEWPORT } from 'twenty-ui';
-import { CollapsedPropertyPreview } from './sidebar/CollapsedPropertyPreview';
+import { LARGE_DESKTOP_VIEWPORT, useIsMobile } from 'twenty-ui';
 import { ConversationSection } from './sidebar/ConversationSection';
 import { PropertyDetails } from './sidebar/PropertyDetails';
 
@@ -45,8 +43,10 @@ export const InquirySidebar = () => {
   const { isInquirySidebarOpen, closeInquirySidebar, selectedInquiry } =
     useInquiryPage();
 
+  const isMobile = useIsMobile();
+
   const [isPropertyDetailsExpanded, setIsPropertyDetailsExpanded] =
-    useState(true);
+    useState(false);
 
   // Only show content if there's a selected inquiry
   const hasInquiry = Boolean(selectedInquiry);
@@ -60,9 +60,11 @@ export const InquirySidebar = () => {
               <ConversationSection
                 inquiry={selectedInquiry}
                 onClose={closeInquirySidebar}
+                onExpandProperty={() => setIsPropertyDetailsExpanded(true)}
+                isPropertyDetailsExpanded={isPropertyDetailsExpanded}
               />
             </StyledConversationWrapper>
-            {isPropertyDetailsExpanded && (
+            {isPropertyDetailsExpanded && !isMobile && (
               <PropertyDetails
                 property={selectedInquiry.property}
                 onCollapse={() => setIsPropertyDetailsExpanded(false)}
@@ -71,12 +73,6 @@ export const InquirySidebar = () => {
           </StyledContent>
         )}
       </StyledSidebar>
-      {hasInquiry && !isPropertyDetailsExpanded && (
-        <CollapsedPropertyPreview
-          property={selectedInquiry.property}
-          onExpand={() => setIsPropertyDetailsExpanded(true)}
-        />
-      )}
     </>
   );
 };

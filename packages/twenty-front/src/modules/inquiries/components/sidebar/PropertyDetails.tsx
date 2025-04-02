@@ -1,23 +1,29 @@
+import { useAttachments } from '@/activities/files/hooks/useAttachments';
 import { DateFormat } from '@/localization/constants/DateFormat';
 import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadataItem';
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { getLinkToShowPage } from '@/object-metadata/utils/getLinkToShowPage';
+import { PlatformBadge } from '@/object-record/record-show/components/nm/publication/PlatformBadge';
 import { StyledLoadingContainer } from '@/object-record/record-show/components/ui/PropertyDetailsCardComponents';
 import { useRecordShowContainerData } from '@/object-record/record-show/hooks/useRecordShowContainerData';
+import { usePublicationsOfProperty } from '@/ui/layout/show-page/hooks/usePublicationsOfProperty';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Trans, useLingui } from '@lingui/react/macro';
 import { format } from 'date-fns';
-import React, { useMemo } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { capitalize } from 'twenty-shared';
 import {
-  AppTooltip,
   Button,
+  IconArrowUpRight,
+  IconCalendar,
+  IconChevronDown,
   IconLayoutBottombarCollapse,
   IconMap,
   IconPhoto,
-  TooltipDelay,
+  useIcons,
 } from 'twenty-ui';
 import { formatAmount } from '~/utils/format/formatAmount';
 
@@ -26,14 +32,6 @@ const StyledContent = styled.div`
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(4)};
   overflow-y: auto;
-`;
-
-const StyledPropertyInfoContainer = styled.div`
-  background: ${({ theme }) => theme.background.transparent.lighter};
-  display: flex;
-  gap: ${({ theme }) => theme.spacing(4)};
-  padding: ${({ theme }) => theme.spacing(3)};
-  border-bottom: 1px solid ${({ theme }) => theme.border.color.light};
 `;
 
 const StyledHeader = styled.div`
@@ -56,6 +54,9 @@ const StyledHeaderTitle = styled.div`
   color: ${({ theme }) => theme.font.color.primary};
   font-size: ${({ theme }) => theme.font.size.md};
   font-weight: ${({ theme }) => theme.font.weight.medium};
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing(2)};
 `;
 
 const StyledImage = styled.img`
@@ -67,14 +68,14 @@ const StyledImage = styled.img`
 const StyledImageContainer = styled.div`
   align-items: center;
   aspect-ratio: 1;
+  width: 70px;
+  height: 70px;
   background: ${({ theme }) => theme.background.tertiary};
   border-radius: ${({ theme }) => theme.border.radius.md};
   display: flex;
   justify-content: center;
   overflow: hidden;
-  position: relative;
-  width: 50px;
-  height: 50px;
+  flex-shrink: 0;
 `;
 
 const StyledPropertyAddress = styled.div`
@@ -138,7 +139,7 @@ const StyledPropertyPrice = styled.div`
   color: ${({ theme }) => theme.font.color.primary};
   font-size: ${({ theme }) => theme.font.size.md};
   font-weight: ${({ theme }) => theme.font.weight.medium};
-  margin-top: ${({ theme }) => theme.spacing(1)};
+  margin: ${({ theme }) => theme.spacing(1.5, 0)};
   text-decoration: underline;
 `;
 
@@ -161,33 +162,108 @@ const StyledDetailCard = styled.div`
   cursor: default;
 `;
 
-const StyledPropertyDetailsContainer = styled.div`
+const StyledSectionsContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(2)};
-  padding: ${({ theme }) => theme.spacing(3)};
 `;
 
-const StyledPropertyDetailsCard = styled.div`
-  background: ${({ theme }) => theme.background.transparent.lighter};
-  border-radius: ${({ theme }) => theme.border.radius.md};
+const StyledSection = styled.div<{ $transparent?: boolean }>`
+  background: ${({ theme, $transparent }) =>
+    $transparent ? 'transparent' : theme.background.transparent.lighter};
+  display: flex;
+  flex-direction: column;
   padding: ${({ theme }) => theme.spacing(3)};
+  gap: ${({ theme }) => theme.spacing(2)};
+`;
+
+const StyledSectionTitle = styled.div`
+  color: ${({ theme }) => theme.font.color.secondary};
+  font-size: ${({ theme }) => theme.font.size.sm};
+  font-weight: ${({ theme }) => theme.font.weight.medium};
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+`;
+
+const StyledPublicationsList = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(2)};
+  max-height: 300px;
+  overflow-y: auto;
+`;
+
+const StyledPublicationCardLink = styled(Link)`
+  text-decoration: none;
+`;
+
+const StyledPublicationCard = styled.div`
+  background: ${({ theme }) => theme.background.primary};
   border: 1px solid ${({ theme }) => theme.border.color.light};
+  border-radius: ${({ theme }) => theme.border.radius.md};
+  padding: ${({ theme }) => theme.spacing(2)};
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(1)};
+
+  &:hover {
+    background: ${({ theme }) => theme.background.transparent.lighter};
+  }
 `;
 
-// Additional details fields to display with proper formatting
-const DETAIL_FIELDS = [
-  'category',
-  'surface',
-  'rooms',
-  'livingSurface',
-  'floor',
-  'constructionYear',
-  'renovationYear',
-];
+const StyledPublicationHeader = styled.div`
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const StyledPublicationDetail = styled.div`
+  align-items: center;
+  display: flex;
+  font-size: ${({ theme }) => theme.font.size.xs};
+  gap: ${({ theme }) => theme.spacing(1)};
+  color: ${({ theme }) => theme.font.color.secondary};
+`;
+
+const StyledPropertyMainSection = styled.div`
+  align-items: center;
+  display: flex;
+  gap: ${({ theme }) => theme.spacing(3)};
+  position: relative;
+`;
+
+const StyledMainInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(1)};
+  flex: 1;
+`;
+
+const StyledDetailsSection = styled.div`
+  margin-top: ${({ theme }) => theme.spacing(1)};
+`;
+
+// Update field groups to be more focused
+const FIELD_GROUPS = {
+  'Key Details': [
+    'category',
+    'offerType',
+    'surface',
+    'livingSurface',
+    'rooms',
+    'floor',
+    'constructionYear',
+  ],
+  Features: [
+    'hasParking',
+    'hasBalcony',
+    'hasElevator',
+    'hasCellar',
+    'hasGarden',
+    'description',
+  ],
+  Availability: ['availableFrom', 'stage'],
+};
 
 // Get formatted value based on field type
 const getFormattedValue = (fieldName: string, value: any, label?: string) => {
@@ -211,6 +287,90 @@ const getFormattedValue = (fieldName: string, value: any, label?: string) => {
   return String(value);
 };
 
+const StyledExpandButton = styled.button`
+  align-items: center;
+  background: none;
+  border: none;
+  color: ${({ theme }) => theme.font.color.secondary};
+  cursor: pointer;
+  display: flex;
+  font-size: ${({ theme }) => theme.font.size.sm};
+  font-weight: ${({ theme }) => theme.font.weight.medium};
+  gap: ${({ theme }) => theme.spacing(1)};
+  padding: 0;
+  transition: all 0.1s ease-in-out;
+
+  &:hover {
+    color: ${({ theme }) => theme.font.color.primary};
+  }
+`;
+
+const StyledDetailsList = styled(motion.div)`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(3)};
+  margin-top: ${({ theme }) => theme.spacing(2)};
+  overflow: hidden;
+`;
+
+const StyledDetailGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(2)};
+`;
+
+const StyledDetailGroupTitle = styled.div`
+  color: ${({ theme }) => theme.font.color.secondary};
+  font-size: ${({ theme }) => theme.font.size.xs};
+  font-weight: ${({ theme }) => theme.font.weight.medium};
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+`;
+
+const StyledDetailItem = styled.div`
+  align-items: flex-start;
+  display: flex;
+  gap: ${({ theme }) => theme.spacing(2)};
+`;
+
+const StyledDetailIcon = styled.div`
+  align-items: center;
+  color: ${({ theme }) => theme.font.color.light};
+  display: flex;
+  flex-shrink: 0;
+  height: 20px;
+  justify-content: center;
+  width: 20px;
+`;
+
+const StyledDetailContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(0.5)};
+`;
+
+const StyledDetailLabel = styled.div`
+  color: ${({ theme }) => theme.font.color.secondary};
+  font-size: ${({ theme }) => theme.font.size.sm};
+`;
+
+const StyledDetailValue = styled.div`
+  color: ${({ theme }) => theme.font.color.primary};
+  font-size: ${({ theme }) => theme.font.size.sm};
+  white-space: pre-wrap;
+`;
+
+const StyledExpandButtonContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: ${({ theme }) => theme.spacing(2)};
+`;
+
+const StyledExpandIcon = styled(motion.div)`
+  align-items: center;
+  display: flex;
+`;
+
 type PropertyDetailsProps = {
   property: any;
   onCollapse: () => void;
@@ -222,11 +382,19 @@ export const PropertyDetails = ({
 }: PropertyDetailsProps) => {
   const theme = useTheme();
   const { t } = useLingui();
+  const [isDetailsExpanded, setIsDetailsExpanded] = useState(false);
+  const { getIcon } = useIcons();
 
   // Get property details from the object metadata
   const { recordFromStore, recordLoading } = useRecordShowContainerData({
     objectNameSingular: CoreObjectNameSingular.Property,
     objectRecordId: property?.id,
+  });
+
+  const { publications } = usePublicationsOfProperty(property?.id, 'published');
+  const { attachments = [] } = useAttachments({
+    id: property?.id,
+    targetObjectNameSingular: CoreObjectNameSingular.Property,
   });
 
   // object metadata
@@ -239,18 +407,54 @@ export const PropertyDetails = ({
     return recordFromStore || property;
   }, [recordFromStore, property]);
 
-  // Get field metadata map for tooltips
-  const fieldMetadataMap = useMemo(() => {
+  // Group fields by predefined categories and filter out empty values
+  const groupedFields = useMemo(() => {
     if (!objectMetadataItem) return {};
 
     return objectMetadataItem.fields.reduce(
       (acc, field) => {
-        acc[field.name] = field;
+        // Skip fields that are already shown in the overview or not in our groups
+        if (
+          [
+            'name',
+            'refProperty',
+            'address',
+            'sellingPrice',
+            'rentNet',
+          ].includes(field.name)
+        ) {
+          return acc;
+        }
+
+        // Find which group this field belongs to
+        const group = Object.entries(FIELD_GROUPS).find(([_, fields]) =>
+          fields.includes(field.name),
+        )?.[0];
+
+        // Skip if field is not in any group
+        if (!group) return acc;
+
+        // Skip if value is empty/null
+        const value = propertyData[field.name];
+        if (value === undefined || value === null || value === '') return acc;
+
+        if (!acc[group]) {
+          acc[group] = [];
+        }
+        acc[group].push(field);
         return acc;
       },
-      {} as Record<string, any>,
+      {} as Record<string, any[]>,
     );
-  }, [objectMetadataItem]);
+  }, [objectMetadataItem, propertyData]);
+
+  const propertyImages = useMemo(
+    () =>
+      attachments
+        .filter((attachment) => attachment.type === 'PropertyImage')
+        .sort((a, b) => a.orderIndex - b.orderIndex),
+    [attachments],
+  );
 
   if (!propertyData) return null;
 
@@ -261,6 +465,42 @@ export const PropertyDetails = ({
       : null;
 
   const isRental = propertyData.category === 'Rental';
+
+  const renderDetailValue = (field: any, value: any) => {
+    if (value === null || value === undefined) return '-';
+
+    if (field.type === 'boolean') {
+      return value ? 'Yes' : 'No';
+    }
+
+    if (field.type === 'number') {
+      if (field.name.toLowerCase().includes('surface')) {
+        return `${value} m²`;
+      }
+      if (field.name.toLowerCase().includes('volume')) {
+        return `${value} m³`;
+      }
+      return value.toString();
+    }
+
+    if (field.type === 'date') {
+      return format(new Date(value), DateFormat.DAY_FIRST);
+    }
+
+    if (field.name === 'stage') {
+      return capitalize(value.toLowerCase());
+    }
+
+    if (field.name === 'description' && value.length > 150) {
+      return value.substring(0, 150) + '...';
+    }
+
+    if (typeof value === 'object') {
+      return JSON.stringify(value);
+    }
+
+    return value.toString();
+  };
 
   if (recordLoading) {
     return (
@@ -291,6 +531,22 @@ export const PropertyDetails = ({
         <StyledHeaderContent>
           <StyledHeaderTitle>
             <Trans>Property Details</Trans>
+            <Link
+              style={{
+                textDecoration: 'none',
+              }}
+              to={getLinkToShowPage(
+                CoreObjectNameSingular.Property,
+                propertyData,
+              )}
+            >
+              <Button
+                title={t`Open`}
+                size="small"
+                variant="secondary"
+                IconRight={IconArrowUpRight}
+              />
+            </Link>
           </StyledHeaderTitle>
         </StyledHeaderContent>
         <Button
@@ -300,99 +556,155 @@ export const PropertyDetails = ({
         />
       </StyledHeader>
       <StyledContent>
-        <StyledPropertyInfoContainer>
-          <StyledImageContainer>
-            {propertyData.images?.[0] ? (
-              <StyledImage
-                src={propertyData.images[0]}
-                alt={propertyData.name}
-              />
-            ) : (
-              <IconPhoto size={20} color={theme.font.color.light} />
-            )}
-          </StyledImageContainer>
-
-          <StyledPropertyInfo>
-            <StyledPropertyHeaderName>
-              {propertyData.name}
-            </StyledPropertyHeaderName>
-            <StyledPropertyHeaderDetails>
-              {objectMetadataItem?.labelSingular}
-              {propertyData.createdAt
-                ? ` · ${t`Created on`} ${format(
-                    new Date(propertyData.createdAt),
-                    DateFormat.DAY_FIRST,
-                  )}`
-                : ''}
-            </StyledPropertyHeaderDetails>
-          </StyledPropertyInfo>
-        </StyledPropertyInfoContainer>
-        <StyledPropertyDetailsContainer>
-          <StyledPropertyDetailsCard>
-            <StyledPropertyName>
-              <StyledHoverName
-                to={getLinkToShowPage(
-                  CoreObjectNameSingular.Property,
-                  propertyData,
+        <StyledSectionsContainer>
+          <StyledSection>
+            <StyledSectionTitle>
+              <Trans>Property Information</Trans>
+            </StyledSectionTitle>
+            <StyledPropertyMainSection>
+              <StyledImageContainer>
+                {propertyImages[0] ? (
+                  <StyledImage
+                    src={propertyImages[0].fullPath}
+                    alt={propertyData.name}
+                  />
+                ) : (
+                  <IconPhoto size={28} color={theme.font.color.light} />
                 )}
+              </StyledImageContainer>
+              <StyledMainInfo>
+                <StyledPropertyName>
+                  <StyledHoverName
+                    to={getLinkToShowPage(
+                      CoreObjectNameSingular.Property,
+                      propertyData,
+                    )}
+                  >
+                    {propertyData.name}
+                  </StyledHoverName>
+                  <StyledDetailCard>
+                    ref: {propertyData.refProperty}
+                  </StyledDetailCard>
+                </StyledPropertyName>
+                {formattedPrice && (
+                  <StyledPropertyPrice>
+                    {formattedPrice}
+                    {isRental && <span> / month</span>}
+                  </StyledPropertyPrice>
+                )}
+                {propertyData.address && (
+                  <StyledPropertyAddress>
+                    <IconMap size={14} />
+                    {[
+                      propertyData.address.addressStreet1,
+                      propertyData.address.addressCity,
+                      propertyData.address.addressPostcode,
+                    ]
+                      .filter(Boolean)
+                      .join(', ')}
+                  </StyledPropertyAddress>
+                )}
+              </StyledMainInfo>
+            </StyledPropertyMainSection>
+
+            <StyledExpandButtonContainer>
+              <StyledExpandButton
+                onClick={() => setIsDetailsExpanded(!isDetailsExpanded)}
               >
-                {propertyData.name}{' '}
-              </StyledHoverName>
-              <StyledDetailCard>
-                ref: {propertyData.refProperty}
-              </StyledDetailCard>
-            </StyledPropertyName>
-            {propertyData.address && (
-              <StyledPropertyAddress>
-                <IconMap size={14} />
-                {[
-                  propertyData.address.addressStreet1,
-                  propertyData.address.addressCity,
-                  propertyData.address.addressPostcode,
-                ]
-                  .filter(Boolean)
-                  .join(', ')}
-              </StyledPropertyAddress>
-            )}
+                <StyledExpandIcon
+                  animate={{ rotate: isDetailsExpanded ? 180 : 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <IconChevronDown size={16} />
+                </StyledExpandIcon>
+                <Trans>
+                  {isDetailsExpanded
+                    ? 'Show less details'
+                    : 'Show more details'}
+                </Trans>
+              </StyledExpandButton>
+            </StyledExpandButtonContainer>
 
-            {formattedPrice && (
-              <StyledPropertyPrice>
-                {formattedPrice}
-                {isRental && <span> / month</span>}
-              </StyledPropertyPrice>
-            )}
+            <AnimatePresence>
+              {isDetailsExpanded && (
+                <StyledDetailsList
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: 'auto', opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  {Object.entries(groupedFields).map(([section, fields]) => (
+                    <StyledDetailGroup key={section}>
+                      <StyledDetailGroupTitle>{section}</StyledDetailGroupTitle>
+                      {fields.map((field) => {
+                        const value = propertyData[field.name];
+                        if (value === undefined || value === null) return null;
 
-            <StyledDetailCardsContainer>
-              {DETAIL_FIELDS.map((field) => {
-                if (!propertyData[field]) return null;
+                        const IconComponent = getIcon(field.icon);
 
-                const fieldId = `property-field-${field}`;
-                const fieldMetadata = fieldMetadataMap[field];
-                const formattedValue = getFormattedValue(
-                  field,
-                  propertyData[field],
-                  fieldMetadata?.label,
-                );
+                        return (
+                          <StyledDetailItem key={field.name}>
+                            <StyledDetailIcon>
+                              <IconComponent size={16} />
+                            </StyledDetailIcon>
+                            <StyledDetailContent>
+                              <StyledDetailLabel>
+                                {field.label}
+                              </StyledDetailLabel>
+                              <StyledDetailValue>
+                                {renderDetailValue(field, value)}
+                              </StyledDetailValue>
+                            </StyledDetailContent>
+                          </StyledDetailItem>
+                        );
+                      })}
+                    </StyledDetailGroup>
+                  ))}
+                </StyledDetailsList>
+              )}
+            </AnimatePresence>
+          </StyledSection>
 
-                return (
-                  <React.Fragment key={field}>
-                    <StyledDetailCard id={fieldId}>
-                      {formattedValue}
-                    </StyledDetailCard>
-                    <AppTooltip
-                      anchorSelect={`#${fieldId}`}
-                      content={fieldMetadata?.label || field}
-                      place="bottom"
-                      noArrow
-                      delay={TooltipDelay.noDelay}
-                      clickable
-                    />
-                  </React.Fragment>
-                );
-              })}
-            </StyledDetailCardsContainer>
-          </StyledPropertyDetailsCard>
-        </StyledPropertyDetailsContainer>
+          {publications?.length > 0 && (
+            <StyledSection $transparent>
+              <StyledSectionTitle>
+                <Trans>Active Publications</Trans>
+              </StyledSectionTitle>
+              <StyledPublicationsList>
+                {publications.map((publication: any) => (
+                  <StyledPublicationCardLink
+                    to={getLinkToShowPage(
+                      CoreObjectNameSingular.Publication,
+                      publication,
+                    )}
+                  >
+                    <StyledPublicationCard key={publication.id}>
+                      <StyledPublicationHeader>
+                        <PlatformBadge
+                          platformId={publication.platform}
+                          size="tiny"
+                          variant="no-background"
+                        />
+                        <StyledDetailCard>
+                          ref: {publication.refProperty}
+                        </StyledDetailCard>
+                      </StyledPublicationHeader>
+                      {publication.createdAt && (
+                        <StyledPublicationDetail>
+                          <IconCalendar size={14} />
+                          {format(
+                            new Date(publication.createdAt),
+                            DateFormat.DAY_FIRST,
+                          )}
+                        </StyledPublicationDetail>
+                      )}
+                    </StyledPublicationCard>
+                  </StyledPublicationCardLink>
+                ))}
+              </StyledPublicationsList>
+            </StyledSection>
+          )}
+        </StyledSectionsContainer>
       </StyledContent>
     </StyledPropertyDetails>
   );

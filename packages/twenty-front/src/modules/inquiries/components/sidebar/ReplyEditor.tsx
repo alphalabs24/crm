@@ -1,14 +1,14 @@
 import { BLOCK_SCHEMA } from '@/activities/blocks/constants/Schema';
-import { useTheme } from '@emotion/react';
-import styled from '@emotion/styled';
-import { useCreateBlockNote } from '@blocknote/react';
-import { useState } from 'react';
-import { Button, IconSend } from 'twenty-ui';
+import { usePreviousHotkeyScope } from '@/ui/utilities/hotkey/hooks/usePreviousHotkeyScope';
 import '@blocknote/core/fonts/inter.css';
 import '@blocknote/mantine/style.css';
+import { useCreateBlockNote } from '@blocknote/react';
 import '@blocknote/react/style.css';
-import { AppHotkeyScope } from '@/ui/utilities/hotkey/types/AppHotkeyScope';
-import { usePreviousHotkeyScope } from '@/ui/utilities/hotkey/hooks/usePreviousHotkeyScope';
+import { useTheme } from '@emotion/react';
+import styled from '@emotion/styled';
+import { Trans } from '@lingui/react/macro';
+import { useState } from 'react';
+import { Button, IconRocket, IconSend } from 'twenty-ui';
 import { CustomBlockEditor } from './CustomBlockEditor';
 
 // Special hotkey scope for the reply editor
@@ -17,10 +17,22 @@ export enum ReplyEditorHotkeyScope {
 }
 
 const StyledButtonContainer = styled.div`
+  align-items: center;
   display: flex;
   gap: ${({ theme }) => theme.spacing(1)};
   justify-content: flex-end;
   margin-top: ${({ theme }) => theme.spacing(1)};
+`;
+
+const StyledComingSoonTag = styled.div`
+  align-items: center;
+  border-radius: ${({ theme }) => theme.border.radius.md};
+  color: ${({ theme }) => theme.font.color.secondary};
+  display: flex;
+  font-size: ${({ theme }) => theme.font.size.xs};
+  font-weight: ${({ theme }) => theme.font.weight.medium};
+  gap: ${({ theme }) => theme.spacing(1)};
+  padding: ${({ theme }) => theme.spacing(1, 2)};
 `;
 
 const StyledComposeHeader = styled.div`
@@ -49,18 +61,33 @@ const StyledSubject = styled.span`
   font-weight: ${({ theme }) => theme.font.weight.medium};
 `;
 
+const StyledPlaceholderWrapper = styled.div`
+  align-items: center;
+  background: ${({ theme }) => theme.background.secondary};
+  border: 1px solid ${({ theme }) => theme.border.color.light};
+  border-radius: ${({ theme }) => theme.border.radius.md};
+  display: flex;
+  height: 120px;
+  justify-content: center;
+  width: 100%;
+`;
+
 type ReplyEditorProps = {
   onSend?: (content: string) => void;
   recipientEmail?: string;
   recipientName?: string;
   subject?: string;
+  disabled?: boolean;
+  comingSoon?: boolean;
 };
 
 export const ReplyEditor = ({
   onSend,
+  disabled = false,
   recipientEmail = '',
   recipientName = '',
   subject = 'Re: Inquiry',
+  comingSoon = false,
 }: ReplyEditorProps) => {
   const theme = useTheme();
   const [isSending, setIsSending] = useState(false);
@@ -122,14 +149,24 @@ export const ReplyEditor = ({
         <StyledSubject>{subject}</StyledSubject>
       </StyledComposeHeader>
 
-      <StyledEditorWrapper key={editorKey}>
-        <CustomBlockEditor
-          editor={editor}
-          onChange={handleEditorChange}
-          onFocus={handleEditorFocus}
-          onBlur={handleEditorBlur}
-        />
-      </StyledEditorWrapper>
+      {comingSoon ? (
+        <StyledPlaceholderWrapper>
+          <StyledComingSoonTag>
+            <IconRocket size={14} />
+            <Trans>Reply functionality coming soon</Trans>
+          </StyledComingSoonTag>
+        </StyledPlaceholderWrapper>
+      ) : (
+        <StyledEditorWrapper key={editorKey}>
+          <CustomBlockEditor
+            editor={editor}
+            readonly={disabled}
+            onChange={handleEditorChange}
+            onFocus={handleEditorFocus}
+            onBlur={handleEditorBlur}
+          />
+        </StyledEditorWrapper>
+      )}
 
       <StyledButtonContainer>
         <Button
@@ -137,7 +174,7 @@ export const ReplyEditor = ({
           Icon={IconSend}
           variant="primary"
           onClick={handleSend}
-          disabled={isSending}
+          disabled={comingSoon || disabled || isSending}
         />
       </StyledButtonContainer>
     </StyledReplyEditorContainer>

@@ -1,11 +1,10 @@
 import { ActivityTargetableObject } from '@/activities/types/ActivityTargetableEntity';
+import { InquiriesPreview } from '@/inquiries/components/InquiriesPreview';
 import { ContactsByStageChart } from '@/object-record/record-show/components/nm/publication/ContactsByStageChart';
 import { StatusBadge } from '@/object-record/record-show/components/nm/publication/StatusBadge';
 import {
   Section,
-  StyledChartContainer,
   StyledComingSoonText,
-  StyledEmptyState,
   StyledLoadingContainer,
   StyledProgressContainer,
 } from '@/object-record/record-show/components/ui/PropertyDetailsCardComponents';
@@ -106,7 +105,6 @@ export const PublicationDetails = ({
       objectRecordId: targetableObject.id,
     });
 
-  // TODO: Add a skeleton loader here
   if (recordLoading || !publication) {
     return (
       <StyledLoadingContainer>
@@ -138,18 +136,18 @@ export const PublicationDetails = ({
             <StatusBadge status={publication.stage} />
           </Section>
 
-          <Section title={t`Inquiries`} icon={<IconMessageCircle2 size={16} />}>
+          <Section
+            title={t`Inquiries Overview`}
+            icon={<IconMessageCircle2 size={16} />}
+          >
             {publicationMetrics?.contactsByStage ? (
-              <StyledChartContainer>
-                <ContactsByStageChart
-                  contactsByStage={publicationMetrics.contactsByStage}
-                />
-              </StyledChartContainer>
+              <ContactsByStageChart
+                contactsByStage={publicationMetrics.contactsByStage}
+              />
             ) : (
-              <StyledEmptyState>
-                <Trans>No inquiries data available yet</Trans>
-              </StyledEmptyState>
+              <Trans>No inquiries data available yet</Trans>
             )}
+            <InquiriesPreview publicationId={publication.id} maxItems={5} />
           </Section>
 
           <Section title={t`Reporting`} icon={<IconChartBar size={16} />}>

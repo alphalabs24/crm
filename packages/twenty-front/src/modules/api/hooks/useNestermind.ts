@@ -1,5 +1,6 @@
 import { tokenPairState } from '@/auth/states/tokenPairState';
 import { useTutorialSteps } from '@/onboarding-tutorial/hooks/useTutorialSteps';
+import { useSnackBar } from '@/ui/feedback/snack-bar-manager/hooks/useSnackBar';
 import { PlatformId } from '@/ui/layout/show-page/components/nm/types/Platform';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios, { AxiosResponse } from 'axios';
@@ -255,7 +256,7 @@ export const useNestermind = () => {
     }: {
       id: string;
       objectNameSingular: string;
-    }): Promise<AxiosResponse<TimelineThread[] | undefined>> => {
+    }): Promise<TimelineThread[] | undefined> => {
       const response = await api.get(
         `/messages/${objectNameSingular}?${objectNameSingular}Id=${id}`,
       );
@@ -274,11 +275,12 @@ export const useNestermind = () => {
       queryFn: async () => {
         if (!id || !objectNameSingular)
           throw new Error('ID and object name are required');
-        const { data } = await api.get(
-          `/messages/${objectNameSingular}?${objectNameSingular}Id=${id}`,
-        );
+        const data = await getRecordMessageThreads({
+          id,
+          objectNameSingular,
+        });
         // Convert TimelineThread[] to ThreadWithMessages[]
-        return (data || []).map((thread: any) => ({
+        return data?.map((thread: any) => ({
           ...thread,
           messages: thread.messages || [],
         }));
@@ -286,6 +288,29 @@ export const useNestermind = () => {
       ...options,
       enabled:
         !!id && !!objectNameSingular && (options as any).enabled !== false,
+    });
+  };
+
+  const getBuyerLeadMessageThreads = useCallback(
+    async ({
+      ids,
+    }: {
+      ids: string[];
+    }): Promise<{ [key: string]: TimelineThread[] } | undefined> => {
+      const response = await api.post(`/messages/buyerLead`, {
+        ids,
+      });
+      return response.data;
+    },
+    [api],
+  );
+
+  const useBuyerLeadMessageThreads = (ids: string[], options = {}) => {
+    return useQuery({
+      queryKey: ['messages', 'buyerLead', ids],
+      queryFn: () => getBuyerLeadMessageThreads({ ids }),
+      ...options,
+      enabled: !!ids && (options as any).enabled !== false,
     });
   };
 
@@ -413,6 +438,7 @@ export const useNestermind = () => {
     },
     messagesApi: {
       getRecordMessageThreads,
+      getBuyerLeadMessageThreads,
     },
     metricsApi: {
       calculatePublicationMetrics,
@@ -423,6 +449,7 @@ export const useNestermind = () => {
       useHealthCheck,
       useCheckPublications,
       useRecordMessageThreads,
+      useBuyerLeadMessageThreads,
       usePublicationMetrics,
       usePropertyMetricsByPlatform,
     },
