@@ -1,8 +1,20 @@
 import { ObjectMetadataItem } from '@/object-metadata/types/ObjectMetadataItem';
 import { capitalize } from 'twenty-shared';
+import { formatAmount } from '~/utils/format/formatAmount';
 import { formatToHumanReadableDate } from '~/utils/format/formatDate';
 
-type FieldValue = string | number | boolean | Date | null | undefined;
+type FieldValue =
+  | string
+  | number
+  | boolean
+  | Date
+  | null
+  | undefined
+  | {
+      amountMicros?: number;
+      currencyCode?: string;
+    };
+
 type PropertyFieldMetadata = {
   type: string;
   name: string;
@@ -19,7 +31,22 @@ export const useFormattedPropertyFields = ({
     value: FieldValue,
   ): string | null => {
     if (value === null || value === undefined) {
-      return '-';
+      return null;
+    }
+
+    // Handle price fields (sellingPrice and rentNet)
+    if (
+      ['sellingPrice', 'rentNet'].includes(field.name) &&
+      typeof value === 'object' &&
+      'amountMicros' in value &&
+      'currencyCode' in value &&
+      value.amountMicros &&
+      value.currencyCode
+    ) {
+      const formattedAmount = formatAmount(value.amountMicros / 1000000);
+      return field.name === 'rentNet'
+        ? `${formattedAmount} ${value.currencyCode} / month`
+        : `${formattedAmount} ${value.currencyCode}`;
     }
 
     // Skip if value is an object (except Date)
@@ -86,7 +113,7 @@ export const useFormattedPropertyFields = ({
     if (!field) {
       return typeof value === 'object' && !(value instanceof Date)
         ? null
-        : String(value ?? '-');
+        : (String(value) ?? null);
     }
 
     return formatFieldValue(field, value);

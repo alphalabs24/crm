@@ -1,9 +1,8 @@
-import { useAttachments } from '@/activities/files/hooks/useAttachments';
 import { ActivityTargetableObject } from '@/activities/types/ActivityTargetableEntity';
+import { usePropertyImages } from '@/ui/layout/show-page/hooks/usePropertyImages';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useLingui } from '@lingui/react/macro';
-import { useMemo } from 'react';
 import { IconPhoto, LARGE_DESKTOP_VIEWPORT, MOBILE_VIEWPORT } from 'twenty-ui';
 
 type ShowPageImageBannerProps = {
@@ -88,14 +87,7 @@ export const ShowPageImageBanner = ({
 }: ShowPageImageBannerProps) => {
   const theme = useTheme();
   const { t } = useLingui();
-  const { attachments = [] } = useAttachments(targetableObject);
-  const images = useMemo(
-    () =>
-      attachments
-        .filter((attachment) => attachment.type === 'PropertyImage')
-        .sort((a, b) => a.orderIndex - b.orderIndex),
-    [attachments],
-  );
+  const images = usePropertyImages(targetableObject);
 
   return (
     <div style={{ position: 'relative' }}>

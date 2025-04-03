@@ -1,14 +1,14 @@
 import { useInquiries } from '@/inquiries/hooks/useInquiries';
+import { AppPath } from '@/types/AppPath';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
+import { Trans, useLingui } from '@lingui/react/macro';
 import { useMemo } from 'react';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
-import { InquiryItem } from './InquiryItem';
-import { AppPath } from '@/types/AppPath';
 import { Link } from 'react-router-dom';
-import { Trans, useLingui } from '@lingui/react/macro';
 import { IconMessageCircle2 } from 'twenty-ui';
+import { InquiryItem } from './InquiryItem';
 
 const StyledSection = styled.div`
   display: flex;
@@ -45,7 +45,7 @@ const StyledList = styled.div`
   flex-direction: column;
 `;
 
-const UnstyledLink = styled(Link)`
+const StyledUnstyledLink = styled(Link)`
   text-decoration: none;
 `;
 
@@ -54,8 +54,11 @@ const StyledEmptyState = styled.div`
   color: ${({ theme }) => theme.font.color.tertiary};
   display: flex;
   flex: 1;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(2)};
   justify-content: center;
   padding: ${({ theme }) => theme.spacing(4)};
+  margin-top: ${({ theme }) => theme.spacing(4)};
 `;
 
 // Create styled components for skeleton loader
@@ -177,7 +180,8 @@ export const InquiriesPreview = ({
           </StyledSectionTitle>
         </StyledSectionHeader>
         <StyledEmptyState>
-          <Trans>No inquiries found</Trans>
+          <IconMessageCircle2 size={24} />
+          <Trans>No inquiries data available yet</Trans>
         </StyledEmptyState>
       </StyledSection>
     );
@@ -195,13 +199,15 @@ export const InquiriesPreview = ({
       </StyledSectionHeader>
       <StyledList>
         {recordsWithPersonAndPublication.map((record, index) => (
-          <UnstyledLink to={`${AppPath.RecordInquiriesPage}?id=${record.id}`}>
+          <StyledUnstyledLink
+            to={`${AppPath.RecordInquiriesPage}?id=${record.id}`}
+          >
             <InquiryItem
               key={record.id}
               inquiry={record}
               isLast={index === recordsWithPersonAndPublication.length - 1}
             />
-          </UnstyledLink>
+          </StyledUnstyledLink>
         ))}
       </StyledList>
     </StyledSection>

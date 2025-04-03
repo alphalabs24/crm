@@ -1,24 +1,20 @@
 import { useAttachments } from '@/activities/files/hooks/useAttachments';
-import { DateFormat } from '@/localization/constants/DateFormat';
 import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadataItem';
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { getLinkToShowPage } from '@/object-metadata/utils/getLinkToShowPage';
 import { useFormattedPropertyFields } from '@/object-record/hooks/useFormattedPropertyFields';
-import { PlatformBadge } from '@/object-record/record-show/components/nm/publication/PlatformBadge';
 import { StyledLoadingContainer } from '@/object-record/record-show/components/ui/PropertyDetailsCardComponents';
 import { useRecordShowContainerData } from '@/object-record/record-show/hooks/useRecordShowContainerData';
 import { usePublicationsOfProperty } from '@/ui/layout/show-page/hooks/usePublicationsOfProperty';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { format } from 'date-fns';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Button,
   IconArrowUpRight,
-  IconCalendar,
   IconChevronDown,
   IconLayoutBottombarCollapse,
   IconMap,
@@ -26,6 +22,7 @@ import {
   useIcons,
 } from 'twenty-ui';
 import { formatAmount } from '~/utils/format/formatAmount';
+import { PropertyPublicationItemCard } from './PropertyPublicationItemCard';
 
 const StyledContent = styled.div`
   display: flex;
@@ -165,38 +162,6 @@ const StyledPublicationsList = styled.div`
   gap: ${({ theme }) => theme.spacing(2)};
   max-height: 300px;
   overflow-y: auto;
-`;
-
-const StyledPublicationCardLink = styled(Link)`
-  text-decoration: none;
-`;
-
-const StyledPublicationCard = styled.div`
-  background: ${({ theme }) => theme.background.primary};
-  border: 1px solid ${({ theme }) => theme.border.color.light};
-  border-radius: ${({ theme }) => theme.border.radius.md};
-  padding: ${({ theme }) => theme.spacing(2)};
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(1)};
-
-  &:hover {
-    background: ${({ theme }) => theme.background.transparent.lighter};
-  }
-`;
-
-const StyledPublicationHeader = styled.div`
-  align-items: center;
-  display: flex;
-  justify-content: space-between;
-`;
-
-const StyledPublicationDetail = styled.div`
-  align-items: center;
-  display: flex;
-  font-size: ${({ theme }) => theme.font.size.xs};
-  gap: ${({ theme }) => theme.spacing(1)};
-  color: ${({ theme }) => theme.font.color.secondary};
 `;
 
 const StyledPropertyMainSection = styled.div`
@@ -530,11 +495,9 @@ export const PropertyDetails = ({
                 >
                   <IconChevronDown size={16} />
                 </StyledExpandIcon>
-                <Trans>
-                  {isDetailsExpanded
-                    ? 'Show less details'
-                    : 'Show more details'}
-                </Trans>
+                {isDetailsExpanded
+                  ? t`Show less details`
+                  : t`Show more details`}
               </StyledExpandButton>
             </StyledExpandButtonContainer>
 
@@ -585,34 +548,10 @@ export const PropertyDetails = ({
               </StyledSectionTitle>
               <StyledPublicationsList>
                 {publications.map((publication: any) => (
-                  <StyledPublicationCardLink
-                    to={getLinkToShowPage(
-                      CoreObjectNameSingular.Publication,
-                      publication,
-                    )}
-                  >
-                    <StyledPublicationCard key={publication.id}>
-                      <StyledPublicationHeader>
-                        <PlatformBadge
-                          platformId={publication.platform}
-                          size="tiny"
-                          variant="no-background"
-                        />
-                        <StyledDetailCard>
-                          ref: {publication.refProperty}
-                        </StyledDetailCard>
-                      </StyledPublicationHeader>
-                      {publication.createdAt && (
-                        <StyledPublicationDetail>
-                          <IconCalendar size={14} />
-                          {format(
-                            new Date(publication.createdAt),
-                            DateFormat.DAY_FIRST,
-                          )}
-                        </StyledPublicationDetail>
-                      )}
-                    </StyledPublicationCard>
-                  </StyledPublicationCardLink>
+                  <PropertyPublicationItemCard
+                    key={publication.id}
+                    publication={publication}
+                  />
                 ))}
               </StyledPublicationsList>
             </StyledSection>

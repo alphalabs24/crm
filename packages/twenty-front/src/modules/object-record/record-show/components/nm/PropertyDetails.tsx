@@ -1,4 +1,12 @@
 import { ActivityTargetableObject } from '@/activities/types/ActivityTargetableEntity';
+import { InquiriesPreview } from '@/inquiries/components/InquiriesPreview';
+import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadataItem';
+import { PropertyAddressCard } from '@/object-record/record-show/components/nm/cards/PropertyAddressCard';
+import { PropertyBasicInfoCard } from '@/object-record/record-show/components/nm/cards/PropertyBasicInfoCard';
+import { PropertyDetailsCard } from '@/object-record/record-show/components/nm/cards/PropertyDetailsCard';
+import { PropertyImagesCard } from '@/object-record/record-show/components/nm/cards/PropertyImagesCard';
+import { PropertyPublicationsCard } from '@/object-record/record-show/components/nm/cards/PropertyPublicationsCard';
+import { PropertyRelationsCard } from '@/object-record/record-show/components/nm/cards/PropertyRelationsCard';
 import { ContactsByPlatformChart } from '@/object-record/record-show/components/nm/property/ContactsByPlatformChart';
 import {
   Section,
@@ -14,71 +22,102 @@ import {
   IconChartBar,
   IconMessageCircle2,
   LARGE_DESKTOP_VIEWPORT,
+  MOBILE_VIEWPORT,
+  useIsMobile,
 } from 'twenty-ui';
-import { ObjectOverview } from './ObjectOverview';
-import { InquiriesPreview } from '@/inquiries/components/InquiriesPreview';
 
 const StyledContentContainer = styled.div<{ isInRightDrawer?: boolean }>`
   display: flex;
-  gap: ${({ theme }) => theme.spacing(2)};
-  flex-wrap: wrap-reverse;
-
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(4)};
   padding: ${({ theme }) => theme.spacing(2)};
 
-  @media (min-width: ${LARGE_DESKTOP_VIEWPORT}px) {
-    flex-wrap: nowrap;
-    width: unset;
-    gap: ${({ theme }) => theme.spacing(4)};
+  @media (min-width: ${MOBILE_VIEWPORT}px) {
+    flex-direction: row;
+    flex-wrap: wrap;
     padding: ${({ theme }) => theme.spacing(4)};
 
     ${({ isInRightDrawer }) =>
       isInRightDrawer &&
       css`
-        width: 100%;
         padding: 0;
-        flex-wrap: wrap;
       `}
+  }
+`;
+
+const StyledMainContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(4)};
+  width: 100%;
+
+  @media (min-width: ${MOBILE_VIEWPORT}px) {
+    flex: 1;
+    min-width: 0;
+  }
+
+  @media (min-width: ${LARGE_DESKTOP_VIEWPORT}px) {
+    max-width: 1250px;
+  }
+`;
+
+const StyledSideContent = styled.div<{ isInRightDrawer?: boolean }>`
+  display: none;
+
+  @media (min-width: ${MOBILE_VIEWPORT}px) {
+    display: flex;
+    flex-direction: column;
+    gap: ${({ theme }) => theme.spacing(4)};
+    width: 380px;
+  }
+`;
+
+const StyledImagesSection = styled.div`
+  width: 100%;
+`;
+
+const StyledOverviewSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(4)};
+  width: 100%;
+
+  @media (min-width: ${LARGE_DESKTOP_VIEWPORT}px) {
+    flex-direction: row;
+    flex-wrap: wrap;
+    > * {
+      flex: 1;
+    }
+  }
+`;
+
+const StyledDetailsSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(4)};
+  width: 100%;
+
+  @media (min-width: ${LARGE_DESKTOP_VIEWPORT}px) {
+    flex-direction: row;
+    flex-wrap: wrap;
+    > * {
+      flex: 1;
+      min-width: 300px;
+    }
+  }
+`;
+
+const StyledPublicationsSection = styled.div`
+  display: none;
+
+  @media (min-width: ${MOBILE_VIEWPORT}px) {
+    display: block;
+    width: 100%;
   }
 `;
 
 export const StyledComingSoonText = styled.div`
   color: ${({ theme }) => theme.font.color.secondary};
-`;
-
-const StyledRightContentContainer = styled.div<{ isInRightDrawer?: boolean }>`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(4)};
-
-  width: 100%;
-  @media (min-width: ${LARGE_DESKTOP_VIEWPORT}px) {
-    max-width: 900px;
-    padding: 0;
-    ${({ isInRightDrawer, theme }) =>
-      isInRightDrawer &&
-      css`
-        padding: 0 ${theme.spacing(4)};
-        width: 100%;
-      `}
-  }
-`;
-
-const StyledLeftContentContainer = styled.div<{ isInRightDrawer?: boolean }>`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(4)};
-  width: 100%;
-  @media (min-width: ${LARGE_DESKTOP_VIEWPORT}px) {
-    max-width: 900px;
-
-    padding: 0;
-    ${({ isInRightDrawer, theme }) =>
-      isInRightDrawer &&
-      css`
-        padding: 0 ${theme.spacing(4)};
-        width: 100%;
-      `}
-  }
 `;
 
 type PropertyDetailsProps = {
@@ -94,6 +133,13 @@ export const PropertyDetails = ({
   isInRightDrawer,
 }: PropertyDetailsProps) => {
   const { t } = useLingui();
+
+  const isMobile = useIsMobile();
+
+  const { objectMetadataItem } = useObjectMetadataItem({
+    objectNameSingular: targetableObject.targetObjectNameSingular,
+  });
+
   const { recordFromStore: property, recordLoading } =
     useRecordShowContainerData({
       objectNameSingular: targetableObject.targetObjectNameSingular,
@@ -113,38 +159,65 @@ export const PropertyDetails = ({
   }
 
   return (
-    <>
-      <StyledContentContainer isInRightDrawer={isInRightDrawer}>
-        <StyledLeftContentContainer isInRightDrawer={isInRightDrawer}>
-          <ObjectOverview
+    <StyledContentContainer isInRightDrawer={isInRightDrawer}>
+      <StyledMainContent>
+        <StyledImagesSection>
+          <PropertyImagesCard
+            loading={recordLoading}
             targetableObject={targetableObject}
-            isInRightDrawer={isInRightDrawer}
-            isNewRightDrawerItemLoading={false}
           />
-        </StyledLeftContentContainer>
-        <StyledRightContentContainer isInRightDrawer={isInRightDrawer}>
+        </StyledImagesSection>
+
+        <StyledOverviewSection>
+          <PropertyBasicInfoCard record={property} loading={recordLoading} />
+          <PropertyRelationsCard
+            record={property}
+            loading={recordLoading}
+            objectMetadataItem={objectMetadataItem}
+          />
+        </StyledOverviewSection>
+
+        <StyledDetailsSection>
+          <PropertyDetailsCard
+            record={property}
+            loading={recordLoading}
+            objectMetadataItem={objectMetadataItem}
+          />
+          <PropertyAddressCard record={property} loading={recordLoading} />
+        </StyledDetailsSection>
+
+        <StyledPublicationsSection>
+          <PropertyPublicationsCard record={property} loading={recordLoading} />
+        </StyledPublicationsSection>
+      </StyledMainContent>
+
+      {isMobile ? null : (
+        <StyledSideContent isInRightDrawer={isInRightDrawer}>
           <Section
             title={t`Inquiries Overview`}
             icon={<IconMessageCircle2 size={16} />}
+            preserveHeight
           >
-            {propertyPlatformMetrics?.contactsByPlatform ? (
+            {propertyPlatformMetrics?.contactsByPlatform && (
               <ContactsByPlatformChart
                 contactsByPlatform={propertyPlatformMetrics.contactsByPlatform}
                 totalContacts={propertyPlatformMetrics.contacts}
               />
-            ) : (
-              <Trans>No inquiries data available yet</Trans>
             )}
             <InquiriesPreview propertyId={property.id} maxItems={5} />
           </Section>
 
-          <Section title={t`Reporting`} icon={<IconChartBar size={16} />}>
+          <Section
+            title={t`Reporting`}
+            icon={<IconChartBar size={16} />}
+            preserveHeight
+          >
             <StyledComingSoonText>
               <Trans>Reporting coming soon</Trans>
             </StyledComingSoonText>
           </Section>
-        </StyledRightContentContainer>
-      </StyledContentContainer>
-    </>
+        </StyledSideContent>
+      )}
+    </StyledContentContainer>
   );
 };
