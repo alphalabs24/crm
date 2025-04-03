@@ -90,6 +90,7 @@ const StyledMapOverlay = styled.div`
   padding: ${({ theme }) => theme.spacing(1)} ${({ theme }) => theme.spacing(2)};
   position: absolute;
   right: ${({ theme }) => theme.spacing(2)};
+  cursor: pointer;
 `;
 
 type PropertyAddressCardProps = {

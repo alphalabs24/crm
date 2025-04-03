@@ -1,10 +1,7 @@
-import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
-import { getLinkToShowPage } from '@/object-metadata/utils/getLinkToShowPage';
 import { PlatformBadge } from '@/object-record/record-show/components/nm/publication/PlatformBadge';
 import { ObjectRecord } from '@/object-record/types/ObjectRecord';
 import styled from '@emotion/styled';
 import { format } from 'date-fns';
-import { Link } from 'react-router-dom';
 import { Avatar } from 'twenty-ui';
 
 const StyledInquiryItem = styled.div<{ isLast: boolean }>`
@@ -86,6 +83,17 @@ type InquiryItemProps = {
   onClick?: () => void;
 };
 
+// Format message body
+const formatMessageBody = (body: string) => {
+  const isHTML = /<[a-z][\s\S]*>/i.test(body);
+  if (isHTML) {
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = body;
+    return tempDiv.textContent || body;
+  }
+  return body;
+};
+
 export const InquiryItem = ({
   onClick,
   inquiry,
@@ -94,8 +102,6 @@ export const InquiryItem = ({
   const { createdAt, person, publication } = inquiry;
   const formattedDate = format(new Date(createdAt), 'MMM d, yyyy');
 
-  if (inquiry.person.name.firstName === 'Premier')
-    console.log('inquiry', inquiry);
   const fullName = `${person.name.firstName} ${person.name.lastName}`;
 
   return (
@@ -116,7 +122,11 @@ export const InquiryItem = ({
             <StyledPreviewRow>
               {inquiry.messageThreads && (
                 <StyledMessagePreview>
-                  {inquiry.messageThreads[0]?.lastMessageBody.slice(0, 100)}
+                  {formatMessageBody(
+                    inquiry.messageThreads[0]?.lastMessageBody.slice(0, 100),
+                  )}{' '}
+                  {inquiry.messageThreads[0]?.lastMessageBody.length > 100 &&
+                    '...'}
                 </StyledMessagePreview>
               )}
               <StyledRelationshipSection>

@@ -1,8 +1,10 @@
+import { OptionalWrap } from '@/ui/layout/utilities/components/OptionalWrapWith';
 import { useColorScheme } from '@/ui/theme/hooks/useColorScheme';
 import styled from '@emotion/styled';
-import { useLingui } from '@lingui/react/macro';
+import { Trans, useLingui } from '@lingui/react/macro';
 import { format } from 'date-fns';
-import { Link } from 'react-router-dom';
+import { Link, To } from 'react-router-dom';
+import { isDefined } from 'twenty-shared';
 import { Button, ColorScheme, IconMessage } from 'twenty-ui';
 
 const StyledMessageContainer = styled.div<{ isCurrentUser?: boolean }>`
@@ -26,18 +28,40 @@ const StyledMessageHeader = styled.div<{ isCurrentUser?: boolean }>`
 const StyledMessageSender = styled.div<{ isCurrentUser?: boolean }>`
   display: flex;
   flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(0.5)};
   ${({ isCurrentUser }) => (isCurrentUser ? 'align-items: flex-end;' : '')}
 `;
 
 const StyledSenderName = styled.div`
+  align-items: center;
   color: ${({ theme }) => theme.font.color.primary};
+  display: flex;
   font-size: ${({ theme }) => theme.font.size.sm};
   font-weight: ${({ theme }) => theme.font.weight.medium};
+  gap: ${({ theme }) => theme.spacing(1.5)};
+`;
+const StyledUnstyledLink = styled(Link)`
+  text-decoration: none;
 `;
 
 const StyledMessageTime = styled.div`
+  align-items: center;
   color: ${({ theme }) => theme.font.color.tertiary};
+  display: flex;
   font-size: ${({ theme }) => theme.font.size.xs};
+  gap: ${({ theme }) => theme.spacing(1)};
+`;
+
+const StyledAutoTag = styled.div`
+  align-items: center;
+  background-color: ${({ theme }) => theme.background.secondary};
+  border: 1px solid ${({ theme }) => theme.border.color.light};
+  border-radius: ${({ theme }) => theme.border.radius.xs};
+  color: ${({ theme }) => theme.font.color.tertiary};
+  display: flex;
+  font-size: ${({ theme }) => theme.font.size.xs};
+  justify-content: center;
+  padding: ${({ theme }) => theme.spacing(0.5, 1)};
 `;
 
 const StyledMessageContent = styled.div<{
@@ -62,39 +86,18 @@ const StyledReplyButton = styled(Button)`
   margin-top: ${({ theme }) => theme.spacing(1)};
 `;
 
-// Format date to relative time (like "2 days ago", "Yesterday", "Just now")
-const formatDateToRelative = (date: Date | string): string => {
-  const dateObj = typeof date === 'string' ? new Date(date) : date;
-  const now = new Date();
-  const diffInMilliseconds = now.getTime() - dateObj.getTime();
-  const diffInHours = diffInMilliseconds / (1000 * 60 * 60);
-  const diffInDays = diffInHours / 24;
-
-  if (diffInDays < 1) {
-    if (diffInHours < 1) {
-      return 'Just now';
-    } else {
-      return `${Math.floor(diffInHours)} hour${Math.floor(diffInHours) !== 1 ? 's' : ''} ago`;
-    }
-  } else if (diffInDays < 2) {
-    return 'Yesterday';
-  } else if (diffInDays < 7) {
-    return `${Math.floor(diffInDays)} days ago`;
-  } else {
-    return format(dateObj, 'MMM d, yyyy');
-  }
-};
-
 type ConversationMessageItemProps = {
   message: any;
   isCurrentUser: boolean;
   senderName: string;
+  linkToPerson?: To;
 };
 
 export const ConversationMessageItem = ({
   message,
   isCurrentUser,
   senderName,
+  linkToPerson,
 }: ConversationMessageItemProps) => {
   const { t } = useLingui();
   const { colorScheme } = useColorScheme();
@@ -110,15 +113,58 @@ export const ConversationMessageItem = ({
     return body;
   };
 
+  // Format date to relative time (like "2 days ago", "Yesterday", "Just now")
+  const formatDateToRelative = (date: Date | string): string => {
+    const dateObj = typeof date === 'string' ? new Date(date) : date;
+    const now = new Date();
+    const diffInMilliseconds = now.getTime() - dateObj.getTime();
+    const diffInHours = diffInMilliseconds / (1000 * 60 * 60);
+    const diffInDays = diffInHours / 24;
+
+    if (diffInDays < 1) {
+      if (diffInHours < 1) {
+        return t`Just now`;
+      } else {
+        return `${Math.floor(diffInHours)} ${
+          Math.floor(diffInHours) !== 1 ? t`hours ago` : t`hour ago`
+        }`;
+      }
+    } else if (diffInDays < 2) {
+      return t`Yesterday`;
+    } else if (diffInDays < 7) {
+      return `${Math.floor(diffInDays)} ${
+        Math.floor(diffInDays) !== 1 ? t`days ago` : t`day ago`
+      }`;
+    } else {
+      return format(dateObj, 'MMM d, yyyy');
+    }
+  };
+
+  const isAutomatic = !message.sender.person && !message.sender.workspaceMember;
+
   const formattedBody = formatMessageBody(message.text);
 
   return (
     <StyledMessageContainer isCurrentUser={isCurrentUser}>
       <StyledMessageHeader isCurrentUser={isCurrentUser}>
         <StyledMessageSender isCurrentUser={isCurrentUser}>
-          <StyledSenderName>{senderName}</StyledSenderName>
+          <OptionalWrap
+            With={<StyledUnstyledLink to={linkToPerson as To} />}
+            condition={isDefined(linkToPerson)}
+          >
+            <StyledSenderName>{senderName}</StyledSenderName>
+          </OptionalWrap>
+
           <StyledMessageTime>
             {formatDateToRelative(message.createdAt)}
+            {isAutomatic && (
+              <>
+                {' • '}
+                <StyledAutoTag>
+                  <Trans>Auto Response</Trans>
+                </StyledAutoTag>
+              </>
+            )}
           </StyledMessageTime>
         </StyledMessageSender>
       </StyledMessageHeader>
@@ -136,7 +182,6 @@ export const ConversationMessageItem = ({
           size="small"
           title={t`Reply`}
           Icon={IconMessage}
-          // TODO: Remove this once we have a reply feature
           disabled={true}
         />
       )}

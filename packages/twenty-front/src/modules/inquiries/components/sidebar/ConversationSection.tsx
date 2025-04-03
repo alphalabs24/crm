@@ -16,18 +16,21 @@ import {
 } from 'twenty-ui';
 import { useInquiryPage } from '../../contexts/InquiryPageContext';
 
+import { ConnectedAccount } from '@/accounts/types/ConnectedAccount';
 import { currentWorkspaceMembersState } from '@/auth/states/currentWorkspaceMembersStates';
 import { CollapsedPropertyPreview } from '@/inquiries/components/sidebar/CollapsedPropertyPreview';
+import { useConnectedAccounts } from '@/inquiries/hooks/useConnectedAccounts';
+import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
+import { getLinkToShowPage } from '@/object-metadata/utils/getLinkToShowPage';
 import { useColorScheme } from '@/ui/theme/hooks/useColorScheme';
 import { useRecoilComponentStateV2 } from '@/ui/utilities/state/component-state/hooks/useRecoilComponentStateV2';
 import { useTheme } from '@emotion/react';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+import { Link } from 'react-router-dom';
 import { WorkspaceMember } from '~/generated/graphql';
 import { ConversationMessageItem } from './ConversationMessageItem';
 import { ReplyEditor } from './ReplyEditor';
-import { useConnectedAccounts } from '@/inquiries/hooks/useConnectedAccounts';
-import { ConnectedAccount } from '@/accounts/types/ConnectedAccount';
 
 const StyledConversationSection = styled.div`
   background: ${({ theme }) => theme.background.primary};
@@ -101,6 +104,10 @@ type ConversationSectionProps = {
   onExpandProperty: () => void;
   isPropertyDetailsExpanded: boolean;
 };
+
+const StyledUnstyledLink = styled(Link)`
+  text-decoration: none;
+`;
 
 const StyledSkeletonMessageContainer = styled.div<{ isCurrentUser?: boolean }>`
   align-items: ${({ isCurrentUser }) =>
@@ -273,7 +280,14 @@ export const ConversationSection = ({
           />
           <StyledProfileInfo>
             <StyledNameEmailContainer>
-              <StyledName>{fullName}</StyledName>
+              <StyledUnstyledLink
+                to={getLinkToShowPage(
+                  CoreObjectNameSingular.Person,
+                  inquiry.person,
+                )}
+              >
+                <StyledName>{fullName}</StyledName>
+              </StyledUnstyledLink>
               {senderEmail && (
                 <StyledSenderEmail>{senderEmail}</StyledSenderEmail>
               )}
@@ -315,6 +329,14 @@ export const ConversationSection = ({
               <ConversationMessageItem
                 key={message.id}
                 message={message}
+                linkToPerson={
+                  isCurrentUser(message)
+                    ? undefined
+                    : getLinkToShowPage(
+                        CoreObjectNameSingular.Person,
+                        inquiry.person,
+                      )
+                }
                 senderName={
                   isCurrentUser(message) ? workspaceMemberName : fullName
                 }

@@ -7,7 +7,7 @@ import styled from '@emotion/styled';
 import { useCallback, useEffect, useMemo } from 'react';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
-import { useSearchParams } from 'react-router-dom';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { useInquiryPage } from '../contexts/InquiryPageContext';
 import { InquiriesFilterHeader } from './InquiriesFilterHeader';
 import { InquiryItem } from './InquiryItem';
@@ -112,31 +112,101 @@ const InquirySkeletonLoader = () => {
 };
 
 export const InquiriesList = () => {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const propertyId = searchParams.get('propertyId') || undefined;
   const publicationId = searchParams.get('publicationId') || undefined;
   const id = searchParams.get('id');
 
   const { records, loading } = useInquiries({ propertyId, publicationId });
-  const { openInquirySidebar, setSelectedInquiry } = useInquiryPage();
+  const { openInquirySidebar, setSelectedInquiry, closeInquirySidebar } =
+    useInquiryPage();
 
   const handleInquiryClick = useCallback(
-    (inquiry: ObjectRecord, id: string) => {
+    (inquiry: ObjectRecord, inquiryId: string) => {
+      const newParams = new URLSearchParams(searchParams);
+      newParams.set('id', inquiryId);
+
+      // Replace current state to avoid double entries in history
+      navigate(
+        {
+          pathname: location.pathname,
+          search: newParams.toString(),
+        },
+        { replace: true },
+      );
+
       setSelectedInquiry(inquiry);
-      openInquirySidebar(id);
+      openInquirySidebar(inquiryId);
     },
-    [setSelectedInquiry, openInquirySidebar],
+    [
+      navigate,
+      location.pathname,
+      searchParams,
+      setSelectedInquiry,
+      openInquirySidebar,
+    ],
   );
+
+  const handleUnselectInquiry = useCallback(() => {
+    const newParams = new URLSearchParams(searchParams);
+    newParams.delete('id');
+
+    // Update URL without adding to history
+    navigate(
+      {
+        pathname: location.pathname,
+        search: newParams.toString(),
+      },
+      { replace: true },
+    );
+
+    setSelectedInquiry(null);
+    closeInquirySidebar();
+  }, [
+    navigate,
+    location.pathname,
+    searchParams,
+    setSelectedInquiry,
+    closeInquirySidebar,
+  ]);
+
+  // Listen to popstate (browser back/forward) events
+  useEffect(() => {
+    const handlePopState = () => {
+      const currentParams = new URLSearchParams(window.location.search);
+      const currentId = currentParams.get('id');
+
+      if (!currentId) {
+        setSelectedInquiry(null);
+        closeInquirySidebar();
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [setSelectedInquiry, closeInquirySidebar]);
 
   // Open inquiry on load if ID is present in URL
   useEffect(() => {
     if (id && records.length > 0) {
       const inquiry = records.find((record) => record.id === id);
       if (inquiry) {
-        handleInquiryClick(inquiry, id);
+        setSelectedInquiry(inquiry);
+        openInquirySidebar(id);
+      } else {
+        handleUnselectInquiry();
       }
     }
-  }, [records, id, handleInquiryClick]);
+  }, [
+    records,
+    id,
+    setSelectedInquiry,
+    openInquirySidebar,
+    handleUnselectInquiry,
+  ]);
 
   const recordsWithPersonAndPublication = useMemo(() => {
     return records.filter((record) => record.person && record.publication);

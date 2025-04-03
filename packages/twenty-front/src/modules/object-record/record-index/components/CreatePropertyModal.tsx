@@ -12,6 +12,7 @@ import { forwardRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { isDefined } from 'twenty-shared';
 import { Button, IconPlus } from 'twenty-ui';
+import { getEnv } from '~/utils/get-env';
 
 const StyledModalContent = styled.div`
   display: flex;
@@ -56,6 +57,43 @@ type CreatePropertyModalProps = {
   objectNameSingular: string;
 };
 
+const geocodeAddress = async (address: FieldAddressValue) => {
+  const apiKey = getEnv('REACT_APP_MAPBOX_ACCESS_TOKEN');
+  if (!apiKey) return null;
+
+  // Only geocode if we have at least a street and city
+  if (!address.addressStreet1 || !address.addressCity) return null;
+
+  const addressString = [
+    address.addressStreet1,
+    address.addressStreet2,
+    address.addressCity,
+    address.addressState,
+    address.addressPostcode,
+    address.addressCountry,
+  ]
+    .filter(Boolean)
+    .join(', ');
+
+  const endpoint = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
+    addressString,
+  )}.json?access_token=${apiKey}&types=address&country=ch,de,fr,it&proximity=8.5417,47.3769&limit=1`;
+
+  try {
+    const response = await fetch(endpoint);
+    const data = await response.json();
+
+    if (data.features && data.features.length > 0) {
+      const [lng, lat] = data.features[0].geometry.coordinates;
+      return { addressLat: lat, addressLng: lng };
+    }
+  } catch (error) {
+    console.error('Error geocoding address:', error);
+  }
+
+  return null;
+};
+
 export const CreatePropertyModal = forwardRef<
   ModalRefType,
   CreatePropertyModalProps
@@ -93,9 +131,18 @@ export const CreatePropertyModal = forwardRef<
   const handleCreate = async () => {
     if (!propertyName) return;
 
+    // Get coordinates for the address
+    let addressWithCoordinates = address;
+    if (address.addressLat === 0 && address.addressLng === 0) {
+      const coordinates = await geocodeAddress(address);
+      addressWithCoordinates = coordinates
+        ? { ...address, ...coordinates }
+        : address;
+    }
+
     const record = await createOneRecord({
       name: propertyName.trim(),
-      address: address,
+      address: addressWithCoordinates,
       refProperty: generateNumericRef(),
     });
 

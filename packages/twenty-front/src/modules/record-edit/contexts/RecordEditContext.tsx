@@ -23,6 +23,7 @@ import {
 } from 'react';
 import { useParams } from 'react-router-dom';
 import { isDefined, isPublicAttachmentType } from 'twenty-shared';
+import { getEnv } from '~/utils/get-env';
 
 type FieldUpdate = {
   fieldName: string;
@@ -93,6 +94,54 @@ type RecordEditProviderProps = {
   objectMetadataItem: ObjectMetadataItem;
   initialRecord: ObjectRecord | null;
 } & PropsWithChildren;
+
+const geocodeAddress = async (address: {
+  addressStreet1?: string | null;
+  addressStreet2?: string | null;
+  addressCity?: string | null;
+  addressState?: string | null;
+  addressPostcode?: string | null;
+  addressCountry?: string | null;
+}) => {
+  const apiKey = getEnv('REACT_APP_MAPBOX_ACCESS_TOKEN');
+  if (!apiKey) return null;
+
+  // Only geocode if we have at least a street and city
+  if (!address.addressStreet1 || !address.addressCity) return null;
+
+  const addressString = [
+    address.addressStreet1,
+    address.addressStreet2,
+    address.addressCity,
+    address.addressState,
+    address.addressPostcode,
+    address.addressCountry,
+  ]
+    .filter(Boolean)
+    .join(', ');
+
+  const endpoint = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
+    addressString,
+  )}.json?access_token=${apiKey}&types=address&country=ch,de,fr,it&proximity=8.5417,47.3769&limit=1`;
+
+  try {
+    const response = await fetch(endpoint);
+    const data = await response.json();
+
+    if (data.features && data.features.length > 0) {
+      const [lng, lat] = data.features[0].geometry.coordinates;
+      return { addressLat: lat, addressLng: lng };
+    }
+  } catch (error) {
+    console.error('Error geocoding address:', error);
+  }
+
+  return null;
+};
+
+const hasAddressChanged = (updates: Record<string, unknown>) => {
+  return 'address' in updates;
+};
 
 export const RecordEditProvider = ({
   children,
@@ -379,6 +428,21 @@ export const RecordEditProvider = ({
     setLoading(true);
     if (isDirty) {
       const updatedFields = getUpdatedFields();
+
+      // Check if address was modified
+      if (hasAddressChanged(updatedFields)) {
+        const addressUpdate = updatedFields.address as Record<string, unknown>;
+
+        // Only geocode if coordinates are not already provided
+        const coordinates = await geocodeAddress(addressUpdate);
+        if (coordinates) {
+          updatedFields.address = {
+            ...addressUpdate,
+            ...coordinates,
+          };
+        }
+      }
+
       await updateOneRecord({
         idToUpdate: objectRecordId ?? '',
         updateOneRecordInput: updatedFields,
