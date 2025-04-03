@@ -1,4 +1,7 @@
 import { CoreObjectNamePlural } from '@/object-metadata/types/CoreObjectNamePlural';
+import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
+import { getLinkToShowPage } from '@/object-metadata/utils/getLinkToShowPage';
+import { useFindManyRecords } from '@/object-record/hooks/useFindManyRecords';
 import { EmailTutorialModal } from '@/onboarding-tutorial/components/modals/EmailTutorialModal';
 import { InquiryTutorialModal } from '@/onboarding-tutorial/components/modals/InquiryTutorialModal';
 import { PublicationSyncTutorialModal } from '@/onboarding-tutorial/components/modals/PublicationSyncTutorialModal';
@@ -31,10 +34,9 @@ export const TutorialProvider = ({
     UserTutorialTask | UserTutorialExplanation | null
   >(null);
 
-  // todo handle case where Property does not exist
-  // const { records: properties } = useFindManyRecords({
-  //   objectNameSingular: CoreObjectNameSingular.Property,
-  // });
+  const { records: properties } = useFindManyRecords({
+    objectNameSingular: CoreObjectNameSingular.Property,
+  });
 
   const tutorialModalRef = useRef<ModalRefType>(null);
   const emailTutorialModalRef = useRef<ModalRefType>(null);
@@ -79,16 +81,14 @@ export const TutorialProvider = ({
   };
 
   const showPublicationTutorial = () => {
-    // todo handle case where Property does not exist
-    return;
-    // const firstProperty = properties[0];
-    // if (!firstProperty) {
-    //   return;
-    // }
-    // const path = getLinkToShowPage(CoreObjectNameSingular.Property, {
-    //   id: firstProperty.id,
-    // });
-    // navigate(path);
+    const firstProperty = properties[0];
+    if (!firstProperty) {
+      return;
+    }
+    const path = getLinkToShowPage(CoreObjectNameSingular.Property, {
+      id: firstProperty.id,
+    });
+    navigate(path);
   };
 
   const showTutorial = (step: UserTutorialTask | UserTutorialExplanation) => {

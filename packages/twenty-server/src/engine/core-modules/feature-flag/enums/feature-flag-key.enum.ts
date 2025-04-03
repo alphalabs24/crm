@@ -8,6 +8,7 @@ export enum FeatureFlagKey {
   IsLaborSettingsEnabled = 'IS_LABOR_SETTINGS_ENABLED',
   IsMultiPublisherEnabled = 'IS_MULTI_PUBLISHER_ENABLED',
   IsAIDemoEnabled = 'IS_AI_DEMO_ENABLED',
+  IsNonNestermindWorkspaceEnabled = 'IS_NON_NESTERMIND_WORKSPACE_ENABLED',
   // feature flags from upstream
   IsEventObjectEnabled = 'IS_EVENT_OBJECT_ENABLED',
   IsAirtableIntegrationEnabled = 'IS_AIRTABLE_INTEGRATION_ENABLED',
