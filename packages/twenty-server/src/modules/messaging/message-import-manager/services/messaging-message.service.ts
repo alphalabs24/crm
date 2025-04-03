@@ -207,7 +207,12 @@ export class MessagingMessageService {
             recordId: createdMessage?.id ?? '',
             objectMetadata: messageMetadata,
             properties: {
-              after: { ...createdMessage, participants: message.participants },
+              after: {
+                ...createdMessage,
+                participants: message.participants,
+                externalThreadId: message.messageThreadExternalId,
+                messageChannelId: messageChannelId,
+              },
             },
           },
         ],
