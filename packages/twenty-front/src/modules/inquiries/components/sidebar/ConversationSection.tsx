@@ -8,6 +8,7 @@ import { useRecoilValue } from 'recoil';
 import {
   Avatar,
   Button,
+  ColorScheme,
   IconChevronLeft,
   IconMessageCircle2,
   IconX,
@@ -16,6 +17,7 @@ import { useInquiryPage } from '../../contexts/InquiryPageContext';
 
 import { currentWorkspaceMembersState } from '@/auth/states/currentWorkspaceMembersStates';
 import { CollapsedPropertyPreview } from '@/inquiries/components/sidebar/CollapsedPropertyPreview';
+import { useColorScheme } from '@/ui/theme/hooks/useColorScheme';
 import { useRecoilComponentStateV2 } from '@/ui/utilities/state/component-state/hooks/useRecoilComponentStateV2';
 import { useTheme } from '@emotion/react';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
@@ -131,21 +133,38 @@ const StyledSkeletonSender = styled.div<{ isCurrentUser?: boolean }>`
   ${({ isCurrentUser }) => (isCurrentUser ? 'align-items: flex-end;' : '')}
 `;
 
-const StyledSkeletonContent = styled.div<{ isCurrentUser?: boolean }>`
-  background-color: ${({ theme, isCurrentUser }) =>
-    isCurrentUser ? theme.color.blue10 : theme.background.tertiary};
-  border-radius: ${({ theme }) => theme.border.radius.md};
+const StyledSkeletonContent = styled.div<{
+  isCurrentUser?: boolean;
+  colorScheme: ColorScheme;
+}>`
+  background-color: ${({ theme, isCurrentUser, colorScheme }) =>
+    isCurrentUser
+      ? colorScheme === 'Light'
+        ? theme.color.blue10
+        : theme.background.tertiary
+      : theme.background.tertiary};
   padding: ${({ theme }) => theme.spacing(2)};
 `;
 
 // Create a skeleton message component
 const MessageSkeletonItem = ({ isCurrentUser = false }) => {
   const theme = useTheme();
+  const { colorScheme } = useColorScheme();
 
   return (
     <SkeletonTheme
-      baseColor={isCurrentUser ? theme.color.blue10 : theme.background.tertiary}
-      highlightColor={theme.background.transparent.lighter}
+      baseColor={
+        isCurrentUser
+          ? colorScheme === 'Light'
+            ? theme.color.blue10
+            : theme.background.secondary
+          : theme.background.tertiary
+      }
+      highlightColor={
+        colorScheme === 'Light'
+          ? theme.background.transparent.lighter
+          : theme.background.tertiary
+      }
       borderRadius={theme.border.radius.sm}
     >
       <StyledSkeletonMessageContainer isCurrentUser={isCurrentUser}>
@@ -155,7 +174,10 @@ const MessageSkeletonItem = ({ isCurrentUser = false }) => {
             <Skeleton width={80} height={12} />
           </StyledSkeletonSender>
         </StyledSkeletonHeader>
-        <StyledSkeletonContent isCurrentUser={isCurrentUser}>
+        <StyledSkeletonContent
+          colorScheme={colorScheme}
+          isCurrentUser={isCurrentUser}
+        >
           <Skeleton width={280} height={16} style={{ marginBottom: 8 }} />
           <Skeleton width={200} height={16} />
         </StyledSkeletonContent>
@@ -285,8 +307,7 @@ export const ConversationSection = ({
         recipientEmail={inquiry.person.emails?.primaryEmail || ''}
         comingSoon={true}
         onSend={(content) => {
-          console.log('Message sent:', content);
-          // Here you would typically call an API to send the email
+          // TODO add reply fuctionality
         }}
       />
     </StyledConversationSection>

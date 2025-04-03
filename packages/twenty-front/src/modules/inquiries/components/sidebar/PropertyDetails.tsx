@@ -3,6 +3,7 @@ import { DateFormat } from '@/localization/constants/DateFormat';
 import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadataItem';
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { getLinkToShowPage } from '@/object-metadata/utils/getLinkToShowPage';
+import { useFormattedPropertyFields } from '@/object-record/hooks/useFormattedPropertyFields';
 import { PlatformBadge } from '@/object-record/record-show/components/nm/publication/PlatformBadge';
 import { StyledLoadingContainer } from '@/object-record/record-show/components/ui/PropertyDetailsCardComponents';
 import { useRecordShowContainerData } from '@/object-record/record-show/hooks/useRecordShowContainerData';
@@ -14,7 +15,6 @@ import { format } from 'date-fns';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { capitalize } from 'twenty-shared';
 import {
   Button,
   IconArrowUpRight,
@@ -96,26 +96,6 @@ const StyledPropertyDetails = styled.div`
   flex-shrink: 0;
 `;
 
-const StyledPropertyInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: ${({ theme }) => theme.spacing(1)};
-`;
-
-const StyledPropertyHeaderName = styled.div`
-  color: ${({ theme }) => theme.font.color.primary};
-  font-size: ${({ theme }) => theme.font.size.xl};
-  font-weight: ${({ theme }) => theme.font.weight.semiBold};
-`;
-
-const StyledPropertyHeaderDetails = styled.div`
-  align-items: center;
-  color: ${({ theme }) => theme.font.color.tertiary};
-  display: flex;
-  gap: ${({ theme }) => theme.spacing(1)};
-`;
-
 const StyledPropertyName = styled.div`
   color: ${({ theme }) => theme.font.color.primary};
   font-size: ${({ theme }) => theme.font.size.lg};
@@ -141,12 +121,6 @@ const StyledPropertyPrice = styled.div`
   font-weight: ${({ theme }) => theme.font.weight.medium};
   margin: ${({ theme }) => theme.spacing(1.5, 0)};
   text-decoration: underline;
-`;
-
-const StyledDetailCardsContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: ${({ theme }) => theme.spacing(2)};
 `;
 
 const StyledDetailCard = styled.div`
@@ -239,10 +213,6 @@ const StyledMainInfo = styled.div`
   flex: 1;
 `;
 
-const StyledDetailsSection = styled.div`
-  margin-top: ${({ theme }) => theme.spacing(1)};
-`;
-
 // Update field groups to be more focused
 const FIELD_GROUPS = {
   'Key Details': [
@@ -254,37 +224,8 @@ const FIELD_GROUPS = {
     'floor',
     'constructionYear',
   ],
-  Features: [
-    'hasParking',
-    'hasBalcony',
-    'hasElevator',
-    'hasCellar',
-    'hasGarden',
-    'description',
-  ],
+  Overview: ['description'],
   Availability: ['availableFrom', 'stage'],
-};
-
-// Get formatted value based on field type
-const getFormattedValue = (fieldName: string, value: any, label?: string) => {
-  if (value === undefined || value === null) return '';
-
-  if (fieldName === 'surface' || fieldName === 'livingSurface') {
-    return `${value} m²`;
-  }
-
-  if (fieldName === 'volume') {
-    return `${value} m³`;
-  }
-
-  if (fieldName === 'category') {
-    return capitalize(value.toLowerCase());
-  }
-
-  if ((fieldName === 'rooms' || fieldName === 'floor') && label)
-    return `${label}: ${value}`;
-
-  return String(value);
 };
 
 const StyledExpandButton = styled.button`
@@ -402,6 +343,10 @@ export const PropertyDetails = ({
     objectNameSingular: CoreObjectNameSingular.Property,
   });
 
+  const { formatFieldValue } = useFormattedPropertyFields({
+    objectMetadataItem,
+  });
+
   // Use the data from the store if available, otherwise use the passed property
   const propertyData = useMemo(() => {
     return recordFromStore || property;
@@ -467,39 +412,7 @@ export const PropertyDetails = ({
   const isRental = propertyData.category === 'Rental';
 
   const renderDetailValue = (field: any, value: any) => {
-    if (value === null || value === undefined) return '-';
-
-    if (field.type === 'boolean') {
-      return value ? 'Yes' : 'No';
-    }
-
-    if (field.type === 'number') {
-      if (field.name.toLowerCase().includes('surface')) {
-        return `${value} m²`;
-      }
-      if (field.name.toLowerCase().includes('volume')) {
-        return `${value} m³`;
-      }
-      return value.toString();
-    }
-
-    if (field.type === 'date') {
-      return format(new Date(value), DateFormat.DAY_FIRST);
-    }
-
-    if (field.name === 'stage') {
-      return capitalize(value.toLowerCase());
-    }
-
-    if (field.name === 'description' && value.length > 150) {
-      return value.substring(0, 150) + '...';
-    }
-
-    if (typeof value === 'object') {
-      return JSON.stringify(value);
-    }
-
-    return value.toString();
+    return formatFieldValue(field, value);
   };
 
   if (recordLoading) {

@@ -42,9 +42,12 @@ const StyledMessageContent = styled.div<{
   isCurrentUser?: boolean;
   colorScheme: ColorScheme;
 }>`
-  background-color: ${(
-    { theme, isCurrentUser, colorScheme }, // TODO handle color scheme
-  ) => (isCurrentUser ? theme.color.blue10 : theme.background.tertiary)};
+  background-color: ${({ theme, isCurrentUser, colorScheme }) =>
+    isCurrentUser
+      ? colorScheme === 'Light'
+        ? theme.color.blue10
+        : theme.color.gray
+      : theme.background.tertiary};
   border-radius: ${({ theme }) => theme.border.radius.md};
   padding: ${({ theme }) => theme.spacing(2)};
   font-size: ${({ theme }) => theme.font.size.sm};
@@ -90,7 +93,7 @@ export const ConversationMessageItem = ({
   isCurrentUser,
 }: ConversationMessageItemProps) => {
   const { t } = useLingui();
-  const colorScheme = useColorScheme();
+  const { colorScheme } = useColorScheme();
   const sender = message.sender;
   const senderName = sender?.person?.name
     ? `${sender.person.name.firstName} ${sender.person.name.lastName}`

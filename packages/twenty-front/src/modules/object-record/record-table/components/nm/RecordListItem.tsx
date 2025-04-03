@@ -2,60 +2,37 @@ import { useAttachments } from '@/activities/files/hooks/useAttachments';
 import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadataItem';
 import { getLinkToShowPage } from '@/object-metadata/utils/getLinkToShowPage';
 import { useFormattedPropertyFields } from '@/object-record/hooks/useFormattedPropertyFields';
-import { recordIndexAllRecordIdsComponentSelector } from '@/object-record/record-index/states/selectors/recordIndexAllRecordIdsComponentSelector';
 import { PlatformBadge } from '@/object-record/record-show/components/nm/publication/PlatformBadge';
 import { StatusBadge } from '@/object-record/record-show/components/nm/publication/StatusBadge';
 import { useRecordShowContainerData } from '@/object-record/record-show/hooks/useRecordShowContainerData';
-import { RECORD_TABLE_CLICK_OUTSIDE_LISTENER_ID } from '@/object-record/record-table/constants/RecordTableClickOutsideListenerId';
-import { useRecordTableContextOrThrow } from '@/object-record/record-table/contexts/RecordTableContext';
-import { RecordTableEmptyState } from '@/object-record/record-table/empty-state/components/RecordTableEmptyState';
-import { useRecordTable } from '@/object-record/record-table/hooks/useRecordTable';
-import { isRecordTableInitialLoadingComponentState } from '@/object-record/record-table/states/isRecordTableInitialLoadingComponentState';
-import { hasPendingRecordComponentSelector } from '@/object-record/record-table/states/selectors/hasPendingRecordComponentSelector';
-import { selectedRowIdsComponentSelector } from '@/object-record/record-table/states/selectors/selectedRowIdsComponentSelector';
 import { calculateCompletionLevel } from '@/object-record/utils/calculateCompletionLevel';
 import { Dropdown } from '@/ui/layout/dropdown/components/Dropdown';
 import { DropdownMenuItemsContainer } from '@/ui/layout/dropdown/components/DropdownMenuItemsContainer';
 import { useDropdown } from '@/ui/layout/dropdown/hooks/useDropdown';
-import { DragSelect } from '@/ui/utilities/drag-select/components/DragSelect';
-import { useClickOutsideListener } from '@/ui/utilities/pointer-event/hooks/useClickOutsideListener';
-import { useRecoilComponentValueV2 } from '@/ui/utilities/state/component-state/hooks/useRecoilComponentValueV2';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useLingui } from '@lingui/react/macro';
-import { useIcons } from '@ui/display/icon/hooks/useIcons';
 import { format } from 'date-fns';
-import { AnimatePresence, motion } from 'framer-motion';
-import { useMemo, useRef } from 'react';
-import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css';
+import { motion } from 'framer-motion';
+import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
-  Button,
-  IconAlertTriangle,
-  IconCheck,
-  IconDots,
-  IconEye,
-  IconMap,
-  IconPencil,
-  IconPhoto,
-  IconSquare,
-  LARGE_DESKTOP_VIEWPORT,
-  MenuItem,
-  MOBILE_VIEWPORT,
-  useIsMobile,
+    Button,
+    IconAlertTriangle,
+    IconCheck,
+    IconDots,
+    IconEye,
+    IconMap,
+    IconPencil,
+    IconPhoto,
+    IconSquare,
+    LARGE_DESKTOP_VIEWPORT,
+    MenuItem,
+    MOBILE_VIEWPORT,
+    useIcons,
+    useIsMobile,
 } from 'twenty-ui';
 import { formatAmount } from '~/utils/format/formatAmount';
-
-import { RecordListDataLoaderEffect } from './RecordListDataLoaderEffect';
-import { RecordListSkeletonLoader } from './RecordListSkeletonLoader';
-
-const StyledListContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(2)};
-  padding: ${({ theme }) => theme.spacing(2)};
-`;
 
 const StyledCard = styled(motion.div)<{ isSelected?: boolean }>`
   background: ${({ theme, isSelected }) =>
@@ -334,66 +311,25 @@ const StyledPlatformBadgeContainer = styled.div`
   margin-right: ${({ theme }) => theme.spacing(1)};
 `;
 
-// Create styled components for skeleton loader
-const StyledSkeletonCard = styled.div`
-  border: 1px solid ${({ theme }) => theme.border.color.light};
-  border-radius: ${({ theme }) => theme.border.radius.md};
+const StyledPriceContainer = styled.div`
   display: flex;
-  padding: ${({ theme }) => theme.spacing(1.5)};
-  position: relative;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing(1)};
+  margin-top: ${({ theme }) => theme.spacing(1)};
+  text-decoration: underline;
 `;
 
-const StyledSkeletonImageSection = styled.div`
-  aspect-ratio: 1;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  margin-right: ${({ theme }) => theme.spacing(2)};
-  position: relative;
-  background-color: ${({ theme }) => theme.background.tertiary};
-  border-radius: ${({ theme }) => theme.border.radius.sm};
-  position: relative;
+const StyledPrice = styled.span`
+  color: ${({ theme }) => theme.font.color.primary};
+  font-size: ${({ theme }) => theme.font.size.lg};
+  font-weight: ${({ theme }) => theme.font.weight.semiBold};
 `;
 
-const StyledSkeletonContentSection = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  min-width: 0;
-  padding: ${({ theme }) => theme.spacing(0.5, 0)};
-  justify-content: center;
+const StyledRentalLabel = styled.span`
+  font-size: ${({ theme }) => theme.font.size.xs};
+  color: ${({ theme }) => theme.font.color.tertiary};
+  margin-left: ${({ theme }) => theme.spacing(0.5)};
 `;
-
-const StyledSkeletonUpperSection = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(2)};
-`;
-
-// Create a skeleton card loader component
-const RecordListSkeletonCard = () => {
-  const theme = useTheme();
-
-  return (
-    <SkeletonTheme
-      baseColor={theme.background.tertiary}
-      highlightColor={theme.background.transparent.lighter}
-      borderRadius={theme.border.radius.sm}
-    >
-      <StyledSkeletonCard>
-        <StyledSkeletonImageSection />
-        <StyledSkeletonContentSection>
-          <StyledSkeletonUpperSection>
-            <Skeleton width={80} height={12} />
-            <Skeleton width="30%" height={24} />
-            <Skeleton width="50%" height={20} />
-            <Skeleton width="50%" height={30} />
-          </StyledSkeletonUpperSection>
-        </StyledSkeletonContentSection>
-      </StyledSkeletonCard>
-    </SkeletonTheme>
-  );
-};
 
 type FieldDetailItemProps = {
   fieldName: string;
@@ -447,105 +383,27 @@ const FieldDetailItem = ({
   );
 };
 
-export const RecordList = () => {
-  const { recordTableId, objectNameSingular } = useRecordTableContextOrThrow();
-  const navigate = useNavigate();
+const getDisplayPriorityFields = () => {
+  return [
+    'refProperty',
+    'category',
+    'surface',
+    'rooms',
+    'livingSurface',
+    'numberOfFloors',
+    'floor',
+    'constructionYear',
+    'renovationYear',
+  ];
+};
 
-  const { setRowSelected, resetTableRowSelection } = useRecordTable({
-    recordTableId,
-  });
-  const listContainerRef = useRef<HTMLDivElement>(null);
+const formatPrice = (price: any) => {
+  if (!price || !price?.amountMicros) return null;
 
-  const { toggleClickOutsideListener } = useClickOutsideListener(
-    RECORD_TABLE_CLICK_OUTSIDE_LISTENER_ID,
-  );
+  const amount = price?.amountMicros / 1000000;
+  const currency = price?.currencyCode || 'EUR';
 
-  const isRecordTableInitialLoading = useRecoilComponentValueV2(
-    isRecordTableInitialLoadingComponentState,
-    recordTableId,
-  );
-
-  const allRecordIds = useRecoilComponentValueV2(
-    recordIndexAllRecordIdsComponentSelector,
-    recordTableId,
-  );
-
-  const hasPendingRecord = useRecoilComponentValueV2(
-    hasPendingRecordComponentSelector,
-    recordTableId,
-  );
-
-  const selectedRowIds = useRecoilComponentValueV2(
-    selectedRowIdsComponentSelector,
-    recordTableId,
-  );
-
-  const recordTableIsEmpty =
-    !isRecordTableInitialLoading &&
-    allRecordIds.length === 0 &&
-    !hasPendingRecord;
-
-  if (isRecordTableInitialLoading) {
-    return (
-      <StyledListContainer ref={listContainerRef}>
-        <RecordListDataLoaderEffect />
-        <RecordListSkeletonLoader />
-      </StyledListContainer>
-    );
-  }
-
-  if (recordTableIsEmpty) {
-    return (
-      <StyledListContainer ref={listContainerRef}>
-        <RecordListDataLoaderEffect />
-        <RecordTableEmptyState />
-      </StyledListContainer>
-    );
-  }
-
-  return (
-    <>
-      <StyledListContainer ref={listContainerRef}>
-        <RecordListDataLoaderEffect />
-        <AnimatePresence
-          mode="wait"
-          key={`${recordTableId}-${allRecordIds.length}`}
-        >
-          {allRecordIds.map((recordId) => (
-            <RecordListItem
-              key={recordId}
-              recordId={recordId}
-              objectNameSingular={objectNameSingular}
-              isSelected={selectedRowIds.includes(recordId)}
-              onSelect={(selected) => setRowSelected(recordId, selected)}
-              onClick={() => {
-                if (selectedRowIds.includes(recordId)) {
-                  setRowSelected(recordId, false);
-                } else {
-                  navigate(
-                    getLinkToShowPage(objectNameSingular, {
-                      id: recordId,
-                    }),
-                  );
-                }
-              }}
-            />
-          ))}
-        </AnimatePresence>
-      </StyledListContainer>
-      <DragSelect
-        dragSelectable={listContainerRef}
-        onDragSelectionStart={() => {
-          resetTableRowSelection();
-          toggleClickOutsideListener(false);
-        }}
-        onDragSelectionChange={setRowSelected}
-        onDragSelectionEnd={() => {
-          toggleClickOutsideListener(true);
-        }}
-      />
-    </>
-  );
+  return `${formatAmount(amount)} ${currency}`;
 };
 
 type RecordListItemProps = {
@@ -556,56 +414,7 @@ type RecordListItemProps = {
   onClick: () => void;
 };
 
-const getDisplayPriorityFields = () => {
-  // Filter for publication-specific fields here if necessary
-
-  // Use property priority fields
-  return [
-    'refProperty',
-    'category',
-    'surface',
-    'rooms',
-    'livingSurface',
-    'numberOfFloors',
-    // 'volume',
-    'floor',
-    'constructionYear',
-    'renovationYear',
-  ];
-};
-
-// Add a new function to format price display
-const formatPrice = (price: any) => {
-  if (!price || !price?.amountMicros) return null;
-
-  const amount = price?.amountMicros / 1000000;
-  const currency = price?.currencyCode || 'EUR';
-
-  return `${formatAmount(amount)} ${currency}`;
-};
-
-// Create a styled component for price display
-const StyledPriceContainer = styled.div`
-  display: flex;
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing(1)};
-  margin-top: ${({ theme }) => theme.spacing(1)};
-  text-decoration: underline;
-`;
-
-const StyledPrice = styled.span`
-  color: ${({ theme }) => theme.font.color.primary};
-  font-size: ${({ theme }) => theme.font.size.lg};
-  font-weight: ${({ theme }) => theme.font.weight.semiBold};
-`;
-
-const StyledRentalLabel = styled.span`
-  font-size: ${({ theme }) => theme.font.size.xs};
-  color: ${({ theme }) => theme.font.color.tertiary};
-  margin-left: ${({ theme }) => theme.spacing(0.5)};
-`;
-
-const RecordListItem = ({
+export const RecordListItem = ({
   recordId,
   objectNameSingular,
   isSelected,
@@ -688,7 +497,6 @@ const RecordListItem = ({
       .slice(0, isMobile ? 5 : 8);
   }, [isMobile, record]);
 
-  // Format price for display
   const formattedPrice = useMemo(() => {
     if (!record) return null;
 
@@ -704,7 +512,6 @@ const RecordListItem = ({
     return null;
   }, [record]);
 
-  // Check if it's a rental property
   const isRental = useMemo(() => {
     return record?.category === 'Rental';
   }, [record]);
@@ -796,7 +603,6 @@ const RecordListItem = ({
               </StyledLocationContainer>
             )}
 
-            {/* Display price information if available */}
             {formattedPrice && (
               <StyledPriceContainer>
                 <StyledPrice>{formattedPrice}</StyledPrice>
