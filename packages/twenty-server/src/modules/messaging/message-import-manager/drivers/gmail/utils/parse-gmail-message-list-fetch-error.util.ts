@@ -82,12 +82,14 @@ export const parseGmailMessageListFetchError = (error: {
       );
 
     case 500:
-      if (reason === 'backendError') {
-        return new MessageImportDriverException(
-          message,
-          MessageImportDriverExceptionCode.TEMPORARY_ERROR,
-        );
-      }
+      // we set it to temporary in every case, because we don't know the exact reason
+      // let's see if this fixes the issue
+      // if (reason === 'backendError') {
+      return new MessageImportDriverException(
+        message,
+        MessageImportDriverExceptionCode.TEMPORARY_ERROR,
+      );
+      // }
 
       break;
 
