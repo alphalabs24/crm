@@ -8,6 +8,7 @@ import { RecordLayout } from '@/object-record/record-show/types/RecordLayout';
 import { SingleTabProps } from '@/ui/layout/tab/components/TabList';
 import { RecordLayoutTab } from '@/ui/layout/tab/types/RecordLayoutTab';
 import { useIsMobile } from '@/ui/utilities/responsive/hooks/useIsMobile';
+import { useIsFeatureEnabled } from '@/workspace/hooks/useIsFeatureEnabled';
 import { useRecoilValue } from 'recoil';
 import {
   IconCalendarEvent,
@@ -18,6 +19,7 @@ import {
   IconNotes,
   IconPrinter,
   IconSettings,
+  IconSparkles,
   IconTimelineEvent,
 } from 'twenty-ui';
 import { FieldMetadataType } from '~/generated-metadata/graphql';
@@ -31,7 +33,7 @@ export const useRecordShowContainerTabs = (
 ): { layout: RecordLayout; tabs: SingleTabProps[] } => {
   const isMobile = useIsMobile();
   const objectMetadataItems = useRecoilValue(objectMetadataItemsState);
-
+  const isAIDemoEnabled = useIsFeatureEnabled(FeatureFlagKey.IsAIDemoEnabled);
   const currentWorkspace = useRecoilValue(currentWorkspaceState);
 
   // Object-specific layouts that override or extend the base layout
@@ -68,21 +70,24 @@ export const useRecordShowContainerTabs = (
             ifRelationsMissing: [],
           },
         },
-        /* Reuse this once we have actual functionality:
-        aiSuite: {
-          title: 'AI Suite',
-          position: 1,
-          Icon: IconSparkles,
-          cards: [{ type: CardType.AISuiteCard }],
-          hide: {
-            ifMobile: false,
-            ifDesktop: false,
-            ifInRightDrawer: false,
-            ifFeaturesDisabled: [],
-            ifRequiredObjectsInactive: [],
-            ifRelationsMissing: [],
-          },
-        },*/
+        ...(isAIDemoEnabled
+          ? {
+              aiSuite: {
+                title: 'AI Suite',
+                position: 1,
+                Icon: IconSparkles,
+                cards: [{ type: CardType.AISuiteCard }],
+                hide: {
+                  ifMobile: false,
+                  ifDesktop: false,
+                  ifInRightDrawer: false,
+                  ifFeaturesDisabled: [],
+                  ifRequiredObjectsInactive: [],
+                  ifRelationsMissing: [],
+                },
+              },
+            }
+          : {}),
         fields: null,
       },
     },

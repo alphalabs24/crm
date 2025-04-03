@@ -7,6 +7,7 @@ export enum FeatureFlagKey {
   IsAdvancedSettingsEnabled = 'IS_ADVANCED_SETTINGS_ENABLED',
   IsLaborSettingsEnabled = 'IS_LABOR_SETTINGS_ENABLED',
   IsMultiPublisherEnabled = 'IS_MULTI_PUBLISHER_ENABLED',
+  IsAIDemoEnabled = 'IS_AI_DEMO_ENABLED',
   // feature flags from upstream
   IsEventObjectEnabled = 'IS_EVENT_OBJECT_ENABLED',
   IsAirtableIntegrationEnabled = 'IS_AIRTABLE_INTEGRATION_ENABLED',
