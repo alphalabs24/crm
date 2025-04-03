@@ -156,6 +156,7 @@ export const PublicationDetails = ({
     );
   }
 
+  // TODO add tab cards for inquiries, publications and reporting on mobile
   return (
     <StyledContentContainer isInRightDrawer={isInRightDrawer}>
       <StyledMainContent>
@@ -168,7 +169,7 @@ export const PublicationDetails = ({
 
         <StyledOverviewSection>
           <PropertyBasicInfoCard record={publication} loading={recordLoading} />
-          <PropertyRelationsCard
+          <PropertyDetailsCard
             record={publication}
             loading={recordLoading}
             objectMetadataItem={objectMetadataItem}
@@ -176,11 +177,12 @@ export const PublicationDetails = ({
         </StyledOverviewSection>
 
         <StyledDetailsSection>
-          <PropertyDetailsCard
+          <PropertyRelationsCard
             record={publication}
             loading={recordLoading}
             objectMetadataItem={objectMetadataItem}
           />
+
           <PropertyAddressCard record={publication} loading={recordLoading} />
         </StyledDetailsSection>
       </StyledMainContent>

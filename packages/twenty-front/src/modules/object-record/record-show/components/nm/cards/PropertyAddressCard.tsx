@@ -8,24 +8,19 @@ const StyledContent = styled.div`
 `;
 
 const StyledAddressContainer = styled.div`
+  align-items: center;
   display: flex;
   gap: ${({ theme }) => theme.spacing(2)};
-`;
-
-const StyledIconContainer = styled.div`
-  color: ${({ theme }) => theme.font.color.tertiary};
-  display: flex;
-  padding-top: ${({ theme }) => theme.spacing(1)};
+  color: ${({ theme }) => theme.font.color.secondary};
 `;
 
 const StyledAddressDetails = styled.div`
+  align-items: center;
   display: flex;
-  flex-direction: column;
   gap: ${({ theme }) => theme.spacing(1)};
 `;
 
 const StyledAddressLine = styled.div`
-  color: ${({ theme }) => theme.font.color.primary};
   font-size: ${({ theme }) => theme.font.size.sm};
   line-height: ${({ theme }) => theme.text.lineHeight.lg};
 `;
@@ -73,29 +68,23 @@ export const PropertyAddressCard = ({
     return null;
   }
 
+  const formattedAddress = [
+    address.addressStreet1 || '',
+    address.addressCity || '',
+    address.addressState || '',
+    address.addressPostcode || '',
+    address.addressCountry || '',
+  ]
+    .filter(Boolean)
+    .join(', ');
+
   return (
     <Section title={t`Location`} icon={<IconMap size={16} />}>
       <StyledContent>
         <StyledAddressContainer>
-          <StyledIconContainer>
-            <IconMap size={16} />
-          </StyledIconContainer>
+          <IconMap size={16} />
           <StyledAddressDetails>
-            {address.addressStreet1 && (
-              <StyledAddressLine>{address.addressStreet1}</StyledAddressLine>
-            )}
-            <StyledAddressLine>
-              {[
-                address.addressCity,
-                address.addressState,
-                address.addressPostcode,
-              ]
-                .filter(Boolean)
-                .join(', ')}
-            </StyledAddressLine>
-            {address.addressCountry && (
-              <StyledAddressLine>{address.addressCountry}</StyledAddressLine>
-            )}
+            <StyledAddressLine>{formattedAddress}</StyledAddressLine>
           </StyledAddressDetails>
         </StyledAddressContainer>
         <StyledMapPlaceholder>{t`Map integration coming soon`}</StyledMapPlaceholder>

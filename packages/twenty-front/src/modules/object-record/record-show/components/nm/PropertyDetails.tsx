@@ -170,7 +170,8 @@ export const PropertyDetails = ({
 
         <StyledOverviewSection>
           <PropertyBasicInfoCard record={property} loading={recordLoading} />
-          <PropertyRelationsCard
+
+          <PropertyDetailsCard
             record={property}
             loading={recordLoading}
             objectMetadataItem={objectMetadataItem}
@@ -178,7 +179,7 @@ export const PropertyDetails = ({
         </StyledOverviewSection>
 
         <StyledDetailsSection>
-          <PropertyDetailsCard
+          <PropertyRelationsCard
             record={property}
             loading={recordLoading}
             objectMetadataItem={objectMetadataItem}
