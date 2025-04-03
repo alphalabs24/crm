@@ -1,7 +1,11 @@
+import { Logger } from '@nestjs/common';
+
 import {
   MessageImportDriverException,
   MessageImportDriverExceptionCode,
 } from 'src/modules/messaging/message-import-manager/drivers/exceptions/message-import-driver.exception';
+
+const logger = new Logger('GmailMessageListFetchError');
 
 export const parseGmailMessageListFetchError = (error: {
   code?: number;
@@ -14,6 +18,11 @@ export const parseGmailMessageListFetchError = (error: {
 
   const reason = errors?.[0]?.reason;
   const message = errors?.[0]?.message;
+
+  logger.error(
+    `Gmail message list fetch error: code=${code}, reason=${reason}, message=${message}`,
+    JSON.stringify(errors),
+  );
 
   switch (code) {
     case 400:

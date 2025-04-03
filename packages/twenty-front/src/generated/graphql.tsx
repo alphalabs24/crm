@@ -471,6 +471,7 @@ export type FeatureFlag = {
 };
 
 export enum FeatureFlagKey {
+  IsAIDemoEnabled = 'IsAIDemoEnabled',
   IsAdvancedFiltersEnabled = 'IsAdvancedFiltersEnabled',
   IsAdvancedSettingsEnabled = 'IsAdvancedSettingsEnabled',
   IsAirtableIntegrationEnabled = 'IsAirtableIntegrationEnabled',

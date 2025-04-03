@@ -41,6 +41,10 @@ const StyledContentContainer = styled.div<{ isInRightDrawer?: boolean }>`
   }
 `;
 
+export const StyledComingSoonText = styled.div`
+  color: ${({ theme }) => theme.font.color.secondary};
+`;
+
 const StyledRightContentContainer = styled.div<{ isInRightDrawer?: boolean }>`
   display: flex;
   flex-direction: column;
@@ -135,7 +139,9 @@ export const PropertyDetails = ({
           </Section>
 
           <Section title={t`Reporting`} icon={<IconChartBar size={16} />}>
-            <Trans>Reporting coming soon</Trans>
+            <StyledComingSoonText>
+              <Trans>Reporting coming soon</Trans>
+            </StyledComingSoonText>
           </Section>
         </StyledRightContentContainer>
       </StyledContentContainer>
