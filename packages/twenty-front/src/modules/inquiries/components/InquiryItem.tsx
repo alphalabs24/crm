@@ -1,7 +1,10 @@
+import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
+import { getLinkToShowPage } from '@/object-metadata/utils/getLinkToShowPage';
 import { PlatformBadge } from '@/object-record/record-show/components/nm/publication/PlatformBadge';
 import { ObjectRecord } from '@/object-record/types/ObjectRecord';
 import styled from '@emotion/styled';
 import { format } from 'date-fns';
+import { Link } from 'react-router-dom';
 import { Avatar } from 'twenty-ui';
 
 const StyledInquiryItem = styled.div<{ isLast: boolean }>`
@@ -60,11 +63,6 @@ const StyledMessagePreview = styled.div`
   color: ${({ theme }) => theme.font.color.tertiary};
   font-size: ${({ theme }) => theme.font.size.sm};
   line-height: 1.4;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  flex: 1;
-  min-width: 0;
 `;
 
 const StyledDate = styled.div`
@@ -96,6 +94,8 @@ export const InquiryItem = ({
   const { createdAt, person, publication } = inquiry;
   const formattedDate = format(new Date(createdAt), 'MMM d, yyyy');
 
+  if (inquiry.person.name.firstName === 'Premier')
+    console.log('inquiry', inquiry);
   const fullName = `${person.name.firstName} ${person.name.lastName}`;
 
   return (
@@ -114,9 +114,9 @@ export const InquiryItem = ({
               <StyledDate>{formattedDate}</StyledDate>
             </StyledPreviewRow>
             <StyledPreviewRow>
-              {inquiry.messageParticipations && (
+              {inquiry.messageThreads && (
                 <StyledMessagePreview>
-                  {inquiry.messageParticipations.lastBodyMessage}
+                  {inquiry.messageThreads[0]?.lastMessageBody.slice(0, 100)}
                 </StyledMessagePreview>
               )}
               <StyledRelationshipSection>

@@ -2,13 +2,15 @@ import { useColorScheme } from '@/ui/theme/hooks/useColorScheme';
 import styled from '@emotion/styled';
 import { useLingui } from '@lingui/react/macro';
 import { format } from 'date-fns';
+import { Link } from 'react-router-dom';
 import { Button, ColorScheme, IconMessage } from 'twenty-ui';
 
 const StyledMessageContainer = styled.div<{ isCurrentUser?: boolean }>`
   display: flex;
   flex-direction: column;
   margin-bottom: ${({ theme }) => theme.spacing(4)};
-  max-width: 90%;
+  max-width: min(1200px, 90%);
+  min-width: 40%;
   ${({ isCurrentUser }) => (isCurrentUser ? 'align-self: flex-end;' : '')}
 `;
 
@@ -86,18 +88,16 @@ const formatDateToRelative = (date: Date | string): string => {
 type ConversationMessageItemProps = {
   message: any;
   isCurrentUser: boolean;
+  senderName: string;
 };
 
 export const ConversationMessageItem = ({
   message,
   isCurrentUser,
+  senderName,
 }: ConversationMessageItemProps) => {
   const { t } = useLingui();
   const { colorScheme } = useColorScheme();
-  const sender = message.sender;
-  const senderName = sender?.person?.name
-    ? `${sender.person.name.firstName} ${sender.person.name.lastName}`
-    : sender?.displayName || 'Unknown';
 
   // Format message body
   const formatMessageBody = (body: string) => {

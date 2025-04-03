@@ -26,6 +26,8 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import { WorkspaceMember } from '~/generated/graphql';
 import { ConversationMessageItem } from './ConversationMessageItem';
 import { ReplyEditor } from './ReplyEditor';
+import { useConnectedAccounts } from '@/inquiries/hooks/useConnectedAccounts';
+import { ConnectedAccount } from '@/accounts/types/ConnectedAccount';
 
 const StyledConversationSection = styled.div`
   background: ${({ theme }) => theme.background.primary};
@@ -225,7 +227,8 @@ export const ConversationSection = ({
   isPropertyDetailsExpanded,
 }: ConversationSectionProps) => {
   const { messages, thread, isLoadingMessages } = useInquiryPage();
-  const currentWorkspaceMembers = useRecoilValue(currentWorkspaceMembersState);
+  const { accounts } = useConnectedAccounts();
+
   const [scrollInstance] = useRecoilComponentStateV2(
     scrollWrapperInstanceComponentState,
     CONVERSATION_SCROLL_WRAPPER_ID,
@@ -238,19 +241,24 @@ export const ConversationSection = ({
     }
   }, [isLoadingMessages, messages?.length, scrollInstance]);
 
-  if (!inquiry) return null;
+  const currentWorkspaceMembers = useRecoilValue(currentWorkspaceMembersState);
+  const workspaceMember = currentWorkspaceMembers[0] as WorkspaceMember;
 
   const fullName = `${inquiry.person.name.firstName} ${inquiry.person.name.lastName}`;
+  const workspaceMemberName = `${workspaceMember.name.firstName} ${workspaceMember.name.lastName}`;
 
   // Helper to determine if a message is from the current user
   const isCurrentUser = (message: any) => {
-    return (
-      message.sender?.handle ===
-      (currentWorkspaceMembers[0] as WorkspaceMember)?.userEmail
-    );
+    const sender =
+      message.messageParticipants.find((participant: any) => {
+        return participant.role === 'from';
+      }) ?? message.sender;
+    return sender?.handle === (accounts?.[0] as ConnectedAccount)?.handle;
   };
 
   const senderEmail = messages[0]?.sender?.person?.emails?.primaryEmail;
+
+  if (!inquiry) return null;
 
   return (
     <StyledConversationSection>
@@ -307,6 +315,9 @@ export const ConversationSection = ({
               <ConversationMessageItem
                 key={message.id}
                 message={message}
+                senderName={
+                  isCurrentUser(message) ? workspaceMemberName : fullName
+                }
                 isCurrentUser={isCurrentUser(message)}
               />
             ))
