@@ -201,6 +201,7 @@ export const PublicationDetails = ({
         <Section
           title={t`Inquiries Overview`}
           icon={<IconMessageCircle2 size={16} />}
+          preserveHeight
         >
           {publicationMetrics?.contactsByStage && (
             <ContactsByStageChart
