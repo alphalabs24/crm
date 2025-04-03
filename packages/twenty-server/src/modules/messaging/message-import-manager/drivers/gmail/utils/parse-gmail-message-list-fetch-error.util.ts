@@ -89,9 +89,9 @@ export const parseGmailMessageListFetchError = (error: {
         message,
         MessageImportDriverExceptionCode.TEMPORARY_ERROR,
       );
-      // }
+    // }
 
-      break;
+    // break;
 
     default:
       break;
