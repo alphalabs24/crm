@@ -23,8 +23,7 @@ export const parseGmailMessagesImportError = (
   const message = `${errors?.[0]?.message} for message with externalId: ${messageExternalId}`;
 
   logger.error(
-    `Gmail messages import error: code=${code}, reason=${reason}, messageExternalId=${messageExternalId}`,
-    JSON.stringify(errors),
+    `Gmail messages import error: code=${code}, reason=${reason}, messageExternalId=${messageExternalId}\nError: ${JSON.stringify(error)}`,
   );
 
   switch (code) {

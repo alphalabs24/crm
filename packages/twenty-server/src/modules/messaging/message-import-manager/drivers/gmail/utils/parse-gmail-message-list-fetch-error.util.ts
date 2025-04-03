@@ -20,8 +20,7 @@ export const parseGmailMessageListFetchError = (error: {
   const message = errors?.[0]?.message;
 
   logger.error(
-    `Gmail message list fetch error: code=${code}, reason=${reason}, message=${message}`,
-    JSON.stringify(errors),
+    `Gmail message list fetch error: code=${code}, reason=${reason}, message=${message}\nError: ${JSON.stringify(error)}`,
   );
 
   switch (code) {
