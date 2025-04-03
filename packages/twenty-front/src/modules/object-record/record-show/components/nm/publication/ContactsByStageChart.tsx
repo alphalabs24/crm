@@ -376,21 +376,19 @@ export const ContactsByStageChart = ({
     );
   };
 
+  if (totalContacts === 0) {
+    return null;
+  }
+
   return (
     <StyledChartContainer>
-      {totalContacts > 0 ? (
-        <StyledChartContentContainer>
-          <StyledPieWrapper>
-            <Pie data={chartData} options={chartOptions} />
-            <StyledKPICardOverlay>{renderKpiCard()}</StyledKPICardOverlay>
-          </StyledPieWrapper>
-          <StyledLegendContainer>{renderLegend()}</StyledLegendContainer>
-        </StyledChartContentContainer>
-      ) : (
-        <StyledEmptyStateContainer>
-          <Trans>No inquiries data available yet</Trans>
-        </StyledEmptyStateContainer>
-      )}
+      <StyledChartContentContainer>
+        <StyledPieWrapper>
+          <Pie data={chartData} options={chartOptions} />
+          <StyledKPICardOverlay>{renderKpiCard()}</StyledKPICardOverlay>
+        </StyledPieWrapper>
+        <StyledLegendContainer>{renderLegend()}</StyledLegendContainer>
+      </StyledChartContentContainer>
     </StyledChartContainer>
   );
 };

@@ -1,6 +1,7 @@
 import { MAIN_CONTEXT_STORE_INSTANCE_ID } from '@/context-store/constants/MainContextStoreInstanceId';
 import { contextStoreCurrentViewIdComponentState } from '@/context-store/states/contextStoreCurrentViewIdComponentState';
 import { lastVisitedViewPerObjectMetadataItemState } from '@/navigation/states/lastVisitedViewPerObjectMetadataItemState';
+import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { ObjectMetadataItem } from '@/object-metadata/types/ObjectMetadataItem';
 import { prefetchViewsFromObjectMetadataItemFamilySelector } from '@/prefetch/states/selector/prefetchViewsFromObjectMetadataItemFamilySelector';
 import { AppPath } from '@/types/AppPath';
@@ -42,11 +43,14 @@ export const NavigationDrawerItemForObjectMetadataItem = ({
   const { getIcon } = useIcons();
   const currentPath = useLocation().pathname;
 
-  const navigationPath = getAppPath(
-    AppPath.RecordIndexPage,
-    { objectNamePlural: objectMetadataItem.namePlural },
-    lastVisitedViewId ? { viewId: lastVisitedViewId } : undefined,
-  );
+  const navigationPath =
+    objectMetadataItem.nameSingular === CoreObjectNameSingular.BuyerLead
+      ? getAppPath(AppPath.RecordInquiriesPage)
+      : getAppPath(
+          AppPath.RecordIndexPage,
+          { objectNamePlural: objectMetadataItem.namePlural },
+          lastVisitedViewId ? { viewId: lastVisitedViewId } : undefined,
+        );
 
   const isActive =
     currentPath ===

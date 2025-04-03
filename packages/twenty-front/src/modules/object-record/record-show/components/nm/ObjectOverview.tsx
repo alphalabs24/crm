@@ -1,18 +1,8 @@
 import { ActivityTargetableObject } from '@/activities/types/ActivityTargetableEntity';
-import { formatFieldMetadataItemAsColumnDefinition } from '@/object-metadata/utils/formatFieldMetadataItemAsColumnDefinition';
 import { getLinkToShowPage } from '@/object-metadata/utils/getLinkToShowPage';
-import { FieldContext } from '@/object-record/record-field/contexts/FieldContext';
-import { RecordInlineEntry } from '@/object-record/record-inline-cell/components/nm/RecordInlineEntry';
-import { InlineCellHotkeyScope } from '@/object-record/record-inline-cell/types/InlineCellHotkeyScope';
-import {
-  StyledButtonContainer,
-  StyledFormBorder,
-  StyledLoadingContainer,
-} from '@/object-record/record-show/components/ui/PropertyDetailsCardComponents';
 import { useRecordShowContainerActions } from '@/object-record/record-show/hooks/useRecordShowContainerActions';
 import { useRecordShowContainerData } from '@/object-record/record-show/hooks/useRecordShowContainerData';
 import { isFieldCellSupported } from '@/object-record/utils/isFieldCellSupported';
-import { ShowPagePropertySummaryCard } from '@/ui/layout/show-page/components/nm/ShowPagePropertySummaryCard';
 import { ShowPageSummaryCardSkeletonLoader } from '@/ui/layout/show-page/components/ShowPageSummaryCardSkeletonLoader';
 
 import { FieldMetadataItem } from '@/object-metadata/types/FieldMetadataItem';
@@ -39,6 +29,32 @@ import {
 } from 'twenty-ui';
 import { FieldMetadataType } from '~/generated/graphql';
 import { useSubcategoryByCategory } from '../../hooks/useSubcategoryByCategory';
+
+import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadataItem';
+import { PropertyAddressCard } from '@/object-record/record-show/components/nm/cards/PropertyAddressCard';
+import { PropertyBasicInfoCard } from '@/object-record/record-show/components/nm/cards/PropertyBasicInfoCard';
+import { PropertyDetailsCard } from '@/object-record/record-show/components/nm/cards/PropertyDetailsCard';
+import { PropertyImagesCard } from '@/object-record/record-show/components/nm/cards/PropertyImagesCard';
+import { PropertyPublicationsCard } from '@/object-record/record-show/components/nm/cards/PropertyPublicationsCard';
+import { PropertyRelationsCard } from '@/object-record/record-show/components/nm/cards/PropertyRelationsCard';
+
+const StyledContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(4)};
+  width: 100%;
+`;
+
+const StyledCardGrid = styled.div`
+  display: grid;
+  gap: ${({ theme }) => theme.spacing(4)};
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  width: 100%;
+`;
+
+const StyledFullWidthCard = styled.div`
+  grid-column: 1 / -1;
+`;
 
 const StyledHeader = styled.div`
   align-items: center;
@@ -185,20 +201,23 @@ const requiredPublicationFieldsAndSubtypes = [
   ...Object.values(CATEGORY_SUBTYPES),
 ];
 
-export const ObjectOverview = ({
-  targetableObject,
-  isInRightDrawer,
-  isNewRightDrawerItemLoading,
-  isPublication,
-}: {
+type ObjectOverviewProps = {
   targetableObject: Pick<
     ActivityTargetableObject,
     'targetObjectNameSingular' | 'id'
   >;
-  isNewRightDrawerItemLoading?: boolean;
   isInRightDrawer?: boolean;
-  isPublication?: boolean;
-}) => {
+  isNewRightDrawerItemLoading?: boolean;
+};
+
+export const ObjectOverview = ({
+  targetableObject,
+  isInRightDrawer,
+  isNewRightDrawerItemLoading,
+}: ObjectOverviewProps) => {
+  const { t } = useLingui();
+  const isMobile = useIsMobile();
+
   const {
     recordFromStore,
     recordLoading,
@@ -210,6 +229,11 @@ export const ObjectOverview = ({
     objectNameSingular: targetableObject.targetObjectNameSingular,
     objectRecordId: targetableObject.id,
   });
+
+  const { objectMetadataItem: objectMetadataItemFromObjectMetadata } =
+    useObjectMetadataItem({
+      objectNameSingular: targetableObject.targetObjectNameSingular,
+    });
 
   const [isLoading, setIsLoading] = useState(false);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
@@ -243,6 +267,13 @@ export const ObjectOverview = ({
 
   const subType = useSubcategoryByCategory(recordFromStore?.category);
 
+  const relationsToShow = useMemo(() => {
+    return relationFieldMetadataItems.filter(
+      // Add relation fields to hide here
+      (fieldMetadataItem) => fieldMetadataItem.name !== 'buyerLeads',
+    );
+  }, [relationFieldMetadataItems]);
+
   const rowsToShow = useMemo(() => {
     const finances = [];
 
@@ -256,7 +287,7 @@ export const ObjectOverview = ({
       finances.push('rentNet', 'rentExtra');
     }
 
-    const stage = isPublication ? [] : ['stage'];
+    const stage = isPrefetchLoading ? [] : ['stage'];
     // construct correct overview fields to show
     const base = [
       ...stage,
@@ -276,7 +307,7 @@ export const ObjectOverview = ({
     ];
 
     return base;
-  }, [isPublication, recordFromStore?.priceUnit, subType]);
+  }, [isPrefetchLoading, recordFromStore?.priceUnit, subType]);
 
   const isDefinedInRecord = (field: string) => {
     return (
@@ -286,7 +317,6 @@ export const ObjectOverview = ({
   };
 
   const mainDetails: FieldMetadataItem[] = [];
-  const { t } = useLingui();
   // make sure all are defined pls
   rowsToShow.forEach((row) => {
     const fieldMetadata = inlineFieldMetadataItems.find(
@@ -303,17 +333,6 @@ export const ObjectOverview = ({
     objectRecordId: targetableObject.id,
     recordFromStore,
   });
-
-  const isMobile = useIsMobile() || isInRightDrawer;
-
-  // Handle modal for prefill once we need it.
-  const openModal = () => {
-    modalRef.current?.open();
-  };
-
-  const closeModal = useCallback(() => {
-    modalRef.current?.close();
-  }, [modalRef]);
 
   const navigate = useNavigate();
 
@@ -332,7 +351,6 @@ export const ObjectOverview = ({
   }, []);
 
   const handlePrefill = useCallback(() => {
-    closeModal();
     if (isDefined(recordFromStore)) {
       navigate(
         `${getLinkToShowPage(
@@ -341,17 +359,12 @@ export const ObjectOverview = ({
         )}/edit`,
       );
     }
-  }, [
-    closeModal,
-    navigate,
-    recordFromStore,
-    targetableObject.targetObjectNameSingular,
-  ]);
+  }, [navigate, recordFromStore, targetableObject.targetObjectNameSingular]);
 
   // Reset the state when modal closes
   const handleModalClose = useCallback(() => {
-    closeModal();
-  }, [closeModal]);
+    modalRef.current?.close();
+  }, [modalRef]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -372,7 +385,7 @@ export const ObjectOverview = ({
     return <ShowPageSummaryCardSkeletonLoader />;
   }
 
-  const platformBadge = isPublication ? (
+  const platformBadge = isPrefetchLoading ? (
     <PlatformBadge
       platformId={recordFromStore.platform ?? PlatformId.Newhome}
       isActive
@@ -380,211 +393,117 @@ export const ObjectOverview = ({
   ) : null;
 
   return (
-    <>
-      <StyledFormBorder>
-        {recordLoading ? (
-          <StyledLoadingContainer>
-            <Trans>Loading...</Trans>
-          </StyledLoadingContainer>
-        ) : (
-          <>
-            <StyledHeader>
-              <StyledTitle>
-                <Trans>{overviewLabel} Overview</Trans>
-              </StyledTitle>
-              {platformBadge && (
-                <StyledButtonContainer>{platformBadge}</StyledButtonContainer>
-              )}
-            </StyledHeader>
-            <StyledContent>
-              <ShowPagePropertySummaryCard
-                date={recordFromStore.createdAt ?? ''}
-                loading={isPrefetchLoading || recordLoading}
-                title={
-                  recordFromStore.name?.firstName
-                    ? recordFromStore.name.firstName
-                    : recordFromStore.name
-                }
-                description={recordFromStore.description}
-                address={
-                  recordFromStore.address &&
-                  (recordFromStore.address.addressStreet1 ||
-                    recordFromStore.address.addressCity)
-                    ? `${recordFromStore.address?.addressStreet1 || ''} ${recordFromStore.address?.addressCity || ''} ${recordFromStore.address?.addressState || ''} ${recordFromStore.address?.addressPostcode || ''} ${recordFromStore.address?.addressCountry || ''}`
-                    : undefined
-                }
-                isMobile={isMobile}
-              />
+    <StyledContainer>
+      <PropertyBasicInfoCard record={recordFromStore} loading={recordLoading} />
 
-              {relationFieldMetadataItems?.map((FieldMetadataitem, index) => (
-                <>
-                  <FieldContext.Provider
-                    key={FieldMetadataitem.id + 'relation' + index}
-                    value={{
-                      recordId: targetableObject.id,
-                      maxWidth: 200,
-                      recoilScopeId: targetableObject.id + FieldMetadataitem.id,
-                      isLabelIdentifier: false,
-                      fieldDefinition:
-                        formatFieldMetadataItemAsColumnDefinition({
-                          field: FieldMetadataitem,
-                          position: index,
-                          objectMetadataItem,
-                          showLabel: true,
-                          labelWidth: 90,
-                        }),
-                      useUpdateRecord: useUpdateOneObjectRecordMutation,
-                      hotkeyScope: InlineCellHotkeyScope.InlineCell,
-                    }}
-                  >
-                    <RecordInlineEntry
-                      key={FieldMetadataitem.id + 'relation' + index}
-                      loading={recordLoading}
-                      isRequired={
-                        !isDefinedInRecord(FieldMetadataitem.name) &&
-                        requiredPublicationFieldsAndSubtypes.includes(
-                          FieldMetadataitem.name,
-                        )
-                      }
-                    />
-                  </FieldContext.Provider>
-                  {inlineFieldMetadataItems?.length === 0 ? (
-                    index < relationFieldMetadataItems.length - 1 ? (
-                      <StyledBottomBorder />
-                    ) : null
-                  ) : (
-                    <StyledBottomBorder />
-                  )}
-                </>
-              ))}
+      <PropertyImagesCard
+        targetableObject={targetableObject}
+        loading={recordLoading}
+      />
 
-              {mainDetails?.map((fieldMetadataItem, index) => (
-                <>
-                  <FieldContext.Provider
-                    key={fieldMetadataItem.id + 'inline' + index}
-                    value={{
-                      recordId: targetableObject.id,
-                      maxWidth: 200,
-                      recoilScopeId: targetableObject.id + fieldMetadataItem.id,
-                      isLabelIdentifier: false,
-                      fieldDefinition:
-                        formatFieldMetadataItemAsColumnDefinition({
-                          field: fieldMetadataItem,
-                          position: index,
-                          objectMetadataItem,
-                          showLabel: true,
-                          labelWidth: 90,
-                        }),
-                      useUpdateRecord: useUpdateOneObjectRecordMutation,
-                      hotkeyScope: InlineCellHotkeyScope.InlineCell,
-                    }}
-                  >
-                    <RecordInlineEntry
-                      key={fieldMetadataItem.id + 'inline' + index}
-                      loading={recordLoading}
-                      isRequired={
-                        !isDefinedInRecord(fieldMetadataItem.name) &&
-                        requiredPublicationFieldsAndSubtypes.includes(
-                          fieldMetadataItem.name,
-                        )
-                      }
-                    />
-                  </FieldContext.Provider>
-                  {index < mainDetails.length - 1 && <StyledBottomBorder />}
-                </>
-              ))}
-            </StyledContent>
-          </>
-        )}
-        <Modal
-          size="medium"
-          onClose={handleModalClose}
-          isClosable
-          ref={modalRef}
-          closedOnMount
-          hotkeyScope={ModalHotkeyScope.Default}
-          padding="none"
-          portal
-        >
-          <StyledModalHeader>
-            <StyledModalTitleContainer>
-              <IconSparkles size={16} />
-              <StyledModalTitle>
-                <Trans>Prefill Property</Trans>
-              </StyledModalTitle>
-            </StyledModalTitleContainer>
-            <StyledModalHeaderButtons>
+      <PropertyDetailsCard
+        record={recordFromStore}
+        loading={recordLoading}
+        objectMetadataItem={objectMetadataItem}
+      />
+
+      <PropertyAddressCard record={recordFromStore} loading={recordLoading} />
+
+      <PropertyRelationsCard
+        record={recordFromStore}
+        loading={recordLoading}
+        objectMetadataItem={objectMetadataItem}
+      />
+
+      <PropertyPublicationsCard
+        record={recordFromStore}
+        loading={recordLoading}
+      />
+
+      <Modal
+        size="medium"
+        onClose={handleModalClose}
+        isClosable
+        ref={modalRef}
+        closedOnMount
+        hotkeyScope={ModalHotkeyScope.Default}
+        padding="none"
+        portal
+      >
+        <StyledModalHeader>
+          <StyledModalTitleContainer>
+            <IconSparkles size={16} />
+            <StyledModalTitle>
+              <Trans>Prefill Property</Trans>
+            </StyledModalTitle>
+          </StyledModalTitleContainer>
+          <StyledModalHeaderButtons>
+            <Button title={t`Cancel`} Icon={IconX} onClick={handleModalClose} />
+            {isProcessed && (
               <Button
-                title={t`Cancel`}
-                Icon={IconX}
-                onClick={handleModalClose}
+                title={t`Prefill`}
+                Icon={IconSparkles}
+                accent="purple"
+                onClick={handlePrefill}
               />
-              {isProcessed && (
-                <Button
-                  title={t`Prefill`}
-                  Icon={IconSparkles}
-                  accent="purple"
-                  onClick={handlePrefill}
-                />
-              )}
-            </StyledModalHeaderButtons>
-          </StyledModalHeader>
-          <StyledModalContent>
-            {uploadedFile && (
-              <StyledDocumentContainer>
-                <StyledDocumentInfo>
-                  <IconUpload size={16} />
-                  <StyledDocumentName>{uploadedFile.name}</StyledDocumentName>
-                </StyledDocumentInfo>
-                {isLoading ? (
-                  <CircularProgressBar size={16} barWidth={2} />
-                ) : (
-                  isProcessed && <IconCheck size={16} color="green" />
-                )}
-              </StyledDocumentContainer>
             )}
-            <StyledModalDescription>
-              <Trans>
-                <StyledNesterColored>Nester</StyledNesterColored> will analyze
-                available data and suggest values for empty fields.
-              </Trans>
-            </StyledModalDescription>
+          </StyledModalHeaderButtons>
+        </StyledModalHeader>
+        <StyledModalContent>
+          {uploadedFile && (
+            <StyledDocumentContainer>
+              <StyledDocumentInfo>
+                <IconUpload size={16} />
+                <StyledDocumentName>{uploadedFile.name}</StyledDocumentName>
+              </StyledDocumentInfo>
+              {isLoading ? (
+                <CircularProgressBar size={16} barWidth={2} />
+              ) : (
+                isProcessed && <IconCheck size={16} color="green" />
+              )}
+            </StyledDocumentContainer>
+          )}
+          <StyledModalDescription>
+            <Trans>
+              <StyledNesterColored>Nester</StyledNesterColored> will analyze
+              available data and suggest values for empty fields.
+            </Trans>
+          </StyledModalDescription>
 
-            <StyledDropZoneContainer
-              onClick={getRootProps().onClick}
-              onKeyDown={getRootProps().onKeyDown}
-              onFocus={getRootProps().onFocus}
-              onBlur={getRootProps().onBlur}
-              onDragEnter={getRootProps().onDragEnter}
-              onDragOver={getRootProps().onDragOver}
-              onDragLeave={getRootProps().onDragLeave}
-              onDrop={getRootProps().onDrop}
-              role="presentation"
-            >
-              <input
-                type="file"
-                onChange={getInputProps().onChange}
-                onFocus={getInputProps().onFocus}
-                onBlur={getInputProps().onBlur}
-                accept={getInputProps().accept}
-                multiple={getInputProps().multiple}
-                style={{ display: 'none' }}
-              />
-              <StyledDropZoneContent>
-                <StyledUploadIcon size={32} />
-                <StyledUploadTitle>
-                  {isDragActive ? t`Drop the file here` : t`Upload a file`}
-                </StyledUploadTitle>
-                <StyledUploadSubTitle>
-                  {isDragActive
-                    ? t`Drop your file to start analyzing`
-                    : t`Drag and drop your file here, or click to browse`}
-                </StyledUploadSubTitle>
-              </StyledDropZoneContent>
-            </StyledDropZoneContainer>
-          </StyledModalContent>
-        </Modal>
-      </StyledFormBorder>
-    </>
+          <StyledDropZoneContainer
+            onClick={getRootProps().onClick}
+            onKeyDown={getRootProps().onKeyDown}
+            onFocus={getRootProps().onFocus}
+            onBlur={getRootProps().onBlur}
+            onDragEnter={getRootProps().onDragEnter}
+            onDragOver={getRootProps().onDragOver}
+            onDragLeave={getRootProps().onDragLeave}
+            onDrop={getRootProps().onDrop}
+            role="presentation"
+          >
+            <input
+              type="file"
+              onChange={getInputProps().onChange}
+              onFocus={getInputProps().onFocus}
+              onBlur={getInputProps().onBlur}
+              accept={getInputProps().accept}
+              multiple={getInputProps().multiple}
+              style={{ display: 'none' }}
+            />
+            <StyledDropZoneContent>
+              <StyledUploadIcon size={32} />
+              <StyledUploadTitle>
+                {isDragActive ? t`Drop the file here` : t`Upload a file`}
+              </StyledUploadTitle>
+              <StyledUploadSubTitle>
+                {isDragActive
+                  ? t`Drop your file to start analyzing`
+                  : t`Drag and drop your file here, or click to browse`}
+              </StyledUploadSubTitle>
+            </StyledDropZoneContent>
+          </StyledDropZoneContainer>
+        </StyledModalContent>
+      </Modal>
+    </StyledContainer>
   );
 };

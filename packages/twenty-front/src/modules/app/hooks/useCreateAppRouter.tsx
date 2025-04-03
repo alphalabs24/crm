@@ -17,6 +17,7 @@ import { PasswordReset } from '~/pages/auth/PasswordReset';
 import { SignInUp } from '~/pages/auth/SignInUp';
 import { NotFound } from '~/pages/not-found/NotFound';
 import { RecordEditPage } from '~/pages/object-record/nm/RecordEditPage';
+import { RecordInquiriesPage } from '~/pages/object-record/nm/RecordInquiriesPage';
 import { RecordShowPropertyPage } from '~/pages/object-record/nm/RecordShowPropertyPage';
 import { RecordIndexPage } from '~/pages/object-record/RecordIndexPage';
 import { RecordShowPage } from '~/pages/object-record/RecordShowPage';
@@ -58,6 +59,10 @@ export const useCreateAppRouter = (
           />
           <Route path={indexAppPath.getIndexAppPath()} element={<></>} />
           <Route path={AppPath.RecordIndexPage} element={<RecordIndexPage />} />
+          <Route
+            path={AppPath.RecordInquiriesPage}
+            element={<RecordInquiriesPage />}
+          />
           <Route path={AppPath.RecordShowPage} element={<RecordShowPage />} />
           <Route
             path={AppPath.RecordShowPropertyPage}

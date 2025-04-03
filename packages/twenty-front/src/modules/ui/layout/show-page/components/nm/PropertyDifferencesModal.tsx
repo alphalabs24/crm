@@ -19,10 +19,13 @@ import { UserTutorialExplanation } from 'twenty-shared';
 import {
   Button,
   IconAlertCircle,
+  IconCheck,
   IconExchange,
   IconHelpCircle,
+  IconHome,
   IconHomeShare,
   IconRefresh,
+  IconX,
   MOBILE_VIEWPORT,
   useIcons,
 } from 'twenty-ui';
@@ -45,10 +48,15 @@ const StyledDifferenceItem = styled.div`
   border: 1px solid ${({ theme }) => theme.border.color.medium};
   border-radius: ${({ theme }) => theme.border.radius.md};
   padding: ${({ theme }) => theme.spacing(3)};
+  display: grid;
+  grid-template-columns: 200px 1fr;
   gap: ${({ theme }) => theme.spacing(4)};
-  display: flex;
-  position: relative;
-  flex-wrap: wrap;
+  align-items: center;
+
+  @media (max-width: ${MOBILE_VIEWPORT}px) {
+    grid-template-columns: 1fr;
+    gap: ${({ theme }) => theme.spacing(2)};
+  }
 `;
 
 const StyledDifferenceHeader = styled.div`
@@ -58,30 +66,43 @@ const StyledDifferenceHeader = styled.div`
   font-size: ${({ theme }) => theme.font.size.sm};
   font-weight: ${({ theme }) => theme.font.weight.medium};
   gap: ${({ theme }) => theme.spacing(2)};
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 const StyledValueComparison = styled.div`
-  align-items: center;
-  display: flex;
-  gap: ${({ theme }) => theme.spacing(3)};
-  max-width: 100%;
-  position: relative;
-  overflow: hidden;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: ${({ theme }) => theme.spacing(4)};
+  width: 100%;
 
-  @media only screen and (min-width: ${MOBILE_VIEWPORT}px) {
-    flex: 1;
+  @media (max-width: ${MOBILE_VIEWPORT}px) {
+    grid-template-columns: 1fr;
+    gap: ${({ theme }) => theme.spacing(2)};
   }
 `;
 
-const StyledValueColumn = styled.div`
-  flex: 1;
+const StyledValueColumn = styled.div<{ $isOld?: boolean; $isNew?: boolean }>`
+  font-weight: ${({ $isNew }) => ($isNew ? 500 : 'normal')};
   min-width: 0;
+  opacity: ${({ $isOld }) => ($isOld ? 0.7 : 1)};
   overflow: hidden;
+  padding: ${({ theme }) => theme.spacing(2)};
+  position: relative;
+  text-decoration: ${({ $isOld }) => ($isOld ? 'line-through' : 'none')};
 `;
 
-const StyledArrowContainer = styled.div`
+const StyledEmptyValue = styled.span`
+  color: ${({ theme }) => theme.font.color.light};
+  font-style: italic;
+`;
+
+const StyledChangeIcon = styled.div<{ $type: 'old' | 'new' }>`
   align-items: center;
-  color: ${({ theme }) => theme.font.color.secondary};
+  color: ${({ theme, $type }) =>
+    $type === 'old' ? theme.color.red : theme.color.blue};
   display: flex;
   justify-content: center;
 `;
@@ -116,16 +137,26 @@ const StyledModalTopTitle = styled.div`
 `;
 
 const StyledColumnHeaders = styled.div`
-  display: flex;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 200px 1fr;
   gap: ${({ theme }) => theme.spacing(4)};
   padding: ${({ theme }) => theme.spacing(3)};
+
+  @media (max-width: ${MOBILE_VIEWPORT}px) {
+    grid-template-columns: 1fr;
+    gap: ${({ theme }) => theme.spacing(2)};
+  }
 `;
 
-const StyledNewTag = styled.div`
-  color: ${({ theme }) => theme.color.blue40};
-  width: fit-content;
-  font-size: ${({ theme }) => theme.font.size.xs};
+const StyledHeaderColumns = styled.div`
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: ${({ theme }) => theme.spacing(4)};
+
+  @media (max-width: ${MOBILE_VIEWPORT}px) {
+    grid-template-columns: 1fr;
+    gap: ${({ theme }) => theme.spacing(2)};
+  }
 `;
 
 const StyledColumnHeader = styled.div`
@@ -270,7 +301,6 @@ type PropertyDifferencesModalProps = {
   publicationRecordId: string;
 };
 
-// First create a new component for individual publication differences
 const PublicationDiffView = ({
   differences,
   propertyRecordId,
@@ -289,7 +319,6 @@ const PublicationDiffView = ({
     objectNameSingular: CoreObjectNameSingular.Property,
   });
 
-  // Add missing Recoil state setup
   const setEntityFields = useSetRecoilState(
     recordStoreFamilyState(publicationRecordId),
   );
@@ -308,26 +337,42 @@ const PublicationDiffView = ({
     }
   }, [record, setEntityFields]);
 
+  const EmptyValueDisplay = () => (
+    <StyledEmptyValue>
+      <Trans>Empty</Trans>
+    </StyledEmptyValue>
+  );
+
   return (
     <StyledDiffViewContainer>
       <StyledColumnHeaders>
-        <StyledColumnHeader>
-          <IconHomeShare size={16} />
-          <div>
-            <StyledColumnTitle>{t`Old`}</StyledColumnTitle>
-            <StyledColumnSubtitle>{t`Current draft values`}</StyledColumnSubtitle>
-          </div>
-        </StyledColumnHeader>
-        <StyledArrowContainer>→</StyledArrowContainer>
-        <StyledColumnHeader>
-          <IconHomeShare size={16} />
-          <div>
-            <StyledColumnTitle>
-              <StyledNewTag>{t`Updated`}</StyledNewTag>
-            </StyledColumnTitle>
-            <StyledColumnSubtitle>{t`Source values`}</StyledColumnSubtitle>
-          </div>
-        </StyledColumnHeader>
+        <div />
+        <StyledHeaderColumns>
+          <StyledColumnHeader>
+            <IconHomeShare size={16} />
+            <div>
+              <StyledColumnTitle>
+                <StyledChangeIcon $type="old">
+                  <IconX size={16} />
+                </StyledChangeIcon>
+                {t`Old Draft Values`}
+              </StyledColumnTitle>
+              <StyledColumnSubtitle>{t`Will be replaced`}</StyledColumnSubtitle>
+            </div>
+          </StyledColumnHeader>
+          <StyledColumnHeader>
+            <IconHome size={16} />
+            <div>
+              <StyledColumnTitle>
+                <StyledChangeIcon $type="new">
+                  <IconCheck size={16} />
+                </StyledChangeIcon>
+                {t`New Draft Values`}
+              </StyledColumnTitle>
+              <StyledColumnSubtitle>{t`Will be applied`}</StyledColumnSubtitle>
+            </div>
+          </StyledColumnHeader>
+        </StyledHeaderColumns>
       </StyledColumnHeaders>
 
       {differences.map((diff, index) => {
@@ -342,6 +387,9 @@ const PublicationDiffView = ({
           return null;
         }
 
+        const isOldValueEmpty = isValueEmpty(diff.publicationValue);
+        const isNewValueEmpty = isValueEmpty(diff.propertyValue);
+
         return (
           <StyledDifferenceItem key={index}>
             <StyledDifferenceHeader>
@@ -349,12 +397,13 @@ const PublicationDiffView = ({
               {diff.fieldLabel}
             </StyledDifferenceHeader>
             <StyledValueComparison>
-              <StyledValueColumn>
+              <StyledValueColumn $isOld>
                 <RecordFieldValueSelectorContextProvider>
                   <RecordValueSetterEffect recordId={publicationRecordId} />
-
                   {loading ? (
                     <Skeleton height={12} width={100} />
+                  ) : isOldValueEmpty ? (
+                    <EmptyValueDisplay />
                   ) : (
                     <FieldContext.Provider
                       value={{
@@ -390,44 +439,42 @@ const PublicationDiffView = ({
                 </RecordFieldValueSelectorContextProvider>
               </StyledValueColumn>
 
-              <StyledArrowContainer>→</StyledArrowContainer>
-              <StyledValueColumn>
-                <div>
-                  {loading ? (
-                    <Skeleton height={12} width={100} />
-                  ) : (
-                    <FieldContext.Provider
-                      value={{
-                        overridenIsFieldEmpty: isValueEmpty(diff.propertyValue),
-                        recordId: propertyRecordId,
-                        isLabelIdentifier: isLabelIdentifierField({
-                          fieldMetadataItem: diff.propertyFieldMetadataItem,
-                          objectMetadataItem: propertyMetadataItem,
-                        }),
-                        fieldDefinition: {
-                          type: diff.propertyFieldMetadataItem.type,
-                          iconName:
-                            diff.propertyFieldMetadataItem.icon || 'FieldIcon',
-                          fieldMetadataId:
-                            diff.propertyFieldMetadataItem.id || '',
-                          label: diff.propertyFieldMetadataItem.label,
-                          metadata: {
-                            fieldName: diff.propertyFieldMetadataItem.name,
-                            objectMetadataNameSingular:
-                              propertyMetadataItem?.nameSingular,
-                            options:
-                              diff.propertyFieldMetadataItem.options ?? [],
-                          },
-                          defaultValue:
-                            diff.propertyFieldMetadataItem.defaultValue,
+              <StyledValueColumn $isNew>
+                {loading ? (
+                  <Skeleton height={12} width={100} />
+                ) : isNewValueEmpty ? (
+                  <EmptyValueDisplay />
+                ) : (
+                  <FieldContext.Provider
+                    value={{
+                      overridenIsFieldEmpty: isValueEmpty(diff.propertyValue),
+                      recordId: propertyRecordId,
+                      isLabelIdentifier: isLabelIdentifierField({
+                        fieldMetadataItem: diff.propertyFieldMetadataItem,
+                        objectMetadataItem: propertyMetadataItem,
+                      }),
+                      fieldDefinition: {
+                        type: diff.propertyFieldMetadataItem.type,
+                        iconName:
+                          diff.propertyFieldMetadataItem.icon || 'FieldIcon',
+                        fieldMetadataId:
+                          diff.propertyFieldMetadataItem.id || '',
+                        label: diff.propertyFieldMetadataItem.label,
+                        metadata: {
+                          fieldName: diff.propertyFieldMetadataItem.name,
+                          objectMetadataNameSingular:
+                            propertyMetadataItem?.nameSingular,
+                          options: diff.propertyFieldMetadataItem.options ?? [],
                         },
-                        hotkeyScope: 'property-diff',
-                      }}
-                    >
-                      <FieldDisplay wrap />
-                    </FieldContext.Provider>
-                  )}
-                </div>
+                        defaultValue:
+                          diff.propertyFieldMetadataItem.defaultValue,
+                      },
+                      hotkeyScope: 'property-diff',
+                    }}
+                  >
+                    <FieldDisplay wrap />
+                  </FieldContext.Provider>
+                )}
               </StyledValueColumn>
             </StyledValueComparison>
           </StyledDifferenceItem>
@@ -469,6 +516,7 @@ export const PropertyDifferencesModal = forwardRef<
       ref={ref}
       closedOnMount
       padding="none"
+      portal
       size="large"
     >
       <StyledModalContainer>

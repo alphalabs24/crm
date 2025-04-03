@@ -45,11 +45,41 @@ export const PropertyEmailsFormInput = ({ loading }: { loading?: boolean }) => {
   const { objectRecordId, objectNameSingular } = useParams();
   const [testEmail, setTestEmail] = useState('');
   const [emailError, setEmailError] = useState('');
-  const [isSending, setIsSending] = useState(false);
   const { t } = useLingui();
 
-  const { publicationsApi, propertiesApi } = useNestermind();
+  const { useMutations } = useNestermind();
   const { enqueueSnackBar } = useSnackBar();
+
+  // Use mutation hooks
+  const { mutate: sendTestEmailPublication, isPending: isSendingPublication } =
+    useMutations.useSendTestEmailPublication({
+      onSuccess: () => {
+        enqueueSnackBar(t`Test email sent successfully`, {
+          variant: SnackBarVariant.Success,
+        });
+      },
+      onError: () => {
+        enqueueSnackBar(t`Failed to send test email`, {
+          variant: SnackBarVariant.Error,
+        });
+      },
+    });
+
+  const { mutate: sendTestEmailProperty, isPending: isSendingProperty } =
+    useMutations.useSendTestEmailProperty({
+      onSuccess: () => {
+        enqueueSnackBar(t`Test email sent successfully`, {
+          variant: SnackBarVariant.Success,
+        });
+      },
+      onError: () => {
+        enqueueSnackBar(t`Failed to send test email`, {
+          variant: SnackBarVariant.Error,
+        });
+      },
+    });
+
+  const isSending = isSendingPublication || isSendingProperty;
 
   const handleEmailChange = useCallback(
     (value: string) => {
@@ -64,29 +94,16 @@ export const PropertyEmailsFormInput = ({ loading }: { loading?: boolean }) => {
   );
 
   const sendTestEmail = async () => {
-    try {
-      setIsSending(true);
-      if (objectNameSingular === CoreObjectNameSingular.Property) {
-        await propertiesApi.sendTestEmail({
-          propertyId: objectRecordId ?? '',
-          toEmail: testEmail,
-        });
-      } else {
-        await publicationsApi.sendTestEmail({
-          publicationId: objectRecordId ?? '',
-          toEmail: testEmail,
-        });
-      }
-
-      enqueueSnackBar(t`Test email sent successfully`, {
-        variant: SnackBarVariant.Success,
+    if (objectNameSingular === CoreObjectNameSingular.Property) {
+      sendTestEmailProperty({
+        propertyId: objectRecordId ?? '',
+        toEmail: testEmail,
       });
-    } catch (error) {
-      enqueueSnackBar(t`Failed to send test email`, {
-        variant: SnackBarVariant.Error,
+    } else {
+      sendTestEmailPublication({
+        publicationId: objectRecordId ?? '',
+        toEmail: testEmail,
       });
-    } finally {
-      setIsSending(false);
     }
   };
 
@@ -105,7 +122,7 @@ export const PropertyEmailsFormInput = ({ loading }: { loading?: boolean }) => {
             label: t`Save and send`,
             onClick: async () => {
               await saveRecord();
-              await sendTestEmail();
+              sendTestEmail();
             },
             variant: 'secondary',
             accent: 'blue',
@@ -114,7 +131,7 @@ export const PropertyEmailsFormInput = ({ loading }: { loading?: boolean }) => {
         ],
       });
     } else {
-      await sendTestEmail();
+      sendTestEmail();
     }
   };
 
