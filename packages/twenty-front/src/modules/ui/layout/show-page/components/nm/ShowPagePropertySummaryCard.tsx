@@ -30,7 +30,6 @@ export const StyledShowPageSummaryCard = styled.div<{
     isMobile ? theme.spacing(2) : theme.spacing(3)};
   justify-content: center;
   padding-bottom: ${({ theme }) => theme.spacing(4)};
-  border-bottom: 1px solid ${({ theme }) => theme.border.color.light};
   box-sizing: border-box;
 `;
 

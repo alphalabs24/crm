@@ -355,7 +355,7 @@ const PublicationDiffView = ({
                 <StyledChangeIcon $type="old">
                   <IconX size={16} />
                 </StyledChangeIcon>
-                {t`Current Draft`}
+                {t`Old Draft Values`}
               </StyledColumnTitle>
               <StyledColumnSubtitle>{t`Will be replaced`}</StyledColumnSubtitle>
             </div>
@@ -367,7 +367,7 @@ const PublicationDiffView = ({
                 <StyledChangeIcon $type="new">
                   <IconCheck size={16} />
                 </StyledChangeIcon>
-                {t`Property Values`}
+                {t`New Draft Values`}
               </StyledColumnTitle>
               <StyledColumnSubtitle>{t`Will be applied`}</StyledColumnSubtitle>
             </div>

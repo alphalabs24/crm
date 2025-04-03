@@ -8,8 +8,6 @@ import { IconNotes } from 'twenty-ui';
 const StyledContent = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(2)};
-  padding: ${({ theme }) => theme.spacing(2)};
 `;
 
 const StyledEmptyState = styled.div`
@@ -43,10 +41,11 @@ export const PropertyPublicationsCard = ({
     <Section title={t`Publications`} icon={<IconNotes size={16} />}>
       <StyledContent>
         {publications && publications.length > 0 ? (
-          publications.map((publication) => (
+          publications.map((publication, index) => (
             <PropertyPublicationItemCard
               key={publication.id}
               publication={publication}
+              isLast={index === publications.length - 1}
             />
           ))
         ) : (

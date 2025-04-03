@@ -6,10 +6,6 @@ import { useLingui } from '@lingui/react/macro';
 import { useCallback, useState } from 'react';
 import { IconPhoto } from 'twenty-ui';
 
-const StyledContent = styled.div`
-  padding: ${({ theme }) => theme.spacing(2)};
-`;
-
 const StyledImagesGrid = styled.div`
   display: grid;
   gap: ${({ theme }) => theme.spacing(2)};
@@ -100,7 +96,7 @@ export const PropertyImagesCard = ({
 
   return (
     <Section title={t`Images`} icon={<IconPhoto size={16} />}>
-      <StyledContent>
+      <div>
         {images.length > 0 ? (
           <StyledImagesGrid>
             {images.map((image) => (
@@ -122,7 +118,7 @@ export const PropertyImagesCard = ({
             <div>{t`No images available`}</div>
           </StyledEmptyState>
         )}
-      </StyledContent>
+      </div>
     </Section>
   );
 };

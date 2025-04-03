@@ -484,7 +484,7 @@ export const ShowPagePropertySubContainer = ({
                       }
                     : showSyncButton
                       ? {
-                          title: t`Differences ${differenceLength}`,
+                          title: t`Sync Publications ${differenceLength}`,
                           onClick: () => differencesModalRef.current?.open(),
                         }
                       : showUnpublishButton

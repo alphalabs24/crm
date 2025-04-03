@@ -10,7 +10,6 @@ const StyledContent = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
   gap: ${({ theme }) => theme.spacing(6)};
-  padding: ${({ theme }) => theme.spacing(2)};
 `;
 
 const StyledDetailGroup = styled.div`

@@ -1,26 +1,19 @@
 import { ActivityTargetableObject } from '@/activities/types/ActivityTargetableEntity';
-import { InquiriesPreview } from '@/inquiries/components/InquiriesPreview';
 import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadataItem';
 import { PropertyAddressCard } from '@/object-record/record-show/components/nm/cards/PropertyAddressCard';
 import { PropertyBasicInfoCard } from '@/object-record/record-show/components/nm/cards/PropertyBasicInfoCard';
 import { PropertyDetailsCard } from '@/object-record/record-show/components/nm/cards/PropertyDetailsCard';
 import { PropertyImagesCard } from '@/object-record/record-show/components/nm/cards/PropertyImagesCard';
+import { PropertyInquiriesCard } from '@/object-record/record-show/components/nm/cards/PropertyInquiriesCard';
 import { PropertyPublicationsCard } from '@/object-record/record-show/components/nm/cards/PropertyPublicationsCard';
 import { PropertyRelationsCard } from '@/object-record/record-show/components/nm/cards/PropertyRelationsCard';
-import { ContactsByPlatformChart } from '@/object-record/record-show/components/nm/property/ContactsByPlatformChart';
-import {
-  Section,
-  StyledLoadingContainer,
-} from '@/object-record/record-show/components/ui/PropertyDetailsCardComponents';
+import { PropertyReportingCard } from '@/object-record/record-show/components/nm/cards/PropertyReportingCard';
+import { StyledLoadingContainer } from '@/object-record/record-show/components/ui/PropertyDetailsCardComponents';
 import { useRecordShowContainerData } from '@/object-record/record-show/hooks/useRecordShowContainerData';
-import { propertyPlatformMetricsState } from '@/object-record/record-show/states/propertyPlatformMetricsState';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import { Trans, useLingui } from '@lingui/react/macro';
-import { useRecoilValue } from 'recoil';
+import { Trans } from '@lingui/react/macro';
 import {
-  IconChartBar,
-  IconMessageCircle2,
   LARGE_DESKTOP_VIEWPORT,
   MOBILE_VIEWPORT,
   useIsMobile,
@@ -132,8 +125,6 @@ export const PropertyDetails = ({
   targetableObject,
   isInRightDrawer,
 }: PropertyDetailsProps) => {
-  const { t } = useLingui();
-
   const isMobile = useIsMobile();
 
   const { objectMetadataItem } = useObjectMetadataItem({
@@ -145,10 +136,6 @@ export const PropertyDetails = ({
       objectNameSingular: targetableObject.targetObjectNameSingular,
       objectRecordId: targetableObject.id,
     });
-
-  const propertyPlatformMetrics = useRecoilValue(
-    propertyPlatformMetricsState(targetableObject.id),
-  );
 
   if (recordLoading || !property) {
     return (
@@ -170,7 +157,6 @@ export const PropertyDetails = ({
 
         <StyledOverviewSection>
           <PropertyBasicInfoCard record={property} loading={recordLoading} />
-
           <PropertyDetailsCard
             record={property}
             loading={recordLoading}
@@ -194,29 +180,8 @@ export const PropertyDetails = ({
 
       {isMobile ? null : (
         <StyledSideContent isInRightDrawer={isInRightDrawer}>
-          <Section
-            title={t`Inquiries Overview`}
-            icon={<IconMessageCircle2 size={16} />}
-            preserveHeight
-          >
-            {propertyPlatformMetrics?.contactsByPlatform && (
-              <ContactsByPlatformChart
-                contactsByPlatform={propertyPlatformMetrics.contactsByPlatform}
-                totalContacts={propertyPlatformMetrics.contacts}
-              />
-            )}
-            <InquiriesPreview propertyId={property.id} maxItems={5} />
-          </Section>
-
-          <Section
-            title={t`Reporting`}
-            icon={<IconChartBar size={16} />}
-            preserveHeight
-          >
-            <StyledComingSoonText>
-              <Trans>Reporting coming soon</Trans>
-            </StyledComingSoonText>
-          </Section>
+          <PropertyInquiriesCard recordId={property.id} />
+          <PropertyReportingCard />
         </StyledSideContent>
       )}
     </StyledContentContainer>

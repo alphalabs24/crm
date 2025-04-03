@@ -3,13 +3,8 @@ import { Section } from '@/object-record/record-show/components/ui/PropertyDetai
 import { ShowPagePropertySummaryCard } from '@/ui/layout/show-page/components/nm/ShowPagePropertySummaryCard';
 import { PlatformId } from '@/ui/layout/show-page/components/nm/types/Platform';
 import { useIsMobile } from '@/ui/utilities/responsive/hooks/useIsMobile';
-import styled from '@emotion/styled';
 import { useLingui } from '@lingui/react/macro';
 import { IconBuilding } from 'twenty-ui';
-
-const StyledContent = styled.div`
-  padding: ${({ theme }) => theme.spacing(2)};
-`;
 
 type PropertyBasicInfoCardProps = {
   record: any;
@@ -38,7 +33,7 @@ export const PropertyBasicInfoCard = ({
       icon={<IconBuilding size={16} />}
       rightComponent={platformBadge}
     >
-      <StyledContent>
+      <div>
         <ShowPagePropertySummaryCard
           date={record.createdAt ?? ''}
           loading={loading}
@@ -52,7 +47,7 @@ export const PropertyBasicInfoCard = ({
           }
           isMobile={isMobile}
         />
-      </StyledContent>
+      </div>
     </Section>
   );
 };

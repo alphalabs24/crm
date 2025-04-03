@@ -9,6 +9,7 @@ import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { useSearchParams } from 'react-router-dom';
 import { useInquiryPage } from '../contexts/InquiryPageContext';
+import { InquiriesFilterHeader } from './InquiriesFilterHeader';
 import { InquiryItem } from './InquiryItem';
 
 const StyledPageBody = styled(PageBody)`
@@ -111,10 +112,13 @@ const InquirySkeletonLoader = () => {
 };
 
 export const InquiriesList = () => {
-  const { records, loading } = useInquiries();
-  const { openInquirySidebar, setSelectedInquiry } = useInquiryPage();
   const [searchParams] = useSearchParams();
+  const propertyId = searchParams.get('propertyId') || undefined;
+  const publicationId = searchParams.get('publicationId') || undefined;
   const id = searchParams.get('id');
+
+  const { records, loading } = useInquiries({ propertyId, publicationId });
+  const { openInquirySidebar, setSelectedInquiry } = useInquiryPage();
 
   const handleInquiryClick = useCallback(
     (inquiry: ObjectRecord, id: string) => {
@@ -141,6 +145,10 @@ export const InquiriesList = () => {
   if (loading) {
     return (
       <StyledPageBody>
+        <InquiriesFilterHeader
+          propertyId={propertyId}
+          publicationId={publicationId}
+        />
         <ScrollWrapper
           componentInstanceId="inquiries-list"
           contextProviderName="inquiriesList"
@@ -154,6 +162,10 @@ export const InquiriesList = () => {
   if (recordsWithPersonAndPublication.length === 0) {
     return (
       <StyledPageBody>
+        <InquiriesFilterHeader
+          propertyId={propertyId}
+          publicationId={publicationId}
+        />
         <StyledEmptyState>No inquiries found</StyledEmptyState>
       </StyledPageBody>
     );
@@ -161,6 +173,10 @@ export const InquiriesList = () => {
 
   return (
     <StyledPageBody>
+      <InquiriesFilterHeader
+        propertyId={propertyId}
+        publicationId={publicationId}
+      />
       <ScrollWrapper
         componentInstanceId="inquiries-list"
         contextProviderName="inquiriesList"

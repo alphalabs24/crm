@@ -158,6 +158,11 @@ export const InquiriesPreview = ({
       .slice(0, maxItems);
   }, [records, maxItems]);
 
+  const totalRecords = useMemo(() => {
+    return records.filter((record) => record.person && record.publication)
+      .length;
+  }, [records]);
+
   if (loading) {
     return (
       <StyledSection>
@@ -193,8 +198,14 @@ export const InquiriesPreview = ({
         <StyledSectionTitle>
           <Trans>Latest Inquiries</Trans>
         </StyledSectionTitle>
-        <StyledViewAll to={AppPath.RecordInquiriesPage}>
-          <Trans>View all</Trans>
+        <StyledViewAll
+          to={`${AppPath.RecordInquiriesPage}?${
+            propertyId
+              ? `propertyId=${propertyId}`
+              : `publicationId=${publicationId}`
+          }`}
+        >
+          <Trans>View all ({totalRecords})</Trans>
         </StyledViewAll>
       </StyledSectionHeader>
       <StyledList>

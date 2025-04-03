@@ -294,6 +294,8 @@ export const AddressInput = ({
       addressState: state?.text || '',
       addressPostcode: postcode?.text || '',
       addressCountry: COUNTRY_MAPPING[countryCode] || '',
+      addressLat: suggestion.geometry.coordinates[1],
+      addressLng: suggestion.geometry.coordinates[0],
     };
 
     setInternalValue(newValue);

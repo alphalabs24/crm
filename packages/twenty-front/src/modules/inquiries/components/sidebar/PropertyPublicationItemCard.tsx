@@ -5,24 +5,30 @@ import { PlatformBadge } from '@/object-record/record-show/components/nm/publica
 import { StatusBadge } from '@/object-record/record-show/components/nm/publication/StatusBadge';
 import { ObjectRecord } from '@/object-record/types/ObjectRecord';
 import { usePropertyImages } from '@/ui/layout/show-page/hooks/usePropertyImages';
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { format } from 'date-fns';
 import { Link } from 'react-router-dom';
 import { IconCalendar, IconPhoto } from 'twenty-ui';
 
-const StyledPublicationItem = styled(Link)`
+const StyledPublicationItem = styled(Link)<{ isLast?: boolean }>`
   align-items: center;
-  border: 1px solid ${({ theme }) => theme.border.color.medium};
-  border-radius: ${({ theme }) => theme.border.radius.sm};
+  border-bottom: 1px solid ${({ theme }) => theme.border.color.medium};
   display: flex;
   gap: ${({ theme }) => theme.spacing(2)};
-  padding: ${({ theme }) => theme.spacing(2)};
+  padding: ${({ theme }) => theme.spacing(3, 2)};
   text-decoration: none;
   transition: background-color 0.1s ease;
 
   &:hover {
     background: ${({ theme }) => theme.background.secondary};
   }
+
+  ${({ isLast }) =>
+    isLast &&
+    css`
+      border-bottom: none;
+    `}
 `;
 
 const StyledImageContainer = styled.div`
@@ -70,10 +76,12 @@ const StyledPublicationDate = styled.div`
 
 type PropertyPublicationItemCardProps = {
   publication: ObjectRecord;
+  isLast?: boolean;
 };
 
 export const PropertyPublicationItemCard = ({
   publication,
+  isLast,
 }: PropertyPublicationItemCardProps) => {
   const images = usePropertyImages({
     id: publication.propertyId,
@@ -82,6 +90,7 @@ export const PropertyPublicationItemCard = ({
 
   return (
     <StyledPublicationItem
+      isLast={isLast}
       to={getLinkToShowPage(CoreObjectNameSingular.Publication, publication)}
     >
       <StyledImageContainer>
@@ -94,7 +103,7 @@ export const PropertyPublicationItemCard = ({
       <StyledPublicationInfo>
         <StyledPublicationTitle>
           {publication.name}
-          <StatusBadge status={publication.status} size="small" />
+          <StatusBadge status={publication.stage} size="small" />
         </StyledPublicationTitle>
         {publication.createdAt && (
           <StyledPublicationDate>
@@ -104,7 +113,7 @@ export const PropertyPublicationItemCard = ({
         )}
       </StyledPublicationInfo>
 
-      <PlatformBadge platformId={publication.platform} isActive size="small" />
+      <PlatformBadge platformId={publication.platform} size="small" />
     </StyledPublicationItem>
   );
 };

@@ -1,33 +1,22 @@
 import { ActivityTargetableObject } from '@/activities/types/ActivityTargetableEntity';
-import { InquiriesPreview } from '@/inquiries/components/InquiriesPreview';
 import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadataItem';
 import { PropertyAddressCard } from '@/object-record/record-show/components/nm/cards/PropertyAddressCard';
 import { PropertyBasicInfoCard } from '@/object-record/record-show/components/nm/cards/PropertyBasicInfoCard';
 import { PropertyDetailsCard } from '@/object-record/record-show/components/nm/cards/PropertyDetailsCard';
 import { PropertyImagesCard } from '@/object-record/record-show/components/nm/cards/PropertyImagesCard';
+import { PropertyInquiriesCard } from '@/object-record/record-show/components/nm/cards/PropertyInquiriesCard';
 import { PropertyRelationsCard } from '@/object-record/record-show/components/nm/cards/PropertyRelationsCard';
-import { ContactsByStageChart } from '@/object-record/record-show/components/nm/publication/ContactsByStageChart';
-import { StatusBadge } from '@/object-record/record-show/components/nm/publication/StatusBadge';
-import {
-  Section,
-  StyledComingSoonText,
-  StyledLoadingContainer,
-  StyledProgressContainer,
-} from '@/object-record/record-show/components/ui/PropertyDetailsCardComponents';
+import { PropertyReportingCard } from '@/object-record/record-show/components/nm/cards/PropertyReportingCard';
+import { PublicationCompletionCard } from '@/object-record/record-show/components/nm/cards/PublicationCompletionCard';
+import { PublicationStatusCard } from '@/object-record/record-show/components/nm/cards/PublicationStatusCard';
+import { StyledLoadingContainer } from '@/object-record/record-show/components/ui/PropertyDetailsCardComponents';
 import { useRecordShowContainerData } from '@/object-record/record-show/hooks/useRecordShowContainerData';
 import { publicationMetricsState } from '@/object-record/record-show/states/publicationMetricsState';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Trans, useLingui } from '@lingui/react/macro';
 import { useRecoilValue } from 'recoil';
-import {
-  IconBuildingSkyscraper,
-  IconChartBar,
-  IconMessageCircle2,
-  LARGE_DESKTOP_VIEWPORT,
-  MOBILE_VIEWPORT,
-} from 'twenty-ui';
-import { CompletionProgress } from './publication/CompletionProgress';
+import { LARGE_DESKTOP_VIEWPORT, MOBILE_VIEWPORT } from 'twenty-ui';
 
 const StyledContentContainer = styled.div<{ isInRightDrawer?: boolean }>`
   display: flex;
@@ -60,7 +49,7 @@ const StyledMainContent = styled.div`
   }
 
   @media (min-width: ${LARGE_DESKTOP_VIEWPORT}px) {
-    max-width: calc(100% - 400px);
+    max-width: 1250px;
   }
 `;
 
@@ -168,7 +157,11 @@ export const PublicationDetails = ({
         </StyledImagesSection>
 
         <StyledOverviewSection>
-          <PropertyBasicInfoCard record={publication} loading={recordLoading} />
+          <PropertyBasicInfoCard
+            record={publication}
+            loading={recordLoading}
+            isPublication
+          />
           <PropertyDetailsCard
             record={publication}
             loading={recordLoading}
@@ -182,42 +175,15 @@ export const PublicationDetails = ({
             loading={recordLoading}
             objectMetadataItem={objectMetadataItem}
           />
-
           <PropertyAddressCard record={publication} loading={recordLoading} />
         </StyledDetailsSection>
       </StyledMainContent>
 
       <StyledSideContent isInRightDrawer={isInRightDrawer}>
-        <StyledProgressContainer>
-          <CompletionProgress record={publication} />
-        </StyledProgressContainer>
-
-        <Section
-          title={t`Status`}
-          icon={<IconBuildingSkyscraper size={16} />}
-          preserveHeight
-        >
-          <StatusBadge status={publication.stage} />
-        </Section>
-
-        <Section
-          title={t`Inquiries Overview`}
-          icon={<IconMessageCircle2 size={16} />}
-          preserveHeight
-        >
-          {publicationMetrics?.contactsByStage && (
-            <ContactsByStageChart
-              contactsByStage={publicationMetrics.contactsByStage}
-            />
-          )}
-          <InquiriesPreview publicationId={publication.id} maxItems={5} />
-        </Section>
-
-        <Section title={t`Reporting`} icon={<IconChartBar size={16} />}>
-          <StyledComingSoonText>
-            <Trans>Reporting coming soon</Trans>
-          </StyledComingSoonText>
-        </Section>
+        <PublicationCompletionCard record={publication} />
+        <PublicationStatusCard stage={publication.stage} />
+        <PropertyInquiriesCard recordId={publication.id} isPublication />
+        <PropertyReportingCard />
       </StyledSideContent>
     </StyledContentContainer>
   );

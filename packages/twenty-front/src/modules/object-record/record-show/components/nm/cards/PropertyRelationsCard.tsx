@@ -13,7 +13,7 @@ import { IconUsers } from 'twenty-ui';
 const StyledContent = styled.div`
   display: flex;
   flex-direction: column;
-  padding: ${({ theme }) => theme.spacing(2)};
+  gap: ${({ theme }) => theme.spacing(2)};
 `;
 
 const StyledBottomBorder = styled.div`

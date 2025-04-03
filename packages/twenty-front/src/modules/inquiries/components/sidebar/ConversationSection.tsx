@@ -12,6 +12,7 @@ import {
   IconChevronLeft,
   IconMessageCircle2,
   IconX,
+  useIsMobile,
 } from 'twenty-ui';
 import { useInquiryPage } from '../../contexts/InquiryPageContext';
 
@@ -31,6 +32,7 @@ const StyledConversationSection = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
+  position: relative;
 `;
 
 const StyledHeader = styled.div`
@@ -99,11 +101,11 @@ type ConversationSectionProps = {
 };
 
 const StyledSkeletonMessageContainer = styled.div<{ isCurrentUser?: boolean }>`
+  align-items: ${({ isCurrentUser }) =>
+    isCurrentUser ? 'flex-end' : 'flex-start'};
   display: flex;
   flex-direction: column;
   margin-bottom: ${({ theme }) => theme.spacing(4)};
-  max-width: 90%;
-  ${({ isCurrentUser }) => (isCurrentUser ? 'align-self: flex-end;' : '')}
 `;
 
 const StyledSkeletonHeader = styled.div<{ isCurrentUser?: boolean }>`
@@ -133,6 +135,14 @@ const StyledSkeletonSender = styled.div<{ isCurrentUser?: boolean }>`
   ${({ isCurrentUser }) => (isCurrentUser ? 'align-items: flex-end;' : '')}
 `;
 
+const StyledSkeleton = styled(Skeleton)<{
+  maxWidthPercentage?: number;
+  minWidth?: number;
+}>`
+  max-width: ${({ maxWidthPercentage }) => maxWidthPercentage}%;
+  min-width: ${({ minWidth }) => minWidth}px;
+`;
+
 const StyledSkeletonContent = styled.div<{
   isCurrentUser?: boolean;
   colorScheme: ColorScheme;
@@ -144,12 +154,14 @@ const StyledSkeletonContent = styled.div<{
         : theme.background.tertiary
       : theme.background.tertiary};
   padding: ${({ theme }) => theme.spacing(2)};
+  position: relative;
 `;
 
 // Create a skeleton message component
 const MessageSkeletonItem = ({ isCurrentUser = false }) => {
   const theme = useTheme();
   const { colorScheme } = useColorScheme();
+  const isMobile = useIsMobile();
 
   return (
     <SkeletonTheme
@@ -178,7 +190,12 @@ const MessageSkeletonItem = ({ isCurrentUser = false }) => {
           colorScheme={colorScheme}
           isCurrentUser={isCurrentUser}
         >
-          <Skeleton width={280} height={16} style={{ marginBottom: 8 }} />
+          <StyledSkeleton
+            maxWidthPercentage={90}
+            minWidth={isMobile ? 200 : 380}
+            height={16}
+            style={{ marginBottom: 8 }}
+          />
           <Skeleton width={200} height={16} />
         </StyledSkeletonContent>
       </StyledSkeletonMessageContainer>

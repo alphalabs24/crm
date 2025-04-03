@@ -11,7 +11,6 @@ import { useRecordEdit } from '@/record-edit/contexts/RecordEditContext';
 import { EditSectionContentWidth } from '@/record-edit/types/EditSectionTypes';
 import { SnackBarVariant } from '@/ui/feedback/snack-bar-manager/components/SnackBar';
 import { useSnackBar } from '@/ui/feedback/snack-bar-manager/hooks/useSnackBar';
-import { ShowPageImageBanner } from '@/ui/layout/show-page/components/nm/ShowPageImageBanner';
 import { SingleTabProps, TabList } from '@/ui/layout/tab/components/TabList';
 import { useTabList } from '@/ui/layout/tab/hooks/useTabList';
 import { useLingui } from '@lingui/react/macro';
@@ -393,15 +392,6 @@ export const RecordEditContainer = ({
       }}
     >
       <StyledEditContainer>
-        {record && (
-          <ShowPageImageBanner
-            targetableObject={{
-              id: record.id,
-              targetObjectNameSingular: objectNameSingular,
-            }}
-          />
-        )}
-
         <StyledTabListContainer shouldDisplay={true}>
           <TabList
             behaveAsLinks={!isInRightDrawer}
