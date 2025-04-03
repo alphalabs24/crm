@@ -76,7 +76,6 @@ export const ActionDropdown = ({
               accent="blue"
             />
           }
-          dropdownMenuWidth={160}
           dropdownComponents={actions.map((action) => (
             <DropdownMenuItemsContainer>
               <MenuItem

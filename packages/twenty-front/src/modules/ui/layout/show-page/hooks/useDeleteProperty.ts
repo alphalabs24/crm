@@ -1,11 +1,8 @@
-import { tokenPairState } from '@/auth/states/tokenPairState';
+import { useNestermind } from '@/api/hooks/useNestermind';
 import { SnackBarVariant } from '@/ui/feedback/snack-bar-manager/components/SnackBar';
 import { useSnackBar } from '@/ui/feedback/snack-bar-manager/hooks/useSnackBar';
 import { useLingui } from '@lingui/react/macro';
-import axios from 'axios';
-import { useCallback, useState } from 'react';
-import { useRecoilValue } from 'recoil';
-import { getEnv } from '~/utils/get-env';
+import { useCallback } from 'react';
 
 type Props = {
   objectRecordId: string;
@@ -15,69 +12,52 @@ type Props = {
 // Handles the deletion of a property and all its publications through the API. Make sure
 // to refetch the data after the deletion!
 export const useDeleteProperty = ({ objectRecordId, onDelete }: Props) => {
-  const [loading, setLoading] = useState(false);
+  const { t } = useLingui();
   const { enqueueSnackBar } = useSnackBar();
-  const tokenPair = useRecoilValue(tokenPairState);
+  const { useMutations } = useNestermind();
 
-  const deletePropertyAndAllPublications = useCallback(async () => {
-    try {
-      setLoading(true);
-      await axios.delete(
-        `${getEnv('REACT_APP_NESTERMIND_SERVER_BASE_URL') ?? 'http://api.localhost'}/properties/delete?id=${objectRecordId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${tokenPair?.accessToken?.token}`,
-          },
-        },
-      );
+  // Use mutation hooks instead of direct API calls
+  const { mutate: deletePropertyMutation, isPending: isDeletePropertyPending } =
+    useMutations.useDeleteProperty(objectRecordId, {
+      onSuccess: async () => {
+        // Call the onDelete callback to handle any additional logic
+        await onDelete?.();
+      },
+      onError: (error: Error) => {
+        enqueueSnackBar(error?.message || t`Failed to delete property`, {
+          variant: SnackBarVariant.Error,
+        });
+      },
+    });
 
+  const {
+    mutate: deletePublicationMutation,
+    isPending: isDeletePublicationPending,
+  } = useMutations.useDeletePublication({
+    onSuccess: async () => {
       // Call the onDelete callback to handle any additional logic
       await onDelete?.();
-    } catch (error: any) {
-      enqueueSnackBar(error?.message, {
+    },
+    onError: (error: Error) => {
+      enqueueSnackBar(error?.message || t`Failed to delete publication`, {
         variant: SnackBarVariant.Error,
       });
-    } finally {
-      setLoading(false);
-    }
-  }, [
-    enqueueSnackBar,
-    objectRecordId,
-    onDelete,
-    tokenPair?.accessToken?.token,
-  ]);
+    },
+  });
 
-  const deletePublication = useCallback(async () => {
-    try {
-      setLoading(true);
-      await axios.delete(
-        `${getEnv('REACT_APP_NESTERMIND_SERVER_BASE_URL') ?? 'http://api.localhost'}/publications/delete?id=${objectRecordId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${tokenPair?.accessToken?.token}`,
-          },
-        },
-      );
+  const deletePropertyAndAllPublications = useCallback(() => {
+    deletePropertyMutation();
+  }, [deletePropertyMutation]);
 
-      // Call the onDelete callback to handle any additional logic
-      await onDelete?.();
-    } catch (error: any) {
-      enqueueSnackBar(error?.message, {
-        variant: SnackBarVariant.Error,
-      });
-    } finally {
-      setLoading(false);
-    }
-  }, [
-    enqueueSnackBar,
-    objectRecordId,
-    onDelete,
-    tokenPair?.accessToken?.token,
-  ]);
+  const deletePublication = useCallback(() => {
+    deletePublicationMutation({
+      publicationId: objectRecordId,
+    });
+  }, [deletePublicationMutation, objectRecordId]);
 
   return {
     deletePropertyAndAllPublications,
     deletePublication,
-    loading,
+    loading: isDeletePropertyPending || isDeletePublicationPending,
   };
 };

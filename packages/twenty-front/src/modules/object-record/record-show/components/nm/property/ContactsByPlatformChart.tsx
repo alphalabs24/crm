@@ -3,11 +3,11 @@ import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Trans } from '@lingui/react/macro';
 import {
-    ArcElement,
-    Chart as ChartJS,
-    ChartOptions,
-    Legend,
-    Tooltip,
+  ArcElement,
+  Chart as ChartJS,
+  ChartOptions,
+  Legend,
+  Tooltip,
 } from 'chart.js';
 import { useEffect } from 'react';
 import { Pie } from 'react-chartjs-2';
@@ -355,21 +355,19 @@ export const ContactsByPlatformChart = ({
     );
   };
 
+  if (totalContacts === 0) {
+    return null;
+  }
+
   return (
     <StyledChartContainer>
-      {totalContacts > 0 ? (
-        <StyledChartContentContainer>
-          <StyledPieWrapper>
-            <Pie data={chartData} options={chartOptions} />
-            <StyledKPICardOverlay>{renderKpiCard()}</StyledKPICardOverlay>
-          </StyledPieWrapper>
-          <StyledLegendContainer>{renderLegend()}</StyledLegendContainer>
-        </StyledChartContentContainer>
-      ) : (
-        <StyledEmptyStateContainer>
-          <Trans>No inquiries data available yet</Trans>
-        </StyledEmptyStateContainer>
-      )}
+      <StyledChartContentContainer>
+        <StyledPieWrapper>
+          <Pie data={chartData} options={chartOptions} />
+          <StyledKPICardOverlay>{renderKpiCard()}</StyledKPICardOverlay>
+        </StyledPieWrapper>
+        <StyledLegendContainer>{renderLegend()}</StyledLegendContainer>
+      </StyledChartContentContainer>
     </StyledChartContainer>
   );
 };

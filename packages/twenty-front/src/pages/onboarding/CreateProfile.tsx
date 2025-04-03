@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCallback, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { Key } from 'ts-key-enum';
 import {
   AppTooltip,
@@ -15,10 +15,10 @@ import {
 } from 'twenty-ui';
 import { z } from 'zod';
 
+import { useNestermind } from '@/api/hooks/useNestermind';
 import { SubTitle } from '@/auth/components/SubTitle';
 import { Title } from '@/auth/components/Title';
 import { currentWorkspaceMemberState } from '@/auth/states/currentWorkspaceMemberState';
-import { tokenPairState } from '@/auth/states/tokenPairState';
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { useUpdateOneRecord } from '@/object-record/hooks/useUpdateOneRecord';
 import { useOnboardingStatus } from '@/onboarding/hooks/useOnboardingStatus';
@@ -31,10 +31,8 @@ import { TextInputV2 } from '@/ui/input/components/TextInputV2';
 import { useScopedHotkeys } from '@/ui/utilities/hotkey/hooks/useScopedHotkeys';
 import { WorkspaceMember } from '@/workspace-member/types/WorkspaceMember';
 import { Trans, useLingui } from '@lingui/react/macro';
-import axios from 'axios';
 import { isDefined } from 'twenty-shared';
 import { OnboardingStatus } from '~/generated/graphql';
-import { getEnv } from '~/utils/get-env';
 
 const StyledContentContainer = styled.div`
   width: 100%;
@@ -93,7 +91,6 @@ export const CreateProfile = () => {
   const onboardingStatus = useOnboardingStatus();
   const setNextOnboardingStatus = useSetNextOnboardingStatus();
   const { enqueueSnackBar } = useSnackBar();
-  const tokenPair = useRecoilValue(tokenPairState);
   const [currentWorkspaceMember, setCurrentWorkspaceMember] = useRecoilState(
     currentWorkspaceMemberState,
   );
@@ -102,21 +99,15 @@ export const CreateProfile = () => {
   });
   const [dataAccessChecked, setDataAccessChecked] = useState(false);
   const theme = useTheme();
+  const { useMutations } = useNestermind();
 
-  const acceptTermsAndConditions = useCallback(async () => {
-    const response = await axios.post(
-      `${getEnv('REACT_APP_NESTERMIND_SERVER_BASE_URL') ?? 'http://api.localhost'}/setup/create-workspace`,
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${tokenPair?.accessToken?.token}`,
-        },
-      },
-    );
-    if (response.status !== 201) {
-      throw new Error('Failed to publish');
-    }
-  }, [tokenPair?.accessToken?.token]);
+  const { mutate: createWorkspace } = useMutations.useCreateWorkspace({
+    onError: (error: Error) => {
+      enqueueSnackBar(error?.message || t`Failed to create workspace`, {
+        variant: SnackBarVariant.Error,
+      });
+    },
+  });
 
   const {
     control,
@@ -142,7 +133,7 @@ export const CreateProfile = () => {
           throw new Error('First name or last name is missing');
         }
 
-        await acceptTermsAndConditions();
+        createWorkspace();
 
         await updateOneRecord({
           idToUpdate: currentWorkspaceMember?.id,
@@ -177,11 +168,11 @@ export const CreateProfile = () => {
     },
     [
       currentWorkspaceMember?.id,
-      acceptTermsAndConditions,
       updateOneRecord,
       setCurrentWorkspaceMember,
       setNextOnboardingStatus,
       enqueueSnackBar,
+      createWorkspace,
     ],
   );
 

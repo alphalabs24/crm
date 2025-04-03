@@ -121,13 +121,33 @@ export class SendEmailWorkflowAction implements WorkflowAction {
     ].join('\n');
 
     const encodedMessage = Buffer.from(message).toString('base64');
+    try {
+      const response = await emailProvider.users.messages.send({
+        userId: 'me',
+        requestBody: {
+          raw: encodedMessage,
+          threadId: workflowActionInput.externalThreadId,
+          payload: {
+            headers: [
+              {
+                name: 'In-Reply-To',
+                value: workflowActionInput.inReplyTo || '',
+              },
+              {
+                name: 'References',
+                value: workflowActionInput.references?.join(' ') || '',
+              },
+            ],
+          },
+        },
+      });
+      console.log('sendEmailAction', response);
+    } catch (error) {
+      console.error('sendEmailAction', error);
+    }
 
-    await emailProvider.users.messages.send({
-      userId: 'me',
-      requestBody: {
-        raw: encodedMessage,
-      },
-    });
+    // `In-Reply-To: ${workflowActionInput.inReplyTo || ''}`,
+    // `References: ${workflowActionInput.references?.join(' ') || ''}`,
 
     this.logger.log(`Email sent successfully`);
 

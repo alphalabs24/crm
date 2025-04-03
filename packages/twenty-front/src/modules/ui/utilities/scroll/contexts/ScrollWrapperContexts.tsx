@@ -21,7 +21,8 @@ export type ContextProviderName =
   | 'navigationDrawer'
   | 'aggregateFooterCell'
   | 'modalContent'
-  | 'recordEdit';
+  | 'recordEdit'
+  | 'inquiriesList';
 
 const createScrollWrapperContext = (id: string) =>
   createContext<ScrollWrapperContextValue>({
@@ -60,6 +61,8 @@ export const ModalContentScrollWrapperContext =
   createScrollWrapperContext('modalContent');
 export const RecordEditScrollWrapperContext =
   createScrollWrapperContext('recordEdit');
+export const InquiriesListScrollWrapperContext =
+  createScrollWrapperContext('inquiriesList');
 
 export const getContextByProviderName = (
   contextProviderName: ContextProviderName,
@@ -97,6 +100,8 @@ export const getContextByProviderName = (
       return ModalContentScrollWrapperContext;
     case 'recordEdit':
       return RecordEditScrollWrapperContext;
+    case 'inquiriesList':
+      return InquiriesListScrollWrapperContext;
     default:
       throw new Error('Context Provider not available');
   }

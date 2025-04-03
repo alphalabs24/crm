@@ -17,9 +17,9 @@ const StyledValueContainer = styled.div`
 `;
 
 const StyledGridEntryLabelContainer = styled.div`
+  color: ${({ theme }) => theme.font.color.primary};
   flex-shrink: 0;
   min-width: 200px;
-  color: ${({ theme }) => theme.font.color.primary};
   @media only screen and (max-width: ${MOBILE_VIEWPORT}px) {
     min-width: 100px;
   }
