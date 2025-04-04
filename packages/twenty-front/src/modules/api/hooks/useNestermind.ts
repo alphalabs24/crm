@@ -1,9 +1,8 @@
 import { tokenPairState } from '@/auth/states/tokenPairState';
 import { useTutorialSteps } from '@/onboarding-tutorial/hooks/useTutorialSteps';
-import { useSnackBar } from '@/ui/feedback/snack-bar-manager/hooks/useSnackBar';
 import { PlatformId } from '@/ui/layout/show-page/components/nm/types/Platform';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 import { useCallback, useMemo } from 'react';
 import { useRecoilValue } from 'recoil';
 import { UserTutorialTask } from 'twenty-shared';
@@ -309,7 +308,12 @@ export const useNestermind = () => {
     return useQuery({
       queryKey: ['messages', 'buyerLead', ids],
       queryFn: () => getBuyerLeadMessageThreads({ ids }),
+      // Default polling configuration
+      refetchInterval: 15000, // 15 seconds
+      refetchIntervalInBackground: false, // Only poll when tab is visible
+      // Allow overriding defaults through options
       ...options,
+      // Always ensure these are set correctly
       enabled: !!ids && (options as any).enabled !== false,
     });
   };

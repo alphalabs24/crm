@@ -4,9 +4,11 @@ import {
   InquiryPageContextProvider,
   useInquiryPage,
 } from '@/inquiries/contexts/InquiryPageContext';
+import { useInquiries } from '@/inquiries/hooks/useInquiries';
 import { PageContainer } from '@/ui/layout/page/components/PageContainer';
 import { PageHeader } from '@/ui/layout/page/components/PageHeader';
 import styled from '@emotion/styled';
+import { useSearchParams } from 'react-router-dom';
 import { IconInbox, LARGE_DESKTOP_VIEWPORT, MOBILE_VIEWPORT } from 'twenty-ui';
 
 const StyledSplitView = styled.div`
@@ -59,8 +61,21 @@ const RecordInquiriesPageContent = () => {
 };
 
 export const RecordInquiriesPage = () => {
+  const [searchParams] = useSearchParams();
+
+  const propertyId = searchParams.get('propertyId') || undefined;
+  const publicationId = searchParams.get('publicationId') || undefined;
+
+  const { records, loading, deleteOne } = useInquiries({
+    propertyId,
+    publicationId,
+  });
   return (
-    <InquiryPageContextProvider>
+    <InquiryPageContextProvider
+      inquiries={records}
+      loading={loading}
+      deleteOne={deleteOne}
+    >
       <RecordInquiriesPageContent />
     </InquiryPageContextProvider>
   );

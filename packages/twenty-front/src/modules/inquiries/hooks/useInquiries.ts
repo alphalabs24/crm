@@ -4,12 +4,17 @@ import { generateDepthOneRecordGqlFields } from '@/object-record/graphql/utils/g
 
 import { useFindManyRecords } from '@/object-record/hooks/useFindManyRecords';
 
-import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
-import { useEffect, useMemo } from 'react';
 import { useNestermind } from '@/api/hooks/useNestermind';
-import { useSnackBar } from '@/ui/feedback/snack-bar-manager/hooks/useSnackBar';
-import { SnackBarVariant } from '@/ui/feedback/snack-bar-manager/components/SnackBar';
+import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
+import { useDeleteOneRecord } from '@/object-record/hooks/useDeleteOneRecord';
 import { ObjectRecord } from '@/object-record/types/ObjectRecord';
+import { SnackBarVariant } from '@/ui/feedback/snack-bar-manager/components/SnackBar';
+import { useSnackBar } from '@/ui/feedback/snack-bar-manager/hooks/useSnackBar';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { useInquiryReadState } from './useInquiryReadState';
+import { usePollingInterval } from './usePollingInterval';
+
+const INQUIRIES_POLLING_INTERVAL = 30000; // 30 seconds
 
 type UseInquiriesOptions = {
   publicationId?: string;
@@ -25,8 +30,14 @@ export const useInquiries = ({
   } = useNestermind();
 
   const { enqueueSnackBar } = useSnackBar();
+  const { hasNewMessages, markAsUnread, isUnread } = useInquiryReadState();
+  const processedInquiriesRef = useRef<Set<string>>(new Set());
 
   const { objectMetadataItem } = useObjectMetadataItem({
+    objectNameSingular: CoreObjectNameSingular.BuyerLead,
+  });
+
+  const { deleteOneRecord } = useDeleteOneRecord({
     objectNameSingular: CoreObjectNameSingular.BuyerLead,
   });
 
@@ -46,14 +57,24 @@ export const useInquiries = ({
     return filters;
   }, [publicationId, propertyId]);
 
-  const { records, loading, fetchMoreRecords, totalCount } = useFindManyRecords(
-    {
+  const { records, loading, fetchMoreRecords, totalCount, refetch } =
+    useFindManyRecords({
       objectNameSingular: CoreObjectNameSingular.BuyerLead,
       recordGqlFields,
       skip: !objectMetadataItem,
       filter: filterVariables,
-    },
-  );
+    });
+
+  // Set up polling for inquiries list
+  const pollInquiries = useCallback(async () => {
+    try {
+      await refetch();
+    } catch (error) {
+      console.error('Error polling inquiries:', error);
+    }
+  }, [refetch]);
+
+  usePollingInterval(pollInquiries, INQUIRIES_POLLING_INTERVAL);
 
   // Fetch the message threads for inquiries
   const {
@@ -74,9 +95,54 @@ export const useInquiries = ({
         };
       }) as ObjectRecord[]
     ).sort((a, b) => {
-      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+      return (
+        new Date(b.messageThreads[0]?.lastMessageReceivedAt).getTime() -
+        new Date(a.messageThreads[0]?.lastMessageReceivedAt).getTime()
+      );
     }) as ObjectRecord[];
   }, [records, messageThreadsByInquiryId]);
+
+  // Check for new messages and update read state
+  useEffect(() => {
+    if (!inquiriesWithMessageThreads.length || isLoadingMessageThreads) {
+      return;
+    }
+
+    let newlyMarkedAsUnread = false;
+
+    // Check each inquiry for new messages
+    inquiriesWithMessageThreads.forEach((inquiry) => {
+      // Skip if we've already processed this inquiry in this session
+      if (processedInquiriesRef.current.has(inquiry.id)) {
+        return;
+      }
+
+      // Only mark as unread and show notification if:
+      // 1. It has new messages
+      // 2. It's not already marked as unread
+      if (hasNewMessages(inquiry) && !isUnread(inquiry)) {
+        markAsUnread(inquiry.id);
+        newlyMarkedAsUnread = true;
+      }
+
+      // Mark as processed
+      processedInquiriesRef.current.add(inquiry.id);
+    });
+
+    // Only show notification if we actually marked something as unread
+    if (newlyMarkedAsUnread) {
+      enqueueSnackBar('New messages received', {
+        variant: SnackBarVariant.Info,
+      });
+    }
+  }, [
+    inquiriesWithMessageThreads,
+    isLoadingMessageThreads,
+    hasNewMessages,
+    isUnread,
+    markAsUnread,
+    enqueueSnackBar,
+  ]);
 
   useEffect(() => {
     if (messageThreadsError) {
@@ -86,10 +152,16 @@ export const useInquiries = ({
     }
   }, [messageThreadsError, enqueueSnackBar]);
 
+  // Reset processed inquiries when filter changes
+  useEffect(() => {
+    processedInquiriesRef.current.clear();
+  }, [publicationId, propertyId]);
+
   return {
     records: inquiriesWithMessageThreads,
     loading: loading || isLoadingMessageThreads,
     fetchMoreRecords,
     totalCount,
+    deleteOne: deleteOneRecord,
   };
 };

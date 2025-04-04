@@ -6,7 +6,8 @@ import { useMemo } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { useSearchParams } from 'react-router-dom';
-import { IconX } from 'twenty-ui';
+import { IconCheck, IconX } from 'twenty-ui';
+import { useInquiryReadState } from '../hooks/useInquiryReadState';
 
 const StyledFilterHeader = styled.div`
   align-items: center;
@@ -66,17 +67,42 @@ const StyledSkeletonWrapper = styled.div`
   width: 120px;
 `;
 
+const StyledActionButton = styled.button`
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing(1)};
+  padding: ${({ theme }) => theme.spacing(1)} ${({ theme }) => theme.spacing(2)};
+  border: 1px solid ${({ theme }) => theme.border.color.medium};
+  border-radius: ${({ theme }) => theme.border.radius.sm};
+  background: none;
+  color: ${({ theme }) => theme.font.color.secondary};
+  cursor: pointer;
+  font-size: ${({ theme }) => theme.font.size.sm};
+
+  &:hover {
+    background: ${({ theme }) => theme.background.tertiary};
+  }
+`;
+
+const StyledButtonContainer = styled.div`
+  display: flex;
+  gap: ${({ theme }) => theme.spacing(2)};
+`;
+
 type InquiriesFilterHeaderProps = {
   propertyId?: string;
   publicationId?: string;
+  inquiries: any[];
 };
 
 export const InquiriesFilterHeader = ({
   propertyId,
   publicationId,
+  inquiries,
 }: InquiriesFilterHeaderProps) => {
   const { t } = useLingui();
   const [, setSearchParams] = useSearchParams();
+  const { isUnread, markAllAsRead } = useInquiryReadState();
 
   const { record: property } = useFindOneRecord({
     objectNameSingular: 'property',
@@ -106,47 +132,67 @@ export const InquiriesFilterHeader = ({
     return publication?.refProperty;
   }, [propertyId, property, publication]);
 
-  if (!propertyId && !publicationId) {
+  const hasUnreadInquiries = useMemo(() => {
+    return inquiries.some((inquiry) => isUnread(inquiry));
+  }, [inquiries, isUnread]);
+
+  if (!propertyId && !publicationId && !hasUnreadInquiries) {
     return null;
   }
 
   return (
     <StyledFilterHeader>
       <StyledFilterInfo>
-        {t`Filtered by`}{' '}
-        {propertyId && (
-          <StyledPropertyName>
-            {property?.name || (
-              <StyledSkeletonWrapper>
-                <Skeleton width={120} height={16} />
-              </StyledSkeletonWrapper>
+        {(propertyId || publicationId) && (
+          <>
+            {t`Filtered by`}{' '}
+            {propertyId && (
+              <StyledPropertyName>
+                {property?.name || (
+                  <StyledSkeletonWrapper>
+                    <Skeleton width={120} height={16} />
+                  </StyledSkeletonWrapper>
+                )}
+              </StyledPropertyName>
             )}
-          </StyledPropertyName>
-        )}
-        {publicationId && (
-          <StyledPublicationInfo>
-            <StyledPropertyName>
-              {publication?.name || (
-                <StyledSkeletonWrapper>
-                  <Skeleton width={120} height={16} />
-                </StyledSkeletonWrapper>
-              )}
-            </StyledPropertyName>
-            {publication?.platform && (
-              <PlatformBadge
-                platformId={publication.platform}
-                size="tiny"
-                variant="no-background"
-              />
+            {publicationId && (
+              <StyledPublicationInfo>
+                <StyledPropertyName>
+                  {publication?.name || (
+                    <StyledSkeletonWrapper>
+                      <Skeleton width={120} height={16} />
+                    </StyledSkeletonWrapper>
+                  )}
+                </StyledPropertyName>
+                {publication?.platform && (
+                  <PlatformBadge
+                    platformId={publication.platform}
+                    size="tiny"
+                    variant="no-background"
+                  />
+                )}
+              </StyledPublicationInfo>
             )}
-          </StyledPublicationInfo>
+            {propertyRef && (
+              <StyledRefTag>{t`Ref: ${propertyRef}`}</StyledRefTag>
+            )}
+          </>
         )}
-        {propertyRef && <StyledRefTag>{t`Ref: ${propertyRef}`}</StyledRefTag>}
       </StyledFilterInfo>
-      <StyledClearButton onClick={handleClearFilter}>
-        <IconX size={14} />
-        {t`Clear filter`}
-      </StyledClearButton>
+      <StyledButtonContainer>
+        {hasUnreadInquiries && (
+          <StyledActionButton onClick={() => markAllAsRead(inquiries)}>
+            <IconCheck size={14} />
+            {t`Mark all as read`}
+          </StyledActionButton>
+        )}
+        {(propertyId || publicationId) && (
+          <StyledActionButton onClick={handleClearFilter}>
+            <IconX size={14} />
+            {t`Clear filter`}
+          </StyledActionButton>
+        )}
+      </StyledButtonContainer>
     </StyledFilterHeader>
   );
 };
