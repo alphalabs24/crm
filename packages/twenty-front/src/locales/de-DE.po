@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: nestermind-crm\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-04-03 15:49\n"
+"PO-Revision-Date: 2025-04-04 15:19\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -28,6 +28,10 @@ msgstr ""
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
 #~ msgid "Create Draft"
 #~ msgstr "Create Draft"
+
+#: src/modules/object-record/hooks/useFormattedPropertyFields.ts
+msgid ", "
+msgstr ""
 
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
 msgid "(coming soon)"
@@ -49,6 +53,26 @@ msgstr "{aggregateLabel} von {fieldLabel}"
 msgid "{apiKeyName} API Key"
 msgstr "{apiKeyName} API-Schlüssel"
 
+#: src/modules/object-record/hooks/useFormattedPropertyFields.ts
+msgid "{formattedAmount} {currencyCode}"
+msgstr ""
+
+#: src/modules/object-record/hooks/useFormattedPropertyFields.ts
+msgid "{formattedAmount} {currencyCode} / month"
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/cards/PropertyDetailsCard.tsx
+msgid "{groupTitle}"
+msgstr ""
+
+#: src/modules/object-record/hooks/useFormattedPropertyFields.ts
+msgid "{localString} m²"
+msgstr ""
+
+#: src/modules/object-record/hooks/useFormattedPropertyFields.ts
+msgid "{localString} m³"
+msgstr ""
+
 #: src/modules/action-menu/actions/record-agnostic-actions/run-workflow-actions/hooks/useRunWorkflowActions.tsx
 #: src/modules/action-menu/actions/record-actions/workflow-run-record-actions/hooks/useWorkflowRunRecordActions.tsx
 msgid "{name}"
@@ -59,12 +83,12 @@ msgid "{objectNameSingular} deleted successfully"
 msgstr "{objectNameSingular} erfolgreich gelöscht"
 
 #: src/modules/record-edit/components/RecordEditContainer.tsx
-msgid "{objectNameSingular} saved successfully"
-msgstr "{objectNameSingular} erfolgreich gespeichert"
+#~ msgid "{objectNameSingular} saved successfully"
+#~ msgstr "{objectNameSingular} erfolgreich gespeichert"
 
 #: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
 #~ msgid "{overviewLabel} Overview"
-#~ msgstr "{overviewLabel} Übersicht"
+#~ msgstr "{overviewLabel} Overview"
 
 #: src/pages/settings/roles/components/RoleAssignmentConfirmationModalSubtitle.tsx
 msgid "{workspaceMemberName} will be unassigned from the following role:"
@@ -402,6 +426,10 @@ msgstr "Sind Sie sicher, dass Sie diese {objectNameSingularCapitalized} löschen
 msgid "Are you sure you want to delete this email template? This cannot be undone."
 msgstr "Bist Du sicher, dass Du diese Vorlage löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
 
+#: src/modules/inquiries/components/InquiryItem.tsx
+msgid "Are you sure you want to delete this inquiry? This cannot be undone."
+msgstr ""
+
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
 #~ msgid "Are you sure you want to delete this property and all it's publications?"
 #~ msgstr "Are you sure you want to delete this property and all it's publications?"
@@ -492,6 +520,10 @@ msgstr "Durchschnitt"
 #: src/pages/not-found/NotFound.tsx
 msgid "Back to content"
 msgstr "Zurück zum Inhalt"
+
+#: src/modules/object-record/hooks/useFormattedPropertyFields.ts
+msgid "Basement {absoluteValue}"
+msgstr ""
 
 #: src/pages/settings/SettingsBilling.tsx
 #: src/pages/settings/SettingsBilling.tsx
@@ -852,13 +884,17 @@ msgstr "Erstellen Sie Ihren Instagram-Beitrag mit einer überzeugenden Beschreib
 msgid "Create your workspace"
 msgstr "Ihren Arbeitsbereich erstellen"
 
+#: src/modules/object-record/record-show/components/nm/cards/PropertyBasicInfoCard.tsx
+msgid "Created from property"
+msgstr ""
+
 #: src/modules/publishers/components/modals/EditPublisherModal.tsx
 msgid "Credentials saved successfully"
 msgstr "Zugangsdaten erfolgreich gespeichert!"
 
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
 #~ msgid "Current draft values"
-#~ msgstr "Aktuelle Entwurfswerte"
+#~ msgstr "Current draft values"
 
 #: src/pages/settings/workspace/SettingsCustomDomain.tsx
 msgid "Custom Domain"
@@ -972,6 +1008,8 @@ msgstr "Definiere, was für andere Benutzer in deinem Arbeitsbereich sichtbar is
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+#: src/modules/inquiries/components/InquiryItem.tsx
+#: src/modules/inquiries/components/InquiryItem.tsx
 #: src/modules/action-menu/components/__stories__/RightDrawerActionMenuDropdown.stories.tsx
 #: src/modules/action-menu/components/__stories__/RecordIndexActionMenuDropdown.stories.tsx
 #: src/modules/action-menu/components/__stories__/RecordIndexActionMenuBarEntry.stories.tsx
@@ -1008,6 +1046,10 @@ msgstr "API-Schlüssel löschen"
 #: src/pages/settings/email-templates/components/SettingsEmailTemplatesContent.tsx
 msgid "Delete email template"
 msgstr "E-Mail-Vorlage löschen"
+
+#: src/modules/inquiries/components/InquiryItem.tsx
+msgid "Delete inquiry"
+msgstr ""
 
 #: src/pages/settings/publishers/SettingsPublishers.tsx
 #: src/pages/settings/publishers/SettingsPublishers.tsx
@@ -1092,7 +1134,11 @@ msgstr "Entwickler"
 
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
 #~ msgid "Differences {differenceLength}"
-#~ msgstr "Unterschiede {differenceLength}"
+#~ msgstr "Differences {differenceLength}"
+
+#: src/modules/record-edit/components/RecordEditContainer.tsx
+msgid "Discard"
+msgstr ""
 
 #: src/modules/workflow/components/RecordShowPageWorkflowHeader.tsx
 #: src/modules/action-menu/actions/record-actions/constants/WorkflowActionsConfig.ts
@@ -1552,6 +1598,14 @@ msgstr "Vorname"
 msgid "First steps on nestermind"
 msgstr "Erste Schritte auf nestermind"
 
+#: src/modules/object-record/hooks/useFormattedPropertyFields.ts
+msgid "For Sale"
+msgstr ""
+
+#: src/modules/object-record/hooks/useFormattedPropertyFields.ts
+msgid "For Sale (per m²)"
+msgstr ""
+
 #: src/modules/auth/sign-in-up/components/SignInUpWorkspaceScopeForm.tsx
 msgid "Forgot your password?"
 msgstr "Passwort vergessen?"
@@ -1661,6 +1715,10 @@ msgstr "Gewähre dem nestermind-Support vorübergehend Zugang zu deinem Arbeitsb
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 #~ msgid "Greek"
 #~ msgstr "Greek"
+
+#: src/modules/object-record/hooks/useFormattedPropertyFields.ts
+msgid "Ground Floor"
+msgstr ""
 
 #: src/pages/settings/admin-panel/SettingsAdminIndicatorHealthStatus.tsx
 msgid "Health Status"
@@ -1989,6 +2047,10 @@ msgstr "Verwalte Deine Anbieter und Zugangsdaten."
 msgid "Manage your subscription"
 msgstr "Abonnement verwalten"
 
+#: src/modules/inquiries/components/InquiriesFilterHeader.tsx
+msgid "Mark all as read"
+msgstr ""
+
 #: src/modules/action-menu/components/__stories__/RecordIndexActionMenuDropdown.stories.tsx
 #: src/modules/action-menu/components/__stories__/RecordIndexActionMenuBarEntry.stories.tsx
 msgid "Mark as done"
@@ -2033,7 +2095,7 @@ msgstr "Erforderliche Felder fehlen: {missingFieldsString}"
 #: src/modules/object-record/record-table/components/nm/RecordListItem.tsx
 #: src/modules/object-record/record-table/components/nm/RecordList.tsx
 msgid "More"
-msgstr "More"
+msgstr ""
 
 #: src/modules/object-record/record-table/record-table-footer/components/RecordTableColumnAggregateFooterDropdownContent.tsx
 #: src/modules/object-record/record-board/record-board-column/components/RecordBoardColumnHeaderAggregateDropdownMenuContent.tsx
@@ -2186,6 +2248,10 @@ msgstr "Neue Vorlage"
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhooksNew.tsx
 #~ msgid "New Webhook"
 #~ msgstr "New Webhook"
+
+#: src/modules/object-record/hooks/useFormattedPropertyFields.ts
+msgid "No"
+msgstr ""
 
 #: src/modules/settings/accounts/components/SettingsAccountsListEmptyStateCard.tsx
 msgid "No connected account"
@@ -2344,7 +2410,7 @@ msgstr "Angebotsart"
 
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
 #~ msgid "Old"
-#~ msgstr "Alt"
+#~ msgstr "Old"
 
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
 msgid "Old Draft Values"
@@ -2597,6 +2663,10 @@ msgstr ""
 msgid "Property name"
 msgstr "Objektname"
 
+#: src/modules/record-edit/components/RecordEditContainer.tsx
+msgid "Property saved successfully"
+msgstr ""
+
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 msgid "Pseudo-English"
 msgstr "Pseudo-Englisch"
@@ -2621,6 +2691,10 @@ msgstr "Veröffentlichungsentwurf"
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
 msgid "Publication Draft created successfully"
 msgstr "Veröffentlichungsentwurf erfolgreich erstellt"
+
+#: src/modules/record-edit/components/RecordEditContainer.tsx
+msgid "Publication saved successfully"
+msgstr ""
 
 #: src/modules/onboarding-tutorial/components/modals/PublicationSyncTutorialModal.tsx
 msgid "Publication Synchronization"
@@ -3040,7 +3114,7 @@ msgstr "Sortieren"
 
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
 #~ msgid "Source values"
-#~ msgstr "Stammdaten"
+#~ msgstr "Source values"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 #~ msgid "Spanish"
@@ -3197,8 +3271,12 @@ msgid "The email associated to your account"
 msgstr "Die mit Ihrem Konto verknüpfte E-Mail"
 
 #: src/modules/record-edit/constants/EditSectionPropertyOverviewContent.tsx
-msgid "The location of the property. These fields are <0>required</0> in order to publish."
-msgstr "Der Standort des Objekts. Diese Felder sind <0>benötigt</0> um zu veröffentlichen."
+#~ msgid "The location of the property. These fields are <0>required</0> in order to publish."
+#~ msgstr "Der Standort des Objekts. Diese Felder sind <0>benötigt</0> um zu veröffentlichen."
+
+#: src/modules/record-edit/constants/EditSectionLocationContent.tsx
+msgid "The location of the property. These fields are <0>required</0> in order to publish. (Except for the secondary address field)"
+msgstr ""
 
 #: src/pages/settings/data-model/SettingsObjectFieldEdit.tsx
 #: src/pages/settings/data-model/SettingsObjectNewField/SettingsObjectNewFieldConfigure.tsx
@@ -3354,7 +3432,7 @@ msgstr "Ungespeicherte Änderungen"
 
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
 #~ msgid "Updated"
-#~ msgstr "Aktualisiert"
+#~ msgstr "Updated"
 
 #: src/modules/ui/input/components/ImageInput.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
@@ -3598,6 +3676,10 @@ msgstr "Schreiben Sie eine Beschreibung für Ihren Beitrag..."
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
 msgid "yes"
 msgstr "ja"
+
+#: src/modules/object-record/hooks/useFormattedPropertyFields.ts
+msgid "Yes"
+msgstr ""
 
 #: src/modules/inquiries/components/sidebar/ConversationMessageItem.tsx
 msgid "Yesterday"
