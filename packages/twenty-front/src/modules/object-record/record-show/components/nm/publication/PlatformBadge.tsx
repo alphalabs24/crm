@@ -5,6 +5,7 @@ import {
   PlatformLocaleKey,
 } from '@/ui/layout/show-page/components/nm/types/Platform';
 import { useColorScheme } from '@/ui/theme/hooks/useColorScheme';
+import { useSystemColorScheme } from '@/ui/theme/hooks/useSystemColorScheme';
 import styled from '@emotion/styled';
 
 const StyledPlatformBadge = styled.div<{
@@ -13,6 +14,7 @@ const StyledPlatformBadge = styled.div<{
   isActive?: boolean;
   disabled?: boolean;
   dark?: boolean;
+  system?: boolean;
 }>`
   align-items: center;
   display: flex;
@@ -112,7 +114,14 @@ export const PlatformBadge = ({
   variant = 'default',
 }: PlatformBadgeProps) => {
   const { colorScheme } = useColorScheme();
-  const isDark = colorScheme === 'Dark';
+  const colorSchemeSystem = useSystemColorScheme();
+
+  const colorSchemeToUse =
+    colorScheme === 'System' ? colorSchemeSystem : colorScheme;
+
+  // Either it's explicitly set to dark, or it's the system default and the system is dark
+  const isDark = colorSchemeToUse === 'Dark';
+
   const locale = useLocale();
 
   const platform =
@@ -135,7 +144,7 @@ export const PlatformBadge = ({
         <StyledPlatformLogo
           size={size}
           src={
-            platform.logo[locale as PlatformLocaleKey]?.[colorScheme] ??
+            platform.logo[locale as PlatformLocaleKey]?.[colorSchemeToUse] ??
             platform.logo.en?.Light
           }
           alt={platform.name}
