@@ -7,13 +7,13 @@ import { CurrencyInput } from '@/ui/field/input/components/CurrencyInput';
 import { useCurrencyField } from '../../../hooks/useCurrencyField';
 
 import { useFieldValueAsDraft } from '@/object-record/record-field/meta-types/input/hooks/useFieldValueAsDraft';
+import { FieldCurrencyDraftValue } from '@/object-record/record-field/types/FieldInputDraftValue';
 import { isFieldCurrencyValue } from '@/object-record/record-field/types/guards/isFieldCurrencyValue';
 import { useRecordEdit } from '@/record-edit/contexts/RecordEditContext';
 import { useTheme } from '@emotion/react';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo } from 'react';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import { convertCurrencyAmountToCurrencyMicros } from '~/utils/convertCurrencyToCurrencyMicros';
-import { isUndefinedOrNull } from '~/utils/isUndefinedOrNull';
 import {
   FieldInputClickOutsideEvent,
   FieldInputEvent,
@@ -41,15 +41,14 @@ export const CurrencyFormInput = ({
   const { fieldValue, hotkeyScope, defaultValue, fieldDefinition } =
     useCurrencyField();
 
-  const { updateField, getUpdatedFields } = useRecordEdit();
+  const { updateField, getUpdatedFields, draftValues, updateDraftValue } =
+    useRecordEdit();
 
-  const [draftValue, setDraftValue] = useState<
-    | {
-        amount: string;
-        currencyCode: CurrencyCode;
-      }
-    | undefined
-  >();
+  const draftValue = useMemo(() => {
+    return draftValues[
+      fieldDefinition.metadata.fieldName
+    ] as FieldCurrencyDraftValue;
+  }, [draftValues, fieldDefinition.metadata.fieldName]);
 
   const initialDraftValue = useMemo(() => {
     return {
@@ -60,7 +59,11 @@ export const CurrencyFormInput = ({
 
   const theme = useTheme();
 
-  const initialized = useFieldValueAsDraft(initialDraftValue, setDraftValue);
+  const initialized = useFieldValueAsDraft(
+    fieldDefinition.metadata.fieldName,
+    initialDraftValue,
+    updateDraftValue,
+  );
 
   const defaultCurrencyCodeWithoutSQLQuotes = (
     defaultValue as FieldCurrencyValue
@@ -84,32 +87,45 @@ export const CurrencyFormInput = ({
   const fieldName = fieldDefinition?.metadata?.fieldName;
 
   const handleUpdateField = useCallback(
-    (amountText: string) => {
-      if (amountText === draftValue?.amount?.toString()) {
+    (amountText: string, newCurrencyCode?: CurrencyCode) => {
+      const currencyToUse = newCurrencyCode ?? currencyCode;
+      const shouldUpdateAmount = amountText !== draftValue?.amount?.toString();
+      const shouldUpdateCurrency =
+        newCurrencyCode && newCurrencyCode !== currencyCode;
+
+      if (!shouldUpdateAmount && !shouldUpdateCurrency) {
         return;
       }
-      setDraftValue({
-        amount: amountText,
-        currencyCode,
-      });
-      const amount = parseFloat(amountText);
 
+      updateDraftValue(fieldName, {
+        amount: amountText,
+        currencyCode: currencyToUse,
+      });
+
+      const amount = parseFloat(amountText);
       const newCurrencyValue = {
         amountMicros: isNaN(amount)
           ? null
           : convertCurrencyAmountToCurrencyMicros(amount),
-        currencyCode,
+        currencyCode: currencyToUse,
       };
 
       if (!isFieldCurrencyValue(newCurrencyValue)) {
         return;
       }
+
       updateField({
         fieldName,
         value: newCurrencyValue,
       });
     },
-    [currencyCode, draftValue?.amount, fieldName, setDraftValue, updateField],
+    [
+      currencyCode,
+      draftValue?.amount,
+      fieldName,
+      updateDraftValue,
+      updateField,
+    ],
   );
 
   const handleEnter = (newValue: string) => {
@@ -150,11 +166,8 @@ export const CurrencyFormInput = ({
   };
 
   const handleSelect = (newValue: string) => {
-    setDraftValue({
-      amount: isUndefinedOrNull(draftValue?.amount) ? '' : draftValue?.amount,
-      currencyCode: newValue as CurrencyCode,
-    });
-    handleUpdateField(newValue);
+    const currentAmount = draftValue?.amount || '';
+    handleUpdateField(currentAmount, newValue as CurrencyCode);
   };
 
   const editDraftValue = getUpdatedFields()[

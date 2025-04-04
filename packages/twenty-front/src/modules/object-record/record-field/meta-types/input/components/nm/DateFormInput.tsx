@@ -24,8 +24,7 @@ export const DateFormInput = ({
   onClear,
   onSubmit,
 }: DateFormInputProps) => {
-  const { fieldValue, setDraftValue, hotkeyScope, fieldDefinition } =
-    useDateField();
+  const { fieldValue, hotkeyScope, fieldDefinition } = useDateField();
 
   const { getUpdatedFields, updateField } = useRecordEdit();
 
@@ -68,7 +67,7 @@ export const DateFormInput = ({
   };
 
   const handleChange = (newDate: Nullable<Date>) => {
-    setDraftValue(newDate?.toDateString() ?? '');
+    persistDate(newDate);
   };
 
   const handleClear = () => {

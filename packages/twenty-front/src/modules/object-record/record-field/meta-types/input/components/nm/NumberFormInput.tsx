@@ -4,22 +4,26 @@ import { useFieldValueAsDraft } from '@/object-record/record-field/meta-types/in
 import { useRecordEdit } from '@/record-edit/contexts/RecordEditContext';
 import { FieldInputContainer } from '@/ui/field/input/components/FieldInputContainer';
 import { TextInputV2 } from '@/ui/input/components/TextInputV2';
-import { useState } from 'react';
+import { useMemo } from 'react';
 import { IconComponent } from 'twenty-ui';
 
 export const NumberFormInput = ({ icon }: { icon?: IconComponent }) => {
   const { fieldDefinition, maxWidth } = useNumberField();
-  const [draftValue, setDraftValue] = useState<number | string | undefined>();
 
   const { fieldValue } = useNumberFieldDisplay();
+  const { updateField, getUpdatedFields, draftValues, updateDraftValue } =
+    useRecordEdit();
+
+  const draftValue = useMemo(() => {
+    return draftValues[fieldDefinition.metadata.fieldName];
+  }, [draftValues, fieldDefinition.metadata.fieldName]);
 
   // Makes sure no empty field is created, since the value is only initialized once in the child component
   const initialized = useFieldValueAsDraft(
+    fieldDefinition.metadata.fieldName,
     fieldValue?.toString() ?? '',
-    setDraftValue,
+    updateDraftValue,
   );
-
-  const { updateField, getUpdatedFields } = useRecordEdit();
 
   // Save the field in the store to update once the form is submitted
   const updateFieldInStore = (newText: number | string | null) => {
@@ -31,7 +35,7 @@ export const NumberFormInput = ({ icon }: { icon?: IconComponent }) => {
 
   const handleChange = (newText: string) => {
     if (newText.length === 0) {
-      setDraftValue(newText);
+      updateDraftValue(fieldDefinition.metadata.fieldName, null);
       updateFieldInStore(null);
       return;
     }
@@ -41,7 +45,7 @@ export const NumberFormInput = ({ icon }: { icon?: IconComponent }) => {
     // - Decimals starting with a dot (e.g., ".5")
     // - Numbers with a decimal part (e.g., "2.5")
     if (/^\d*\.?\d*$/.test(newText)) {
-      setDraftValue(newText);
+      updateDraftValue(fieldDefinition.metadata.fieldName, newText);
 
       // Only update store if the input isn't just "." or ends with "."
       if (newText !== '.' && !newText.endsWith('.')) {
