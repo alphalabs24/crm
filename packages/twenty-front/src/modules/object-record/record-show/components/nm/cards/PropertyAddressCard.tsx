@@ -14,6 +14,13 @@ const StyledAddressContainer = styled.div`
   position: relative;
 `;
 
+const StyledContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(1)};
+  position: relative;
+`;
+
 const StyledCopyButton = styled.button`
   position: absolute;
   top: 0;
@@ -54,9 +61,8 @@ const StyledCityLine = styled.div`
 `;
 
 const StyledMapContainer = styled.div`
-  margin-top: ${({ theme }) => theme.spacing(2)};
   width: 100%;
-  height: 200px;
+  max-height: 250px;
   border-radius: ${({ theme }) => theme.border.radius.sm};
   overflow: hidden;
   position: relative;
@@ -69,12 +75,12 @@ const StyledMapContainer = styled.div`
   &:hover {
     opacity: 0.9;
   }
+`;
 
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
+const StyledMap = styled.img`
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
 `;
 
 const StyledMapOverlay = styled.div`
@@ -166,7 +172,7 @@ export const PropertyAddressCard = ({
 
   return (
     <Section title={t`Location`} icon={<IconMap size={16} />}>
-      <div>
+      <StyledContent>
         <StyledAddressContainer>
           <StyledCopyButton onClick={handleCopyClick}>
             <IconCopy size={14} />
@@ -180,7 +186,7 @@ export const PropertyAddressCard = ({
 
         {hasCoordinates ? (
           <StyledMapContainer onClick={handleMapClick}>
-            <img src={mapUrl} alt={`Map of ${streetAddress}`} />
+            <StyledMap src={mapUrl} alt={`Map of ${streetAddress}`} />
             <StyledMapOverlay>
               <IconMap size={12} />
               {t`Open in Google Maps`}
@@ -189,7 +195,7 @@ export const PropertyAddressCard = ({
         ) : (
           <StyledMapContainer>{t`No Map available`}</StyledMapContainer>
         )}
-      </div>
+      </StyledContent>
     </Section>
   );
 };

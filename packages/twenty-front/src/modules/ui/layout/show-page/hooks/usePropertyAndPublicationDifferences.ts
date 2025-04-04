@@ -9,6 +9,7 @@ import { useMemo } from 'react';
 const doNotCompareKeys = [
   'id',
   'createdAt',
+  'createdBy',
   'updatedAt',
   'platform',
   '__typename',

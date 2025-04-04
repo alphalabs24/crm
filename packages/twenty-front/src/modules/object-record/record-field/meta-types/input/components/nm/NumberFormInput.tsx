@@ -4,11 +4,12 @@ import { useFieldValueAsDraft } from '@/object-record/record-field/meta-types/in
 import { useRecordEdit } from '@/record-edit/contexts/RecordEditContext';
 import { FieldInputContainer } from '@/ui/field/input/components/FieldInputContainer';
 import { TextInputV2 } from '@/ui/input/components/TextInputV2';
+import { useState } from 'react';
 import { IconComponent } from 'twenty-ui';
 
 export const NumberFormInput = ({ icon }: { icon?: IconComponent }) => {
-  const { fieldDefinition, draftValue, setDraftValue, maxWidth } =
-    useNumberField();
+  const { fieldDefinition, maxWidth } = useNumberField();
+  const [draftValue, setDraftValue] = useState<number | string | undefined>();
 
   const { fieldValue } = useNumberFieldDisplay();
 

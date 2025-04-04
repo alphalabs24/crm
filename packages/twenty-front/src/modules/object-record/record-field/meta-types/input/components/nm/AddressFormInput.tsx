@@ -4,6 +4,7 @@ import { AddressInput } from '@/ui/field/input/components/AddressInput';
 
 import { useAddressFieldDisplay } from '@/object-record/record-field/meta-types/hooks/useAddressFieldDisplay';
 import { useFieldValueAsDraft } from '@/object-record/record-field/meta-types/input/hooks/useFieldValueAsDraft';
+import { useState } from 'react';
 import { useRecordEdit } from '../../../../../../record-edit/contexts/RecordEditContext';
 import {
   FieldInputClickOutsideEvent,
@@ -25,8 +26,12 @@ export const AddressFormInput = ({
   onTab,
   onShiftTab,
 }: AddressFormInputProps) => {
-  const { hotkeyScope, draftValue, setDraftValue, fieldDefinition } =
-    useAddressField();
+  const { hotkeyScope, fieldDefinition } = useAddressField();
+
+  const [draftValue, setDraftValue] = useState<
+    FieldAddressDraftValue | undefined
+  >();
+
   const { fieldValue } = useAddressFieldDisplay();
 
   const { updateField, getUpdatedFields } = useRecordEdit();

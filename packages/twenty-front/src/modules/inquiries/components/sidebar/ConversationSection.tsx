@@ -12,6 +12,7 @@ import {
   IconChevronLeft,
   IconMessageCircle2,
   IconX,
+  MOBILE_VIEWPORT,
   useIsMobile,
 } from 'twenty-ui';
 import { useInquiryPage } from '../../contexts/InquiryPageContext';
@@ -47,7 +48,11 @@ const StyledHeader = styled.div`
   gap: ${({ theme }) => theme.spacing(2)};
   justify-content: space-between;
   padding: ${({ theme }) => theme.spacing(2)};
-  height: 42px;
+  height: 52px;
+
+  @media (min-width: ${MOBILE_VIEWPORT + 1}px) {
+    height: 42px;
+  }
 `;
 
 const StyledHeaderActions = styled.div`
@@ -132,8 +137,9 @@ const StyledSenderEmail = styled.div`
 `;
 
 const StyledNameEmailContainer = styled.div`
-  display: flex;
   align-items: center;
+  display: flex;
+  flex-wrap: wrap;
   gap: ${({ theme }) => theme.spacing(1)};
 `;
 

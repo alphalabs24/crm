@@ -10,7 +10,7 @@ import { useFieldValueAsDraft } from '@/object-record/record-field/meta-types/in
 import { isFieldCurrencyValue } from '@/object-record/record-field/types/guards/isFieldCurrencyValue';
 import { useRecordEdit } from '@/record-edit/contexts/RecordEditContext';
 import { useTheme } from '@emotion/react';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import { convertCurrencyAmountToCurrencyMicros } from '~/utils/convertCurrencyToCurrencyMicros';
 import { isUndefinedOrNull } from '~/utils/isUndefinedOrNull';
@@ -38,16 +38,18 @@ export const CurrencyFormInput = ({
   onShiftTab,
   maxWidth,
 }: CurrencyFormInputProps) => {
-  const {
-    fieldValue,
-    hotkeyScope,
-    draftValue,
-    setDraftValue,
-    defaultValue,
-    fieldDefinition,
-  } = useCurrencyField();
+  const { fieldValue, hotkeyScope, defaultValue, fieldDefinition } =
+    useCurrencyField();
 
   const { updateField, getUpdatedFields } = useRecordEdit();
+
+  const [draftValue, setDraftValue] = useState<
+    | {
+        amount: string;
+        currencyCode: CurrencyCode;
+      }
+    | undefined
+  >();
 
   const initialDraftValue = useMemo(() => {
     return {

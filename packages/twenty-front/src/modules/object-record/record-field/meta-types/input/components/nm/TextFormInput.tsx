@@ -5,6 +5,7 @@ import { useRecordEdit } from '@/record-edit/contexts/RecordEditContext';
 import { FieldInputContainer } from '@/ui/field/input/components/FieldInputContainer';
 import { TextAreaFormInput } from '@/ui/field/input/components/TextAreaFormInput';
 import { TextInputV2 } from '@/ui/input/components/TextInputV2';
+import { useState } from 'react';
 import { IconComponent } from 'twenty-ui';
 import { turnIntoUndefinedIfWhitespacesOnly } from '~/utils/string/turnIntoUndefinedIfWhitespacesOnly';
 import {
@@ -29,14 +30,9 @@ export const TextFormInput = ({
   onTab,
   onShiftTab,
 }: TextFormInputProps) => {
-  const {
-    fieldDefinition,
-    draftValue,
-    hotkeyScope,
-    setDraftValue,
-    maxWidth,
-    formType,
-  } = useTextField();
+  const { fieldDefinition, hotkeyScope, maxWidth, formType } = useTextField();
+
+  const [draftValue, setDraftValue] = useState<string | undefined>();
 
   const { fieldValue } = useTextFieldDisplay();
 

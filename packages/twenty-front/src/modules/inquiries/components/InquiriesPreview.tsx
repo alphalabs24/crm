@@ -210,10 +210,10 @@ export const InquiriesPreview = ({
       <StyledList>
         {recordsWithPersonAndPublication.map((record, index) => (
           <StyledUnstyledLink
+            key={record.id}
             to={`${AppPath.RecordInquiriesPage}?id=${record.id}`}
           >
             <InquiryItem
-              key={record.id}
               inquiry={record}
               isLast={index === recordsWithPersonAndPublication.length - 1}
             />

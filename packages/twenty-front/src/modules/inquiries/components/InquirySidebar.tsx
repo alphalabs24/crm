@@ -1,7 +1,11 @@
 import { useInquiryPage } from '@/inquiries/contexts/InquiryPageContext';
 import styled from '@emotion/styled';
 import { useState } from 'react';
-import { LARGE_DESKTOP_VIEWPORT, useIsMobile } from 'twenty-ui';
+import {
+  LARGE_DESKTOP_VIEWPORT,
+  MOBILE_VIEWPORT,
+  useIsMobile,
+} from 'twenty-ui';
 import { ConversationSection } from './sidebar/ConversationSection';
 import { PropertyDetails } from './sidebar/PropertyDetails';
 
@@ -32,6 +36,12 @@ const StyledContent = styled.div`
   height: 100%;
   overflow: hidden;
   width: 100%;
+  // Account for mobile bottom bar
+  margin-bottom: ${({ theme }) => theme.spacing(12)};
+
+  @media (min-width: ${MOBILE_VIEWPORT + 1}px) {
+    margin-bottom: 0;
+  }
 `;
 
 const StyledConversationWrapper = styled.div`

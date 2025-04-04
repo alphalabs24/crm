@@ -7,6 +7,8 @@ import { TimelineActivities } from '@/activities/timeline-activities/components/
 import { ActivityTargetableObject } from '@/activities/types/ActivityTargetableEntity';
 import { FieldsCard } from '@/object-record/record-show/components/FieldsCard';
 import { AISuite } from '@/object-record/record-show/components/nm/AISuite';
+import { MobileInquiriesCard } from '@/object-record/record-show/components/nm/cards/MobileInquiriesCard';
+import { MobilePublicationsCard } from '@/object-record/record-show/components/nm/cards/MobilePublicationsCard';
 import { PropertyDetails } from '@/object-record/record-show/components/nm/PropertyDetails';
 import { PublicationDetails } from '@/object-record/record-show/components/nm/PublicationDetails';
 
@@ -126,5 +128,13 @@ export const CardComponents: Record<CardType, CardComponentType> = {
       targetableObject={targetableObject}
       isInRightDrawer={isInRightDrawer}
     />
+  ),
+
+  [CardType.MobileInquiriesCard]: ({ targetableObject }) => (
+    <MobileInquiriesCard targetableObject={targetableObject} />
+  ),
+
+  [CardType.MobilePublicationsCard]: ({ targetableObject }) => (
+    <MobilePublicationsCard targetableObject={targetableObject} />
   ),
 };

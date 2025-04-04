@@ -136,6 +136,11 @@ const StyledGroup = styled.div<{ isHorizontal?: boolean }>`
   gap: ${({ theme }) => theme.spacing(4)};
 `;
 
+const StyledButtonsContainer = styled.div`
+  display: flex;
+  gap: ${({ theme }) => theme.spacing(2)};
+`;
+
 export const TAB_LIST_COMPONENT_ID = 'edit-record-right-tab-list';
 
 type RecordEditContainerProps = {
@@ -252,9 +257,14 @@ export const RecordEditContainer = ({
         id: recordId ?? '',
       });
 
-      enqueueSnackBar(t`${objectNameSingular} saved successfully`, {
-        variant: SnackBarVariant.Success,
-      });
+      enqueueSnackBar(
+        isPublication
+          ? t`Publication saved successfully`
+          : t`Property saved successfully`,
+        {
+          variant: SnackBarVariant.Success,
+        },
+      );
 
       setTimeout(() => {
         navigate(link);
@@ -265,6 +275,13 @@ export const RecordEditContainer = ({
         variant: SnackBarVariant.Error,
       });
     }
+  };
+
+  const handleDiscard = () => {
+    const link = getLinkToShowPage(objectNameSingular ?? '', {
+      id: recordId ?? '',
+    });
+    navigate(link);
   };
 
   const isNewViewableRecordLoading = useRecoilValue(
@@ -401,14 +418,23 @@ export const RecordEditContainer = ({
             isInRightDrawer={isInRightDrawer}
           />
           <StyledButtonContainer>
-            <Button
-              title={t`Save`}
-              variant="primary"
-              accent="blue"
-              size="small"
-              onClick={handleSave}
-              disabled={loading}
-            />
+            <StyledButtonsContainer>
+              <Button
+                title={t`Discard`}
+                variant="secondary"
+                size="small"
+                onClick={handleDiscard}
+                disabled={loading}
+              />
+              <Button
+                title={t`Save`}
+                variant="primary"
+                accent="blue"
+                size="small"
+                onClick={handleSave}
+                disabled={loading}
+              />
+            </StyledButtonsContainer>
           </StyledButtonContainer>
         </StyledTabListContainer>
 
