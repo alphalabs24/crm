@@ -70,7 +70,6 @@ export const RecordChip = ({
       className={className}
       variant={variant}
       onClick={handleClick}
-      disabled={disabled}
       to={
         recordIndexOpenRecordIn === ViewOpenRecordInType.RECORD_PAGE
           ? getLinkToShowPage(objectNameSingular, record)

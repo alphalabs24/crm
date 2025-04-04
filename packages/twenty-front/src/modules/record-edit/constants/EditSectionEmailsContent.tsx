@@ -15,7 +15,12 @@ export const EMAILS_SECTION_CONTENT: SectionContent[] = [
       {
         fields: [
           { name: 'emailSender', type: 'field', fieldWidth: 0 },
-          { name: 'emailTemplate', type: 'custom', fieldWidth: 0 },
+          {
+            name: 'emailTemplate',
+            type: 'custom',
+            fieldWidth: 0,
+            conditionFields: ['emailSender'],
+          },
         ],
       },
     ],

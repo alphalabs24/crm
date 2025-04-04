@@ -224,6 +224,10 @@ export const RecordEditContainer = ({
                     '',
                 ).toLowerCase();
 
+                if (conditionValues?.length === 0) {
+                  return Boolean(conditionFieldValue);
+                }
+
                 return conditionValues?.some(
                   (value) =>
                     String(value ?? '').toLowerCase() === conditionFieldValue,
@@ -363,6 +367,13 @@ export const RecordEditContainer = ({
                               record?.[conditionField?.name] ??
                               '',
                           ).toLowerCase();
+
+                          if (
+                            !conditionValues ||
+                            conditionValues?.length === 0
+                          ) {
+                            return Boolean(conditionFieldValue);
+                          }
 
                           return conditionValues?.some(
                             (value) =>
