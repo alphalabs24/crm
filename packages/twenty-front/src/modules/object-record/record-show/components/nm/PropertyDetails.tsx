@@ -1,79 +1,116 @@
 import { ActivityTargetableObject } from '@/activities/types/ActivityTargetableEntity';
-import { ContactsByPlatformChart } from '@/object-record/record-show/components/nm/property/ContactsByPlatformChart';
-import {
-  Section,
-  StyledLoadingContainer,
-} from '@/object-record/record-show/components/ui/PropertyDetailsCardComponents';
+import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadataItem';
+import { PropertyAddressCard } from '@/object-record/record-show/components/nm/cards/PropertyAddressCard';
+import { PropertyBasicInfoCard } from '@/object-record/record-show/components/nm/cards/PropertyBasicInfoCard';
+import { PropertyDetailsCard } from '@/object-record/record-show/components/nm/cards/PropertyDetailsCard';
+import { PropertyImagesCard } from '@/object-record/record-show/components/nm/cards/PropertyImagesCard';
+import { PropertyInquiriesCard } from '@/object-record/record-show/components/nm/cards/PropertyInquiriesCard';
+import { PropertyPublicationsCard } from '@/object-record/record-show/components/nm/cards/PropertyPublicationsCard';
+import { PropertyRelationsCard } from '@/object-record/record-show/components/nm/cards/PropertyRelationsCard';
+import { PropertyReportingCard } from '@/object-record/record-show/components/nm/cards/PropertyReportingCard';
+import { StyledLoadingContainer } from '@/object-record/record-show/components/ui/PropertyDetailsCardComponents';
 import { useRecordShowContainerData } from '@/object-record/record-show/hooks/useRecordShowContainerData';
-import { propertyPlatformMetricsState } from '@/object-record/record-show/states/propertyPlatformMetricsState';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import { Trans, useLingui } from '@lingui/react/macro';
-import { useRecoilValue } from 'recoil';
+import { Trans } from '@lingui/react/macro';
 import {
-  IconChartBar,
-  IconMessageCircle2,
   LARGE_DESKTOP_VIEWPORT,
+  MOBILE_VIEWPORT,
+  useIsMobile,
 } from 'twenty-ui';
-import { ObjectOverview } from './ObjectOverview';
 
 const StyledContentContainer = styled.div<{ isInRightDrawer?: boolean }>`
   display: flex;
-  gap: ${({ theme }) => theme.spacing(2)};
-  flex-wrap: wrap-reverse;
-
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(4)};
   padding: ${({ theme }) => theme.spacing(2)};
 
-  @media (min-width: ${LARGE_DESKTOP_VIEWPORT}px) {
-    flex-wrap: nowrap;
-    width: unset;
-    gap: ${({ theme }) => theme.spacing(4)};
+  @media (min-width: ${MOBILE_VIEWPORT}px) {
+    flex-direction: row;
+    flex-wrap: wrap;
     padding: ${({ theme }) => theme.spacing(4)};
 
     ${({ isInRightDrawer }) =>
       isInRightDrawer &&
       css`
-        width: 100%;
         padding: 0;
-        flex-wrap: wrap;
       `}
   }
 `;
 
-const StyledRightContentContainer = styled.div<{ isInRightDrawer?: boolean }>`
+const StyledMainContent = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(4)};
-
   width: 100%;
+
+  @media (min-width: ${MOBILE_VIEWPORT}px) {
+    flex: 1;
+    min-width: 0;
+  }
+
   @media (min-width: ${LARGE_DESKTOP_VIEWPORT}px) {
-    max-width: 900px;
-    padding: 0;
-    ${({ isInRightDrawer, theme }) =>
-      isInRightDrawer &&
-      css`
-        padding: 0 ${theme.spacing(4)};
-        width: 100%;
-      `}
+    max-width: 1250px;
   }
 `;
 
-const StyledLeftContentContainer = styled.div<{ isInRightDrawer?: boolean }>`
+const StyledSideContent = styled.div<{ isInRightDrawer?: boolean }>`
+  display: none;
+
+  @media (min-width: ${MOBILE_VIEWPORT}px) {
+    display: flex;
+    flex-direction: column;
+    gap: ${({ theme }) => theme.spacing(4)};
+    width: 380px;
+  }
+`;
+
+const StyledImagesSection = styled.div`
+  width: 100%;
+`;
+
+const StyledOverviewSection = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(4)};
   width: 100%;
-  @media (min-width: ${LARGE_DESKTOP_VIEWPORT}px) {
-    max-width: 900px;
 
-    padding: 0;
-    ${({ isInRightDrawer, theme }) =>
-      isInRightDrawer &&
-      css`
-        padding: 0 ${theme.spacing(4)};
-        width: 100%;
-      `}
+  @media (min-width: ${LARGE_DESKTOP_VIEWPORT}px) {
+    flex-direction: row;
+    flex-wrap: wrap;
+    > * {
+      flex: 1;
+    }
   }
+`;
+
+const StyledDetailsSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(4)};
+  width: 100%;
+
+  @media (min-width: ${LARGE_DESKTOP_VIEWPORT}px) {
+    flex-direction: row;
+    flex-wrap: wrap;
+    > * {
+      flex: 1;
+      min-width: 300px;
+    }
+  }
+`;
+
+const StyledPublicationsSection = styled.div`
+  display: none;
+
+  @media (min-width: ${MOBILE_VIEWPORT}px) {
+    display: block;
+    width: 100%;
+  }
+`;
+
+export const StyledComingSoonText = styled.div`
+  color: ${({ theme }) => theme.font.color.secondary};
 `;
 
 type PropertyDetailsProps = {
@@ -88,16 +125,17 @@ export const PropertyDetails = ({
   targetableObject,
   isInRightDrawer,
 }: PropertyDetailsProps) => {
-  const { t } = useLingui();
+  const isMobile = useIsMobile();
+
+  const { objectMetadataItem } = useObjectMetadataItem({
+    objectNameSingular: targetableObject.targetObjectNameSingular,
+  });
+
   const { recordFromStore: property, recordLoading } =
     useRecordShowContainerData({
       objectNameSingular: targetableObject.targetObjectNameSingular,
       objectRecordId: targetableObject.id,
     });
-
-  const propertyPlatformMetrics = useRecoilValue(
-    propertyPlatformMetricsState(targetableObject.id),
-  );
 
   if (recordLoading || !property) {
     return (
@@ -108,32 +146,44 @@ export const PropertyDetails = ({
   }
 
   return (
-    <>
-      <StyledContentContainer isInRightDrawer={isInRightDrawer}>
-        <StyledLeftContentContainer isInRightDrawer={isInRightDrawer}>
-          <ObjectOverview
+    <StyledContentContainer isInRightDrawer={isInRightDrawer}>
+      <StyledMainContent>
+        <StyledImagesSection>
+          <PropertyImagesCard
+            loading={recordLoading}
             targetableObject={targetableObject}
-            isInRightDrawer={isInRightDrawer}
-            isNewRightDrawerItemLoading={false}
           />
-        </StyledLeftContentContainer>
-        <StyledRightContentContainer isInRightDrawer={isInRightDrawer}>
-          <Section title={t`Inquiries`} icon={<IconMessageCircle2 size={16} />}>
-            {propertyPlatformMetrics?.contactsByPlatform ? (
-              <ContactsByPlatformChart
-                contactsByPlatform={propertyPlatformMetrics.contactsByPlatform}
-                totalContacts={propertyPlatformMetrics.contacts}
-              />
-            ) : (
-              <Trans>No inquiries data available yet</Trans>
-            )}
-          </Section>
+        </StyledImagesSection>
 
-          <Section title={t`Reporting`} icon={<IconChartBar size={16} />}>
-            <Trans>Reporting coming soon</Trans>
-          </Section>
-        </StyledRightContentContainer>
-      </StyledContentContainer>
-    </>
+        <StyledOverviewSection>
+          <PropertyBasicInfoCard record={property} loading={recordLoading} />
+          <PropertyDetailsCard
+            record={property}
+            loading={recordLoading}
+            objectMetadataItem={objectMetadataItem}
+          />
+        </StyledOverviewSection>
+
+        <StyledDetailsSection>
+          <PropertyRelationsCard
+            record={property}
+            loading={recordLoading}
+            objectMetadataItem={objectMetadataItem}
+          />
+          <PropertyAddressCard record={property} loading={recordLoading} />
+        </StyledDetailsSection>
+
+        <StyledPublicationsSection>
+          <PropertyPublicationsCard record={property} loading={recordLoading} />
+        </StyledPublicationsSection>
+      </StyledMainContent>
+
+      {isMobile ? null : (
+        <StyledSideContent isInRightDrawer={isInRightDrawer}>
+          <PropertyInquiriesCard recordId={property.id} />
+          <PropertyReportingCard />
+        </StyledSideContent>
+      )}
+    </StyledContentContainer>
   );
 };

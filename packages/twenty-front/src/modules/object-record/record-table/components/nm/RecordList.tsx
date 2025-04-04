@@ -1,8 +1,7 @@
 import { useAttachments } from '@/activities/files/hooks/useAttachments';
-import { currentWorkspaceMemberState } from '@/auth/states/currentWorkspaceMemberState';
 import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadataItem';
 import { getLinkToShowPage } from '@/object-metadata/utils/getLinkToShowPage';
-import { useLazyLoadRecordIndexTable } from '@/object-record/record-index/hooks/useLazyLoadRecordIndexTable';
+import { useFormattedPropertyFields } from '@/object-record/hooks/useFormattedPropertyFields';
 import { recordIndexAllRecordIdsComponentSelector } from '@/object-record/record-index/states/selectors/recordIndexAllRecordIdsComponentSelector';
 import { PlatformBadge } from '@/object-record/record-show/components/nm/publication/PlatformBadge';
 import { StatusBadge } from '@/object-record/record-show/components/nm/publication/StatusBadge';
@@ -24,31 +23,32 @@ import { useRecoilComponentValueV2 } from '@/ui/utilities/state/component-state/
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useLingui } from '@lingui/react/macro';
-import { isNull } from '@sniptt/guards';
-import { IconDots, IconSquare } from '@tabler/icons-react';
 import { useIcons } from '@ui/display/icon/hooks/useIcons';
 import { format } from 'date-fns';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useRef } from 'react';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
-import { capitalize } from 'twenty-shared';
 import {
   Button,
   IconAlertTriangle,
   IconCheck,
+  IconDots,
   IconEye,
   IconMap,
   IconPencil,
   IconPhoto,
+  IconSquare,
   LARGE_DESKTOP_VIEWPORT,
   MenuItem,
   MOBILE_VIEWPORT,
   useIsMobile,
 } from 'twenty-ui';
 import { formatAmount } from '~/utils/format/formatAmount';
+
+import { RecordListDataLoaderEffect } from './RecordListDataLoaderEffect';
+import { RecordListSkeletonLoader } from './RecordListSkeletonLoader';
 
 const StyledListContainer = styled.div`
   display: flex;
@@ -395,57 +395,6 @@ const RecordListSkeletonCard = () => {
   );
 };
 
-// Create a skeleton loader for the list
-const RecordListSkeletonLoader = () => {
-  const skeletonItems = Array.from({ length: 10 }).map((_, index) => ({
-    id: `skeleton-item-${index}`,
-  }));
-
-  return (
-    <>
-      {skeletonItems.map(({ id }) => (
-        <RecordListSkeletonCard key={id} />
-      ))}
-    </>
-  );
-};
-
-// This component is similar to RecordTableNoRecordGroupBodyEffect
-// It ensures records are loaded when the component mounts
-const RecordListDataLoaderEffect = () => {
-  const { objectNameSingular } = useRecordTableContextOrThrow();
-  const currentWorkspaceMember = useRecoilValue(currentWorkspaceMemberState);
-  const [hasInitialized, setHasInitialized] = useState(false);
-
-  const { findManyRecords, records, totalCount, setRecordTableData, loading } =
-    useLazyLoadRecordIndexTable(objectNameSingular);
-
-  // Initialize data loading
-  useEffect(() => {
-    if (isNull(currentWorkspaceMember)) {
-      return;
-    }
-
-    if (!hasInitialized) {
-      findManyRecords();
-      setHasInitialized(true);
-    }
-  }, [currentWorkspaceMember, findManyRecords, hasInitialized]);
-
-  // Update record table data when records change
-  useEffect(() => {
-    if (!loading) {
-      setRecordTableData({
-        records,
-        totalCount,
-      });
-    }
-  }, [records, totalCount, setRecordTableData, loading]);
-
-  return null;
-};
-
-// Create a new component for field detail display
 type FieldDetailItemProps = {
   fieldName: string;
   value: any;
@@ -459,42 +408,27 @@ const FieldDetailItem = ({
 }: FieldDetailItemProps) => {
   const { getIcon } = useIcons();
 
-  // Get object metadata using the useObjectMetadataItem hook
   const { objectMetadataItem } = useObjectMetadataItem({
     objectNameSingular,
   });
 
-  // Find the field metadata for this field name
+  const { formatFieldValue } = useFormattedPropertyFields({
+    objectMetadataItem,
+  });
+
   const fieldMetadata = useMemo(() => {
     return objectMetadataItem.fields.find((field) => field.name === fieldName);
   }, [fieldName, objectMetadataItem]);
 
-  // Format the value based on field type
   const formattedValue = useMemo(() => {
-    if (value === undefined || value === null) return '';
+    if (!fieldMetadata) return String(value ?? '-');
+    return formatFieldValue(fieldMetadata, value) ?? '-';
+  }, [fieldMetadata, formatFieldValue, value]);
 
-    if (fieldName === 'surface' || fieldName === 'livingSurface') {
-      return `${value} m²`;
-    }
-
-    if (fieldName === 'volume') {
-      return `${value} m³`;
-    }
-
-    if (fieldName === 'category') {
-      return capitalize(value.toLowerCase());
-    }
-
-    return String(value);
-  }, [fieldName, value]);
-
-  // Get the icon based on field metadata
   const Icon = useMemo(() => {
-    // Get icon from field metadata
     if (fieldMetadata?.icon) {
       return getIcon(fieldMetadata.icon);
     }
-
     return null;
   }, [fieldMetadata, getIcon]);
 
@@ -551,7 +485,6 @@ export const RecordList = () => {
     allRecordIds.length === 0 &&
     !hasPendingRecord;
 
-  // Return skeleton loader when loading
   if (isRecordTableInitialLoading) {
     return (
       <StyledListContainer ref={listContainerRef}>
@@ -574,7 +507,10 @@ export const RecordList = () => {
     <>
       <StyledListContainer ref={listContainerRef}>
         <RecordListDataLoaderEffect />
-        <AnimatePresence>
+        <AnimatePresence
+          mode="wait"
+          key={`${recordTableId}-${allRecordIds.length}`}
+        >
           {allRecordIds.map((recordId) => (
             <RecordListItem
               key={recordId}
@@ -779,8 +715,9 @@ const RecordListItem = ({
     <StyledCard
       isSelected={isSelected}
       onClick={handleCardClick}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
+      initial={{ opacity: 0, y: 5 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -5 }}
       transition={{ duration: 0.15 }}
       whileHover={{
         boxShadow: theme.boxShadow.light,

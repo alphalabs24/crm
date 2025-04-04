@@ -126,46 +126,43 @@ export const Publishing = ({
   isPublished,
   setIsPublished,
 }: PublishingProps) => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [showError, setShowError] = useState(false);
   const { enqueueSnackBar } = useSnackBar();
   const { t } = useLingui();
-  const [showError, setShowError] = useState(false);
 
   const { record, refetch } = useFindOneRecord({
     objectNameSingular: 'publication',
     objectRecordId: recordId,
   });
 
-  const {
-    publicationsApi: { publish },
-  } = useNestermind();
+  const { useMutations } = useNestermind();
+
+  // Using the mutation hook for publish
+  const { mutate: publishPublication, isPending: isLoading } =
+    useMutations.usePublishPublication({
+      onSuccess: () => {
+        setIsPublished(true);
+        enqueueSnackBar(`Publication created successfully`, {
+          variant: SnackBarVariant.Success,
+        });
+        refetch();
+      },
+      onError: (error: Error) => {
+        enqueueSnackBar(error?.message || 'Failed to publish', {
+          variant: SnackBarVariant.Error,
+        });
+      },
+    });
 
   const publishDraft = async () => {
-    try {
-      if (validationDetails?.missingFields?.length > 0) {
-        setShowError(true);
-        return;
-      }
-      setIsLoading(true);
-
-      const response = await publish({ publicationId: recordId });
-
-      if (response.status !== 201) {
-        throw new Error('Failed to publish');
-      }
-      setIsPublished(true);
-      enqueueSnackBar(`Publication created successfully`, {
-        variant: SnackBarVariant.Success,
-      });
-      await refetch();
-    } catch (error: any) {
-      enqueueSnackBar(error?.message, {
-        variant: SnackBarVariant.Error,
-      });
-    } finally {
-      setIsLoading(false);
+    if (validationDetails?.missingFields?.length > 0) {
+      setShowError(true);
+      return;
     }
+
+    publishPublication({ publicationId: recordId });
   };
+
   return (
     <StyledPublishingProcess>
       <StyledPlatformPublishItem key={selectedPlatform}>

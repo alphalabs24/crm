@@ -471,6 +471,7 @@ export type FeatureFlag = {
 };
 
 export enum FeatureFlagKey {
+  IsAIDemoEnabled = 'IsAIDemoEnabled',
   IsAdvancedFiltersEnabled = 'IsAdvancedFiltersEnabled',
   IsAdvancedSettingsEnabled = 'IsAdvancedSettingsEnabled',
   IsAirtableIntegrationEnabled = 'IsAirtableIntegrationEnabled',
@@ -487,6 +488,7 @@ export enum FeatureFlagKey {
   IsLaborSettingsEnabled = 'IsLaborSettingsEnabled',
   IsMultiPublisherEnabled = 'IsMultiPublisherEnabled',
   IsNewRelationEnabled = 'IsNewRelationEnabled',
+  IsNonNestermindWorkspaceEnabled = 'IsNonNestermindWorkspaceEnabled',
   IsPermissionsEnabled = 'IsPermissionsEnabled',
   IsPostgreSQLIntegrationEnabled = 'IsPostgreSQLIntegrationEnabled',
   IsRichTextV2Enabled = 'IsRichTextV2Enabled',

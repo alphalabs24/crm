@@ -84,14 +84,6 @@ const StyledSuggestion = styled.div<{ isHighlighted: boolean }>`
   `}
 `;
 
-// Add country mapping
-const COUNTRY_MAPPING: Record<string, string> = {
-  CH: 'Switzerland',
-  DE: 'Germany',
-  IT: 'Italy',
-  FR: 'France',
-};
-
 export type AddressInputProps = {
   value: FieldAddressValue;
   onTab: (newAddress: FieldAddressDraftValue) => void;
@@ -293,7 +285,9 @@ export const AddressInput = ({
       addressCity: city?.text || '',
       addressState: state?.text || '',
       addressPostcode: postcode?.text || '',
-      addressCountry: COUNTRY_MAPPING[countryCode] || '',
+      addressCountry: countryCode || '',
+      addressLat: suggestion.geometry.coordinates[1],
+      addressLng: suggestion.geometry.coordinates[0],
     };
 
     setInternalValue(newValue);

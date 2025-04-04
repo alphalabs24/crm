@@ -7,8 +7,11 @@ export const StyledModalContainer = styled.div<{ adaptiveHeight?: boolean }>`
   display: flex;
   flex-direction: column;
   height: 100%;
-  max-height: 80vh;
   min-height: ${(p) => (p.adaptiveHeight ? 'unset' : '70vh')};
+
+  @media only screen and (min-width: ${MOBILE_VIEWPORT}px) {
+    max-height: 80vh;
+  }
 `;
 
 export const StyledModalContent = styled(motion.div)`

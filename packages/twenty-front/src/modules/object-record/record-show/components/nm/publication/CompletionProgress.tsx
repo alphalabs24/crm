@@ -31,6 +31,7 @@ const StyledProgressTitle = styled.div`
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(1)};
   width: 100%;
+  flex-wrap: wrap;
 
   @media only screen and (min-width: ${MOBILE_VIEWPORT}px) {
     flex-direction: row;
@@ -51,7 +52,7 @@ const StyledProgressWithIcon = styled.div`
   align-items: center;
   color: ${({ theme }) => theme.font.color.secondary};
 
-  gap: ${({ theme }) => theme.spacing(1)};
+  gap: ${({ theme }) => theme.spacing(2)};
 `;
 
 const StyledProgressBarContainer = styled.div`

@@ -25,8 +25,26 @@ const StyledPlatformBadge = styled.div<{
           ? theme.border.color.strong
           : theme.border.color.light};
   border-radius: ${({ theme }) => theme.border.radius.sm};
-  height: ${({ size }) => (size === 'small' ? '20px' : '30px')};
-  width: ${({ size }) => (size === 'small' ? '60px' : '80px')};
+  height: ${({ size }) => {
+    switch (size) {
+      case 'tiny':
+        return '18px';
+      case 'small':
+        return '20px';
+      default:
+        return '30px';
+    }
+  }};
+  width: ${({ size }) => {
+    switch (size) {
+      case 'tiny':
+        return '50px';
+      case 'small':
+        return '60px';
+      default:
+        return '80px';
+    }
+  }};
   justify-content: center;
   align-items: center;
   cursor: ${({ disabled }) => (disabled ? 'unset' : 'pointer')};
@@ -63,7 +81,16 @@ const StyledPlatformLogo = styled.img<{
   size: PlatformSize;
   dark?: boolean;
 }>`
-  width: ${({ size }) => (size === 'small' ? '50px' : '70px')};
+  width: ${({ size }) => {
+    switch (size) {
+      case 'tiny':
+        return '40px';
+      case 'small':
+        return '50px';
+      default:
+        return '70px';
+    }
+  }};
 `;
 
 type PlatformBadgeProps = {
@@ -74,7 +101,7 @@ type PlatformBadgeProps = {
   variant?: PlatformVariant;
 };
 
-type PlatformSize = 'default' | 'small';
+type PlatformSize = 'default' | 'small' | 'tiny';
 type PlatformVariant = 'default' | 'no-background';
 
 export const PlatformBadge = ({

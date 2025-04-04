@@ -1,85 +1,112 @@
 import { ActivityTargetableObject } from '@/activities/types/ActivityTargetableEntity';
-import { ContactsByStageChart } from '@/object-record/record-show/components/nm/publication/ContactsByStageChart';
-import { StatusBadge } from '@/object-record/record-show/components/nm/publication/StatusBadge';
-import {
-  Section,
-  StyledChartContainer,
-  StyledComingSoonText,
-  StyledEmptyState,
-  StyledLoadingContainer,
-  StyledProgressContainer,
-} from '@/object-record/record-show/components/ui/PropertyDetailsCardComponents';
+import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadataItem';
+import { PropertyAddressCard } from '@/object-record/record-show/components/nm/cards/PropertyAddressCard';
+import { PropertyBasicInfoCard } from '@/object-record/record-show/components/nm/cards/PropertyBasicInfoCard';
+import { PropertyDetailsCard } from '@/object-record/record-show/components/nm/cards/PropertyDetailsCard';
+import { PropertyImagesCard } from '@/object-record/record-show/components/nm/cards/PropertyImagesCard';
+import { PropertyInquiriesCard } from '@/object-record/record-show/components/nm/cards/PropertyInquiriesCard';
+import { PropertyRelationsCard } from '@/object-record/record-show/components/nm/cards/PropertyRelationsCard';
+import { PropertyReportingCard } from '@/object-record/record-show/components/nm/cards/PropertyReportingCard';
+import { PublicationCompletionCard } from '@/object-record/record-show/components/nm/cards/PublicationCompletionCard';
+import { PublicationStatusCard } from '@/object-record/record-show/components/nm/cards/PublicationStatusCard';
+import { StyledLoadingContainer } from '@/object-record/record-show/components/ui/PropertyDetailsCardComponents';
 import { useRecordShowContainerData } from '@/object-record/record-show/hooks/useRecordShowContainerData';
 import { publicationMetricsState } from '@/object-record/record-show/states/publicationMetricsState';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Trans, useLingui } from '@lingui/react/macro';
 import { useRecoilValue } from 'recoil';
-import {
-  IconBuildingSkyscraper,
-  IconChartBar,
-  IconMessageCircle2,
-  LARGE_DESKTOP_VIEWPORT,
-} from 'twenty-ui';
-import { ObjectOverview } from './ObjectOverview';
-import { CompletionProgress } from './publication/CompletionProgress';
+import { LARGE_DESKTOP_VIEWPORT, MOBILE_VIEWPORT } from 'twenty-ui';
 
 const StyledContentContainer = styled.div<{ isInRightDrawer?: boolean }>`
   display: flex;
-  gap: ${({ theme }) => theme.spacing(2)};
-  flex-wrap: wrap-reverse;
-
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(4)};
   padding: ${({ theme }) => theme.spacing(2)};
 
-  @media (min-width: ${LARGE_DESKTOP_VIEWPORT}px) {
-    flex-wrap: nowrap;
-    width: unset;
-    gap: ${({ theme }) => theme.spacing(4)};
+  @media (min-width: ${MOBILE_VIEWPORT}px) {
+    flex-direction: row;
+    flex-wrap: wrap;
     padding: ${({ theme }) => theme.spacing(4)};
 
     ${({ isInRightDrawer }) =>
       isInRightDrawer &&
       css`
-        width: 100%;
         padding: 0;
-        flex-wrap: wrap;
       `}
   }
 `;
 
-const StyledRightContentContainer = styled.div<{ isInRightDrawer?: boolean }>`
+const StyledMainContent = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(4)};
-
   width: 100%;
+
+  @media (min-width: ${MOBILE_VIEWPORT}px) {
+    flex: 1;
+    min-width: 0;
+  }
+
   @media (min-width: ${LARGE_DESKTOP_VIEWPORT}px) {
-    max-width: 900px;
-    padding: 0;
-    ${({ isInRightDrawer, theme }) =>
-      isInRightDrawer &&
-      css`
-        padding: 0 ${theme.spacing(4)};
-        width: 100%;
-      `}
+    max-width: 1250px;
   }
 `;
 
-const StyledLeftContentContainer = styled.div<{ isInRightDrawer?: boolean }>`
+const StyledSideContent = styled.div<{ isInRightDrawer?: boolean }>`
+  display: none;
+
+  @media (min-width: ${MOBILE_VIEWPORT}px) {
+    display: flex;
+    flex-direction: column;
+    gap: ${({ theme }) => theme.spacing(4)};
+    width: 380px;
+  }
+`;
+
+const StyledImagesSection = styled.div`
+  width: 100%;
+`;
+
+const StyledOverviewSection = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(4)};
   width: 100%;
-  @media (min-width: ${LARGE_DESKTOP_VIEWPORT}px) {
-    max-width: 900px;
 
-    padding: 0;
-    ${({ isInRightDrawer, theme }) =>
-      isInRightDrawer &&
-      css`
-        padding: 0 ${theme.spacing(4)};
-        width: 100%;
-      `}
+  @media (min-width: ${MOBILE_VIEWPORT}px) {
+    flex-direction: row;
+    flex-wrap: wrap;
+    > * {
+      flex: 1;
+      min-width: 300px;
+    }
+  }
+`;
+
+const StyledDetailsSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(4)};
+  width: 100%;
+
+  @media (min-width: ${MOBILE_VIEWPORT}px) {
+    flex-direction: row;
+    flex-wrap: wrap;
+    > * {
+      flex: 1;
+      min-width: 300px;
+    }
+  }
+`;
+
+const StyledPropertySection = styled.div`
+  display: none;
+
+  @media (min-width: ${MOBILE_VIEWPORT}px) {
+    display: block;
+    max-width: 800px;
+    width: 100%;
   }
 `;
 
@@ -100,13 +127,16 @@ export const PublicationDetails = ({
     publicationMetricsState(targetableObject.id),
   );
 
+  const { objectMetadataItem } = useObjectMetadataItem({
+    objectNameSingular: targetableObject.targetObjectNameSingular,
+  });
+
   const { recordFromStore: publication, recordLoading } =
     useRecordShowContainerData({
       objectNameSingular: targetableObject.targetObjectNameSingular,
       objectRecordId: targetableObject.id,
     });
 
-  // TODO: Add a skeleton loader here
   if (recordLoading || !publication) {
     return (
       <StyledLoadingContainer>
@@ -115,50 +145,46 @@ export const PublicationDetails = ({
     );
   }
 
+  // TODO add tab cards for inquiries, publications and reporting on mobile
   return (
-    <>
-      <StyledContentContainer isInRightDrawer={isInRightDrawer}>
-        <StyledLeftContentContainer isInRightDrawer={isInRightDrawer}>
-          <ObjectOverview
+    <StyledContentContainer isInRightDrawer={isInRightDrawer}>
+      <StyledMainContent>
+        <StyledImagesSection>
+          <PropertyImagesCard
+            loading={recordLoading}
             targetableObject={targetableObject}
-            isInRightDrawer={isInRightDrawer}
-            isNewRightDrawerItemLoading={false}
+          />
+        </StyledImagesSection>
+
+        <StyledOverviewSection>
+          <PropertyBasicInfoCard
+            record={publication}
+            loading={recordLoading}
             isPublication
           />
-        </StyledLeftContentContainer>
-        <StyledRightContentContainer isInRightDrawer={isInRightDrawer}>
-          <StyledProgressContainer>
-            <CompletionProgress record={publication} />
-          </StyledProgressContainer>
+          <PropertyDetailsCard
+            record={publication}
+            loading={recordLoading}
+            objectMetadataItem={objectMetadataItem}
+          />
+        </StyledOverviewSection>
 
-          <Section
-            title={t`Status`}
-            icon={<IconBuildingSkyscraper size={16} />}
-          >
-            <StatusBadge status={publication.stage} />
-          </Section>
+        <StyledDetailsSection>
+          <PropertyRelationsCard
+            record={publication}
+            loading={recordLoading}
+            objectMetadataItem={objectMetadataItem}
+          />
+          <PropertyAddressCard record={publication} loading={recordLoading} />
+        </StyledDetailsSection>
+      </StyledMainContent>
 
-          <Section title={t`Inquiries`} icon={<IconMessageCircle2 size={16} />}>
-            {publicationMetrics?.contactsByStage ? (
-              <StyledChartContainer>
-                <ContactsByStageChart
-                  contactsByStage={publicationMetrics.contactsByStage}
-                />
-              </StyledChartContainer>
-            ) : (
-              <StyledEmptyState>
-                <Trans>No inquiries data available yet</Trans>
-              </StyledEmptyState>
-            )}
-          </Section>
-
-          <Section title={t`Reporting`} icon={<IconChartBar size={16} />}>
-            <StyledComingSoonText>
-              <Trans>Reporting coming soon</Trans>
-            </StyledComingSoonText>
-          </Section>
-        </StyledRightContentContainer>
-      </StyledContentContainer>
-    </>
+      <StyledSideContent isInRightDrawer={isInRightDrawer}>
+        <PublicationCompletionCard record={publication} />
+        <PublicationStatusCard stage={publication.stage} />
+        <PropertyInquiriesCard recordId={publication.id} isPublication />
+        <PropertyReportingCard />
+      </StyledSideContent>
+    </StyledContentContainer>
   );
 };

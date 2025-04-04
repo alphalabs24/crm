@@ -2,10 +2,13 @@ import styled from '@emotion/styled';
 import { ReactNode } from 'react';
 
 // Section Card Components
-export const StyledSection = styled.div`
+export const StyledSection = styled.div<{ preserveHeight?: boolean }>`
   border: 1px solid ${({ theme }) => theme.border.color.light};
   border-radius: ${({ theme }) => theme.border.radius.sm};
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex: ${({ preserveHeight }) => (preserveHeight ? 'unset' : '1')};
   overflow: hidden;
 `;
 
@@ -148,6 +151,7 @@ export const KPICard = ({ label, value, icon }: KPICardProps) => (
 type SectionProps = {
   title: ReactNode;
   icon?: ReactNode;
+  preserveHeight?: boolean;
   rightComponent?: ReactNode;
   children: ReactNode;
 };
@@ -156,9 +160,10 @@ export const Section = ({
   title,
   icon,
   rightComponent,
+  preserveHeight = false,
   children,
 }: SectionProps) => (
-  <StyledSection>
+  <StyledSection preserveHeight={preserveHeight}>
     <StyledSectionTitle>
       <StyledSectionTitleLeft>
         {icon}

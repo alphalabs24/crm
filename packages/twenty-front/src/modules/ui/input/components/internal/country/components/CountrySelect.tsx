@@ -24,9 +24,9 @@ export const CountrySelect = ({
 
   const options: SelectOption<string>[] = useMemo(() => {
     const countryList = countries.map<SelectOption<string>>(
-      ({ countryName, Flag }) => ({
+      ({ countryName, countryCode, Flag }) => ({
         label: countryName,
-        value: countryName,
+        value: countryCode,
         Icon: (props: IconComponentProps) =>
           Flag({ width: props.size, height: props.size }), // TODO : improve this ?
       }),

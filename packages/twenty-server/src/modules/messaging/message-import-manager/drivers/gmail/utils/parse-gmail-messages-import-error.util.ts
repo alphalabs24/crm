@@ -1,7 +1,11 @@
+import { Logger } from '@nestjs/common';
+
 import {
   MessageImportDriverException,
   MessageImportDriverExceptionCode,
 } from 'src/modules/messaging/message-import-manager/drivers/exceptions/message-import-driver.exception';
+
+const logger = new Logger('GmailMessagesImportError');
 
 export const parseGmailMessagesImportError = (
   error: {
@@ -17,6 +21,10 @@ export const parseGmailMessagesImportError = (
 
   const reason = errors?.[0]?.reason;
   const message = `${errors?.[0]?.message} for message with externalId: ${messageExternalId}`;
+
+  logger.error(
+    `Gmail messages import error: code=${code}, reason=${reason}, messageExternalId=${messageExternalId}\nError: ${JSON.stringify(error)}`,
+  );
 
   switch (code) {
     case 400:

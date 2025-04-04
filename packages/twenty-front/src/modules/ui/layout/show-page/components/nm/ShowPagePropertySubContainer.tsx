@@ -23,6 +23,7 @@ import { useTabList } from '@/ui/layout/tab/hooks/useTabList';
 import { useIsMobile } from '@/ui/utilities/responsive/hooks/useIsMobile';
 import styled from '@emotion/styled';
 import { useLingui } from '@lingui/react/macro';
+import { AxiosResponse } from 'axios';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
@@ -123,12 +124,65 @@ export const ShowPagePropertySubContainer = ({
   const objectNameSingular = targetableObject.targetObjectNameSingular;
   const capitalizedObjectNameSingular = capitalize(objectNameSingular);
 
-  // Loading states
-  const [loadingDraft, setLoadingDraft] = useState(false);
-  const [loadingSync, setLoadingSync] = useState(false);
-  const [loadingUnpublish, setLoadingUnpublish] = useState(false);
+  const { useMutations } = useNestermind();
 
-  const { propertiesApi, publicationsApi } = useNestermind();
+  const { mutate: syncPublicationMutation, isPending: isSyncPending } =
+    useMutations.useSyncPublicationsWithProperty(targetableObject.id, {
+      onSuccess: () => {
+        enqueueSnackBar(t`Your Publication Drafts were synced successfully`, {
+          variant: SnackBarVariant.Success,
+        });
+        differencesModalRef.current?.close();
+        refetchPublications();
+      },
+      onError: (error: Error) => {
+        enqueueSnackBar(error?.message || t`Failed to sync publications`, {
+          variant: SnackBarVariant.Error,
+        });
+      },
+    });
+
+  const {
+    mutate: duplicatePublicationMutation,
+    isPending: isDuplicatePending,
+  } = useMutations.useDuplicatePublication({
+    onSuccess: (response: AxiosResponse<string>) => {
+      enqueueSnackBar(t`Publication Draft created successfully`, {
+        variant: SnackBarVariant.Success,
+      });
+      refetchPublications();
+
+      const route = `${getLinkToShowPage(CoreObjectNameSingular.Publication, {
+        id: response.data,
+      })}/edit`;
+
+      navigate(route);
+    },
+    onError: (error: Error) => {
+      enqueueSnackBar(error?.message || t`Failed to create publication draft`, {
+        variant: SnackBarVariant.Error,
+      });
+    },
+  });
+
+  const {
+    mutate: unpublishPublicationMutation,
+    isPending: isUnpublishPending,
+  } = useMutations.useUnpublishPublication({
+    onSuccess: () => {
+      enqueueSnackBar(t`Publication unpublished successfully`, {
+        variant: SnackBarVariant.Success,
+      });
+      refetchPublications();
+      refetchRecord();
+      setIsUnpublishModalOpen(false);
+    },
+    onError: (error: Error) => {
+      enqueueSnackBar(error?.message || t`Failed to unpublish publication`, {
+        variant: SnackBarVariant.Error,
+      });
+    },
+  });
 
   const dropdownId = `show-page-property-sub-container-dropdown-${targetableObject.id}`;
 
@@ -230,51 +284,16 @@ export const ShowPagePropertySubContainer = ({
   };
 
   // Sync publication drafts with master data from property
-  const syncPublications = async () => {
-    try {
-      setLoadingSync(true);
-      await propertiesApi.syncPublications(targetableObject.id);
-      enqueueSnackBar(t`Your Publication Drafts were synced successfully`, {
-        variant: SnackBarVariant.Success,
-      });
-      differencesModalRef.current?.close();
-      refetchPublications();
-    } catch (error: any) {
-      enqueueSnackBar(error?.message, {
-        variant: SnackBarVariant.Error,
-      });
-    } finally {
-      setLoadingSync(false);
-      closeDropdown();
-    }
+  const syncPublications = () => {
+    syncPublicationMutation();
+    closeDropdown();
   };
 
   // Create a draft if the publication is published
-  const createDraftIfPublished = async () => {
-    try {
-      setLoadingDraft(true);
-      const response = await publicationsApi.duplicate({
-        publicationId: targetableObject.id,
-      });
-
-      enqueueSnackBar(t`Publication Draft created successfully`, {
-        variant: SnackBarVariant.Success,
-      });
-
-      refetchPublications();
-
-      const route = `${getLinkToShowPage(CoreObjectNameSingular.Publication, {
-        id: response.data,
-      })}/edit`;
-
-      navigate(route);
-    } catch (error: any) {
-      enqueueSnackBar(error?.message, {
-        variant: SnackBarVariant.Error,
-      });
-    } finally {
-      setLoadingDraft(false);
-    }
+  const createDraftIfPublished = () => {
+    duplicatePublicationMutation({
+      publicationId: targetableObject.id,
+    });
   };
 
   // Update handleUnpublish to show confirmation first
@@ -284,27 +303,10 @@ export const ShowPagePropertySubContainer = ({
   };
 
   // New function to handle the actual unpublish action
-  const handleConfirmUnpublish = async () => {
-    try {
-      setLoadingUnpublish(true);
-      await publicationsApi.unpublish({
-        publicationId: targetableObject.id,
-      });
-
-      enqueueSnackBar(t`Publication unpublished successfully`, {
-        variant: SnackBarVariant.Success,
-      });
-
-      refetchPublications();
-      refetchRecord();
-    } catch (error: any) {
-      enqueueSnackBar(error?.message, {
-        variant: SnackBarVariant.Error,
-      });
-    } finally {
-      setLoadingUnpublish(false);
-      setIsUnpublishModalOpen(false);
-    }
+  const handleConfirmUnpublish = () => {
+    unpublishPublicationMutation({
+      publicationId: targetableObject.id,
+    });
   };
 
   // Edit publication
@@ -429,7 +431,9 @@ export const ShowPagePropertySubContainer = ({
                 Icon={IconPencil}
                 size="small"
                 onClick={onEditPublication}
-                disabled={loadingDraft}
+                disabled={
+                  isSyncPending || isDuplicatePending || isUnpublishPending
+                }
               />
             )}
 
@@ -454,7 +458,7 @@ export const ShowPagePropertySubContainer = ({
                           title: t`Sync Publications`,
                           Icon: IconRefresh,
                           onClick: syncPublications,
-                          disabled: loadingSync,
+                          disabled: isSyncPending,
                         },
                       ]
                     : []),
@@ -480,7 +484,7 @@ export const ShowPagePropertySubContainer = ({
                       }
                     : showSyncButton
                       ? {
-                          title: t`Differences ${differenceLength}`,
+                          title: t`Sync Publications ${differenceLength}`,
                           onClick: () => differencesModalRef.current?.open(),
                         }
                       : showUnpublishButton
@@ -548,7 +552,7 @@ export const ShowPagePropertySubContainer = ({
         setIsOpen={setIsUnpublishModalOpen}
         title={t`Unpublish Publication`}
         subtitle={t`Are you sure you want to unpublish this publication? This will remove it from the published platform and make it unavailable to potential clients. You can always publish it again later.`}
-        loading={loadingUnpublish}
+        loading={isUnpublishPending}
         onConfirmClick={handleConfirmUnpublish}
         deleteButtonText={t`Unpublish`}
       />
