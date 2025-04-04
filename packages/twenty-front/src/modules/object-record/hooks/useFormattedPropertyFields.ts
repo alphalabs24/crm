@@ -57,7 +57,7 @@ export const useFormattedPropertyFields = ({
         case 'rentExtra':
           return t`${formattedAmount} ${currencyCode} / month`;
         default:
-          return t`${formattedAmount} ${currencyCode}`;
+          return `${formattedAmount} ${currencyCode}`;
       }
     }
 
@@ -76,10 +76,10 @@ export const useFormattedPropertyFields = ({
         const localString = numValue.toLocaleString();
         // Handle measurements
         if (field.name.toLowerCase().includes('surface')) {
-          return t`${localString} m²`;
+          return `${localString} m²`;
         }
         if (field.name.toLowerCase().includes('volume')) {
-          return t`${localString} m³`;
+          return `${localString} m³`;
         }
         // Handle years
         if (
@@ -152,7 +152,7 @@ export const useFormattedPropertyFields = ({
       case 'MULTI_SELECT':
         if (field.name === 'features') {
           return Array.isArray(value)
-            ? value.map((v) => capitalize(String(v).toLowerCase())).join(t`, `)
+            ? value.map((v) => capitalize(String(v).toLowerCase())).join(`, `)
             : String(value);
         }
 
