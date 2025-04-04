@@ -3,6 +3,7 @@ import { Section } from '@/object-record/record-show/components/ui/PropertyDetai
 import { ObjectRecord } from '@/object-record/types/ObjectRecord';
 import styled from '@emotion/styled';
 import { useLingui } from '@lingui/react/macro';
+import { useMemo } from 'react';
 import { IconNotes } from 'twenty-ui';
 
 const StyledContent = styled.div`
@@ -26,12 +27,39 @@ type PropertyPublicationsCardProps = {
   loading?: boolean;
 };
 
+const getPublicationSortOrder = (stage: string) => {
+  switch (stage) {
+    case 'PUBLISHED':
+      return 0;
+    case 'DRAFT':
+      return 1;
+    default:
+      return 2;
+  }
+};
+
 export const PropertyPublicationsCard = ({
   record,
   loading = false,
 }: PropertyPublicationsCardProps) => {
   const { t } = useLingui();
   const publications = record.publications as ObjectRecord[];
+
+  const sortedPublications = useMemo(() => {
+    if (!publications) return [];
+
+    return [...publications].sort((a, b) => {
+      const aOrder = getPublicationSortOrder(a.stage);
+      const bOrder = getPublicationSortOrder(b.stage);
+
+      if (aOrder !== bOrder) {
+        return aOrder - bOrder;
+      }
+
+      // If same stage, sort by createdAt date (newest first)
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    });
+  }, [publications]);
 
   if (loading) {
     return null;
@@ -40,14 +68,16 @@ export const PropertyPublicationsCard = ({
   return (
     <Section title={t`Publications`} icon={<IconNotes size={16} />}>
       <StyledContent>
-        {publications && publications.length > 0 ? (
-          publications.map((publication, index) => (
-            <PropertyPublicationItemCard
-              key={publication.id}
-              publication={publication}
-              isLast={index === publications.length - 1}
-            />
-          ))
+        {sortedPublications.length > 0 ? (
+          sortedPublications
+            .filter((p) => p.stage !== 'OVERWRITTEN')
+            .map((publication, index) => (
+              <PropertyPublicationItemCard
+                key={publication.id}
+                publication={publication}
+                isLast={index === sortedPublications.length - 1}
+              />
+            ))
         ) : (
           <StyledEmptyState>
             <IconNotes size={32} />

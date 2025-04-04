@@ -3,6 +3,7 @@ import { useTutorialSteps } from '@/onboarding-tutorial/hooks/useTutorialSteps';
 import { PageBody } from '@/ui/layout/page/components/PageBody';
 import { PageContainer } from '@/ui/layout/page/components/PageContainer';
 import { useColorScheme } from '@/ui/theme/hooks/useColorScheme';
+import { useSystemColorScheme } from '@/ui/theme/hooks/useSystemColorScheme';
 import { PageTitle } from '@/ui/utilities/page-title/components/PageTitle';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
@@ -193,6 +194,9 @@ export const Tutorial = () => {
   const { steps } = useTutorialSteps();
   const theme = useTheme();
   const { colorScheme } = useColorScheme();
+  const systemColorScheme = useSystemColorScheme();
+  const colorSchemeToUse =
+    colorScheme === 'System' ? systemColorScheme : colorScheme;
   const [blockHover, setBlockHover] = useState(true);
   const completedSteps = Object.values(steps).filter(
     (step) => step.completed,
@@ -251,7 +255,7 @@ export const Tutorial = () => {
 
                 return (
                   <StyledStepCard
-                    colorScheme={colorScheme}
+                    colorScheme={colorSchemeToUse}
                     key={step.step.id}
                     $isCompleted={step.completed}
                     $isDisabled={isDisabled}

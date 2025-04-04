@@ -24,6 +24,7 @@ import { useConnectedAccounts } from '@/inquiries/hooks/useConnectedAccounts';
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { getLinkToShowPage } from '@/object-metadata/utils/getLinkToShowPage';
 import { useColorScheme } from '@/ui/theme/hooks/useColorScheme';
+import { useSystemColorScheme } from '@/ui/theme/hooks/useSystemColorScheme';
 import { useRecoilComponentStateV2 } from '@/ui/utilities/state/component-state/hooks/useRecoilComponentStateV2';
 import { useTheme } from '@emotion/react';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
@@ -114,12 +115,21 @@ const StyledUnstyledLink = styled(Link)`
   text-decoration: none;
 `;
 
-const StyledSkeletonMessageContainer = styled.div<{ isCurrentUser?: boolean }>`
+const StyledSkeletonMessageContainer = styled.div<{
+  isCurrentUser?: boolean;
+  colorScheme: ColorScheme;
+}>`
   align-items: ${({ isCurrentUser }) =>
     isCurrentUser ? 'flex-end' : 'flex-start'};
   display: flex;
   flex-direction: column;
   margin-bottom: ${({ theme }) => theme.spacing(4)};
+  background-color: ${({ theme, isCurrentUser, colorScheme }) =>
+    isCurrentUser
+      ? colorScheme === 'Light'
+        ? theme.color.blue10
+        : theme.background.tertiary
+      : theme.background.tertiary};
 `;
 
 const StyledSkeletonHeader = styled.div<{ isCurrentUser?: boolean }>`
@@ -176,25 +186,31 @@ const StyledSkeletonContent = styled.div<{
 const MessageSkeletonItem = ({ isCurrentUser = false }) => {
   const theme = useTheme();
   const { colorScheme } = useColorScheme();
+  const systemColorScheme = useSystemColorScheme();
+  const colorSchemeToUse =
+    colorScheme === 'System' ? systemColorScheme : colorScheme;
   const isMobile = useIsMobile();
 
   return (
     <SkeletonTheme
       baseColor={
         isCurrentUser
-          ? colorScheme === 'Light'
+          ? colorSchemeToUse === 'Light'
             ? theme.color.blue10
             : theme.background.secondary
           : theme.background.tertiary
       }
       highlightColor={
-        colorScheme === 'Light'
+        colorSchemeToUse === 'Light'
           ? theme.background.transparent.lighter
           : theme.background.tertiary
       }
       borderRadius={theme.border.radius.sm}
     >
-      <StyledSkeletonMessageContainer isCurrentUser={isCurrentUser}>
+      <StyledSkeletonMessageContainer
+        isCurrentUser={isCurrentUser}
+        colorScheme={colorSchemeToUse}
+      >
         <StyledSkeletonHeader isCurrentUser={isCurrentUser}>
           <StyledSkeletonSender isCurrentUser={isCurrentUser}>
             <Skeleton width={120} height={16} />

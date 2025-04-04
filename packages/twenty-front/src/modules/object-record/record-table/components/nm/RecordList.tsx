@@ -709,8 +709,6 @@ const RecordListItem = ({
     return record?.category === 'Rental';
   }, [record]);
 
-  if (!record) return null;
-
   return (
     <StyledCard
       isSelected={isSelected}

@@ -1,5 +1,6 @@
 import { OptionalWrap } from '@/ui/layout/utilities/components/OptionalWrapWith';
 import { useColorScheme } from '@/ui/theme/hooks/useColorScheme';
+import { useSystemColorScheme } from '@/ui/theme/hooks/useSystemColorScheme';
 import styled from '@emotion/styled';
 import { Trans, useLingui } from '@lingui/react/macro';
 import { format } from 'date-fns';
@@ -72,7 +73,7 @@ const StyledMessageContent = styled.div<{
     isCurrentUser
       ? colorScheme === 'Light'
         ? theme.color.blue10
-        : theme.color.gray
+        : theme.color.blue60
       : theme.background.tertiary};
   border-radius: ${({ theme }) => theme.border.radius.md};
   padding: ${({ theme }) => theme.spacing(2)};
@@ -101,6 +102,9 @@ export const ConversationMessageItem = ({
 }: ConversationMessageItemProps) => {
   const { t } = useLingui();
   const { colorScheme } = useColorScheme();
+  const systemColorScheme = useSystemColorScheme();
+  const colorSchemeToUse =
+    colorScheme === 'System' ? systemColorScheme : colorScheme;
 
   // Format message body
   const formatMessageBody = (body: string) => {
@@ -170,7 +174,7 @@ export const ConversationMessageItem = ({
       </StyledMessageHeader>
       <StyledMessageContent
         isCurrentUser={isCurrentUser}
-        colorScheme={colorScheme}
+        colorScheme={colorSchemeToUse}
       >
         {formattedBody.split('\n').map((paragraph: string, index: number) => (
           <p key={index}>{paragraph}</p>
