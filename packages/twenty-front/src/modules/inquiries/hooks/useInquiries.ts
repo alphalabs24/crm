@@ -146,9 +146,7 @@ export const useInquiries = ({
 
   useEffect(() => {
     if (messageThreadsError) {
-      enqueueSnackBar('Error fetching messages', {
-        variant: SnackBarVariant.Error,
-      });
+      console.log('messageThreadsError', messageThreadsError);
     }
   }, [messageThreadsError, enqueueSnackBar]);
 
@@ -163,5 +161,6 @@ export const useInquiries = ({
     fetchMoreRecords,
     totalCount,
     deleteOne: deleteOneRecord,
+    error: messageThreadsError,
   };
 };

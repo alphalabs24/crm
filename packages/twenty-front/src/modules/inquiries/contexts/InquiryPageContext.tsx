@@ -16,6 +16,7 @@ type InquiryPageContextProviderProps = {
   inquiries: ObjectRecord[];
   loading: boolean;
   deleteOne: (id: string) => void;
+  error: Error | null;
 } & PropsWithChildren;
 
 type InquiryContextValue = {
@@ -39,6 +40,7 @@ export const InquiryPageContextProvider = ({
   inquiries,
   loading,
   deleteOne,
+  error,
 }: InquiryPageContextProviderProps) => {
   const [selectedInquiryId, setSelectedInquiryId] = useState<string | null>(
     null,
@@ -128,6 +130,7 @@ export const InquiryPageContextProvider = ({
     inquiries,
     loading,
     deleteOne,
+    error,
   };
 
   return (

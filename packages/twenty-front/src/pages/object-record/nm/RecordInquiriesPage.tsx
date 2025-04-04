@@ -66,7 +66,7 @@ export const RecordInquiriesPage = () => {
   const propertyId = searchParams.get('propertyId') || undefined;
   const publicationId = searchParams.get('publicationId') || undefined;
 
-  const { records, loading, deleteOne } = useInquiries({
+  const { records, loading, deleteOne, error } = useInquiries({
     propertyId,
     publicationId,
   });
@@ -75,6 +75,7 @@ export const RecordInquiriesPage = () => {
       inquiries={records}
       loading={loading}
       deleteOne={deleteOne}
+      error={error}
     >
       <RecordInquiriesPageContent />
     </InquiryPageContextProvider>

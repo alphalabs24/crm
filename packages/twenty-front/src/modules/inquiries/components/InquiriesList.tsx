@@ -1,3 +1,5 @@
+import { SnackBarVariant } from '@/ui/feedback/snack-bar-manager/components/SnackBar';
+import { useSnackBar } from '@/ui/feedback/snack-bar-manager/hooks/useSnackBar';
 import { PageBody } from '@/ui/layout/page/components/PageBody';
 import { ScrollWrapper } from '@/ui/utilities/scroll/components/ScrollWrapper';
 import { useTheme } from '@emotion/react';
@@ -113,13 +115,17 @@ export const InquiriesList = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [searchParams] = useSearchParams();
-  const { inquiries, loading, deleteOne } = useInquiryPage();
+  const { enqueueSnackBar } = useSnackBar();
 
   const propertyId = searchParams.get('propertyId') || undefined;
   const publicationId = searchParams.get('publicationId') || undefined;
   const id = searchParams.get('id');
 
   const {
+    inquiries,
+    loading,
+    deleteOne,
+    error,
     openInquirySidebar,
     setSelectedInquiry,
     closeInquirySidebar,
@@ -219,6 +225,14 @@ export const InquiriesList = () => {
     return inquiries.filter((record) => record.person && record.publication);
   }, [inquiries]);
 
+  useEffect(() => {
+    if (error) {
+      enqueueSnackBar('Error fetching messages', {
+        variant: SnackBarVariant.Error,
+      });
+    }
+  }, [error]);
+
   if (loading) {
     return (
       <StyledPageBody>
@@ -269,6 +283,7 @@ export const InquiriesList = () => {
               isLast={index === recordsWithPersonAndPublication.length - 1}
               onClick={() => handleInquiryClick(record.id)}
               onDelete={() => deleteOne(record.id)}
+              selectedInquiryId={selectedInquiry?.id}
             />
           ))}
         </StyledList>

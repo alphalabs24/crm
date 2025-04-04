@@ -9,7 +9,6 @@ import { Trans, useLingui } from '@lingui/react/macro';
 import { format } from 'date-fns';
 import { useState } from 'react';
 import { Avatar, IconButton, IconDots, IconTrash, MenuItem } from 'twenty-ui';
-import { useInquiryPage } from '../contexts/InquiryPageContext';
 import { useInquiryReadState } from '../hooks/useInquiryReadState';
 
 const StyledInquiryItem = styled.div<{
@@ -171,6 +170,7 @@ type InquiryItemProps = {
   isLast?: boolean;
   onClick?: () => void;
   onDelete?: () => void;
+  selectedInquiryId?: string | null;
 };
 
 // Format message body
@@ -189,6 +189,7 @@ export const InquiryItem = ({
   inquiry,
   isLast = false,
   onDelete,
+  selectedInquiryId,
 }: InquiryItemProps) => {
   const { t } = useLingui();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -198,7 +199,6 @@ export const InquiryItem = ({
   const dropdownId = `inquiry-actions-${inquiry.id}`;
   const { closeDropdown } = useDropdown(dropdownId);
   const { isUnread, markAsRead } = useInquiryReadState();
-  const { selectedInquiryId } = useInquiryPage();
 
   const handleClick = (event: React.MouseEvent) => {
     // Prevent opening the inquiry when clicking the dropdown
