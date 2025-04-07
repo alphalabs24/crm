@@ -1,3 +1,4 @@
+import { AgencyCredential } from '@/publishers/components/modals/EditPublisherModal';
 import { Trans } from '@lingui/react/macro';
 import { ColorScheme } from 'twenty-ui';
 
@@ -53,6 +54,7 @@ export type Platform = {
   isBeta?: boolean;
   backgroundColor?: string;
   fieldsOnAgency?: PlatformField[];
+  getOfferListLink?: (credential: AgencyCredential) => string | null;
 };
 
 export const PLATFORMS: { [key in PlatformId]: Platform } = {
@@ -111,6 +113,10 @@ export const PLATFORMS: { [key in PlatformId]: Platform } = {
         ),
       },
     ],
+    getOfferListLink: (credential: AgencyCredential) =>
+      credential.partnerId
+        ? `https://test.newhome.ch/partner/${credential.partnerId}.aspx`
+        : null,
   },
   [PlatformId.SocialMedia]: {
     type: 'social_media',
