@@ -1,14 +1,18 @@
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { useFindManyRecords } from '@/object-record/hooks/useFindManyRecords';
 import { ObjectRecord } from '@/object-record/types/ObjectRecord';
+import { SettingsPath } from '@/types/SettingsPath';
 import { PlatformId } from '@/ui/layout/show-page/components/nm/types/Platform';
 import { useLingui } from '@lingui/react/macro';
+import isEmpty from 'lodash.isempty';
 import { ReactNode, useMemo } from 'react';
+import { getSettingsPath } from '~/utils/navigation/getSettingsPath';
 
 export type ValidationResult = {
   isValid: boolean;
   missingFields: ReactNode[];
   message?: string;
+  path?: string;
 };
 
 export type PublicationValidationState = {
@@ -114,18 +118,38 @@ export const usePublicationValidation = ({
       }
     }
 
+    let path;
     const platformIdToUse = platformId ?? record.platform;
     const credential = credentials.find((c) => c.name === platformIdToUse);
     if (!credential?.username || !credential?.password) {
+      if (isEmpty(missingFields))
+        path = getSettingsPath(
+          SettingsPath.Platforms,
+          {},
+          { id: record.agencyId },
+        );
       missingFields.push(t`Publisher Credentials`);
     }
+    // this only handles validation for Publication
     if (record.platform === PlatformId.Newhome && !credential?.partnerId) {
+      if (isEmpty(missingFields))
+        path = getSettingsPath(
+          SettingsPath.Platforms,
+          {},
+          { id: record.agencyId },
+        );
       missingFields.push(t`Partner Id`);
     }
     if (
       record.platform === PlatformId.Comparis &&
       !credential?.platformAgencyId
     ) {
+      if (isEmpty(missingFields))
+        path = getSettingsPath(
+          SettingsPath.Platforms,
+          {},
+          { id: record.agencyId },
+        );
       missingFields.push(t`Platform Agency Id`);
     }
 
@@ -136,6 +160,7 @@ export const usePublicationValidation = ({
       message: missingFields.length
         ? t`Missing required fields: ${missingFieldsString}`
         : undefined,
+      path,
     };
   }, [credentials, isPublication, platformId, record, t]);
 

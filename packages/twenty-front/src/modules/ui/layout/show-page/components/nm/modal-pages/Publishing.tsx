@@ -214,7 +214,10 @@ export const Publishing = ({
           <StyledValidationDetails>
             {validationDetails?.message}
             <StyledEditLink
-              to={`${getLinkToShowPage('publication', { id: recordId })}/edit`}
+              to={
+                validationDetails?.path ??
+                `${getLinkToShowPage('publication', { id: recordId })}/edit`
+              }
             >
               {t`Edit`}
             </StyledEditLink>
