@@ -89,11 +89,13 @@ export const PublishDraftModal = forwardRef<ModalRefType, PublishModalProps>(
     );
 
     const handlePlatformSelect = (platformId: PlatformId) => {
-      setSelectedPlatforms((prev) =>
-        prev?.includes(platformId)
-          ? prev?.filter((id) => id !== platformId)
-          : [...(prev || []), platformId],
-      );
+      setSelectedPlatforms((prev) => {
+        if (prev?.includes(platformId)) {
+          return prev?.filter((id) => id !== platformId);
+        } else {
+          return [platformId];
+        }
+      });
     };
 
     useEffect(() => {
