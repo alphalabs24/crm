@@ -67,6 +67,7 @@ export type AgencyCredential = {
   host: string;
   port: number;
   partnerId: string;
+  platformAgencyId: string;
 };
 
 type InitialState = {
@@ -267,6 +268,7 @@ export const EditPublisherModal = forwardRef<ModalRefType, Props>(
               port: newCredentials?.port,
               host: newCredentials?.host,
               partnerId: newCredentials?.partnerId,
+              platformAgencyId: newCredentials?.platformAgencyId,
             };
 
             if (!oldCredentials && newCredentials) {
