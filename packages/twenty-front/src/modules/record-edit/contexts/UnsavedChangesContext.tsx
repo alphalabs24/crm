@@ -2,21 +2,21 @@ import { SnackBarVariant } from '@/ui/feedback/snack-bar-manager/components/Snac
 import { useSnackBar } from '@/ui/feedback/snack-bar-manager/hooks/useSnackBar';
 import { Modal, ModalRefType } from '@/ui/layout/modal/components/Modal';
 import {
-    StyledModalContent,
-    StyledModalHeader,
-    StyledModalHeaderButtons,
-    StyledModalTitle,
-    StyledModalTitleContainer,
+  StyledModalContent,
+  StyledModalHeader,
+  StyledModalHeaderButtons,
+  StyledModalTitle,
+  StyledModalTitleContainer,
 } from '@/ui/layout/show-page/components/nm/modal-components/ModalComponents';
 import { useLingui } from '@lingui/react/macro';
 import {
-    createContext,
-    forwardRef,
-    PropsWithChildren,
-    useCallback,
-    useContext,
-    useRef,
-    useState,
+  createContext,
+  forwardRef,
+  PropsWithChildren,
+  useCallback,
+  useContext,
+  useRef,
+  useState,
 } from 'react';
 import { useBlocker, useNavigate } from 'react-router-dom';
 import { Button, IconAlertTriangle } from 'twenty-ui';
@@ -196,7 +196,7 @@ export const UnsavedChangesProvider = ({
       resetFields();
       setTimeout(() => {
         navigate(pendingNavigation);
-      }, 100);
+      }, 200);
       setPendingNavigation(null);
     }
   }, [isSaving, navigate, pendingNavigation, resetFields]);

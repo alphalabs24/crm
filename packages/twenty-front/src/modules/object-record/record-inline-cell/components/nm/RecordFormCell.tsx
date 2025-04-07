@@ -125,7 +125,7 @@ export const RecordFormCell = ({ loading }: RecordFormCellProps) => {
         isReadOnly={isFieldReadOnly}
       />
     ),
-    displayModeContent: <FormDisplay />,
+    displayModeContent: <FormDisplay canClick={false} />,
     isDisplayModeFixHeight: isDisplayModeFixHeight,
     editModeContentOnly: isFieldInputOnly,
     loading: loading,

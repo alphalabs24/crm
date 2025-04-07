@@ -14,7 +14,8 @@ import { useIsFeatureEnabled } from '@/workspace/hooks/useIsFeatureEnabled';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import {
   Button,
   IconChevronRight,
@@ -122,6 +123,22 @@ export const PublishersListCard = ({
   );
   const { openModalForPublisher } = usePublishers();
   const theme = useTheme();
+  const navigate = useNavigate();
+
+  const [searchParams] = useSearchParams();
+  const hasHandledInitialId = useRef(false);
+  const id = searchParams.get('id');
+
+  useEffect(() => {
+    if (id && !hasHandledInitialId.current) {
+      hasHandledInitialId.current = true;
+      openModalForPublisher(id);
+      // Clean up the URL by removing the id parameter
+      const newSearchParams = new URLSearchParams(searchParams);
+      newSearchParams.delete('id');
+      navigate({ search: newSearchParams.toString() }, { replace: true });
+    }
+  }, [id, openModalForPublisher, searchParams, navigate]);
 
   const canCreateNewPublisher = useMemo(() => {
     return (isMultiPublisherEnabled || publishers.length < 1) && !loading;

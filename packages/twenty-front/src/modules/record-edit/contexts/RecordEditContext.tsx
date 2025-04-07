@@ -84,6 +84,8 @@ export type RecordEditContextType = {
   ) => void;
   emailTemplate: Note | null;
   setEmailTemplate: (template: Note | null) => void;
+  updateDraftValue: (fieldName: string, value: unknown) => void;
+  draftValues: Record<string, unknown>;
 };
 
 export const RecordEditContext = createContext<RecordEditContextType | null>(
@@ -150,6 +152,7 @@ export const RecordEditProvider = ({
 }: RecordEditProviderProps) => {
   const [loading, setLoading] = useState(false);
   const [fieldUpdates, setFieldUpdates] = useState<Record<string, unknown>>({});
+  const [draftValues, setDraftValues] = useState<Record<string, unknown>>({});
   const [isDirty, setIsDirty] = useState(false);
   const { objectRecordId, objectNameSingular } = useParams();
 
@@ -560,6 +563,13 @@ export const RecordEditProvider = ({
     }
   };
 
+  const updateDraftValue = useCallback((fieldName: string, value: unknown) => {
+    setDraftValues((prev) => ({
+      ...prev,
+      [fieldName]: value,
+    }));
+  }, []);
+
   // Initialize email template from the record when loaded
   useEffect(() => {
     if (initialRecord) {
@@ -602,6 +612,8 @@ export const RecordEditProvider = ({
         updatePropertyDocument,
         emailTemplate,
         setEmailTemplate: handleSetEmailTemplate,
+        updateDraftValue,
+        draftValues,
       }}
     >
       {children}

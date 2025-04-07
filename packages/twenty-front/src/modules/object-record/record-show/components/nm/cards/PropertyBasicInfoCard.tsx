@@ -1,21 +1,46 @@
+import { LinkedPropertyCard } from '@/object-record/record-show/components/nm/cards/LinkedPropertyCard';
 import { PlatformBadge } from '@/object-record/record-show/components/nm/publication/PlatformBadge';
 import { Section } from '@/object-record/record-show/components/ui/PropertyDetailsCardComponents';
+import { ObjectRecord } from '@/object-record/types/ObjectRecord';
 import { ShowPagePropertySummaryCard } from '@/ui/layout/show-page/components/nm/ShowPagePropertySummaryCard';
 import { PlatformId } from '@/ui/layout/show-page/components/nm/types/Platform';
 import { useIsMobile } from '@/ui/utilities/responsive/hooks/useIsMobile';
+import styled from '@emotion/styled';
 import { useLingui } from '@lingui/react/macro';
 import { IconBuilding } from 'twenty-ui';
+
+const StyledContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(2)};
+  justify-content: space-between;
+  flex: 1;
+`;
+
+const StyledPropertyContainer = styled.div`
+  border-top: 1px solid ${({ theme }) => theme.border.color.light};
+  padding-top: ${({ theme }) => theme.spacing(4)};
+`;
+
+const StyledPropertyLabel = styled.div`
+  color: ${({ theme }) => theme.font.color.light};
+  font-size: ${({ theme }) => theme.font.size.sm};
+  font-weight: ${({ theme }) => theme.font.weight.medium};
+  margin-bottom: ${({ theme }) => theme.spacing(2)};
+`;
 
 type PropertyBasicInfoCardProps = {
   record: any;
   loading?: boolean;
   isPublication?: boolean;
+  property?: ObjectRecord;
 };
 
 export const PropertyBasicInfoCard = ({
   record,
   loading = false,
   isPublication,
+  property,
 }: PropertyBasicInfoCardProps) => {
   const { t } = useLingui();
   const isMobile = useIsMobile();
@@ -33,7 +58,7 @@ export const PropertyBasicInfoCard = ({
       icon={<IconBuilding size={16} />}
       rightComponent={platformBadge}
     >
-      <div>
+      <StyledContent>
         <ShowPagePropertySummaryCard
           date={record.createdAt ?? ''}
           loading={loading}
@@ -47,7 +72,13 @@ export const PropertyBasicInfoCard = ({
           }
           isMobile={isMobile}
         />
-      </div>
+        {isPublication && property && (
+          <StyledPropertyContainer>
+            <StyledPropertyLabel>{t`Created from property`}</StyledPropertyLabel>
+            <LinkedPropertyCard property={property} />
+          </StyledPropertyContainer>
+        )}
+      </StyledContent>
     </Section>
   );
 };

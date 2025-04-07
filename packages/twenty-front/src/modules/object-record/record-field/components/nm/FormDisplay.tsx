@@ -46,7 +46,7 @@ import { isFieldSelect } from '../../types/guards/isFieldSelect';
 import { isFieldText } from '../../types/guards/isFieldText';
 import { isFieldUuid } from '../../types/guards/isFieldUuid';
 
-export const FormDisplay = () => {
+export const FormDisplay = ({ canClick }: { canClick?: boolean }) => {
   const { fieldDefinition, isLabelIdentifier } = useContext(FieldContext);
 
   const isChipDisplay = isFieldIdentifierDisplay(
@@ -57,9 +57,9 @@ export const FormDisplay = () => {
   return isChipDisplay ? (
     <ChipFieldDisplay />
   ) : isFieldRelationToOneObject(fieldDefinition) ? (
-    <RelationToOneFieldDisplay />
+    <RelationToOneFieldDisplay canClick={canClick} />
   ) : isFieldRelationFromManyObjects(fieldDefinition) ? (
-    <RelationFromManyFieldDisplay />
+    <RelationFromManyFieldDisplay canClick={canClick} />
   ) : isFieldText(fieldDefinition) ? (
     <TextFieldDisplay />
   ) : isFieldUuid(fieldDefinition) ? (

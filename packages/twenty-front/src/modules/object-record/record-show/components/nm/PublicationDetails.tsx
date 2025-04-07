@@ -10,12 +10,11 @@ import { PropertyReportingCard } from '@/object-record/record-show/components/nm
 import { PublicationCompletionCard } from '@/object-record/record-show/components/nm/cards/PublicationCompletionCard';
 import { PublicationStatusCard } from '@/object-record/record-show/components/nm/cards/PublicationStatusCard';
 import { StyledLoadingContainer } from '@/object-record/record-show/components/ui/PropertyDetailsCardComponents';
+import { usePropertyOfPublication } from '@/object-record/record-show/hooks/usePropertyOfPublication';
 import { useRecordShowContainerData } from '@/object-record/record-show/hooks/useRecordShowContainerData';
-import { publicationMetricsState } from '@/object-record/record-show/states/publicationMetricsState';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import { Trans, useLingui } from '@lingui/react/macro';
-import { useRecoilValue } from 'recoil';
+import { Trans } from '@lingui/react/macro';
 import { LARGE_DESKTOP_VIEWPORT, MOBILE_VIEWPORT } from 'twenty-ui';
 
 const StyledContentContainer = styled.div<{ isInRightDrawer?: boolean }>`
@@ -122,11 +121,6 @@ export const PublicationDetails = ({
   targetableObject,
   isInRightDrawer,
 }: PublicationDetailsProps) => {
-  const { t } = useLingui();
-  const publicationMetrics = useRecoilValue(
-    publicationMetricsState(targetableObject.id),
-  );
-
   const { objectMetadataItem } = useObjectMetadataItem({
     objectNameSingular: targetableObject.targetObjectNameSingular,
   });
@@ -136,6 +130,10 @@ export const PublicationDetails = ({
       objectNameSingular: targetableObject.targetObjectNameSingular,
       objectRecordId: targetableObject.id,
     });
+
+  const property = usePropertyOfPublication({
+    publication,
+  });
 
   if (recordLoading || !publication) {
     return (
@@ -161,6 +159,7 @@ export const PublicationDetails = ({
             record={publication}
             loading={recordLoading}
             isPublication
+            property={property}
           />
           <PropertyDetailsCard
             record={publication}

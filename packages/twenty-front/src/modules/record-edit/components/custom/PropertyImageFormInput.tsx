@@ -6,6 +6,7 @@ import {
 import { Dropdown } from '@/ui/layout/dropdown/components/Dropdown';
 import { DropdownMenuItemsContainer } from '@/ui/layout/dropdown/components/DropdownMenuItemsContainer';
 import { useDropdown } from '@/ui/layout/dropdown/hooks/useDropdown';
+import { css, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import {
   DragDropContext,
@@ -25,15 +26,13 @@ import {
   IconChevronRight,
   IconDotsVertical,
   IconEdit,
+  IconPhoto,
   IconTrash,
   IconUpload,
   MenuItem,
-  MOBILE_VIEWPORT,
-  IconPhoto,
   TooltipDelay,
 } from 'twenty-ui';
 import { ImageEditModal } from './ImageEditModal';
-import { css, useTheme } from '@emotion/react';
 
 const StyledContainer = styled.div`
   display: flex;
@@ -84,9 +83,7 @@ const StyledImageGrid = styled.div<{ isDraggingOver?: boolean }>`
 const StyledSkeletonLoader = styled(Skeleton)`
   display: inline-block;
   flex: 0 0 120px;
-  height: 120px;
-  margin: 0 8px 0 0; /* Add this to match image wrapper */
-  width: 120px; /* Add this to respect white-space: nowrap */
+  margin: 0 8px 0 0; /* Add this to respect white-space: nowrap */
 `;
 
 const StyledImageWrapper = styled.div`
@@ -626,7 +623,14 @@ export const PropertyImageFormInput = ({ loading }: { loading?: boolean }) => {
                         isNew={newImageIds.has(image.id)}
                       />
                     ) : (
-                      <StyledSkeletonLoader key={index} />
+                      <StyledSkeletonLoader
+                        key={index}
+                        height={120}
+                        width={120}
+                        borderRadius={theme.border.radius.sm}
+                        highlightColor={theme.background.transparent.medium}
+                        baseColor={theme.background.transparent.lighter}
+                      />
                     ),
                   )}
                   {provided.placeholder}

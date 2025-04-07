@@ -69,34 +69,14 @@ const StyledImagesSection = styled.div`
   width: 100%;
 `;
 
-const StyledOverviewSection = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(4)};
-  width: 100%;
-
-  @media (min-width: ${LARGE_DESKTOP_VIEWPORT}px) {
-    flex-direction: row;
-    flex-wrap: wrap;
-    > * {
-      flex: 1;
-    }
-  }
-`;
-
 const StyledDetailsSection = styled.div`
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr;
   gap: ${({ theme }) => theme.spacing(4)};
   width: 100%;
 
   @media (min-width: ${LARGE_DESKTOP_VIEWPORT}px) {
-    flex-direction: row;
-    flex-wrap: wrap;
-    > * {
-      flex: 1;
-      min-width: 300px;
-    }
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   }
 `;
 
@@ -155,14 +135,14 @@ export const PropertyDetails = ({
           />
         </StyledImagesSection>
 
-        <StyledOverviewSection>
+        <StyledDetailsSection>
           <PropertyBasicInfoCard record={property} loading={recordLoading} />
           <PropertyDetailsCard
             record={property}
             loading={recordLoading}
             objectMetadataItem={objectMetadataItem}
           />
-        </StyledOverviewSection>
+        </StyledDetailsSection>
 
         <StyledDetailsSection>
           <PropertyRelationsCard

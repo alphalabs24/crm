@@ -1,5 +1,5 @@
-import { useInquiries } from '@/inquiries/hooks/useInquiries';
-import { ObjectRecord } from '@/object-record/types/ObjectRecord';
+import { SnackBarVariant } from '@/ui/feedback/snack-bar-manager/components/SnackBar';
+import { useSnackBar } from '@/ui/feedback/snack-bar-manager/hooks/useSnackBar';
 import { PageBody } from '@/ui/layout/page/components/PageBody';
 import { ScrollWrapper } from '@/ui/utilities/scroll/components/ScrollWrapper';
 import { useTheme } from '@emotion/react';
@@ -112,20 +112,29 @@ const InquirySkeletonLoader = () => {
 };
 
 export const InquiriesList = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const location = useLocation();
+  const [searchParams] = useSearchParams();
+  const { enqueueSnackBar } = useSnackBar();
 
   const propertyId = searchParams.get('propertyId') || undefined;
   const publicationId = searchParams.get('publicationId') || undefined;
   const id = searchParams.get('id');
 
-  const { records, loading } = useInquiries({ propertyId, publicationId });
-  const { openInquirySidebar, setSelectedInquiry, closeInquirySidebar } =
-    useInquiryPage();
+  const {
+    inquiries,
+    loading,
+    deleteOne,
+    error,
+    openInquirySidebar,
+    setSelectedInquiry,
+    closeInquirySidebar,
+    refreshMessages,
+    selectedInquiry,
+  } = useInquiryPage();
 
   const handleInquiryClick = useCallback(
-    (inquiry: ObjectRecord, inquiryId: string) => {
+    (inquiryId: string) => {
       const newParams = new URLSearchParams(searchParams);
       newParams.set('id', inquiryId);
 
@@ -137,16 +146,20 @@ export const InquiriesList = () => {
         },
         { replace: true },
       );
-
-      setSelectedInquiry(inquiry);
+      if (selectedInquiry?.id !== inquiryId) {
+        refreshMessages();
+        setSelectedInquiry(inquiryId);
+      }
       openInquirySidebar(inquiryId);
     },
     [
+      searchParams,
       navigate,
       location.pathname,
-      searchParams,
-      setSelectedInquiry,
+      selectedInquiry?.id,
       openInquirySidebar,
+      refreshMessages,
+      setSelectedInquiry,
     ],
   );
 
@@ -191,17 +204,17 @@ export const InquiriesList = () => {
 
   // Open inquiry on load if ID is present in URL
   useEffect(() => {
-    if (id && records.length > 0) {
-      const inquiry = records.find((record) => record.id === id);
+    if (id && inquiries.length > 0) {
+      const inquiry = inquiries.find((record) => record.id === id);
       if (inquiry) {
-        setSelectedInquiry(inquiry);
-        openInquirySidebar(id);
+        setSelectedInquiry(inquiry.id);
+        openInquirySidebar(inquiry.id);
       } else {
         handleUnselectInquiry();
       }
     }
   }, [
-    records,
+    inquiries,
     id,
     setSelectedInquiry,
     openInquirySidebar,
@@ -209,8 +222,16 @@ export const InquiriesList = () => {
   ]);
 
   const recordsWithPersonAndPublication = useMemo(() => {
-    return records.filter((record) => record.person && record.publication);
-  }, [records]);
+    return inquiries.filter((record) => record.person && record.publication);
+  }, [inquiries]);
+
+  useEffect(() => {
+    if (error) {
+      enqueueSnackBar('Error fetching messages', {
+        variant: SnackBarVariant.Error,
+      });
+    }
+  }, [error]);
 
   if (loading) {
     return (
@@ -218,6 +239,7 @@ export const InquiriesList = () => {
         <InquiriesFilterHeader
           propertyId={propertyId}
           publicationId={publicationId}
+          inquiries={[]}
         />
         <ScrollWrapper
           componentInstanceId="inquiries-list"
@@ -235,6 +257,7 @@ export const InquiriesList = () => {
         <InquiriesFilterHeader
           propertyId={propertyId}
           publicationId={publicationId}
+          inquiries={[]}
         />
         <StyledEmptyState>No inquiries found</StyledEmptyState>
       </StyledPageBody>
@@ -246,6 +269,7 @@ export const InquiriesList = () => {
       <InquiriesFilterHeader
         propertyId={propertyId}
         publicationId={publicationId}
+        inquiries={recordsWithPersonAndPublication}
       />
       <ScrollWrapper
         componentInstanceId="inquiries-list"
@@ -257,7 +281,9 @@ export const InquiriesList = () => {
               key={record.id}
               inquiry={record}
               isLast={index === recordsWithPersonAndPublication.length - 1}
-              onClick={() => handleInquiryClick(record, record.id)}
+              onClick={() => handleInquiryClick(record.id)}
+              onDelete={() => deleteOne(record.id)}
+              selectedInquiryId={selectedInquiry?.id}
             />
           ))}
         </StyledList>

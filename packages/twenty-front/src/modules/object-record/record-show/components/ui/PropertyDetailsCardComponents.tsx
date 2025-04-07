@@ -36,6 +36,7 @@ export const StyledSectionContent = styled.div`
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(3)};
   padding: ${({ theme }) => theme.spacing(4)};
+  flex: 1;
 `;
 
 // Form Border Container

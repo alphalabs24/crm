@@ -26,6 +26,7 @@ export type AvatarChipProps = {
   to?: string;
   maxWidth?: number;
   LeftCustomComponent?: ReactElement;
+  disabled?: boolean;
 };
 
 export enum AvatarChipVariant {
@@ -64,6 +65,7 @@ export const AvatarChip = ({
   size = ChipSize.Small,
   maxWidth,
   LeftCustomComponent,
+  disabled,
 }: AvatarChipProps) => {
   const { theme } = useContext(ThemeContext);
 
@@ -77,6 +79,7 @@ export const AvatarChip = ({
             : ChipVariant.Regular
           : ChipVariant.Transparent
       }
+      disabled={disabled}
       size={size}
       leftComponent={
         isDefined(LeftCustomComponent) ? (

@@ -709,8 +709,6 @@ const RecordListItem = ({
     return record?.category === 'Rental';
   }, [record]);
 
-  if (!record) return null;
-
   return (
     <StyledCard
       isSelected={isSelected}
@@ -741,7 +739,7 @@ const RecordListItem = ({
       <StyledImageSection>
         <StyledImageContainer>
           {mainImage ? (
-            <StyledImage src={mainImage} alt={record.name} />
+            <StyledImage src={mainImage} alt={record?.name} />
           ) : (
             <IconPhoto
               size={40}
@@ -754,7 +752,7 @@ const RecordListItem = ({
               }}
             />
           )}
-          {record.stage && (
+          {record?.stage && (
             <StyledStageTag>
               <StatusBadge status={record.stage} size="small" />
             </StyledStageTag>
@@ -768,12 +766,12 @@ const RecordListItem = ({
             <StyledDate>{createdAtFormatted}</StyledDate>
             <StyledTitleContainer>
               <StyledTitle onClick={handleViewDetails}>
-                {record.name}
+                {record?.name}
               </StyledTitle>
-              {record.platform && (
+              {record?.platform && (
                 <StyledPlatformBadgeContainer>
                   <PlatformBadge
-                    platformId={record.platform}
+                    platformId={record?.platform}
                     size="small"
                     variant="no-background"
                   />
@@ -781,7 +779,7 @@ const RecordListItem = ({
               )}
             </StyledTitleContainer>
 
-            {record.address && (
+            {record?.address && (
               <StyledLocationContainer>
                 <IconMap size={12} color={theme.font.color.tertiary} />
                 <StyledAddress>
@@ -826,7 +824,7 @@ const RecordListItem = ({
               <FieldDetailItem
                 key={fieldName}
                 fieldName={fieldName}
-                value={record[fieldName]}
+                value={record?.[fieldName]}
                 objectNameSingular={objectNameSingular}
               />
             ))}

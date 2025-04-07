@@ -1,6 +1,8 @@
 import { Section } from '@/object-record/record-show/components/ui/PropertyDetailsCardComponents';
 import { SnackBarVariant } from '@/ui/feedback/snack-bar-manager/components/SnackBar';
 import { useSnackBar } from '@/ui/feedback/snack-bar-manager/hooks/useSnackBar';
+import { useColorScheme } from '@/ui/theme/hooks/useColorScheme';
+import { useSystemColorScheme } from '@/ui/theme/hooks/useSystemColorScheme';
 import styled from '@emotion/styled';
 import { useLingui } from '@lingui/react/macro';
 import { IconCopy, IconMap } from 'twenty-ui';
@@ -11,6 +13,13 @@ const StyledAddressContainer = styled.div`
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(1)};
   margin-bottom: ${({ theme }) => theme.spacing(2)};
+  position: relative;
+`;
+
+const StyledContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(1)};
   position: relative;
 `;
 
@@ -54,9 +63,8 @@ const StyledCityLine = styled.div`
 `;
 
 const StyledMapContainer = styled.div`
-  margin-top: ${({ theme }) => theme.spacing(2)};
   width: 100%;
-  height: 200px;
+  max-height: 250px;
   border-radius: ${({ theme }) => theme.border.radius.sm};
   overflow: hidden;
   position: relative;
@@ -69,12 +77,12 @@ const StyledMapContainer = styled.div`
   &:hover {
     opacity: 0.9;
   }
+`;
 
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
+const StyledMap = styled.img`
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
 `;
 
 const StyledMapOverlay = styled.div`
@@ -105,6 +113,10 @@ export const PropertyAddressCard = ({
   const { t } = useLingui();
   const mapboxToken = getEnv('REACT_APP_MAPBOX_ACCESS_TOKEN');
   const { enqueueSnackBar } = useSnackBar();
+  const { colorScheme } = useColorScheme();
+  const systemColorScheme = useSystemColorScheme();
+  const colorSchemeToUse =
+    colorScheme === 'System' ? systemColorScheme : colorScheme;
 
   if (loading) {
     return null;
@@ -144,8 +156,11 @@ export const PropertyAddressCard = ({
 
   const fullAddress = `${streetAddress}\n${cityLine}`;
 
+  // Choose map style based on color scheme
+  const mapStyle = colorSchemeToUse === 'Dark' ? 'dark-v11' : 'streets-v11';
+
   const mapUrl = hasCoordinates
-    ? `https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/pin-s+ff0000(${address.addressLng},${address.addressLat})/${address.addressLng},${address.addressLat},16/600x400@2x?access_token=${mapboxToken}`
+    ? `https://api.mapbox.com/styles/v1/mapbox/${mapStyle}/static/pin-s+ff0000(${address.addressLng},${address.addressLat})/${address.addressLng},${address.addressLat},16/600x400@2x?access_token=${mapboxToken}`
     : '';
 
   const handleMapClick = () => {
@@ -166,7 +181,7 @@ export const PropertyAddressCard = ({
 
   return (
     <Section title={t`Location`} icon={<IconMap size={16} />}>
-      <div>
+      <StyledContent>
         <StyledAddressContainer>
           <StyledCopyButton onClick={handleCopyClick}>
             <IconCopy size={14} />
@@ -180,7 +195,7 @@ export const PropertyAddressCard = ({
 
         {hasCoordinates ? (
           <StyledMapContainer onClick={handleMapClick}>
-            <img src={mapUrl} alt={`Map of ${streetAddress}`} />
+            <StyledMap src={mapUrl} alt={`Map of ${streetAddress}`} />
             <StyledMapOverlay>
               <IconMap size={12} />
               {t`Open in Google Maps`}
@@ -189,7 +204,7 @@ export const PropertyAddressCard = ({
         ) : (
           <StyledMapContainer>{t`No Map available`}</StyledMapContainer>
         )}
-      </div>
+      </StyledContent>
     </Section>
   );
 };

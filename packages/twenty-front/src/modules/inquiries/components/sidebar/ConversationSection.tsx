@@ -3,7 +3,7 @@ import { ScrollWrapper } from '@/ui/utilities/scroll/components/ScrollWrapper';
 import { scrollWrapperInstanceComponentState } from '@/ui/utilities/scroll/states/scrollWrapperInstanceComponentState';
 import styled from '@emotion/styled';
 import { Trans } from '@lingui/react/macro';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 import {
   Avatar,
@@ -12,6 +12,7 @@ import {
   IconChevronLeft,
   IconMessageCircle2,
   IconX,
+  MOBILE_VIEWPORT,
   useIsMobile,
 } from 'twenty-ui';
 import { useInquiryPage } from '../../contexts/InquiryPageContext';
@@ -23,6 +24,7 @@ import { useConnectedAccounts } from '@/inquiries/hooks/useConnectedAccounts';
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { getLinkToShowPage } from '@/object-metadata/utils/getLinkToShowPage';
 import { useColorScheme } from '@/ui/theme/hooks/useColorScheme';
+import { useSystemColorScheme } from '@/ui/theme/hooks/useSystemColorScheme';
 import { useRecoilComponentStateV2 } from '@/ui/utilities/state/component-state/hooks/useRecoilComponentStateV2';
 import { useTheme } from '@emotion/react';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
@@ -47,7 +49,11 @@ const StyledHeader = styled.div`
   gap: ${({ theme }) => theme.spacing(2)};
   justify-content: space-between;
   padding: ${({ theme }) => theme.spacing(2)};
-  height: 42px;
+  height: 52px;
+
+  @media (min-width: ${MOBILE_VIEWPORT + 1}px) {
+    height: 42px;
+  }
 `;
 
 const StyledHeaderActions = styled.div`
@@ -109,12 +115,21 @@ const StyledUnstyledLink = styled(Link)`
   text-decoration: none;
 `;
 
-const StyledSkeletonMessageContainer = styled.div<{ isCurrentUser?: boolean }>`
+const StyledSkeletonMessageContainer = styled.div<{
+  isCurrentUser?: boolean;
+  colorScheme: ColorScheme;
+}>`
   align-items: ${({ isCurrentUser }) =>
     isCurrentUser ? 'flex-end' : 'flex-start'};
   display: flex;
   flex-direction: column;
   margin-bottom: ${({ theme }) => theme.spacing(4)};
+  background-color: ${({ theme, isCurrentUser, colorScheme }) =>
+    isCurrentUser
+      ? colorScheme === 'Light'
+        ? theme.color.blue10
+        : theme.background.tertiary
+      : theme.background.tertiary};
 `;
 
 const StyledSkeletonHeader = styled.div<{ isCurrentUser?: boolean }>`
@@ -126,14 +141,25 @@ const StyledSkeletonHeader = styled.div<{ isCurrentUser?: boolean }>`
     isCurrentUser ? 'flex-direction: row-reverse;' : ''}
 `;
 
-const StyledSenderEmail = styled.div`
+const StyledSenderEmail = styled.button`
   color: ${({ theme }) => theme.font.color.tertiary};
   font-size: ${({ theme }) => theme.font.size.xs};
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+
+  &:hover {
+    color: ${({ theme }) => theme.font.color.secondary};
+    text-decoration: underline;
+  }
 `;
 
 const StyledNameEmailContainer = styled.div`
-  display: flex;
   align-items: center;
+  display: flex;
+  flex-wrap: wrap;
   gap: ${({ theme }) => theme.spacing(1)};
 `;
 
@@ -170,25 +196,31 @@ const StyledSkeletonContent = styled.div<{
 const MessageSkeletonItem = ({ isCurrentUser = false }) => {
   const theme = useTheme();
   const { colorScheme } = useColorScheme();
+  const systemColorScheme = useSystemColorScheme();
+  const colorSchemeToUse =
+    colorScheme === 'System' ? systemColorScheme : colorScheme;
   const isMobile = useIsMobile();
 
   return (
     <SkeletonTheme
       baseColor={
         isCurrentUser
-          ? colorScheme === 'Light'
+          ? colorSchemeToUse === 'Light'
             ? theme.color.blue10
             : theme.background.secondary
           : theme.background.tertiary
       }
       highlightColor={
-        colorScheme === 'Light'
+        colorSchemeToUse === 'Light'
           ? theme.background.transparent.lighter
           : theme.background.tertiary
       }
       borderRadius={theme.border.radius.sm}
     >
-      <StyledSkeletonMessageContainer isCurrentUser={isCurrentUser}>
+      <StyledSkeletonMessageContainer
+        isCurrentUser={isCurrentUser}
+        colorScheme={colorSchemeToUse}
+      >
         <StyledSkeletonHeader isCurrentUser={isCurrentUser}>
           <StyledSkeletonSender isCurrentUser={isCurrentUser}>
             <Skeleton width={120} height={16} />
@@ -263,7 +295,12 @@ export const ConversationSection = ({
     return sender?.handle === (accounts?.[0] as ConnectedAccount)?.handle;
   };
 
-  const senderEmail = messages[0]?.sender?.person?.emails?.primaryEmail;
+  const senderEmail = inquiry.person.emails.primaryEmail;
+
+  const handleEmailClick = useCallback((email: string) => {
+    const mailto = `mailto:${email}`;
+    window.open(mailto, '_blank');
+  }, []);
 
   if (!inquiry) return null;
 
@@ -289,7 +326,11 @@ export const ConversationSection = ({
                 <StyledName>{fullName}</StyledName>
               </StyledUnstyledLink>
               {senderEmail && (
-                <StyledSenderEmail>{senderEmail}</StyledSenderEmail>
+                <StyledSenderEmail
+                  onClick={() => handleEmailClick(senderEmail)}
+                >
+                  {senderEmail}
+                </StyledSenderEmail>
               )}
             </StyledNameEmailContainer>
             {inquiry.publication?.platform && (
@@ -337,6 +378,7 @@ export const ConversationSection = ({
                         inquiry.person,
                       )
                 }
+                senderEmail={senderEmail}
                 senderName={
                   isCurrentUser(message) ? workspaceMemberName : fullName
                 }

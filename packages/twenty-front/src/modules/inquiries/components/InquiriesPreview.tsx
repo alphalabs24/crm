@@ -2,7 +2,7 @@ import { useInquiries } from '@/inquiries/hooks/useInquiries';
 import { AppPath } from '@/types/AppPath';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
-import { Trans, useLingui } from '@lingui/react/macro';
+import { Trans } from '@lingui/react/macro';
 import { useMemo } from 'react';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
@@ -149,7 +149,6 @@ export const InquiriesPreview = ({
   propertyId,
   maxItems = 5,
 }: InquiriesPreviewProps) => {
-  const { t } = useLingui();
   const { records, loading } = useInquiries({ publicationId, propertyId });
 
   const recordsWithPersonAndPublication = useMemo(() => {
@@ -211,10 +210,10 @@ export const InquiriesPreview = ({
       <StyledList>
         {recordsWithPersonAndPublication.map((record, index) => (
           <StyledUnstyledLink
+            key={record.id}
             to={`${AppPath.RecordInquiriesPage}?id=${record.id}`}
           >
             <InquiryItem
-              key={record.id}
               inquiry={record}
               isLast={index === recordsWithPersonAndPublication.length - 1}
             />
