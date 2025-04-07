@@ -3,7 +3,7 @@ import { ScrollWrapper } from '@/ui/utilities/scroll/components/ScrollWrapper';
 import { scrollWrapperInstanceComponentState } from '@/ui/utilities/scroll/states/scrollWrapperInstanceComponentState';
 import styled from '@emotion/styled';
 import { Trans } from '@lingui/react/macro';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 import {
   Avatar,
@@ -141,9 +141,19 @@ const StyledSkeletonHeader = styled.div<{ isCurrentUser?: boolean }>`
     isCurrentUser ? 'flex-direction: row-reverse;' : ''}
 `;
 
-const StyledSenderEmail = styled.div`
+const StyledSenderEmail = styled.button`
   color: ${({ theme }) => theme.font.color.tertiary};
   font-size: ${({ theme }) => theme.font.size.xs};
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+
+  &:hover {
+    color: ${({ theme }) => theme.font.color.secondary};
+    text-decoration: underline;
+  }
 `;
 
 const StyledNameEmailContainer = styled.div`
@@ -285,7 +295,12 @@ export const ConversationSection = ({
     return sender?.handle === (accounts?.[0] as ConnectedAccount)?.handle;
   };
 
-  const senderEmail = messages[0]?.sender?.person?.emails?.primaryEmail;
+  const senderEmail = inquiry.person.emails.primaryEmail;
+
+  const handleEmailClick = useCallback((email: string) => {
+    const mailto = `mailto:${email}`;
+    window.open(mailto, '_blank');
+  }, []);
 
   if (!inquiry) return null;
 
@@ -311,7 +326,11 @@ export const ConversationSection = ({
                 <StyledName>{fullName}</StyledName>
               </StyledUnstyledLink>
               {senderEmail && (
-                <StyledSenderEmail>{senderEmail}</StyledSenderEmail>
+                <StyledSenderEmail
+                  onClick={() => handleEmailClick(senderEmail)}
+                >
+                  {senderEmail}
+                </StyledSenderEmail>
               )}
             </StyledNameEmailContainer>
             {inquiry.publication?.platform && (
@@ -359,6 +378,7 @@ export const ConversationSection = ({
                         inquiry.person,
                       )
                 }
+                senderEmail={senderEmail}
                 senderName={
                   isCurrentUser(message) ? workspaceMemberName : fullName
                 }

@@ -1,9 +1,11 @@
+import { ObjectRecord } from '@/object-record/types/ObjectRecord';
 import { OptionalWrap } from '@/ui/layout/utilities/components/OptionalWrapWith';
 import { useColorScheme } from '@/ui/theme/hooks/useColorScheme';
 import { useSystemColorScheme } from '@/ui/theme/hooks/useSystemColorScheme';
 import styled from '@emotion/styled';
 import { Trans, useLingui } from '@lingui/react/macro';
 import { format } from 'date-fns';
+import { useCallback, useMemo } from 'react';
 import { Link, To } from 'react-router-dom';
 import { isDefined } from 'twenty-shared';
 import { Button, ColorScheme, IconMessage } from 'twenty-ui';
@@ -88,10 +90,12 @@ const StyledReplyButton = styled(Button)`
 `;
 
 type ConversationMessageItemProps = {
-  message: any;
+  message: ObjectRecord;
   isCurrentUser: boolean;
   senderName: string;
   linkToPerson?: To;
+  subject?: string;
+  senderEmail?: string;
 };
 
 export const ConversationMessageItem = ({
@@ -99,12 +103,49 @@ export const ConversationMessageItem = ({
   isCurrentUser,
   senderName,
   linkToPerson,
+  subject = 'Your inquiry',
+  senderEmail,
 }: ConversationMessageItemProps) => {
   const { t } = useLingui();
   const { colorScheme } = useColorScheme();
   const systemColorScheme = useSystemColorScheme();
   const colorSchemeToUse =
     colorScheme === 'System' ? systemColorScheme : colorScheme;
+
+  const recipientEmail = useMemo(() => {
+    return (
+      senderEmail ||
+      message.sender?.person?.email ||
+      message.sender?.workspaceMember?.email ||
+      message.sender?.handle
+    );
+  }, [
+    message.sender.handle,
+    message.sender.person?.email,
+    message.sender.workspaceMember?.email,
+    senderEmail,
+  ]);
+
+  const handleReplyClick = useCallback(() => {
+    if (!recipientEmail) {
+      return;
+    }
+
+    const date = new Date(message.createdAt).toLocaleString();
+
+    // Format quoted text by prefixing each line with ">"
+    const quotedText = message.text
+      .split('\n')
+      .map((line: string) => `> ${line}`)
+      .join('\n');
+
+    // Construct email body with quote
+    const body = `\n\nOn ${date}, ${senderName} wrote:\n${quotedText}`;
+
+    // Open default mail client with pre-filled data
+    const mailto = `mailto:${recipientEmail}?subject=${encodeURIComponent('Re: ' + subject)}&body=${encodeURIComponent(body)}`;
+    window.open(mailto, '_blank');
+  }, [message.createdAt, message.text, recipientEmail, senderName, subject]);
 
   // Format message body
   const formatMessageBody = (body: string) => {
@@ -148,6 +189,8 @@ export const ConversationMessageItem = ({
 
   const formattedBody = formatMessageBody(message.text);
 
+  const canReply = Boolean(recipientEmail);
+
   return (
     <StyledMessageContainer isCurrentUser={isCurrentUser}>
       <StyledMessageHeader isCurrentUser={isCurrentUser}>
@@ -186,7 +229,8 @@ export const ConversationMessageItem = ({
           size="small"
           title={t`Reply`}
           Icon={IconMessage}
-          disabled={true}
+          onClick={handleReplyClick}
+          disabled={!canReply}
         />
       )}
     </StyledMessageContainer>

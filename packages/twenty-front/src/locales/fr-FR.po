@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: nestermind-crm\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-04-04 15:19\n"
+"PO-Revision-Date: 2025-04-07 06:20\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -30,8 +30,8 @@ msgstr ""
 #~ msgstr "Create Draft"
 
 #: src/modules/object-record/hooks/useFormattedPropertyFields.ts
-msgid ", "
-msgstr ""
+#~ msgid ", "
+#~ msgstr ""
 
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
 msgid "(coming soon)"
@@ -54,8 +54,8 @@ msgid "{apiKeyName} API Key"
 msgstr "{apiKeyName} Clé API"
 
 #: src/modules/object-record/hooks/useFormattedPropertyFields.ts
-msgid "{formattedAmount} {currencyCode}"
-msgstr ""
+#~ msgid "{formattedAmount} {currencyCode}"
+#~ msgstr ""
 
 #: src/modules/object-record/hooks/useFormattedPropertyFields.ts
 msgid "{formattedAmount} {currencyCode} / month"
@@ -66,12 +66,12 @@ msgid "{groupTitle}"
 msgstr ""
 
 #: src/modules/object-record/hooks/useFormattedPropertyFields.ts
-msgid "{localString} m²"
-msgstr ""
+#~ msgid "{localString} m²"
+#~ msgstr ""
 
 #: src/modules/object-record/hooks/useFormattedPropertyFields.ts
-msgid "{localString} m³"
-msgstr ""
+#~ msgid "{localString} m³"
+#~ msgstr ""
 
 #: src/modules/action-menu/actions/record-agnostic-actions/run-workflow-actions/hooks/useRunWorkflowActions.tsx
 #: src/modules/action-menu/actions/record-actions/workflow-run-record-actions/hooks/useWorkflowRunRecordActions.tsx
@@ -84,7 +84,7 @@ msgstr ""
 
 #: src/modules/record-edit/components/RecordEditContainer.tsx
 #~ msgid "{objectNameSingular} saved successfully"
-#~ msgstr ""
+#~ msgstr "{objectNameSingular} saved successfully"
 
 #: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
 #~ msgid "{overviewLabel} Overview"
@@ -1777,6 +1777,10 @@ msgstr ""
 msgid "In progress"
 msgstr ""
 
+#: src/modules/inquiries/components/sidebar/ReplyEditor.tsx
+msgid "In-App reply functionality coming soon"
+msgstr ""
+
 #: src/pages/settings/data-model/SettingsObjects.tsx
 #: src/pages/settings/data-model/SettingsObjectFieldTable.tsx
 msgid "Inactive"
@@ -2813,8 +2817,8 @@ msgid "Reply"
 msgstr ""
 
 #: src/modules/inquiries/components/sidebar/ReplyEditor.tsx
-msgid "Reply functionality coming soon"
-msgstr ""
+#~ msgid "Reply functionality coming soon"
+#~ msgstr ""
 
 #: src/modules/object-record/record-show/components/nm/cards/PropertyReportingCard.tsx
 msgid "Reporting"
@@ -3269,7 +3273,7 @@ msgstr "L'email associé à votre compte"
 
 #: src/modules/record-edit/constants/EditSectionPropertyOverviewContent.tsx
 #~ msgid "The location of the property. These fields are <0>required</0> in order to publish."
-#~ msgstr ""
+#~ msgstr "The location of the property. These fields are <0>required</0> in order to publish."
 
 #: src/modules/record-edit/constants/EditSectionLocationContent.tsx
 msgid "The location of the property. These fields are <0>required</0> in order to publish. (Except for the secondary address field)"

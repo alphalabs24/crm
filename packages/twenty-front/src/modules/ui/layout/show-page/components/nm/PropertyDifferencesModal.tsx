@@ -10,6 +10,7 @@ import { RecordFieldValueSelectorContextProvider } from '@/object-record/record-
 import { recordStoreFamilyState } from '@/object-record/record-store/states/recordStoreFamilyState';
 import { useTutorial } from '@/onboarding-tutorial/contexts/TutorialProvider';
 import { Modal, ModalRefType } from '@/ui/layout/modal/components/Modal';
+import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Trans, useLingui } from '@lingui/react/macro';
 import { forwardRef, useEffect, useRef, useState } from 'react';
@@ -311,6 +312,7 @@ const PublicationDiffView = ({
   publicationRecordId: string;
 }) => {
   const { t } = useLingui();
+  const theme = useTheme();
   const { getIcon } = useIcons();
   const { objectMetadataItem } = useObjectMetadataItem({
     objectNameSingular: CoreObjectNameSingular.Publication,
@@ -401,7 +403,12 @@ const PublicationDiffView = ({
                 <RecordFieldValueSelectorContextProvider>
                   <RecordValueSetterEffect recordId={publicationRecordId} />
                   {loading ? (
-                    <Skeleton height={12} width={100} />
+                    <Skeleton
+                      height={12}
+                      width={100}
+                      highlightColor={theme.background.secondary}
+                      baseColor={theme.background.tertiary}
+                    />
                   ) : isOldValueEmpty ? (
                     <EmptyValueDisplay />
                   ) : (
@@ -441,7 +448,12 @@ const PublicationDiffView = ({
 
               <StyledValueColumn $isNew>
                 {loading ? (
-                  <Skeleton height={12} width={100} />
+                  <Skeleton
+                    height={12}
+                    width={100}
+                    highlightColor={theme.background.secondary}
+                    baseColor={theme.background.tertiary}
+                  />
                 ) : isNewValueEmpty ? (
                   <EmptyValueDisplay />
                 ) : (

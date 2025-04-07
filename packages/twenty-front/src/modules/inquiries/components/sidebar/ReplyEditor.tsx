@@ -153,7 +153,7 @@ export const ReplyEditor = ({
         <StyledPlaceholderWrapper>
           <StyledComingSoonTag>
             <IconRocket size={14} />
-            <Trans>Reply functionality coming soon</Trans>
+            <Trans>In-App reply functionality coming soon</Trans>
           </StyledComingSoonTag>
         </StyledPlaceholderWrapper>
       ) : (

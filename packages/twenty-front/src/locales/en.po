@@ -25,8 +25,8 @@ msgstr ""
 #~ msgstr "Create Draft"
 
 #: src/modules/object-record/hooks/useFormattedPropertyFields.ts
-msgid ", "
-msgstr ", "
+#~ msgid ", "
+#~ msgstr ", "
 
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
 msgid "(coming soon)"
@@ -49,8 +49,8 @@ msgid "{apiKeyName} API Key"
 msgstr "{apiKeyName} API Key"
 
 #: src/modules/object-record/hooks/useFormattedPropertyFields.ts
-msgid "{formattedAmount} {currencyCode}"
-msgstr "{formattedAmount} {currencyCode}"
+#~ msgid "{formattedAmount} {currencyCode}"
+#~ msgstr "{formattedAmount} {currencyCode}"
 
 #: src/modules/object-record/hooks/useFormattedPropertyFields.ts
 msgid "{formattedAmount} {currencyCode} / month"
@@ -61,12 +61,12 @@ msgid "{groupTitle}"
 msgstr "{groupTitle}"
 
 #: src/modules/object-record/hooks/useFormattedPropertyFields.ts
-msgid "{localString} m²"
-msgstr "{localString} m²"
+#~ msgid "{localString} m²"
+#~ msgstr "{localString} m²"
 
 #: src/modules/object-record/hooks/useFormattedPropertyFields.ts
-msgid "{localString} m³"
-msgstr "{localString} m³"
+#~ msgid "{localString} m³"
+#~ msgstr "{localString} m³"
 
 #: src/modules/action-menu/actions/record-agnostic-actions/run-workflow-actions/hooks/useRunWorkflowActions.tsx
 #: src/modules/action-menu/actions/record-actions/workflow-run-record-actions/hooks/useWorkflowRunRecordActions.tsx
@@ -1772,6 +1772,10 @@ msgstr "Import"
 msgid "In progress"
 msgstr "In progress"
 
+#: src/modules/inquiries/components/sidebar/ReplyEditor.tsx
+msgid "In-App reply functionality coming soon"
+msgstr "In-App reply functionality coming soon"
+
 #: src/pages/settings/data-model/SettingsObjects.tsx
 #: src/pages/settings/data-model/SettingsObjectFieldTable.tsx
 msgid "Inactive"
@@ -2811,8 +2815,8 @@ msgid "Reply"
 msgstr "Reply"
 
 #: src/modules/inquiries/components/sidebar/ReplyEditor.tsx
-msgid "Reply functionality coming soon"
-msgstr "Reply functionality coming soon"
+#~ msgid "Reply functionality coming soon"
+#~ msgstr "Reply functionality coming soon"
 
 #: src/modules/object-record/record-show/components/nm/cards/PropertyReportingCard.tsx
 msgid "Reporting"
