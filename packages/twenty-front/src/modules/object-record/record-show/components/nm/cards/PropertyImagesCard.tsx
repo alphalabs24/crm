@@ -79,9 +79,11 @@ export const PropertyImagesCard = ({
   const [loadedImages, setLoadedImages] = useState<Record<string, boolean>>({});
 
   const { attachments = [] } = useAttachments(targetableObject);
-  const images = attachments.filter(
-    (attachment) => attachment.type === 'PropertyImage',
-  );
+  const images = attachments
+    .filter((attachment) => attachment.type === 'PropertyImage')
+    .sort((a, b) => {
+      return a.orderIndex - b.orderIndex;
+    });
 
   const handleImageLoad = useCallback((imageId: string) => {
     setLoadedImages((prev) => ({
