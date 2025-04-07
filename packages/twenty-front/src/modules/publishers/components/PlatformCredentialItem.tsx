@@ -126,7 +126,7 @@ const StyledHeaderRight = styled.div`
 type PlatformCredentialItemProps = {
   platformId: PublishablePlatforms;
   platform: Platform;
-  values: Record<string, string>;
+  values: Record<string, string | number>;
   onChange: (fieldName: string, value: string) => void;
   onHelpAction?: (action: PlatformField['action']) => void;
 };
@@ -151,7 +151,8 @@ export const PlatformCredentialItem = ({
   const isFullySetup =
     hasFields &&
     platform.fieldsOnAgency?.every(
-      (field) => values[field.name] && values[field.name].trim() !== '',
+      (field) =>
+        values[field.name] && values[field.name].toString().trim() !== '',
     );
 
   const getFieldLabel = (fieldName: string) => {
