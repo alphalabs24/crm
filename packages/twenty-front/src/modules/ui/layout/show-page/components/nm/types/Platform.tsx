@@ -222,6 +222,10 @@ export const PLATFORMS: { [key in PlatformId]: Platform } = {
         ),
         type: 'password',
       },
+      {
+        name: 'platformAgencyId',
+        helpText: <Trans>Your Agencie's ID on Comparis.</Trans>,
+      },
     ],
   },
   [PlatformId.Flatfox]: {

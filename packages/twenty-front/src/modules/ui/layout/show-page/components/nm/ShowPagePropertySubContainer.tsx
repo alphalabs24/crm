@@ -520,7 +520,6 @@ export const ShowPagePropertySubContainer = ({
           ref={modalRef}
           onClose={handleModalClose}
           targetableObject={targetableObject}
-          validationDetails={validationDetails}
         />
       )}
 

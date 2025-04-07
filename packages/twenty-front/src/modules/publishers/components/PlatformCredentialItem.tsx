@@ -140,7 +140,7 @@ export const PlatformCredentialItem = ({
 }: PlatformCredentialItemProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const { objectMetadataItem } = useObjectMetadataItem({
-    objectNameSingular: CoreObjectNameSingular.Agency,
+    objectNameSingular: CoreObjectNameSingular.Credential,
   });
 
   const theme = useTheme();

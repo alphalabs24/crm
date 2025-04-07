@@ -16,7 +16,6 @@ import {
 import { PlatformSelect } from './modal-pages/PlatformSelect';
 import { PlatformId } from './types/Platform';
 import { useLingui } from '@lingui/react/macro';
-import { ValidationResult } from '../../hooks/usePublicationValidation';
 
 const StyledModalContent = styled(motion.div)`
   background: ${({ theme }) => theme.background.secondary};
@@ -72,11 +71,10 @@ type PublishModalProps = {
     id: string;
     targetObjectNameSingular: string;
   };
-  validationDetails: ValidationResult;
 };
 
 export const PublishDraftModal = forwardRef<ModalRefType, PublishModalProps>(
-  ({ onClose, targetableObject, validationDetails }, ref) => {
+  ({ onClose, targetableObject }, ref) => {
     const [currentStep, setCurrentStep] = useState<Step>('platform-select');
     const { t } = useLingui();
     const [selectedPlatforms, setSelectedPlatforms] = useState<
@@ -139,7 +137,6 @@ export const PublishDraftModal = forwardRef<ModalRefType, PublishModalProps>(
             setSelectedPlatforms={setSelectedPlatforms}
             recordId={targetableObject.id}
             closeModal={onClose}
-            validationDetails={validationDetails}
           />
         </StyledModalContent>
       </Modal>

@@ -21,19 +21,20 @@ export type PublicationValidationState = {
 export const usePublicationValidation = ({
   record,
   isPublication = false,
+  platformId,
 }: {
   record?: ObjectRecord | null;
   isPublication?: boolean;
+  platformId?: PlatformId;
 }): PublicationValidationState => {
   const { t } = useLingui();
 
   const { records: credentials } = useFindManyRecords({
     objectNameSingular: CoreObjectNameSingular.Credential,
     filter: {
-      agencyId: { eq: record?.agency?.id },
-      name: { eq: record?.platform },
+      agencyId: { eq: record?.agencyId },
     },
-    skip: !record || !isPublication || !record.agency?.id,
+    skip: !record || !record.agencyId,
   });
 
   const validationDetails = useMemo((): ValidationResult => {
@@ -113,12 +114,19 @@ export const usePublicationValidation = ({
       }
     }
 
-    const credential = credentials[0];
+    const platformIdToUse = platformId ?? record.platform;
+    const credential = credentials.find((c) => c.name === platformIdToUse);
     if (!credential?.username || !credential?.password) {
       missingFields.push(t`Publisher Credentials`);
     }
     if (record.platform === PlatformId.Newhome && !credential?.partnerId) {
       missingFields.push(t`Partner Id`);
+    }
+    if (
+      record.platform === PlatformId.Comparis &&
+      !credential?.platformAgencyId
+    ) {
+      missingFields.push(t`Platform Agency Id`);
     }
 
     const missingFieldsString = missingFields.join(', ');
@@ -129,7 +137,7 @@ export const usePublicationValidation = ({
         ? t`Missing required fields: ${missingFieldsString}`
         : undefined,
     };
-  }, [credentials, isPublication, record, t]);
+  }, [credentials, isPublication, platformId, record, t]);
 
   const showPublishButton = useMemo(() => {
     if (!record) return false;
