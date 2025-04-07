@@ -77,9 +77,98 @@ export class AppModule {
     const frontPath = join(__dirname, '..', 'front');
 
     if (existsSync(frontPath)) {
+      const isDevEnvironment =
+        process.env.NODE_ENV === 'development' ||
+        process.env.NODE_ENV === 'test';
+      const frontendUrl = process.env.FRONTEND_URL;
+      const corsAllowedOrigins =
+        process.env.CORS_ALLOWED_ORIGINS?.split(',').filter(Boolean) || [];
+
+      // Always include the frontend URL if it exists
+      if (frontendUrl && !corsAllowedOrigins.includes(frontendUrl)) {
+        corsAllowedOrigins.push(frontendUrl);
+      }
+
+      // In production, ensure the main app domain is allowed
+      if (
+        !isDevEnvironment &&
+        !corsAllowedOrigins.includes('https://app.nestermind.com')
+      ) {
+        corsAllowedOrigins.push('https://app.nestermind.com');
+      }
+
       modules.push(
         ServeStaticModule.forRoot({
           rootPath: frontPath,
+          serveStaticOptions: {
+            dotfiles: 'deny',
+            index: false,
+            setHeaders: (res, path) => {
+              // Set security headers
+              res.setHeader('X-Content-Type-Options', 'nosniff');
+
+              // Handle CORS based on file type
+              const isPublicAsset =
+                // Only allow CORS * for static assets
+                path.match(/\.(css|js|png|jpg|jpeg|gif|ico|svg)$/) ||
+                path === '/robots.txt' ||
+                path === '/sitemap.xml';
+
+              // HTML files and other content should use strict CORS
+              const isHtmlContent =
+                path === '/' || path.endsWith('.html') || !path.includes('.');
+
+              if (isPublicAsset) {
+                // Public assets can be loaded from anywhere for caching/CDN purposes
+                res.setHeader('Access-Control-Allow-Origin', '*');
+                res.setHeader('Access-Control-Allow-Methods', 'GET');
+              } else {
+                // For HTML and other files, use strict CORS
+                const origin = (res as any).req.get('origin');
+
+                if (origin) {
+                  // Allow localhost in dev mode
+                  if (
+                    isDevEnvironment &&
+                    (origin === 'http://localhost:3000' ||
+                      origin.startsWith('http://localhost:') ||
+                      origin.endsWith('.localhost'))
+                  ) {
+                    res.setHeader('Access-Control-Allow-Origin', origin);
+                  }
+                  // Allow whitelisted origins
+                  else if (corsAllowedOrigins.includes(origin)) {
+                    res.setHeader('Access-Control-Allow-Origin', origin);
+                  }
+                }
+
+                // For HTML content, add additional security headers
+                if (isHtmlContent) {
+                  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+                  res.setHeader('X-XSS-Protection', '1; mode=block');
+                  res.setHeader(
+                    'Content-Security-Policy',
+                    "default-src 'self'; img-src 'self' data: https:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval';",
+                  );
+                }
+              }
+
+              // Add caching headers for static assets
+              if (isPublicAsset) {
+                res.setHeader('Cache-Control', 'public, max-age=31536000');
+              }
+            },
+          },
+          serveRoot: '/',
+          exclude: [
+            '/**/.*/**',
+            '/**/.*',
+            '/BitKeeper/**',
+            '/CVS/**',
+            '/RCS/**',
+            '/SCCS/**',
+            '/_darcs/**',
+          ],
         }),
       );
     }

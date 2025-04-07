@@ -24,7 +24,7 @@ import { generateFrontConfig } from './utils/generate-front-config';
 
 const bootstrap = async () => {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
-    cors: true,
+    cors: false,
     bufferLogs: process.env.LOGGER_IS_BUFFER_ENABLED === 'true',
     rawBody: true,
     snapshot: process.env.NODE_ENV === NodeEnvironment.development,
@@ -39,6 +39,134 @@ const bootstrap = async () => {
   });
   const logger = app.get(LoggerService);
   const environmentService = app.get(EnvironmentService);
+  const nodeEnv = environmentService.get('NODE_ENV');
+  const isDevEnvironment =
+    nodeEnv === NodeEnvironment.development || nodeEnv === NodeEnvironment.test;
+
+  // CORS configuration
+  const frontendUrl = environmentService.get('FRONTEND_URL');
+  const corsAllowedOrigins =
+    process.env.CORS_ALLOWED_ORIGINS?.split(',').filter(Boolean) || [];
+
+  // Always include the frontend URL if it exists
+  if (frontendUrl && !corsAllowedOrigins.includes(frontendUrl)) {
+    corsAllowedOrigins.push(frontendUrl);
+  }
+
+  // In production, ensure the main app domain is allowed
+  if (
+    !isDevEnvironment &&
+    !corsAllowedOrigins.includes('https://app.nestermind.com')
+  ) {
+    corsAllowedOrigins.push('https://app.nestermind.com');
+  }
+
+  // Special handling for development environment
+  const corsOptions = {
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: [
+      'Content-Type',
+      'Authorization',
+      'Accept',
+      'Origin',
+      'X-Requested-With',
+      'x-locale',
+      'x-schema-version',
+    ],
+    exposedHeaders: ['Content-Disposition'],
+  };
+
+  if (isDevEnvironment) {
+    // In development, we can be more permissive with CORS
+    // This allows local development on different ports
+    logger.log(
+      'Running in development mode - using permissive CORS for localhost',
+      'CorsConfig',
+    );
+
+    // Function to check if origin is localhost
+    const isLocalhost = (origin: string) => {
+      if (!origin) return false;
+
+      try {
+        const url = new URL(origin);
+
+        logger.log(
+          `Checking origin: ${origin}, hostname: ${url.hostname}`,
+          'CorsConfig',
+        );
+
+        // Check for exact localhost or 127.0.0.1
+        if (url.hostname === 'localhost' || url.hostname === '127.0.0.1') {
+          logger.log('Matched exact localhost or 127.0.0.1', 'CorsConfig');
+
+          return true;
+        }
+        // Check for subdomains of localhost
+        if (url.hostname.endsWith('.localhost')) {
+          logger.log('Matched localhost subdomain', 'CorsConfig');
+
+          return true;
+        }
+        logger.log('Did not match any localhost patterns', 'CorsConfig');
+
+        return false;
+      } catch (error) {
+        logger.error(`Error parsing origin: ${error.message}`, 'CorsConfig');
+
+        return false;
+      }
+    };
+
+    // Use a function for origin to dynamically check localhost origins
+    app.enableCors({
+      ...corsOptions,
+      origin: (origin, callback) => {
+        logger.log(
+          `Received CORS request from origin: ${origin}`,
+          'CorsConfig',
+        );
+
+        // Allow if origin is null (like same-origin requests)
+        if (!origin) {
+          logger.log('Allowing null origin', 'CorsConfig');
+
+          return callback(null, true);
+        }
+
+        // Check if origin is in the allowed list
+        if (corsAllowedOrigins.includes(origin)) {
+          logger.log(
+            `Origin found in explicit allow list: ${origin}`,
+            'CorsConfig',
+          );
+
+          return callback(null, true);
+        }
+
+        // Check if origin is localhost in dev mode
+        if (isLocalhost(origin)) {
+          logger.log(`Allowing localhost origin: ${origin}`, 'CorsConfig');
+
+          return callback(null, true);
+        }
+
+        logger.warn(`Rejecting origin: ${origin}`, 'CorsConfig');
+        callback(new Error('Not allowed by CORS'));
+      },
+    });
+  } else {
+    // In production, use strict CORS with specific allowed origins
+    logger.log(
+      'Running in production mode - using strict CORS configuration',
+      'CorsConfig',
+    );
+    app.enableCors({
+      ...corsOptions,
+      origin: corsAllowedOrigins.length ? corsAllowedOrigins : false,
+    });
+  }
 
   app.use(session(getSessionStorageOptions(environmentService)));
 
