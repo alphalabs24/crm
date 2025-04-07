@@ -17,4 +17,5 @@ export enum EnvironmentVariablesGroup {
   SupportChatConfig = 'support-chat-config',
   TinybirdConfig = 'tinybird-config',
   TokensDuration = 'tokens-duration',
+  MapboxConfig = 'mapbox-config',
 }

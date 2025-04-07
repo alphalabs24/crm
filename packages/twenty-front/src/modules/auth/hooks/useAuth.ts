@@ -54,6 +54,7 @@ import { BillingCheckoutSession } from '@/auth/types/billingCheckoutSession.type
 import { captchaState } from '@/client-config/states/captchaState';
 import { isEmailVerificationRequiredState } from '@/client-config/states/isEmailVerificationRequiredState';
 import { isMultiWorkspaceEnabledState } from '@/client-config/states/isMultiWorkspaceEnabledState';
+import { mapboxAccessTokenState } from '@/client-config/states/mapboxAccessTokenState';
 import { useIsCurrentLocationOnAWorkspace } from '@/domain-manager/hooks/useIsCurrentLocationOnAWorkspace';
 import { useLastAuthenticatedWorkspaceDomain } from '@/domain-manager/hooks/useLastAuthenticatedWorkspaceDomain';
 import { useRedirect } from '@/domain-manager/hooks/useRedirect';
@@ -132,6 +133,9 @@ export const useAuth = () => {
         const supportChat = snapshot.getLoadable(supportChatState).getValue();
         const isDebugMode = snapshot.getLoadable(isDebugModeState).getValue();
         const captcha = snapshot.getLoadable(captchaState).getValue();
+        const mapboxAccessToken = snapshot
+          .getLoadable(mapboxAccessTokenState)
+          .getValue();
         const clientConfigApiStatus = snapshot
           .getLoadable(clientConfigApiStatusState)
           .getValue();
@@ -156,6 +160,7 @@ export const useAuth = () => {
           set(isDebugModeState, isDebugMode);
           set(captchaState, captcha);
           set(clientConfigApiStatusState, clientConfigApiStatus);
+          set(mapboxAccessTokenState, mapboxAccessToken);
           set(isCurrentUserLoadedState, isCurrentUserLoaded);
           set(isMultiWorkspaceEnabledState, isMultiWorkspaceEnabled);
           set(domainConfigurationState, domainConfiguration);

@@ -963,6 +963,15 @@ export class EnvironmentVariables {
   CAPTCHA_SECRET_KEY?: string;
 
   @EnvironmentVariablesMetadata({
+    group: EnvironmentVariablesGroup.MapboxConfig,
+    sensitive: true,
+    description: 'Mapbox access token',
+  })
+  @IsString()
+  @IsOptional()
+  MAPBOX_ACCESS_TOKEN: string;
+
+  @EnvironmentVariablesMetadata({
     group: EnvironmentVariablesGroup.ServerConfig,
     sensitive: true,
     description: 'License key for the Enterprise version',
