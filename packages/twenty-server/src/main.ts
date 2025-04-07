@@ -198,6 +198,27 @@ const bootstrap = async () => {
       },
     }),
   );
+
+  // Add global anti-clickjacking headers
+  app.use((req, res, next) => {
+    // Add security headers to all responses
+    res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+    res.setHeader('X-XSS-Protection', '1; mode=block');
+    res.setHeader('X-Content-Type-Options', 'nosniff');
+
+    // Only set CSP for HTML responses to avoid breaking API requests
+    const path = req.path;
+
+    if (path === '/' || path.endsWith('.html') || !path.includes('.')) {
+      res.setHeader(
+        'Content-Security-Policy',
+        "frame-ancestors 'self'; default-src 'self'; img-src 'self' data: https:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval';",
+      );
+    }
+
+    next();
+  });
+
   app.useBodyParser('json', { limit: settings.storage.maxFileSize });
   app.useBodyParser('urlencoded', {
     limit: settings.storage.maxFileSize,

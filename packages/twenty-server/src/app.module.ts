@@ -114,14 +114,11 @@ export class AppModule {
                 path === '/robots.txt' ||
                 path === '/sitemap.xml';
 
-              // HTML files and other content should use strict CORS
-              const isHtmlContent =
-                path === '/' || path.endsWith('.html') || !path.includes('.');
-
               if (isPublicAsset) {
                 // Public assets can be loaded from anywhere for caching/CDN purposes
                 res.setHeader('Access-Control-Allow-Origin', '*');
                 res.setHeader('Access-Control-Allow-Methods', 'GET');
+                res.setHeader('Cache-Control', 'public, max-age=31536000');
               } else {
                 // For HTML and other files, use strict CORS
                 const origin = (res as any).req.get('origin');
@@ -141,21 +138,6 @@ export class AppModule {
                     res.setHeader('Access-Control-Allow-Origin', origin);
                   }
                 }
-
-                // For HTML content, add additional security headers
-                if (isHtmlContent) {
-                  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
-                  res.setHeader('X-XSS-Protection', '1; mode=block');
-                  res.setHeader(
-                    'Content-Security-Policy',
-                    "default-src 'self'; img-src 'self' data: https:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval';",
-                  );
-                }
-              }
-
-              // Add caching headers for static assets
-              if (isPublicAsset) {
-                res.setHeader('Cache-Control', 'public, max-age=31536000');
               }
             },
           },
