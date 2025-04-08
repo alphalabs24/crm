@@ -10,8 +10,10 @@ import {
 
 import { SettingsCard } from '@/settings/components/SettingsCard';
 import { SettingsPath } from '@/types/SettingsPath';
+import { useIsFeatureEnabled } from '@/workspace/hooks/useIsFeatureEnabled';
 import { useTheme } from '@emotion/react';
 import { useLingui } from '@lingui/react/macro';
+import { FeatureFlagKey } from '~/generated/graphql';
 import { getSettingsPath } from '~/utils/navigation/getSettingsPath';
 
 const StyledCardsContainer = styled.div`
@@ -27,6 +29,10 @@ const StyledCardsContainer = styled.div`
 export const SettingsAccountsSettingsSection = () => {
   const { t } = useLingui();
   const theme = useTheme();
+  const isEmailSettingsPageEnabled = useIsFeatureEnabled(
+    FeatureFlagKey.IsEmailSettingsPageEnabled,
+  );
+
   return (
     <Section>
       <H2Title
@@ -34,18 +40,20 @@ export const SettingsAccountsSettingsSection = () => {
         description={t`Configure your emails and calendar settings.`}
       />
       <StyledCardsContainer>
-        <UndecoratedLink to={getSettingsPath(SettingsPath.AccountsEmails)}>
-          <SettingsCard
-            Icon={
-              <IconMailCog
-                size={theme.icon.size.lg}
-                stroke={theme.icon.stroke.sm}
-              />
-            }
-            title={t`Emails`}
-            description={t`Set email visibility, manage your blocklist and more.`}
-          />
-        </UndecoratedLink>
+        {isEmailSettingsPageEnabled && (
+          <UndecoratedLink to={getSettingsPath(SettingsPath.AccountsEmails)}>
+            <SettingsCard
+              Icon={
+                <IconMailCog
+                  size={theme.icon.size.lg}
+                  stroke={theme.icon.stroke.sm}
+                />
+              }
+              title={t`Emails`}
+              description={t`Set email visibility, manage your blocklist and more.`}
+            />
+          </UndecoratedLink>
+        )}
         <UndecoratedLink to={getSettingsPath(SettingsPath.AccountsCalendars)}>
           <SettingsCard
             Icon={
