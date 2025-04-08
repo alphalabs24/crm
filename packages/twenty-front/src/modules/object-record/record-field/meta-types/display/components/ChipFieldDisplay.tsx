@@ -1,13 +1,16 @@
 import { useCommandMenu } from '@/command-menu/hooks/useCommandMenu';
+import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { isPublication } from '@/object-metadata/utils/isPropertyOrPublication';
 import { RecordChip } from '@/object-record/components/RecordChip';
 import { useChipFieldDisplay } from '@/object-record/record-field/meta-types/hooks/useChipFieldDisplay';
 import { RecordIdentifierChip } from '@/object-record/record-index/components/RecordIndexRecordChip';
 import { recordIndexOpenRecordInState } from '@/object-record/record-index/states/recordIndexOpenRecordInState';
 import { PlatformBadge } from '@/object-record/record-show/components/nm/publication/PlatformBadge';
+import { SettingsPath } from '@/types/SettingsPath';
 import { ViewOpenRecordInType } from '@/views/types/ViewOpenRecordInType';
 import { useRecoilValue } from 'recoil';
 import { ChipSize } from 'twenty-ui';
+import { getSettingsPath } from '~/utils/navigation/getSettingsPath';
 
 export const ChipFieldDisplay = () => {
   const {
@@ -20,6 +23,7 @@ export const ChipFieldDisplay = () => {
   const recordIndexOpenRecordIn = useRecoilValue(recordIndexOpenRecordInState);
 
   const { openRecordInCommandMenu } = useCommandMenu();
+  const isAgency = objectNameSingular === CoreObjectNameSingular.Agency;
 
   if (!recordValue) {
     return null;
@@ -31,9 +35,11 @@ export const ChipFieldDisplay = () => {
       record={recordValue}
       size={ChipSize.Small}
       to={
-        recordIndexOpenRecordIn === ViewOpenRecordInType.RECORD_PAGE
-          ? labelIdentifierLink
-          : undefined
+        isAgency
+          ? getSettingsPath(SettingsPath.Platforms, {}, { id: recordValue.id })
+          : recordIndexOpenRecordIn === ViewOpenRecordInType.RECORD_PAGE
+            ? labelIdentifierLink
+            : undefined
       }
       onClick={
         recordIndexOpenRecordIn === ViewOpenRecordInType.SIDE_PANEL

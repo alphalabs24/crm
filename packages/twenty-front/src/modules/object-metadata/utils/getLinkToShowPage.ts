@@ -1,6 +1,8 @@
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { getBasePathToShowPage } from '@/object-metadata/utils/getBasePathToShowPage';
 import { ObjectRecord } from '@/object-record/types/ObjectRecord';
+import { SettingsPath } from '@/types/SettingsPath';
+import { getSettingsPath } from '~/utils/navigation/getSettingsPath';
 
 export const getLinkToShowPage = (
   objectNameSingular: string,
@@ -26,6 +28,16 @@ export const getLinkToShowPage = (
       getBasePathToShowPage({
         objectNameSingular: CoreObjectNameSingular.Task,
       }) + record.task?.id
+    );
+  }
+
+  if (objectNameSingular === CoreObjectNameSingular.Agency) {
+    return getSettingsPath(
+      SettingsPath.Platforms,
+      {},
+      {
+        id: record?.id,
+      },
     );
   }
 

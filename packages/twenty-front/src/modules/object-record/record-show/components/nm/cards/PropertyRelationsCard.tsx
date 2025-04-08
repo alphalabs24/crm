@@ -27,6 +27,7 @@ type PropertyRelationsCardProps = {
 };
 
 const RELATION_FIELDS = ['agency', 'assignee', 'seller'];
+const REQUIRED_RELATION_FIELDS = ['agency'];
 
 export const PropertyRelationsCard = ({
   record,
@@ -89,7 +90,7 @@ export const PropertyRelationsCard = ({
                 loading={loading}
                 isRequired={
                   !isDefinedInRecord(field.name) &&
-                  RELATION_FIELDS.includes(field.name)
+                  REQUIRED_RELATION_FIELDS.includes(field.name)
                 }
               />
             </FieldContext.Provider>
