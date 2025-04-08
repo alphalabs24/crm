@@ -33,6 +33,7 @@ const StyledContentContainer = styled.div<{ isInRightDrawer?: boolean }>`
     ${({ isInRightDrawer }) =>
       isInRightDrawer &&
       css`
+        flex-direction: column;
         padding: 0;
       `}
   }

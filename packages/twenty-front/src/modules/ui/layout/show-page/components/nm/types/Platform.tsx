@@ -1,3 +1,4 @@
+import { AgencyCredential } from '@/publishers/components/modals/EditPublisherModal';
 import { Trans } from '@lingui/react/macro';
 import { ColorScheme } from 'twenty-ui';
 
@@ -53,6 +54,7 @@ export type Platform = {
   isBeta?: boolean;
   backgroundColor?: string;
   fieldsOnAgency?: PlatformField[];
+  getOfferListLink?: (credential: AgencyCredential) => string | null;
 };
 
 export const PLATFORMS: { [key in PlatformId]: Platform } = {
@@ -83,7 +85,7 @@ export const PLATFORMS: { [key in PlatformId]: Platform } = {
     },
     fieldsOnAgency: [
       {
-        name: 'newhomeFtpUser',
+        name: 'username',
         helpText: (
           <Trans>
             Your FTP username can be found under "Import interfaces" on
@@ -92,7 +94,7 @@ export const PLATFORMS: { [key in PlatformId]: Platform } = {
         ),
       },
       {
-        name: 'newhomeFtpPassword',
+        name: 'password',
         helpText: (
           <Trans>
             Your FTP password can be found under "Import interfaces" on
@@ -102,7 +104,7 @@ export const PLATFORMS: { [key in PlatformId]: Platform } = {
         type: 'password',
       },
       {
-        name: 'newhomePartnerId',
+        name: 'partnerId',
         helpText: (
           <Trans>
             Your Partner ID is displayed in your MyNewhome dashboard under
@@ -111,6 +113,10 @@ export const PLATFORMS: { [key in PlatformId]: Platform } = {
         ),
       },
     ],
+    getOfferListLink: (credential: AgencyCredential) =>
+      credential.partnerId
+        ? `https://test.newhome.ch/partner/${credential.partnerId}.aspx`
+        : null,
   },
   [PlatformId.SocialMedia]: {
     type: 'social_media',
@@ -189,13 +195,38 @@ export const PLATFORMS: { [key in PlatformId]: Platform } = {
     type: 'real_estate',
     name: 'Comparis',
     description: <Trans>List your property on Comparis.</Trans>,
-    isBeta: true,
+    isNew: true,
     logo: {
       en: {
         Dark: '/logos/comparis.png',
         Light: '/logos/comparis.png',
       },
     },
+    fieldsOnAgency: [
+      {
+        name: 'username',
+        helpText: (
+          <Trans>
+            Your FTP username can be found under "Import interfaces" on
+            Comparis.
+          </Trans>
+        ),
+      },
+      {
+        name: 'password',
+        helpText: (
+          <Trans>
+            Your FTP password can be found under "Import interfaces" on
+            Comparis.
+          </Trans>
+        ),
+        type: 'password',
+      },
+      {
+        name: 'platformAgencyId',
+        helpText: <Trans>Your Agencie's ID on Comparis.</Trans>,
+      },
+    ],
   },
   [PlatformId.Flatfox]: {
     type: 'real_estate',

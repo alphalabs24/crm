@@ -24,7 +24,7 @@ import {
   IconWand,
   LARGE_DESKTOP_VIEWPORT,
 } from 'twenty-ui';
-import { ValidationResult } from '../../../hooks/usePublicationValidation';
+import { usePublicationValidation } from '../../../hooks/usePublicationValidation';
 
 const StyledPlatformSelectionContainer = styled.div`
   display: flex;
@@ -235,7 +235,6 @@ type PlatformSelectProps = {
   setSelectedPlatforms: Dispatch<SetStateAction<PlatformId[] | null>>;
   recordId: string;
   closeModal?: () => void;
-  validationDetails?: ValidationResult;
 };
 
 export const PlatformSelect = ({
@@ -243,7 +242,6 @@ export const PlatformSelect = ({
   selectedPlatforms,
   recordId,
   closeModal,
-  validationDetails,
 }: PlatformSelectProps) => {
   const navigate = useNavigate();
   const theme = useTheme();
@@ -279,6 +277,12 @@ export const PlatformSelect = ({
   const { record } = useFindOneRecord({
     objectNameSingular: CoreObjectNameSingular.Property,
     objectRecordId: recordId,
+  });
+
+  const { validationDetails } = usePublicationValidation({
+    record,
+    isPublication: false,
+    platformId: selectedPlatforms?.[0],
   });
 
   const hasEmailTemplate = useMemo(

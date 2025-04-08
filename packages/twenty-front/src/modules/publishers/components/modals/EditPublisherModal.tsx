@@ -59,10 +59,21 @@ const StyledInputContainer = styled.div`
   margin-bottom: ${({ theme }) => theme.spacing(1)};
 `;
 
+export type AgencyCredential = {
+  id: string;
+  name: string;
+  username: string;
+  password: string;
+  host: string;
+  port: number;
+  partnerId: string;
+  platformAgencyId: string;
+};
+
 type InitialState = {
   name: string;
   email: string;
-  platformCredentials: Record<string, Record<string, string>>;
+  platformCredentials: Record<string, AgencyCredential>;
 };
 
 type Props = {
@@ -78,7 +89,7 @@ export const EditPublisherModal = forwardRef<ModalRefType, Props>(
     const [email, setEmail] = useState('');
     const [emailError, setEmailError] = useState('');
     const [platformCredentials, setPlatformCredentials] = useState<
-      Record<string, Record<string, string>>
+      Record<string, AgencyCredential>
     >({});
 
     const initialStateRef = useRef<InitialState | null>(null);
@@ -100,6 +111,14 @@ export const EditPublisherModal = forwardRef<ModalRefType, Props>(
       objectNameSingular: CoreObjectNameSingular.Agency,
     });
 
+    const { createOneRecord: createCredentialRecord } = useCreateOneRecord({
+      objectNameSingular: CoreObjectNameSingular.Credential,
+    });
+
+    const { updateOneRecord: updateCredentialRecord } = useUpdateOneRecord({
+      objectNameSingular: CoreObjectNameSingular.Credential,
+    });
+
     const theme = useTheme();
 
     useEffect(() => {
@@ -111,15 +130,15 @@ export const EditPublisherModal = forwardRef<ModalRefType, Props>(
           '';
 
         // Initialize platform credentials from agency record
-        const credentials: Record<string, Record<string, string>> = {};
+        const credentials: Record<string, AgencyCredential> = {};
         PUBLISHABLE_PLATFORMS.forEach((platformId) => {
           const platform = PLATFORMS[platformId];
+
           if (platform.fieldsOnAgency) {
-            credentials[platformId] = {};
-            platform.fieldsOnAgency.forEach((field) => {
-              credentials[platformId][field.name] =
-                agencyRecord[field.name] || '';
-            });
+            const creds = (
+              agencyRecord.credentials as Array<AgencyCredential>
+            ).find((c) => c.name === platformId);
+            if (creds) credentials[platformId] = creds;
           }
         });
 
@@ -215,27 +234,59 @@ export const EditPublisherModal = forwardRef<ModalRefType, Props>(
       }
 
       try {
-        const allCredentials = Object.values(platformCredentials).reduce(
-          (acc, credentials) => ({ ...acc, ...credentials }),
-          {},
-        );
-
-        const recordData = {
-          name,
-          email: {
-            primaryEmail: email,
-          },
-          ...allCredentials,
-        };
-
+        let publisherIdToUse = publisherId;
         if (publisherId) {
           await updateOneRecord({
             idToUpdate: publisherId,
-            updateOneRecordInput: recordData,
+            updateOneRecordInput: {
+              email: {
+                primaryEmail: email,
+              },
+              name,
+            },
           });
         } else {
-          await createOneRecord(recordData);
+          const newPublisher = await createOneRecord({
+            name,
+            email: {
+              primaryEmail: email,
+            },
+          });
+          publisherIdToUse = newPublisher.id;
         }
+
+        await Promise.all(
+          PUBLISHABLE_PLATFORMS.map(async (platform) => {
+            const oldCredentials = agencyRecord?.credentials.find(
+              (cred: AgencyCredential) => cred.name === platform,
+            );
+            const newCredentials = platformCredentials[platform];
+
+            const propertiesToUpdate = {
+              password: newCredentials?.password,
+              username: newCredentials?.username,
+              port: newCredentials?.port,
+              host: newCredentials?.host,
+              partnerId: newCredentials?.partnerId,
+              platformAgencyId: newCredentials?.platformAgencyId,
+            };
+
+            if (!oldCredentials && newCredentials) {
+              await createCredentialRecord({
+                agencyId: publisherIdToUse,
+                name: platform,
+                ...propertiesToUpdate,
+              });
+            } else if (newCredentials) {
+              await updateCredentialRecord({
+                idToUpdate: oldCredentials.id,
+                updateOneRecordInput: {
+                  ...propertiesToUpdate,
+                },
+              });
+            }
+          }),
+        );
 
         enqueueSnackBar(t`Credentials saved successfully`, {
           variant: SnackBarVariant.Success,
@@ -243,6 +294,7 @@ export const EditPublisherModal = forwardRef<ModalRefType, Props>(
 
         closeModal();
       } catch (error) {
+        console.error(error);
         enqueueSnackBar(t`Error saving publisher`, {
           variant: SnackBarVariant.Error,
         });

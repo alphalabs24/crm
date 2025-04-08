@@ -1,8 +1,12 @@
 import { useNestermind } from '@/api/hooks/useNestermind';
+import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { getLinkToShowPage } from '@/object-metadata/utils/getLinkToShowPage';
 import { useFindOneRecord } from '@/object-record/hooks/useFindOneRecord';
 import { SnackBarVariant } from '@/ui/feedback/snack-bar-manager/components/SnackBar';
 import { useSnackBar } from '@/ui/feedback/snack-bar-manager/hooks/useSnackBar';
+
+import { useFindManyRecords } from '@/object-record/hooks/useFindManyRecords';
+import { AgencyCredential } from '@/publishers/components/modals/EditPublisherModal';
 import {
   PlatformId,
   PLATFORMS,
@@ -131,8 +135,21 @@ export const Publishing = ({
   const { t } = useLingui();
 
   const { record, refetch } = useFindOneRecord({
-    objectNameSingular: 'publication',
+    objectNameSingular: CoreObjectNameSingular.Publication,
     objectRecordId: recordId,
+  });
+
+  const { records: credentialRecords } = useFindManyRecords({
+    objectNameSingular: CoreObjectNameSingular.Credential,
+    filter: {
+      name: {
+        eq: selectedPlatform,
+      },
+      agencyId: {
+        eq: record?.agencyId,
+      },
+    },
+    skip: !record?.agencyId,
   });
 
   const { useMutations } = useNestermind();
@@ -163,6 +180,15 @@ export const Publishing = ({
     publishPublication({ publicationId: recordId });
   };
 
+  const platform = PLATFORMS[selectedPlatform];
+
+  const offerListLink =
+    platform.getOfferListLink && credentialRecords.length > 0
+      ? platform.getOfferListLink(
+          credentialRecords[0] as unknown as AgencyCredential,
+        )
+      : null;
+
   return (
     <StyledPublishingProcess>
       <StyledPlatformPublishItem key={selectedPlatform}>
@@ -170,9 +196,7 @@ export const Publishing = ({
           {renderPlatformIcon(selectedPlatform)}
         </StyledPlatformPublishIcon>
         <StyledPlatformPublishInfo>
-          <StyledPlatformPublishName>
-            {PLATFORMS[selectedPlatform].name}
-          </StyledPlatformPublishName>
+          <StyledPlatformPublishName>{platform.name}</StyledPlatformPublishName>
           <StyledPlatformPublishStatus isPublished={isPublished}>
             {isPublished ? (
               <>
@@ -190,7 +214,10 @@ export const Publishing = ({
           <StyledValidationDetails>
             {validationDetails?.message}
             <StyledEditLink
-              to={`${getLinkToShowPage('publication', { id: recordId })}/edit`}
+              to={
+                validationDetails?.path ??
+                `${getLinkToShowPage('publication', { id: recordId })}/edit`
+              }
             >
               {t`Edit`}
             </StyledEditLink>
@@ -198,11 +225,8 @@ export const Publishing = ({
         )}
         <StyledPlatformPublishStatusIcon>
           {isPublished ? (
-            record?.agency.newhomePartnerId ? (
-              <StyledViewPublicationButton
-                to={`https://test.newhome.ch/partner/${record?.agency.newhomePartnerId}.aspx`}
-                target="_blank"
-              >
+            offerListLink ? (
+              <StyledViewPublicationButton to={offerListLink} target="_blank">
                 {t`View Publications`}
                 <IconExternalLink size={14} />
               </StyledViewPublicationButton>

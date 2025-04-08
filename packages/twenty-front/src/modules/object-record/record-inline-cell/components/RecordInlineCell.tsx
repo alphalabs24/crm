@@ -30,7 +30,10 @@ type RecordInlineCellProps = {
   loading?: boolean;
 };
 
-export const RecordInlineCell = ({ loading }: RecordInlineCellProps) => {
+export const RecordInlineCell = ({
+  loading,
+  readonly,
+}: RecordInlineCellProps) => {
   const { fieldDefinition, recordId, isCentered, isDisplayModeFixHeight } =
     useContext(FieldContext);
   const buttonIcon = useGetButtonIcon();
@@ -97,7 +100,7 @@ export const RecordInlineCell = ({ loading }: RecordInlineCellProps) => {
   const { getIcon } = useIcons();
 
   const RecordInlineCellContextValue: RecordInlineCellContextProps = {
-    readonly: isFieldReadOnly,
+    readonly: readonly || isFieldReadOnly,
     buttonIcon: buttonIcon,
     customEditHotkeyScope: isFieldRelation(fieldDefinition)
       ? { scope: RelationPickerHotkeyScope.RelationPicker }
