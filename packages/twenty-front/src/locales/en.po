@@ -57,8 +57,8 @@ msgid "{formattedAmount} {currencyCode} / month"
 msgstr "{formattedAmount} {currencyCode} / month"
 
 #: src/modules/object-record/record-show/components/nm/cards/PropertyDetailsCard.tsx
-msgid "{groupTitle}"
-msgstr "{groupTitle}"
+#~ msgid "{groupTitle}"
+#~ msgstr "{groupTitle}"
 
 #: src/modules/object-record/hooks/useFormattedPropertyFields.ts
 #~ msgid "{localString} m²"
@@ -252,8 +252,12 @@ msgid "Add to favorites"
 msgstr "Add to favorites"
 
 #: src/modules/object-record/record-table/empty-state/utils/getEmptyStateTitle.ts
-msgid "Add your first {objectLabel}"
-msgstr "Add your first {objectLabel}"
+msgid "Add your {objectLabel}"
+msgstr "Add your {objectLabel}"
+
+#: src/modules/object-record/record-table/empty-state/utils/getEmptyStateTitle.ts
+#~ msgid "Add your first {objectLabel}"
+#~ msgstr "Add your first {objectLabel}"
 
 #: src/modules/ui/layout/show-page/components/ShowPageSummaryCard.tsx
 msgid "Added {beautifiedCreatedAt}"
@@ -753,6 +757,7 @@ msgstr "Contact auto-creation"
 msgid "Context"
 msgstr "Context"
 
+#: src/pages/onboarding/SyncEmails.tsx
 #: src/pages/onboarding/InviteTeam.tsx
 #: src/pages/onboarding/CreateWorkspace.tsx
 #: src/pages/onboarding/CreateProfile.tsx
@@ -772,6 +777,10 @@ msgstr "Continue with Google"
 #: src/modules/auth/sign-in-up/components/SignInUpWithMicrosoft.tsx
 msgid "Continue with Microsoft"
 msgstr "Continue with Microsoft"
+
+#: src/pages/onboarding/SyncEmails.tsx
+msgid "Continue without sync"
+msgstr "Continue without sync"
 
 #: src/modules/command-menu/components/CommandMenu.tsx
 msgid "Copilot"
@@ -1333,6 +1342,10 @@ msgstr "Email Templates"
 msgid "Emails"
 msgstr "Emails"
 
+#: src/pages/onboarding/SyncEmails.tsx
+msgid "Emails and Calendar"
+msgstr "Emails and Calendar"
+
 #: src/modules/settings/data-model/fields/forms/components/SettingsDataModelFieldIconLabelForm.tsx
 msgid "employees"
 msgstr "employees"
@@ -1422,6 +1435,7 @@ msgid "Establish Webhook endpoints for notifications on asynchronous events."
 msgstr "Establish Webhook endpoints for notifications on asynchronous events."
 
 #: src/modules/settings/accounts/components/SettingsAccountsMessageVisibilityCard.tsx
+#: src/modules/onboarding/components/onboardingSyncEmailsOptions.tsx
 msgid "Everything"
 msgstr "Everything"
 
@@ -1530,6 +1544,7 @@ msgid "Failed to delete publication"
 msgstr "Failed to delete publication"
 
 #: src/modules/record-edit/contexts/UnsavedChangesContext.tsx
+#: src/modules/record-edit/components/custom/PropertyEmailsFormInput.tsx
 msgid "Failed to save changes"
 msgstr "Failed to save changes"
 
@@ -1549,6 +1564,10 @@ msgstr "Failed to unpublish publication"
 #: src/modules/favorites/components/CurrentWorkspaceMemberFavoritesFolders.tsx
 msgid "Favorites"
 msgstr "Favorites"
+
+#: src/modules/object-record/record-show/components/nm/cards/PropertyDetailsCard.tsx
+msgid "Features"
+msgstr "Features"
 
 #: src/pages/settings/data-model/SettingsObjectFieldTable.tsx
 msgid "Field type"
@@ -1578,6 +1597,10 @@ msgstr "Filtered by"
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx
 msgid "Filters"
 msgstr "Filters"
+
+#: src/modules/object-record/record-show/components/nm/cards/PropertyDetailsCard.tsx
+msgid "Financial"
+msgstr "Financial"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 #~ msgid "Finnish"
@@ -1914,6 +1937,10 @@ msgstr "Keep in mind that only nestermind drafts will be synchronized. You will 
 #~ msgid "Keep in mind that only nestermind drafts will be synchronized. You will need to publish the drafts manually again after synchronization."
 #~ msgstr "Keep in mind that only nestermind drafts will be synchronized. You will need to publish the drafts manually again after synchronization."
 
+#: src/modules/object-record/record-show/components/nm/cards/PropertyDetailsCard.tsx
+msgid "Key Details"
+msgstr "Key Details"
+
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 #~ msgid "Korean"
 #~ msgstr "Korean"
@@ -2079,6 +2106,7 @@ msgid "Members"
 msgstr "Members"
 
 #: src/modules/settings/accounts/components/SettingsAccountsMessageVisibilityCard.tsx
+#: src/modules/onboarding/components/onboardingSyncEmailsOptions.tsx
 msgid "Metadata"
 msgstr "Metadata"
 
@@ -2390,6 +2418,10 @@ msgstr "Not empty"
 msgid "Object"
 msgstr "Object"
 
+#: src/modules/object-record/record-show/components/nm/cards/PropertyDetailsCard.tsx
+msgid "Object Info"
+msgstr "Object Info"
+
 #: src/pages/settings/roles/components/RolePermissions.tsx
 #: src/pages/settings/data-model/SettingsObjects.tsx
 #: src/pages/settings/data-model/SettingsObjectFieldEdit.tsx
@@ -2414,6 +2446,10 @@ msgstr "Offer Type"
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
 msgid "Old Draft Values"
 msgstr "Old Draft Values"
+
+#: src/modules/onboarding/components/onboardingSyncEmailsOptions.tsx
+msgid "Only the timestamp & participants will be shared with your team."
+msgstr "Only the timestamp & participants will be shared with your team."
 
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 #: src/modules/inquiries/components/sidebar/PropertyDetails.tsx
@@ -2462,6 +2498,10 @@ msgstr "Page Not Found"
 #: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
 #~ msgid "Parking Space Subtype"
 #~ msgstr "Parking Space Subtype"
+
+#: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
+msgid "Partner Id"
+msgstr "Partner Id"
 
 #: src/modules/settings/security/components/SettingsSecurityOptionsList.tsx
 msgid "Password"
@@ -2525,6 +2565,10 @@ msgstr "Picture"
 #: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
 msgid "Platform"
 msgstr "Platform"
+
+#: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
+msgid "Platform Agency Id"
+msgstr "Platform Agency Id"
 
 #: src/modules/publishers/components/modals/EditPublisherModal.tsx
 #: src/modules/onboarding-tutorial/components/modals/PublisherTutorialModal.tsx
@@ -3115,6 +3159,10 @@ msgstr "Sort"
 #~ msgid "Source values"
 #~ msgstr "Source values"
 
+#: src/modules/object-record/record-show/components/nm/cards/PropertyDetailsCard.tsx
+msgid "Space Details"
+msgstr "Space Details"
+
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 #~ msgid "Spanish"
 #~ msgstr "Spanish"
@@ -3154,6 +3202,7 @@ msgid "Subject"
 msgstr "Subject"
 
 #: src/modules/settings/accounts/components/SettingsAccountsMessageVisibilityCard.tsx
+#: src/modules/onboarding/components/onboardingSyncEmailsOptions.tsx
 msgid "Subject and metadata"
 msgstr "Subject and metadata"
 
@@ -3217,6 +3266,18 @@ msgstr "Sync Publications"
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
 msgid "Sync Publications {differenceLength}"
 msgstr "Sync Publications {differenceLength}"
+
+#: src/pages/onboarding/SyncEmails.tsx
+msgid "Sync with Google"
+msgstr "Sync with Google"
+
+#: src/pages/onboarding/SyncEmails.tsx
+msgid "Sync with Outlook"
+msgstr "Sync with Outlook"
+
+#: src/pages/onboarding/SyncEmails.tsx
+msgid "Sync your Emails and Calendar with nestermind. Choose your privacy settings."
+msgstr "Sync your Emails and Calendar with nestermind. Choose your privacy settings."
 
 #: src/modules/settings/data-model/fields/forms/components/SettingsDataModelFieldIconLabelForm.tsx
 msgid "Synchronize Field Label and API Name"
@@ -3464,8 +3525,12 @@ msgid "Use letter, number and dash only. Start and finish with a letter or a num
 msgstr "Use letter, number and dash only. Start and finish with a letter or a number"
 
 #: src/modules/object-record/record-table/empty-state/utils/getEmptyStateSubTitle.ts
-msgid "Use our API or add your first {objectLabel} manually"
-msgstr "Use our API or add your first {objectLabel} manually"
+msgid "Use our API or add your {objectLabel} manually"
+msgstr "Use our API or add your {objectLabel} manually"
+
+#: src/modules/object-record/record-table/empty-state/utils/getEmptyStateSubTitle.ts
+#~ msgid "Use our API or add your first {objectLabel} manually"
+#~ msgstr "Use our API or add your first {objectLabel} manually"
 
 #: src/pages/settings/SettingsProfile.tsx
 #: src/pages/settings/profile/appearance/components/SettingsExperience.tsx
@@ -3708,13 +3773,33 @@ msgstr "You have unsaved changes. What would you like to do?"
 msgid "You will be charged immediately for the full year."
 msgstr "You will be charged immediately for the full year."
 
+#: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
+msgid "Your Agencie's ID on Comparis."
+msgstr "Your Agencie's ID on Comparis."
+
 #: src/pages/settings/SettingsBilling.tsx
 msgid "Your credit balance will be used to pay the monthly bills."
 msgstr "Your credit balance will be used to pay the monthly bills."
 
+#: src/modules/onboarding/components/onboardingSyncEmailsOptions.tsx
+msgid "Your email subjects and meeting titles will be shared with your team."
+msgstr "Your email subjects and meeting titles will be shared with your team."
+
+#: src/modules/onboarding/components/onboardingSyncEmailsOptions.tsx
+msgid "Your emails and events content will be shared with your team."
+msgstr "Your emails and events content will be shared with your team."
+
+#: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
+msgid "Your FTP password can be found under \"Import interfaces\" on Comparis."
+msgstr "Your FTP password can be found under \"Import interfaces\" on Comparis."
+
 #: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
 msgid "Your FTP password can be found under \"Import interfaces\" on MyNewhome."
 msgstr "Your FTP password can be found under \"Import interfaces\" on MyNewhome."
+
+#: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
+msgid "Your FTP username can be found under \"Import interfaces\" on Comparis."
+msgstr "Your FTP username can be found under \"Import interfaces\" on Comparis."
 
 #: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
 msgid "Your FTP username can be found under \"Import interfaces\" on MyNewhome."

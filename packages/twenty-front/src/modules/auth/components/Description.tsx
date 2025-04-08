@@ -14,6 +14,7 @@ const StyledDescription = styled.div<Pick<DescriptionProps, 'noMarginTop'>>`
   margin-bottom: ${({ theme }) => theme.spacing(2)};
   margin-top: ${({ theme, noMarginTop }) =>
     !noMarginTop ? theme.spacing(2) : 0};
+  text-align: center;
 `;
 
 export const Description = ({
