@@ -20,7 +20,8 @@ export class FileAttachmentListener {
     private readonly messageQueueService: MessageQueueService,
   ) {}
 
-  @OnDatabaseBatchEvent('attachment', DatabaseEventAction.DESTROYED)
+  // We don't want to delete the file since it is possible that it's still attached to a record's attachment
+  // @OnDatabaseBatchEvent('attachment', DatabaseEventAction.DESTROYED)
   async handleDestroyEvent(
     payload: WorkspaceEventBatch<
       ObjectRecordDestroyEvent<AttachmentWorkspaceEntity>
