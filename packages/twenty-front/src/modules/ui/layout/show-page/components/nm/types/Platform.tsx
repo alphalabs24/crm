@@ -1,5 +1,6 @@
 import { AgencyCredential } from '@/publishers/components/modals/EditPublisherModal';
 import { Trans } from '@lingui/react/macro';
+import { Link } from 'react-router-dom';
 import { ColorScheme } from 'twenty-ui';
 
 export type PlatformType = 'social_media' | 'real_estate' | 'smart_listing';
@@ -61,7 +62,16 @@ export const PLATFORMS: { [key in PlatformId]: Platform } = {
   [PlatformId.Newhome]: {
     type: 'real_estate',
     name: 'Newhome',
-    description: <Trans>List your property conveniently to newhome.ch.</Trans>,
+    description: (
+      <Trans>
+        List your property conveniently to newhome.ch. If you don't have newhome
+        credentials, create a new account{' '}
+        <Link to="https://id.newhome.ch/Registration" target="_blank">
+          here
+        </Link>{' '}
+        and set up an IDX interface by clicking on 'Import interfaces'.
+      </Trans>
+    ),
     isNew: true,
     // eslint-disable-next-line @nx/workspace-no-hardcoded-colors
     backgroundColor: '#97DDD2',
@@ -115,7 +125,7 @@ export const PLATFORMS: { [key in PlatformId]: Platform } = {
     ],
     getOfferListLink: (credential: AgencyCredential) =>
       credential.partnerId
-        ? `https://test.newhome.ch/partner/${credential.partnerId}.aspx`
+        ? `https://newhome.ch/partner/${credential.partnerId}.aspx`
         : null,
   },
   [PlatformId.SocialMedia]: {
@@ -194,7 +204,20 @@ export const PLATFORMS: { [key in PlatformId]: Platform } = {
   [PlatformId.Comparis]: {
     type: 'real_estate',
     name: 'Comparis',
-    description: <Trans>List your property on Comparis.</Trans>,
+    description: (
+      <Trans>
+        List your property on Comparis. If you don't have Comparis credentials,
+        contact Comparis{' '}
+        <Link
+          to="https://www.comparis.ch/immobilien/inserieren/loesungen-fuer-agenturen"
+          target="_blank"
+        >
+          here
+        </Link>{' '}
+        by clicking the 'Get in touch' button under 'Import via Real Estate
+        Software (CRM)'.
+      </Trans>
+    ),
     isNew: true,
     logo: {
       en: {
