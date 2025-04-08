@@ -190,7 +190,7 @@ export class MessageChannelWorkspaceEntity extends BaseWorkspaceEntity {
         color: 'red',
       },
     ],
-    defaultValue: `'${MessageChannelContactAutoCreationPolicy.SENT}'`,
+    defaultValue: `'${MessageChannelContactAutoCreationPolicy.SENT_AND_RECEIVED}'`,
   })
   contactAutoCreationPolicy: MessageChannelContactAutoCreationPolicy;
 
@@ -200,7 +200,7 @@ export class MessageChannelWorkspaceEntity extends BaseWorkspaceEntity {
     label: msg`Exclude non professional emails`,
     description: msg`Exclude non professional emails`,
     icon: 'IconBriefcase',
-    defaultValue: true,
+    defaultValue: false,
   })
   excludeNonProfessionalEmails: boolean;
 
@@ -210,7 +210,7 @@ export class MessageChannelWorkspaceEntity extends BaseWorkspaceEntity {
     label: msg`Exclude group emails`,
     description: msg`Exclude group emails`,
     icon: 'IconUsersGroup',
-    defaultValue: true,
+    defaultValue: false,
   })
   excludeGroupEmails: boolean;
 
