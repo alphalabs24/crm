@@ -121,8 +121,14 @@ export const PropertyEmailsFormInput = ({ loading }: { loading?: boolean }) => {
           {
             label: t`Save and send`,
             onClick: async () => {
-              await saveRecord();
-              sendTestEmail();
+              const error = await saveRecord();
+              if (error) {
+                enqueueSnackBar(t`Failed to save changes`, {
+                  variant: SnackBarVariant.Error,
+                });
+              } else {
+                sendTestEmail();
+              }
             },
             variant: 'secondary',
             accent: 'blue',

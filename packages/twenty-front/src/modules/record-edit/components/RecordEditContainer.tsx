@@ -254,31 +254,31 @@ export const RecordEditContainer = ({
   }, [tabs, activeTabId, fieldsByName, getUpdatedFields, record, updateField]);
 
   const handleSave = async () => {
-    try {
-      await saveRecord();
+    const error = await saveRecord();
 
-      const link = getLinkToShowPage(objectNameSingular ?? '', {
-        id: recordId ?? '',
-      });
-
-      enqueueSnackBar(
-        isPublication
-          ? t`Publication saved successfully`
-          : t`Property saved successfully`,
-        {
-          variant: SnackBarVariant.Success,
-        },
-      );
-
-      setTimeout(() => {
-        navigate(link);
-      }, 100);
-    } catch (error) {
-      console.error(error);
+    if (error) {
       enqueueSnackBar(t`Error saving ${objectNameSingular}`, {
         variant: SnackBarVariant.Error,
       });
+      return;
     }
+
+    const link = getLinkToShowPage(objectNameSingular ?? '', {
+      id: recordId ?? '',
+    });
+
+    enqueueSnackBar(
+      isPublication
+        ? t`Publication saved successfully`
+        : t`Property saved successfully`,
+      {
+        variant: SnackBarVariant.Success,
+      },
+    );
+
+    setTimeout(() => {
+      navigate(link);
+    }, 100);
   };
 
   const handleDiscard = () => {

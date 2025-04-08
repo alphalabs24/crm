@@ -54,6 +54,8 @@ const StyledListContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(2)};
+  justify-content: center;
+  height: 100%;
   padding: ${({ theme }) => theme.spacing(2)};
 `;
 

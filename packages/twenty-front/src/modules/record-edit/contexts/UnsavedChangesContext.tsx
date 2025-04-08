@@ -187,41 +187,37 @@ export const UnsavedChangesProvider = ({
   );
   const [modalConfig, setModalConfig] = useState<ModalConfig | null>(null);
   const { t } = useLingui();
-  const [isSaving, setIsSaving] = useState(false);
-  const { isDirty, saveRecord, resetFields } = useRecordEdit();
+  const { isDirty, saveRecord, resetFields, loading } = useRecordEdit();
   const { enqueueSnackBar } = useSnackBar();
 
   const handleConfirmNavigation = useCallback(() => {
-    if (pendingNavigation && !isSaving) {
+    if (pendingNavigation && !loading) {
       resetFields();
       setTimeout(() => {
         navigate(pendingNavigation);
       }, 200);
       setPendingNavigation(null);
     }
-  }, [isSaving, navigate, pendingNavigation, resetFields]);
+  }, [loading, navigate, pendingNavigation, resetFields]);
 
   const handleCancelNavigation = useCallback(() => {
     setPendingNavigation(null);
   }, []);
 
   const handleSaveAndLeave = useCallback(async () => {
-    if (isSaving) {
+    if (loading) {
       return;
     }
 
-    setIsSaving(true);
-    try {
-      await saveRecord();
-      handleConfirmNavigation();
-    } catch (error) {
+    const error = await saveRecord();
+    if (error) {
       enqueueSnackBar(t`Failed to save changes`, {
         variant: SnackBarVariant.Error,
       });
-    } finally {
-      setIsSaving(false);
+    } else {
+      handleConfirmNavigation();
     }
-  }, [isSaving, saveRecord, handleConfirmNavigation, enqueueSnackBar, t]);
+  }, [loading, saveRecord, handleConfirmNavigation, enqueueSnackBar, t]);
 
   const openUnsavedChangesModal = useCallback(() => {
     modalRef.current?.open();
@@ -258,7 +254,7 @@ export const UnsavedChangesProvider = ({
         onConfirm={handleConfirmNavigation}
         onCancel={handleCancelNavigation}
         onSave={handleSaveAndLeave}
-        isSaving={isSaving}
+        isSaving={loading}
       />
       {modalConfig && (
         <ActionModal
