@@ -1998,12 +1998,20 @@ msgid "Link copied to clipboard"
 msgstr "Link in die Zwischenablage kopiert"
 
 #: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
-msgid "List your property conveniently to newhome.ch."
-msgstr "Gib Deine Immobilie bequem auf newhome.ch auf."
+#~ msgid "List your property conveniently to newhome.ch."
+#~ msgstr "Gib Deine Immobilie bequem auf newhome.ch auf."
 
 #: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
-msgid "List your property on Comparis."
-msgstr "Publiziere Deine Immobilie auf Comparis."
+msgid "List your property conveniently to newhome.ch. If you don't have newhome credentials, create a new account <0>here</0> and set up an IDX interface by clicking on 'Import interfaces'."
+msgstr ""
+
+#: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
+#~ msgid "List your property on Comparis."
+#~ msgstr "Publiziere Deine Immobilie auf Comparis."
+
+#: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
+msgid "List your property on Comparis. If you don't have Comparis credentials, contact Comparis <0>here</0> by clicking the 'Get in touch' button under 'Import via Real Estate Software (CRM)'."
+msgstr ""
 
 #: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
 msgid "List your property on Facebook."

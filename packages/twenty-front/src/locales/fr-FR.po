@@ -1995,11 +1995,19 @@ msgid "Link copied to clipboard"
 msgstr "Lien copié dans le presse-papiers"
 
 #: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
-msgid "List your property conveniently to newhome.ch."
+#~ msgid "List your property conveniently to newhome.ch."
+#~ msgstr ""
+
+#: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
+msgid "List your property conveniently to newhome.ch. If you don't have newhome credentials, create a new account <0>here</0> and set up an IDX interface by clicking on 'Import interfaces'."
 msgstr ""
 
 #: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
-msgid "List your property on Comparis."
+#~ msgid "List your property on Comparis."
+#~ msgstr ""
+
+#: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
+msgid "List your property on Comparis. If you don't have Comparis credentials, contact Comparis <0>here</0> by clicking the 'Get in touch' button under 'Import via Real Estate Software (CRM)'."
 msgstr ""
 
 #: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx

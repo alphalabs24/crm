@@ -1,7 +1,6 @@
-import { currentWorkspaceMembersState } from '@/auth/states/currentWorkspaceMembersStates';
+import { useProviderGuard } from '@/onboarding/hooks/useProviderGuard';
 import { AppPath } from '@/types/AppPath';
 import { AutoSetAgencyEffect } from '@/ui/layout/show-page/components/nm/effects/AutoSetAgencyEffect';
-import { useRecoilValue } from 'recoil';
 import { useIsMatchingLocation } from '~/hooks/useIsMatchingLocation';
 
 export const RecordAutomationProvider = ({
@@ -9,13 +8,13 @@ export const RecordAutomationProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const currentWorkspaceMembers = useRecoilValue(currentWorkspaceMembersState);
+  const blockProvider = useProviderGuard();
 
   const { isMatchingLocation } = useIsMatchingLocation();
 
   const isPropertyShowPage = isMatchingLocation(AppPath.RecordShowPropertyPage);
 
-  if (!currentWorkspaceMembers || !isPropertyShowPage) return children;
+  if (!isPropertyShowPage || blockProvider) return children;
 
   return (
     <>

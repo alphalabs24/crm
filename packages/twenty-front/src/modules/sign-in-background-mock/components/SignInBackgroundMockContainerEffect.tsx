@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 
+import { MAIN_CONTEXT_STORE_INSTANCE_ID } from '@/context-store/constants/MainContextStoreInstanceId';
 import { contextStoreCurrentObjectMetadataItemComponentState } from '@/context-store/states/contextStoreCurrentObjectMetadataItemComponentState';
 import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadataItem';
 import { useObjectNameSingularFromPlural } from '@/object-metadata/hooks/useObjectNameSingularFromPlural';
@@ -12,7 +13,6 @@ import { SIGN_IN_BACKGROUND_MOCK_VIEW_FIELDS } from '@/sign-in-background-mock/c
 import { useSetRecoilComponentStateV2 } from '@/ui/utilities/state/component-state/hooks/useSetRecoilComponentStateV2';
 import { useInitViewBar } from '@/views/hooks/useInitViewBar';
 import { mapViewFieldsToColumnDefinitions } from '@/views/utils/mapViewFieldsToColumnDefinitions';
-import { MAIN_CONTEXT_STORE_INSTANCE_ID } from '@/context-store/constants/MainContextStoreInstanceId';
 
 type SignInBackgroundMockContainerEffectProps = {
   objectNamePlural: string;
@@ -68,7 +68,8 @@ export const SignInBackgroundMockContainerEffect = ({
       recordTableId,
     );
 
-    setContextStoreCurrentObjectMetadataItem(objectMetadataItem);
+    // TODO: think about how we can solve this differently and show data in the background that fits our app.
+    //setContextStoreCurrentObjectMetadataItem(objectMetadataItem);
   }, [
     setViewObjectMetadataId,
     setAvailableSortDefinitions,

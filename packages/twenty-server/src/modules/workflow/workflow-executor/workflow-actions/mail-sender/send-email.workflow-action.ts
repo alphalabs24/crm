@@ -111,7 +111,7 @@ export class SendEmailWorkflowAction implements WorkflowAction {
 
     const message = [
       `To: ${email}`,
-      `Subject: ${safeSubject || ''}`,
+      `Subject: ${this.encodeSubject(safeSubject || '')}`,
       'MIME-Version: 1.0',
       workflowActionInput.isHtml
         ? 'Content-Type: text/html; charset="UTF-8"'
@@ -154,5 +154,12 @@ export class SendEmailWorkflowAction implements WorkflowAction {
     return {
       result: { success: true } satisfies WorkflowSendEmailStepOutputSchema,
     };
+  }
+
+  private encodeSubject(subject: string): string {
+    if (/[^\x00-\x7F]/.test(subject)) {
+      return '=?UTF-8?B?' + Buffer.from(subject).toString('base64') + '?=';
+    }
+    return subject;
   }
 }
