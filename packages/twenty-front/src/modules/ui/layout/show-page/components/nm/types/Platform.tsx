@@ -281,4 +281,14 @@ export const PLATFORMS: { [key in PlatformId]: Platform } = {
     description: <Trans>List your property on Flatfox.</Trans>,
     isBeta: true,
   },
+  [PlatformId.ImmoScout]: {
+    type: 'real_estate',
+    name: 'ImmoScout',
+    description: undefined,
+  },
+  [PlatformId.Homegate]: {
+    type: 'real_estate',
+    name: 'Homegate',
+    description: undefined,
+  },
 };
