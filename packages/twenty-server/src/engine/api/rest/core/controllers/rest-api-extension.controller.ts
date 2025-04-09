@@ -24,7 +24,10 @@ class SendEmailDto {
   subject: string;
 
   @IsString()
-  body: string;
+  text: string;
+
+  @IsString()
+  html: string;
 
   @IsString()
   connectedAccount: string;
@@ -74,7 +77,8 @@ export class RestApiExtensionController {
     const sendEmailInput: WorkflowSendEmailActionInput = {
       email: emailDto.to,
       subject: emailDto.subject,
-      body: emailDto.body,
+      text: emailDto.text,
+      html: emailDto.html,
       connectedAccountId: emailDto.connectedAccount,
       workspaceId,
       isHtml: true,

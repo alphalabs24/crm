@@ -91,7 +91,7 @@ export class SendEmailWorkflowAction implements WorkflowAction {
       workflowActionInput.connectedAccountId,
       workflowActionInput.workspaceId,
     );
-    const { email, body, subject } = workflowActionInput;
+    const { email, html, text, subject } = workflowActionInput;
 
     const emailSchema = z.string().trim().email('Invalid email');
 
@@ -106,21 +106,37 @@ export class SendEmailWorkflowAction implements WorkflowAction {
 
     const window = new JSDOM('').window;
     const purify = DOMPurify(window);
-    const safeBody = purify.sanitize(body || '');
+    const safeHtml = purify.sanitize(html || '');
     const safeSubject = purify.sanitize(subject || '');
+    const safeText = purify.sanitize(text || '');
+
+    const boundary = `----MultipartBoundary${Date.now().toString(16)}`;
 
     const message = [
       `To: ${email}`,
       `Subject: ${this.encodeSubject(safeSubject || '')}`,
       'MIME-Version: 1.0',
-      workflowActionInput.isHtml
-        ? 'Content-Type: text/html; charset="UTF-8"'
-        : 'Content-Type: text/plain; charset="UTF-8"',
+      `Content-Type: multipart/alternative; boundary="${boundary}"`,
       '',
-      safeBody,
+      `--${boundary}`,
+      'Content-Type: text/plain; charset=UTF-8',
+      '',
+      safeText,
+      '',
+      `--${boundary}`,
+      'Content-Type: text/html; charset=UTF-8',
+      '',
+      safeHtml,
+      '',
+      `--${boundary}--`,
     ].join('\n');
 
-    const encodedMessage = Buffer.from(message).toString('base64');
+    const encodedMessage = Buffer.from(message)
+      .toString('base64')
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=+$/, '');
+
     try {
       const response = await emailProvider.users.messages.send({
         userId: 'me',
@@ -141,13 +157,11 @@ export class SendEmailWorkflowAction implements WorkflowAction {
           },
         },
       });
+
       console.log('sendEmailAction', response);
     } catch (error) {
       console.error('sendEmailAction', error);
     }
-
-    // `In-Reply-To: ${workflowActionInput.inReplyTo || ''}`,
-    // `References: ${workflowActionInput.references?.join(' ') || ''}`,
 
     this.logger.log(`Email sent successfully`);
 
@@ -157,9 +171,11 @@ export class SendEmailWorkflowAction implements WorkflowAction {
   }
 
   private encodeSubject(subject: string): string {
+    // eslint-disable-next-line no-control-regex
     if (/[^\x00-\x7F]/.test(subject)) {
       return '=?UTF-8?B?' + Buffer.from(subject).toString('base64') + '?=';
     }
+
     return subject;
   }
 }

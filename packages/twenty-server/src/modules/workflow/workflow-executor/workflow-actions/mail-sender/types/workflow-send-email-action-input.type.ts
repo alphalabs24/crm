@@ -2,7 +2,8 @@ export type WorkflowSendEmailActionInput = {
   connectedAccountId: string;
   email: string;
   subject?: string;
-  body?: string;
+  html?: string;
+  text?: string;
   workspaceId?: string;
   isHtml?: boolean;
   inReplyTo?: string;
