@@ -152,20 +152,56 @@ export const PLATFORMS: { [key in PlatformId]: Platform } = {
   [PlatformId.SwissMarketplaceGroup]: {
     type: 'real_estate',
     name: 'Swiss Marketplace Group',
-    logo: {
-      en: {
-        Dark: '/logos/smg.png',
-        Light: '/logos/smg.png',
-      },
-    },
     description: (
       <Trans>
         This includes the following platforms: ImmoScout24, Homegate, and more.
       </Trans>
     ),
-    isBeta: true,
+    isNew: true,
+    // eslint-disable-next-line @nx/workspace-no-hardcoded-colors
+    backgroundColor: '#97DDD2',
+    logo: {
+      en: {
+        Dark: '/logos/smg.png',
+        Light: '/logos/smg.png',
+      },
+      'de-DE': {
+        Dark: '/logos/smg.png',
+        Light: '/logos/smg.png',
+      },
+      'fr-FR': {
+        Dark: '/logos/smg.png',
+        Light: '/logos/smg.png',
+      },
+      'it-IT': {
+        Dark: '/logos/smg.png',
+        Light: '/logos/smg.png',
+      },
+    },
+    fieldsOnAgency: [
+      {
+        name: 'username',
+        helpText: (
+          <Trans>
+            Your FTP username can be found under "Import interfaces" on Smg.
+          </Trans>
+        ),
+      },
+      {
+        name: 'password',
+        helpText: (
+          <Trans>
+            Your FTP password can be found under "Import interfaces" on Smg.
+          </Trans>
+        ),
+        type: 'password',
+      },
+      {
+        name: 'platformAgencyId',
+        helpText: <Trans>Your Agencie's ID on Smg.</Trans>,
+      },
+    ],
   },
-
   [PlatformId.SmartListing]: {
     type: 'smart_listing',
     name: 'Smart Listing',
@@ -175,18 +211,6 @@ export const PLATFORMS: { [key in PlatformId]: Platform } = {
         reach with a tailored listing.
       </Trans>
     ),
-    isBeta: true,
-  },
-  [PlatformId.ImmoScout]: {
-    type: 'real_estate',
-    name: 'ImmoScout24',
-    description: <Trans>List your property on ImmoScout24.</Trans>,
-    isBeta: true,
-  },
-  [PlatformId.Homegate]: {
-    type: 'real_estate',
-    name: 'Homegate',
-    description: <Trans>List your property on Homegate.</Trans>,
     isBeta: true,
   },
   [PlatformId.Instagram]: {
@@ -256,5 +280,15 @@ export const PLATFORMS: { [key in PlatformId]: Platform } = {
     name: 'Flatfox',
     description: <Trans>List your property on Flatfox.</Trans>,
     isBeta: true,
+  },
+  [PlatformId.ImmoScout]: {
+    type: 'real_estate',
+    name: 'ImmoScout',
+    description: undefined,
+  },
+  [PlatformId.Homegate]: {
+    type: 'real_estate',
+    name: 'Homegate',
+    description: undefined,
   },
 };
