@@ -10,7 +10,6 @@ import { WorkflowAction } from 'src/modules/workflow/workflow-executor/interface
 import { ScopedWorkspaceContextFactory } from 'src/engine/twenty-orm/factories/scoped-workspace-context.factory';
 import { TwentyORMGlobalManager } from 'src/engine/twenty-orm/twenty-orm-global.manager';
 import { ConnectedAccountWorkspaceEntity } from 'src/modules/connected-account/standard-objects/connected-account.workspace-entity';
-import { GmailClientProvider } from 'src/modules/messaging/message-import-manager/drivers/gmail/providers/gmail-client.provider';
 import {
   WorkflowStepExecutorException,
   WorkflowStepExecutorExceptionCode,
@@ -21,6 +20,7 @@ import {
 } from 'src/modules/workflow/workflow-executor/workflow-actions/mail-sender/exceptions/send-email-action.exception';
 import { WorkflowSendEmailActionInput } from 'src/modules/workflow/workflow-executor/workflow-actions/mail-sender/types/workflow-send-email-action-input.type';
 import { WorkflowActionResult } from 'src/modules/workflow/workflow-executor/workflow-actions/types/workflow-action-result.type';
+import { MessagingSendMessageService } from 'src/modules/messaging/message-import-manager/services/messaging-send-message.service';
 
 export type WorkflowSendEmailStepOutputSchema = {
   success: boolean;
@@ -30,24 +30,23 @@ export type WorkflowSendEmailStepOutputSchema = {
 export class SendEmailWorkflowAction implements WorkflowAction {
   private readonly logger = new Logger(SendEmailWorkflowAction.name);
   constructor(
-    private readonly gmailClientProvider: GmailClientProvider,
     private readonly scopedWorkspaceContextFactory: ScopedWorkspaceContextFactory,
     private readonly twentyORMGlobalManager: TwentyORMGlobalManager,
+    private readonly messagingSendMessageService: MessagingSendMessageService,
   ) {}
 
-  private async getEmailClient(
-    connectedAccountId: string,
-    passedWorkspaceId?: string,
-  ) {
-    if (!isValidUuid(connectedAccountId)) {
+  async execute(
+    workflowActionInput: WorkflowSendEmailActionInput,
+  ): Promise<WorkflowActionResult> {
+    if (!isValidUuid(workflowActionInput.connectedAccountId)) {
       throw new SendEmailActionException(
         `Connected Account ID is not a valid UUID`,
         SendEmailActionExceptionCode.INVALID_CONNECTED_ACCOUNT_ID,
       );
     }
 
-    const { workspaceId } = passedWorkspaceId
-      ? { workspaceId: passedWorkspaceId }
+    const { workspaceId } = workflowActionInput.workspaceId
+      ? { workspaceId: workflowActionInput.workspaceId }
       : this.scopedWorkspaceContextFactory.create();
 
     if (!workspaceId) {
@@ -62,35 +61,18 @@ export class SendEmailWorkflowAction implements WorkflowAction {
         workspaceId,
         'connectedAccount',
       );
+
     const connectedAccount = await connectedAccountRepository.findOneBy({
-      id: connectedAccountId,
+      id: workflowActionInput.connectedAccountId,
     });
 
-    if (!isDefined(connectedAccount)) {
+    if (!isDefined(connectedAccount) || !connectedAccount) {
       throw new SendEmailActionException(
-        `Connected Account '${connectedAccountId}' not found`,
+        `Connected Account '${workflowActionInput.connectedAccountId}' not found`,
         SendEmailActionExceptionCode.CONNECTED_ACCOUNT_NOT_FOUND,
       );
     }
 
-    switch (connectedAccount.provider) {
-      case 'google':
-        return await this.gmailClientProvider.getGmailClient(connectedAccount);
-      default:
-        throw new SendEmailActionException(
-          `Provider ${connectedAccount.provider} is not supported`,
-          SendEmailActionExceptionCode.PROVIDER_NOT_SUPPORTED,
-        );
-    }
-  }
-
-  async execute(
-    workflowActionInput: WorkflowSendEmailActionInput,
-  ): Promise<WorkflowActionResult> {
-    const emailProvider = await this.getEmailClient(
-      workflowActionInput.connectedAccountId,
-      workflowActionInput.workspaceId,
-    );
     const { email, body, subject } = workflowActionInput;
 
     const emailSchema = z.string().trim().email('Invalid email');
@@ -109,55 +91,23 @@ export class SendEmailWorkflowAction implements WorkflowAction {
     const safeBody = purify.sanitize(body || '');
     const safeSubject = purify.sanitize(subject || '');
 
-    const message = [
-      `To: ${email}`,
-      `Subject: ${this.encodeSubject(safeSubject || '')}`,
-      'MIME-Version: 1.0',
-      workflowActionInput.isHtml
-        ? 'Content-Type: text/html; charset="UTF-8"'
-        : 'Content-Type: text/plain; charset="UTF-8"',
-      '',
-      safeBody,
-    ].join('\n');
-
-    const encodedMessage = Buffer.from(message).toString('base64');
-
-    await emailProvider.users.messages.send({
-      userId: 'me',
-      requestBody: {
-        raw: encodedMessage,
-        threadId: workflowActionInput.externalThreadId,
-        payload: {
-          headers: [
-            {
-              name: 'In-Reply-To',
-              value: workflowActionInput.inReplyTo || '',
-            },
-            {
-              name: 'References',
-              value: workflowActionInput.references?.join(' ') || '',
-            },
-          ],
-        },
+    this.messagingSendMessageService.sendMessage(
+      {
+        body: safeBody,
+        subject: safeSubject,
+        to: email,
+        isHtml: workflowActionInput.isHtml,
+        inReplyTo: workflowActionInput.inReplyTo,
+        references: workflowActionInput.references,
+        externalThreadId: workflowActionInput.externalThreadId,
       },
-    });
-
-    // `In-Reply-To: ${workflowActionInput.inReplyTo || ''}`,
-    // `References: ${workflowActionInput.references?.join(' ') || ''}`,
+      connectedAccount,
+    );
 
     this.logger.log(`Email sent successfully`);
 
     return {
       result: { success: true } satisfies WorkflowSendEmailStepOutputSchema,
     };
-  }
-
-  private encodeSubject(subject: string): string {
-    // eslint-disable-next-line no-control-regex
-    if (/[^\x00-\x7F]/.test(subject)) {
-      return '=?UTF-8?B?' + Buffer.from(subject).toString('base64') + '?=';
-    }
-
-    return subject;
   }
 }

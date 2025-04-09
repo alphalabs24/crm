@@ -11,6 +11,10 @@ interface SendMessageInput {
   body: string;
   subject: string;
   to: string;
+  isHtml?: boolean;
+  inReplyTo?: string;
+  references?: string[];
+  externalThreadId?: string;
 }
 
 @Injectable()
@@ -31,9 +35,11 @@ export class MessagingSendMessageService {
 
         const message = [
           `To: ${sendMessageInput.to}`,
-          `Subject: ${sendMessageInput.subject}`,
+          `Subject: ${this.encodeSubject(sendMessageInput.subject || '')}`,
           'MIME-Version: 1.0',
-          'Content-Type: text/plain; charset="UTF-8"',
+          sendMessageInput.isHtml
+            ? 'Content-Type: text/html; charset="UTF-8"'
+            : 'Content-Type: text/plain; charset="UTF-8"',
           '',
           sendMessageInput.body,
         ].join('\n');
@@ -78,5 +84,14 @@ export class MessagingSendMessageService {
           `Provider ${connectedAccount.provider} not supported for sending messages`,
         );
     }
+  }
+
+  private encodeSubject(subject: string): string {
+    // eslint-disable-next-line no-control-regex
+    if (/[^\x00-\x7F]/.test(subject)) {
+      return '=?UTF-8?B?' + Buffer.from(subject).toString('base64') + '?=';
+    }
+
+    return subject;
   }
 }
