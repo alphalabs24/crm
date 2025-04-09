@@ -61,7 +61,7 @@ import { useRedirectToWorkspaceDomain } from '@/domain-manager/hooks/useRedirect
 import { domainConfigurationState } from '@/domain-manager/states/domainConfigurationState';
 import { isAppWaitingForFreshObjectMetadataState } from '@/object-metadata/states/isAppWaitingForFreshObjectMetadataState';
 import { workspaceAuthProvidersState } from '@/workspace/states/workspaceAuthProvidersState';
-import { i18n } from '@lingui/core';
+import { useLingui } from '@lingui/react/macro';
 import { useSearchParams } from 'react-router-dom';
 import { getWorkspaceUrl } from '~/utils/getWorkspaceUrl';
 import { dynamicActivate } from '~/utils/i18n/dynamicActivate';
@@ -72,6 +72,7 @@ export const useAuth = () => {
   const setCurrentWorkspaceMember = useSetRecoilState(
     currentWorkspaceMemberState,
   );
+  const { i18n } = useLingui();
   const setCurrentUserWorkspace = useSetRecoilState(currentUserWorkspaceState);
   const setIsAppWaitingForFreshObjectMetadataState = useSetRecoilState(
     isAppWaitingForFreshObjectMetadataState,
@@ -430,6 +431,7 @@ export const useAuth = () => {
               loginToken: signUpResult.data.signUp.loginToken.token,
             }),
             email,
+            locale: i18n.locale,
           },
         );
       }
@@ -448,6 +450,7 @@ export const useAuth = () => {
       setSearchParams,
       isEmailVerificationRequired,
       redirectToWorkspaceDomain,
+      i18n.locale,
     ],
   );
 
@@ -481,9 +484,11 @@ export const useAuth = () => {
         url.searchParams.set('workspaceId', workspacePublicData.id);
       }
 
+      url.searchParams.set('locale', i18n.locale);
+
       return url.toString();
     },
-    [workspacePublicData],
+    [workspacePublicData, i18n.locale],
   );
 
   const handleGoogleLogin = useCallback(

@@ -2,7 +2,9 @@ import { fromNavigator, fromStorage, fromUrl } from '@lingui/detect-locale';
 import { APP_LOCALES, isDefined, isValidLocale } from 'twenty-shared';
 import { dynamicActivate } from '~/utils/i18n/dynamicActivate';
 
-const mapNavigatorLocaleToLocale = (navigatorLocale: string) => {
+const mapNavigatorLocaleToLocale = (navigatorLocale?: string) => {
+  if (!isDefined(navigatorLocale)) return null;
+
   switch (navigatorLocale) {
     case 'en':
       return APP_LOCALES.en;
@@ -13,7 +15,7 @@ const mapNavigatorLocaleToLocale = (navigatorLocale: string) => {
     case 'it':
       return APP_LOCALES['it-IT'];
     default:
-      return APP_LOCALES.en;
+      return null;
   }
 };
 
@@ -21,7 +23,6 @@ export const initialI18nActivate = () => {
   const urlLocale = fromUrl('locale');
   const storageLocale = fromStorage('locale');
   const navigatorLocale = fromNavigator();
-
   let locale: keyof typeof APP_LOCALES = APP_LOCALES.en;
 
   if (isDefined(urlLocale) && isValidLocale(urlLocale)) {
@@ -36,9 +37,13 @@ export const initialI18nActivate = () => {
     locale = storageLocale;
   } else if (
     isDefined(navigatorLocale) &&
-    isValidLocale(mapNavigatorLocaleToLocale(navigatorLocale))
+    // Test for prefix and suffix locale (e.g. de-CH)
+    (isValidLocale(mapNavigatorLocaleToLocale(navigatorLocale.split('-')[0])) ||
+      isValidLocale(mapNavigatorLocaleToLocale(navigatorLocale.split('-')[1])))
   ) {
-    locale = mapNavigatorLocaleToLocale(navigatorLocale);
+    locale =
+      mapNavigatorLocaleToLocale(navigatorLocale.split('-')[0]) ??
+      APP_LOCALES.en;
   }
 
   dynamicActivate(locale);

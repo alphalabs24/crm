@@ -1,3 +1,4 @@
+import { useProviderGuard } from '@/onboarding/hooks/useProviderGuard';
 import React from 'react';
 import { PropertyPlatformMetricsEffect } from '../effect-components/PropertyPlatformMetricsEffect';
 import { PublicationMetricsEffect } from '../effect-components/PublicationMetricsEffect';
@@ -6,6 +7,10 @@ import { PublicationMetricsEffect } from '../effect-components/PublicationMetric
 export const NestermindDataProvider = ({
   children,
 }: React.PropsWithChildren) => {
+  const blockProvider = useProviderGuard();
+
+  if (blockProvider) return children;
+
   return (
     <>
       <PublicationMetricsEffect />
