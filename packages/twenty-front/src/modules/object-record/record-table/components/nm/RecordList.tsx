@@ -50,7 +50,7 @@ import { formatAmount } from '~/utils/format/formatAmount';
 import { RecordListDataLoaderEffect } from './RecordListDataLoaderEffect';
 import { RecordListSkeletonLoader } from './RecordListSkeletonLoader';
 
-const StyledListContainer = styled.div<{ empty: boolean }>`
+const StyledListContainer = styled.div<{ empty?: boolean }>`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(2)};
