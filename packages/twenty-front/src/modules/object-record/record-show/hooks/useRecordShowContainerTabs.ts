@@ -76,10 +76,10 @@ export const useRecordShowContainerTabs = (
           title: 'Publications',
           position: 0,
           Icon: IconHomeShare,
-          cards: [{ type: CardType.MobilePublicationsCard }],
+          cards: [{ type: CardType.PublicationListCard }],
           hide: {
             ifMobile: false,
-            ifDesktop: true,
+            ifDesktop: false,
             ifInRightDrawer: false,
             ifFeaturesDisabled: [],
             ifRequiredObjectsInactive: [],

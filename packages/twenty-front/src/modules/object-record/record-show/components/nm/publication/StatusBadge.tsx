@@ -1,18 +1,19 @@
+import { PublicationStage } from '@/object-record/record-show/constants/PublicationStage';
 import styled from '@emotion/styled';
 
 const StyledBadge = styled.div<{ status: string; size: 'small' | 'medium' }>`
   align-items: center;
   background: ${({ theme, status }) => {
-    switch (status.toLowerCase()) {
-      case 'draft':
+    switch (status) {
+      case PublicationStage.Draft:
         return theme.tag.background.gray;
-      case 'published':
+      case PublicationStage.Published:
         return theme.tag.background.green;
-      case 'scheduled':
+      case PublicationStage.Scheduled:
         return theme.tag.background.blue;
-      case 'archived':
+      case PublicationStage.Archived:
         return theme.tag.background.gray;
-      case 'rejected':
+      case PublicationStage.Rejected:
         return theme.tag.background.red;
       default:
         return theme.tag.background.gray;
@@ -21,16 +22,16 @@ const StyledBadge = styled.div<{ status: string; size: 'small' | 'medium' }>`
   border-radius: ${({ theme, size }) =>
     size === 'small' ? theme.border.radius.xs : theme.border.radius.sm};
   color: ${({ theme, status }) => {
-    switch (status.toLowerCase()) {
-      case 'draft':
+    switch (status) {
+      case PublicationStage.Draft:
         return theme.tag.text.gray;
-      case 'published':
+      case PublicationStage.Published:
         return theme.tag.text.green;
-      case 'scheduled':
+      case PublicationStage.Scheduled:
         return theme.tag.text.blue;
-      case 'archived':
+      case PublicationStage.Archived:
         return theme.tag.text.gray;
-      case 'rejected':
+      case PublicationStage.Rejected:
         return theme.tag.text.red;
       default:
         return theme.tag.text.gray;
@@ -47,21 +48,13 @@ const StyledBadge = styled.div<{ status: string; size: 'small' | 'medium' }>`
       : `${theme.spacing(1)} ${theme.spacing(2)}`};
 `;
 
-enum Status {
-  Draft = 'Draft',
-  Published = 'Published',
-  Scheduled = 'Scheduled',
-  Archived = 'Archived',
-  Rejected = 'Rejected',
-}
-
 type StatusBadgeProps = {
-  status?: Status | null | string;
+  status?: PublicationStage | null | string;
   size?: 'small' | 'medium';
 };
 
 export const StatusBadge = ({
-  status = Status.Draft,
+  status = PublicationStage.Draft,
   size = 'medium',
 }: StatusBadgeProps) => {
   if (!status) {

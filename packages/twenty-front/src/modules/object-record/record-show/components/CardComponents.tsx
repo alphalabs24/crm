@@ -9,6 +9,7 @@ import { FieldsCard } from '@/object-record/record-show/components/FieldsCard';
 import { AISuite } from '@/object-record/record-show/components/nm/AISuite';
 import { MobileInquiriesCard } from '@/object-record/record-show/components/nm/cards/MobileInquiriesCard';
 import { MobilePublicationsCard } from '@/object-record/record-show/components/nm/cards/MobilePublicationsCard';
+import { PublicationList } from '@/object-record/record-show/components/nm/cards/PublicationList';
 import { PropertyDetails } from '@/object-record/record-show/components/nm/PropertyDetails';
 import { PublicationDetails } from '@/object-record/record-show/components/nm/PublicationDetails';
 
@@ -136,5 +137,9 @@ export const CardComponents: Record<CardType, CardComponentType> = {
 
   [CardType.MobilePublicationsCard]: ({ targetableObject }) => (
     <MobilePublicationsCard targetableObject={targetableObject} />
+  ),
+
+  [CardType.PublicationListCard]: ({ targetableObject }) => (
+    <PublicationList targetableObject={targetableObject} />
   ),
 };

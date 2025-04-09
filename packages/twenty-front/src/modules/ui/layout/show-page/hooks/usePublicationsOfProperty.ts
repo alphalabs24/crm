@@ -3,6 +3,8 @@ import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSi
 import { useFindManyRecords } from '@/object-record/hooks/useFindManyRecords';
 import deepEqual from 'deep-equal';
 import { useMemo } from 'react';
+import { PublicationStage } from '~/modules/object-record/record-show/constants/PublicationStage';
+import { PlatformId } from '~/modules/ui/layout/show-page/components/nm/types/Platform';
 
 type Stage = 'draft' | 'published' | 'archived' | 'scheduled' | 'overwritten';
 
@@ -14,7 +16,11 @@ export const usePublicationsOfProperty = (
     nameSingular: CoreObjectNameSingular.Property,
   });
 
-  const { records: publications, refetch } = useFindManyRecords({
+  const {
+    records: publications,
+    refetch,
+    loading,
+  } = useFindManyRecords({
     objectNameSingular: CoreObjectNameSingular.Publication,
     filter: {
       ...(propertyId
@@ -28,9 +34,35 @@ export const usePublicationsOfProperty = (
     return deepEqual(pub1, pub2, { strict: true });
   };
 
+  const publicationGroups = useMemo(() => {
+    return publications.reduce(
+      (groups: Record<PlatformId, Record<string, any[]>>, publication: any) => {
+        const platform = publication.platform as PlatformId;
+        const publicationStage = publication.stage as PublicationStage;
+        if (!groups[platform]) {
+          groups[platform] = {
+            all: [],
+          };
+        }
+
+        if (!groups[platform][publicationStage]) {
+          groups[platform][publicationStage] = [];
+        }
+
+        groups[platform][publicationStage].push(publication);
+        groups[platform].all.push(publication);
+
+        return groups;
+      },
+      {} as Record<PlatformId, Record<string, any[]>>,
+    );
+  }, [publications]);
+
   return {
     publications,
+    publicationGroups,
     arePublicationsEqual,
     refetch,
+    loading,
   };
 };
