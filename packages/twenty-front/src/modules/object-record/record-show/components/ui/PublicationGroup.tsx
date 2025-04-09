@@ -2,16 +2,13 @@ import { PlatformBadge } from '@/object-record/record-show/components/nm/publica
 import { StatusBadge } from '@/object-record/record-show/components/nm/publication/StatusBadge';
 import { PublicationStage } from '@/object-record/record-show/constants/PublicationStage';
 import { ObjectRecord } from '@/object-record/types/ObjectRecord';
-import { Dropdown } from '@/ui/layout/dropdown/components/Dropdown';
-import { DropdownMenuItemsContainer } from '@/ui/layout/dropdown/components/DropdownMenuItemsContainer';
 import {
     PlatformId,
     PLATFORMS,
 } from '@/ui/layout/show-page/components/nm/types/Platform';
+import { useDraftPublishedDifferences } from '@/ui/layout/show-page/hooks/useDraftPublishedDifferences';
 import styled from '@emotion/styled';
-import { useLingui } from '@lingui/react/macro';
-import { useCallback } from 'react';
-import { IconButton, IconDots, IconTrash, MenuItem } from 'twenty-ui';
+import { IconButton, IconRefresh } from 'twenty-ui';
 
 const StyledPublicationGroupContainer = styled.button`
   background-color: ${({ theme }) => theme.background.primary};
@@ -77,25 +74,41 @@ const StyledPlatformInfo = styled.div`
   gap: ${({ theme }) => theme.spacing(1)};
 `;
 
+const StyledDifferenceBadge = styled.div`
+  align-items: center;
+  background-color: ${({ theme }) => theme.background.primary};
+  border-radius: ${({ theme }) => theme.border.radius.sm};
+  color: ${({ theme }) => theme.color.blue};
+  border: 1px solid ${({ theme }) => theme.color.blue};
+  display: flex;
+  font-size: ${({ theme }) => theme.font.size.sm};
+  gap: ${({ theme }) => theme.spacing(1)};
+  padding: ${({ theme }) => theme.spacing(1, 2)};
+`;
+
+const StyledDifferenceText = styled.span`
+  font-weight: ${({ theme }) => theme.font.weight.medium};
+`;
+
 type PublicationGroupProps = {
   platform: PlatformId;
-  records: ObjectRecord[];
+  draftRecord?: ObjectRecord;
+  publishedRecord?: ObjectRecord;
   stage?: PublicationStage;
   onClick?: () => void;
 };
 
 export const PublicationGroup = ({
   platform,
-  records,
+  draftRecord,
+  publishedRecord,
   stage,
   onClick,
 }: PublicationGroupProps) => {
-  const dropdownId = `publication-group-${platform}`;
-  const { t } = useLingui();
-
-  const unpublish = useCallback(() => {
-    console.log('unpublish');
-  }, []);
+  const { hasDifferences, totalDifferenceCount } = useDraftPublishedDifferences(
+    draftRecord,
+    publishedRecord,
+  );
 
   return (
     <StyledPublicationGroupContainer onClick={onClick}>
@@ -114,32 +127,19 @@ export const PublicationGroup = ({
         </StyledPublicationGroupHeaderLeft>
 
         <StyledPublicationGroupHeaderRight>
-          {stage && <StatusBadge status={stage} />}
-          <StyledActionsSection className="actions-dropdown">
-            <Dropdown
-              dropdownId={dropdownId}
-              clickableComponent={
-                <StyledIconButton
-                  Icon={IconDots}
-                  variant="tertiary"
-                  size="small"
-                />
-              }
-              dropdownComponents={
-                <DropdownMenuItemsContainer>
-                  <MenuItem
-                    text={t`Unpublish`}
-                    LeftIcon={IconTrash}
-                    onClick={unpublish}
-                    accent="danger"
-                  />
-                </DropdownMenuItemsContainer>
-              }
-              dropdownHotkeyScope={{
-                scope: dropdownId,
-              }}
-            />
-          </StyledActionsSection>
+          {hasDifferences ? (
+            <StyledDifferenceBadge>
+              <IconRefresh size={12} />
+
+              <StyledDifferenceText>
+                {totalDifferenceCount === 1
+                  ? '1 unpublished change'
+                  : `${totalDifferenceCount} unpublished changes`}
+              </StyledDifferenceText>
+            </StyledDifferenceBadge>
+          ) : (
+            stage && <StatusBadge status={stage} />
+          )}
         </StyledPublicationGroupHeaderRight>
       </StyledPublicationGroupHeader>
     </StyledPublicationGroupContainer>

@@ -1,7 +1,13 @@
 import { AgencyCredential } from '@/publishers/components/modals/EditPublisherModal';
+import styled from '@emotion/styled';
 import { Trans } from '@lingui/react/macro';
 import { Link } from 'react-router-dom';
 import { ColorScheme } from 'twenty-ui';
+
+const StyledLink = styled(Link)`
+  color: ${({ theme }) => theme.color.blue};
+  text-decoration: underline;
+`;
 
 export type PlatformType = 'social_media' | 'real_estate' | 'smart_listing';
 
@@ -66,9 +72,9 @@ export const PLATFORMS: { [key in PlatformId]: Platform } = {
       <Trans>
         List your property conveniently to newhome.ch. If you don't have newhome
         credentials, create a new account{' '}
-        <Link to="https://id.newhome.ch/Registration" target="_blank">
+        <StyledLink to="https://id.newhome.ch/Registration" target="_blank">
           here
-        </Link>{' '}
+        </StyledLink>{' '}
         and set up an IDX interface by clicking on 'Import interfaces'.
       </Trans>
     ),
@@ -208,12 +214,12 @@ export const PLATFORMS: { [key in PlatformId]: Platform } = {
       <Trans>
         List your property on Comparis. If you don't have Comparis credentials,
         contact Comparis{' '}
-        <Link
+        <StyledLink
           to="https://www.comparis.ch/immobilien/inserieren/loesungen-fuer-agenturen"
           target="_blank"
         >
           here
-        </Link>{' '}
+        </StyledLink>{' '}
         by clicking the 'Get in touch' button under 'Import via Real Estate
         Software (CRM)'.
       </Trans>

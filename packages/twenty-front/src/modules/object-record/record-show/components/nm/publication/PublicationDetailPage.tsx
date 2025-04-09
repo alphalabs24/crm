@@ -32,13 +32,13 @@ import { useMemo, useRef, useState } from 'react';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { capitalize } from 'twenty-shared';
 import {
-    Button,
-    IconCloudOff,
-    IconPencil,
-    IconTrash,
-    IconUpload,
-    LARGE_DESKTOP_VIEWPORT,
-    MOBILE_VIEWPORT,
+  Button,
+  IconCloudOff,
+  IconPencil,
+  IconTrash,
+  IconUpload,
+  LARGE_DESKTOP_VIEWPORT,
+  MOBILE_VIEWPORT,
 } from 'twenty-ui';
 
 const StyledPageContainer = styled.div<{ isInRightDrawer?: boolean }>`
@@ -189,10 +189,6 @@ export const PublicationDetailPage = ({
     isPending: isDuplicatePending,
   } = useMutations.useDuplicatePublication({
     onSuccess: (response: AxiosResponse<string>) => {
-      enqueueSnackBar(t`Publication Draft created successfully`, {
-        variant: SnackBarVariant.Success,
-      });
-
       const route = `${getLinkToShowPage(CoreObjectNameSingular.Publication, {
         id: response.data,
       })}/edit`;

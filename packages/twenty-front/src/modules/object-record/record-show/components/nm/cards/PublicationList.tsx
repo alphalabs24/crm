@@ -172,14 +172,15 @@ export const PublicationList = ({ targetableObject }: PublicationListProps) => {
               <PublicationGroup
                 key={platform}
                 platform={platform as PlatformId}
-                records={
+                draftRecord={
                   publicationGroups[platform as PlatformId][
-                    computeStage(
-                      publicationGroups[platform as PlatformId][
-                        PublicationStage.Published
-                      ],
-                    )
-                  ]
+                    PublicationStage.Draft
+                  ]?.[0]
+                }
+                publishedRecord={
+                  publicationGroups[platform as PlatformId][
+                    PublicationStage.Published
+                  ]?.[0]
                 }
                 onClick={() => handlePlatformClick(platform as PlatformId)}
                 stage={computeStage(

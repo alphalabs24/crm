@@ -236,7 +236,8 @@ export const UnsavedChangesProvider = ({
     }
 
     // Store the pending navigation and show the modal
-    setPendingNavigation(nextLocation.pathname);
+    const fullPath = `${nextLocation.pathname}${nextLocation.search}${nextLocation.hash}`;
+    setPendingNavigation(fullPath);
     openUnsavedChangesModal();
     return true;
   });

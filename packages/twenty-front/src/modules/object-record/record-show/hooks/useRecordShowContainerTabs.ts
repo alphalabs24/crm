@@ -13,9 +13,9 @@ import { useRecoilValue } from 'recoil';
 import {
   IconCalendarEvent,
   IconCheckbox,
+  IconHome,
   IconHomeShare,
   IconLayoutDashboard,
-  IconList,
   IconMail,
   IconMessageCircle2,
   IconNotes,
@@ -45,7 +45,7 @@ export const useRecordShowContainerTabs = (
     [CoreObjectNameSingular.Property]: {
       tabs: {
         overview: {
-          title: 'Overview',
+          title: 'Property',
           hide: {
             ifMobile: false,
             ifDesktop: false,
@@ -54,23 +54,9 @@ export const useRecordShowContainerTabs = (
             ifRequiredObjectsInactive: [],
             ifRelationsMissing: ['noteTargets', 'taskTargets'],
           },
-          Icon: IconList,
+          Icon: IconHome,
           position: 0,
           cards: [{ type: CardType.OverviewCard }],
-        },
-        inquiries: {
-          title: 'Inquiries',
-          position: 0,
-          Icon: IconMessageCircle2,
-          cards: [{ type: CardType.MobileInquiriesCard }],
-          hide: {
-            ifMobile: false,
-            ifDesktop: true,
-            ifInRightDrawer: false,
-            ifFeaturesDisabled: [],
-            ifRequiredObjectsInactive: [],
-            ifRelationsMissing: [],
-          },
         },
         publications: {
           title: 'Publications',
@@ -80,6 +66,20 @@ export const useRecordShowContainerTabs = (
           hide: {
             ifMobile: false,
             ifDesktop: false,
+            ifInRightDrawer: false,
+            ifFeaturesDisabled: [],
+            ifRequiredObjectsInactive: [],
+            ifRelationsMissing: [],
+          },
+        },
+        inquiries: {
+          title: 'Inquiries',
+          position: 0,
+          Icon: IconMessageCircle2,
+          cards: [{ type: CardType.MobileInquiriesCard }],
+          hide: {
+            ifMobile: false,
+            ifDesktop: true,
             ifInRightDrawer: false,
             ifFeaturesDisabled: [],
             ifRequiredObjectsInactive: [],

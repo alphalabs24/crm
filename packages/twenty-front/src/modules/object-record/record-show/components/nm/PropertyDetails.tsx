@@ -28,11 +28,10 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Trans, useLingui } from '@lingui/react/macro';
 import { useMemo, useRef, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { capitalize } from 'twenty-shared';
 import {
   Button,
-  IconChevronRight,
   IconPencil,
   IconRefresh,
   IconTrash,
@@ -127,20 +126,6 @@ const StyledButtonContainer = styled.div`
   margin-left: auto;
 `;
 
-const StyledBreadcrumb = styled.div`
-  align-items: center;
-  display: flex;
-  color: ${({ theme }) => theme.font.color.primary};
-  font-size: ${({ theme }) => theme.font.size.md};
-  gap: ${({ theme }) => theme.spacing(1)};
-`;
-
-const StyledBreadcrumbIcon = styled.div`
-  align-items: center;
-  color: ${({ theme }) => theme.font.color.tertiary};
-  display: flex;
-`;
-
 const StyledPageContainer = styled.div<{ isInRightDrawer?: boolean }>`
   display: flex;
   flex-direction: column;
@@ -161,24 +146,6 @@ export const StyledComingSoonText = styled.div`
   color: ${({ theme }) => theme.font.color.secondary};
 `;
 
-const PropertyBreadcrumb = () => {
-  const { t } = useLingui();
-
-  return (
-    <StyledBreadcrumb>
-      <StyledLinkWrapper to="/properties">
-        <Trans>Properties</Trans>
-      </StyledLinkWrapper>
-      <StyledBreadcrumbIcon>
-        <IconChevronRight size={16} />
-      </StyledBreadcrumbIcon>
-      <div>
-        <Trans>Property Details</Trans>
-      </div>
-    </StyledBreadcrumb>
-  );
-};
-
 type PropertyDetailsProps = {
   targetableObject: Pick<
     ActivityTargetableObject,
@@ -192,7 +159,6 @@ export const PropertyDetails = ({
   isInRightDrawer,
 }: PropertyDetailsProps) => {
   const isMobile = useIsMobile();
-  const navigate = useNavigate();
   const { t } = useLingui();
   const { enqueueSnackBar } = useSnackBar();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -296,6 +262,8 @@ export const PropertyDetails = ({
         : '',
     [differenceRecords],
   );
+
+  console.log(differenceLength);
 
   // Determine visibility of buttons based on state
   const showDeleteButton = useMemo(

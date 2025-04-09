@@ -137,9 +137,6 @@ export const ShowPagePropertySubContainer = ({
     isPending: isDuplicatePending,
   } = useMutations.useDuplicatePublication({
     onSuccess: (response: AxiosResponse<string>) => {
-      enqueueSnackBar(t`Publication Draft created successfully`, {
-        variant: SnackBarVariant.Success,
-      });
       refetchPublications();
 
       const route = `${getLinkToShowPage(CoreObjectNameSingular.Publication, {
