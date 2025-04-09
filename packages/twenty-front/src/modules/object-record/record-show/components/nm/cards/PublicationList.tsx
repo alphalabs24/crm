@@ -8,11 +8,12 @@ import {
     PUBLISHABLE_PLATFORMS,
 } from '@/ui/layout/show-page/components/nm/types/Platform';
 import { usePublicationsOfProperty } from '@/ui/layout/show-page/hooks/usePublicationsOfProperty';
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Trans } from '@lingui/react/macro';
-import { useMemo } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { LARGE_DESKTOP_VIEWPORT } from 'twenty-ui';
+import { useEffect, useMemo } from 'react';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { LARGE_DESKTOP_VIEWPORT, MOBILE_VIEWPORT } from 'twenty-ui';
 
 const StyledPublicationListContainer = styled.div`
   color: ${({ theme }) => theme.font.color.primary};
@@ -35,10 +36,37 @@ const StyledSection = styled.div`
   gap: ${({ theme }) => theme.spacing(4)};
 `;
 
-const StyledSectionList = styled.div`
+const StyledSectionList = styled.div<{ horizontal?: boolean }>`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(2)};
+  flex-wrap: wrap;
+
+  ${({ horizontal }) =>
+    horizontal &&
+    css`
+      display: grid;
+      grid-template-columns: 1fr;
+    `}
+
+  @media (min-width: ${MOBILE_VIEWPORT}px) {
+    ${({ horizontal }) =>
+      horizontal &&
+      css`
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+      `}
+  }
+
+  @media (min-width: ${MOBILE_VIEWPORT + 300}px) {
+    ${({ horizontal }) =>
+      horizontal &&
+      css`
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+      `}
+  }
 `;
 
 const StyledSectionTitle = styled.span`
@@ -64,12 +92,15 @@ type PublicationListProps = {
 };
 
 export const PublicationList = ({ targetableObject }: PublicationListProps) => {
-  const { publicationGroups, loading } = usePublicationsOfProperty(
+  const { publicationGroups, loading, refetch } = usePublicationsOfProperty(
     targetableObject.id,
   );
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const selectedPlatformId = searchParams.get('platform') as PlatformId;
+  const currentHash = location.hash;
 
   const unpublishedPublishablePlatforms = useMemo(() => {
     return PUBLISHABLE_PLATFORMS.filter((platform) => {
@@ -79,22 +110,45 @@ export const PublicationList = ({ targetableObject }: PublicationListProps) => {
 
   // TODO: Add Diff Indicator Stage (e.g. has unpublished changes)
   const computeStage = (publishedRecords?: Record<string, any>[]) => {
-    if (publishedRecords?.length === 0) {
+    if (!publishedRecords || publishedRecords.length === 0) {
       return PublicationStage.Draft;
     }
 
     return PublicationStage.Published;
   };
 
+  // Update URL with platform parameter while preserving hash fragment
   const handlePlatformClick = (platformId: PlatformId) => {
-    setSearchParams({ platform: platformId });
+    // Create a new URLSearchParams object to update the query params
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set('platform', platformId);
+
+    // Construct the new URL with both search params and hash
+    navigate({
+      pathname: location.pathname,
+      search: newParams.toString(),
+      hash: currentHash,
+    });
   };
 
-  if (selectedPlatformId) {
+  // Restore the hash when coming back from PublicationDetailPage
+  useEffect(() => {
+    // This ensures hash is properly restored after navigation
+    if (currentHash && !selectedPlatformId) {
+      const tabElement = document.querySelector(currentHash);
+      if (tabElement) {
+        tabElement.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  }, [selectedPlatformId, currentHash]);
+
+  if (selectedPlatformId && publicationGroups?.[selectedPlatformId]) {
     return (
       <PublicationDetailPage
-        publicationGroup={publicationGroups?.[selectedPlatformId]}
-        stage={computeStage(publicationGroups?.[selectedPlatformId]?.published)}
+        publicationGroup={publicationGroups[selectedPlatformId]}
+        stage={computeStage(
+          publicationGroups[selectedPlatformId][PublicationStage.Published],
+        )}
         recordLoading={loading}
         isInRightDrawer={false}
       />
@@ -103,61 +157,73 @@ export const PublicationList = ({ targetableObject }: PublicationListProps) => {
 
   return (
     <StyledPublicationListContainer>
-      <StyledSection>
-        <StyledPublicationListHeader>
-          <StyledSectionTitle>
-            <Trans>Your publications</Trans>
-          </StyledSectionTitle>
-          <StyledSectionDescription>
-            <Trans>
-              Here you can see all your publications and add new ones.
-            </Trans>
-          </StyledSectionDescription>
-        </StyledPublicationListHeader>
-        <StyledSectionList>
-          {Object.keys(publicationGroups).map((platform) => (
-            <PublicationGroup
-              key={platform}
-              platform={platform as PlatformId}
-              records={
-                publicationGroups[platform as PlatformId][
-                  computeStage(
-                    publicationGroups[platform as PlatformId]?.published,
-                  )
-                ]
-              }
-              onClick={() => handlePlatformClick(platform as PlatformId)}
-              stage={computeStage(
-                publicationGroups[platform as PlatformId]?.published,
-              )}
-            />
-          ))}
-        </StyledSectionList>
-      </StyledSection>
-
-      <StyledPublicationListDivider />
-
-      <StyledSection>
-        <StyledPublicationListHeader>
-          <StyledSectionTitle>
-            <Trans>New publication</Trans>
-          </StyledSectionTitle>
-          <StyledSectionDescription>
-            <Trans>Publish your property on a new platform.</Trans>
-          </StyledSectionDescription>
-        </StyledPublicationListHeader>
-        {unpublishedPublishablePlatforms.length > 0 && (
+      {Object.keys(publicationGroups).length > 0 && (
+        <StyledSection>
+          <StyledPublicationListHeader>
+            <StyledSectionTitle>
+              <Trans>Your publications</Trans>
+            </StyledSectionTitle>
+            <StyledSectionDescription>
+              <Trans>Here you can see all your publications.</Trans>
+            </StyledSectionDescription>
+          </StyledPublicationListHeader>
           <StyledSectionList>
+            {Object.keys(publicationGroups).map((platform) => (
+              <PublicationGroup
+                key={platform}
+                platform={platform as PlatformId}
+                records={
+                  publicationGroups[platform as PlatformId][
+                    computeStage(
+                      publicationGroups[platform as PlatformId][
+                        PublicationStage.Published
+                      ],
+                    )
+                  ]
+                }
+                onClick={() => handlePlatformClick(platform as PlatformId)}
+                stage={computeStage(
+                  publicationGroups[platform as PlatformId][
+                    PublicationStage.Published
+                  ],
+                )}
+              />
+            ))}
+          </StyledSectionList>
+        </StyledSection>
+      )}
+
+      {Object.keys(publicationGroups).length > 0 &&
+        unpublishedPublishablePlatforms.length > 0 && (
+          <>
+            <StyledPublicationListDivider />
+          </>
+        )}
+
+      {unpublishedPublishablePlatforms.length > 0 && (
+        <StyledSection>
+          <StyledPublicationListHeader>
+            <StyledSectionTitle>
+              <Trans>New publication</Trans>
+            </StyledSectionTitle>
+            <StyledSectionDescription>
+              <Trans>Publish your property on a new platform.</Trans>
+            </StyledSectionDescription>
+          </StyledPublicationListHeader>
+
+          <StyledSectionList horizontal>
             {unpublishedPublishablePlatforms.map((platform) => (
               <NewPublicationCard
                 key={platform}
                 platform={platform}
                 onClick={() => {}}
+                propertyId={targetableObject.id}
+                refetchCallback={refetch}
               />
             ))}
           </StyledSectionList>
-        )}
-      </StyledSection>
+        </StyledSection>
+      )}
     </StyledPublicationListContainer>
   );
 };

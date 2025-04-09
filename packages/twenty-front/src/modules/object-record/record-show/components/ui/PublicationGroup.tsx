@@ -2,13 +2,16 @@ import { PlatformBadge } from '@/object-record/record-show/components/nm/publica
 import { StatusBadge } from '@/object-record/record-show/components/nm/publication/StatusBadge';
 import { PublicationStage } from '@/object-record/record-show/constants/PublicationStage';
 import { ObjectRecord } from '@/object-record/types/ObjectRecord';
+import { Dropdown } from '@/ui/layout/dropdown/components/Dropdown';
+import { DropdownMenuItemsContainer } from '@/ui/layout/dropdown/components/DropdownMenuItemsContainer';
 import {
     PlatformId,
     PLATFORMS,
 } from '@/ui/layout/show-page/components/nm/types/Platform';
-import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
-import { IconChevronRight } from 'twenty-ui';
+import { useLingui } from '@lingui/react/macro';
+import { useCallback } from 'react';
+import { IconButton, IconDots, IconTrash, MenuItem } from 'twenty-ui';
 
 const StyledPublicationGroupContainer = styled.button`
   background-color: ${({ theme }) => theme.background.primary};
@@ -30,6 +33,10 @@ const StyledPublicationGroupHeader = styled.div`
   align-items: center;
   display: flex;
   justify-content: space-between;
+`;
+
+const StyledActionsSection = styled.div`
+  margin-left: ${({ theme }) => theme.spacing(2)};
 `;
 
 const StyledPublicationGroupHeaderLeft = styled.div`
@@ -58,10 +65,10 @@ const StyledPropertyImageContainer = styled.div`
   background-color: ${({ theme }) => theme.background.tertiary};
 `;
 
-const StyledPropertyImage = styled.img`
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
+const StyledIconButton = styled(IconButton)`
+  &:hover {
+    background: ${({ theme }) => theme.background.transparent.light};
+  }
 `;
 
 const StyledPlatformInfo = styled.div`
@@ -83,7 +90,12 @@ export const PublicationGroup = ({
   stage,
   onClick,
 }: PublicationGroupProps) => {
-  const theme = useTheme();
+  const dropdownId = `publication-group-${platform}`;
+  const { t } = useLingui();
+
+  const unpublish = useCallback(() => {
+    console.log('unpublish');
+  }, []);
 
   return (
     <StyledPublicationGroupContainer onClick={onClick}>
@@ -103,7 +115,31 @@ export const PublicationGroup = ({
 
         <StyledPublicationGroupHeaderRight>
           {stage && <StatusBadge status={stage} />}
-          <IconChevronRight size={20} color={theme.font.color.tertiary} />
+          <StyledActionsSection className="actions-dropdown">
+            <Dropdown
+              dropdownId={dropdownId}
+              clickableComponent={
+                <StyledIconButton
+                  Icon={IconDots}
+                  variant="tertiary"
+                  size="small"
+                />
+              }
+              dropdownComponents={
+                <DropdownMenuItemsContainer>
+                  <MenuItem
+                    text={t`Unpublish`}
+                    LeftIcon={IconTrash}
+                    onClick={unpublish}
+                    accent="danger"
+                  />
+                </DropdownMenuItemsContainer>
+              }
+              dropdownHotkeyScope={{
+                scope: dropdownId,
+              }}
+            />
+          </StyledActionsSection>
         </StyledPublicationGroupHeaderRight>
       </StyledPublicationGroupHeader>
     </StyledPublicationGroupContainer>

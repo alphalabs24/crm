@@ -34,7 +34,7 @@ const StyledPlatformBadge = styled.div<{
       case 'small':
         return '20px';
       default:
-        return '30px';
+        return '26px';
     }
   }};
   width: ${({ size }) => {
@@ -90,7 +90,7 @@ const StyledPlatformLogo = styled.img<{
       case 'small':
         return '50px';
       default:
-        return '70px';
+        return '65px';
     }
   }};
 `;

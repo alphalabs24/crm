@@ -28,21 +28,11 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { capitalize } from 'twenty-shared';
-import {
-  Button,
-  IconCloudOff,
-  IconPencil,
-  IconPlus,
-  IconRefresh,
-  IconTrash,
-  IconUpload,
-  MOBILE_VIEWPORT,
-} from 'twenty-ui';
+import { MOBILE_VIEWPORT } from 'twenty-ui';
 import { useDeleteProperty } from '../../hooks/useDeleteProperty';
 import { usePropertyAndPublicationDifferences } from '../../hooks/usePropertyAndPublicationDifferences';
 import { usePublicationsOfProperty } from '../../hooks/usePublicationsOfProperty';
 import { usePublicationValidation } from '../../hooks/usePublicationValidation';
-import { ActionDropdown } from './ActionDropdown';
 import { PropertyDifferencesModal } from './PropertyDifferencesModal';
 import { PublishDraftModal } from './PublishDraftModal';
 import { PlatformId } from './types/Platform';
@@ -424,80 +414,6 @@ export const ShowPagePropertySubContainer = ({
             tabs={tabs}
             isInRightDrawer={isInRightDrawer}
           />
-          <StyledButtonContainer>
-            {recordFromStore && !recordFromStore.deletedAt && (
-              <Button
-                title={t`Edit`}
-                Icon={IconPencil}
-                size="small"
-                onClick={onEditPublication}
-                disabled={
-                  isSyncPending || isDuplicatePending || isUnpublishPending
-                }
-              />
-            )}
-
-            {showDropdown && (
-              <ActionDropdown
-                dropdownId={dropdownId}
-                actions={[
-                  ...(showSyncButton // When sync button is primary
-                    ? [
-                        {
-                          title: t`New Publication`,
-                          Icon: IconPlus,
-                          onClick: handlePublishClick,
-                        },
-                      ]
-                    : []),
-                  ...(showNewPublicationButton &&
-                  publicationDraftsOfProperty.length > 0 &&
-                  !isPublication // When publication button is primary
-                    ? [
-                        {
-                          title: t`Sync Publications`,
-                          Icon: IconRefresh,
-                          onClick: syncPublications,
-                          disabled: isSyncPending,
-                        },
-                      ]
-                    : []),
-
-                  ...(showDeleteButton
-                    ? [
-                        {
-                          title: t`Delete`,
-                          Icon: IconTrash,
-                          onClick: handleDelete,
-                          distructive: true,
-                          disabled: loadingDelete,
-                        },
-                      ]
-                    : []),
-                ]}
-                primaryAction={
-                  showNewPublicationButton && showPublishButton
-                    ? {
-                        title: isPublication ? t`Publish` : t`New Publication`,
-                        Icon: isPublication ? IconUpload : IconPlus,
-                        onClick: handlePublishClick,
-                      }
-                    : showSyncButton
-                      ? {
-                          title: t`Sync Publications ${differenceLength}`,
-                          onClick: () => differencesModalRef.current?.open(),
-                        }
-                      : showUnpublishButton
-                        ? {
-                            title: t`Unpublish`,
-                            Icon: IconCloudOff,
-                            onClick: handleUnpublish,
-                          }
-                        : null
-                }
-              />
-            )}
-          </StyledButtonContainer>
         </StyledTabListContainer>
         <StyledContentContainer isInRightDrawer={isInRightDrawer}>
           {renderActiveTabContent()}
