@@ -9,6 +9,7 @@ import { Select } from '@/ui/input/components/Select';
 
 import { useRefreshObjectMetadataItems } from '@/object-metadata/hooks/useRefreshObjectMetadataItem';
 import { useLingui } from '@lingui/react/macro';
+import { useState } from 'react';
 import { APP_LOCALES, isDefined } from 'twenty-shared';
 import { dynamicActivate } from '~/utils/i18n/dynamicActivate';
 import { logError } from '~/utils/logError';
@@ -20,11 +21,21 @@ const StyledContainer = styled.div`
 `;
 
 export const LocalePicker = () => {
-  const { t } = useLingui();
+  const { t, i18n } = useLingui();
+
   const [currentWorkspaceMember, setCurrentWorkspaceMember] = useRecoilState(
     currentWorkspaceMemberState,
   );
   const isDebugMode = useRecoilValue(isDebugModeState);
+
+  // Track selected locale when workspace member isn't defined
+  const [selectedLocale, setSelectedLocale] = useState<
+    keyof typeof APP_LOCALES
+  >(
+    (currentWorkspaceMember?.locale as keyof typeof APP_LOCALES) ||
+      i18n.locale ||
+      APP_LOCALES.en,
+  );
 
   const { updateOneRecord } = useUpdateOneRecord({
     objectNameSingular: CoreObjectNameSingular.WorkspaceMember,
@@ -48,17 +59,23 @@ export const LocalePicker = () => {
     }
   };
 
-  if (!isDefined(currentWorkspaceMember)) return;
-
   const handleLocaleChange = async (value: keyof typeof APP_LOCALES) => {
-    setCurrentWorkspaceMember({
-      ...currentWorkspaceMember,
-      ...{ locale: value },
-    });
-    await updateWorkspaceMember({ locale: value });
+    if (isDefined(currentWorkspaceMember)) {
+      setCurrentWorkspaceMember({
+        ...currentWorkspaceMember,
+        ...{ locale: value },
+      });
+      await updateWorkspaceMember({ locale: value });
 
+      // Only refresh metadata if user is authenticated
+      await refreshObjectMetadataItems();
+    } else {
+      // Just update the local state when workspace member isn't defined
+      setSelectedLocale(value);
+    }
+
+    // Always update the locale regardless of authentication status
     await dynamicActivate(value);
-    await refreshObjectMetadataItems();
   };
 
   const localeOptions: Array<{
@@ -95,7 +112,11 @@ export const LocalePicker = () => {
         dropdownId="preferred-locale"
         dropdownWidthAuto
         fullWidth
-        value={currentWorkspaceMember.locale}
+        value={
+          isDefined(currentWorkspaceMember)
+            ? currentWorkspaceMember.locale
+            : selectedLocale
+        }
         options={localeOptions}
         onChange={(value) =>
           handleLocaleChange(value as keyof typeof APP_LOCALES)

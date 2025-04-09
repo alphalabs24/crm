@@ -20,7 +20,7 @@ import { useDropdown } from '@/ui/layout/dropdown/hooks/useDropdown';
 import { DragSelect } from '@/ui/utilities/drag-select/components/DragSelect';
 import { useClickOutsideListener } from '@/ui/utilities/pointer-event/hooks/useClickOutsideListener';
 import { useRecoilComponentValueV2 } from '@/ui/utilities/state/component-state/hooks/useRecoilComponentValueV2';
-import { useTheme } from '@emotion/react';
+import { css, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useLingui } from '@lingui/react/macro';
 import { useIcons } from '@ui/display/icon/hooks/useIcons';
@@ -50,13 +50,18 @@ import { formatAmount } from '~/utils/format/formatAmount';
 import { RecordListDataLoaderEffect } from './RecordListDataLoaderEffect';
 import { RecordListSkeletonLoader } from './RecordListSkeletonLoader';
 
-const StyledListContainer = styled.div`
+const StyledListContainer = styled.div<{ empty: boolean }>`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(2)};
-  justify-content: center;
+
   height: 100%;
   padding: ${({ theme }) => theme.spacing(2)};
+  ${({ empty }) =>
+    empty &&
+    css`
+      justify-content: center;
+    `}
 `;
 
 const StyledCard = styled(motion.div)<{ isSelected?: boolean }>`
@@ -498,7 +503,7 @@ export const RecordList = () => {
 
   if (recordTableIsEmpty) {
     return (
-      <StyledListContainer ref={listContainerRef}>
+      <StyledListContainer ref={listContainerRef} empty={recordTableIsEmpty}>
         <RecordListDataLoaderEffect />
         <RecordTableEmptyState />
       </StyledListContainer>

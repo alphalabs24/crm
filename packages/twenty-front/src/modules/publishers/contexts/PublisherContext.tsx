@@ -1,3 +1,4 @@
+import { useProviderGuard } from '@/onboarding/hooks/useProviderGuard';
 import { EditPublisherModal } from '@/publishers/components/modals/EditPublisherModal';
 import { ModalRefType } from '@/ui/layout/modal/components/Modal';
 import { createContext, useContext, useRef, useState } from 'react';
@@ -20,6 +21,8 @@ export const PublishersProvider = ({
   const [publisherId, setPublisherId] = useState<string | undefined>(undefined);
   const ref = useRef<ModalRefType>(null);
 
+  const blockProvider = useProviderGuard();
+
   const openModalForPublisher = (publisherId?: string) => {
     setPublisherId(publisherId);
     setShowModal(true);
@@ -33,6 +36,10 @@ export const PublishersProvider = ({
     setShowModal(false);
     ref.current?.close();
   };
+
+  if (blockProvider) {
+    return children;
+  }
 
   return (
     <PublisherContext.Provider value={{ openModalForPublisher }}>

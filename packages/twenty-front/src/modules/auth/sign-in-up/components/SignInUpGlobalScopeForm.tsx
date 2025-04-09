@@ -26,6 +26,7 @@ import { authProvidersState } from '@/client-config/states/authProvidersState';
 import { useRedirectToWorkspaceDomain } from '@/domain-manager/hooks/useRedirectToWorkspaceDomain';
 import { SnackBarVariant } from '@/ui/feedback/snack-bar-manager/components/SnackBar';
 import { useSnackBar } from '@/ui/feedback/snack-bar-manager/hooks/useSnackBar';
+import { useLingui } from '@lingui/react/macro';
 import { isDefined } from 'twenty-shared';
 import { getWorkspaceUrl } from '~/utils/getWorkspaceUrl';
 
@@ -44,6 +45,7 @@ const StyledForm = styled.form`
 export const SignInUpGlobalScopeForm = () => {
   const authProviders = useRecoilValue(authProvidersState);
   const signInUpStep = useRecoilValue(signInUpStepState);
+  const { i18n } = useLingui();
 
   const { checkUserExists } = useAuth();
   const { readCaptchaToken } = useReadCaptchaToken();
@@ -98,6 +100,7 @@ export const SignInUpGlobalScopeForm = () => {
               pathname,
               {
                 email: form.getValues('email'),
+                locale: i18n.locale,
               },
             );
           }
