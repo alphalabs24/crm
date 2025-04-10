@@ -26,11 +26,13 @@ import { usePublicationsOfProperty } from '@/ui/layout/show-page/hooks/usePublic
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { capitalize } from 'twenty-shared';
 import {
   Button,
+  IconCheck,
+  IconCopy,
   IconPencil,
   IconRefresh,
   IconTrash,
@@ -104,15 +106,39 @@ const StyledDetailsSection = styled.div`
 `;
 
 const StyledPageTitle = styled.div`
-  font-size: ${({ theme }) => theme.font.size.lg};
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  font-size: ${({ theme }) => theme.font.size.md};
   font-weight: ${({ theme }) => theme.font.weight.semiBold};
+  gap: ${({ theme }) => theme.spacing(2)};
+`;
+
+const StyledPropertyRef = styled.div`
+  align-items: center;
+  background-color: ${({ theme }) => theme.background.secondary};
+  border: 1px solid ${({ theme }) => theme.border.color.medium};
+  border-radius: ${({ theme }) => theme.border.radius.sm};
+  color: ${({ theme }) => theme.font.color.secondary};
+  cursor: pointer;
+  display: flex;
+  font-size: ${({ theme }) => theme.font.size.sm};
+  font-weight: ${({ theme }) => theme.font.weight.semiBold};
+  gap: ${({ theme }) => theme.spacing(1)};
+  padding: ${({ theme }) => theme.spacing(1)};
 `;
 
 const StyledPageHeader = styled.div`
-  align-items: center;
   display: flex;
+  flex-direction: column-reverse;
+
   gap: ${({ theme }) => theme.spacing(4)};
   padding: ${({ theme }) => theme.spacing(0, 0, 4)};
+
+  @media (min-width: ${MOBILE_VIEWPORT}px) {
+    flex-direction: row;
+    align-items: center;
+  }
 `;
 
 const StyledButtonContainer = styled.div`
@@ -158,6 +184,8 @@ export const PropertyDetails = ({
   const { enqueueSnackBar } = useSnackBar();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const differencesModalRef = useRef<ModalRefType>(null);
+
+  const [isCopied, setIsCopied] = useState(false);
 
   const dropdownId = `property-details-dropdown-${targetableObject.id}`;
   const { closeDropdown } = useDropdown(dropdownId);
@@ -269,6 +297,14 @@ export const PropertyDetails = ({
     [differenceRecords?.length, property?.deletedAt],
   );
 
+  // Reset copy state
+  useEffect(() => {
+    if (isCopied) {
+      const timeout = setTimeout(() => setIsCopied(false), 2000);
+      return () => clearTimeout(timeout);
+    }
+  }, [isCopied]);
+
   if (recordLoading || !property) {
     return (
       <StyledLoadingContainer>
@@ -280,7 +316,18 @@ export const PropertyDetails = ({
   return (
     <StyledPageContainer isInRightDrawer={isInRightDrawer}>
       <StyledPageHeader>
-        <StyledPageTitle>{capitalizedObjectNameSingular}</StyledPageTitle>
+        <StyledPageTitle>
+          {property?.name}
+          <StyledPropertyRef
+            onClick={() => {
+              navigator.clipboard.writeText(property?.refProperty || '');
+              setIsCopied(true);
+            }}
+          >
+            {property?.refProperty}
+            {isCopied ? <IconCheck size={14} /> : <IconCopy size={14} />}
+          </StyledPropertyRef>
+        </StyledPageTitle>
         <StyledButtonContainer>
           {property && !property.deletedAt && (
             <StyledLinkWrapper
