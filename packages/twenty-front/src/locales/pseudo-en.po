@@ -40,6 +40,11 @@ msgstr ""
 #~ msgid "(Updated)"
 #~ msgstr ""
 
+#. placeholder {0}: targetableObject.targetObjectNameSingular
+#: src/modules/object-record/record-show/components/nm/PropertyDetails.tsx
+msgid "{0} deleted successfully"
+msgstr ""
+
 #: src/modules/object-record/record-board/record-board-column/utils/computeAggregateValueAndLabel.ts
 msgid "{aggregateLabel} of {fieldLabel}"
 msgstr ""
@@ -437,11 +442,20 @@ msgstr ""
 #~ msgid "Are you sure you want to delete this publication?"
 #~ msgstr ""
 
+#: src/modules/object-record/record-show/components/nm/publication/PublicationDetailPage.tsx
+msgid "Are you sure you want to delete this publication? This action cannot be undone."
+msgstr ""
+
 #: src/pages/settings/publishers/SettingsPublishers.tsx
 msgid "Are you sure you want to delete this publisher? This action cannot be undone."
 msgstr ""
 
+#: src/modules/object-record/record-show/components/nm/publication/PublicationDetailPage.tsx
+msgid "Are you sure you want to revert all changes? This will delete the draft and any changes you've made. This action cannot be undone."
+msgstr ""
+
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+#: src/modules/object-record/record-show/components/nm/publication/PublicationDetailPage.tsx
 msgid "Are you sure you want to unpublish this publication? This will remove it from the published platform and make it unavailable to potential clients. You can always publish it again later."
 msgstr ""
 
@@ -567,6 +581,7 @@ msgstr ""
 #: src/pages/auth/Authorize.tsx
 #: src/modules/ui/layout/show-page/components/nm/PublishModal.tsx
 #: src/modules/ui/layout/show-page/components/nm/PublishDraftModal.tsx
+#: src/modules/ui/layout/show-page/components/nm/PublicationDifferencesModal.tsx
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
 #: src/modules/ui/layout/modal/components/ConfirmationModal.tsx
 #: src/modules/settings/components/SaveAndCancelButtons/CancelButton.tsx
@@ -851,6 +866,10 @@ msgstr ""
 msgid "Create new property"
 msgstr ""
 
+#: src/modules/object-record/record-show/components/ui/NewPublicationCard.tsx
+msgid "Create new publication"
+msgstr ""
+
 #: src/modules/action-menu/actions/record-actions/constants/WorkflowActionsConfig.ts
 #: src/modules/action-menu/actions/record-actions/constants/DefaultActionsConfigV2.ts
 msgid "Create new record"
@@ -899,6 +918,10 @@ msgstr ""
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
 #~ msgid "Current draft values"
 #~ msgstr ""
+
+#: src/modules/ui/layout/show-page/components/nm/PublicationDifferencesModal.tsx
+msgid "Currently Published"
+msgstr ""
 
 #: src/pages/settings/workspace/SettingsCustomDomain.tsx
 msgid "Custom Domain"
@@ -1009,9 +1032,11 @@ msgstr ""
 #: src/pages/settings/email-templates/components/SettingsEmailTemplatesContent.tsx
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
-#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+#: src/modules/object-record/record-show/components/nm/PropertyDetails.tsx
+#: src/modules/object-record/record-show/components/nm/publication/PublicationDetailPage.tsx
+#: src/modules/object-record/record-show/components/nm/publication/PublicationDetailPage.tsx
 #: src/modules/inquiries/components/InquiryItem.tsx
 #: src/modules/inquiries/components/InquiryItem.tsx
 #: src/modules/action-menu/components/__stories__/RightDrawerActionMenuDropdown.stories.tsx
@@ -1030,6 +1055,8 @@ msgstr ""
 
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+#: src/modules/object-record/record-show/components/nm/PropertyDetails.tsx
+#: src/modules/object-record/record-show/components/nm/PropertyDetails.tsx
 msgid "Delete {capitalizedObjectNameSingular}"
 msgstr ""
 
@@ -1053,6 +1080,10 @@ msgstr ""
 
 #: src/modules/inquiries/components/InquiryItem.tsx
 msgid "Delete inquiry"
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/publication/PublicationDetailPage.tsx
+msgid "Delete Publication"
 msgstr ""
 
 #: src/pages/settings/publishers/SettingsPublishers.tsx
@@ -1177,6 +1208,7 @@ msgid "Don’t sync emails from team@ support@ noreply@..."
 msgstr ""
 
 #: src/modules/ui/layout/show-page/components/nm/PublishModal.tsx
+#: src/modules/ui/layout/show-page/components/nm/PublicationDifferencesModal.tsx
 msgid "Done"
 msgstr ""
 
@@ -1242,13 +1274,15 @@ msgid "Easy Synchronization"
 msgstr ""
 
 #: src/pages/settings/email-templates/components/EmailTemplateSelect.tsx
-#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+#: src/modules/ui/layout/show-page/components/nm/PublicationDifferencesModal.tsx
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/Publishing.tsx
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 #: src/modules/object-record/record-table/components/nm/RecordListItem.tsx
 #: src/modules/object-record/record-table/components/nm/RecordList.tsx
+#: src/modules/object-record/record-show/components/nm/PropertyDetails.tsx
+#: src/modules/object-record/record-show/components/nm/publication/PublicationDetailPage.tsx
 msgid "Edit"
 msgstr ""
 
@@ -1354,6 +1388,7 @@ msgstr ""
 msgid "Employees"
 msgstr ""
 
+#: src/modules/ui/layout/show-page/components/nm/PublicationDifferencesModal.tsx
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
 #: src/modules/object-record/record-show/components/nm/cards/PropertyDetailsCard.tsx
 #: src/modules/object-record/record-inline-cell/components/RecordInlineCellDisplayMode.tsx
@@ -1524,15 +1559,21 @@ msgid "Export Workflows"
 msgstr ""
 
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
+#: src/modules/object-record/record-show/components/ui/NewPublicationCard.tsx
 msgid "Failed to create draft"
 msgstr ""
 
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+#: src/modules/object-record/record-show/components/nm/publication/PublicationDetailPage.tsx
 msgid "Failed to create publication draft"
 msgstr ""
 
 #: src/pages/onboarding/CreateProfile.tsx
 msgid "Failed to create workspace"
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/publication/PublicationDetailPage.tsx
+msgid "Failed to delete changes"
 msgstr ""
 
 #: src/modules/ui/layout/show-page/hooks/useDeleteProperty.ts
@@ -1541,6 +1582,10 @@ msgstr ""
 
 #: src/modules/ui/layout/show-page/hooks/useDeleteProperty.ts
 msgid "Failed to delete publication"
+msgstr ""
+
+#: src/modules/ui/layout/show-page/components/nm/PublicationDifferencesModal.tsx
+msgid "Failed to publish"
 msgstr ""
 
 #: src/modules/record-edit/contexts/UnsavedChangesContext.tsx
@@ -1554,10 +1599,12 @@ msgid "Failed to send test email"
 msgstr ""
 
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+#: src/modules/object-record/record-show/components/nm/PropertyDetails.tsx
 msgid "Failed to sync publications"
 msgstr ""
 
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+#: src/modules/object-record/record-show/components/nm/publication/PublicationDetailPage.tsx
 msgid "Failed to unpublish publication"
 msgstr ""
 
@@ -1745,6 +1792,10 @@ msgstr ""
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 #~ msgid "Hebrew"
 #~ msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/cards/PublicationList.tsx
+msgid "Here you can see all your publications."
+msgstr ""
 
 #: src/modules/object-record/record-table/record-table-header/components/RecordTableColumnHeadDropdownMenu.tsx
 msgid "Hide"
@@ -2124,6 +2175,7 @@ msgstr ""
 msgid "Missing required fields: {missingFieldsString}"
 msgstr ""
 
+#: src/modules/ui/layout/show-page/components/nm/ActionDropdown.tsx
 #: src/modules/object-record/record-table/components/nm/RecordListItem.tsx
 #: src/modules/object-record/record-table/components/nm/RecordList.tsx
 msgid "More"
@@ -2233,6 +2285,7 @@ msgstr ""
 msgid "New account"
 msgstr ""
 
+#: src/modules/ui/layout/show-page/components/nm/PublicationDifferencesModal.tsx
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
 msgid "New Draft Values"
 msgstr ""
@@ -2257,10 +2310,14 @@ msgstr ""
 msgid "New Password"
 msgstr ""
 
-#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
-#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
-msgid "New Publication"
+#: src/modules/object-record/record-show/components/nm/cards/PublicationList.tsx
+msgid "New publication"
 msgstr ""
+
+#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+#~ msgid "New Publication"
+#~ msgstr ""
 
 #: src/modules/ui/layout/page/components/PageAddButton.tsx
 #: src/modules/ui/layout/page/components/PageAddButton.tsx
@@ -2317,9 +2374,9 @@ msgstr ""
 msgid "No inquiries data available yet"
 msgstr ""
 
-#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
-#~ msgid "No inquiries yet"
-#~ msgstr ""
+#: src/modules/inquiries/components/InquiriesList.tsx
+msgid "No inquiries yet"
+msgstr ""
 
 #: src/modules/object-record/record-show/components/nm/cards/PropertyAddressCard.tsx
 msgid "No Map available"
@@ -2450,6 +2507,10 @@ msgstr ""
 
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
 msgid "Old Draft Values"
+msgstr ""
+
+#: src/modules/inquiries/components/InquiriesList.tsx
+msgid "Once you receive an inquiry on your connected Email, it will appear here."
 msgstr ""
 
 #: src/modules/onboarding/components/onboardingSyncEmailsOptions.tsx
@@ -2719,6 +2780,10 @@ msgstr ""
 msgid "Pseudo-English"
 msgstr ""
 
+#: src/modules/ui/layout/show-page/components/nm/PublicationDifferencesModal.tsx
+msgid "Publication Changes to Publish"
+msgstr ""
+
 #: src/modules/object-record/record-show/components/nm/publication/CompletionProgress.tsx
 msgid "Publication completion"
 msgstr ""
@@ -2731,15 +2796,24 @@ msgstr ""
 msgid "Publication created successfully"
 msgstr ""
 
+#: src/modules/object-record/record-show/components/nm/publication/PublicationDetailPage.tsx
+msgid "Publication deleted successfully"
+msgstr ""
+
 #: src/modules/ui/layout/show-page/components/nm/PublishModal.tsx
 msgid "Publication Draft"
 msgstr ""
 
-#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
+#: src/modules/object-record/record-show/components/ui/NewPublicationCard.tsx
 msgid "Publication Draft created successfully"
 msgstr ""
 
+#: src/modules/ui/layout/show-page/components/nm/PublicationDifferencesModal.tsx
+msgid "Publication published successfully"
+msgstr ""
+
+#: src/modules/record-edit/components/RecordEditContainer.tsx
 #: src/modules/record-edit/components/RecordEditContainer.tsx
 msgid "Publication saved successfully"
 msgstr ""
@@ -2749,6 +2823,7 @@ msgid "Publication Synchronization"
 msgstr ""
 
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+#: src/modules/object-record/record-show/components/nm/publication/PublicationDetailPage.tsx
 msgid "Publication unpublished successfully"
 msgstr ""
 
@@ -2756,13 +2831,30 @@ msgstr ""
 msgid "Publications"
 msgstr ""
 
-#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/Publishing.tsx
+#: src/modules/object-record/record-show/components/nm/publication/PublicationDetailPage.tsx
+#: src/modules/object-record/record-show/components/nm/publication/PublicationDetailPage.tsx
 msgid "Publish"
+msgstr ""
+
+#: src/modules/ui/layout/show-page/components/nm/PublicationDifferencesModal.tsx
+msgid "Publish Changes"
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/publication/PublicationDetailPage.tsx
+msgid "Publish Changes ({totalDifferenceCount})"
 msgstr ""
 
 #: src/modules/onboarding-tutorial/constants/onboarding-steps.tsx
 msgid "Publish your first property"
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/cards/PublicationList.tsx
+msgid "Publish your property on a new platform."
+msgstr ""
+
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/Publishing.tsx
+msgid "Published"
 msgstr ""
 
 #: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
@@ -2875,6 +2967,11 @@ msgstr ""
 msgid "Reporting coming soon"
 msgstr ""
 
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/Publishing.tsx
+#: src/modules/object-record/record-show/components/nm/publication/PublicationDetailPage.tsx
+msgid "Republish"
+msgstr ""
+
 #: src/pages/auth/PasswordReset.tsx
 msgid "Reset Password"
 msgstr ""
@@ -2887,8 +2984,22 @@ msgstr ""
 msgid "Results"
 msgstr ""
 
+#: src/modules/object-record/record-show/components/nm/publication/PublicationDetailPage.tsx
+#: src/modules/object-record/record-show/components/nm/publication/PublicationDetailPage.tsx
+#: src/modules/object-record/record-show/components/nm/publication/PublicationDetailPage.tsx
+msgid "Revert Changes"
+msgstr ""
+
+#: src/modules/ui/layout/show-page/components/nm/PublicationDifferencesModal.tsx
+msgid "Review Changes"
+msgstr ""
+
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
 msgid "Review differences between your property and its publication drafts. Syncing will update the publication drafts with the current property values."
+msgstr ""
+
+#: src/modules/ui/layout/show-page/components/nm/PublicationDifferencesModal.tsx
+msgid "Review the changes that will be published. These changes will update the published version of your property listing."
 msgstr ""
 
 #: src/pages/settings/roles/SettingsRoles.tsx
@@ -3265,10 +3376,10 @@ msgid "Sync Drafts with Property"
 msgstr ""
 
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
-msgid "Sync Publications"
-msgstr ""
+#~ msgid "Sync Publications"
+#~ msgstr ""
 
-#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+#: src/modules/object-record/record-show/components/nm/PropertyDetails.tsx
 msgid "Sync Publications {differenceLength}"
 msgstr ""
 
@@ -3381,6 +3492,10 @@ msgstr ""
 msgid "There was an issue"
 msgstr ""
 
+#: src/modules/ui/layout/show-page/components/nm/PublicationDifferencesModal.tsx
+msgid "These changes will update your published listing immediately. Make sure all details are correct before proceeding."
+msgstr ""
+
 #: src/pages/settings/SettingsWorkspaceMembers.tsx
 msgid "This action cannot be undone. This will permanently delete this user and remove them from all their assignments."
 msgstr ""
@@ -3478,11 +3593,14 @@ msgid "Unlimited contacts"
 msgstr ""
 
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
-#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+#: src/modules/object-record/record-show/components/nm/publication/PublicationDetailPage.tsx
+#: src/modules/object-record/record-show/components/nm/publication/PublicationDetailPage.tsx
+#: src/modules/object-record/record-show/components/nm/publication/PublicationDetailPage.tsx
 msgid "Unpublish"
 msgstr ""
 
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+#: src/modules/object-record/record-show/components/nm/publication/PublicationDetailPage.tsx
 msgid "Unpublish Publication"
 msgstr ""
 
@@ -3661,6 +3779,11 @@ msgstr ""
 msgid "Will be applied"
 msgstr ""
 
+#: src/modules/ui/layout/show-page/components/nm/PublicationDifferencesModal.tsx
+msgid "Will be published"
+msgstr ""
+
+#: src/modules/ui/layout/show-page/components/nm/PublicationDifferencesModal.tsx
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
 msgid "Will be replaced"
 msgstr ""
@@ -3784,6 +3907,10 @@ msgstr ""
 msgid "Your Agencie's ID on Smg."
 msgstr ""
 
+#: src/modules/ui/layout/show-page/components/nm/PublicationDifferencesModal.tsx
+msgid "Your changes have been published successfully."
+msgstr ""
+
 #: src/pages/settings/SettingsBilling.tsx
 msgid "Your credit balance will be used to pay the monthly bills."
 msgstr ""
@@ -3833,7 +3960,12 @@ msgid "Your Partner ID is displayed in your MyNewhome dashboard under \"Integrat
 msgstr ""
 
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+#: src/modules/object-record/record-show/components/nm/PropertyDetails.tsx
 msgid "Your Publication Drafts were synced successfully"
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/cards/PublicationList.tsx
+msgid "Your publications"
 msgstr ""
 
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
