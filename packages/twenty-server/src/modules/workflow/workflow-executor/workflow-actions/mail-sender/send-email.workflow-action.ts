@@ -121,30 +121,26 @@ export class SendEmailWorkflowAction implements WorkflowAction {
     ].join('\n');
 
     const encodedMessage = Buffer.from(message).toString('base64');
-    try {
-      const response = await emailProvider.users.messages.send({
-        userId: 'me',
-        requestBody: {
-          raw: encodedMessage,
-          threadId: workflowActionInput.externalThreadId,
-          payload: {
-            headers: [
-              {
-                name: 'In-Reply-To',
-                value: workflowActionInput.inReplyTo || '',
-              },
-              {
-                name: 'References',
-                value: workflowActionInput.references?.join(' ') || '',
-              },
-            ],
-          },
+
+    await emailProvider.users.messages.send({
+      userId: 'me',
+      requestBody: {
+        raw: encodedMessage,
+        threadId: workflowActionInput.externalThreadId,
+        payload: {
+          headers: [
+            {
+              name: 'In-Reply-To',
+              value: workflowActionInput.inReplyTo || '',
+            },
+            {
+              name: 'References',
+              value: workflowActionInput.references?.join(' ') || '',
+            },
+          ],
         },
-      });
-      console.log('sendEmailAction', response);
-    } catch (error) {
-      console.error('sendEmailAction', error);
-    }
+      },
+    });
 
     // `In-Reply-To: ${workflowActionInput.inReplyTo || ''}`,
     // `References: ${workflowActionInput.references?.join(' ') || ''}`,
@@ -157,9 +153,11 @@ export class SendEmailWorkflowAction implements WorkflowAction {
   }
 
   private encodeSubject(subject: string): string {
+    // eslint-disable-next-line no-control-regex
     if (/[^\x00-\x7F]/.test(subject)) {
       return '=?UTF-8?B?' + Buffer.from(subject).toString('base64') + '?=';
     }
+
     return subject;
   }
 }

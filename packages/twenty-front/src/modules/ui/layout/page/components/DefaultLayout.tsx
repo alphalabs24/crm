@@ -121,7 +121,7 @@ export const DefaultLayout = () => {
                     <StyledLocaleHeader>
                       <LocalePicker />
                     </StyledLocaleHeader>
-                    ;
+
                     <Outlet />
                   </AuthModal>
                 </LayoutGroup>
