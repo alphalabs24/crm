@@ -47,10 +47,37 @@ export type PublicationDifference = {
 };
 
 /**
+ * Compares two date values by only comparing their day, month and year values
+ * Ignores time components to avoid false positives from small time differences
+ *
+ * @param date1 First date value (string or Date)
+ * @param date2 Second date value (string or Date)
+ * @returns true if the dates have the same day, month and year
+ */
+const areDatesEqual = (date1: any, date2: any): boolean => {
+  if (!date1 && !date2) return true;
+  if (!date1 || !date2) return false;
+
+  try {
+    const d1 = new Date(date1);
+    const d2 = new Date(date2);
+
+    return (
+      d1.getDate() === d2.getDate() &&
+      d1.getMonth() === d2.getMonth() &&
+      d1.getFullYear() === d2.getFullYear()
+    );
+  } catch (e) {
+    // If there's an error parsing the dates, fall back to regular comparison
+    return date1 === date2;
+  }
+};
+
+/**
  * Hook to compare differences between draft and published publications
  *
- * @param draftPublications - Array of draft publications to compare
- * @param publishedPublications - Array of published publications to compare
+ * @param draftRecord - Array of draft publications to compare
+ * @param publishedRecord - Array of published publications to compare
  * @returns Object containing differences between draft and published publications
  */
 export const useDraftPublishedDifferences = (
@@ -96,12 +123,26 @@ export const useDraftPublishedDifferences = (
         return;
       }
 
-      // Use deep comparison for objects, regular comparison for primitives
-      const fieldIsEqual = isDeeplyEqual(
-        firstDraft[key],
-        matchingPublished[key],
-        { strict: true },
+      // Get the field metadata item
+      const fieldMetadata = objectMetadataItem.fields.find(
+        (field) => field?.name === key,
       );
+
+      // For date fields or availableFrom fields, use date-only comparison
+      const isDateField =
+        fieldMetadata?.type === 'DATE' ||
+        key.toLowerCase().includes('availablefrom');
+
+      let fieldIsEqual;
+
+      if (isDateField) {
+        fieldIsEqual = areDatesEqual(firstDraft[key], matchingPublished[key]);
+      } else {
+        // Use deep comparison for objects, regular comparison for primitives
+        fieldIsEqual = isDeeplyEqual(firstDraft[key], matchingPublished[key], {
+          strict: true,
+        });
+      }
 
       if (!fieldIsEqual && fieldMetadataLabels[key]) {
         // Add difference to the list
@@ -110,9 +151,7 @@ export const useDraftPublishedDifferences = (
           draftValue: firstDraft[key],
           publishedValue: matchingPublished[key],
           fieldLabel: fieldMetadataLabels[key],
-          fieldMetadataItem: objectMetadataItem.fields.find(
-            (field) => field?.name === key,
-          ),
+          fieldMetadataItem: fieldMetadata,
         });
       }
     });

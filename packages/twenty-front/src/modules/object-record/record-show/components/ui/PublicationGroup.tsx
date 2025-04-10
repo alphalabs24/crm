@@ -8,7 +8,7 @@ import {
 } from '@/ui/layout/show-page/components/nm/types/Platform';
 import { useDraftPublishedDifferences } from '@/ui/layout/show-page/hooks/useDraftPublishedDifferences';
 import styled from '@emotion/styled';
-import { IconButton, IconRefresh } from 'twenty-ui';
+import { IconButton, IconEdit } from 'twenty-ui';
 
 const StyledPublicationGroupContainer = styled.button`
   background-color: ${({ theme }) => theme.background.primary};
@@ -129,7 +129,7 @@ export const PublicationGroup = ({
         <StyledPublicationGroupHeaderRight>
           {hasDifferences ? (
             <StyledDifferenceBadge>
-              <IconRefresh size={12} />
+              <IconEdit size={12} />
 
               <StyledDifferenceText>
                 {totalDifferenceCount === 1

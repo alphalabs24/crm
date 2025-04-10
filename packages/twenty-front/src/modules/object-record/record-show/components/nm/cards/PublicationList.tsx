@@ -4,14 +4,16 @@ import { NewPublicationCard } from '@/object-record/record-show/components/ui/Ne
 import { PublicationGroup } from '@/object-record/record-show/components/ui/PublicationGroup';
 import { PublicationStage } from '@/object-record/record-show/constants/PublicationStage';
 import {
-    PlatformId,
-    PUBLISHABLE_PLATFORMS,
+  PlatformId,
+  PUBLISHABLE_PLATFORMS,
 } from '@/ui/layout/show-page/components/nm/types/Platform';
 import { usePublicationsOfProperty } from '@/ui/layout/show-page/hooks/usePublicationsOfProperty';
-import { css } from '@emotion/react';
+import { css, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Trans } from '@lingui/react/macro';
 import { useEffect, useMemo } from 'react';
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { LARGE_DESKTOP_VIEWPORT, MOBILE_VIEWPORT } from 'twenty-ui';
 
@@ -84,6 +86,147 @@ const StyledPublicationListDivider = styled.div`
   height: 1px;
 `;
 
+// Create styled components for skeleton loader
+const StyledSkeletonCard = styled.div`
+  background-color: ${({ theme }) => theme.background.primary};
+  border: 1px solid ${({ theme }) => theme.border.color.light};
+  border-radius: ${({ theme }) => theme.border.radius.md};
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(2)};
+  padding: ${({ theme }) => theme.spacing(3)};
+
+  overflow: hidden;
+`;
+
+const StyledSkeletonHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+`;
+
+const StyledSkeletonPlatformIcon = styled.div`
+  background-color: ${({ theme }) => theme.background.tertiary};
+  border-radius: 50%;
+  height: 32px;
+  width: 32px;
+`;
+
+const StyledSkeletonPlatformInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(1)};
+  flex: 1;
+`;
+
+const StyledSkeletonStatusChips = styled.div`
+  display: flex;
+  gap: ${({ theme }) => theme.spacing(1)};
+`;
+
+// Create a skeleton publication group component
+const PublicationGroupSkeleton = () => {
+  const theme = useTheme();
+
+  return (
+    <SkeletonTheme
+      baseColor={theme.background.tertiary}
+      highlightColor={theme.background.transparent.lighter}
+      borderRadius={theme.border.radius.sm}
+    >
+      <StyledSkeletonCard>
+        <StyledSkeletonHeader>
+          <div
+            style={{
+              display: 'flex',
+              gap: theme.spacing(3),
+              alignItems: 'center',
+            }}
+          >
+            <StyledSkeletonPlatformIcon />
+            <StyledSkeletonPlatformInfo>
+              <Skeleton width={120} height={16} />
+              <Skeleton width={80} height={12} />
+            </StyledSkeletonPlatformInfo>
+          </div>
+          <StyledSkeletonStatusChips>
+            <Skeleton width={60} height={20} />
+          </StyledSkeletonStatusChips>
+        </StyledSkeletonHeader>
+      </StyledSkeletonCard>
+    </SkeletonTheme>
+  );
+};
+
+// Create a skeleton loader for the new publication section
+const NewPublicationSkeletonCard = () => {
+  const theme = useTheme();
+
+  return (
+    <SkeletonTheme
+      baseColor={theme.background.tertiary}
+      highlightColor={theme.background.transparent.lighter}
+      borderRadius={theme.border.radius.sm}
+    >
+      <StyledSkeletonCard style={{ width: '220px', height: '140px' }}>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: theme.spacing(2),
+          }}
+        >
+          <StyledSkeletonPlatformIcon
+            style={{ width: '48px', height: '48px' }}
+          />
+          <Skeleton width={100} height={16} />
+          <Skeleton
+            width={120}
+            height={32}
+            style={{ marginTop: theme.spacing(1) }}
+          />
+        </div>
+      </StyledSkeletonCard>
+    </SkeletonTheme>
+  );
+};
+
+// Skeleton loader for the entire publication list
+const PublicationListSkeleton = () => {
+  return (
+    <StyledPublicationListContainer>
+      <StyledSection>
+        <StyledPublicationListHeader>
+          <Skeleton width={150} height={20} />
+          <Skeleton width={250} height={16} />
+        </StyledPublicationListHeader>
+        <StyledSectionList>
+          {Array.from({ length: 3 }).map((_, index) => (
+            <PublicationGroupSkeleton key={`publication-skeleton-${index}`} />
+          ))}
+        </StyledSectionList>
+      </StyledSection>
+
+      <StyledPublicationListDivider />
+
+      <StyledSection>
+        <StyledPublicationListHeader>
+          <Skeleton width={150} height={20} />
+          <Skeleton width={250} height={16} />
+        </StyledPublicationListHeader>
+        <StyledSectionList horizontal>
+          {Array.from({ length: 4 }).map((_, index) => (
+            <NewPublicationSkeletonCard
+              key={`new-publication-skeleton-${index}`}
+            />
+          ))}
+        </StyledSectionList>
+      </StyledSection>
+    </StyledPublicationListContainer>
+  );
+};
+
 type PublicationListProps = {
   targetableObject: Pick<
     ActivityTargetableObject,
@@ -142,6 +285,11 @@ export const PublicationList = ({ targetableObject }: PublicationListProps) => {
     }
   }, [selectedPlatformId, currentHash]);
 
+  // Show Skeleton when loading
+  if (loading) {
+    return <PublicationListSkeleton />;
+  }
+
   if (selectedPlatformId && publicationGroups?.[selectedPlatformId]) {
     return (
       <PublicationDetailPage
@@ -151,6 +299,7 @@ export const PublicationList = ({ targetableObject }: PublicationListProps) => {
         )}
         recordLoading={loading}
         isInRightDrawer={false}
+        refetch={refetch}
       />
     );
   }
