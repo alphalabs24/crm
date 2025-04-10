@@ -1,6 +1,7 @@
 import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadataItem';
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { FieldMetadataItem } from '@/object-metadata/types/FieldMetadataItem';
+import { usePublicationImages } from '@/object-record/record-show/contexts/PublicationImagesProvider';
 import { ObjectRecord } from '@/object-record/types/ObjectRecord';
 import { useMemo } from 'react';
 import { isDeeplyEqual } from '../../../../../utils/isDeeplyEqual';
@@ -31,12 +32,19 @@ const IGNORE_FIELD_KEYS = [
   'coverImage',
 ];
 
+export type AttachmentDifference = {
+  type: string; // 'image', 'document', etc.
+  draftAttachments: any[];
+  publishedAttachments: any[];
+};
+
 export type FieldDifference = {
   key: string;
   draftValue: any;
   publishedValue: any;
   fieldLabel: string;
   fieldMetadataItem: FieldMetadataItem | undefined;
+  isCustomDiff?: boolean;
 };
 
 export type PublicationDifference = {
@@ -44,6 +52,7 @@ export type PublicationDifference = {
   publishedId: string;
   platform: string;
   differences: FieldDifference[];
+  attachmentDifferences: Record<string, AttachmentDifference>;
 };
 
 /**
@@ -81,13 +90,15 @@ const areDatesEqual = (date1: any, date2: any): boolean => {
  * @returns Object containing differences between draft and published publications
  */
 export const useDraftPublishedDifferences = (
-  draftRecord?: ObjectRecord | null,
-  publishedRecord?: ObjectRecord | null,
+  draftRecord?: ObjectRecord,
+  publishedRecord?: ObjectRecord,
 ) => {
   // Get metadata for publication object
   const { objectMetadataItem } = useObjectMetadataItem({
     objectNameSingular: CoreObjectNameSingular.Publication,
   });
+
+  const { draftImages, publishedImages } = usePublicationImages();
 
   // Create a map of field labels for easier access
   const fieldMetadataLabels = useMemo(() => {
@@ -115,6 +126,7 @@ export const useDraftPublishedDifferences = (
     }
 
     const fieldDifferences: FieldDifference[] = [];
+    const attachmentDifferences: Record<string, AttachmentDifference> = {};
 
     // Compare each field in the draft publication
     Object.keys(firstDraft).forEach((key) => {
@@ -156,6 +168,32 @@ export const useDraftPublishedDifferences = (
       }
     });
 
+    // Handle image differences (custom comparison for attachments)
+    if (draftImages?.length > 0 || publishedImages?.length > 0) {
+      const hasImageChanges = !isDeeplyEqual(draftImages, publishedImages, {
+        strict: false, // Less strict comparison since these might have system fields that differ
+      });
+
+      if (hasImageChanges) {
+        // Store attachment differences for special rendering
+        attachmentDifferences['images'] = {
+          type: 'image',
+          draftAttachments: draftImages || [],
+          publishedAttachments: publishedImages || [],
+        };
+
+        // Add a custom field difference for images
+        fieldDifferences.push({
+          key: 'images',
+          draftValue: draftImages,
+          publishedValue: publishedImages,
+          fieldLabel: 'Images',
+          fieldMetadataItem: undefined,
+          isCustomDiff: true,
+        });
+      }
+    }
+
     // Only add to results if there are differences
     if (fieldDifferences.length > 0) {
       publishedResult.push({
@@ -163,11 +201,19 @@ export const useDraftPublishedDifferences = (
         publishedId: matchingPublished.id,
         platform: firstDraft.platform,
         differences: fieldDifferences,
+        attachmentDifferences,
       });
     }
 
     return publishedResult;
-  }, [draftRecord, publishedRecord, objectMetadataItem, fieldMetadataLabels]);
+  }, [
+    draftRecord,
+    publishedRecord,
+    objectMetadataItem,
+    fieldMetadataLabels,
+    draftImages,
+    publishedImages,
+  ]);
 
   return {
     differences,

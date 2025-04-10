@@ -3,11 +3,13 @@ import { PublicationDetailPage } from '@/object-record/record-show/components/nm
 import { NewPublicationCard } from '@/object-record/record-show/components/ui/NewPublicationCard';
 import { PublicationGroup } from '@/object-record/record-show/components/ui/PublicationGroup';
 import { PublicationStage } from '@/object-record/record-show/constants/PublicationStage';
+import { PublicationImagesProvider } from '@/object-record/record-show/contexts/PublicationImagesProvider';
 import {
   PlatformId,
   PUBLISHABLE_PLATFORMS,
 } from '@/ui/layout/show-page/components/nm/types/Platform';
 import { usePublicationsOfProperty } from '@/ui/layout/show-page/hooks/usePublicationsOfProperty';
+import { OptionalWrap } from '@/ui/layout/utilities/components/OptionalWrapWith';
 import { css, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Trans } from '@lingui/react/macro';
@@ -23,7 +25,10 @@ const StyledPublicationListContainer = styled.div`
   flex-direction: column;
   padding: ${({ theme }) => theme.spacing(4)};
   gap: ${({ theme }) => theme.spacing(8)};
-  max-width: ${LARGE_DESKTOP_VIEWPORT}px;
+
+  @media (min-width: ${LARGE_DESKTOP_VIEWPORT}px) {
+    max-width: 1250px;
+  }
 `;
 
 const StyledPublicationListHeader = styled.div`
@@ -245,6 +250,21 @@ export const PublicationList = ({ targetableObject }: PublicationListProps) => {
   const selectedPlatformId = searchParams.get('platform') as PlatformId;
   const currentHash = location.hash;
 
+  const draftRecord = useMemo(() => {
+    return publicationGroups[selectedPlatformId]?.[PublicationStage.Draft]?.[0];
+  }, [publicationGroups, selectedPlatformId]);
+
+  const publishedRecord = useMemo(() => {
+    return publicationGroups[selectedPlatformId]?.[
+      PublicationStage.Published
+    ]?.[0];
+  }, [publicationGroups, selectedPlatformId]);
+
+  // Handles wrapping with image provider
+  const provideImages = useMemo(() => {
+    return draftRecord && publishedRecord;
+  }, [draftRecord, publishedRecord]);
+
   const unpublishedPublishablePlatforms = useMemo(() => {
     return PUBLISHABLE_PLATFORMS.filter((platform) => {
       return !Object.keys(publicationGroups).includes(platform as PlatformId);
@@ -292,15 +312,25 @@ export const PublicationList = ({ targetableObject }: PublicationListProps) => {
 
   if (selectedPlatformId && publicationGroups?.[selectedPlatformId]) {
     return (
-      <PublicationDetailPage
-        publicationGroup={publicationGroups[selectedPlatformId]}
-        stage={computeStage(
-          publicationGroups[selectedPlatformId][PublicationStage.Published],
-        )}
-        recordLoading={loading}
-        isInRightDrawer={false}
-        refetch={refetch}
-      />
+      <OptionalWrap
+        condition={provideImages}
+        With={
+          <PublicationImagesProvider
+            draftRecord={draftRecord}
+            publishedRecord={publishedRecord}
+          />
+        }
+      >
+        <PublicationDetailPage
+          publicationGroup={publicationGroups[selectedPlatformId]}
+          stage={computeStage(
+            publicationGroups[selectedPlatformId][PublicationStage.Published],
+          )}
+          recordLoading={loading}
+          isInRightDrawer={false}
+          refetch={refetch}
+        />
+      </OptionalWrap>
     );
   }
 

@@ -9,23 +9,23 @@ import { PlatformBadge } from '@/object-record/record-show/components/nm/publica
 import { RecordValueSetterEffect } from '@/object-record/record-store/components/RecordValueSetterEffect';
 import { RecordFieldValueSelectorContextProvider } from '@/object-record/record-store/contexts/RecordFieldValueSelectorContext';
 import { recordStoreFamilyState } from '@/object-record/record-store/states/recordStoreFamilyState';
-import { useTutorial } from '@/onboarding-tutorial/contexts/TutorialProvider';
 import { SnackBarVariant } from '@/ui/feedback/snack-bar-manager/components/SnackBar';
 import { useSnackBar } from '@/ui/feedback/snack-bar-manager/hooks/useSnackBar';
 import { Modal, ModalRefType } from '@/ui/layout/modal/components/Modal';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { forwardRef, useEffect, useState } from 'react';
+import { forwardRef, useCallback, useEffect, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import { Link } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import {
     Button,
-    CircularProgressBar,
     IconAlertCircle,
     IconCheck,
     IconExchange,
+    IconLoader,
+    IconPhoto,
     IconUpload,
     IconX,
     MOBILE_VIEWPORT,
@@ -228,6 +228,76 @@ const StyledSuccessMessage = styled.div`
   padding: ${({ theme }) => theme.spacing(2)};
 `;
 
+const StyledImageContainer = styled.div`
+  align-items: center;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  width: 100%;
+`;
+
+const StyledErrorImage = styled.div`
+  align-items: center;
+  background-color: ${({ theme }) => theme.background.tertiary};
+  border-radius: ${({ theme }) => theme.border.radius.sm};
+  color: ${({ theme }) => theme.font.color.light};
+  display: flex;
+  font-size: ${({ theme }) => theme.font.size.sm};
+  height: 100px;
+  justify-content: center;
+  width: 150px;
+`;
+
+const StyledImagesGrid = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: ${({ theme }) => theme.spacing(2)};
+  width: 100%;
+`;
+
+const StyledImageCard = styled.div`
+  aspect-ratio: 1;
+  background-color: ${({ theme }) => theme.background.secondary};
+  border-radius: ${({ theme }) => theme.border.radius.sm};
+  overflow: hidden;
+  position: relative;
+  max-width: 80px;
+`;
+
+const StyledImage = styled.img`
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+`;
+
+const StyledImageCount = styled.div`
+  align-items: center;
+  background-color: ${({ theme }) => theme.background.transparent.primary};
+  border-radius: ${({ theme }) => theme.border.radius.sm};
+  bottom: ${({ theme }) => theme.spacing(1)};
+  color: ${({ theme }) => theme.font.color.primary};
+  display: flex;
+  font-size: ${({ theme }) => theme.font.size.xs};
+  font-weight: ${({ theme }) => theme.font.weight.medium};
+  gap: ${({ theme }) => theme.spacing(1)};
+  padding: ${({ theme }) => theme.spacing(0.5, 1)};
+  position: absolute;
+  right: ${({ theme }) => theme.spacing(1)};
+`;
+
+const StyledNoImages = styled.div`
+  border-radius: ${({ theme }) => theme.border.radius.sm};
+  color: ${({ theme }) => theme.font.color.light};
+  display: flex;
+  flex-direction: column;
+  font-size: ${({ theme }) => theme.font.size.sm};
+  gap: ${({ theme }) => theme.spacing(1)};
+  justify-content: center;
+
+  width: 100%;
+  height: 100%;
+`;
+
 type PublicationDifferencesModalProps = {
   draftId: string;
   publishedId: string;
@@ -259,7 +329,6 @@ export const PublicationDifferencesModal = forwardRef<
     const { t } = useLingui();
     const theme = useTheme();
     const { getIcon } = useIcons();
-    const { showTutorial } = useTutorial();
     const { enqueueSnackBar } = useSnackBar();
     const [showValidationError, setShowValidationError] = useState(false);
     const [isPublished, setIsPublished] = useState(false);
@@ -269,7 +338,6 @@ export const PublicationDifferencesModal = forwardRef<
     });
 
     const setDraftFields = useSetRecoilState(recordStoreFamilyState(draftId));
-
     const setPublishedFields = useSetRecoilState(
       recordStoreFamilyState(publishedId),
     );
@@ -356,6 +424,119 @@ export const PublicationDifferencesModal = forwardRef<
       </StyledEmptyValue>
     );
 
+    // Image with error fallback
+    const ImageWithFallback = ({
+      src,
+      alt = 'Image',
+      className,
+    }: {
+      src: string;
+      alt?: string;
+      className?: string;
+    }) => {
+      const [hasError, setHasError] = useState(false);
+
+      const handleError = useCallback(() => {
+        setHasError(true);
+      }, []);
+
+      if (hasError) {
+        return (
+          <StyledErrorImage>
+            <IconAlertCircle size={16} />
+          </StyledErrorImage>
+        );
+      }
+
+      return (
+        <StyledImage
+          src={src}
+          alt={alt}
+          className={className}
+          onError={handleError}
+        />
+      );
+    };
+
+    // Component to display images grid
+    const ImagesGrid = ({ images }: { images: any[] }) => {
+      if (!images || images.length === 0) {
+        return (
+          <StyledNoImages>
+            <IconPhoto size={24} />
+          </StyledNoImages>
+        );
+      }
+
+      // Show up to 4 images + count
+      const displayImages = images.slice(0, 3);
+      const hasMoreImages = images.length > 3;
+
+      return (
+        <StyledImagesGrid>
+          {displayImages.map((image, index) => (
+            <StyledImageCard key={image.id || index}>
+              <ImageWithFallback
+                src={image.fullPath}
+                alt={`Image ${index + 1}`}
+              />
+              {index === 2 && hasMoreImages && (
+                <StyledImageCount>+{images.length - 3}</StyledImageCount>
+              )}
+            </StyledImageCard>
+          ))}
+        </StyledImagesGrid>
+      );
+    };
+
+    // Custom component for displaying attachment differences
+    const AttachmentDifference = ({ diff }: { diff: FieldDifference }) => {
+      // For now, only handle images (extendable for documents later)
+      if (diff.key === 'images') {
+        return (
+          <StyledDifferenceItem>
+            <StyledDifferenceHeader>
+              <IconPhoto size={14} />
+              {diff.fieldLabel}
+            </StyledDifferenceHeader>
+            <StyledValueComparison>
+              <StyledValueColumn $isOld>
+                {loading ? (
+                  <Skeleton
+                    height={100}
+                    width="100%"
+                    highlightColor={theme.background.secondary}
+                    baseColor={theme.background.tertiary}
+                  />
+                ) : (
+                  <ImagesGrid images={diff.publishedValue || []} />
+                )}
+              </StyledValueColumn>
+
+              <StyledValueColumn $isNew>
+                {loading ? (
+                  <Skeleton
+                    height={100}
+                    width="100%"
+                    highlightColor={theme.background.secondary}
+                    baseColor={theme.background.tertiary}
+                  />
+                ) : (
+                  <ImagesGrid
+                    images={diff.draftValue || []}
+                    emptyMessage={t`No images in draft`}
+                  />
+                )}
+              </StyledValueColumn>
+            </StyledValueComparison>
+          </StyledDifferenceItem>
+        );
+      }
+
+      // Default fallback for unknown custom diff types
+      return undefined;
+    };
+
     const loading = loadingDraft || loadingPublished;
 
     return (
@@ -386,7 +567,7 @@ export const PublicationDifferencesModal = forwardRef<
                   accent="blue"
                   title={t`Publish Changes`}
                   onClick={handlePublishClick}
-                  Icon={isPublishing ? CircularProgressBar : IconUpload}
+                  Icon={isPublishing ? IconLoader : IconUpload}
                   disabled={isPublishing}
                 />
               )}
@@ -459,112 +640,129 @@ export const PublicationDifferencesModal = forwardRef<
                 </StyledHeaderColumns>
               </StyledColumnHeaders>
 
-              {differences.map((diff, index) => {
-                const FieldIcon = getIcon(diff.fieldMetadataItem?.icon);
+              {/* Display custom differences (images, documents) first */}
+              {differences
+                .filter((diff) => diff.isCustomDiff)
+                .map((diff, index) => (
+                  <AttachmentDifference
+                    key={`custom-diff-${diff.key}-${index}`}
+                    diff={diff}
+                  />
+                ))}
 
-                if (!diff.fieldMetadataItem) {
-                  return null;
-                }
+              {/* Display regular field differences */}
+              {differences
+                .filter((diff) => !diff.isCustomDiff)
+                .map((diff, index) => {
+                  const FieldIcon = getIcon(diff.fieldMetadataItem?.icon);
 
-                const isOldValueEmpty = isValueEmpty(diff.publishedValue);
-                const isNewValueEmpty = isValueEmpty(diff.draftValue);
+                  if (!diff.fieldMetadataItem) {
+                    return null;
+                  }
 
-                return (
-                  <StyledDifferenceItem key={index}>
-                    <StyledDifferenceHeader>
-                      <FieldIcon size={14} />
-                      {diff.fieldLabel}
-                    </StyledDifferenceHeader>
-                    <StyledValueComparison>
-                      <StyledValueColumn $isOld>
-                        <RecordFieldValueSelectorContextProvider>
-                          <RecordValueSetterEffect recordId={publishedId} />
-                          {loading ? (
-                            <Skeleton
-                              height={12}
-                              width={100}
-                              highlightColor={theme.background.secondary}
-                              baseColor={theme.background.tertiary}
-                            />
-                          ) : isOldValueEmpty ? (
-                            <EmptyValueDisplay />
-                          ) : (
-                            <FieldContext.Provider
-                              value={{
-                                recordId: publishedId,
-                                isLabelIdentifier: false,
-                                fieldDefinition: {
-                                  type: diff.fieldMetadataItem.type,
-                                  iconName:
-                                    diff.fieldMetadataItem.icon || 'FieldIcon',
-                                  fieldMetadataId:
-                                    diff.fieldMetadataItem.id || '',
-                                  label: diff.fieldMetadataItem.label,
-                                  metadata: {
-                                    fieldName: diff.fieldMetadataItem.name,
-                                    objectMetadataNameSingular:
-                                      objectMetadataItem.nameSingular,
-                                    options:
-                                      diff.fieldMetadataItem.options ?? [],
+                  const isOldValueEmpty = isValueEmpty(diff.publishedValue);
+                  const isNewValueEmpty = isValueEmpty(diff.draftValue);
+
+                  return (
+                    <StyledDifferenceItem
+                      key={`field-diff-${diff.key}-${index}`}
+                    >
+                      <StyledDifferenceHeader>
+                        <FieldIcon size={14} />
+                        {diff.fieldLabel}
+                      </StyledDifferenceHeader>
+                      <StyledValueComparison>
+                        <StyledValueColumn $isOld>
+                          <RecordFieldValueSelectorContextProvider>
+                            <RecordValueSetterEffect recordId={publishedId} />
+                            {loading ? (
+                              <Skeleton
+                                height={12}
+                                width={100}
+                                highlightColor={theme.background.secondary}
+                                baseColor={theme.background.tertiary}
+                              />
+                            ) : isOldValueEmpty ? (
+                              <EmptyValueDisplay />
+                            ) : (
+                              <FieldContext.Provider
+                                value={{
+                                  recordId: publishedId,
+                                  isLabelIdentifier: false,
+                                  fieldDefinition: {
+                                    type: diff.fieldMetadataItem.type,
+                                    iconName:
+                                      diff.fieldMetadataItem.icon ||
+                                      'FieldIcon',
+                                    fieldMetadataId:
+                                      diff.fieldMetadataItem.id || '',
+                                    label: diff.fieldMetadataItem.label,
+                                    metadata: {
+                                      fieldName: diff.fieldMetadataItem.name,
+                                      objectMetadataNameSingular:
+                                        objectMetadataItem.nameSingular,
+                                      options:
+                                        diff.fieldMetadataItem.options ?? [],
+                                    },
+                                    defaultValue:
+                                      diff.fieldMetadataItem.defaultValue,
                                   },
-                                  defaultValue:
-                                    diff.fieldMetadataItem.defaultValue,
-                                },
-                                hotkeyScope: 'publication-diff',
-                              }}
-                            >
-                              <FieldDisplay wrap />
-                            </FieldContext.Provider>
-                          )}
-                        </RecordFieldValueSelectorContextProvider>
-                      </StyledValueColumn>
+                                  hotkeyScope: 'publication-diff',
+                                }}
+                              >
+                                <FieldDisplay wrap />
+                              </FieldContext.Provider>
+                            )}
+                          </RecordFieldValueSelectorContextProvider>
+                        </StyledValueColumn>
 
-                      <StyledValueColumn $isNew>
-                        <RecordFieldValueSelectorContextProvider>
-                          <RecordValueSetterEffect recordId={draftId} />
-                          {loading ? (
-                            <Skeleton
-                              height={12}
-                              width={100}
-                              highlightColor={theme.background.secondary}
-                              baseColor={theme.background.tertiary}
-                            />
-                          ) : isNewValueEmpty ? (
-                            <EmptyValueDisplay />
-                          ) : (
-                            <FieldContext.Provider
-                              value={{
-                                recordId: draftId,
-                                isLabelIdentifier: false,
-                                fieldDefinition: {
-                                  type: diff.fieldMetadataItem.type,
-                                  iconName:
-                                    diff.fieldMetadataItem.icon || 'FieldIcon',
-                                  fieldMetadataId:
-                                    diff.fieldMetadataItem.id || '',
-                                  label: diff.fieldMetadataItem.label,
-                                  metadata: {
-                                    fieldName: diff.fieldMetadataItem.name,
-                                    objectMetadataNameSingular:
-                                      objectMetadataItem.nameSingular,
-                                    options:
-                                      diff.fieldMetadataItem.options ?? [],
+                        <StyledValueColumn $isNew>
+                          <RecordFieldValueSelectorContextProvider>
+                            <RecordValueSetterEffect recordId={draftId} />
+                            {loading ? (
+                              <Skeleton
+                                height={12}
+                                width={100}
+                                highlightColor={theme.background.secondary}
+                                baseColor={theme.background.tertiary}
+                              />
+                            ) : isNewValueEmpty ? (
+                              <EmptyValueDisplay />
+                            ) : (
+                              <FieldContext.Provider
+                                value={{
+                                  recordId: draftId,
+                                  isLabelIdentifier: false,
+                                  fieldDefinition: {
+                                    type: diff.fieldMetadataItem.type,
+                                    iconName:
+                                      diff.fieldMetadataItem.icon ||
+                                      'FieldIcon',
+                                    fieldMetadataId:
+                                      diff.fieldMetadataItem.id || '',
+                                    label: diff.fieldMetadataItem.label,
+                                    metadata: {
+                                      fieldName: diff.fieldMetadataItem.name,
+                                      objectMetadataNameSingular:
+                                        objectMetadataItem.nameSingular,
+                                      options:
+                                        diff.fieldMetadataItem.options ?? [],
+                                    },
+                                    defaultValue:
+                                      diff.fieldMetadataItem.defaultValue,
                                   },
-                                  defaultValue:
-                                    diff.fieldMetadataItem.defaultValue,
-                                },
-                                hotkeyScope: 'publication-diff',
-                              }}
-                            >
-                              <FieldDisplay wrap />
-                            </FieldContext.Provider>
-                          )}
-                        </RecordFieldValueSelectorContextProvider>
-                      </StyledValueColumn>
-                    </StyledValueComparison>
-                  </StyledDifferenceItem>
-                );
-              })}
+                                  hotkeyScope: 'publication-diff',
+                                }}
+                              >
+                                <FieldDisplay wrap />
+                              </FieldContext.Provider>
+                            )}
+                          </RecordFieldValueSelectorContextProvider>
+                        </StyledValueColumn>
+                      </StyledValueComparison>
+                    </StyledDifferenceItem>
+                  );
+                })}
             </StyledDiffViewContainer>
 
             <StyledModalWarningText>
