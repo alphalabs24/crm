@@ -78,6 +78,8 @@ export const NavigationDrawerItemForObjectMetadataItem = ({
     (view) => contextStoreCurrentViewId === view.id,
   );
 
+  console.log(sortedObjectMetadataViews);
+
   const subItemArrayLength = sortedObjectMetadataViews.length;
 
   return (

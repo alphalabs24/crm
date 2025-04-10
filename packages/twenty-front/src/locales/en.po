@@ -2017,12 +2017,12 @@ msgid "List your property on Flatfox."
 msgstr "List your property on Flatfox."
 
 #: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
-msgid "List your property on Homegate."
-msgstr "List your property on Homegate."
+#~ msgid "List your property on Homegate."
+#~ msgstr "List your property on Homegate."
 
 #: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
-msgid "List your property on ImmoScout24."
-msgstr "List your property on ImmoScout24."
+#~ msgid "List your property on ImmoScout24."
+#~ msgstr "List your property on ImmoScout24."
 
 #: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
 msgid "List your property on Instagram."
@@ -3785,6 +3785,10 @@ msgstr "You will be charged immediately for the full year."
 msgid "Your Agencie's ID on Comparis."
 msgstr "Your Agencie's ID on Comparis."
 
+#: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
+msgid "Your Agencie's ID on Smg."
+msgstr "Your Agencie's ID on Smg."
+
 #: src/pages/settings/SettingsBilling.tsx
 msgid "Your credit balance will be used to pay the monthly bills."
 msgstr "Your credit balance will be used to pay the monthly bills."
@@ -3806,12 +3810,20 @@ msgid "Your FTP password can be found under \"Import interfaces\" on MyNewhome."
 msgstr "Your FTP password can be found under \"Import interfaces\" on MyNewhome."
 
 #: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
+msgid "Your FTP password can be found under \"Import interfaces\" on Smg."
+msgstr "Your FTP password can be found under \"Import interfaces\" on Smg."
+
+#: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
 msgid "Your FTP username can be found under \"Import interfaces\" on Comparis."
 msgstr "Your FTP username can be found under \"Import interfaces\" on Comparis."
 
 #: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
 msgid "Your FTP username can be found under \"Import interfaces\" on MyNewhome."
 msgstr "Your FTP username can be found under \"Import interfaces\" on MyNewhome."
+
+#: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
+msgid "Your FTP username can be found under \"Import interfaces\" on Smg."
+msgstr "Your FTP username can be found under \"Import interfaces\" on Smg."
 
 #: src/pages/settings/SettingsProfile.tsx
 msgid "Your name as it will be displayed"

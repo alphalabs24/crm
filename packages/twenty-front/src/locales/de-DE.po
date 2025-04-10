@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: nestermind-crm\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-04-08 14:32\n"
+"PO-Revision-Date: 2025-04-09 22:17\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -1999,7 +1999,7 @@ msgstr "Link in die Zwischenablage kopiert"
 
 #: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
 #~ msgid "List your property conveniently to newhome.ch."
-#~ msgstr "Gib Deine Immobilie bequem auf newhome.ch auf."
+#~ msgstr "List your property conveniently to newhome.ch."
 
 #: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
 msgid "List your property conveniently to newhome.ch. If you don't have newhome credentials, create a new account <0>here</0> and set up an IDX interface by clicking on 'Import interfaces'."
@@ -2007,7 +2007,7 @@ msgstr ""
 
 #: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
 #~ msgid "List your property on Comparis."
-#~ msgstr "Publiziere Deine Immobilie auf Comparis."
+#~ msgstr "List your property on Comparis."
 
 #: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
 msgid "List your property on Comparis. If you don't have Comparis credentials, contact Comparis <0>here</0> by clicking the 'Get in touch' button under 'Import via Real Estate Software (CRM)'."
@@ -2022,12 +2022,12 @@ msgid "List your property on Flatfox."
 msgstr "Publizieren Sie Ihre Immobilie auf Flatfox"
 
 #: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
-msgid "List your property on Homegate."
-msgstr "Publizieren Sie Ihre Immobilie auf Homegate"
+#~ msgid "List your property on Homegate."
+#~ msgstr "Publizieren Sie Ihre Immobilie auf Homegate"
 
 #: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
-msgid "List your property on ImmoScout24."
-msgstr "Publizieren Sie Ihre Immobilie auf Immoscout24"
+#~ msgid "List your property on ImmoScout24."
+#~ msgstr "Publizieren Sie Ihre Immobilie auf Immoscout24"
 
 #: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
 msgid "List your property on Instagram."
@@ -3790,6 +3790,10 @@ msgstr "Sie werden sofort für das gesamte Jahr belastet."
 msgid "Your Agencie's ID on Comparis."
 msgstr "Ihre Anbieter-ID auf Comparis"
 
+#: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
+msgid "Your Agencie's ID on Smg."
+msgstr ""
+
 #: src/pages/settings/SettingsBilling.tsx
 msgid "Your credit balance will be used to pay the monthly bills."
 msgstr "Ihr Guthaben wird zur Begleichung der monatlichen Rechnungen verwendet."
@@ -3811,12 +3815,20 @@ msgid "Your FTP password can be found under \"Import interfaces\" on MyNewhome."
 msgstr "Dein FTP-Passwort findest Du unter \"Import-Schnittstellen\" auf MyNewhome."
 
 #: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
+msgid "Your FTP password can be found under \"Import interfaces\" on Smg."
+msgstr ""
+
+#: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
 msgid "Your FTP username can be found under \"Import interfaces\" on Comparis."
 msgstr "Dein FTP-Passwort findest du unter \"Import-Schnittstellen\" auf MyNewhome."
 
 #: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
 msgid "Your FTP username can be found under \"Import interfaces\" on MyNewhome."
 msgstr "Dein FTP Benutzername findest Du unter \"Import Interfaces\" auf MyNewhome."
+
+#: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
+msgid "Your FTP username can be found under \"Import interfaces\" on Smg."
+msgstr ""
 
 #: src/pages/settings/SettingsProfile.tsx
 msgid "Your name as it will be displayed"
