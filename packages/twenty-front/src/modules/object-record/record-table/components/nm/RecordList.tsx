@@ -116,7 +116,10 @@ const StyledImageContainer = styled.div`
   align-items: center;
   justify-content: center;
   height: 100%;
-  max-width: 120px;
+
+  @media only screen and (min-width: ${MOBILE_VIEWPORT}px) {
+    max-width: 120px;
+  }
 `;
 
 const StyledImage = styled.img`
