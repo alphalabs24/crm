@@ -1,3 +1,9 @@
+import { ActionMenuComponentInstanceContext } from '@/action-menu/states/contexts/ActionMenuComponentInstanceContext';
+import { getActionMenuIdFromRecordIndexId } from '@/action-menu/utils/getActionMenuIdFromRecordIndexId';
+import { MainContextStoreProviderEffect } from '@/context-store/components/MainContextStoreProviderEffect';
+import { MAIN_CONTEXT_STORE_INSTANCE_ID } from '@/context-store/constants/MainContextStoreInstanceId';
+import { ContextStoreComponentInstanceContext } from '@/context-store/states/contexts/ContextStoreComponentInstanceContext';
+import { contextStoreCurrentViewIdComponentState } from '@/context-store/states/contextStoreCurrentViewIdComponentState';
 import { InquiriesList } from '@/inquiries/components/InquiriesList';
 import { InquirySidebar } from '@/inquiries/components/InquirySidebar';
 import {
@@ -5,10 +11,18 @@ import {
   useInquiryPage,
 } from '@/inquiries/contexts/InquiryPageContext';
 import { useInquiries } from '@/inquiries/hooks/useInquiries';
+import { objectMetadataItemsState } from '@/object-metadata/states/objectMetadataItemsState';
+import { CoreObjectNamePlural } from '@/object-metadata/types/CoreObjectNamePlural';
+import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
+import { RecordFiltersComponentInstanceContext } from '@/object-record/record-filter/states/context/RecordFiltersComponentInstanceContext';
+import { RecordSortsComponentInstanceContext } from '@/object-record/record-sort/states/context/RecordSortsComponentInstanceContext';
 import { PageContainer } from '@/ui/layout/page/components/PageContainer';
 import { PageHeader } from '@/ui/layout/page/components/PageHeader';
+import { useRecoilComponentValueV2 } from '@/ui/utilities/state/component-state/hooks/useRecoilComponentValueV2';
+import { ViewComponentInstanceContext } from '@/views/states/contexts/ViewComponentInstanceContext';
 import styled from '@emotion/styled';
 import { useSearchParams } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 import { IconInbox, LARGE_DESKTOP_VIEWPORT, MOBILE_VIEWPORT } from 'twenty-ui';
 
 const StyledSplitView = styled.div`
@@ -66,18 +80,63 @@ export const RecordInquiriesPage = () => {
   const propertyId = searchParams.get('propertyId') || undefined;
   const publicationId = searchParams.get('publicationId') || undefined;
 
+  const contextStoreCurrentViewId = useRecoilComponentValueV2(
+    contextStoreCurrentViewIdComponentState,
+    MAIN_CONTEXT_STORE_INSTANCE_ID,
+  );
+
   const { records, loading, deleteOne, error } = useInquiries({
     propertyId,
     publicationId,
   });
+
+  const recordIndexId = `${CoreObjectNamePlural.BuyerLead}-${contextStoreCurrentViewId}`;
+
+  // Get the BuyerLead object metadata item to set in the context store
+  const objectMetadataItems = useRecoilValue(objectMetadataItemsState);
+  const buyerLeadObjectMetadata = objectMetadataItems.find(
+    (item) => item.nameSingular === CoreObjectNameSingular.BuyerLead,
+  );
+
   return (
-    <InquiryPageContextProvider
-      inquiries={records}
-      loading={loading}
-      deleteOne={deleteOne}
-      error={error}
+    <ContextStoreComponentInstanceContext.Provider
+      value={{
+        instanceId: MAIN_CONTEXT_STORE_INSTANCE_ID,
+      }}
     >
-      <RecordInquiriesPageContent />
-    </InquiryPageContextProvider>
+      {buyerLeadObjectMetadata && (
+        <MainContextStoreProviderEffect
+          objectMetadataItem={buyerLeadObjectMetadata}
+          pageName="record-index"
+          viewId={contextStoreCurrentViewId}
+        />
+      )}
+      <ViewComponentInstanceContext.Provider
+        value={{ instanceId: recordIndexId }}
+      >
+        <RecordFiltersComponentInstanceContext.Provider
+          value={{ instanceId: recordIndexId }}
+        >
+          <RecordSortsComponentInstanceContext.Provider
+            value={{ instanceId: recordIndexId }}
+          >
+            <ActionMenuComponentInstanceContext.Provider
+              value={{
+                instanceId: getActionMenuIdFromRecordIndexId(recordIndexId),
+              }}
+            >
+              <InquiryPageContextProvider
+                inquiries={records}
+                loading={loading}
+                deleteOne={deleteOne}
+                error={error}
+              >
+                <RecordInquiriesPageContent />
+              </InquiryPageContextProvider>
+            </ActionMenuComponentInstanceContext.Provider>
+          </RecordSortsComponentInstanceContext.Provider>
+        </RecordFiltersComponentInstanceContext.Provider>
+      </ViewComponentInstanceContext.Provider>
+    </ContextStoreComponentInstanceContext.Provider>
   );
 };

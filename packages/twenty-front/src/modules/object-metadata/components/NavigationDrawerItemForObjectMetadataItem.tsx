@@ -43,16 +43,20 @@ export const NavigationDrawerItemForObjectMetadataItem = ({
   const { getIcon } = useIcons();
   const currentPath = useLocation().pathname;
 
-  const navigationPath =
-    objectMetadataItem.nameSingular === CoreObjectNameSingular.BuyerLead
-      ? getAppPath(AppPath.RecordInquiriesPage)
-      : getAppPath(
-          AppPath.RecordIndexPage,
-          { objectNamePlural: objectMetadataItem.namePlural },
-          lastVisitedViewId ? { viewId: lastVisitedViewId } : undefined,
-        );
+  // TODO This is a bit hacky, we should find a better way to handle this
+  const isBuyerLead =
+    objectMetadataItem.nameSingular === CoreObjectNameSingular.BuyerLead;
+
+  const navigationPath = isBuyerLead
+    ? getAppPath(AppPath.RecordInquiriesPage)
+    : getAppPath(
+        AppPath.RecordIndexPage,
+        { objectNamePlural: objectMetadataItem.namePlural },
+        lastVisitedViewId ? { viewId: lastVisitedViewId } : undefined,
+      );
 
   const isActive =
+    (isBuyerLead && currentPath === getAppPath(AppPath.RecordInquiriesPage)) ||
     currentPath ===
       getAppPath(AppPath.RecordIndexPage, {
         objectNamePlural: objectMetadataItem.namePlural,
@@ -73,6 +77,8 @@ export const NavigationDrawerItemForObjectMetadataItem = ({
   const selectedSubItemIndex = sortedObjectMetadataViews.findIndex(
     (view) => contextStoreCurrentViewId === view.id,
   );
+
+  console.log(sortedObjectMetadataViews);
 
   const subItemArrayLength = sortedObjectMetadataViews.length;
 

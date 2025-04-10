@@ -1,13 +1,19 @@
+import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadataItem';
+import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
+import { RecordTableContextProvider } from '@/object-record/record-table/contexts/RecordTableContext';
+import { RecordTableEmptyStateDisplay } from '@/object-record/record-table/empty-state/components/RecordTableEmptyStateDisplay';
 import { SnackBarVariant } from '@/ui/feedback/snack-bar-manager/components/SnackBar';
 import { useSnackBar } from '@/ui/feedback/snack-bar-manager/hooks/useSnackBar';
 import { PageBody } from '@/ui/layout/page/components/PageBody';
 import { ScrollWrapper } from '@/ui/utilities/scroll/components/ScrollWrapper';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
+import { useLingui } from '@lingui/react/macro';
 import { useCallback, useEffect, useMemo } from 'react';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { IconInbox } from 'twenty-ui';
 import { useInquiryPage } from '../contexts/InquiryPageContext';
 import { InquiriesFilterHeader } from './InquiriesFilterHeader';
 import { InquiryItem } from './InquiryItem';
@@ -32,6 +38,7 @@ const StyledEmptyState = styled.div`
   flex: 1;
   justify-content: center;
   padding: ${({ theme }) => theme.spacing(4)};
+  height: 100%;
 `;
 
 // Create styled components for skeleton loader
@@ -117,9 +124,14 @@ export const InquiriesList = () => {
   const [searchParams] = useSearchParams();
   const { enqueueSnackBar } = useSnackBar();
 
+  const { objectMetadataItem } = useObjectMetadataItem({
+    objectNameSingular: CoreObjectNameSingular.BuyerLead,
+  });
+
   const propertyId = searchParams.get('propertyId') || undefined;
   const publicationId = searchParams.get('publicationId') || undefined;
   const id = searchParams.get('id');
+  const { t } = useLingui();
 
   const {
     inquiries,
@@ -231,7 +243,7 @@ export const InquiriesList = () => {
         variant: SnackBarVariant.Error,
       });
     }
-  }, [error]);
+  }, [enqueueSnackBar, error]);
 
   if (loading) {
     return (
@@ -259,7 +271,24 @@ export const InquiriesList = () => {
           publicationId={publicationId}
           inquiries={[]}
         />
-        <StyledEmptyState>No inquiries found</StyledEmptyState>
+        <StyledEmptyState>
+          <RecordTableContextProvider
+            value={{
+              objectMetadataItem,
+              objectNameSingular: CoreObjectNameSingular.BuyerLead,
+              recordTableId: 'inquiries-list',
+              viewBarId: 'inquiries-list',
+              visibleTableColumns: [],
+            }}
+          >
+            <RecordTableEmptyStateDisplay
+              subTitle={t`Once you receive an inquiry on your connected Email, it will appear here.`}
+              title={t`No inquiries yet`}
+              ButtonIcon={IconInbox}
+              animatedPlaceholderType="noRecord"
+            />
+          </RecordTableContextProvider>
+        </StyledEmptyState>
       </StyledPageBody>
     );
   }
