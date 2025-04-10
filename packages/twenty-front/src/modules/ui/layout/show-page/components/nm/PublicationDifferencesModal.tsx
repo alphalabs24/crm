@@ -228,14 +228,6 @@ const StyledSuccessMessage = styled.div`
   padding: ${({ theme }) => theme.spacing(2)};
 `;
 
-const StyledImageContainer = styled.div`
-  align-items: center;
-  display: flex;
-  height: 100%;
-  justify-content: center;
-  width: 100%;
-`;
-
 const StyledErrorImage = styled.div`
   align-items: center;
   background-color: ${({ theme }) => theme.background.tertiary};
@@ -492,7 +484,7 @@ export const PublicationDifferencesModal = forwardRef<
     // Custom component for displaying attachment differences
     const AttachmentDifference = ({ diff }: { diff: FieldDifference }) => {
       // For now, only handle images (extendable for documents later)
-      if (diff.key === 'images') {
+      if (diff.key === 'PropertyImage') {
         return (
           <StyledDifferenceItem>
             <StyledDifferenceHeader>
@@ -522,10 +514,7 @@ export const PublicationDifferencesModal = forwardRef<
                     baseColor={theme.background.tertiary}
                   />
                 ) : (
-                  <ImagesGrid
-                    images={diff.draftValue || []}
-                    emptyMessage={t`No images in draft`}
-                  />
+                  <ImagesGrid images={diff.draftValue || []} />
                 )}
               </StyledValueColumn>
             </StyledValueComparison>

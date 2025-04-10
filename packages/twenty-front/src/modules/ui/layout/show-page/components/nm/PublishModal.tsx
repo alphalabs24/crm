@@ -62,7 +62,7 @@ type PublishModalProps = {
   };
   validationDetails: ValidationResult;
   platformId: PlatformId;
-  hasDraftAndPublished: boolean;
+  hasDraftAndPublished?: boolean;
 };
 
 export const PublishModal = forwardRef<ModalRefType, PublishModalProps>(

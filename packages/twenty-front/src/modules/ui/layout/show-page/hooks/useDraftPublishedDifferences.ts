@@ -176,18 +176,18 @@ export const useDraftPublishedDifferences = (
 
       if (hasImageChanges) {
         // Store attachment differences for special rendering
-        attachmentDifferences['images'] = {
-          type: 'image',
+        attachmentDifferences['PropertyImage'] = {
+          type: 'PropertyImage',
           draftAttachments: draftImages || [],
           publishedAttachments: publishedImages || [],
         };
 
         // Add a custom field difference for images
         fieldDifferences.push({
-          key: 'images',
+          key: 'PropertyImage',
           draftValue: draftImages,
           publishedValue: publishedImages,
-          fieldLabel: 'Images',
+          fieldLabel: 'PropertyImage',
           fieldMetadataItem: undefined,
           isCustomDiff: true,
         });

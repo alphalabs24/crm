@@ -120,7 +120,7 @@ type PublishingProps = {
   validationDetails: ValidationResult;
   isPublished: boolean;
   setIsPublished: (isPublished: boolean) => void;
-  hasDraftAndPublished: boolean;
+  hasDraftAndPublished?: boolean;
 };
 
 export const Publishing = ({
