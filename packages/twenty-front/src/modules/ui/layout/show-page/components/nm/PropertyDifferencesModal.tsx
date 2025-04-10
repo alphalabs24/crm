@@ -245,16 +245,6 @@ const StyledPlatformIcon = styled.div<{ platform: string }>`
   align-items: center;
   justify-content: center;
   border-radius: ${({ theme }) => theme.border.radius.sm};
-  background: ${({ theme, platform }) => {
-    switch (platform.toLowerCase()) {
-      case 'airbnb':
-        return theme.color.red10;
-      case 'booking':
-        return theme.color.blue10;
-      default:
-        return theme.background.quaternary;
-    }
-  }};
 
   svg {
     color: ${({ theme, platform }) => {
