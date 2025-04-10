@@ -83,6 +83,42 @@ const areDatesEqual = (date1: any, date2: any): boolean => {
 };
 
 /**
+ * Compares two arrays of attachments by only comparing fullPath and orderIndex
+ * Ignores other properties like ids that might differ between draft and published
+ *
+ * @param draftAttachments Array of draft attachments
+ * @param publishedAttachments Array of published attachments
+ * @returns true if attachments are equivalent (same paths in same order)
+ */
+const areAttachmentsEqual = (
+  draftAttachments: any[],
+  publishedAttachments: any[],
+): boolean => {
+  if (!draftAttachments && !publishedAttachments) return true;
+  if (!draftAttachments || !publishedAttachments) return false;
+  if (draftAttachments.length !== publishedAttachments.length) return false;
+
+  // Create simplified versions of each attachment with only relevant fields
+  const simplifyAttachment = (attachment: any) => ({
+    fullPath: attachment.fullPath,
+    orderIndex: attachment.orderIndex,
+  });
+
+  const simplifiedDraft = draftAttachments.map(simplifyAttachment);
+  const simplifiedPublished = publishedAttachments.map(simplifyAttachment);
+
+  // Sort by orderIndex to ensure consistent comparison
+  const sortByOrderIndex = (a: any, b: any) =>
+    (a.orderIndex || 0) - (b.orderIndex || 0);
+
+  const sortedDraft = [...simplifiedDraft].sort(sortByOrderIndex);
+  const sortedPublished = [...simplifiedPublished].sort(sortByOrderIndex);
+
+  // Compare the simplified, sorted attachments
+  return isDeeplyEqual(sortedDraft, sortedPublished, { strict: true });
+};
+
+/**
  * Hook to compare differences between draft and published publications
  *
  * @param draftRecord - Array of draft publications to compare
@@ -168,11 +204,12 @@ export const useDraftPublishedDifferences = (
       }
     });
 
-    // Handle image differences (custom comparison for attachments)
+    // Handle image differences using the custom attachment comparison
     if (draftImages?.length > 0 || publishedImages?.length > 0) {
-      const hasImageChanges = !isDeeplyEqual(draftImages, publishedImages, {
-        strict: false, // Less strict comparison since these might have system fields that differ
-      });
+      const hasImageChanges = !areAttachmentsEqual(
+        draftImages,
+        publishedImages,
+      );
 
       if (hasImageChanges) {
         // Store attachment differences for special rendering

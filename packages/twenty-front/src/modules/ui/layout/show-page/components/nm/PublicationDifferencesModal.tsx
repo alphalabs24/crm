@@ -460,9 +460,16 @@ export const PublicationDifferencesModal = forwardRef<
         );
       }
 
-      // Show up to 4 images + count
-      const displayImages = images.slice(0, 3);
-      const hasMoreImages = images.length > 3;
+      // Sort images by orderIndex
+      const sortedImages = [...images].sort((a, b) => {
+        const orderA = a.orderIndex ?? 0;
+        const orderB = b.orderIndex ?? 0;
+        return orderA - orderB;
+      });
+
+      // Show up to 3 images + count
+      const displayImages = sortedImages.slice(0, 3);
+      const hasMoreImages = sortedImages.length > 3;
 
       return (
         <StyledImagesGrid>
@@ -473,7 +480,7 @@ export const PublicationDifferencesModal = forwardRef<
                 alt={`Image ${index + 1}`}
               />
               {index === 2 && hasMoreImages && (
-                <StyledImageCount>+{images.length - 3}</StyledImageCount>
+                <StyledImageCount>+{sortedImages.length - 3}</StyledImageCount>
               )}
             </StyledImageCard>
           ))}
