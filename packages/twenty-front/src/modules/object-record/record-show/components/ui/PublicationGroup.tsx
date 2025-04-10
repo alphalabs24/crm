@@ -3,8 +3,8 @@ import { StatusBadge } from '@/object-record/record-show/components/nm/publicati
 import { PublicationStage } from '@/object-record/record-show/constants/PublicationStage';
 import { ObjectRecord } from '@/object-record/types/ObjectRecord';
 import {
-    PlatformId,
-    PLATFORMS,
+  PlatformId,
+  PLATFORMS,
 } from '@/ui/layout/show-page/components/nm/types/Platform';
 import { useDraftPublishedDifferences } from '@/ui/layout/show-page/hooks/useDraftPublishedDifferences';
 import styled from '@emotion/styled';

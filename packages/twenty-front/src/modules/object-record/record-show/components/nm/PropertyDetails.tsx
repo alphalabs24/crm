@@ -9,7 +9,6 @@ import { PropertyBasicInfoCard } from '@/object-record/record-show/components/nm
 import { PropertyDetailsCard } from '@/object-record/record-show/components/nm/cards/PropertyDetailsCard';
 import { PropertyImagesCard } from '@/object-record/record-show/components/nm/cards/PropertyImagesCard';
 import { PropertyInquiriesCard } from '@/object-record/record-show/components/nm/cards/PropertyInquiriesCard';
-import { PropertyPublicationsCard } from '@/object-record/record-show/components/nm/cards/PropertyPublicationsCard';
 import { PropertyRelationsCard } from '@/object-record/record-show/components/nm/cards/PropertyRelationsCard';
 import { PropertyReportingCard } from '@/object-record/record-show/components/nm/cards/PropertyReportingCard';
 import { StyledLoadingContainer } from '@/object-record/record-show/components/ui/PropertyDetailsCardComponents';
@@ -104,13 +103,9 @@ const StyledDetailsSection = styled.div`
   }
 `;
 
-const StyledPublicationsSection = styled.div`
-  display: none;
-
-  @media (min-width: ${MOBILE_VIEWPORT}px) {
-    display: block;
-    width: 100%;
-  }
+const StyledPageTitle = styled.div`
+  font-size: ${({ theme }) => theme.font.size.lg};
+  font-weight: ${({ theme }) => theme.font.weight.semiBold};
 `;
 
 const StyledPageHeader = styled.div`
@@ -263,8 +258,6 @@ export const PropertyDetails = ({
     [differenceRecords],
   );
 
-  console.log(differenceLength);
-
   // Determine visibility of buttons based on state
   const showDeleteButton = useMemo(
     () => !property?.deletedAt,
@@ -287,6 +280,7 @@ export const PropertyDetails = ({
   return (
     <StyledPageContainer isInRightDrawer={isInRightDrawer}>
       <StyledPageHeader>
+        <StyledPageTitle>{capitalizedObjectNameSingular}</StyledPageTitle>
         <StyledButtonContainer>
           {property && !property.deletedAt && (
             <StyledLinkWrapper
@@ -356,12 +350,12 @@ export const PropertyDetails = ({
             <PropertyAddressCard record={property} loading={recordLoading} />
           </StyledDetailsSection>
 
-          <StyledPublicationsSection>
+          {/* <StyledPublicationsSection>
             <PropertyPublicationsCard
               record={property}
               loading={recordLoading}
             />
-          </StyledPublicationsSection>
+          </StyledPublicationsSection> */}
         </StyledMainContent>
 
         {isMobile ? null : (
