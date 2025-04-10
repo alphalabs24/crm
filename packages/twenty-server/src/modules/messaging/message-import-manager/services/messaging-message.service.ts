@@ -212,6 +212,7 @@ export class MessagingMessageService {
                 participants: message.participants,
                 externalThreadId: message.messageThreadExternalId,
                 messageChannelId: messageChannelId,
+                externalMessageId: message.externalId,
               },
             },
           },
