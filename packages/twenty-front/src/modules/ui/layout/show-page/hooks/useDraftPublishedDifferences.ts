@@ -98,9 +98,16 @@ const areAttachmentsEqual = (
   if (!draftAttachments || !publishedAttachments) return false;
   if (draftAttachments.length !== publishedAttachments.length) return false;
 
+  // Helper to strip token query parameters from image URLs
+  const stripTokenFromPath = (path: string): string => {
+    if (!path) return '';
+    // Remove the token query parameter
+    return path.split('?token=')[0];
+  };
+
   // Create simplified versions of each attachment with only relevant fields
   const simplifyAttachment = (attachment: any) => ({
-    fullPath: attachment.fullPath,
+    fullPath: stripTokenFromPath(attachment.fullPath),
     orderIndex: attachment.orderIndex,
   });
 
