@@ -128,8 +128,8 @@ const areAttachmentsEqual = (
 /**
  * Hook to compare differences between draft and published publications
  *
- * @param draftRecord - Array of draft publications to compare
- * @param publishedRecord - Array of published publications to compare
+ * @param draftRecord - publication to compare
+ * @param publishedRecord - published publication to compare
  * @returns Object containing differences between draft and published publications
  */
 export const useDraftPublishedDifferences = (
