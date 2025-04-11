@@ -121,6 +121,7 @@ export const FieldsCard = ({
                             | CoreObjectNameSingular.Note
                             | CoreObjectNameSingular.Task
                         }
+                        readonly
                         activity={recordFromStore as Task | Note}
                         showLabel={true}
                         maxWidth={200}
