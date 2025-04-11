@@ -329,6 +329,7 @@ export const PublicationList = ({ targetableObject }: PublicationListProps) => {
           stage={computeStage(
             publicationGroups[selectedPlatformId][PublicationStage.Published],
           )}
+          selectedPlatformId={selectedPlatformId}
           recordLoading={loading}
           isInRightDrawer={false}
           refetch={refetch}

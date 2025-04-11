@@ -1,15 +1,16 @@
 import {
-    PlatformId,
-    PLATFORMS,
+  PlatformId,
+  PLATFORMS,
 } from '@/ui/layout/show-page/components/nm/types/Platform';
 import { NavigationDrawerCollapseButton } from '@/ui/navigation/navigation-drawer/components/NavigationDrawerCollapseButton';
 import { isNavigationDrawerExpandedState } from '@/ui/navigation/states/isNavigationDrawerExpanded';
 import styled from '@emotion/styled';
+import { Trans } from '@lingui/react/macro';
 import { useRecoilValue } from 'recoil';
 import {
-    IconChevronLeft,
-    LARGE_DESKTOP_VIEWPORT,
-    useIsMobile,
+  IconChevronLeft,
+  LARGE_DESKTOP_VIEWPORT,
+  useIsMobile,
 } from 'twenty-ui';
 
 const StyledBreadcrumbContainer = styled.div`
@@ -107,7 +108,9 @@ export const PublicationBreadcrumb = ({
       </StyledBackButton>
       <StyledBreadcrumbItem>
         <StyledUnstyledButton onClick={onBackClick}>
-          <StyledBreadcrumbText>Publications</StyledBreadcrumbText>
+          <StyledBreadcrumbText>
+            <Trans>Publications</Trans>
+          </StyledBreadcrumbText>
         </StyledUnstyledButton>
         <StyledSeparator>/</StyledSeparator>
         <StyledPlatformNameText>

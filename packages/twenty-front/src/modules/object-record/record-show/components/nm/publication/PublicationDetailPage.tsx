@@ -162,6 +162,7 @@ type PublicationDetailPageProps = {
   stage: PublicationStage;
   isInRightDrawer?: boolean;
   recordLoading: boolean;
+  selectedPlatformId: PlatformId;
   refetch: () => void;
 };
 
@@ -170,6 +171,7 @@ export const PublicationDetailPage = ({
   stage,
   isInRightDrawer,
   recordLoading,
+  selectedPlatformId,
   refetch,
 }: PublicationDetailPageProps) => {
   const { t } = useLingui();
@@ -563,7 +565,7 @@ export const PublicationDetailPage = ({
             targetObjectNameSingular: CoreObjectNameSingular.Publication,
           }}
           validationDetails={validationDetails}
-          platformId={draftRecord?.platform ?? PlatformId.Newhome}
+          platformId={selectedPlatformId}
           hasDraftAndPublished={hasDraftAndPublished}
         />
       ) : (
