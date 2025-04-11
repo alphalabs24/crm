@@ -8,7 +8,7 @@ import {
   PlatformId,
   PUBLISHABLE_PLATFORMS,
 } from '@/ui/layout/show-page/components/nm/types/Platform';
-import { usePublicationsOfProperty } from '@/ui/layout/show-page/hooks/usePublicationsOfProperty';
+import { usePublications } from '@/ui/layout/show-page/contexts/PublicationsProvider';
 import { OptionalWrap } from '@/ui/layout/utilities/components/OptionalWrapWith';
 import { css, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
@@ -240,9 +240,12 @@ type PublicationListProps = {
 };
 
 export const PublicationList = ({ targetableObject }: PublicationListProps) => {
-  const { publicationGroups, loading, refetch } = usePublicationsOfProperty(
-    targetableObject.id,
-  );
+  const {
+    publicationGroupsWithoutAll: publicationGroups,
+    loading,
+    refetch,
+  } = usePublications();
+
   const [searchParams] = useSearchParams();
   const location = useLocation();
   const navigate = useNavigate();

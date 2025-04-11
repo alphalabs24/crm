@@ -8,6 +8,12 @@ import { PlatformId } from '~/modules/ui/layout/show-page/components/nm/types/Pl
 
 type Stage = 'draft' | 'published' | 'archived' | 'scheduled' | 'overwritten';
 
+// Define a type for publication groups
+export type PublicationGroupsType = Record<
+  string | 'all',
+  Record<string, any[]>
+>;
+
 export const usePublicationsOfProperty = (
   propertyId?: string,
   stage?: Stage,
@@ -35,26 +41,46 @@ export const usePublicationsOfProperty = (
   };
 
   const publicationGroups = useMemo(() => {
+    // Create all stage buckets for a platform
+    const createStagesBucket = () => {
+      const bucket: Record<string, any[]> = { all: [] };
+
+      // Add bucket for each PublicationStage value
+      Object.values(PublicationStage).forEach((stageValue) => {
+        bucket[stageValue] = [];
+      });
+
+      return bucket;
+    };
+
+    // Initialize result with an 'all' platform group
+    const result: PublicationGroupsType = {
+      all: createStagesBucket(),
+    };
+
     return publications.reduce(
-      (groups: Record<PlatformId, Record<string, any[]>>, publication: any) => {
+      (groups: PublicationGroupsType, publication: any) => {
         const platform = publication.platform as PlatformId;
         const publicationStage = publication.stage as PublicationStage;
+
+        // Add to platform-specific group if it doesn't exist yet
         if (!groups[platform]) {
-          groups[platform] = {
-            all: [],
-          };
+          groups[platform] = createStagesBucket();
         }
 
-        if (!groups[platform][publicationStage]) {
-          groups[platform][publicationStage] = [];
-        }
-
-        groups[platform][publicationStage].push(publication);
+        // Add to platform-specific stage group (non-null assertion is safe because we just created it if missing)
+        groups[platform][publicationStage]?.push(publication);
+        // Add to platform-specific all group
         groups[platform].all.push(publication);
+
+        // Add to all platform stage group
+        groups.all[publicationStage]?.push(publication);
+        // Add to all platform all group
+        groups.all.all.push(publication);
 
         return groups;
       },
-      {} as Record<PlatformId, Record<string, any[]>>,
+      result,
     );
   }, [publications]);
 

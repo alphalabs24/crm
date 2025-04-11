@@ -12,6 +12,7 @@ import { PropertyInquiriesCard } from '@/object-record/record-show/components/nm
 import { PropertyRelationsCard } from '@/object-record/record-show/components/nm/cards/PropertyRelationsCard';
 import { PropertyReportingCard } from '@/object-record/record-show/components/nm/cards/PropertyReportingCard';
 import { StyledLoadingContainer } from '@/object-record/record-show/components/ui/PropertyDetailsCardComponents';
+import { PublicationStage } from '@/object-record/record-show/constants/PublicationStage';
 import { useRecordShowContainerData } from '@/object-record/record-show/hooks/useRecordShowContainerData';
 import { SnackBarVariant } from '@/ui/feedback/snack-bar-manager/components/SnackBar';
 import { useSnackBar } from '@/ui/feedback/snack-bar-manager/hooks/useSnackBar';
@@ -20,13 +21,13 @@ import { ConfirmationModal } from '@/ui/layout/modal/components/ConfirmationModa
 import { ModalRefType } from '@/ui/layout/modal/components/Modal';
 import { ActionDropdown } from '@/ui/layout/show-page/components/nm/ActionDropdown';
 import { PropertyDifferencesModal } from '@/ui/layout/show-page/components/nm/PropertyDifferencesModal';
+import { usePublications } from '@/ui/layout/show-page/contexts/PublicationsProvider';
 import { useDeleteProperty } from '@/ui/layout/show-page/hooks/useDeleteProperty';
 import { usePropertyAndPublicationDifferences } from '@/ui/layout/show-page/hooks/usePropertyAndPublicationDifferences';
-import { usePublicationsOfProperty } from '@/ui/layout/show-page/hooks/usePublicationsOfProperty';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { capitalize } from 'twenty-shared';
 import {
@@ -206,24 +207,23 @@ export const PropertyDetails = ({
       objectRecordId: targetableObject.id,
     });
 
-  // Publications
-  const {
-    publications: publicationDraftsOfProperty,
-    refetch: refetchPublications,
-  } = usePublicationsOfProperty(targetableObject.id, 'draft');
+  const { publicationGroups, refetch: refetchPublications } = usePublications();
+
+  const publicationDraftsOfProperty = useMemo(() => {
+    return publicationGroups.all[PublicationStage.Draft];
+  }, [publicationGroups]);
+
+  const objectNameSingular = targetableObject.targetObjectNameSingular;
 
   // Delete handling
   const { deleteOneRecord } = useDeleteOneRecord({
-    objectNameSingular: targetableObject.targetObjectNameSingular,
+    objectNameSingular,
   });
 
   const onDelete = async () => {
-    enqueueSnackBar(
-      t`${targetableObject.targetObjectNameSingular} deleted successfully`,
-      {
-        variant: SnackBarVariant.Success,
-      },
-    );
+    enqueueSnackBar(t`${objectNameSingular} deleted successfully`, {
+      variant: SnackBarVariant.Success,
+    });
     await refetchPublications();
   };
 
@@ -264,10 +264,10 @@ export const PropertyDetails = ({
       },
     });
 
-  const syncPublications = () => {
-    syncPublicationMutation();
+  const syncPublications = useCallback(async () => {
+    await syncPublicationMutation();
     closeDropdown();
-  };
+  }, [syncPublicationMutation, closeDropdown]);
 
   // Publication differences
   const { differenceRecords } = usePropertyAndPublicationDifferences(

@@ -3,8 +3,8 @@ import { PlatformBadge } from '@/object-record/record-show/components/nm/publica
 import { SnackBarVariant } from '@/ui/feedback/snack-bar-manager/components/SnackBar';
 import { useSnackBar } from '@/ui/feedback/snack-bar-manager/hooks/useSnackBar';
 import {
-    PlatformId,
-    PLATFORMS,
+  PlatformId,
+  PLATFORMS,
 } from '@/ui/layout/show-page/components/nm/types/Platform';
 import styled from '@emotion/styled';
 import { useLingui } from '@lingui/react/macro';
@@ -84,6 +84,8 @@ export const NewPublicationCard = ({
         enqueueSnackBar(t`Publication Draft created successfully`, {
           variant: SnackBarVariant.Success,
         });
+
+        onClick();
 
         // Refetch publications data to get the newly created publication
         if (refetchCallback) {
