@@ -98,11 +98,6 @@ export const PublicationBreadcrumb = ({
 
   return (
     <StyledBreadcrumbContainer>
-      {!isMobile && !isNavigationDrawerExpanded && (
-        <StyledTopBarButtonContainer>
-          <NavigationDrawerCollapseButton direction="right" />
-        </StyledTopBarButtonContainer>
-      )}
       <StyledBackButton onClick={onBackClick}>
         <IconChevronLeft size={16} />
       </StyledBackButton>
