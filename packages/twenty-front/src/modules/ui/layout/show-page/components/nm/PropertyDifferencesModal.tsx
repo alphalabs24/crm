@@ -1,6 +1,6 @@
 import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadataItem';
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
-import { isLabelIdentifierField } from '@/object-metadata/utils/isLabelIdentifierField';
+import { RecordChip } from '@/object-record/components/RecordChip';
 import { useFindOneRecord } from '@/object-record/hooks/useFindOneRecord';
 import { FieldDisplay } from '@/object-record/record-field/components/FieldDisplay';
 import { FieldContext } from '@/object-record/record-field/contexts/FieldContext';
@@ -382,6 +382,10 @@ const PublicationDiffView = ({
         const isOldValueEmpty = isValueEmpty(diff.publicationValue);
         const isNewValueEmpty = isValueEmpty(diff.propertyValue);
 
+        const isObject =
+          typeof diff.publicationValue === 'object' ||
+          typeof diff.propertyValue === 'object';
+
         return (
           <StyledDifferenceItem key={index}>
             <StyledDifferenceHeader>
@@ -401,14 +405,22 @@ const PublicationDiffView = ({
                     />
                   ) : isOldValueEmpty ? (
                     <EmptyValueDisplay />
+                  ) : (isObject && diff.publicationValue.name) ||
+                    diff.publicationValue.title ? (
+                    <div>
+                      <RecordChip
+                        record={diff.publicationValue}
+                        objectNameSingular={
+                          diff.publicationValue.__typename?.toLowerCase() ?? ''
+                        }
+                        disabled
+                      />
+                    </div>
                   ) : (
                     <FieldContext.Provider
                       value={{
                         recordId: publicationRecordId,
-                        isLabelIdentifier: isLabelIdentifierField({
-                          fieldMetadataItem: diff.publicationFieldMetadataItem,
-                          objectMetadataItem: objectMetadataItem,
-                        }),
+                        isLabelIdentifier: false,
                         fieldDefinition: {
                           type: diff.publicationFieldMetadataItem.type,
                           iconName:
@@ -446,15 +458,23 @@ const PublicationDiffView = ({
                   />
                 ) : isNewValueEmpty ? (
                   <EmptyValueDisplay />
+                ) : (isObject && diff.propertyValue.name) ||
+                  diff.propertyValue.title ? (
+                  <div>
+                    <RecordChip
+                      record={diff.propertyValue}
+                      objectNameSingular={
+                        diff.propertyValue.__typename?.toLowerCase() ?? ''
+                      }
+                      disabled
+                    />
+                  </div>
                 ) : (
                   <FieldContext.Provider
                     value={{
                       overridenIsFieldEmpty: isValueEmpty(diff.propertyValue),
                       recordId: propertyRecordId,
-                      isLabelIdentifier: isLabelIdentifierField({
-                        fieldMetadataItem: diff.propertyFieldMetadataItem,
-                        objectMetadataItem: propertyMetadataItem,
-                      }),
+                      isLabelIdentifier: false,
                       fieldDefinition: {
                         type: diff.propertyFieldMetadataItem.type,
                         iconName:

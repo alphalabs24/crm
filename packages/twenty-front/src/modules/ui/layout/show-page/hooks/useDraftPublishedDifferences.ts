@@ -23,13 +23,19 @@ const IGNORE_FIELD_KEYS = [
   'favorites',
   'noteTargets',
   'timelineActivites',
-  // TODO: handle these relations separately
+  'attachments',
+  'timelineActivities',
   'assigneeId',
   'agencyId',
   'sellerId',
-  // Image-related fields will be handled in a second step
-  'images',
-  'coverImage',
+  'movies',
+  'pictures',
+  'documents',
+  'messageParticipations',
+  'emailSenderId',
+  'buyerLeads',
+  'deletedAt',
+  'agency',
 ];
 
 export type AttachmentDifference = {

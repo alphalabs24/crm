@@ -62,10 +62,10 @@ const StyledPageContainer = styled.div<{ isInRightDrawer?: boolean }>`
 
 const StyledContentContainer = styled.div<{ isInRightDrawer?: boolean }>`
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   gap: ${({ theme }) => theme.spacing(4)};
 
-  @media (min-width: ${MOBILE_VIEWPORT}px) {
+  @media (min-width: ${MOBILE_VIEWPORT + 300}px) {
     flex-direction: row;
     flex-wrap: wrap;
 
@@ -102,7 +102,20 @@ const StyledSideContent = styled.div<{ isInRightDrawer?: boolean }>`
     display: flex;
     flex-direction: column;
     gap: ${({ theme }) => theme.spacing(4)};
+  }
+
+  @media (min-width: ${MOBILE_VIEWPORT + 300}px) {
     width: 380px;
+  }
+`;
+
+const StyledSideContentMobile = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(4)};
+
+  @media (min-width: ${MOBILE_VIEWPORT}px) {
+    display: none;
   }
 `;
 
@@ -553,6 +566,10 @@ export const PublicationDetailPage = ({
               />
             </StyledDetailsSection>
           </StyledMainContent>
+          <StyledSideContentMobile>
+            <PublicationCompletionCard record={publication} />
+            <PublicationStatusCard stage={publication.stage} />
+          </StyledSideContentMobile>
 
           <StyledSideContent isInRightDrawer={isInRightDrawer}>
             <PublicationCompletionCard record={publication} />
