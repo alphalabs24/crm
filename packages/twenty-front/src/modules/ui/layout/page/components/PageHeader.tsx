@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import { ReactNode } from 'react';
 import { useRecoilValue } from 'recoil';
 import {
+  Button,
   IconButton,
   IconChevronDown,
   IconChevronUp,
@@ -15,6 +16,7 @@ import {
 
 import { NavigationDrawerCollapseButton } from '@/ui/navigation/navigation-drawer/components/NavigationDrawerCollapseButton';
 
+import { useOpenSpreadsheetImportDialog } from '@/spreadsheet-import/hooks/useOpenSpreadsheetImportDialog';
 import { isNavigationDrawerExpandedState } from '@/ui/navigation/states/isNavigationDrawerExpanded';
 import { useIsMobile } from '@/ui/utilities/responsive/hooks/useIsMobile';
 import { useIsFeatureEnabled } from '@/workspace/hooks/useIsFeatureEnabled';
@@ -121,6 +123,7 @@ export const PageHeader = ({
   const isNavigationDrawerExpanded = useRecoilValue(
     isNavigationDrawerExpandedState,
   );
+  const { openSpreadsheetImportDialog } = useOpenSpreadsheetImportDialog();
 
   const isCommandMenuV2Enabled = useIsFeatureEnabled(
     FeatureFlagKey.IsCommandMenuV2Enabled,
@@ -174,6 +177,17 @@ export const PageHeader = ({
               {tutorialButton}
             </StyledTitleContainer>
           )}
+          <Button
+            variant="secondary"
+            size="small"
+            onClick={() =>
+              openSpreadsheetImportDialog({
+                fields: [],
+                onSubmit: () => {},
+              })
+            }
+            title={'import from csv'}
+          />
         </StyledTopBarIconStyledTitleContainer>
       </StyledLeftContainer>
 
