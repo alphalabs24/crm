@@ -89,6 +89,12 @@ const StyledSideContent = styled.div<{ isInRightDrawer?: boolean }>`
     flex-direction: column;
     gap: ${({ theme }) => theme.spacing(4)};
     width: 380px;
+
+    ${({ isInRightDrawer }) =>
+      isInRightDrawer &&
+      css`
+        width: 100%;
+      `}
   }
 `;
 
@@ -136,7 +142,7 @@ const StyledPropertyRef = styled.div`
   padding: ${({ theme }) => theme.spacing(1)};
 `;
 
-const StyledPageHeader = styled.div`
+const StyledPageHeader = styled.div<{ isInRightDrawer?: boolean }>`
   display: flex;
   flex-direction: column-reverse;
 
@@ -146,6 +152,13 @@ const StyledPageHeader = styled.div`
   @media (min-width: ${MOBILE_VIEWPORT}px) {
     flex-direction: row;
     align-items: center;
+
+    ${({ isInRightDrawer }) =>
+      isInRightDrawer &&
+      css`
+        align-items: flex-start;
+        flex-direction: column-reverse;
+      `}
   }
 `;
 
@@ -162,12 +175,6 @@ const StyledPageContainer = styled.div<{ isInRightDrawer?: boolean }>`
 
   @media (min-width: ${MOBILE_VIEWPORT}px) {
     padding: ${({ theme }) => theme.spacing(4)};
-
-    ${({ isInRightDrawer }) =>
-      isInRightDrawer &&
-      css`
-        padding: 0;
-      `}
   }
 `;
 
@@ -322,7 +329,7 @@ export const PropertyDetails = ({
 
   return (
     <StyledPageContainer isInRightDrawer={isInRightDrawer}>
-      <StyledPageHeader>
+      <StyledPageHeader isInRightDrawer={isInRightDrawer}>
         <StyledPageTitle>
           {property?.name}
           <StyledPropertyRef

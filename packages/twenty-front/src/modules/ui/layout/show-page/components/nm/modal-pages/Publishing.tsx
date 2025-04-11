@@ -22,6 +22,7 @@ import {
   IconExternalLink,
 } from 'twenty-ui';
 import { ValidationResult } from '../../../hooks/usePublicationValidation';
+import { useTheme } from '@emotion/react';
 
 const StyledPublishingProcess = styled.div`
   display: flex;
@@ -134,6 +135,7 @@ export const Publishing = ({
 }: PublishingProps) => {
   const [showError, setShowError] = useState(false);
   const { enqueueSnackBar } = useSnackBar();
+  const theme = useTheme();
   const { t } = useLingui();
 
   const { record, refetch } = useFindOneRecord({
@@ -236,7 +238,11 @@ export const Publishing = ({
               </StyledViewPublicationButton>
             ) : null
           ) : isLoading ? (
-            <CircularProgressBar size={16} barWidth={2} barColor="black" />
+            <CircularProgressBar
+              size={16}
+              barWidth={2}
+              barColor={theme.background.invertedPrimary}
+            />
           ) : (
             <Button
               variant="primary"

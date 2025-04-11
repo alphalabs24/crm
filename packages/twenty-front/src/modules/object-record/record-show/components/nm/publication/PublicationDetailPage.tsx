@@ -72,7 +72,7 @@ const StyledContentContainer = styled.div<{ isInRightDrawer?: boolean }>`
     ${({ isInRightDrawer }) =>
       isInRightDrawer &&
       css`
-        flex-direction: column;
+        flex-direction: column-reverse;
 
         padding: 0;
       `}
@@ -106,6 +106,12 @@ const StyledSideContent = styled.div<{ isInRightDrawer?: boolean }>`
 
   @media (min-width: ${MOBILE_VIEWPORT + 300}px) {
     width: 380px;
+
+    ${({ isInRightDrawer }) =>
+      isInRightDrawer &&
+      css`
+        width: 100%;
+      `}
   }
 `;
 
@@ -155,7 +161,7 @@ const StyledDetailsSection = styled.div`
   }
 `;
 
-const StyledPageHeader = styled.div`
+const StyledPageHeader = styled.div<{ isInRightDrawer?: boolean }>`
   display: flex;
   flex-direction: column-reverse;
   gap: ${({ theme }) => theme.spacing(4)};
@@ -164,6 +170,13 @@ const StyledPageHeader = styled.div`
   @media (min-width: ${MOBILE_VIEWPORT}px) {
     flex-direction: row;
     align-items: center;
+
+    ${({ isInRightDrawer }) =>
+      isInRightDrawer &&
+      css`
+        align-items: flex-start;
+        flex-direction: column-reverse;
+      `}
   }
 `;
 
@@ -435,7 +448,7 @@ export const PublicationDetailPage = ({
     <RecordFieldValueSelectorContextProvider>
       <RecordValueSetterEffect recordId={publication.id} />
       <StyledPageContainer>
-        <StyledPageHeader>
+        <StyledPageHeader isInRightDrawer={isInRightDrawer}>
           <PublicationBreadcrumb
             platformId={publication.platform}
             onBackClick={handleBackClick}
@@ -581,7 +594,8 @@ export const PublicationDetailPage = ({
         </StyledContentContainer>
 
         {/* Modals */}
-        {!hasDraftAndPublished || !hasDifferences ? (
+        {(!hasDraftAndPublished || !hasDifferences) &&
+        stage !== PublicationStage.Published ? (
           <PublishModal
             ref={modalRef}
             onClose={handleModalClose}

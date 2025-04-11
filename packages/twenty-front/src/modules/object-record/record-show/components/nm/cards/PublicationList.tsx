@@ -265,9 +265,13 @@ type PublicationListProps = {
     ActivityTargetableObject,
     'targetObjectNameSingular' | 'id'
   >;
+  isInRightDrawer?: boolean;
 };
 
-export const PublicationList = ({ targetableObject }: PublicationListProps) => {
+export const PublicationList = ({
+  targetableObject,
+  isInRightDrawer,
+}: PublicationListProps) => {
   const {
     publicationGroupsWithoutAll: publicationGroups,
     loading,
@@ -359,7 +363,7 @@ export const PublicationList = ({ targetableObject }: PublicationListProps) => {
           )}
           selectedPlatformId={selectedPlatformId}
           recordLoading={loading}
-          isInRightDrawer={false}
+          isInRightDrawer={isInRightDrawer}
           refetch={refetch}
         />
       </OptionalWrap>

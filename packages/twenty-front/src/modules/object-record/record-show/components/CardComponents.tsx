@@ -139,7 +139,10 @@ export const CardComponents: Record<CardType, CardComponentType> = {
     <MobilePublicationsCard targetableObject={targetableObject} />
   ),
 
-  [CardType.PublicationListCard]: ({ targetableObject }) => (
-    <PublicationList targetableObject={targetableObject} />
+  [CardType.PublicationListCard]: ({ targetableObject, isInRightDrawer }) => (
+    <PublicationList
+      targetableObject={targetableObject}
+      isInRightDrawer={isInRightDrawer}
+    />
   ),
 };

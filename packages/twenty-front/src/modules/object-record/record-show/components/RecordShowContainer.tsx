@@ -7,6 +7,7 @@ import { RecordShowContainerContextStoreTargetedRecordsEffect } from '@/object-r
 import { useRecordShowContainerData } from '@/object-record/record-show/hooks/useRecordShowContainerData';
 import { useRecordShowContainerTabs } from '@/object-record/record-show/hooks/useRecordShowContainerTabs';
 import { ShowPageSubContainer } from '@/ui/layout/show-page/components/ShowPageSubContainer';
+import { PublicationsProvider } from '@/ui/layout/show-page/contexts/PublicationsProvider';
 
 type RecordShowContainerProps = {
   objectNameSingular: string;
@@ -41,7 +42,12 @@ export const RecordShowContainer = ({
   );
 
   return (
-    <>
+    <PublicationsProvider
+      targetableObject={{
+        id: objectRecordId,
+        targetObjectNameSingular: objectMetadataItem?.nameSingular,
+      }}
+    >
       <RecordShowContainerContextStoreTargetedRecordsEffect
         recordId={objectRecordId}
       />
@@ -64,6 +70,6 @@ export const RecordShowContainer = ({
           isNewRightDrawerItemLoading={isNewRightDrawerItemLoading}
         />
       </ShowPageContainer>
-    </>
+    </PublicationsProvider>
   );
 };
