@@ -8,7 +8,6 @@ import { PropertyBasicInfoCard } from '@/object-record/record-show/components/nm
 import { PropertyDetailsCard } from '@/object-record/record-show/components/nm/cards/PropertyDetailsCard';
 import { PropertyImagesCard } from '@/object-record/record-show/components/nm/cards/PropertyImagesCard';
 import { PropertyInquiriesCard } from '@/object-record/record-show/components/nm/cards/PropertyInquiriesCard';
-import { PropertyRelationsCard } from '@/object-record/record-show/components/nm/cards/PropertyRelationsCard';
 import { PropertyReportingCard } from '@/object-record/record-show/components/nm/cards/PropertyReportingCard';
 import { PublicationCompletionCard } from '@/object-record/record-show/components/nm/cards/PublicationCompletionCard';
 import { PublicationStatusCard } from '@/object-record/record-show/components/nm/cards/PublicationStatusCard';
@@ -536,11 +535,11 @@ export const PublicationDetailPage = ({
           </StyledOverviewSection>
 
           <StyledDetailsSection>
-            <PropertyRelationsCard
-              record={publication}
-              loading={recordLoading}
-              objectMetadataItem={objectMetadataItem}
-            />
+            {/*<PropertyRelationsCard
+            record={publication}
+            loading={recordLoading}
+            objectMetadataItem={objectMetadataItem}
+          />*/}
             <PropertyAddressCard record={publication} loading={recordLoading} />
           </StyledDetailsSection>
         </StyledMainContent>

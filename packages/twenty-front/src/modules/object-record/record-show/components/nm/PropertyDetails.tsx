@@ -113,6 +113,7 @@ const StyledPageTitle = styled.div`
   font-size: ${({ theme }) => theme.font.size.md};
   font-weight: ${({ theme }) => theme.font.weight.semiBold};
   gap: ${({ theme }) => theme.spacing(2)};
+  color: ${({ theme }) => theme.font.color.primary};
 `;
 
 const StyledPropertyRef = styled.div`
