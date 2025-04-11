@@ -120,6 +120,7 @@ type PublishingProps = {
   validationDetails: ValidationResult;
   isPublished: boolean;
   setIsPublished: (isPublished: boolean) => void;
+  hasDraftAndPublished?: boolean;
 };
 
 export const Publishing = ({
@@ -129,6 +130,7 @@ export const Publishing = ({
   validationDetails,
   isPublished,
   setIsPublished,
+  hasDraftAndPublished,
 }: PublishingProps) => {
   const [showError, setShowError] = useState(false);
   const { enqueueSnackBar } = useSnackBar();
@@ -205,6 +207,8 @@ export const Publishing = ({
               </>
             ) : isLoading ? (
               t`Publishing...`
+            ) : hasDraftAndPublished ? (
+              t`Published`
             ) : (
               t`Unpublished`
             )}
@@ -237,7 +241,7 @@ export const Publishing = ({
             <Button
               variant="primary"
               accent="blue"
-              title={t`Publish`}
+              title={hasDraftAndPublished ? t`Republish` : t`Publish`}
               onClick={publishDraft}
             />
           )}

@@ -1,10 +1,13 @@
+import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { FieldMetadataItem } from '@/object-metadata/types/FieldMetadataItem';
 import { getLinkToShowPage } from '@/object-metadata/utils/getLinkToShowPage';
+import { isPublication } from '@/object-metadata/utils/isPropertyOrPublication';
 import { useFindOneRecord } from '@/object-record/hooks/useFindOneRecord';
 import { NavigationDrawerCollapseButton } from '@/ui/navigation/navigation-drawer/components/NavigationDrawerCollapseButton';
 import { isNavigationDrawerExpandedState } from '@/ui/navigation/states/isNavigationDrawerExpanded';
 import styled from '@emotion/styled';
-import { Link } from 'react-router-dom';
+import { useMemo } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { capitalize } from 'twenty-shared';
 import {
@@ -99,13 +102,34 @@ export const RecordShowPropertyBreadcrumb = ({
     objectRecordId,
     recordGqlFields: {
       [labelIdentifierFieldMetadataItem?.name ?? 'name']: true,
+      platform: true,
+      propertyId: true,
     },
   });
   const isMobile = useIsMobile();
-
+  const navigate = useNavigate();
   const isNavigationDrawerExpanded = useRecoilValue(
     isNavigationDrawerExpandedState,
   );
+
+  const suffixLink = useMemo(() => {
+    return record
+      ? isPublication(objectNameSingular)
+        ? getLinkToShowPage(
+            CoreObjectNameSingular.Property,
+            {
+              id: record.propertyId,
+            },
+            {
+              hash: `#publications`,
+              searchParams: {
+                platform: record.platform,
+              },
+            },
+          )
+        : getLinkToShowPage(objectNameSingular, { id: objectRecordId })
+      : `/object/${objectNameSingular}/${objectRecordId}`;
+  }, [objectNameSingular, objectRecordId, record]);
 
   if (loading) {
     return null;
@@ -120,19 +144,15 @@ export const RecordShowPropertyBreadcrumb = ({
       )}
       {showBackButton &&
         (suffix ? (
-          <Link
-            to={
-              record
-                ? getLinkToShowPage(objectNameSingular, { id: objectRecordId })
-                : `/object/${objectNameSingular}/${objectRecordId}`
-            }
-          >
-            <LightIconButton
-              Icon={IconChevronLeft}
-              size="small"
-              accent="tertiary"
-            />
-          </Link>
+          <LightIconButton
+            Icon={IconChevronLeft}
+            size="small"
+            accent="tertiary"
+            // eslint-disable-next-line @nx/workspace-no-navigate-prefer-link
+            onClick={() => {
+              navigate(-1);
+            }}
+          />
         ) : (
           <LightIconButton
             Icon={IconX}
@@ -147,13 +167,7 @@ export const RecordShowPropertyBreadcrumb = ({
         </StyledBreadcrumbText>
         <StyledSeparator>/</StyledSeparator>
         {suffix ? (
-          <StyledPropertyTitleLink
-            to={
-              record
-                ? getLinkToShowPage(objectNameSingular, { id: objectRecordId })
-                : `/object/${objectNameSingular}/${objectRecordId}`
-            }
-          >
+          <StyledPropertyTitleLink to={suffixLink}>
             {typeof record?.name === 'string'
               ? record?.name
               : record?.name

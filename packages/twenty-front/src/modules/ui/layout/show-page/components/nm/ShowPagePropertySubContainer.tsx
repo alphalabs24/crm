@@ -3,8 +3,6 @@ import { RecordShowRightDrawerActionMenu } from '@/action-menu/components/Record
 import { ActivityTargetableObject } from '@/activities/types/ActivityTargetableEntity';
 import { useNestermind } from '@/api/hooks/useNestermind';
 import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadataItem';
-import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
-import { getLinkToShowPage } from '@/object-metadata/utils/getLinkToShowPage';
 import { useDeleteOneRecord } from '@/object-record/hooks/useDeleteOneRecord';
 import { isNewViewableRecordLoadingState } from '@/object-record/record-right-drawer/states/isNewViewableRecordLoading';
 import { CardComponents } from '@/object-record/record-show/components/CardComponents';
@@ -12,40 +10,21 @@ import { useRecordShowPage } from '@/object-record/record-show/hooks/useRecordSh
 import { RecordLayout } from '@/object-record/record-show/types/RecordLayout';
 import { SnackBarVariant } from '@/ui/feedback/snack-bar-manager/components/SnackBar';
 import { useSnackBar } from '@/ui/feedback/snack-bar-manager/hooks/useSnackBar';
-import { useDropdown } from '@/ui/layout/dropdown/hooks/useDropdown';
 import { ConfirmationModal } from '@/ui/layout/modal/components/ConfirmationModal';
 import { ModalRefType } from '@/ui/layout/modal/components/Modal';
 import { RightDrawerFooter } from '@/ui/layout/right-drawer/components/RightDrawerFooter';
-import { PublishModal } from '@/ui/layout/show-page/components/nm/PublishModal';
 import { ShowPageImageBanner } from '@/ui/layout/show-page/components/nm/ShowPageImageBanner';
+import { usePublications } from '@/ui/layout/show-page/contexts/PublicationsProvider';
 import { SingleTabProps, TabList } from '@/ui/layout/tab/components/TabList';
 import { useTabList } from '@/ui/layout/tab/hooks/useTabList';
 import { useIsMobile } from '@/ui/utilities/responsive/hooks/useIsMobile';
 import styled from '@emotion/styled';
 import { useLingui } from '@lingui/react/macro';
-import { AxiosResponse } from 'axios';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { capitalize } from 'twenty-shared';
-import {
-  Button,
-  IconCloudOff,
-  IconPencil,
-  IconPlus,
-  IconRefresh,
-  IconTrash,
-  IconUpload,
-  MOBILE_VIEWPORT,
-} from 'twenty-ui';
+import { MOBILE_VIEWPORT } from 'twenty-ui';
 import { useDeleteProperty } from '../../hooks/useDeleteProperty';
-import { usePropertyAndPublicationDifferences } from '../../hooks/usePropertyAndPublicationDifferences';
-import { usePublicationsOfProperty } from '../../hooks/usePublicationsOfProperty';
-import { usePublicationValidation } from '../../hooks/usePublicationValidation';
-import { ActionDropdown } from './ActionDropdown';
-import { PropertyDifferencesModal } from './PropertyDifferencesModal';
-import { PublishDraftModal } from './PublishDraftModal';
-import { PlatformId } from './types/Platform';
 
 const StyledShowPageRightContainer = styled.div<{ isMobile: boolean }>`
   display: flex;
@@ -75,12 +54,6 @@ const StyledTabListContainer = styled.div<{ shouldDisplay: boolean }>`
     align-items: center;
     height: 40px;
   }
-`;
-
-const StyledButtonContainer = styled.div`
-  display: flex;
-  gap: ${({ theme }) => theme.spacing(2)};
-  padding: ${({ theme }) => theme.spacing(3)} ${({ theme }) => theme.spacing(4)};
 `;
 
 const StyledContentContainer = styled.div<{ isInRightDrawer: boolean }>`
@@ -116,7 +89,6 @@ export const ShowPagePropertySubContainer = ({
   const tabListComponentId = `${TAB_LIST_COMPONENT_ID}-${isInRightDrawer}-${targetableObject.id}`;
   const { activeTabId } = useTabList(tabListComponentId);
   const isMobile = useIsMobile();
-  const navigate = useNavigate();
   const [isDeleteRecordsModalOpen, setIsDeleteRecordsModalOpen] =
     useState(false);
   const [isUnpublishModalOpen, setIsUnpublishModalOpen] = useState(false);
@@ -125,45 +97,6 @@ export const ShowPagePropertySubContainer = ({
   const capitalizedObjectNameSingular = capitalize(objectNameSingular);
 
   const { useMutations } = useNestermind();
-
-  const { mutate: syncPublicationMutation, isPending: isSyncPending } =
-    useMutations.useSyncPublicationsWithProperty(targetableObject.id, {
-      onSuccess: () => {
-        enqueueSnackBar(t`Your Publication Drafts were synced successfully`, {
-          variant: SnackBarVariant.Success,
-        });
-        differencesModalRef.current?.close();
-        refetchPublications();
-      },
-      onError: (error: Error) => {
-        enqueueSnackBar(error?.message || t`Failed to sync publications`, {
-          variant: SnackBarVariant.Error,
-        });
-      },
-    });
-
-  const {
-    mutate: duplicatePublicationMutation,
-    isPending: isDuplicatePending,
-  } = useMutations.useDuplicatePublication({
-    onSuccess: (response: AxiosResponse<string>) => {
-      enqueueSnackBar(t`Publication Draft created successfully`, {
-        variant: SnackBarVariant.Success,
-      });
-      refetchPublications();
-
-      const route = `${getLinkToShowPage(CoreObjectNameSingular.Publication, {
-        id: response.data,
-      })}/edit`;
-
-      navigate(route);
-    },
-    onError: (error: Error) => {
-      enqueueSnackBar(error?.message || t`Failed to create publication draft`, {
-        variant: SnackBarVariant.Error,
-      });
-    },
-  });
 
   const {
     mutate: unpublishPublicationMutation,
@@ -184,19 +117,11 @@ export const ShowPagePropertySubContainer = ({
     },
   });
 
-  const dropdownId = `show-page-property-sub-container-dropdown-${targetableObject.id}`;
-
   // Translations
   const { t } = useLingui();
 
-  // Dropdown
-  const { closeDropdown } = useDropdown(dropdownId);
-
   const visibleTabs = tabs.filter((tab) => !tab.hide);
 
-  // Modals
-  const modalRef = useRef<ModalRefType>(null);
-  const differencesModalRef = useRef<ModalRefType>(null);
   const deleteModalRef = useRef<ModalRefType>(null);
 
   const { enqueueSnackBar } = useSnackBar();
@@ -215,17 +140,7 @@ export const ShowPagePropertySubContainer = ({
     targetableObject.id,
   );
 
-  // Publications of Property
-  const { refetch: refetchPublications } = usePublicationsOfProperty(
-    isPublication ? undefined : recordFromStore?.id,
-  );
-
-  // Publication Drafts of Property
-  const { publications: publicationDraftsOfProperty } =
-    usePublicationsOfProperty(
-      isPublication ? undefined : recordFromStore?.id,
-      'draft',
-    );
+  const { refetch: refetchPublications } = usePublications();
 
   // Delete callback
   const onDelete = async () => {
@@ -272,72 +187,12 @@ export const ShowPagePropertySubContainer = ({
     refetchPublications();
   }, [refetchPublications]);
 
-  const { differenceRecords } = usePropertyAndPublicationDifferences(
-    publicationDraftsOfProperty,
-    isPublication ? null : recordFromStore,
-  );
-
-  // Update handleDelete to show confirmation first
-  const handleDelete = () => {
-    setIsDeleteRecordsModalOpen(true);
-    closeDropdown();
-  };
-
-  // Sync publication drafts with master data from property
-  const syncPublications = () => {
-    syncPublicationMutation();
-    closeDropdown();
-  };
-
-  // Create a draft if the publication is published
-  const createDraftIfPublished = () => {
-    duplicatePublicationMutation({
-      publicationId: targetableObject.id,
-    });
-  };
-
-  // Update handleUnpublish to show confirmation first
-  const handleUnpublish = () => {
-    setIsUnpublishModalOpen(true);
-    closeDropdown();
-  };
-
   // New function to handle the actual unpublish action
   const handleConfirmUnpublish = () => {
     unpublishPublicationMutation({
       publicationId: targetableObject.id,
     });
   };
-
-  // Edit publication
-  const onEditPublication = () => {
-    if (!recordFromStore) return;
-
-    if (
-      isPublication &&
-      ['PUBLISHED', 'SCHEDULED'].includes(recordFromStore.stage)
-    ) {
-      createDraftIfPublished();
-    } else {
-      navigate(
-        `${getLinkToShowPage(
-          targetableObject.targetObjectNameSingular,
-          recordFromStore,
-        )}/edit`,
-      );
-    }
-  };
-
-  // Amount of differences between the property and the publication
-  const differenceLength = useMemo(
-    () =>
-      differenceRecords?.length > 0
-        ? `(${differenceRecords
-            .map((difference) => difference.differences.length)
-            .reduce((a, b) => a + b, 0)})`
-        : '',
-    [differenceRecords],
-  );
 
   const renderActiveTabContent = () => {
     const activeTab = tabs.find((tab) => tab.id === activeTabId);
@@ -355,61 +210,6 @@ export const ShowPagePropertySubContainer = ({
     });
   };
 
-  const { showPublishButton, validationDetails } = usePublicationValidation({
-    record: recordFromStore,
-    isPublication,
-  });
-
-  // Open the publish modal
-  const handlePublishClick = () => {
-    modalRef.current?.open();
-  };
-  const handleModalClose = () => {
-    modalRef.current?.close();
-  };
-
-  const showDeleteButton = useMemo(
-    () =>
-      !recordFromStore?.deletedAt &&
-      (!isPublication || recordFromStore?.stage !== 'PUBLISHED'),
-    [isPublication, recordFromStore?.deletedAt, recordFromStore?.stage],
-  );
-
-  const showSyncButton = useMemo(
-    () =>
-      !recordFromStore?.deletedAt &&
-      !isPublication &&
-      differenceRecords?.length > 0,
-    [differenceRecords?.length, isPublication, recordFromStore?.deletedAt],
-  );
-
-  const showNewPublicationButton = useMemo(
-    () => !recordFromStore?.deletedAt && differenceRecords?.length === 0,
-    [differenceRecords?.length, recordFromStore?.deletedAt],
-  );
-
-  const showUnpublishButton = useMemo(
-    () =>
-      isPublication &&
-      !recordFromStore?.deletedAt &&
-      recordFromStore?.stage === 'PUBLISHED',
-    [isPublication, recordFromStore?.deletedAt, recordFromStore?.stage],
-  );
-
-  const showDropdown = useMemo(
-    () =>
-      showNewPublicationButton ||
-      showSyncButton ||
-      showDeleteButton ||
-      showUnpublishButton,
-    [
-      showNewPublicationButton,
-      showSyncButton,
-      showDeleteButton,
-      showUnpublishButton,
-    ],
-  );
-
   return (
     <>
       <StyledShowPageRightContainer isMobile={isMobile}>
@@ -424,80 +224,6 @@ export const ShowPagePropertySubContainer = ({
             tabs={tabs}
             isInRightDrawer={isInRightDrawer}
           />
-          <StyledButtonContainer>
-            {recordFromStore && !recordFromStore.deletedAt && (
-              <Button
-                title={t`Edit`}
-                Icon={IconPencil}
-                size="small"
-                onClick={onEditPublication}
-                disabled={
-                  isSyncPending || isDuplicatePending || isUnpublishPending
-                }
-              />
-            )}
-
-            {showDropdown && (
-              <ActionDropdown
-                dropdownId={dropdownId}
-                actions={[
-                  ...(showSyncButton // When sync button is primary
-                    ? [
-                        {
-                          title: t`New Publication`,
-                          Icon: IconPlus,
-                          onClick: handlePublishClick,
-                        },
-                      ]
-                    : []),
-                  ...(showNewPublicationButton &&
-                  publicationDraftsOfProperty.length > 0 &&
-                  !isPublication // When publication button is primary
-                    ? [
-                        {
-                          title: t`Sync Publications`,
-                          Icon: IconRefresh,
-                          onClick: syncPublications,
-                          disabled: isSyncPending,
-                        },
-                      ]
-                    : []),
-
-                  ...(showDeleteButton
-                    ? [
-                        {
-                          title: t`Delete`,
-                          Icon: IconTrash,
-                          onClick: handleDelete,
-                          distructive: true,
-                          disabled: loadingDelete,
-                        },
-                      ]
-                    : []),
-                ]}
-                primaryAction={
-                  showNewPublicationButton && showPublishButton
-                    ? {
-                        title: isPublication ? t`Publish` : t`New Publication`,
-                        Icon: isPublication ? IconUpload : IconPlus,
-                        onClick: handlePublishClick,
-                      }
-                    : showSyncButton
-                      ? {
-                          title: t`Sync Publications ${differenceLength}`,
-                          onClick: () => differencesModalRef.current?.open(),
-                        }
-                      : showUnpublishButton
-                        ? {
-                            title: t`Unpublish`,
-                            Icon: IconCloudOff,
-                            onClick: handleUnpublish,
-                          }
-                        : null
-                }
-              />
-            )}
-          </StyledButtonContainer>
         </StyledTabListContainer>
         <StyledContentContainer isInRightDrawer={isInRightDrawer}>
           {renderActiveTabContent()}
@@ -506,33 +232,6 @@ export const ShowPagePropertySubContainer = ({
           <RightDrawerFooter actions={[<RecordShowRightDrawerActionMenu />]} />
         )}
       </StyledShowPageRightContainer>
-
-      {isPublication ? (
-        <PublishModal
-          ref={modalRef}
-          onClose={handleModalClose}
-          targetableObject={targetableObject}
-          validationDetails={validationDetails}
-          platformId={recordFromStore?.platform ?? PlatformId.Newhome}
-        />
-      ) : (
-        <PublishDraftModal
-          ref={modalRef}
-          onClose={handleModalClose}
-          targetableObject={targetableObject}
-        />
-      )}
-
-      {differenceRecords?.length > 0 && (
-        <PropertyDifferencesModal
-          ref={differencesModalRef}
-          differences={differenceRecords}
-          onClose={() => differencesModalRef.current?.close()}
-          onSync={syncPublications}
-          propertyRecordId={recordFromStore?.id ?? ''}
-          publicationRecordId={publicationDraftsOfProperty?.[0]?.id ?? ''}
-        />
-      )}
 
       <ConfirmationModal
         isOpen={isDeleteRecordsModalOpen}

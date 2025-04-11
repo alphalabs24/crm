@@ -2,7 +2,11 @@ import { Dropdown } from '@/ui/layout/dropdown/components/Dropdown';
 import { DropdownMenuItemsContainer } from '@/ui/layout/dropdown/components/DropdownMenuItemsContainer';
 import { useDropdown } from '@/ui/layout/dropdown/hooks/useDropdown';
 import styled from '@emotion/styled';
-import { IconChevronDown } from '@ui/display/icon/components/TablerIcons';
+import { useLingui } from '@lingui/react/macro';
+import {
+  IconChevronDown,
+  IconDotsVertical,
+} from '@ui/display/icon/components/TablerIcons';
 import { IconComponent } from '@ui/display/icon/types/IconComponent';
 import { Button } from '@ui/input/button/components/Button';
 import { IconButton } from '@ui/input/button/components/IconButton';
@@ -49,7 +53,41 @@ export const ActionDropdown = ({
 }: ActionDropdownProps) => {
   const [showingOptions, setShowingOptions] = useState(false);
   const { closeDropdown } = useDropdown(dropdownId);
+  const { t } = useLingui();
+  // If there's no primary action but we have secondary actions,
+  // display a single dropdown button
+  if (!primaryAction && actions.length > 0) {
+    return (
+      <Dropdown
+        dropdownId={dropdownId}
+        clickableComponent={
+          <Button
+            title={t`More`}
+            Icon={IconDotsVertical}
+            onClick={() => setShowingOptions(!showingOptions)}
+            size="small"
+          />
+        }
+        dropdownComponents={actions.map((action) => (
+          <DropdownMenuItemsContainer key={action.title}>
+            <MenuItem
+              text={action.title}
+              LeftIcon={action.Icon}
+              onClick={() => {
+                action.onClick();
+                closeDropdown();
+              }}
+              disabled={action.disabled}
+              accent={action.distructive ? 'danger' : 'default'}
+            />
+          </DropdownMenuItemsContainer>
+        ))}
+        dropdownHotkeyScope={{ scope: dropdownId }}
+      />
+    );
+  }
 
+  // If no primary action and no secondary actions, don't show anything
   if (!primaryAction) {
     return null;
   }

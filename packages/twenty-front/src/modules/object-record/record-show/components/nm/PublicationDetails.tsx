@@ -101,16 +101,6 @@ const StyledDetailsSection = styled.div`
   }
 `;
 
-const StyledPropertySection = styled.div`
-  display: none;
-
-  @media (min-width: ${MOBILE_VIEWPORT}px) {
-    display: block;
-    max-width: 800px;
-    width: 100%;
-  }
-`;
-
 type PublicationDetailsProps = {
   targetableObject: Pick<
     ActivityTargetableObject,

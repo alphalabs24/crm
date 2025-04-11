@@ -62,10 +62,20 @@ type PublishModalProps = {
   };
   validationDetails: ValidationResult;
   platformId: PlatformId;
+  hasDraftAndPublished?: boolean;
 };
 
 export const PublishModal = forwardRef<ModalRefType, PublishModalProps>(
-  ({ onClose, targetableObject, validationDetails, platformId }, ref) => {
+  (
+    {
+      onClose,
+      targetableObject,
+      validationDetails,
+      platformId,
+      hasDraftAndPublished,
+    },
+    ref,
+  ) => {
     const { t } = useLingui();
     const [isPublished, setIsPublished] = useState(false);
     return (
@@ -109,6 +119,7 @@ export const PublishModal = forwardRef<ModalRefType, PublishModalProps>(
             validationDetails={validationDetails}
             isPublished={isPublished}
             setIsPublished={setIsPublished}
+            hasDraftAndPublished={hasDraftAndPublished}
           />
         </StyledModalContent>
       </Modal>
