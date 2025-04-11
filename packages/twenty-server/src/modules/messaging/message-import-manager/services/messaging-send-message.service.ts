@@ -15,6 +15,7 @@ interface SendMessageInput {
   inReplyTo?: string;
   references?: string[];
   externalThreadId?: string;
+  externalMessageId?: string;
 }
 
 @Injectable()
@@ -50,6 +51,19 @@ export class MessagingSendMessageService {
           userId: 'me',
           requestBody: {
             raw: encodedMessage,
+            threadId: sendMessageInput.externalThreadId,
+            payload: {
+              headers: [
+                {
+                  name: 'In-Reply-To',
+                  value: sendMessageInput.inReplyTo || '',
+                },
+                {
+                  name: 'References',
+                  value: sendMessageInput.references?.join(' ') || '',
+                },
+              ],
+            },
           },
         });
         break;
@@ -60,22 +74,84 @@ export class MessagingSendMessageService {
             connectedAccount,
           );
 
-        const message = {
-          subject: sendMessageInput.subject,
-          body: {
-            contentType: 'Text',
-            content: sendMessageInput.body,
-          },
-          toRecipients: [{ emailAddress: { address: sendMessageInput.to } }],
-        };
+        // Check if we're replying to a message
+        if (sendMessageInput.inReplyTo && sendMessageInput.externalMessageId) {
+          try {
+            // Get the original message to obtain its conversationId
+            const originalMessage = await microsoftClient
+              .api(`/me/messages/${sendMessageInput.externalMessageId}`)
+              .select('conversationId,subject,from,toRecipients,ccRecipients')
+              .get();
 
-        const response = await microsoftClient
-          .api(`/me/messages`)
-          .post(message);
+            // Create a reply draft
+            const replyResponse = await microsoftClient
+              .api(
+                `/me/messages/${sendMessageInput.externalMessageId}/createReply`,
+              )
+              .post({});
 
-        z.string().parse(response.id);
+            const replyId = replyResponse.id;
 
-        await microsoftClient.api(`/me/messages/${response.id}/send`).post({});
+            z.string().parse(replyId);
+
+            const updatePayload = {
+              subject: originalMessage.subject,
+              body: {
+                contentType: sendMessageInput.isHtml ? 'HTML' : 'Text',
+                content: sendMessageInput.body,
+              },
+              toRecipients: [
+                { emailAddress: { address: sendMessageInput.to } },
+              ],
+              conversationId: originalMessage.conversationId,
+            };
+
+            await microsoftClient
+              .api(`/me/messages/${replyId}`)
+              .update(updatePayload);
+
+            await microsoftClient.api(`/me/messages/${replyId}/send`).post({});
+          } catch (error) {
+            // Fallback to standard send if reply API fails
+            const message = {
+              subject: sendMessageInput.subject,
+              body: {
+                contentType: sendMessageInput.isHtml ? 'HTML' : 'Text',
+                content: sendMessageInput.body,
+              },
+              toRecipients: [
+                { emailAddress: { address: sendMessageInput.to } },
+              ],
+            };
+
+            const response = await microsoftClient
+              .api(`/me/messages`)
+              .post(message);
+
+            z.string().parse(response.id);
+            await microsoftClient
+              .api(`/me/messages/${response.id}/send`)
+              .post({});
+          }
+        } else {
+          const message = {
+            subject: sendMessageInput.subject,
+            body: {
+              contentType: sendMessageInput.isHtml ? 'HTML' : 'Text',
+              content: sendMessageInput.body,
+            },
+          };
+
+          const response = await microsoftClient
+            .api(`/me/messages`)
+            .post(message);
+
+          z.string().parse(response.id);
+
+          await microsoftClient
+            .api(`/me/messages/${response.id}/send`)
+            .post({});
+        }
         break;
       }
       default:

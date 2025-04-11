@@ -66,7 +66,7 @@ export class SendEmailWorkflowAction implements WorkflowAction {
       id: workflowActionInput.connectedAccountId,
     });
 
-    if (!isDefined(connectedAccount) || !connectedAccount) {
+    if (!isDefined(connectedAccount)) {
       throw new SendEmailActionException(
         `Connected Account '${workflowActionInput.connectedAccountId}' not found`,
         SendEmailActionExceptionCode.CONNECTED_ACCOUNT_NOT_FOUND,
@@ -100,6 +100,7 @@ export class SendEmailWorkflowAction implements WorkflowAction {
         inReplyTo: workflowActionInput.inReplyTo,
         references: workflowActionInput.references,
         externalThreadId: workflowActionInput.externalThreadId,
+        externalMessageId: workflowActionInput.externalMessageId,
       },
       connectedAccount,
     );
