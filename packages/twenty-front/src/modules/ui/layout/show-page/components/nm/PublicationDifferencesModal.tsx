@@ -2,6 +2,7 @@ import { useNestermind } from '@/api/hooks/useNestermind';
 import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadataItem';
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { getLinkToShowPage } from '@/object-metadata/utils/getLinkToShowPage';
+import { RecordChip } from '@/object-record/components/RecordChip';
 import { useFindOneRecord } from '@/object-record/hooks/useFindOneRecord';
 import { FieldDisplay } from '@/object-record/record-field/components/FieldDisplay';
 import { FieldContext } from '@/object-record/record-field/contexts/FieldContext';
@@ -659,6 +660,10 @@ export const PublicationDifferencesModal = forwardRef<
                   const isOldValueEmpty = isValueEmpty(diff.publishedValue);
                   const isNewValueEmpty = isValueEmpty(diff.draftValue);
 
+                  const isObject =
+                    typeof diff.publishedValue === 'object' ||
+                    typeof diff.draftValue === 'object';
+
                   return (
                     <StyledDifferenceItem
                       key={`field-diff-${diff.key}-${index}`}
@@ -680,6 +685,18 @@ export const PublicationDifferencesModal = forwardRef<
                               />
                             ) : isOldValueEmpty ? (
                               <EmptyValueDisplay />
+                            ) : (isObject && diff.publishedValue?.name) ||
+                              diff.publishedValue?.title ? (
+                              <div>
+                                <RecordChip
+                                  record={diff.publishedValue}
+                                  objectNameSingular={
+                                    diff.publishedValue.__typename?.toLowerCase() ??
+                                    ''
+                                  }
+                                  disabled
+                                />
+                              </div>
                             ) : (
                               <FieldContext.Provider
                                 value={{
@@ -724,6 +741,18 @@ export const PublicationDifferencesModal = forwardRef<
                               />
                             ) : isNewValueEmpty ? (
                               <EmptyValueDisplay />
+                            ) : (isObject && diff.draftValue?.name) ||
+                              diff.draftValue?.title ? (
+                              <div>
+                                <RecordChip
+                                  record={diff.draftValue}
+                                  objectNameSingular={
+                                    diff.draftValue.__typename?.toLowerCase() ??
+                                    ''
+                                  }
+                                  disabled
+                                />
+                              </div>
                             ) : (
                               <FieldContext.Provider
                                 value={{
