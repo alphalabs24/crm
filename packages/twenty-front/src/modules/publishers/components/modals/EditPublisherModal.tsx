@@ -56,7 +56,7 @@ const StyledSection = styled.div`
 const StyledInputContainer = styled.div`
   display: flex;
   gap: ${({ theme }) => theme.spacing(4)};
-  margin-bottom: ${({ theme }) => theme.spacing(1)};
+  margin-bottom: ${({ theme }) => theme.spacing(4)};
 `;
 
 export type AgencyCredential = {
@@ -96,11 +96,16 @@ export const EditPublisherModal = forwardRef<ModalRefType, Props>(
 
     const { enqueueSnackBar } = useSnackBar();
 
-    const { record: agencyRecord, loading: loadingAgencyRecord } =
-      useFindOneRecord({
-        objectNameSingular: CoreObjectNameSingular.Agency,
-        objectRecordId: publisherId,
-      });
+    const {
+      record: agencyRecord,
+      loading: loadingAgencyRecord,
+      refetch: refetchAgencyRecord,
+    } = useFindOneRecord({
+      objectNameSingular: CoreObjectNameSingular.Agency,
+      objectRecordId: publisherId,
+    });
+
+    const [hasSetInitialValues, setHasSetInitialValues] = useState(false);
 
     const { createOneRecord, loading: creatingAgencyRecord } =
       useCreateOneRecord({
@@ -122,6 +127,7 @@ export const EditPublisherModal = forwardRef<ModalRefType, Props>(
     const theme = useTheme();
 
     useEffect(() => {
+      if (hasSetInitialValues) return;
       if (agencyRecord) {
         const newName = agencyRecord.name || '';
         const newEmail =
@@ -152,6 +158,7 @@ export const EditPublisherModal = forwardRef<ModalRefType, Props>(
           email: newEmail,
           platformCredentials: credentials,
         };
+        setHasSetInitialValues(true);
       } else if (!publisherId) {
         // Initialize empty state for new publisher
         setName('');
@@ -164,7 +171,7 @@ export const EditPublisherModal = forwardRef<ModalRefType, Props>(
           platformCredentials: {},
         };
       }
-    }, [agencyRecord, publisherId]);
+    }, [agencyRecord, hasSetInitialValues, publisherId]);
 
     const hasChanges = useMemo(() => {
       // For new publishers, require at least a name
@@ -287,6 +294,8 @@ export const EditPublisherModal = forwardRef<ModalRefType, Props>(
             }
           }),
         );
+
+        refetchAgencyRecord();
 
         enqueueSnackBar(t`Credentials saved successfully`, {
           variant: SnackBarVariant.Success,
