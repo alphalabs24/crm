@@ -47,7 +47,7 @@ const StyledContentContainer = styled.div<{ isInRightDrawer?: boolean }>`
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(4)};
 
-  @media (min-width: ${MOBILE_VIEWPORT}px) {
+  @media (min-width: ${MOBILE_VIEWPORT + 300}px) {
     flex-direction: row;
     flex-wrap: wrap;
 
@@ -79,6 +79,12 @@ const StyledSideContent = styled.div<{ isInRightDrawer?: boolean }>`
   display: none;
 
   @media (min-width: ${MOBILE_VIEWPORT}px) {
+    display: flex;
+    flex-direction: column;
+    gap: ${({ theme }) => theme.spacing(4)};
+  }
+
+  @media (min-width: ${MOBILE_VIEWPORT + 300}px) {
     display: flex;
     flex-direction: column;
     gap: ${({ theme }) => theme.spacing(4)};

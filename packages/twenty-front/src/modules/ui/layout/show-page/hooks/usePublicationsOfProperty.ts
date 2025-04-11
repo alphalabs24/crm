@@ -1,8 +1,13 @@
 import { getActivityTargetObjectFieldIdName } from '@/activities/utils/getActivityTargetObjectFieldIdName';
+import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadataItem';
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
+import { generateDepthOneRecordGqlFields } from '@/object-record/graphql/utils/generateDepthOneRecordGqlFields';
 import { useFindManyRecords } from '@/object-record/hooks/useFindManyRecords';
+import { recordStoreFamilyState } from '@/object-record/record-store/states/recordStoreFamilyState';
+import { ObjectRecord } from '@/object-record/types/ObjectRecord';
 import deepEqual from 'deep-equal';
 import { useMemo } from 'react';
+import { useRecoilCallback } from 'recoil';
 import { PublicationStage } from '~/modules/object-record/record-show/constants/PublicationStage';
 import { PlatformId } from '~/modules/ui/layout/show-page/components/nm/types/Platform';
 
@@ -22,18 +27,37 @@ export const usePublicationsOfProperty = (
     nameSingular: CoreObjectNameSingular.Property,
   });
 
+  const { objectMetadataItem } = useObjectMetadataItem({
+    objectNameSingular: CoreObjectNameSingular.Publication,
+  });
+
+  const recordGqlFields = useMemo(() => {
+    if (!objectMetadataItem) return undefined;
+    return generateDepthOneRecordGqlFields({ objectMetadataItem });
+  }, [objectMetadataItem]);
+
   const {
     records: publications,
     refetch,
     loading,
   } = useFindManyRecords({
     objectNameSingular: CoreObjectNameSingular.Publication,
+    recordGqlFields: recordGqlFields,
     filter: {
       ...(propertyId
         ? { [targetableObjectFieldIdName]: { eq: propertyId } }
         : {}),
       ...(stage ? { stage: { eq: stage.toUpperCase() } } : {}),
     },
+    onCompleted: useRecoilCallback(
+      ({ set }) =>
+        (fetchedPublications: ObjectRecord[]) => {
+          for (const publication of fetchedPublications) {
+            set(recordStoreFamilyState(publication.id), publication);
+          }
+        },
+      [],
+    ),
   });
 
   const arePublicationsEqual = (pub1: any, pub2: any) => {

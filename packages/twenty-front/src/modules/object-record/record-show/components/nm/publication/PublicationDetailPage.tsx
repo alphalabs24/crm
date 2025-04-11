@@ -8,11 +8,14 @@ import { PropertyBasicInfoCard } from '@/object-record/record-show/components/nm
 import { PropertyDetailsCard } from '@/object-record/record-show/components/nm/cards/PropertyDetailsCard';
 import { PropertyImagesCard } from '@/object-record/record-show/components/nm/cards/PropertyImagesCard';
 import { PropertyInquiriesCard } from '@/object-record/record-show/components/nm/cards/PropertyInquiriesCard';
+import { PropertyRelationsCard } from '@/object-record/record-show/components/nm/cards/PropertyRelationsCard';
 import { PropertyReportingCard } from '@/object-record/record-show/components/nm/cards/PropertyReportingCard';
 import { PublicationCompletionCard } from '@/object-record/record-show/components/nm/cards/PublicationCompletionCard';
 import { PublicationStatusCard } from '@/object-record/record-show/components/nm/cards/PublicationStatusCard';
 import { PublicationBreadcrumb } from '@/object-record/record-show/components/nm/publication/PublicationBreadcrumb';
 import { PublicationStage } from '@/object-record/record-show/constants/PublicationStage';
+import { RecordValueSetterEffect } from '@/object-record/record-store/components/RecordValueSetterEffect';
+import { RecordFieldValueSelectorContextProvider } from '@/object-record/record-store/contexts/RecordFieldValueSelectorContext';
 import { ObjectRecord } from '@/object-record/types/ObjectRecord';
 import { SnackBarVariant } from '@/ui/feedback/snack-bar-manager/components/SnackBar';
 import { useSnackBar } from '@/ui/feedback/snack-bar-manager/hooks/useSnackBar';
@@ -416,200 +419,206 @@ export const PublicationDetailPage = ({
   const dropdownId = `publication-detail-dropdown-${publication?.id}`;
 
   return (
-    <StyledPageContainer>
-      <StyledPageHeader>
-        <PublicationBreadcrumb
-          platformId={publication.platform}
-          onBackClick={handleBackClick}
-        />
-        <StyledButtonContainer>
-          {publication && !publication.deletedAt && (
-            <Button
-              title={t`Edit`}
-              Icon={IconPencil}
-              size="small"
-              onClick={onEditPublication}
-              disabled={isDuplicatePending || isUnpublishPending}
-            />
-          )}
+    <RecordFieldValueSelectorContextProvider>
+      <RecordValueSetterEffect recordId={publication.id} />
+      <StyledPageContainer>
+        <StyledPageHeader>
+          <PublicationBreadcrumb
+            platformId={publication.platform}
+            onBackClick={handleBackClick}
+          />
+          <StyledButtonContainer>
+            {publication && !publication.deletedAt && (
+              <Button
+                title={t`Edit`}
+                Icon={IconPencil}
+                size="small"
+                onClick={onEditPublication}
+                disabled={isDuplicatePending || isUnpublishPending}
+              />
+            )}
 
-          {(showDeleteButton ||
-            showUnpublishButton ||
-            showPublishAction ||
-            showRepublishAction ||
-            showPublishChangesAction ||
-            showRevertChangesAction) && (
-            <ActionDropdown
-              dropdownId={dropdownId}
-              actions={[
-                ...(showDeleteButton
-                  ? [
-                      {
-                        title: t`Delete`,
-                        Icon: IconTrash,
-                        onClick: handleDelete,
-                        distructive: true,
-                        disabled: loadingDelete,
-                      },
-                    ]
-                  : []),
-                ...(hasDraftAndPublished &&
-                showPublishChangesAction &&
-                showUnpublishButton
-                  ? [
-                      {
-                        title: t`Unpublish`,
-                        Icon: IconCloudOff,
-                        onClick: handleUnpublish,
-                      },
-                    ]
-                  : []),
-                ...(showRepublishAction
-                  ? [
-                      {
-                        title: t`Republish`,
-                        Icon: IconUpload,
-                        onClick: handlePublishClick,
-                      },
-                    ]
-                  : []),
-                ...(showRevertChangesAction
-                  ? [
-                      {
-                        title: t`Revert Changes`,
-                        Icon: IconTrash,
-                        onClick: handleRevertChanges,
-                        distructive: true,
-                      },
-                    ]
-                  : []),
-              ]}
-              primaryAction={
-                showPublishChangesAction
-                  ? {
-                      title: hasDifferences
-                        ? t`Publish Changes (${totalDifferenceCount})`
-                        : t`Publish`,
-                      Icon: IconUpload,
-                      onClick: handlePublishClick,
-                    }
-                  : !hasDraftAndPublished && showPublishAction
-                    ? {
-                        title: t`Publish`,
-                        Icon: IconUpload,
-                        onClick: handlePublishClick,
-                      }
-                    : showUnpublishButton && !hasDifferences
-                      ? {
+            {(showDeleteButton ||
+              showUnpublishButton ||
+              showPublishAction ||
+              showRepublishAction ||
+              showPublishChangesAction ||
+              showRevertChangesAction) && (
+              <ActionDropdown
+                dropdownId={dropdownId}
+                actions={[
+                  ...(showDeleteButton
+                    ? [
+                        {
+                          title: t`Delete`,
+                          Icon: IconTrash,
+                          onClick: handleDelete,
+                          distructive: true,
+                          disabled: loadingDelete,
+                        },
+                      ]
+                    : []),
+                  ...(hasDraftAndPublished &&
+                  showPublishChangesAction &&
+                  showUnpublishButton
+                    ? [
+                        {
                           title: t`Unpublish`,
                           Icon: IconCloudOff,
                           onClick: handleUnpublish,
+                        },
+                      ]
+                    : []),
+                  ...(showRepublishAction
+                    ? [
+                        {
+                          title: t`Republish`,
+                          Icon: IconUpload,
+                          onClick: handlePublishClick,
+                        },
+                      ]
+                    : []),
+                  ...(showRevertChangesAction
+                    ? [
+                        {
+                          title: t`Revert Changes`,
+                          Icon: IconTrash,
+                          onClick: handleRevertChanges,
+                          distructive: true,
+                        },
+                      ]
+                    : []),
+                ]}
+                primaryAction={
+                  showPublishChangesAction
+                    ? {
+                        title: hasDifferences
+                          ? t`Publish Changes (${totalDifferenceCount})`
+                          : t`Publish`,
+                        Icon: IconUpload,
+                        onClick: handlePublishClick,
+                      }
+                    : !hasDraftAndPublished && showPublishAction
+                      ? {
+                          title: t`Publish`,
+                          Icon: IconUpload,
+                          onClick: handlePublishClick,
                         }
-                      : null
-              }
-            />
-          )}
-        </StyledButtonContainer>
-      </StyledPageHeader>
-      <StyledContentContainer isInRightDrawer={isInRightDrawer}>
-        <StyledMainContent>
-          <StyledImagesSection>
-            <PropertyImagesCard
-              loading={recordLoading}
-              targetableObject={{
-                id: publication.id,
-                targetObjectNameSingular: CoreObjectNameSingular.Publication,
-              }}
-            />
-          </StyledImagesSection>
+                      : showUnpublishButton && !hasDifferences
+                        ? {
+                            title: t`Unpublish`,
+                            Icon: IconCloudOff,
+                            onClick: handleUnpublish,
+                          }
+                        : null
+                }
+              />
+            )}
+          </StyledButtonContainer>
+        </StyledPageHeader>
+        <StyledContentContainer isInRightDrawer={isInRightDrawer}>
+          <StyledMainContent>
+            <StyledImagesSection>
+              <PropertyImagesCard
+                loading={recordLoading}
+                targetableObject={{
+                  id: publication.id,
+                  targetObjectNameSingular: CoreObjectNameSingular.Publication,
+                }}
+              />
+            </StyledImagesSection>
 
-          <StyledOverviewSection>
-            <PropertyBasicInfoCard
-              record={publication}
-              loading={recordLoading}
-              isPublication
-            />
-            <PropertyDetailsCard
-              record={publication}
-              loading={recordLoading}
-              objectMetadataItem={objectMetadataItem}
-            />
-          </StyledOverviewSection>
+            <StyledOverviewSection>
+              <PropertyBasicInfoCard
+                record={publication}
+                loading={recordLoading}
+                isPublication
+              />
+              <PropertyDetailsCard
+                record={publication}
+                loading={recordLoading}
+                objectMetadataItem={objectMetadataItem}
+              />
+            </StyledOverviewSection>
 
-          <StyledDetailsSection>
-            {/*<PropertyRelationsCard
-            record={publication}
-            loading={recordLoading}
-            objectMetadataItem={objectMetadataItem}
-          />*/}
-            <PropertyAddressCard record={publication} loading={recordLoading} />
-          </StyledDetailsSection>
-        </StyledMainContent>
+            <StyledDetailsSection>
+              <PropertyRelationsCard
+                record={publication}
+                loading={recordLoading}
+                objectMetadataItem={objectMetadataItem}
+              />
+              <PropertyAddressCard
+                record={publication}
+                loading={recordLoading}
+              />
+            </StyledDetailsSection>
+          </StyledMainContent>
 
-        <StyledSideContent isInRightDrawer={isInRightDrawer}>
-          <PublicationCompletionCard record={publication} />
-          <PublicationStatusCard stage={publication.stage} />
+          <StyledSideContent isInRightDrawer={isInRightDrawer}>
+            <PublicationCompletionCard record={publication} />
+            <PublicationStatusCard stage={publication.stage} />
 
-          <PropertyInquiriesCard recordId={publication.id} isPublication />
-          <PropertyReportingCard />
-        </StyledSideContent>
-      </StyledContentContainer>
+            <PropertyInquiriesCard recordId={publication.id} isPublication />
+            <PropertyReportingCard />
+          </StyledSideContent>
+        </StyledContentContainer>
 
-      {/* Modals */}
-      {!hasDraftAndPublished || !hasDifferences ? (
-        <PublishModal
-          ref={modalRef}
-          onClose={handleModalClose}
-          targetableObject={{
-            id: draftRecord?.id,
-            targetObjectNameSingular: CoreObjectNameSingular.Publication,
-          }}
-          validationDetails={validationDetails}
-          platformId={selectedPlatformId}
-          hasDraftAndPublished={hasDraftAndPublished}
+        {/* Modals */}
+        {!hasDraftAndPublished || !hasDifferences ? (
+          <PublishModal
+            ref={modalRef}
+            onClose={handleModalClose}
+            targetableObject={{
+              id: draftRecord?.id,
+              targetObjectNameSingular: CoreObjectNameSingular.Publication,
+            }}
+            validationDetails={validationDetails}
+            platformId={selectedPlatformId}
+            hasDraftAndPublished={hasDraftAndPublished}
+          />
+        ) : (
+          <PublicationDifferencesModal
+            ref={differencesModalRef}
+            draftId={draftRecord?.id}
+            publishedId={publishedRecord?.id}
+            differences={differences?.[0]?.differences || []}
+            platform={draftRecord?.platform || PlatformId.Newhome}
+            onClose={handleDiffModalClose}
+            isOpen={isPublishDifferencesModalOpen}
+            validationDetails={validationDetails}
+          />
+        )}
+
+        <ConfirmationModal
+          isOpen={isDeleteRecordsModalOpen}
+          setIsOpen={setIsDeleteRecordsModalOpen}
+          title={t`Delete Publication`}
+          subtitle={t`Are you sure you want to delete this publication? This action cannot be undone.`}
+          loading={loadingDelete}
+          onConfirmClick={handleConfirmDelete}
+          deleteButtonText={t`Delete`}
         />
-      ) : (
-        <PublicationDifferencesModal
-          ref={differencesModalRef}
-          draftId={draftRecord?.id}
-          publishedId={publishedRecord?.id}
-          differences={differences?.[0]?.differences || []}
-          platform={draftRecord?.platform || PlatformId.Newhome}
-          onClose={handleDiffModalClose}
-          isOpen={isPublishDifferencesModalOpen}
-          validationDetails={validationDetails}
+
+        <ConfirmationModal
+          isOpen={isUnpublishModalOpen}
+          setIsOpen={setIsUnpublishModalOpen}
+          title={t`Unpublish Publication`}
+          subtitle={t`Are you sure you want to unpublish this publication? This will remove it from the published platform and make it unavailable to potential clients. You can always publish it again later.`}
+          loading={isUnpublishPending}
+          onConfirmClick={handleConfirmUnpublish}
+          deleteButtonText={t`Unpublish`}
         />
-      )}
 
-      <ConfirmationModal
-        isOpen={isDeleteRecordsModalOpen}
-        setIsOpen={setIsDeleteRecordsModalOpen}
-        title={t`Delete Publication`}
-        subtitle={t`Are you sure you want to delete this publication? This action cannot be undone.`}
-        loading={loadingDelete}
-        onConfirmClick={handleConfirmDelete}
-        deleteButtonText={t`Delete`}
-      />
-
-      <ConfirmationModal
-        isOpen={isUnpublishModalOpen}
-        setIsOpen={setIsUnpublishModalOpen}
-        title={t`Unpublish Publication`}
-        subtitle={t`Are you sure you want to unpublish this publication? This will remove it from the published platform and make it unavailable to potential clients. You can always publish it again later.`}
-        loading={isUnpublishPending}
-        onConfirmClick={handleConfirmUnpublish}
-        deleteButtonText={t`Unpublish`}
-      />
-
-      <ConfirmationModal
-        isOpen={isRevertChangesModalOpen}
-        setIsOpen={setIsRevertChangesModalOpen}
-        title={t`Revert Changes`}
-        subtitle={t`Are you sure you want to revert all changes? This will delete the draft and any changes you've made. This action cannot be undone.`}
-        loading={loadingDelete}
-        onConfirmClick={handleConfirmRevertChanges}
-        deleteButtonText={t`Revert Changes`}
-      />
-    </StyledPageContainer>
+        <ConfirmationModal
+          isOpen={isRevertChangesModalOpen}
+          setIsOpen={setIsRevertChangesModalOpen}
+          title={t`Revert Changes`}
+          subtitle={t`Are you sure you want to revert all changes? This will delete the draft and any changes you've made. This action cannot be undone.`}
+          loading={loadingDelete}
+          onConfirmClick={handleConfirmRevertChanges}
+          deleteButtonText={t`Revert Changes`}
+        />
+      </StyledPageContainer>
+    </RecordFieldValueSelectorContextProvider>
   );
 };
