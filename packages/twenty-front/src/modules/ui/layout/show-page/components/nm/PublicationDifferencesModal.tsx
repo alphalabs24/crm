@@ -20,26 +20,26 @@ import Skeleton from 'react-loading-skeleton';
 import { Link } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import {
-    Button,
-    IconAlertCircle,
-    IconCheck,
-    IconExchange,
-    IconLoader,
-    IconPhoto,
-    IconUpload,
-    IconX,
-    MOBILE_VIEWPORT,
-    useIcons,
+  Button,
+  IconAlertCircle,
+  IconCheck,
+  IconExchange,
+  IconLoader,
+  IconPhoto,
+  IconUpload,
+  IconX,
+  MOBILE_VIEWPORT,
+  useIcons,
 } from 'twenty-ui';
 import { FieldDifference } from '../../hooks/useDraftPublishedDifferences';
 import { ValidationResult } from '../../hooks/usePublicationValidation';
 import {
-    StyledModalContainer,
-    StyledModalContent,
-    StyledModalHeader,
-    StyledModalHeaderButtons,
-    StyledModalTitle,
-    StyledModalTitleContainer,
+  StyledModalContainer,
+  StyledModalContent,
+  StyledModalHeader,
+  StyledModalHeaderButtons,
+  StyledModalTitle,
+  StyledModalTitleContainer,
 } from './modal-components/ModalComponents';
 import { PlatformId } from './types/Platform';
 
