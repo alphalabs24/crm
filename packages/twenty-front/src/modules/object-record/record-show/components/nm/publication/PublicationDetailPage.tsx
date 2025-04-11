@@ -163,7 +163,7 @@ const StyledDetailsSection = styled.div`
 
 const StyledPageHeader = styled.div<{ isInRightDrawer?: boolean }>`
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
   gap: ${({ theme }) => theme.spacing(4)};
   padding: ${({ theme }) => theme.spacing(0, 0, 4)};
 
@@ -175,7 +175,7 @@ const StyledPageHeader = styled.div<{ isInRightDrawer?: boolean }>`
       isInRightDrawer &&
       css`
         align-items: flex-start;
-        flex-direction: column-reverse;
+        flex-direction: column;
       `}
   }
 `;
