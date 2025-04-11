@@ -185,11 +185,18 @@ const NewPublicationSkeletonCard = () => {
           <StyledSkeletonPlatformIcon
             style={{ width: '48px', height: '48px' }}
           />
-          <Skeleton width={100} height={16} />
+          <Skeleton
+            width={100}
+            height={16}
+            baseColor={theme.background.tertiary}
+            highlightColor={theme.background.transparent.lighter}
+          />
           <Skeleton
             width={120}
             height={32}
             style={{ marginTop: theme.spacing(1) }}
+            baseColor={theme.background.tertiary}
+            highlightColor={theme.background.transparent.lighter}
           />
         </div>
       </StyledSkeletonCard>
@@ -199,12 +206,23 @@ const NewPublicationSkeletonCard = () => {
 
 // Skeleton loader for the entire publication list
 const PublicationListSkeleton = () => {
+  const theme = useTheme();
   return (
     <StyledPublicationListContainer>
       <StyledSection>
         <StyledPublicationListHeader>
-          <Skeleton width={150} height={20} />
-          <Skeleton width={250} height={16} />
+          <Skeleton
+            width={150}
+            height={20}
+            baseColor={theme.background.tertiary}
+            highlightColor={theme.background.transparent.lighter}
+          />
+          <Skeleton
+            width={250}
+            height={16}
+            baseColor={theme.background.tertiary}
+            highlightColor={theme.background.transparent.lighter}
+          />
         </StyledPublicationListHeader>
         <StyledSectionList>
           {Array.from({ length: 3 }).map((_, index) => (
@@ -217,8 +235,18 @@ const PublicationListSkeleton = () => {
 
       <StyledSection>
         <StyledPublicationListHeader>
-          <Skeleton width={150} height={20} />
-          <Skeleton width={250} height={16} />
+          <Skeleton
+            width={150}
+            height={20}
+            baseColor={theme.background.tertiary}
+            highlightColor={theme.background.transparent.lighter}
+          />
+          <Skeleton
+            width={250}
+            height={16}
+            baseColor={theme.background.tertiary}
+            highlightColor={theme.background.transparent.lighter}
+          />
         </StyledPublicationListHeader>
         <StyledSectionList horizontal>
           {Array.from({ length: 4 }).map((_, index) => (

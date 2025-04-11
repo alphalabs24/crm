@@ -91,11 +91,6 @@ export const PublicationBreadcrumb = ({
   platformId,
   onBackClick,
 }: PublicationBreadcrumbProps) => {
-  const isMobile = useIsMobile();
-  const isNavigationDrawerExpanded = useRecoilValue(
-    isNavigationDrawerExpandedState,
-  );
-
   return (
     <StyledBreadcrumbContainer>
       <StyledBackButton onClick={onBackClick}>
