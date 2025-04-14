@@ -72,6 +72,10 @@ const useSettingsNavigationItems = (): SettingsNavigationSection[] => {
     FeatureFlagKey.IsLaborSettingsEnabled,
   );
 
+  const isEmailSettingsPageEnabled = useIsFeatureEnabled(
+    FeatureFlagKey.IsEmailSettingsPageEnabled,
+  );
+
   const featureFlags = useFeatureFlagsMap();
   const permissionMap = useSettingsPermissionMap();
 
@@ -100,6 +104,7 @@ const useSettingsNavigationItems = (): SettingsNavigationSection[] => {
               path: SettingsPath.AccountsEmails,
               Icon: IconMail,
               indentationLevel: 2,
+              isHidden: !isEmailSettingsPageEnabled,
             },
             {
               label: t`Calendars`,

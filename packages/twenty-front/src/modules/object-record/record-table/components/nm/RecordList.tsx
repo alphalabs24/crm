@@ -20,14 +20,13 @@ import { useDropdown } from '@/ui/layout/dropdown/hooks/useDropdown';
 import { DragSelect } from '@/ui/utilities/drag-select/components/DragSelect';
 import { useClickOutsideListener } from '@/ui/utilities/pointer-event/hooks/useClickOutsideListener';
 import { useRecoilComponentValueV2 } from '@/ui/utilities/state/component-state/hooks/useRecoilComponentValueV2';
-import { useTheme } from '@emotion/react';
+import { css, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useLingui } from '@lingui/react/macro';
 import { useIcons } from '@ui/display/icon/hooks/useIcons';
 import { format } from 'date-fns';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useMemo, useRef } from 'react';
-import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -50,11 +49,18 @@ import { formatAmount } from '~/utils/format/formatAmount';
 import { RecordListDataLoaderEffect } from './RecordListDataLoaderEffect';
 import { RecordListSkeletonLoader } from './RecordListSkeletonLoader';
 
-const StyledListContainer = styled.div`
+const StyledListContainer = styled.div<{ empty?: boolean }>`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(2)};
+
+  height: 100%;
   padding: ${({ theme }) => theme.spacing(2)};
+  ${({ empty }) =>
+    empty &&
+    css`
+      justify-content: center;
+    `}
 `;
 
 const StyledCard = styled(motion.div)<{ isSelected?: boolean }>`
@@ -110,6 +116,12 @@ const StyledImageContainer = styled.div`
   align-items: center;
   justify-content: center;
   height: 100%;
+  width: 100%;
+
+  @media only screen and (min-width: ${MOBILE_VIEWPORT}px) {
+    max-width: 120px;
+    width: 120px;
+  }
 `;
 
 const StyledImage = styled.img`
@@ -334,67 +346,6 @@ const StyledPlatformBadgeContainer = styled.div`
   margin-right: ${({ theme }) => theme.spacing(1)};
 `;
 
-// Create styled components for skeleton loader
-const StyledSkeletonCard = styled.div`
-  border: 1px solid ${({ theme }) => theme.border.color.light};
-  border-radius: ${({ theme }) => theme.border.radius.md};
-  display: flex;
-  padding: ${({ theme }) => theme.spacing(1.5)};
-  position: relative;
-`;
-
-const StyledSkeletonImageSection = styled.div`
-  aspect-ratio: 1;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  margin-right: ${({ theme }) => theme.spacing(2)};
-  position: relative;
-  background-color: ${({ theme }) => theme.background.tertiary};
-  border-radius: ${({ theme }) => theme.border.radius.sm};
-  position: relative;
-`;
-
-const StyledSkeletonContentSection = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  min-width: 0;
-  padding: ${({ theme }) => theme.spacing(0.5, 0)};
-  justify-content: center;
-`;
-
-const StyledSkeletonUpperSection = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(2)};
-`;
-
-// Create a skeleton card loader component
-const RecordListSkeletonCard = () => {
-  const theme = useTheme();
-
-  return (
-    <SkeletonTheme
-      baseColor={theme.background.tertiary}
-      highlightColor={theme.background.transparent.lighter}
-      borderRadius={theme.border.radius.sm}
-    >
-      <StyledSkeletonCard>
-        <StyledSkeletonImageSection />
-        <StyledSkeletonContentSection>
-          <StyledSkeletonUpperSection>
-            <Skeleton width={80} height={12} />
-            <Skeleton width="30%" height={24} />
-            <Skeleton width="50%" height={20} />
-            <Skeleton width="50%" height={30} />
-          </StyledSkeletonUpperSection>
-        </StyledSkeletonContentSection>
-      </StyledSkeletonCard>
-    </SkeletonTheme>
-  );
-};
-
 type FieldDetailItemProps = {
   fieldName: string;
   value: any;
@@ -496,7 +447,7 @@ export const RecordList = () => {
 
   if (recordTableIsEmpty) {
     return (
-      <StyledListContainer ref={listContainerRef}>
+      <StyledListContainer ref={listContainerRef} empty={recordTableIsEmpty}>
         <RecordListDataLoaderEffect />
         <RecordTableEmptyState />
       </StyledListContainer>

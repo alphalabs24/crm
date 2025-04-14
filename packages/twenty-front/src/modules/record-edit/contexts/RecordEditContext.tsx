@@ -71,7 +71,7 @@ export type RecordEditContextType = {
     updates: Partial<RecordEditPropertyImage>,
   ) => void;
   loading: boolean;
-  saveRecord: () => Promise<void>;
+  saveRecord: () => Promise<Error | undefined>;
   propertyDocuments: RecordEditPropertyDocument[];
   addPropertyDocument: (document: RecordEditPropertyDocument) => void;
   removePropertyDocument: (document: RecordEditPropertyDocument) => void;
@@ -382,138 +382,150 @@ export const RecordEditProvider = ({
 
   // This saves the whole record with the updated fields from the form
   const saveRecord = async () => {
-    setLoading(true);
-    if (isDirty) {
-      const updatedFields = getUpdatedFields();
+    try {
+      setLoading(true);
+      if (isDirty) {
+        const updatedFields = getUpdatedFields();
 
-      // Check if address was modified
-      if (hasAddressChanged(updatedFields)) {
-        const addressUpdate = updatedFields.address as Record<string, unknown>;
+        // Check if address was modified
+        if (hasAddressChanged(updatedFields)) {
+          const addressUpdate = updatedFields.address as Record<
+            string,
+            unknown
+          >;
 
-        // Only geocode if coordinates are not already provided
-        const coordinates = await geocodeAddress(addressUpdate);
-        if (coordinates) {
-          updatedFields.address = {
-            ...addressUpdate,
-            ...coordinates,
-          };
-        }
-      }
-
-      await updateOneRecord({
-        idToUpdate: objectRecordId ?? '',
-        updateOneRecordInput: updatedFields,
-      });
-
-      // Handle email template relations
-      if (previousEmailTemplate) {
-        // Detach the previous template based on the record type
-        if (objectNameSingular === CoreObjectNameSingular.Property) {
-          await detachTemplateFromProperty({
-            recordId: previousEmailTemplate.id,
-            relatedRecordId: objectRecordId ?? '',
-          });
-        } else if (objectNameSingular === CoreObjectNameSingular.Publication) {
-          await detachTemplateFromPublication({
-            recordId: previousEmailTemplate.id,
-            relatedRecordId: objectRecordId ?? '',
-          });
-        }
-      }
-
-      // Attach new template if it exists
-      if (emailTemplate) {
-        if (objectNameSingular === CoreObjectNameSingular.Property) {
-          await attachTemplateToProperty({
-            recordId: emailTemplate.id,
-            relatedRecordId: objectRecordId ?? '',
-          });
-        } else if (objectNameSingular === CoreObjectNameSingular.Publication) {
-          await attachTemplateToPublication({
-            recordId: emailTemplate.id,
-            relatedRecordId: objectRecordId ?? '',
-          });
-        }
-      }
-
-      // First delete removed images
-      await Promise.all(
-        attachmentsToDelete.map((attachment: Attachment) => {
-          return destroyOneAttachment(attachment.id);
-        }),
-      );
-
-      // Then process remaining/new images
-      let orderIndex = 0;
-      for (const image of propertyImages) {
-        if (image.isAttachment && isDefined(image.attachment)) {
-          await updateOneAttachment({
-            idToUpdate: image.attachment.id,
-            updateOneRecordInput: {
-              orderIndex,
-              description: image.description,
-            },
-          });
-        } else if (isDefined(image.file)) {
-          if (isDefined(objectRecordId) && isDefined(objectNameSingular)) {
-            await uploadAttachmentFile(
-              image.file,
-              {
-                id: objectRecordId,
-                targetObjectNameSingular: objectNameSingular,
-              },
-              'PropertyImage',
-              orderIndex,
-              image.fileName,
-              image.description,
-            );
+          // Only geocode if coordinates are not already provided
+          const coordinates = await geocodeAddress(addressUpdate);
+          if (coordinates) {
+            updatedFields.address = {
+              ...addressUpdate,
+              ...coordinates,
+            };
           }
         }
-        orderIndex++;
-      }
 
-      // First delete removed documents
-      await Promise.all(
-        documentsToDelete.map((attachment: Attachment) => {
-          return destroyOneAttachment(attachment.id);
-        }),
-      );
+        await updateOneRecord({
+          idToUpdate: objectRecordId ?? '',
+          updateOneRecordInput: updatedFields,
+        });
 
-      // Then process remaining/new documents
-      for (const document of propertyDocuments) {
-        if (document.isAttachment && isDefined(document.attachment)) {
-          await updateOneAttachment({
-            idToUpdate: document.attachment.id,
-            updateOneRecordInput: {
-              orderIndex,
-              name:
-                document.fileName ??
-                document.file?.name ??
-                document.attachment.name,
-              description: document.description,
-            },
-          });
-        } else if (isDefined(document.file)) {
-          const isPublic = isPublicAttachmentType(document.type);
-
-          await uploadAttachmentFile(
-            document.file,
-            {
-              id: objectRecordId ?? '',
-              targetObjectNameSingular: objectNameSingular ?? '',
-            },
-            document.type ?? 'PropertyDocument',
-            orderIndex,
-            document.fileName,
-            document.description,
-            isPublic,
-          );
+        // Handle email template relations
+        if (previousEmailTemplate) {
+          // Detach the previous template based on the record type
+          if (objectNameSingular === CoreObjectNameSingular.Property) {
+            await detachTemplateFromProperty({
+              recordId: previousEmailTemplate.id,
+              relatedRecordId: objectRecordId ?? '',
+            });
+          } else if (
+            objectNameSingular === CoreObjectNameSingular.Publication
+          ) {
+            await detachTemplateFromPublication({
+              recordId: previousEmailTemplate.id,
+              relatedRecordId: objectRecordId ?? '',
+            });
+          }
         }
-        orderIndex++;
-      }
 
+        // Attach new template if it exists
+        if (emailTemplate) {
+          if (objectNameSingular === CoreObjectNameSingular.Property) {
+            await attachTemplateToProperty({
+              recordId: emailTemplate.id,
+              relatedRecordId: objectRecordId ?? '',
+            });
+          } else if (
+            objectNameSingular === CoreObjectNameSingular.Publication
+          ) {
+            await attachTemplateToPublication({
+              recordId: emailTemplate.id,
+              relatedRecordId: objectRecordId ?? '',
+            });
+          }
+        }
+
+        // First delete removed images
+        await Promise.all(
+          attachmentsToDelete.map((attachment: Attachment) => {
+            return destroyOneAttachment(attachment.id);
+          }),
+        );
+
+        // Then process remaining/new images
+        let orderIndex = 0;
+        for (const image of propertyImages) {
+          if (image.isAttachment && isDefined(image.attachment)) {
+            await updateOneAttachment({
+              idToUpdate: image.attachment.id,
+              updateOneRecordInput: {
+                orderIndex,
+                description: image.description,
+              },
+            });
+          } else if (isDefined(image.file)) {
+            if (isDefined(objectRecordId) && isDefined(objectNameSingular)) {
+              await uploadAttachmentFile(
+                image.file,
+                {
+                  id: objectRecordId,
+                  targetObjectNameSingular: objectNameSingular,
+                },
+                'PropertyImage',
+                orderIndex,
+                image.fileName,
+                image.description,
+              );
+            }
+          }
+          orderIndex++;
+        }
+
+        // First delete removed documents
+        await Promise.all(
+          documentsToDelete.map((attachment: Attachment) => {
+            return destroyOneAttachment(attachment.id);
+          }),
+        );
+
+        // Then process remaining/new documents
+        for (const document of propertyDocuments) {
+          if (document.isAttachment && isDefined(document.attachment)) {
+            await updateOneAttachment({
+              idToUpdate: document.attachment.id,
+              updateOneRecordInput: {
+                orderIndex,
+                name:
+                  document.fileName ??
+                  document.file?.name ??
+                  document.attachment.name,
+                description: document.description,
+              },
+            });
+          } else if (isDefined(document.file)) {
+            const isPublic = isPublicAttachmentType(document.type);
+
+            await uploadAttachmentFile(
+              document.file,
+              {
+                id: objectRecordId ?? '',
+                targetObjectNameSingular: objectNameSingular ?? '',
+              },
+              document.type ?? 'PropertyDocument',
+              orderIndex,
+              document.fileName,
+              document.description,
+              isPublic,
+            );
+          }
+          orderIndex++;
+        }
+
+        resetFields();
+      }
+    } catch (error) {
+      return error as Error;
+    } finally {
       setLoading(false);
-      resetFields();
     }
   };
 

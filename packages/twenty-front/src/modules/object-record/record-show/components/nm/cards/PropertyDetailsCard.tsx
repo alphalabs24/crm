@@ -5,7 +5,7 @@ import { usePropertyDetailsFields } from '@/object-record/hooks/usePropertyDetai
 import { Section } from '@/object-record/record-show/components/ui/PropertyDetailsCardComponents';
 import { SelectOption } from '@/spreadsheet-import/types';
 import styled from '@emotion/styled';
-import { useLingui } from '@lingui/react/macro';
+import { Trans, useLingui } from '@lingui/react/macro';
 import { IconBuilding, Tag } from 'twenty-ui';
 
 const StyledContent = styled.div`
@@ -60,6 +60,14 @@ const GROUP_ORDER = [
   'Financial',
   'Features',
 ] as const;
+
+const GROUP_LABELS = {
+  'Key Details': <Trans>Key Details</Trans>,
+  'Space Details': <Trans>Space Details</Trans>,
+  'Object Info': <Trans>Object Info</Trans>,
+  Financial: <Trans>Financial</Trans>,
+  Features: <Trans>Features</Trans>,
+} as const;
 
 type GroupTitle = (typeof GROUP_ORDER)[number];
 type GroupedFields = Record<GroupTitle, FieldMetadataItem[]>;
@@ -142,7 +150,7 @@ export const PropertyDetailsCard = ({
   // Sort groups according to fixed order and translate group titles
   const sortedGroups = GROUP_ORDER.filter(
     (groupTitle) => groupedFields[groupTitle]?.length > 0,
-  ).map((groupTitle) => [t`${groupTitle}`, groupedFields[groupTitle]] as const);
+  ).map((groupTitle) => [groupTitle, groupedFields[groupTitle]] as const);
 
   const renderFieldValue = (field: FieldMetadataItem, value: any) => {
     if (field.name === 'features' && Array.isArray(value)) {
@@ -165,7 +173,9 @@ export const PropertyDetailsCard = ({
       <StyledContent>
         {sortedGroups.map(([groupTitle, fields]) => (
           <StyledDetailGroup key={groupTitle}>
-            <StyledDetailGroupTitle>{groupTitle}</StyledDetailGroupTitle>
+            <StyledDetailGroupTitle>
+              {GROUP_LABELS[groupTitle]}
+            </StyledDetailGroupTitle>
             {fields.map((field: FieldMetadataItem) => (
               <StyledDetailItem key={field.name}>
                 {field.name === 'features' ? null : (

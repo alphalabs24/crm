@@ -47,6 +47,10 @@ class SendEmailDto {
   @IsString()
   @IsOptional()
   externalThreadId?: string;
+
+  @IsString()
+  @IsOptional()
+  externalMessageId?: string;
 }
 
 @Controller('rest/email')
@@ -81,6 +85,7 @@ export class RestApiExtensionController {
       inReplyTo: emailDto.inReplyTo,
       references: emailDto.references,
       externalThreadId: emailDto.externalThreadId,
+      externalMessageId: emailDto.externalMessageId,
       // Optional: handle attachments if needed in the future
     };
 

@@ -4,8 +4,6 @@ import { FieldContext } from '@/object-record/record-field/contexts/FieldContext
 import { RecordInlineEntry } from '@/object-record/record-inline-cell/components/nm/RecordInlineEntry';
 import { InlineCellHotkeyScope } from '@/object-record/record-inline-cell/types/InlineCellHotkeyScope';
 import { Section } from '@/object-record/record-show/components/ui/PropertyDetailsCardComponents';
-import { useRecordShowContainerActions } from '@/object-record/record-show/hooks/useRecordShowContainerActions';
-import { useRecordShowContainerData } from '@/object-record/record-show/hooks/useRecordShowContainerData';
 import styled from '@emotion/styled';
 import { useLingui } from '@lingui/react/macro';
 import { IconUsers } from 'twenty-ui';
@@ -36,22 +34,8 @@ export const PropertyRelationsCard = ({
 }: PropertyRelationsCardProps) => {
   const { t } = useLingui();
 
-  const { useUpdateOneObjectRecordMutation } = useRecordShowContainerActions({
-    objectNameSingular: objectMetadataItem.nameSingular,
-    objectRecordId: record.id,
-    recordFromStore: record,
-  });
-
-  const { recordFromStore } = useRecordShowContainerData({
-    objectNameSingular: objectMetadataItem.nameSingular,
-    objectRecordId: record.id,
-  });
-
   const isDefinedInRecord = (field: string) => {
-    return (
-      recordFromStore?.[field] !== undefined &&
-      recordFromStore?.[field] !== null
-    );
+    return record?.[field] !== undefined && record?.[field] !== null;
   };
 
   if (loading) {
@@ -82,7 +66,6 @@ export const PropertyRelationsCard = ({
                   showLabel: true,
                   labelWidth: 90,
                 }),
-                useUpdateRecord: useUpdateOneObjectRecordMutation,
                 hotkeyScope: InlineCellHotkeyScope.InlineCell,
               }}
             >

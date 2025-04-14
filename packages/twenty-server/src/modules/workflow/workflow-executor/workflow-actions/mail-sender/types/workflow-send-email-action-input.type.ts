@@ -8,4 +8,5 @@ export type WorkflowSendEmailActionInput = {
   inReplyTo?: string;
   references?: string[];
   externalThreadId?: string;
+  externalMessageId?: string;
 };

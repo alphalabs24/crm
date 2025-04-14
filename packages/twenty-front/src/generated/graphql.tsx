@@ -484,6 +484,7 @@ export enum FeatureFlagKey {
   IsCustomDomainEnabled = 'IsCustomDomainEnabled',
   IsDataModelSettingsEnabled = 'IsDataModelSettingsEnabled',
   IsDomainGeneralSettingsEnabled = 'IsDomainGeneralSettingsEnabled',
+  IsEmailSettingsPageEnabled = 'IsEmailSettingsPageEnabled',
   IsEventObjectEnabled = 'IsEventObjectEnabled',
   IsIntegrationSettingsEnabled = 'IsIntegrationSettingsEnabled',
   IsJsonFilterEnabled = 'IsJsonFilterEnabled',

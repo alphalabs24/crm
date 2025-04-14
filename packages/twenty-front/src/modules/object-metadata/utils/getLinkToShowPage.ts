@@ -4,9 +4,15 @@ import { ObjectRecord } from '@/object-record/types/ObjectRecord';
 import { SettingsPath } from '@/types/SettingsPath';
 import { getSettingsPath } from '~/utils/navigation/getSettingsPath';
 
+type LinkOptions = {
+  hash?: string;
+  searchParams?: Record<string, string>;
+};
+
 export const getLinkToShowPage = (
   objectNameSingular: string,
   record: Partial<ObjectRecord>,
+  options?: LinkOptions,
 ) => {
   const basePathToShowPage = getBasePathToShowPage({
     objectNameSingular,
@@ -41,10 +47,24 @@ export const getLinkToShowPage = (
     );
   }
 
-  const linkToShowPage =
+  let linkToShowPage =
     isWorkspaceMemberObjectMetadata || !record.id
       ? ''
       : `${basePathToShowPage}${record.id}`;
+
+  // Add search params if provided
+  if (options?.searchParams && Object.keys(options.searchParams).length > 0) {
+    const searchParamsString = new URLSearchParams(
+      options.searchParams,
+    ).toString();
+    linkToShowPage += `?${searchParamsString}`;
+  }
+  // Add hash if provided
+  if (options?.hash) {
+    linkToShowPage += options.hash.startsWith('#')
+      ? options.hash
+      : `#${options.hash}`;
+  }
 
   return linkToShowPage;
 };

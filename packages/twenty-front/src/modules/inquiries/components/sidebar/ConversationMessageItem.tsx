@@ -5,6 +5,7 @@ import { useSystemColorScheme } from '@/ui/theme/hooks/useSystemColorScheme';
 import styled from '@emotion/styled';
 import { Trans, useLingui } from '@lingui/react/macro';
 import { format } from 'date-fns';
+import DOMPurify from 'dompurify';
 import { useCallback, useMemo } from 'react';
 import { Link, To } from 'react-router-dom';
 import { isDefined } from 'twenty-shared';
@@ -111,6 +112,13 @@ export const ConversationMessageItem = ({
   const systemColorScheme = useSystemColorScheme();
   const colorSchemeToUse =
     colorScheme === 'System' ? systemColorScheme : colorScheme;
+  const isHtml = /<([a-z]+)[\s>]|&[a-z]+;/i.test(message.text);
+  const purify = DOMPurify(window);
+
+  const sanitizedBody = useMemo(
+    () => purify.sanitize(message.text),
+    [message.text, purify],
+  );
 
   const recipientEmail = useMemo(() => {
     return (
@@ -187,7 +195,7 @@ export const ConversationMessageItem = ({
 
   const isAutomatic = !message.sender.person && !message.sender.workspaceMember;
 
-  const formattedBody = formatMessageBody(message.text);
+  const formattedBody = formatMessageBody(sanitizedBody);
 
   const canReply = Boolean(recipientEmail);
 
@@ -204,25 +212,34 @@ export const ConversationMessageItem = ({
 
           <StyledMessageTime>
             {formatDateToRelative(message.createdAt)}
-            {isAutomatic && (
+            {/* {isAutomatic && (
               <>
                 {' • '}
                 <StyledAutoTag>
                   <Trans>Auto Response</Trans>
                 </StyledAutoTag>
               </>
-            )}
+            )} */}
           </StyledMessageTime>
         </StyledMessageSender>
       </StyledMessageHeader>
-      <StyledMessageContent
-        isCurrentUser={isCurrentUser}
-        colorScheme={colorSchemeToUse}
-      >
-        {formattedBody.split('\n').map((paragraph: string, index: number) => (
-          <p key={index}>{paragraph}</p>
-        ))}
-      </StyledMessageContent>
+      {isHtml ? (
+        <StyledMessageContent
+          isCurrentUser={isCurrentUser}
+          colorScheme={colorSchemeToUse}
+          dangerouslySetInnerHTML={{ __html: sanitizedBody }}
+        />
+      ) : (
+        <StyledMessageContent
+          isCurrentUser={isCurrentUser}
+          colorScheme={colorSchemeToUse}
+        >
+          {formattedBody.split('\n').map((paragraph: string, index: number) => (
+            <p key={index}>{paragraph}</p>
+          ))}
+        </StyledMessageContent>
+      )}
+
       {!isCurrentUser && (
         <StyledReplyButton
           variant="secondary"

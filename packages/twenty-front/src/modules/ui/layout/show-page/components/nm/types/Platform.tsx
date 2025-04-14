@@ -1,6 +1,13 @@
 import { AgencyCredential } from '@/publishers/components/modals/EditPublisherModal';
+import styled from '@emotion/styled';
 import { Trans } from '@lingui/react/macro';
+import { Link } from 'react-router-dom';
 import { ColorScheme } from 'twenty-ui';
+
+const StyledLink = styled(Link)`
+  color: ${({ theme }) => theme.color.blue};
+  text-decoration: underline;
+`;
 
 export type PlatformType = 'social_media' | 'real_estate' | 'smart_listing';
 
@@ -61,7 +68,16 @@ export const PLATFORMS: { [key in PlatformId]: Platform } = {
   [PlatformId.Newhome]: {
     type: 'real_estate',
     name: 'Newhome',
-    description: <Trans>List your property conveniently to newhome.ch.</Trans>,
+    description: (
+      <Trans>
+        List your property conveniently to newhome.ch. If you don't have newhome
+        credentials, create a new account{' '}
+        <StyledLink to="https://id.newhome.ch/Registration" target="_blank">
+          here
+        </StyledLink>{' '}
+        and set up an IDX interface by clicking on 'Import interfaces'.
+      </Trans>
+    ),
     isNew: true,
     // eslint-disable-next-line @nx/workspace-no-hardcoded-colors
     backgroundColor: '#97DDD2',
@@ -115,7 +131,7 @@ export const PLATFORMS: { [key in PlatformId]: Platform } = {
     ],
     getOfferListLink: (credential: AgencyCredential) =>
       credential.partnerId
-        ? `https://test.newhome.ch/partner/${credential.partnerId}.aspx`
+        ? `https://newhome.ch/partner/${credential.partnerId}.aspx`
         : null,
   },
   [PlatformId.SocialMedia]: {
@@ -142,20 +158,56 @@ export const PLATFORMS: { [key in PlatformId]: Platform } = {
   [PlatformId.SwissMarketplaceGroup]: {
     type: 'real_estate',
     name: 'Swiss Marketplace Group',
-    logo: {
-      en: {
-        Dark: '/logos/smg.png',
-        Light: '/logos/smg.png',
-      },
-    },
     description: (
       <Trans>
         This includes the following platforms: ImmoScout24, Homegate, and more.
       </Trans>
     ),
-    isBeta: true,
+    isNew: true,
+    // eslint-disable-next-line @nx/workspace-no-hardcoded-colors
+    backgroundColor: '#97DDD2',
+    logo: {
+      en: {
+        Dark: '/logos/smg.png',
+        Light: '/logos/smg.png',
+      },
+      'de-DE': {
+        Dark: '/logos/smg.png',
+        Light: '/logos/smg.png',
+      },
+      'fr-FR': {
+        Dark: '/logos/smg.png',
+        Light: '/logos/smg.png',
+      },
+      'it-IT': {
+        Dark: '/logos/smg.png',
+        Light: '/logos/smg.png',
+      },
+    },
+    fieldsOnAgency: [
+      {
+        name: 'username',
+        helpText: (
+          <Trans>
+            Your FTP username can be found under "Import interfaces" on Smg.
+          </Trans>
+        ),
+      },
+      {
+        name: 'password',
+        helpText: (
+          <Trans>
+            Your FTP password can be found under "Import interfaces" on Smg.
+          </Trans>
+        ),
+        type: 'password',
+      },
+      {
+        name: 'platformAgencyId',
+        helpText: <Trans>Your Agencie's ID on Smg.</Trans>,
+      },
+    ],
   },
-
   [PlatformId.SmartListing]: {
     type: 'smart_listing',
     name: 'Smart Listing',
@@ -165,18 +217,6 @@ export const PLATFORMS: { [key in PlatformId]: Platform } = {
         reach with a tailored listing.
       </Trans>
     ),
-    isBeta: true,
-  },
-  [PlatformId.ImmoScout]: {
-    type: 'real_estate',
-    name: 'ImmoScout24',
-    description: <Trans>List your property on ImmoScout24.</Trans>,
-    isBeta: true,
-  },
-  [PlatformId.Homegate]: {
-    type: 'real_estate',
-    name: 'Homegate',
-    description: <Trans>List your property on Homegate.</Trans>,
     isBeta: true,
   },
   [PlatformId.Instagram]: {
@@ -194,7 +234,20 @@ export const PLATFORMS: { [key in PlatformId]: Platform } = {
   [PlatformId.Comparis]: {
     type: 'real_estate',
     name: 'Comparis',
-    description: <Trans>List your property on Comparis.</Trans>,
+    description: (
+      <Trans>
+        List your property on Comparis. If you don't have Comparis credentials,
+        contact Comparis{' '}
+        <StyledLink
+          to="https://www.comparis.ch/immobilien/inserieren/loesungen-fuer-agenturen"
+          target="_blank"
+        >
+          here
+        </StyledLink>{' '}
+        by clicking the 'Get in touch' button under 'Import via Real Estate
+        Software (CRM)'.
+      </Trans>
+    ),
     isNew: true,
     logo: {
       en: {
@@ -233,5 +286,15 @@ export const PLATFORMS: { [key in PlatformId]: Platform } = {
     name: 'Flatfox',
     description: <Trans>List your property on Flatfox.</Trans>,
     isBeta: true,
+  },
+  [PlatformId.ImmoScout]: {
+    type: 'real_estate',
+    name: 'ImmoScout',
+    description: undefined,
+  },
+  [PlatformId.Homegate]: {
+    type: 'real_estate',
+    name: 'Homegate',
+    description: undefined,
   },
 };

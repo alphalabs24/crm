@@ -48,7 +48,7 @@ export const PropertyBasicInfoCard = ({
   const platformBadge = isPublication ? (
     <PlatformBadge
       platformId={record.platform ?? PlatformId.Newhome}
-      isActive
+      variant="no-background"
     />
   ) : null;
 

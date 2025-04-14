@@ -136,7 +136,10 @@ export const useFormattedPropertyFields = ({
             'plotSubtype',
           ].includes(field.name)
         ) {
-          const formatted = capitalize(String(value).toLowerCase());
+          const formatted = capitalize(
+            String(value).toLowerCase().replace('_', ' '),
+          );
+
           // Special handling for price unit
           if (field.name === 'priceUnit') {
             return formatted === 'Sell'

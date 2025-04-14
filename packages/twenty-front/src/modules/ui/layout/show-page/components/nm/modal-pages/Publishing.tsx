@@ -22,6 +22,7 @@ import {
   IconExternalLink,
 } from 'twenty-ui';
 import { ValidationResult } from '../../../hooks/usePublicationValidation';
+import { useTheme } from '@emotion/react';
 
 const StyledPublishingProcess = styled.div`
   display: flex;
@@ -120,6 +121,7 @@ type PublishingProps = {
   validationDetails: ValidationResult;
   isPublished: boolean;
   setIsPublished: (isPublished: boolean) => void;
+  hasDraftAndPublished?: boolean;
 };
 
 export const Publishing = ({
@@ -129,9 +131,11 @@ export const Publishing = ({
   validationDetails,
   isPublished,
   setIsPublished,
+  hasDraftAndPublished,
 }: PublishingProps) => {
   const [showError, setShowError] = useState(false);
   const { enqueueSnackBar } = useSnackBar();
+  const theme = useTheme();
   const { t } = useLingui();
 
   const { record, refetch } = useFindOneRecord({
@@ -205,6 +209,8 @@ export const Publishing = ({
               </>
             ) : isLoading ? (
               t`Publishing...`
+            ) : hasDraftAndPublished ? (
+              t`Published`
             ) : (
               t`Unpublished`
             )}
@@ -232,12 +238,16 @@ export const Publishing = ({
               </StyledViewPublicationButton>
             ) : null
           ) : isLoading ? (
-            <CircularProgressBar size={16} barWidth={2} barColor="black" />
+            <CircularProgressBar
+              size={16}
+              barWidth={2}
+              barColor={theme.background.invertedPrimary}
+            />
           ) : (
             <Button
               variant="primary"
               accent="blue"
-              title={t`Publish`}
+              title={hasDraftAndPublished ? t`Republish` : t`Publish`}
               onClick={publishDraft}
             />
           )}

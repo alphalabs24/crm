@@ -316,9 +316,17 @@ export const SettingsRoutes = ({
         element={<SettingsAccountsCalendars />}
       />
       <Route
-        path={SettingsPath.AccountsEmails}
-        element={<SettingsAccountsEmails />}
-      />
+        element={
+          <SettingsProtectedRouteWrapper
+            requiredFeatureFlag={FeatureFlagKey.IsEmailSettingsPageEnabled}
+          />
+        }
+      >
+        <Route
+          path={SettingsPath.AccountsEmails}
+          element={<SettingsAccountsEmails />}
+        />
+      </Route>
       <Route
         element={
           <SettingsProtectedRouteWrapper

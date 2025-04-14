@@ -3,7 +3,6 @@ import { Module } from '@nestjs/common';
 
 import { RestApiCoreBatchController } from 'src/engine/api/rest/core/controllers/rest-api-core-batch.controller';
 import { RestApiCoreController } from 'src/engine/api/rest/core/controllers/rest-api-core.controller';
-import { RestApiExtensionController } from 'src/engine/api/rest/core/controllers/rest-api-extension.controller';
 import { CoreQueryBuilderModule } from 'src/engine/api/rest/core/query-builder/core-query-builder.module';
 import { RestApiCoreServiceV2 } from 'src/engine/api/rest/core/rest-api-core-v2.service';
 import { RestApiCoreService } from 'src/engine/api/rest/core/rest-api-core.service';
@@ -19,10 +18,15 @@ import { ScopedWorkspaceContextFactory } from 'src/engine/twenty-orm/factories/s
 import { TwentyORMModule } from 'src/engine/twenty-orm/twenty-orm.module';
 import { WorkspaceCacheStorageModule } from 'src/engine/workspace-cache-storage/workspace-cache-storage.module';
 import { GoogleOAuth2ClientManagerService } from 'src/modules/connected-account/oauth2-client-manager/drivers/google/google-oauth2-client-manager.service';
+import { MicrosoftOAuth2ClientManagerService } from 'src/modules/connected-account/oauth2-client-manager/drivers/microsoft/microsoft-oauth2-client-manager.service';
 import { OAuth2ClientManagerService } from 'src/modules/connected-account/oauth2-client-manager/services/oauth2-client-manager.service';
 import { GmailClientProvider } from 'src/modules/messaging/message-import-manager/drivers/gmail/providers/gmail-client.provider';
+import { MicrosoftClientProvider } from 'src/modules/messaging/message-import-manager/drivers/microsoft/providers/microsoft-client.provider';
 import { SendEmailActionModule } from 'src/modules/workflow/workflow-executor/workflow-actions/mail-sender/send-email-action.module';
 import { SendEmailWorkflowAction } from 'src/modules/workflow/workflow-executor/workflow-actions/mail-sender/send-email.workflow-action';
+import { MessagingSendMessageService } from 'src/modules/messaging/message-import-manager/services/messaging-send-message.service';
+
+import { RestApiExtensionController } from './core/controllers/rest-api-extension.controller';
 
 @Module({
   imports: [
@@ -49,7 +53,10 @@ import { SendEmailWorkflowAction } from 'src/modules/workflow/workflow-executor/
     EndingBeforeInputFactory,
     LimitInputFactory,
     GmailClientProvider,
+    MicrosoftClientProvider,
+    MessagingSendMessageService,
     ScopedWorkspaceContextFactory,
+    MicrosoftOAuth2ClientManagerService,
     OAuth2ClientManagerService,
     GoogleOAuth2ClientManagerService,
     SendEmailWorkflowAction,

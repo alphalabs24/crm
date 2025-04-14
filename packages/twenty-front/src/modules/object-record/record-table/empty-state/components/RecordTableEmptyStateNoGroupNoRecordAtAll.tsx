@@ -25,12 +25,12 @@ export const RecordTableEmptyStateNoGroupNoRecordAtAll = () => {
 
   const title = getEmptyStateTitle(
     objectMetadataItem.nameSingular,
-    objectLabel,
+    objectMetadataItem.labelPlural,
   );
 
   const subTitle = getEmptyStateSubTitle(
     objectMetadataItem.nameSingular,
-    objectLabel,
+    objectMetadataItem.labelPlural,
   );
 
   return (

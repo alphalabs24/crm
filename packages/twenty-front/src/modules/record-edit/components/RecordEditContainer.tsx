@@ -254,9 +254,39 @@ export const RecordEditContainer = ({
   }, [tabs, activeTabId, fieldsByName, getUpdatedFields, record, updateField]);
 
   const handleSave = async () => {
-    try {
-      await saveRecord();
+    const error = await saveRecord();
 
+    if (error) {
+      enqueueSnackBar(t`Error saving ${objectNameSingular}`, {
+        variant: SnackBarVariant.Error,
+      });
+      return;
+    }
+
+    if (isPublication && record?.propertyId && record?.platform) {
+      // For publications, navigate back to the property page with hash and search params
+      const propertyLink = getLinkToShowPage(
+        CoreObjectNameSingular.Property,
+        {
+          id: record.propertyId,
+        },
+        {
+          hash: '#publications',
+          searchParams: {
+            platform: record.platform,
+          },
+        },
+      );
+
+      enqueueSnackBar(t`Publication saved successfully`, {
+        variant: SnackBarVariant.Success,
+      });
+
+      setTimeout(() => {
+        navigate(propertyLink);
+      }, 100);
+    } else {
+      // Standard behavior for non-publications
       const link = getLinkToShowPage(objectNameSingular ?? '', {
         id: recordId ?? '',
       });
@@ -273,19 +303,32 @@ export const RecordEditContainer = ({
       setTimeout(() => {
         navigate(link);
       }, 100);
-    } catch (error) {
-      console.error(error);
-      enqueueSnackBar(t`Error saving ${objectNameSingular}`, {
-        variant: SnackBarVariant.Error,
-      });
     }
   };
 
   const handleDiscard = () => {
-    const link = getLinkToShowPage(objectNameSingular ?? '', {
-      id: recordId ?? '',
-    });
-    navigate(link);
+    if (isPublication && record?.propertyId && record?.platform) {
+      // For publications, navigate back to the property page with hash and search params
+      const propertyLink = getLinkToShowPage(
+        CoreObjectNameSingular.Property,
+        {
+          id: record.propertyId,
+        },
+        {
+          hash: '#publications',
+          searchParams: {
+            platform: record.platform,
+          },
+        },
+      );
+      navigate(propertyLink);
+    } else {
+      // Standard behavior for non-publications
+      const link = getLinkToShowPage(objectNameSingular ?? '', {
+        id: recordId ?? '',
+      });
+      navigate(link);
+    }
   };
 
   const isNewViewableRecordLoading = useRecoilValue(
