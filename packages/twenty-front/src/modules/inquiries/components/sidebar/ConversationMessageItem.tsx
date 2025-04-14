@@ -212,14 +212,14 @@ export const ConversationMessageItem = ({
 
           <StyledMessageTime>
             {formatDateToRelative(message.createdAt)}
-            {isAutomatic && (
+            {/* {isAutomatic && (
               <>
                 {' • '}
                 <StyledAutoTag>
                   <Trans>Auto Response</Trans>
                 </StyledAutoTag>
               </>
-            )}
+            )} */}
           </StyledMessageTime>
         </StyledMessageSender>
       </StyledMessageHeader>
