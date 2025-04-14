@@ -45,10 +45,9 @@ msgstr ""
 #~ msgid "(Updated)"
 #~ msgstr "(Updated)"
 
-#. placeholder {0}: targetableObject.targetObjectNameSingular
 #: src/modules/object-record/record-show/components/nm/PropertyDetails.tsx
-msgid "{0} deleted successfully"
-msgstr ""
+#~ msgid "{0} deleted successfully"
+#~ msgstr ""
 
 #: src/modules/object-record/record-board/record-board-column/utils/computeAggregateValueAndLabel.ts
 msgid "{aggregateLabel} of {fieldLabel}"
@@ -84,6 +83,7 @@ msgid "{name}"
 msgstr ""
 
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+#: src/modules/object-record/record-show/components/nm/PropertyDetails.tsx
 msgid "{objectNameSingular} deleted successfully"
 msgstr ""
 
@@ -510,8 +510,8 @@ msgid "Authorize"
 msgstr "Autoriser"
 
 #: src/modules/inquiries/components/sidebar/ConversationMessageItem.tsx
-msgid "Auto Response"
-msgstr ""
+#~ msgid "Auto Response"
+#~ msgstr ""
 
 #: src/modules/onboarding-tutorial/components/modals/EmailTutorialModal.tsx
 msgid "Automatic creation of Inquiries"
@@ -1568,7 +1568,6 @@ msgstr "Exporter les workflows"
 msgid "Failed to create draft"
 msgstr ""
 
-#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
 #: src/modules/object-record/record-show/components/nm/publication/PublicationDetailPage.tsx
 msgid "Failed to create publication draft"
 msgstr ""
@@ -1603,7 +1602,6 @@ msgstr ""
 msgid "Failed to send test email"
 msgstr ""
 
-#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
 #: src/modules/object-record/record-show/components/nm/PropertyDetails.tsx
 msgid "Failed to sync publications"
 msgstr ""
@@ -2832,6 +2830,7 @@ msgstr ""
 msgid "Publication unpublished successfully"
 msgstr ""
 
+#: src/modules/object-record/record-show/components/nm/publication/PublicationBreadcrumb.tsx
 #: src/modules/object-record/record-show/components/nm/cards/PropertyPublicationsCard.tsx
 msgid "Publications"
 msgstr ""
@@ -3964,7 +3963,6 @@ msgstr "Votre nom tel qu'il sera affiché sur l'application"
 msgid "Your Partner ID is displayed in your MyNewhome dashboard under \"Integration of ads on your own website\" under Short name."
 msgstr ""
 
-#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
 #: src/modules/object-record/record-show/components/nm/PropertyDetails.tsx
 msgid "Your Publication Drafts were synced successfully"
 msgstr ""

@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: nestermind-crm\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-04-10 11:02\n"
+"PO-Revision-Date: 2025-04-14 11:24\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -45,10 +45,9 @@ msgstr "(bald verfügbar)"
 #~ msgid "(Updated)"
 #~ msgstr "(Updated)"
 
-#. placeholder {0}: targetableObject.targetObjectNameSingular
 #: src/modules/object-record/record-show/components/nm/PropertyDetails.tsx
-msgid "{0} deleted successfully"
-msgstr "{0} erfolgreich gelöscht"
+#~ msgid "{0} deleted successfully"
+#~ msgstr "{0} erfolgreich gelöscht"
 
 #: src/modules/object-record/record-board/record-board-column/utils/computeAggregateValueAndLabel.ts
 msgid "{aggregateLabel} of {fieldLabel}"
@@ -84,6 +83,7 @@ msgid "{name}"
 msgstr "{name}"
 
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+#: src/modules/object-record/record-show/components/nm/PropertyDetails.tsx
 msgid "{objectNameSingular} deleted successfully"
 msgstr "{objectNameSingular} erfolgreich gelöscht"
 
@@ -457,7 +457,7 @@ msgstr "Bist Du sicher, dass Du diesen Anbieter löschen möchtest? Diese Aktion
 
 #: src/modules/object-record/record-show/components/nm/publication/PublicationDetailPage.tsx
 msgid "Are you sure you want to revert all changes? This will delete the draft and any changes you've made. This action cannot be undone."
-msgstr ""
+msgstr "Alle Änderungen verwerfen? Der Entwurf wird gelöscht und alle Änderungen gehen verloren. Dies kann nicht rückgängig gemacht werden."
 
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
 #: src/modules/object-record/record-show/components/nm/publication/PublicationDetailPage.tsx
@@ -510,8 +510,8 @@ msgid "Authorize"
 msgstr "Autorisieren"
 
 #: src/modules/inquiries/components/sidebar/ConversationMessageItem.tsx
-msgid "Auto Response"
-msgstr "Automatische Antwort"
+#~ msgid "Auto Response"
+#~ msgstr "Automatische Antwort"
 
 #: src/modules/onboarding-tutorial/components/modals/EmailTutorialModal.tsx
 msgid "Automatic creation of Inquiries"
@@ -1568,7 +1568,6 @@ msgstr "Workflows exportieren"
 msgid "Failed to create draft"
 msgstr "Fehler beim Erstellen des Entwurfs"
 
-#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
 #: src/modules/object-record/record-show/components/nm/publication/PublicationDetailPage.tsx
 msgid "Failed to create publication draft"
 msgstr "Erstellung des Veröffentlichungsentwurfs fehlgeschlagen"
@@ -1603,7 +1602,6 @@ msgstr "Änderungen konnten nicht gespeichert werden"
 msgid "Failed to send test email"
 msgstr "Fehler beim Senden der Test-E-Mail"
 
-#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
 #: src/modules/object-record/record-show/components/nm/PropertyDetails.tsx
 msgid "Failed to sync publications"
 msgstr "Fehler beim Synchronisieren der Publikationen"
@@ -1800,7 +1798,7 @@ msgstr "Gesundheitsstatus"
 
 #: src/modules/object-record/record-show/components/nm/cards/PublicationList.tsx
 msgid "Here you can see all your publications."
-msgstr ""
+msgstr "Hier siehst du alle deine Publikationen."
 
 #: src/modules/object-record/record-table/record-table-header/components/RecordTableColumnHeadDropdownMenu.tsx
 msgid "Hide"
@@ -2054,7 +2052,7 @@ msgstr "Link in die Zwischenablage kopiert"
 
 #: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
 msgid "List your property conveniently to newhome.ch. If you don't have newhome credentials, create a new account <0>here</0> and set up an IDX interface by clicking on 'Import interfaces'."
-msgstr ""
+msgstr "Publiziere dein Objekt auf newhome.ch. Falls du noch keine Zugangsdaten hast, kannst du sie <0>hier</0> bestellen."
 
 #: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
 #~ msgid "List your property on Comparis."
@@ -2062,7 +2060,7 @@ msgstr ""
 
 #: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
 msgid "List your property on Comparis. If you don't have Comparis credentials, contact Comparis <0>here</0> by clicking the 'Get in touch' button under 'Import via Real Estate Software (CRM)'."
-msgstr ""
+msgstr "Publiziere dein Objekt auf Comparis. Falls du noch keine Zugangsdaten hast, kannst du sie <0>hier</0> bestellen."
 
 #: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
 msgid "List your property on Facebook."
@@ -2519,7 +2517,7 @@ msgstr "Alte Entwurfswerte"
 
 #: src/modules/inquiries/components/InquiriesList.tsx
 msgid "Once you receive an inquiry on your connected Email, it will appear here."
-msgstr ""
+msgstr "Anfragen auf deine verbundene E-Mail erscheinen hier."
 
 #: src/modules/onboarding/components/onboardingSyncEmailsOptions.tsx
 msgid "Only the timestamp & participants will be shared with your team."
@@ -2819,7 +2817,7 @@ msgstr "Veröffentlichungsentwurf erfolgreich erstellt"
 
 #: src/modules/ui/layout/show-page/components/nm/PublicationDifferencesModal.tsx
 msgid "Publication published successfully"
-msgstr "Publikation erfolgreich zurückgezogen"
+msgstr "Publikation erfolgreich veröffentlicht"
 
 #: src/modules/record-edit/components/RecordEditContainer.tsx
 #: src/modules/record-edit/components/RecordEditContainer.tsx
@@ -2835,6 +2833,7 @@ msgstr "Synchronisation von Publikationen"
 msgid "Publication unpublished successfully"
 msgstr "Publikation erfolgreich zurückgezogen"
 
+#: src/modules/object-record/record-show/components/nm/publication/PublicationBreadcrumb.tsx
 #: src/modules/object-record/record-show/components/nm/cards/PropertyPublicationsCard.tsx
 msgid "Publications"
 msgstr "Publikationen"
@@ -2859,7 +2858,7 @@ msgstr "Veröffentliche Dein erstes Objekt"
 
 #: src/modules/object-record/record-show/components/nm/cards/PublicationList.tsx
 msgid "Publish your property on a new platform."
-msgstr ""
+msgstr "Veröffentliche dein Objekt auf einer neuen Immobilienplattform."
 
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/Publishing.tsx
 msgid "Published"
@@ -3008,7 +3007,7 @@ msgstr "Überprüfen Sie die Unterschiede zwischen Ihrem Objekt und seinen Verö
 
 #: src/modules/ui/layout/show-page/components/nm/PublicationDifferencesModal.tsx
 msgid "Review the changes that will be published. These changes will update the published version of your property listing."
-msgstr ""
+msgstr "Überprüfe deine Änderungen. Diese Änderungen überschreiben die publizierte Version auf der Plattform."
 
 #: src/pages/settings/roles/SettingsRoles.tsx
 #: src/pages/settings/roles/SettingsRoles.tsx
@@ -3502,7 +3501,7 @@ msgstr "Es gab ein Problem"
 
 #: src/modules/ui/layout/show-page/components/nm/PublicationDifferencesModal.tsx
 msgid "These changes will update your published listing immediately. Make sure all details are correct before proceeding."
-msgstr ""
+msgstr "Diese Änderungen werden deine veröffentlichte Version unverzüglich aktualisieren. Stelle sicher, dass alle Details korrekt sind, bevor du fortfährst."
 
 #: src/pages/settings/SettingsWorkspaceMembers.tsx
 msgid "This action cannot be undone. This will permanently delete this user and remove them from all their assignments."
@@ -3789,7 +3788,7 @@ msgstr "Wird angewendet"
 
 #: src/modules/ui/layout/show-page/components/nm/PublicationDifferencesModal.tsx
 msgid "Will be published"
-msgstr ""
+msgstr "Wird angewendet"
 
 #: src/modules/ui/layout/show-page/components/nm/PublicationDifferencesModal.tsx
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
@@ -3915,11 +3914,11 @@ msgstr "Ihre Anbieter-ID auf Comparis"
 
 #: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
 msgid "Your Agencie's ID on Smg."
-msgstr ""
+msgstr "ID des Anbieters auf SMG."
 
 #: src/modules/ui/layout/show-page/components/nm/PublicationDifferencesModal.tsx
 msgid "Your changes have been published successfully."
-msgstr ""
+msgstr "Deine Änderungen wurden erfolgreich veröffentlicht."
 
 #: src/pages/settings/SettingsBilling.tsx
 msgid "Your credit balance will be used to pay the monthly bills."
@@ -3943,7 +3942,7 @@ msgstr "Dein FTP-Passwort findest Du unter \"Import-Schnittstellen\" auf MyNewho
 
 #: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
 msgid "Your FTP password can be found under \"Import interfaces\" on Smg."
-msgstr ""
+msgstr "Dein FTP-Passwort findest du unter \"Import-Schnittstellen\" auf MyNewhome."
 
 #: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
 msgid "Your FTP username can be found under \"Import interfaces\" on Comparis."
@@ -3955,7 +3954,7 @@ msgstr "Dein FTP Benutzername findest Du unter \"Import Interfaces\" auf MyNewho
 
 #: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
 msgid "Your FTP username can be found under \"Import interfaces\" on Smg."
-msgstr ""
+msgstr "Dein FTP-Username findest du unter \"Import-Schnittstellen\" auf MyNewhome."
 
 #: src/pages/settings/SettingsProfile.tsx
 msgid "Your name as it will be displayed"
@@ -3969,14 +3968,13 @@ msgstr "Ihr Name, wie er in der App angezeigt wird"
 msgid "Your Partner ID is displayed in your MyNewhome dashboard under \"Integration of ads on your own website\" under Short name."
 msgstr "Deine Partner-ID wird im MyNewhome Dashboard unter \"Inserate-Einbindung auf eigener Webseite\" unter dem Kurznamen angezeigt."
 
-#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
 #: src/modules/object-record/record-show/components/nm/PropertyDetails.tsx
 msgid "Your Publication Drafts were synced successfully"
 msgstr "Ihre Veröffentlichungsentwürfe wurden erfolgreich synchronisiert"
 
 #: src/modules/object-record/record-show/components/nm/cards/PublicationList.tsx
 msgid "Your publications"
-msgstr ""
+msgstr "Deine Publikationen"
 
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
 #~ msgid "Your Publications Draft was synced successfully"
