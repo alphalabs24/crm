@@ -22,9 +22,11 @@ export const parseGmailMessagesImportError = (
   const reason = errors?.[0]?.reason;
   const message = `${errors?.[0]?.message} for message with externalId: ${messageExternalId}`;
 
-  logger.error(
-    `Gmail messages import error: code=${code}, reason=${reason}, messageExternalId=${messageExternalId}\nError: ${JSON.stringify(error)}`,
-  );
+  if (code !== 404) {
+    logger.error(
+      `Gmail messages import error: code=${code}, reason=${reason}, messageExternalId=${messageExternalId}\nError: ${JSON.stringify(error)}`,
+    );
+  }
 
   switch (code) {
     case 400:
