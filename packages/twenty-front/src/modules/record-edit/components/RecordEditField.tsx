@@ -21,6 +21,7 @@ import { EmailTemplateContextProvider } from '../contexts/EmailTemplateContext';
 import { PropertyDocumentFormInput } from './custom/PropertyDocumentFormInput';
 import { PropertyEmailsFormInput } from './custom/PropertyEmailsFormInput';
 import { PropertyImageFormInput } from './custom/PropertyImageFormInput';
+import { PropertyMoviesFormInput } from './custom/PropertyMoviesFormInput';
 
 const StyledFieldContainer = styled.div<{ isHorizontal?: boolean }>`
   display: flex;
@@ -110,6 +111,8 @@ export const RecordEditField = ({
         return PropertyDocumentFormInput;
       case 'emailTemplate':
         return PropertyEmailsFormInput;
+      case 'movies':
+        return PropertyMoviesFormInput;
       default:
         return null;
     }
