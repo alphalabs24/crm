@@ -24,7 +24,6 @@ import { generateFrontConfig } from './utils/generate-front-config';
 
 const bootstrap = async () => {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
-    cors: true,
     bufferLogs: process.env.LOGGER_IS_BUFFER_ENABLED === 'true',
     rawBody: true,
     snapshot: process.env.NODE_ENV === NodeEnvironment.development,
@@ -39,6 +38,61 @@ const bootstrap = async () => {
   });
   const logger = app.get(LoggerService);
   const environmentService = app.get(EnvironmentService);
+
+  const frontendUrl = environmentService.get('FRONTEND_URL');
+  const allowedOrigins: (string | RegExp)[] = [frontendUrl];
+  const frontendUrlSplitted = frontendUrl?.split('://');
+  const protocol = frontendUrlSplitted?.[0];
+  const domain = frontendUrlSplitted?.[1];
+
+  if (protocol && domain) {
+    allowedOrigins.push(new RegExp(`^(${protocol}:\\/\\/.*\\.${domain})$`));
+  }
+  logger.verbose
+    ? logger.verbose(
+        `Allowed origins: ${allowedOrigins.toString()}`,
+        'CORSConfig',
+      )
+    : null;
+
+  app.enableCors({
+    origin: function (origin, callback) {
+      logger.verbose
+        ? logger.verbose(`Origin here: ${origin}`, 'CORSConfig')
+        : null;
+
+      // Allow requests with no origin (like mobile apps or curl requests or browser preflight requests (OPTIONS))
+      if (!origin) return callback(null, true);
+
+      // Check if the origin is in the allowed list or matches a regex
+      const isAllowed = allowedOrigins.some((allowedOrigin) => {
+        if (allowedOrigin instanceof RegExp) {
+          return allowedOrigin.test(origin);
+        }
+
+        return allowedOrigin === origin;
+      });
+
+      if (isAllowed) {
+        // Reflect the validated origin
+        callback(null, origin);
+      } else {
+        logger.error(`Origin not allowed by CORS: ${origin}`, 'CORSConfig');
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: [
+      'Content-Type',
+      'Authorization',
+      'Accept',
+      'Origin',
+      'X-Requested-With',
+      'x-locale',
+      'x-schema-version',
+    ],
+  });
 
   app.use(session(getSessionStorageOptions(environmentService)));
 
