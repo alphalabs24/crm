@@ -1,5 +1,8 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { PropertyAttachmentType } from '@/activities/files/types/Attachment';
+import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadataItem';
+import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
+import { useFormattedPropertyFields } from '@/object-record/hooks/useFormattedPropertyFields';
 import {
   RecordEditPropertyDocument,
   useRecordEdit,
@@ -7,11 +10,13 @@ import {
 import { Dropdown } from '@/ui/layout/dropdown/components/Dropdown';
 import { DropdownMenuItemsContainer } from '@/ui/layout/dropdown/components/DropdownMenuItemsContainer';
 import { useDropdown } from '@/ui/layout/dropdown/hooks/useDropdown';
-import { ModalRefType } from '@/ui/layout/modal/components/Modal';
+import { Modal, ModalRefType } from '@/ui/layout/modal/components/Modal';
 import {
-  PropertyPdfType,
-  usePropertyPdfGenerator,
-} from '@/ui/layout/property/hooks/usePropertyPdfGenerator';
+  fieldsToShowOnPdf,
+  PropertyPdfPreview,
+} from '@/ui/layout/property-pdf/components/PropertyPdfPreview';
+import { usePropertyPdfGenerator } from '@/ui/layout/property-pdf/hooks/usePropertyPdfGenerator';
+import { PropertyPdfType } from '@/ui/layout/property-pdf/types/types';
 import { css, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import {
@@ -21,7 +26,7 @@ import {
   DropResult,
 } from '@hello-pangea/dnd';
 import { useLingui } from '@lingui/react/macro';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import Skeleton from 'react-loading-skeleton';
 import {
@@ -37,6 +42,7 @@ import {
   IconRefresh,
   IconTrash,
   IconUpload,
+  IconX,
   LARGE_DESKTOP_VIEWPORT,
   MenuItem,
   TooltipDelay,
@@ -177,6 +183,21 @@ const StyledActionButton = styled.button`
   &:hover {
     color: ${({ theme }) => theme.font.color.secondary};
   }
+`;
+
+const StyledClosePdfModalHeader = styled.div`
+  align-items: center;
+  display: flex;
+  gap: ${({ theme }) => theme.spacing(2)};
+  justify-content: flex-end;
+`;
+
+const StyledPdfPreviewContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(2)};
+  height: 80%;
+  width: 80%;
 `;
 
 const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
@@ -601,16 +622,34 @@ export const PropertyDocumentFormInput = ({
     initialRecord: property,
   } = useRecordEdit();
 
-  const { generatePropertyPdf, loading: pdfLoading } = usePropertyPdfGenerator({
+  const {
+    generatePdf,
+    isLoading: pdfLoading,
+    openPreview,
+    pdfPreviewModalRef,
+  } = usePropertyPdfGenerator({
     record: property,
   });
 
+  const { objectMetadataItem } = useObjectMetadataItem({
+    objectNameSingular: CoreObjectNameSingular.Property,
+  });
+
+  const { formatField } = useFormattedPropertyFields({
+    objectMetadataItem,
+  });
+
+  // Show these fields in the PDF
+  const formattedFields = useMemo(() => {
+    if (!property) return [];
+    return fieldsToShowOnPdf.map((field) => ({
+      label: objectMetadataItem.fields.find((f) => f.name === field)?.label,
+      value: formatField(field, property[field]) ?? undefined,
+    }));
+  }, [objectMetadataItem.fields, formatField, property]);
+
   // Store all URL objects to prevent garbage collection
   const urlObjectsRef = useRef<Map<string, string>>(new Map());
-
-  const previewFileUrls = propertyDocuments
-    .filter((doc) => !doc.isAttachment)
-    .map((doc) => doc.previewUrl);
 
   // Helper to create and store a persistent URL
   const createAndStorePersistentURL = (file: File): string => {
@@ -674,7 +713,9 @@ export const PropertyDocumentFormInput = ({
 
     try {
       const orientation = type === 'PropertyFlyer' ? 'landscape' : 'portrait';
-      const result = await generatePropertyPdf(property, type, orientation);
+      const result = await generatePdf(type, orientation, formattedFields);
+
+      if (!result) throw new Error('Failed to generate document');
 
       // Create a file from the blob
       const file = new File([result.blob], result.fileName, {
@@ -691,10 +732,6 @@ export const PropertyDocumentFormInput = ({
         file,
         previewUrl: persistentUrl,
         fileName: result.fileName,
-        description:
-          type === 'PropertyFlyer'
-            ? 'Auto-generated property flyer'
-            : 'Auto-generated property documentation',
         type: type,
       };
 
@@ -847,6 +884,14 @@ export const PropertyDocumentFormInput = ({
                         onClick={() => handleGenerateDocument(doc.type)}
                       />
                       <Button
+                        variant="secondary"
+                        size="small"
+                        Icon={IconExternalLink}
+                        title={t`Preview`}
+                        disabled={!property}
+                        onClick={() => openPreview()}
+                      />
+                      <Button
                         variant="primary"
                         size="small"
                         Icon={IconFileText}
@@ -869,6 +914,22 @@ export const PropertyDocumentFormInput = ({
                 </StyledSpecialDocumentHeader>
                 {specialDoc && (
                   <StyledSpecialDocumentContent>
+                    <div
+                      style={{
+                        display: 'flex',
+                        gap: '8px',
+                        marginBottom: theme.spacing(2),
+                      }}
+                    >
+                      <Button
+                        variant="secondary"
+                        size="small"
+                        Icon={IconExternalLink}
+                        title={t`Preview Template`}
+                        disabled={!property}
+                        onClick={openPreview}
+                      />
+                    </div>
                     <SpecialDocumentItem
                       document={specialDoc}
                       onRemove={onRemove}
@@ -943,6 +1004,29 @@ export const PropertyDocumentFormInput = ({
               </Droppable>
             </DragDropContext>
           )}
+          {property ? (
+            <Modal
+              ref={pdfPreviewModalRef}
+              closedOnMount
+              onClose={() => {
+                pdfPreviewModalRef.current?.close();
+              }}
+              isClosable
+              size="large"
+            >
+              <StyledPdfPreviewContainer>
+                <StyledClosePdfModalHeader>
+                  <Button
+                    variant="secondary"
+                    size="small"
+                    Icon={IconX}
+                    title="Close"
+                  />
+                </StyledClosePdfModalHeader>
+                <PropertyPdfPreview property={property} isFlyer />
+              </StyledPdfPreviewContainer>
+            </Modal>
+          ) : null}
         </StyledSectionContainer>
       </>
     );
