@@ -196,8 +196,7 @@ const StyledPdfPreviewContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(2)};
-  height: 80%;
-  width: 80%;
+  height: 95vh;
 `;
 
 const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
@@ -1021,6 +1020,9 @@ export const PropertyDocumentFormInput = ({
                     size="small"
                     Icon={IconX}
                     title="Close"
+                    onClick={() => {
+                      pdfPreviewModalRef.current?.close();
+                    }}
                   />
                 </StyledClosePdfModalHeader>
                 <PropertyPdfPreview property={property} isFlyer />

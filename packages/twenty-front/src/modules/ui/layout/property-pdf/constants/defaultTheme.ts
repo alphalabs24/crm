@@ -55,15 +55,14 @@ export type PdfTheme = {
     xxl: number;
   };
   spacing: {
+    unit: number;
+    xxs: number;
     xs: number;
     sm: number;
     md: number;
     lg: number;
     xl: number;
     xxl: number;
-    xxxl: number;
-    section: number;
-    large: number;
   };
   borders: {
     radius: {
@@ -163,15 +162,28 @@ export const DEFAULT_THEME: PdfTheme = {
     xxl: 24,
   },
   spacing: {
-    xs: 4,
-    sm: 6,
-    md: 12,
-    lg: 16,
-    xl: 24,
-    xxl: 32,
-    xxxl: 40,
-    section: 20,
-    large: 48,
+    unit: 8, // Base spacing unit in points
+    get xxs() {
+      return this.unit * 0.25;
+    },
+    get xs() {
+      return this.unit * 0.5;
+    },
+    get sm() {
+      return this.unit;
+    },
+    get md() {
+      return this.unit * 1.5;
+    },
+    get lg() {
+      return this.unit * 2;
+    },
+    get xl() {
+      return this.unit * 3;
+    },
+    get xxl() {
+      return this.unit * 4;
+    },
   },
   borders: {
     radius: {

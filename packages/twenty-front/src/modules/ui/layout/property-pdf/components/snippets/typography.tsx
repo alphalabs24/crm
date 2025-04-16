@@ -1,4 +1,4 @@
-import { PDF_STYLES } from '@/ui/layout/property-pdf/constants/styles';
+import { PDF_STYLES } from '@/ui/layout/property-pdf/components/templates/default/styles';
 import { Text, View } from '@react-pdf/renderer';
 import { Style } from '@react-pdf/types';
 import { ReactNode } from 'react';

@@ -1,16 +1,16 @@
 import {
-    Col,
-    Row,
-    Section,
+  Col,
+  Row,
+  Section,
 } from '@/ui/layout/property-pdf/components/snippets/layout';
 import {
-    Body,
-    H1,
-    H2,
-    H3,
+  Body,
+  H1,
+  H2,
+  H3,
 } from '@/ui/layout/property-pdf/components/snippets/typography';
+import { PDF_STYLES } from '@/ui/layout/property-pdf/components/templates/default/styles';
 import { FOOTER_HEIGHT } from '@/ui/layout/property-pdf/constants/footer';
-import { PDF_STYLES } from '@/ui/layout/property-pdf/constants/styles';
 import { PropertyPdfProps } from '@/ui/layout/property-pdf/types/types';
 import { Image, Page, Text, View } from '@react-pdf/renderer';
 import { useMemo } from 'react';

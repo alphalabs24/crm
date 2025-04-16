@@ -1,11 +1,10 @@
+import { DEFAULT_THEME } from '@/ui/layout/property-pdf/constants/defaultTheme';
 import { FOOTER_HEIGHT } from '@/ui/layout/property-pdf/constants/footer';
-import { LAYOUT } from '@/ui/layout/property-pdf/constants/layout';
 import { StyleSheet } from '@react-pdf/renderer';
-import { DEFAULT_THEME } from './defaultTheme';
 
-// Create styles with improved layout system
+// Create styles with improved DEFAULT_THEME system
 export const PDF_STYLES = StyleSheet.create({
-  // Document & Page Layout
+  // Document & Page DEFAULT_THEME
   page: {
     fontFamily: DEFAULT_THEME.fonts.primary,
     color: DEFAULT_THEME.colors.text.primary,
@@ -13,7 +12,7 @@ export const PDF_STYLES = StyleSheet.create({
     backgroundColor: DEFAULT_THEME.colors.background.main,
     display: 'flex',
     flexDirection: 'column',
-    gap: LAYOUT.spacing.md,
+    gap: DEFAULT_THEME.spacing.md,
   },
 
   // Full-width page with no padding (for flyers)
@@ -91,11 +90,11 @@ export const PDF_STYLES = StyleSheet.create({
   },
 
   spacer: {
-    height: LAYOUT.spacing.sm,
+    height: DEFAULT_THEME.spacing.sm,
   },
 
   spacerHorizontal: {
-    paddingHorizontal: LAYOUT.spacing.xs,
+    paddingHorizontal: DEFAULT_THEME.spacing.xs,
   },
 
   // Grid System
@@ -103,24 +102,24 @@ export const PDF_STYLES = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: LAYOUT.spacing.sm,
+    gap: DEFAULT_THEME.spacing.sm,
     width: '100%',
   },
 
   gridItem: {
-    flexBasis: `calc(50% - ${LAYOUT.spacing.sm}px)`,
+    flexBasis: `calc(50% - ${DEFAULT_THEME.spacing.sm}px)`,
     flexGrow: 0,
     flexShrink: 0,
   },
 
-  // Section Layouts
+  // Section DEFAULT_THEMEs
   section: {
     display: 'flex',
     flexDirection: 'column',
     position: 'relative',
-    gap: LAYOUT.spacing.sm,
-    paddingHorizontal: LAYOUT.spacing.md,
-    paddingVertical: LAYOUT.spacing.md,
+    gap: DEFAULT_THEME.spacing.sm,
+    paddingHorizontal: DEFAULT_THEME.spacing.md,
+    paddingVertical: DEFAULT_THEME.spacing.md,
   },
 
   sectionFiller: {
@@ -154,12 +153,12 @@ export const PDF_STYLES = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     left: 0,
-    padding: LAYOUT.spacing.sm,
+    padding: DEFAULT_THEME.spacing.sm,
     backgroundColor: DEFAULT_THEME.colors.overlayBackground,
     backdropFilter: 'blur(8px)',
     display: 'flex',
     flexDirection: 'column',
-    gap: LAYOUT.spacing.xxs,
+    gap: DEFAULT_THEME.spacing.xxs,
   },
 
   // Feature Tags
@@ -167,12 +166,12 @@ export const PDF_STYLES = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: LAYOUT.spacing.xxs,
+    gap: DEFAULT_THEME.spacing.xxs,
   },
 
   tag: {
     fontSize: DEFAULT_THEME.fonts.sizes.xs,
-    padding: `${LAYOUT.spacing.xxs}px ${LAYOUT.spacing.xs}px`,
+    padding: `${DEFAULT_THEME.spacing.xxs}px ${DEFAULT_THEME.spacing.xs}px`,
     backgroundColor: DEFAULT_THEME.colors.background.light,
     borderRadius: DEFAULT_THEME.borders.radius.sm,
     color: DEFAULT_THEME.colors.text.secondary,
@@ -184,11 +183,11 @@ export const PDF_STYLES = StyleSheet.create({
     flexDirection: 'row',
     flex: 1,
     flexWrap: 'wrap',
-    gap: LAYOUT.spacing.xs,
+    gap: DEFAULT_THEME.spacing.xs,
   },
 
   galleryItem: {
-    flexBasis: `calc(25% - ${(LAYOUT.spacing.xs * 3) / 4}px)`,
+    flexBasis: `calc(25% - ${(DEFAULT_THEME.spacing.xs * 3) / 4}px)`,
     aspectRatio: 4 / 3,
   },
 
@@ -203,34 +202,34 @@ export const PDF_STYLES = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     height: '100%',
-    gap: LAYOUT.spacing.xs * 2,
+    gap: DEFAULT_THEME.spacing.xs * 2,
     width: '100%',
   },
 
   flyerGalleryItem: {
     height: '100%',
-    width: `calc(33% - ${LAYOUT.spacing.xs}px)`,
-    marginBottom: LAYOUT.spacing.xs,
+    width: `calc(33% - ${DEFAULT_THEME.spacing.xs}px)`,
+    marginBottom: DEFAULT_THEME.spacing.xs,
   },
 
   // Footer
   footer: {
     borderTop: `1pt solid ${DEFAULT_THEME.colors.divider}`,
     marginTop: 'auto',
-    paddingTop: LAYOUT.spacing.md,
+    paddingTop: DEFAULT_THEME.spacing.md,
     display: 'flex',
     flexDirection: 'column',
-    gap: LAYOUT.spacing.xs,
+    gap: DEFAULT_THEME.spacing.xs,
     alignItems: 'center',
   },
 
   flyerFooter: {
     borderTop: `0.5pt solid ${DEFAULT_THEME.colors.divider}`,
-    paddingHorizontal: LAYOUT.spacing.md,
-    paddingTop: LAYOUT.spacing.md,
+    paddingHorizontal: DEFAULT_THEME.spacing.md,
+    paddingTop: DEFAULT_THEME.spacing.md,
     display: 'flex',
     flexDirection: 'column',
-    gap: LAYOUT.spacing.xxs,
+    gap: DEFAULT_THEME.spacing.xxs,
     height: FOOTER_HEIGHT,
     position: 'absolute',
     bottom: 0,
@@ -251,7 +250,7 @@ export const PDF_STYLES = StyleSheet.create({
   },
 
   // Flyer Specific Styles
-  flyerLayout: {
+  flyerDEFAULT_THEME: {
     display: 'flex',
     flexDirection: 'column',
     flexGrow: 1,
@@ -261,8 +260,8 @@ export const PDF_STYLES = StyleSheet.create({
   flyerContent: {
     display: 'flex',
     flexDirection: 'row',
-    gap: LAYOUT.spacing.md,
-    padding: LAYOUT.spacing.sm,
+    gap: DEFAULT_THEME.spacing.md,
+    padding: DEFAULT_THEME.spacing.sm,
     flexGrow: 1,
     height: '65%',
   },
@@ -279,8 +278,8 @@ export const PDF_STYLES = StyleSheet.create({
     flex: 2,
     display: 'flex',
     flexDirection: 'column',
-    gap: LAYOUT.spacing.xs,
-    padding: LAYOUT.spacing.sm,
+    gap: DEFAULT_THEME.spacing.xs,
+    padding: DEFAULT_THEME.spacing.sm,
     backgroundColor: DEFAULT_THEME.colors.background.light,
     borderRadius: DEFAULT_THEME.borders.radius.md,
     maxWidth: '40%',
@@ -289,14 +288,14 @@ export const PDF_STYLES = StyleSheet.create({
 
   flyerImageContainer: {
     height: '60%',
-    marginTop: LAYOUT.spacing.sm,
+    marginTop: DEFAULT_THEME.spacing.sm,
   },
 
   flyerContactInfo: {
     display: 'flex',
     flexDirection: 'row',
-    gap: LAYOUT.spacing.md,
-    padding: LAYOUT.spacing.xs,
+    gap: DEFAULT_THEME.spacing.md,
+    padding: DEFAULT_THEME.spacing.xs,
     marginTop: 'auto',
     borderRadius: DEFAULT_THEME.borders.radius.sm,
     backgroundColor: DEFAULT_THEME.colors.background.light,
@@ -306,7 +305,7 @@ export const PDF_STYLES = StyleSheet.create({
     flex: 1,
     display: 'flex',
     flexDirection: 'column',
-    gap: LAYOUT.spacing.xxs,
+    gap: DEFAULT_THEME.spacing.xxs,
   },
 
   // Utility Classes
@@ -317,5 +316,5 @@ export const PDF_STYLES = StyleSheet.create({
   flex1: { flex: 1 },
   flex2: { flex: 2 },
   flexGrow: { flexGrow: 1 },
-  contentPadding: { padding: LAYOUT.spacing.sm },
+  contentPadding: { padding: DEFAULT_THEME.spacing.sm },
 });

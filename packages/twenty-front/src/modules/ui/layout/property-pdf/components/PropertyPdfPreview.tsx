@@ -8,7 +8,7 @@ import { usePropertyImages } from '@/ui/layout/show-page/hooks/usePropertyImages
 import styled from '@emotion/styled';
 import { PDFViewer } from '@react-pdf/renderer';
 import { useMemo } from 'react';
-import { DefaultPropertyPdfTemplate } from './templates/DefaultPropertyPdfTemplate';
+import { DefaultPropertyPdfTemplate } from './templates/default/DefaultPropertyPdfTemplate';
 
 const StyledPdfViewerContainer = styled.div`
   align-items: center;
@@ -16,16 +16,11 @@ const StyledPdfViewerContainer = styled.div`
   bottom: 0;
   display: flex;
   justify-content: center;
-  left: 0;
-  padding: 2rem;
-  position: fixed;
-  right: 0;
-  top: 0;
+  height: 100%;
 `;
 
 const StyledPDFViewer = styled(PDFViewer)`
   border: none;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   height: 100%;
   width: 100%;
 `;

@@ -3,7 +3,7 @@ import { ActivityTargetableObject } from '@/activities/types/ActivityTargetableE
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { ObjectRecord } from '@/object-record/types/ObjectRecord';
 import { ModalRefType } from '@/ui/layout/modal/components/Modal';
-import { DefaultPropertyPdfTemplate } from '@/ui/layout/property-pdf/components/templates/DefaultPropertyPdfTemplate';
+import { DefaultPropertyPdfTemplate } from '@/ui/layout/property-pdf/components/templates/default/DefaultPropertyPdfTemplate';
 import { PdfTheme } from '@/ui/layout/property-pdf/constants/defaultTheme';
 import {
   PropertyPdfResult,

@@ -1,5 +1,5 @@
-import { LAYOUT } from '@/ui/layout/property-pdf/constants/layout';
-import { PDF_STYLES } from '@/ui/layout/property-pdf/constants/styles';
+import { PDF_STYLES } from '@/ui/layout/property-pdf/components/templates/default/styles';
+import { DEFAULT_THEME } from '@/ui/layout/property-pdf/constants/defaultTheme';
 import { View } from '@react-pdf/renderer';
 import { Style } from '@react-pdf/types';
 import { ReactNode } from 'react';
@@ -8,8 +8,8 @@ export const Spacer = ({ x = 0, y = 1 }: { x?: number; y?: number }) => {
   return (
     <View
       style={{
-        paddingVertical: x ? undefined : LAYOUT.spacing.xs * y,
-        paddingHorizontal: x ? LAYOUT.spacing.xs * x : undefined,
+        paddingVertical: x ? undefined : DEFAULT_THEME.spacing.xs * y,
+        paddingHorizontal: x ? DEFAULT_THEME.spacing.xs * x : undefined,
       }}
     />
   );
@@ -65,7 +65,7 @@ export const Col = ({
       style={[
         PDF_STYLES.flexColumn,
         style,
-        { width: width, gap: gap ? LAYOUT.spacing.sm * gap : undefined },
+        { width: width, gap: gap ? DEFAULT_THEME.spacing.sm * gap : undefined },
       ]}
     >
       {children}
@@ -89,7 +89,10 @@ export const Row = ({
       style={[
         PDF_STYLES.flexRow,
         style,
-        { height: height, gap: gap ? LAYOUT.spacing.sm * gap : undefined },
+        {
+          height: height,
+          gap: gap ? DEFAULT_THEME.spacing.sm * gap : undefined,
+        },
       ]}
     >
       {children}
