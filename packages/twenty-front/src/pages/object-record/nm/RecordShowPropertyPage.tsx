@@ -25,6 +25,10 @@ import { RecordShowPageWorkflowVersionHeader } from '@/workflow/components/Recor
 import { useIsFeatureEnabled } from '@/workspace/hooks/useIsFeatureEnabled';
 import styled from '@emotion/styled';
 import { FeatureFlagKey } from '~/generated/graphql';
+import { useNestermind } from '@/api/hooks/useNestermind';
+import { useFormattedPropertyFields } from '@/object-record/hooks/useFormattedPropertyFields';
+import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadataItem';
+import { generatePropertyPdfTemplate } from '@/pdf/components/templates/property-template';
 
 const StyledHeader = styled.div`
   align-items: center;
@@ -53,11 +57,49 @@ const StyledRightContainer = styled.div`
   gap: ${({ theme }) => theme.spacing(2)};
 `;
 
+const StyledButton = styled.button`
+  background-color: ${({ theme }) => theme.color.blue};
+  color: ${({ theme }) => theme.font.color.inverted};
+  padding: ${({ theme }) => theme.spacing(1)} ${({ theme }) => theme.spacing(2)};
+  border-radius: ${({ theme }) => theme.border.radius.sm};
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.color.blue80};
+  }
+`;
+
 export const RecordShowPropertyPage = () => {
   const parameters = useParams<{
     objectRecordId: string;
     objectNameSingular: string;
   }>();
+
+  const { useMutations } = useNestermind();
+  const { useGeneratePdf } = useMutations;
+
+  const { objectMetadataItem } = useObjectMetadataItem({
+    objectNameSingular: parameters.objectNameSingular ?? '',
+  });
+
+  const { formatField } = useFormattedPropertyFields({
+    objectMetadataItem,
+  });
+
+  const { mutate: generatePdf } = useGeneratePdf({
+    onSuccess: (pdfBlob: Blob) => {
+      const url = URL.createObjectURL(pdfBlob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${record?.name || 'property'}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    },
+  });
 
   const {
     objectNameSingular,
@@ -67,7 +109,7 @@ export const RecordShowPropertyPage = () => {
     pageName,
     isFavorite,
     record,
-    objectMetadataItem,
+    objectMetadataItem: recordObjectMetadataItem,
     handleFavoriteButtonClick,
   } = useRecordShowPage(
     parameters.objectNameSingular ?? '',
@@ -85,6 +127,15 @@ export const RecordShowPropertyPage = () => {
     objectNameSingular,
     objectRecordId,
   );
+
+  console.log(record);
+
+  const html = generatePropertyPdfTemplate(record, formatField);
+
+  const handleGeneratePdf = () => {
+    if (!record) return;
+    generatePdf({ html });
+  };
 
   return (
     <RecordFieldValueSelectorContextProvider>
@@ -117,6 +168,9 @@ export const RecordShowPropertyPage = () => {
                     />
                   </StyledLeftContainer>
                   <StyledRightContainer>
+                    <StyledButton onClick={handleGeneratePdf}>
+                      Generate PDF
+                    </StyledButton>
                     {!isCommandMenuV2Enabled &&
                       objectNameSingular ===
                         CoreObjectNameSingular.Workflow && (
