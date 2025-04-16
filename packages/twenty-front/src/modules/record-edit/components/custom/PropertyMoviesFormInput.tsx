@@ -1,13 +1,21 @@
 import { useRecordEdit } from '@/record-edit/contexts/RecordEditContext';
-import { TextInputV2 } from '@/ui/input/components/TextInputV2';
 import styled from '@emotion/styled';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
+import { LightButton, IconPhoto } from 'twenty-ui';
+import { TextInputV2 } from '@/ui/input/components/TextInputV2';
+import { useTheme } from '@emotion/react';
 
 const StyledFieldName = styled.div`
   color: ${({ theme }) => theme.font.color.primary};
   display: flex;
   align-items: center;
   gap: ${({ theme }) => theme.spacing(0.5)};
+`;
+
+const StyledIconInputContainer = styled.div`
+  align-items: center;
+  display: flex;
+  gap: ${({ theme }) => theme.spacing(2)};
 `;
 
 const StyledFieldContainer = styled.div<{ isHorizontal?: boolean }>`
@@ -20,6 +28,11 @@ const StyledFieldContainer = styled.div<{ isHorizontal?: boolean }>`
 
 export const PropertyMoviesFormInput = () => {
   const { updateField, initialRecord, getUpdatedFields } = useRecordEdit();
+  const [editMode, setEditMode] = useState(false);
+  const theme = useTheme();
+
+  const color =
+    theme.name === 'light' ? theme.grayScale.gray40 : theme.grayScale.gray10;
 
   const value = useMemo(() => {
     const updatedFields = getUpdatedFields();
@@ -42,11 +55,18 @@ export const PropertyMoviesFormInput = () => {
   return (
     <StyledFieldContainer>
       <StyledFieldName>Movie Link</StyledFieldName>
-      <TextInputV2
-        placeholder="Enter movie link"
-        value={value}
-        onChange={updateMovieFilename}
-      />
+      <StyledIconInputContainer>
+        <IconPhoto size={theme.icon.size.sm} color={color} />
+        {value === '' && !editMode ? (
+          <LightButton onClick={() => setEditMode(true)} title="Link" />
+        ) : (
+          <TextInputV2
+            placeholder="Enter movie link"
+            value={value}
+            onChange={updateMovieFilename}
+          />
+        )}
+      </StyledIconInputContainer>
     </StyledFieldContainer>
   );
 };
