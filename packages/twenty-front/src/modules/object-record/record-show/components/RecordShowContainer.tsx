@@ -8,6 +8,7 @@ import { useRecordShowContainerData } from '@/object-record/record-show/hooks/us
 import { useRecordShowContainerTabs } from '@/object-record/record-show/hooks/useRecordShowContainerTabs';
 import { ShowPageSubContainer } from '@/ui/layout/show-page/components/ShowPageSubContainer';
 import { PublicationsProvider } from '@/ui/layout/show-page/contexts/PublicationsProvider';
+import { useCustomPageGuard } from '~/pages/object-record/hooks/useCustomPageGuard';
 
 type RecordShowContainerProps = {
   objectNameSingular: string;
@@ -24,6 +25,11 @@ export const RecordShowContainer = ({
   isInRightDrawer = false,
   isNewRightDrawerItemLoading = false,
 }: RecordShowContainerProps) => {
+  useCustomPageGuard({
+    objectNameSingular,
+    objectRecordId,
+  });
+
   const {
     recordFromStore,
     objectMetadataItem,

@@ -20,6 +20,7 @@ import { ViewComponentInstanceContext } from '@/views/states/contexts/ViewCompon
 import styled from '@emotion/styled';
 import { useRecoilCallback } from 'recoil';
 import { capitalize } from 'twenty-shared';
+import { useCustomPageGuard } from '~/pages/object-record/hooks/useCustomPageGuard';
 
 const StyledIndexContainer = styled.div`
   display: flex;
@@ -34,6 +35,11 @@ export const RecordIndexContainerGater = () => {
   );
 
   const { objectMetadataItem } = useContextStoreObjectMetadataItemOrThrow();
+
+  // Guard generic pages for custom fields we don't want to be accessed
+  useCustomPageGuard({
+    objectNamePlural: objectMetadataItem.namePlural,
+  });
 
   const recordIndexId = `${objectMetadataItem.namePlural}-${contextStoreCurrentViewId}`;
 
