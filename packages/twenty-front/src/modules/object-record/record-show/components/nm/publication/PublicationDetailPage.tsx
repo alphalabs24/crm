@@ -226,6 +226,8 @@ export const PublicationDetailPage = ({
     return publicationGroup[stage]?.[0];
   }, [publicationGroup, stage]);
 
+  console.log(publication);
+
   const draftRecord: ObjectRecord | undefined = useMemo(() => {
     return publicationGroup[PublicationStage.Draft]?.[0];
   }, [publicationGroup]);

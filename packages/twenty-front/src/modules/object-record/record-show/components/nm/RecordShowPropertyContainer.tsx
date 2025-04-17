@@ -8,6 +8,7 @@ import { useRecordShowContainerData } from '@/object-record/record-show/hooks/us
 import { useRecordShowContainerTabs } from '@/object-record/record-show/hooks/useRecordShowContainerTabs';
 import { ShowPagePropertySubContainer } from '@/ui/layout/show-page/components/nm/ShowPagePropertySubContainer';
 import { PublicationsProvider } from '@/ui/layout/show-page/contexts/PublicationsProvider';
+import { useCustomPageGuard } from '~/pages/object-record/hooks/useCustomPageGuard';
 
 type RecordShowPropertyContainerProps = {
   objectNameSingular: string;
@@ -34,6 +35,11 @@ export const RecordShowPropertyContainer = ({
   } = useRecordShowContainerData({
     objectNameSingular,
     objectRecordId,
+  });
+
+  useCustomPageGuard({
+    objectNameSingular,
+    record: recordFromStore,
   });
 
   const { layout, tabs } = useRecordShowContainerTabs(
