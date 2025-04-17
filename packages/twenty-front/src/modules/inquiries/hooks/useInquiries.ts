@@ -95,10 +95,16 @@ export const useInquiries = ({
         };
       }) as ObjectRecord[]
     ).sort((a, b) => {
-      return (
-        new Date(b.messageThreads[0]?.lastMessageReceivedAt).getTime() -
-        new Date(a.messageThreads[0]?.lastMessageReceivedAt).getTime()
-      );
+      // Sort in descending order (newest first)
+      const timeA = new Date(
+        a.messageThreads[0]?.lastMessageReceivedAt || 0,
+      ).getTime();
+      const timeB = new Date(
+        b.messageThreads[0]?.lastMessageReceivedAt || 0,
+      ).getTime();
+
+      // Return positive number if B is newer than A (B should come first)
+      return timeB - timeA;
     }) as ObjectRecord[];
   }, [records, messageThreadsByInquiryId]);
 
