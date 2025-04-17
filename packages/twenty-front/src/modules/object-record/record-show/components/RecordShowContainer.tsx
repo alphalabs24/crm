@@ -25,11 +25,6 @@ export const RecordShowContainer = ({
   isInRightDrawer = false,
   isNewRightDrawerItemLoading = false,
 }: RecordShowContainerProps) => {
-  useCustomPageGuard({
-    objectNameSingular,
-    objectRecordId,
-  });
-
   const {
     recordFromStore,
     objectMetadataItem,
@@ -38,6 +33,11 @@ export const RecordShowContainer = ({
   } = useRecordShowContainerData({
     objectNameSingular,
     objectRecordId,
+  });
+
+  useCustomPageGuard({
+    objectNameSingular,
+    record: recordFromStore,
   });
 
   const { layout, tabs } = useRecordShowContainerTabs(

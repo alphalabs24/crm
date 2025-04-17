@@ -36,11 +36,6 @@ export const RecordIndexContainerGater = () => {
 
   const { objectMetadataItem } = useContextStoreObjectMetadataItemOrThrow();
 
-  // Guard generic pages for custom fields we don't want to be accessed
-  useCustomPageGuard({
-    objectNamePlural: objectMetadataItem.namePlural,
-  });
-
   const recordIndexId = `${objectMetadataItem.namePlural}-${contextStoreCurrentViewId}`;
 
   const handleIndexRecordsLoaded = useRecoilCallback(

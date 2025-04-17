@@ -1,11 +1,13 @@
 import { CoreObjectNamePlural } from '@/object-metadata/types/CoreObjectNamePlural';
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { ObjectRecord } from '@/object-record/types/ObjectRecord';
+import { AppPath } from '@/types/AppPath';
+import { getAppPath } from '~/utils/navigation/getAppPath';
 import { useMemo } from 'react';
 import { CUSTOM_INDEX_PAGE_ENTITIES } from '~/pages/object-record/constants/CustomIndexPageEntities';
 import {
-    CUSTOM_SHOW_PAGE_ENTITIES,
-    RedirectParam,
+  CUSTOM_SHOW_PAGE_ENTITIES,
+  RedirectParam,
 } from '~/pages/object-record/constants/CustomShowPageEntities';
 
 type RouteParams = {
@@ -17,7 +19,7 @@ type RouteParams = {
 // Helper function to get the value for a redirect parameter
 const getValueForRedirectParam = (
   paramKey: RedirectParam,
-  record?: ObjectRecord,
+  record?: ObjectRecord | null,
   objectNamePlural?: string,
   objectNameSingular?: string,
 ): string | undefined => {
@@ -45,7 +47,7 @@ const getValueForRedirectParam = (
 // Helper function to process params from a spec object
 const processParamsWithSpec = <T extends Record<string, any>>(
   spec: Record<string, string> | undefined,
-  record?: ObjectRecord,
+  record?: ObjectRecord | null,
   objectNamePlural?: string,
   objectNameSingular?: string,
 ): T => {
@@ -74,7 +76,7 @@ const processParamsWithSpec = <T extends Record<string, any>>(
 };
 
 export const useRouteParamsFromRecord = (
-  record?: ObjectRecord,
+  record?: ObjectRecord | null,
   objectNamePlural?: string,
   objectNameSingular?: string,
   // optionally you can overwrite behavior.
@@ -84,13 +86,9 @@ export const useRouteParamsFromRecord = (
     if (type === 'index') {
       return true;
     }
-    // priority is explicit show page, thus we return false if both are provided
-    if (objectNamePlural && objectNameSingular) {
-      return false;
-    }
 
     return Boolean(objectNamePlural);
-  }, [objectNamePlural, objectNameSingular, type]);
+  }, [objectNamePlural, type]);
 
   const isShowPage = useMemo(() => {
     if (type === 'show') {
@@ -113,10 +111,10 @@ export const useRouteParamsFromRecord = (
 
     if (isIndexPage) {
       return CUSTOM_INDEX_PAGE_ENTITIES[
-        objectNameSingular as CoreObjectNameSingular
+        objectNamePlural as CoreObjectNamePlural
       ]?.redirectTo.path;
     }
-  }, [isShowPage, isIndexPage, objectNameSingular]);
+  }, [isShowPage, isIndexPage, objectNameSingular, objectNamePlural]);
 
   const routeParams: RouteParams = useMemo(() => {
     if (isShowPage) {
@@ -149,7 +147,7 @@ export const useRouteParamsFromRecord = (
 
     if (isIndexPage) {
       const paramSpec =
-        CUSTOM_INDEX_PAGE_ENTITIES[objectNameSingular as CoreObjectNameSingular]
+        CUSTOM_INDEX_PAGE_ENTITIES[objectNamePlural as CoreObjectNamePlural]
           ?.redirectTo.params;
 
       return {
@@ -172,8 +170,34 @@ export const useRouteParamsFromRecord = (
     };
   }, [isShowPage, isIndexPage, objectNameSingular, objectNamePlural, record]);
 
+  const fullPath = useMemo(() => {
+    if (!to) return '';
+
+    try {
+      // Generate path with params using getAppPath
+      const pathWithParams = getAppPath(
+        to as AppPath,
+        routeParams.params as any, // Cast to any to bypass type checking for now
+        routeParams.searchParams,
+      );
+
+      // Add hash if it exists
+      const hashString = routeParams.hashParam
+        ? routeParams.hashParam.includes('#')
+          ? routeParams.hashParam
+          : `#${routeParams.hashParam}`
+        : '';
+
+      return `${pathWithParams}${hashString}`;
+    } catch (error) {
+      console.error('Error generating path:', error);
+      return '';
+    }
+  }, [to, routeParams]);
+
   return {
     to,
+    fullPath,
     routeParams,
     isIndexPage,
     isShowPage,

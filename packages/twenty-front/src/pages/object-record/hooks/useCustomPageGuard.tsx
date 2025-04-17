@@ -1,12 +1,13 @@
+import { usePrevious } from '@/hooks/local-state/usePrevious';
 import { ObjectRecord } from '@/object-record/types/ObjectRecord';
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useRef } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useRouteParamsFromRecord } from '~/pages/object-record/hooks/useRouteParamsFromRecord';
 
 type Props = {
   objectNameSingular?: string;
   objectNamePlural?: string;
-  record?: ObjectRecord;
+  record?: ObjectRecord | null;
 };
 
 export const useCustomPageGuard = ({
@@ -15,37 +16,43 @@ export const useCustomPageGuard = ({
   record,
 }: Props) => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const prevLocation = usePrevious(location.pathname);
+  const hasInitializedRef = useRef(false);
 
-  const { to, routeParams } = useRouteParamsFromRecord(
+  const { fullPath } = useRouteParamsFromRecord(
     record,
     objectNamePlural,
     objectNameSingular,
   );
 
   useEffect(() => {
-    if (!to) return;
+    // Skip the first render to allow context to fully initialize
+    if (!hasInitializedRef.current) {
+      hasInitializedRef.current = true;
+      return;
+    }
 
-    // Build the full URL with search params
-    const searchParamsString = new URLSearchParams(
-      routeParams.searchParams,
-    ).toString();
-    const hashString = routeParams.hashParam
-      ? routeParams.hashParam.includes('#')
-        ? routeParams.hashParam
-        : `#${routeParams.hashParam}`
-      : '';
+    // Skip if we're actively navigating between different object types
+    // This prevents redirecting when the store hasn't caught up yet
+    const isNavigatingBetweenObjects =
+      prevLocation && location.pathname !== prevLocation;
 
-    // Replace params in the path
-    let finalPath = to;
-    Object.entries(routeParams.params).forEach(([key, value]) => {
-      if (value !== undefined) {
-        finalPath = finalPath.replace(`:${key}`, value);
-      }
-    });
+    if (isNavigatingBetweenObjects) {
+      return;
+    }
 
-    // Add search params and hash if they exist
-    const fullPath = `${finalPath}${searchParamsString ? `?${searchParamsString}` : ''}${hashString}`;
-
-    navigate(fullPath);
-  }, [to, routeParams, navigate]);
+    // Only navigate if we need to go to a different path
+    if (fullPath && location.pathname !== fullPath) {
+      navigate(fullPath);
+    }
+  }, [
+    navigate,
+    fullPath,
+    location.pathname,
+    prevLocation,
+    objectNameSingular,
+    objectNamePlural,
+    record?.id,
+  ]);
 };

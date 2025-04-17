@@ -1,10 +1,9 @@
-import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
+import { CoreObjectNamePlural } from '@/object-metadata/types/CoreObjectNamePlural';
 import { AppPath } from '@/types/AppPath';
-import { SettingsPath } from '@/types/SettingsPath';
 import { RedirectParam } from '~/pages/object-record/constants/CustomShowPageEntities';
 
 type CustomIndexPageEntitiesType = {
-  [key in CoreObjectNameSingular]?: {
+  [key in CoreObjectNamePlural]?: {
     redirectTo: {
       path: string;
       params?: {
@@ -17,7 +16,7 @@ type CustomIndexPageEntitiesType = {
 
 // This configuration ensures that the index page is guarded for the given field values so no unintended access is possible.
 export const CUSTOM_INDEX_PAGE_ENTITIES: CustomIndexPageEntitiesType = {
-  [CoreObjectNameSingular.Property]: {
+  [CoreObjectNamePlural.Publication]: {
     redirectTo: {
       path: AppPath.RecordIndexPage,
       params: {
@@ -25,20 +24,12 @@ export const CUSTOM_INDEX_PAGE_ENTITIES: CustomIndexPageEntitiesType = {
       },
     },
   },
-  [CoreObjectNameSingular.Publication]: {
-    redirectTo: {
-      path: AppPath.RecordIndexPage,
-      params: {
-        [RedirectParam.PropertyObjectNamePlural]: 'objectNamePlural',
-      },
-    },
-  },
-  [CoreObjectNameSingular.BuyerLead]: {
+  [CoreObjectNamePlural.BuyerLead]: {
     redirectTo: {
       path: AppPath.RecordInquiriesPage,
     },
   },
-  [CoreObjectNameSingular.Credential]: {
+  [CoreObjectNamePlural.Credential]: {
     redirectTo: {
       path: AppPath.RecordIndexPage,
       params: {
@@ -46,9 +37,9 @@ export const CUSTOM_INDEX_PAGE_ENTITIES: CustomIndexPageEntitiesType = {
       },
     },
   },
-  [CoreObjectNameSingular.Agency]: {
+  [CoreObjectNamePlural.Agency]: {
     redirectTo: {
-      path: SettingsPath.Platforms,
+      path: AppPath.Tutorial,
     },
   },
 };

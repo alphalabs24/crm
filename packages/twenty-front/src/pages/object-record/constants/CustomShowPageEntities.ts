@@ -1,6 +1,7 @@
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { AppPath } from '@/types/AppPath';
 import { SettingsPath } from '@/types/SettingsPath';
+import { getSettingsPath } from '~/utils/navigation/getSettingsPath';
 
 // These enum values semantically define what type of property is being passed. Each of them has exactly one semantic meaning!
 export enum RedirectParam {
@@ -81,7 +82,7 @@ export const CUSTOM_SHOW_PAGE_ENTITIES: CustomShowPageEntitiesType = {
   },
   [CoreObjectNameSingular.Agency]: {
     redirectTo: {
-      path: SettingsPath.Platforms,
+      path: getSettingsPath(SettingsPath.Platforms),
       searchParams: {
         [RedirectParam.ObjectRecordId]: 'id',
       },
