@@ -41,6 +41,7 @@ const IconMapping: { [key in AttachmentType]: IconComponent } = {
   PropertyVideo: IconVideo,
   PropertyDocumentation: IconFileText,
   PropertyFlyer: IconFileDescription,
+  EmailTemplateImage: IconPhoto,
 };
 
 export const AttachmentIcon = ({
@@ -64,6 +65,7 @@ export const AttachmentIcon = ({
     PropertyVideo: theme.color.purple,
     PropertyDocumentation: theme.color.turquoise,
     PropertyFlyer: theme.color.orange,
+    EmailTemplateImage: theme.color.gray,
   };
 
   const Icon = IconMapping[attachmentType];

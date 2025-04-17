@@ -7,7 +7,6 @@ import { useRecoilCallback, useRecoilState } from 'recoil';
 import { Key } from 'ts-key-enum';
 import { useDebouncedCallback } from 'use-debounce';
 import { v4 } from 'uuid';
-
 import { useUpsertActivity } from '@/activities/hooks/useUpsertActivity';
 import { canCreateActivityState } from '@/activities/states/canCreateActivityState';
 import { ActivityEditorHotkeyScope } from '@/activities/types/ActivityEditorHotkeyScope';
@@ -79,6 +78,7 @@ export const EmailFormRichTextEditor = ({
   });
 
   const persistBodyDebounced = useDebouncedCallback((blocknote: string) => {
+    console.log(blocknote);
     const input = isRichTextV2Enabled
       ? {
           bodyV2: {
@@ -103,10 +103,18 @@ export const EmailFormRichTextEditor = ({
   const { uploadAttachmentFile } = useUploadAttachmentFile();
 
   const handleUploadAttachment = async (file: File) => {
-    return await uploadAttachmentFile(file, {
-      id: activityId,
-      targetObjectNameSingular: activityObjectNameSingular,
-    });
+    return await uploadAttachmentFile(
+      file,
+      {
+        id: activityId,
+        targetObjectNameSingular: activityObjectNameSingular,
+      },
+      'EmailTemplateImage',
+      undefined,
+      undefined,
+      undefined,
+      true,
+    );
   };
 
   const prepareBody = (newStringifiedBody: string) => {
