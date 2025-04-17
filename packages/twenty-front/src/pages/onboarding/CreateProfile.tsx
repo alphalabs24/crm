@@ -194,7 +194,7 @@ export const CreateProfile = () => {
 
   return (
     <>
-      <Title noMarginTop>
+      <Title>
         <Trans>Create profile</Trans>
       </Title>
       <SubTitle>
