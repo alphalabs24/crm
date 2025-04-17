@@ -265,7 +265,7 @@ export const CreateProfile = () => {
             onChange={(event) => setDataAccessChecked(event.target.checked)}
           />
           <StyledCheckboxLabel>
-            {t`Allow Nestermind to access and administer my data.`}{' '}
+            {t`Allow nestermind to access and administer my data.`}{' '}
             <StyledWhyNeeded id="data-access-info">
               <IconInfoCircle size={14} color={theme.font.color.secondary} />
               {t`Why is this required?`}
@@ -273,7 +273,7 @@ export const CreateProfile = () => {
           </StyledCheckboxLabel>
           <AppTooltip
             anchorSelect={`${'#'}data-access-info`}
-            content={t`This permission is required for Nestermind's automation and AI features to function properly.`}
+            content={t`This permission is required for nestermind's automation and AI features to function properly.`}
             place="bottom"
             noArrow
             delay={TooltipDelay.shortDelay}
