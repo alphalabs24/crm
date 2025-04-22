@@ -90,7 +90,7 @@ export const CUSTOM_SHOW_PAGE_ENTITIES: CustomShowPageEntitiesType = {
   },
   [CoreObjectNameSingular.Note]: {
     redirectTo: {
-      path: SettingsPath.EmailTemplateEdit,
+      path: getSettingsPath(SettingsPath.EmailTemplateEdit),
       params: {
         [RedirectParam.ObjectRecordId]: 'emailTemplateId',
       },
