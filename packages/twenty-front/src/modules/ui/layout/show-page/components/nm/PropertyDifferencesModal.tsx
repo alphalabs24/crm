@@ -291,7 +291,8 @@ type PropertyDifferencesModalProps = {
   onClose: () => void;
   onSync?: () => void;
   onSyncAndPublish?: () => void;
-  loading?: boolean;
+  loadingSync?: boolean;
+  loadingSyncAndPublish?: boolean;
   propertyRecordId: string;
   publicationRecordId: string;
 };
@@ -522,7 +523,8 @@ export const PropertyDifferencesModal = forwardRef<
       onSync,
       onSyncAndPublish,
       propertyRecordId,
-      loading,
+      loadingSync,
+      loadingSyncAndPublish,
     },
     ref,
   ) => {
@@ -567,7 +569,7 @@ export const PropertyDifferencesModal = forwardRef<
                 variant="tertiary"
                 title={t`Cancel`}
                 onClick={onClose}
-                disabled={loading}
+                disabled={loadingSync || loadingSyncAndPublish}
               />
               {onSync && (
                 <Button
@@ -575,7 +577,8 @@ export const PropertyDifferencesModal = forwardRef<
                   title={t`Sync as Drafts`}
                   onClick={onSync}
                   Icon={IconPencil}
-                  disabled={loading}
+                  disabled={loadingSyncAndPublish}
+                  loading={loadingSync}
                 />
               )}
               {onSyncAndPublish && (
@@ -585,7 +588,8 @@ export const PropertyDifferencesModal = forwardRef<
                   title={t`Sync and Publish All`}
                   onClick={onSyncAndPublish}
                   Icon={IconUpload}
-                  disabled={loading}
+                  disabled={loadingSync}
+                  loading={loadingSyncAndPublish}
                 />
               )}
             </StyledModalHeaderButtons>

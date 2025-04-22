@@ -477,6 +477,8 @@ export const PropertyDetails = ({
           onClose={() => differencesModalRef.current?.close()}
           onSync={syncPublicationDrafts}
           onSyncAndPublish={syncAndPublish}
+          loadingSync={loadingSyncDrafts}
+          loadingSyncAndPublish={loadingSyncAndPublish}
           propertyRecordId={property?.id ?? ''}
           publicationRecordId={publicationDraftsOfProperty?.[0]?.id ?? ''}
         />
