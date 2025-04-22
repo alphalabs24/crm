@@ -1,7 +1,12 @@
 import { EntityManager } from 'typeorm';
 
 import { createWorkspaceViews } from 'src/engine/workspace-manager/standard-objects-prefill-data/create-workspace-views';
-import { ViewDefinition } from 'src/engine/workspace-manager/standard-objects-prefill-data/types/view-definition.interface';
+import {
+  ViewDefinition,
+  ViewField,
+  ViewFilter,
+  ViewGroup,
+} from 'src/engine/workspace-manager/standard-objects-prefill-data/types/view-definition.interface';
 import { ViewWorkspaceEntity } from 'src/modules/view/standard-objects/view.workspace-entity';
 
 export async function createNewWorkspaceViewsFromDefaultWorkspaceViews(
@@ -34,7 +39,7 @@ export async function createNewWorkspaceViewsFromDefaultWorkspaceViews(
               return null;
             }
 
-            return {
+            const newViewField: ViewField = {
               id: dwvField.id,
               fieldMetadataId: newFieldMetadataId,
               position: dwvField.position,
@@ -42,8 +47,11 @@ export async function createNewWorkspaceViewsFromDefaultWorkspaceViews(
               size: dwvField.size,
               aggregateOperation: dwvField.aggregateOperation || undefined,
             };
+
+            return newViewField;
           })
-          .filter((viewField) => viewField !== null) || [];
+          .filter((viewField): viewField is ViewField => viewField !== null) ||
+        [];
 
       const newViewFilters =
         defaultWorkspaceView.viewFilters
@@ -57,15 +65,19 @@ export async function createNewWorkspaceViewsFromDefaultWorkspaceViews(
               return null;
             }
 
-            return {
+            const newViewFilter: ViewFilter = {
               id: filter.id,
               fieldMetadataId: newFieldMetadataId,
               displayValue: filter.displayValue,
               operand: filter.operand,
               value: filter.value,
             };
+
+            return newViewFilter;
           })
-          .filter((viewFilter) => viewFilter !== null) || [];
+          .filter(
+            (viewFilter): viewFilter is ViewFilter => viewFilter !== null,
+          ) || [];
 
       const newViewGroups =
         defaultWorkspaceView.viewGroups
@@ -79,15 +91,18 @@ export async function createNewWorkspaceViewsFromDefaultWorkspaceViews(
               return null;
             }
 
-            return {
+            const newViewGroup: ViewGroup = {
               id: group.id,
               fieldMetadataId: newFieldMetadataId,
               isVisible: group.isVisible,
               fieldValue: group.fieldValue,
               position: group.position,
             };
+
+            return newViewGroup;
           })
-          .filter((viewGroup) => viewGroup !== null) || [];
+          .filter((viewGroup): viewGroup is ViewGroup => viewGroup !== null) ||
+        [];
 
       const newKanbanFieldMetadataId =
         defaultWorkspaceView.kanbanFieldMetadataId
@@ -103,7 +118,7 @@ export async function createNewWorkspaceViewsFromDefaultWorkspaceViews(
             ) ?? undefined)
           : undefined;
 
-      return {
+      const newViewDefinition: ViewDefinition = {
         id: defaultWorkspaceView.id,
         name: defaultWorkspaceView.name,
         objectMetadataId: newObjectMetadataId,
@@ -121,8 +136,13 @@ export async function createNewWorkspaceViewsFromDefaultWorkspaceViews(
         filters: newViewFilters,
         groups: newViewGroups,
       };
+
+      return newViewDefinition;
     })
-    .filter((viewDefinition) => viewDefinition !== null);
+    .filter(
+      (viewDefinition): viewDefinition is ViewDefinition =>
+        viewDefinition !== null,
+    );
 
   await createWorkspaceViews(entityManager, schemaName, newViewDefinitions);
 }
