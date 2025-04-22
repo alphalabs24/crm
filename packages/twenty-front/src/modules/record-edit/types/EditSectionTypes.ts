@@ -33,6 +33,7 @@ export type SectionContent = {
   title: string;
   groups: FieldGroup[];
   width?: EditSectionContentWidth;
+  omitForPublications?: boolean;
   description?: ReactNode;
 };
 

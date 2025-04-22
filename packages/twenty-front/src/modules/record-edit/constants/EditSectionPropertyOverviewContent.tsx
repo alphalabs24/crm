@@ -120,20 +120,21 @@ export const OVERVIEW_SECTION_CONTENT: SectionContent[] = [
   {
     title: 'Stakeholders',
     width: 'half',
+    omitForPublications: true,
     groups: [
       {
         isHorizontal: true,
         fields: [
           { name: 'seller', type: 'field' },
           { name: 'agency', type: 'field' },
-          { name: 'assignee', type: 'field' },
+          { name: 'assignee', type: 'field', omitForPublication: true },
         ],
       },
     ],
   },
   {
     title: 'Property Features',
-    width: 'full',
+    width: 'half',
     groups: [
       {
         fields: [{ name: 'features', type: 'field' }],

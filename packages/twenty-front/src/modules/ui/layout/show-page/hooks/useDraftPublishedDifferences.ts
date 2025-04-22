@@ -36,6 +36,8 @@ const IGNORE_FIELD_KEYS = [
   'buyerLeads',
   'deletedAt',
   'agency',
+  'assignee',
+  'emailTemplateId',
 ];
 
 export type AttachmentDifference = {
