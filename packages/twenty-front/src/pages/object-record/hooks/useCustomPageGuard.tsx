@@ -1,3 +1,4 @@
+import { useCommandMenu } from '@/command-menu/hooks/useCommandMenu';
 import { usePrevious } from '@/hooks/local-state/usePrevious';
 import { ObjectRecord } from '@/object-record/types/ObjectRecord';
 import { useEffect, useRef } from 'react';
@@ -19,6 +20,8 @@ export const useCustomPageGuard = ({
   const location = useLocation();
   const prevLocation = usePrevious(location.pathname);
   const hasInitializedRef = useRef(false);
+
+  const { closeCommandMenu } = useCommandMenu();
 
   const { fullPath } = useRouteParamsFromRecord(
     record,
@@ -44,6 +47,7 @@ export const useCustomPageGuard = ({
 
     // Only navigate if we need to go to a different path
     if (fullPath && location.pathname !== fullPath) {
+      closeCommandMenu();
       navigate(fullPath);
     }
   }, [
@@ -54,5 +58,6 @@ export const useCustomPageGuard = ({
     objectNameSingular,
     objectNamePlural,
     record?.id,
+    closeCommandMenu,
   ]);
 };
