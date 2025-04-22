@@ -80,7 +80,9 @@ export const FieldsCard = ({
     (fieldMetadataItem) =>
       !(
         (objectNameSingular === CoreObjectNameSingular.Note &&
-          fieldMetadataItem.name === 'noteTargets') ||
+          (fieldMetadataItem.name === 'noteTargets' ||
+            fieldMetadataItem.name === 'emailTemplateForPublications' ||
+            fieldMetadataItem.name === 'emailTemplateForProperties')) ||
         (objectNameSingular === CoreObjectNameSingular.Task &&
           fieldMetadataItem.name === 'taskTargets') ||
         // Don't show buyer lead relation since it's not relevant to the user to see the underlying buyer lead record
