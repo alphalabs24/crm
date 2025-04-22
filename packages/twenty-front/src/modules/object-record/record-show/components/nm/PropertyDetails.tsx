@@ -42,6 +42,8 @@ import {
   MOBILE_VIEWPORT,
   useIsMobile,
 } from 'twenty-ui';
+import { useSyncDrafts } from '../../hooks/useSyncDrafts';
+import { useSyncAndPublish } from '../../hooks/useSyncAndPublish';
 
 const StyledContentContainer = styled.div<{ isInRightDrawer?: boolean }>`
   display: flex;
@@ -297,68 +299,20 @@ export const PropertyDetails = ({
     setIsDeleteModalOpen(false);
   };
 
-  // Sync publications
-  const { useMutations } = useNestermind();
-
-  const [duplicationsCompleted, setDuplicationsCompleted] = useState(0);
-  const [duplicationsTotal, setDuplicationsTotal] = useState(0);
-  const { mutate: syncPublicationMutation, isPending: isSyncPending } =
-    useMutations.useSyncPublicationsWithProperty(targetableObject.id, {
-      onSuccess: () => {
-        enqueueSnackBar(t`Your Publication Drafts were synced successfully`, {
-          variant: SnackBarVariant.Success,
-        });
-        differencesModalRef.current?.close();
-        refetchPublications();
-      },
-      onError: (error: Error) => {
-        enqueueSnackBar(error?.message || t`Failed to sync publications`, {
-          variant: SnackBarVariant.Error,
-        });
-      },
-    });
-  const {
-    mutate: duplicatePublicationMutation,
-    isPending: isDuplicatePending,
-  } = useMutations.useDuplicatePublication({
-    onSuccess: async () => {
-      setDuplicationsCompleted((prev) => prev + 1);
-      if (duplicationsCompleted === duplicationsTotal - 1) {
-        await syncPublicationMutation();
-        setDuplicationsCompleted(0);
-        setDuplicationsTotal(0);
-      }
-    },
+  const { syncPublicationDrafts, loading: loadingSyncDrafts } = useSyncDrafts({
+    targetableObject,
+    refetchPublications,
+    publications: publicationsToConsiderForDifferences,
   });
 
-  // cleanup in case we have a race condition. This is only a failsafe.
-  useEffect(() => {
-    if (duplicationsCompleted === duplicationsTotal && duplicationsTotal > 0) {
-      syncPublicationMutation();
-      setDuplicationsCompleted(0);
-      setDuplicationsTotal(0);
+  const { syncAndPublish, loading: loadingSyncAndPublish } = useSyncAndPublish({
+    targetableObject,
+    publications: publicationsToConsiderForDifferences,
+    onSuccess: () => {
+      refetchPublications();
       closeDropdown();
-    }
-  }, [
-    duplicationsCompleted,
-    duplicationsTotal,
-    syncPublicationMutation,
-    closeDropdown,
-  ]);
-
-  const syncPublications = useCallback(async () => {
-    setDuplicationsTotal(publicationsToConsiderForDifferences.length);
-    // create drafts for all platforms that are published if they don't have one yet
-    for (const publication of publicationsToConsiderForDifferences) {
-      await duplicatePublicationMutation({ publicationId: publication.id });
-    }
-    //await syncPublicationMutation();
-    closeDropdown();
-  }, [
-    closeDropdown,
-    publicationsToConsiderForDifferences,
-    duplicatePublicationMutation,
-  ]);
+    },
+  });
 
   // Publication differences
   const { differenceRecords } = usePropertyAndPublicationDifferences(
@@ -441,8 +395,8 @@ export const PropertyDetails = ({
                     {
                       title: t`Sync Publications ${differenceLength}`,
                       Icon: IconRefresh,
-                      onClick: syncPublications,
-                      disabled: isSyncPending || isDuplicatePending,
+                      onClick: syncPublicationDrafts,
+                      disabled: loadingSyncDrafts || loadingSyncAndPublish,
                     },
                   ]
                 : []),
@@ -454,7 +408,9 @@ export const PropertyDetails = ({
                       onClick: handleDelete,
                       distructive: true,
                       disabled:
-                        loadingDelete || isSyncPending || isDuplicatePending,
+                        loadingDelete ||
+                        loadingSyncDrafts ||
+                        loadingSyncAndPublish,
                     },
                   ]
                 : []),
@@ -465,7 +421,7 @@ export const PropertyDetails = ({
                     title: t`Sync Publications ${differenceLength}`,
                     Icon: IconRefresh,
                     onClick: () => differencesModalRef.current?.open(),
-                    disabled: isSyncPending || isDuplicatePending,
+                    disabled: loadingSyncDrafts || loadingSyncAndPublish,
                   }
                 : null
             }
@@ -521,7 +477,8 @@ export const PropertyDetails = ({
           ref={differencesModalRef}
           differences={differenceRecords}
           onClose={() => differencesModalRef.current?.close()}
-          onSync={syncPublications}
+          onSync={syncPublicationDrafts}
+          onSyncAndPublish={syncAndPublish}
           propertyRecordId={property?.id ?? ''}
           publicationRecordId={publicationDraftsOfProperty?.[0]?.id ?? ''}
         />

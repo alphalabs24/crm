@@ -444,6 +444,10 @@ export const PublicationDetailPage = ({
 
   const dropdownId = `publication-detail-dropdown-${publication?.id}`;
 
+  if (!publication) {
+    return null;
+  }
+
   return (
     <RecordFieldValueSelectorContextProvider>
       <RecordValueSetterEffect recordId={publication.id} />
@@ -454,7 +458,7 @@ export const PublicationDetailPage = ({
             onBackClick={handleBackClick}
           />
           <StyledButtonContainer>
-            {publication && !publication.deletedAt && (
+            {!publication.deletedAt && (
               <Button
                 title={t`Edit`}
                 Icon={IconPencil}
