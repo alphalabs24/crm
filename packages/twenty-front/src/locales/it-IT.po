@@ -8,7 +8,7 @@ msgstr ""
 "Language: it\n"
 "Project-Id-Version: nestermind-crm\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-04-10 11:02\n"
+"PO-Revision-Date: 2025-04-22 11:48\n"
 "Last-Translator: \n"
 "Language-Team: Italian\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -47,7 +47,7 @@ msgstr ""
 
 #: src/modules/object-record/record-show/components/nm/PropertyDetails.tsx
 #~ msgid "{0} deleted successfully"
-#~ msgstr ""
+#~ msgstr "{0} deleted successfully"
 
 #: src/modules/object-record/record-board/record-board-column/utils/computeAggregateValueAndLabel.ts
 msgid "{aggregateLabel} of {fieldLabel}"
@@ -354,8 +354,12 @@ msgid "Allow logins through Microsoft's single sign-on functionality."
 msgstr "Consenti l'accesso tramite la funzionalità single sign-on di Microsoft."
 
 #: src/pages/onboarding/CreateProfile.tsx
-msgid "Allow Nestermind to access and administer my data."
+msgid "Allow nestermind to access and administer my data."
 msgstr ""
+
+#: src/pages/onboarding/CreateProfile.tsx
+#~ msgid "Allow Nestermind to access and administer my data."
+#~ msgstr "Allow Nestermind to access and administer my data."
 
 #: src/modules/settings/security/components/SettingsSecurityOptionsList.tsx
 msgid "Allow the invitation of new users by sharing an invite link."
@@ -511,7 +515,7 @@ msgstr "Autorizza"
 
 #: src/modules/inquiries/components/sidebar/ConversationMessageItem.tsx
 #~ msgid "Auto Response"
-#~ msgstr ""
+#~ msgstr "Auto Response"
 
 #: src/modules/onboarding-tutorial/components/modals/EmailTutorialModal.tsx
 msgid "Automatic creation of Inquiries"
@@ -991,12 +995,12 @@ msgid "Date and time"
 msgstr "Data e ora"
 
 #: src/modules/inquiries/components/sidebar/ConversationMessageItem.tsx
-msgid "day ago"
-msgstr ""
+#~ msgid "day ago"
+#~ msgstr "day ago"
 
 #: src/modules/inquiries/components/sidebar/ConversationMessageItem.tsx
-msgid "days ago"
-msgstr ""
+#~ msgid "days ago"
+#~ msgstr "days ago"
 
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
 #~ msgid "Days Published"
@@ -1805,12 +1809,12 @@ msgid "Hide"
 msgstr "Nascondi"
 
 #: src/modules/inquiries/components/sidebar/ConversationMessageItem.tsx
-msgid "hour ago"
-msgstr ""
+#~ msgid "hour ago"
+#~ msgstr "hour ago"
 
 #: src/modules/inquiries/components/sidebar/ConversationMessageItem.tsx
-msgid "hours ago"
-msgstr ""
+#~ msgid "hours ago"
+#~ msgstr "hours ago"
 
 #: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
 msgid "House Subtype"
@@ -1977,8 +1981,8 @@ msgstr "Italiano"
 #~ msgstr "Japanese"
 
 #: src/modules/inquiries/components/sidebar/ConversationMessageItem.tsx
-msgid "Just now"
-msgstr ""
+#~ msgid "Just now"
+#~ msgstr "Just now"
 
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
 msgid "Keep in mind that only nestermind drafts will be synchronized. You will need to publish the drafts manually after synchronization."
@@ -3396,6 +3400,10 @@ msgid "Sync with Outlook"
 msgstr ""
 
 #: src/pages/onboarding/SyncEmails.tsx
+msgid "Sync your Emails and Calendar with nestermind."
+msgstr ""
+
+#: src/pages/onboarding/SyncEmails.tsx
 msgid "Sync your Emails and Calendar with nestermind. Choose your privacy settings."
 msgstr ""
 
@@ -3521,8 +3529,12 @@ msgid "This member will be unassigned from this role."
 msgstr "Questo membro verrà rimosso da questo ruolo."
 
 #: src/pages/onboarding/CreateProfile.tsx
-msgid "This permission is required for Nestermind's automation and AI features to function properly."
+msgid "This permission is required for nestermind's automation and AI features to function properly."
 msgstr ""
+
+#: src/pages/onboarding/CreateProfile.tsx
+#~ msgid "This permission is required for Nestermind's automation and AI features to function properly."
+#~ msgstr "This permission is required for Nestermind's automation and AI features to function properly."
 
 #: src/pages/settings/roles/components/RolePermissions.tsx
 #~ msgid "This Role has the following permissions."
@@ -3876,8 +3888,8 @@ msgid "Yes"
 msgstr ""
 
 #: src/modules/inquiries/components/sidebar/ConversationMessageItem.tsx
-msgid "Yesterday"
-msgstr ""
+#~ msgid "Yesterday"
+#~ msgstr "Yesterday"
 
 #: src/modules/object-record/record-table/empty-state/components/RecordTableEmptyStateReadOnly.tsx
 msgid "You are not allowed to create records in this object"
