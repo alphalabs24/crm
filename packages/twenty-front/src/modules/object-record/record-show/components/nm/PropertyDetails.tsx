@@ -300,6 +300,8 @@ export const PropertyDetails = ({
   // Sync publications
   const { useMutations } = useNestermind();
 
+  const [duplicationsCompleted, setDuplicationsCompleted] = useState(0);
+  const [duplicationsTotal, setDuplicationsTotal] = useState(0);
   const { mutate: syncPublicationMutation, isPending: isSyncPending } =
     useMutations.useSyncPublicationsWithProperty(targetableObject.id, {
       onSuccess: () => {
@@ -318,17 +320,41 @@ export const PropertyDetails = ({
   const {
     mutate: duplicatePublicationMutation,
     isPending: isDuplicatePending,
-  } = useMutations.useDuplicatePublication();
+  } = useMutations.useDuplicatePublication({
+    onSuccess: async () => {
+      setDuplicationsCompleted((prev) => prev + 1);
+      if (duplicationsCompleted === duplicationsTotal - 1) {
+        await syncPublicationMutation();
+        setDuplicationsCompleted(0);
+        setDuplicationsTotal(0);
+      }
+    },
+  });
+
+  // cleanup in case we have a race condition. This is only a failsafe.
+  useEffect(() => {
+    if (duplicationsCompleted === duplicationsTotal && duplicationsTotal > 0) {
+      syncPublicationMutation();
+      setDuplicationsCompleted(0);
+      setDuplicationsTotal(0);
+      closeDropdown();
+    }
+  }, [
+    duplicationsCompleted,
+    duplicationsTotal,
+    syncPublicationMutation,
+    closeDropdown,
+  ]);
 
   const syncPublications = useCallback(async () => {
+    setDuplicationsTotal(publicationsToConsiderForDifferences.length);
     // create drafts for all platforms that are published if they don't have one yet
     for (const publication of publicationsToConsiderForDifferences) {
       await duplicatePublicationMutation({ publicationId: publication.id });
     }
-    await syncPublicationMutation();
+    //await syncPublicationMutation();
     closeDropdown();
   }, [
-    syncPublicationMutation,
     closeDropdown,
     publicationsToConsiderForDifferences,
     duplicatePublicationMutation,
