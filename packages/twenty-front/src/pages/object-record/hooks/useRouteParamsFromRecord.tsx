@@ -75,6 +75,33 @@ const processParamsWithSpec = <T extends Record<string, any>>(
   }, {} as T);
 };
 
+// Helper function to check if a record matches the guardedForFieldValues conditions
+const recordMatchesGuardedValues = (
+  record?: ObjectRecord | null,
+  objectNameSingular?: string,
+): boolean => {
+  if (!record || !objectNameSingular) return true; // If no record or objectNameSingular, don't block
+
+  const guardedValues =
+    CUSTOM_SHOW_PAGE_ENTITIES[objectNameSingular as CoreObjectNameSingular]
+      ?.guardedForFieldValues;
+
+  // If no guarded values defined, allow all records
+  if (!guardedValues) return true;
+
+  // Check each field defined in guardedForFieldValues
+  return Object.entries(guardedValues).every(([fieldName, allowedValues]) => {
+    // Get the actual value from the record
+    const recordValue = record[fieldName];
+
+    // If the field doesn't exist in the record, it doesn't match
+    if (recordValue === undefined) return false;
+
+    // Check if the record's value is in the list of allowed values
+    return allowedValues.includes(recordValue);
+  });
+};
+
 export const useRouteParamsFromRecord = (
   record?: ObjectRecord | null,
   objectNamePlural?: string,
@@ -102,7 +129,17 @@ export const useRouteParamsFromRecord = (
     return false;
   }, [objectNameSingular, record, type]);
 
+  // Check if the record matches any guarded field values
+  const isAllowedByGuard = useMemo(() => {
+    return recordMatchesGuardedValues(record, objectNameSingular);
+  }, [record, objectNameSingular]);
+
   const to = useMemo(() => {
+    // If the record doesn't match guarded values, don't return a redirect path
+    if (isShowPage && !isAllowedByGuard) {
+      return undefined;
+    }
+
     if (isShowPage) {
       return CUSTOM_SHOW_PAGE_ENTITIES[
         objectNameSingular as CoreObjectNameSingular
@@ -114,10 +151,18 @@ export const useRouteParamsFromRecord = (
         objectNamePlural as CoreObjectNamePlural
       ]?.redirectTo.path;
     }
-  }, [isShowPage, isIndexPage, objectNameSingular, objectNamePlural]);
+
+    return undefined;
+  }, [
+    isShowPage,
+    isIndexPage,
+    objectNameSingular,
+    objectNamePlural,
+    isAllowedByGuard,
+  ]);
 
   const routeParams: RouteParams = useMemo(() => {
-    if (isShowPage) {
+    if (isShowPage && isAllowedByGuard) {
       const paramSpec =
         CUSTOM_SHOW_PAGE_ENTITIES[objectNameSingular as CoreObjectNameSingular]
           ?.redirectTo.params;
@@ -168,7 +213,14 @@ export const useRouteParamsFromRecord = (
       searchParams: {},
       hashParam: undefined,
     };
-  }, [isShowPage, isIndexPage, objectNameSingular, objectNamePlural, record]);
+  }, [
+    isShowPage,
+    isIndexPage,
+    objectNameSingular,
+    objectNamePlural,
+    record,
+    isAllowedByGuard,
+  ]);
 
   const fullPath = useMemo(() => {
     if (!to) return '';
@@ -201,5 +253,6 @@ export const useRouteParamsFromRecord = (
     routeParams,
     isIndexPage,
     isShowPage,
+    isAllowedByGuard,
   };
 };
