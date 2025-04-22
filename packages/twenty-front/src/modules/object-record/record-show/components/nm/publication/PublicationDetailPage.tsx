@@ -548,7 +548,7 @@ export const PublicationDetailPage = ({
               <PropertyImagesCard
                 loading={recordLoading}
                 targetableObject={{
-                  id: draftRecord.id || publication.id,
+                  id: draftRecord?.id || publication.id,
                   targetObjectNameSingular: CoreObjectNameSingular.Publication,
                 }}
               />
