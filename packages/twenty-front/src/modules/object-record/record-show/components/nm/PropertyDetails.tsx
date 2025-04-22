@@ -14,6 +14,7 @@ import { PropertyReportingCard } from '@/object-record/record-show/components/nm
 import { StyledLoadingContainer } from '@/object-record/record-show/components/ui/PropertyDetailsCardComponents';
 import { PublicationStage } from '@/object-record/record-show/constants/PublicationStage';
 import { useRecordShowContainerData } from '@/object-record/record-show/hooks/useRecordShowContainerData';
+import { ObjectRecord } from '@/object-record/types/ObjectRecord';
 import { SnackBarVariant } from '@/ui/feedback/snack-bar-manager/components/SnackBar';
 import { useSnackBar } from '@/ui/feedback/snack-bar-manager/hooks/useSnackBar';
 import { useDropdown } from '@/ui/layout/dropdown/hooks/useDropdown';
@@ -227,6 +228,43 @@ export const PropertyDetails = ({
     return publicationGroups.all[PublicationStage.Draft];
   }, [publicationGroups]);
 
+  const publicationPublishedOfProperty = useMemo(() => {
+    return publicationGroups.all[PublicationStage.Published];
+  }, [publicationGroups]);
+
+  const publicationsToConsiderForDifferences = useMemo(() => {
+    const availablePlatforms = new Set<string>();
+
+    for (const publication of publicationDraftsOfProperty) {
+      availablePlatforms.add(publication.platform);
+    }
+
+    for (const publication of publicationPublishedOfProperty) {
+      availablePlatforms.add(publication.platform);
+    }
+
+    // Prioritize Drafts but if there is not draft, then use the published version if it exists.
+    const publicationPerPlatform: Record<string, ObjectRecord[]> = {};
+
+    for (const platform of availablePlatforms) {
+      const draft = publicationDraftsOfProperty.find(
+        (p) => p.platform === platform,
+      );
+      const published = publicationPublishedOfProperty.find(
+        (p) => p.platform === platform,
+      );
+
+      if (draft) {
+        publicationPerPlatform[platform] = [draft];
+      } else if (published) {
+        publicationPerPlatform[platform] = [published];
+      }
+    }
+
+    // return array of publications
+    return Object.values(publicationPerPlatform).flat();
+  }, [publicationDraftsOfProperty, publicationPublishedOfProperty]);
+
   const objectNameSingular = targetableObject.targetObjectNameSingular;
 
   // Delete handling
@@ -277,15 +315,28 @@ export const PropertyDetails = ({
         });
       },
     });
+  const {
+    mutate: duplicatePublicationMutation,
+    isPending: isDuplicatePending,
+  } = useMutations.useDuplicatePublication();
 
   const syncPublications = useCallback(async () => {
+    // create drafts for all platforms that are published if they don't have one yet
+    for (const publication of publicationsToConsiderForDifferences) {
+      await duplicatePublicationMutation({ publicationId: publication.id });
+    }
     await syncPublicationMutation();
     closeDropdown();
-  }, [syncPublicationMutation, closeDropdown]);
+  }, [
+    syncPublicationMutation,
+    closeDropdown,
+    publicationsToConsiderForDifferences,
+    duplicatePublicationMutation,
+  ]);
 
   // Publication differences
   const { differenceRecords } = usePropertyAndPublicationDifferences(
-    publicationDraftsOfProperty,
+    publicationsToConsiderForDifferences,
     property,
   );
 
@@ -359,6 +410,16 @@ export const PropertyDetails = ({
           <ActionDropdown
             dropdownId={dropdownId}
             actions={[
+              ...(!showSyncButton
+                ? [
+                    {
+                      title: t`Sync Publications ${differenceLength}`,
+                      Icon: IconRefresh,
+                      onClick: syncPublications,
+                      disabled: isSyncPending || isDuplicatePending,
+                    },
+                  ]
+                : []),
               ...(showDeleteButton
                 ? [
                     {
@@ -366,7 +427,8 @@ export const PropertyDetails = ({
                       Icon: IconTrash,
                       onClick: handleDelete,
                       distructive: true,
-                      disabled: loadingDelete,
+                      disabled:
+                        loadingDelete || isSyncPending || isDuplicatePending,
                     },
                   ]
                 : []),
@@ -377,7 +439,7 @@ export const PropertyDetails = ({
                     title: t`Sync Publications ${differenceLength}`,
                     Icon: IconRefresh,
                     onClick: () => differencesModalRef.current?.open(),
-                    disabled: isSyncPending,
+                    disabled: isSyncPending || isDuplicatePending,
                   }
                 : null
             }

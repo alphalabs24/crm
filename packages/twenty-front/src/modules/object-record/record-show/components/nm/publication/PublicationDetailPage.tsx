@@ -226,8 +226,6 @@ export const PublicationDetailPage = ({
     return publicationGroup[stage]?.[0];
   }, [publicationGroup, stage]);
 
-  console.log(publication);
-
   const draftRecord: ObjectRecord | undefined = useMemo(() => {
     return publicationGroup[PublicationStage.Draft]?.[0];
   }, [publicationGroup]);
@@ -550,7 +548,7 @@ export const PublicationDetailPage = ({
               <PropertyImagesCard
                 loading={recordLoading}
                 targetableObject={{
-                  id: publication.id,
+                  id: draftRecord.id || publication.id,
                   targetObjectNameSingular: CoreObjectNameSingular.Publication,
                 }}
               />
@@ -558,12 +556,12 @@ export const PublicationDetailPage = ({
 
             <StyledOverviewSection>
               <PropertyBasicInfoCard
-                record={publication}
+                record={draftRecord || publication}
                 loading={recordLoading}
                 isPublication
               />
               <PropertyDetailsCard
-                record={publication}
+                record={draftRecord || publication}
                 loading={recordLoading}
                 objectMetadataItem={objectMetadataItem}
               />
@@ -576,18 +574,18 @@ export const PublicationDetailPage = ({
                 objectMetadataItem={objectMetadataItem}
               />
               <PropertyAddressCard
-                record={publication}
+                record={draftRecord || publication}
                 loading={recordLoading}
               />
             </StyledDetailsSection>
           </StyledMainContent>
           <StyledSideContentMobile>
-            <PublicationCompletionCard record={publication} />
+            <PublicationCompletionCard record={draftRecord || publication} />
             <PublicationStatusCard stage={publication.stage} />
           </StyledSideContentMobile>
 
           <StyledSideContent isInRightDrawer={isInRightDrawer}>
-            <PublicationCompletionCard record={publication} />
+            <PublicationCompletionCard record={draftRecord || publication} />
             <PublicationStatusCard stage={publication.stage} />
 
             <PropertyInquiriesCard recordId={publication.id} isPublication />
