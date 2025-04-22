@@ -1,4 +1,4 @@
-import { ValidationPipe } from '@nestjs/common';
+import { ForbiddenException, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 
@@ -78,7 +78,7 @@ const bootstrap = async () => {
         callback(null, origin);
       } else {
         logger.error(`Origin not allowed by CORS: ${origin}`, 'CORSConfig');
-        callback(new Error('Not allowed by CORS'));
+        callback(new ForbiddenException('Not allowed by CORS'));
       }
     },
     credentials: true,
