@@ -302,12 +302,10 @@ export const PropertyDetails = ({
   const { syncPublicationDrafts, loading: loadingSyncDrafts } = useSyncDrafts({
     targetableObject,
     refetchPublications,
-    publications: publicationsToConsiderForDifferences,
   });
 
   const { syncAndPublish, loading: loadingSyncAndPublish } = useSyncAndPublish({
     targetableObject,
-    publications: publicationsToConsiderForDifferences,
     onSuccess: () => {
       refetchPublications();
       closeDropdown();

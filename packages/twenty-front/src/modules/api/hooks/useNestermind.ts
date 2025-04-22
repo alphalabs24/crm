@@ -61,6 +61,31 @@ export const useNestermind = () => {
     });
   };
 
+  const syncAndPublishPublications = useCallback(
+    async (propertyId: string) => {
+      return api.post(`/properties/sync-publish?id=${propertyId}`);
+    },
+    [api],
+  );
+
+  const useSyncAndPublishPublications = (
+    propertyId: string | null,
+    options = {},
+  ) => {
+    return useMutation({
+      mutationFn: () => {
+        if (!propertyId) throw new Error('Property ID is required');
+        return syncAndPublishPublications(propertyId);
+      },
+      onSuccess: () => {
+        // Invalidate relevant queries after successful sync and publish
+        queryClient.invalidateQueries({ queryKey: ['properties', propertyId] });
+        queryClient.invalidateQueries({ queryKey: ['publications'] });
+      },
+      ...options,
+    });
+  };
+
   const deleteProperty = useCallback(
     async (propertyId: string) => {
       return api.delete(`/properties/delete?id=${propertyId}`);
@@ -459,6 +484,7 @@ export const useNestermind = () => {
     },
     useMutations: {
       useSyncPublicationsWithProperty,
+      useSyncAndPublishPublications,
       useDeleteProperty,
       useCreatePublicationDraft,
       useCreateEmailWebhook,
