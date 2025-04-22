@@ -30,7 +30,6 @@ export async function createNewWorkspaceViewsFromDefaultWorkspaceViews(
                 dwvField.fieldMetadataId,
               );
 
-
             if (!newFieldMetadataId) {
               return null;
             }
