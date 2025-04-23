@@ -148,13 +148,43 @@ export const PageChangeEffect = () => {
         setHotkeyScope(PageHotkeyScope.PropertyShowPage);
         break;
       }
-      case isMatchingLocation(AppPath.RecordShowPublicationPage): {
-        setHotkeyScope(PageHotkeyScope.PublicationShowPage);
-        break;
-      }
       case isMatchingLocation(SettingsPath.Domain, AppBasePath.Settings): {
         setHotkeyScope(PageHotkeyScope.Settings, {
           goto: false,
+          keyboardShortcutMenu: true,
+        });
+        break;
+      }
+      case isMatchingLocation(SettingsPath.Platforms, AppBasePath.Settings): {
+        setHotkeyScope(PageHotkeyScope.Settings, {
+          goto: true,
+          keyboardShortcutMenu: true,
+        });
+        break;
+      }
+      case isMatchingLocation(
+        SettingsPath.EmailTemplates,
+        AppBasePath.Settings,
+      ): {
+        setHotkeyScope(PageHotkeyScope.Settings, {
+          goto: true,
+          keyboardShortcutMenu: true,
+        });
+        break;
+      }
+      case isMatchingLocation(
+        SettingsPath.EmailTemplateEdit,
+        AppBasePath.Settings,
+      ): {
+        setHotkeyScope(PageHotkeyScope.Settings, {
+          goto: false,
+          keyboardShortcutMenu: true,
+        });
+        break;
+      }
+      case isMatchingLocation(AppPath.Tutorial): {
+        setHotkeyScope(PageHotkeyScope.Tutorial, {
+          goto: true,
           keyboardShortcutMenu: true,
         });
         break;

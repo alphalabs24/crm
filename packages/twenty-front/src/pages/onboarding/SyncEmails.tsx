@@ -19,9 +19,12 @@ import { isMicrosoftCalendarEnabledState } from '@/client-config/states/isMicros
 import { isMicrosoftMessagingEnabledState } from '@/client-config/states/isMicrosoftMessagingEnabledState';
 import { useTriggerApisOAuth } from '@/settings/accounts/hooks/useTriggerApiOAuth';
 import { AppPath } from '@/types/AppPath';
+import { useIsFeatureEnabled } from '@/workspace/hooks/useIsFeatureEnabled';
+import { Trans, useLingui } from '@lingui/react/macro';
 import { ConnectedAccountProvider } from 'twenty-shared';
 import {
   CalendarChannelVisibility,
+  FeatureFlagKey,
   MessageChannelVisibility,
   OnboardingStatus,
   useSkipSyncEmailOnboardingStepMutation,
@@ -48,6 +51,10 @@ const StyledProviderContainer = styled.div`
   gap: ${({ theme }) => theme.spacing(3)};
 `;
 
+const StyledSpacer = styled.div`
+  height: ${({ theme }) => theme.spacing(4)};
+`;
+
 export const SyncEmails = () => {
   const theme = useTheme();
   const { triggerApisOAuth } = useTriggerApisOAuth();
@@ -56,8 +63,13 @@ export const SyncEmails = () => {
   const [visibility, setVisibility] = useState<MessageChannelVisibility>(
     MessageChannelVisibility.SHARE_EVERYTHING,
   );
+  const { t } = useLingui();
   const [skipSyncEmailOnboardingStatusMutation] =
     useSkipSyncEmailOnboardingStepMutation();
+
+  const isEmailSettingsPageEnabled = useIsFeatureEnabled(
+    FeatureFlagKey.IsEmailSettingsPageEnabled,
+  );
 
   const handleButtonClick = async (provider: ConnectedAccountProvider) => {
     const calendarChannelVisibility =
@@ -110,21 +122,28 @@ export const SyncEmails = () => {
 
   return (
     <>
-      <Title noMarginTop>Emails and Calendar</Title>
+      <Title>
+        <Trans>Emails and Calendar</Trans>
+      </Title>
       <SubTitle>
-        Sync your Emails and Calendar with nestermind. Choose your privacy
-        settings.
+        {isEmailSettingsPageEnabled
+          ? t`Sync your Emails and Calendar with nestermind. Choose your privacy settings.`
+          : t`Sync your Emails and Calendar with nestermind.`}
       </SubTitle>
-      <StyledSyncEmailsContainer>
-        <OnboardingSyncEmailsSettingsCard
-          value={visibility}
-          onChange={setVisibility}
-        />
-      </StyledSyncEmailsContainer>
+      {isEmailSettingsPageEnabled ? (
+        <StyledSyncEmailsContainer>
+          <OnboardingSyncEmailsSettingsCard
+            value={visibility}
+            onChange={setVisibility}
+          />
+        </StyledSyncEmailsContainer>
+      ) : (
+        <StyledSpacer />
+      )}
       <StyledProviderContainer>
         {isGoogleProviderEnabled && (
           <MainButton
-            title="Sync with Google"
+            title={t`Sync with Google`}
             onClick={() => handleButtonClick(ConnectedAccountProvider.GOOGLE)}
             width={200}
             Icon={() => <IconGoogle size={theme.icon.size.sm} />}
@@ -132,7 +151,7 @@ export const SyncEmails = () => {
         )}
         {isMicrosoftProviderEnabled && (
           <MainButton
-            title="Sync with Outlook"
+            title={t`Sync with Outlook`}
             onClick={() =>
               handleButtonClick(ConnectedAccountProvider.MICROSOFT)
             }
@@ -142,7 +161,7 @@ export const SyncEmails = () => {
         )}
         {!isMicrosoftProviderEnabled && !isGoogleProviderEnabled && (
           <MainButton
-            title="Continue"
+            title={t`Continue`}
             onClick={continueWithoutSync}
             width={144}
           />
@@ -150,7 +169,7 @@ export const SyncEmails = () => {
       </StyledProviderContainer>
       <StyledActionLinkContainer>
         <ActionLink onClick={continueWithoutSync}>
-          Continue without sync
+          <Trans>Continue without sync</Trans>
         </ActionLink>
       </StyledActionLinkContainer>
     </>

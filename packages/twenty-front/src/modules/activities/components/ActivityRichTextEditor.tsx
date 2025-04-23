@@ -2,7 +2,7 @@ import { useApolloClient } from '@apollo/client';
 import { PartialBlock } from '@blocknote/core';
 import { useCreateBlockNote } from '@blocknote/react';
 import { isArray, isNonEmptyString } from '@sniptt/guards';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRecoilCallback, useRecoilState } from 'recoil';
 import { Key } from 'ts-key-enum';
 import { useDebouncedCallback } from 'use-debounce';
@@ -33,6 +33,8 @@ import '@blocknote/core/fonts/inter.css';
 import '@blocknote/mantine/style.css';
 import '@blocknote/react/style.css';
 import { FeatureFlagKey } from '~/generated/graphql';
+import { usePrevious } from '@/hooks/local-state/usePrevious';
+import { ActivityRichTextEditorPlaceholderButtonBar } from './ActivityRichTextEditorPlaceholderButtonBar';
 
 type ActivityRichTextEditorProps = {
   activityId: string;
@@ -208,6 +210,10 @@ export const ActivityRichTextEditor = ({
     return undefined;
   }, [activity, isRichTextV2Enabled, activityId]);
 
+  const [initialBodyComputed, setInitialBodyComputed] = useState(false);
+
+  const prevInitialBody = usePrevious(initialBody);
+
   const handleEditorBuiltInUploadFile = async (file: File) => {
     const { attachmentAbsoluteURL } = await handleUploadAttachment(file);
 
@@ -220,6 +226,14 @@ export const ActivityRichTextEditor = ({
     schema: BLOCK_SCHEMA,
     uploadFile: handleEditorBuiltInUploadFile,
   });
+
+  // handle if initialBody is undefined at first
+  useEffect(() => {
+    if (!initialBodyComputed && initialBody !== undefined) {
+      setInitialBodyComputed(true);
+      editor.replaceBlocks(editor.document, initialBody);
+    }
+  }, [initialBody, prevInitialBody, initialBodyComputed, editor]);
 
   useScopedHotkeys(
     Key.Escape,
@@ -313,6 +327,7 @@ export const ActivityRichTextEditor = ({
         editor={editor}
         activityId={activityId}
       />
+
       <BlockEditor
         onFocus={handleBlockEditorFocus}
         onBlur={handlerBlockEditorBlur}

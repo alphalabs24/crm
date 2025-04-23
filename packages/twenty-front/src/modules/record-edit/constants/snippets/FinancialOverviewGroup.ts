@@ -7,6 +7,7 @@ export const FinancialOverviewGroup: FieldGroup = {
       name: 'offerType',
       type: 'field',
       fieldWidth: 150,
+      required: true,
     },
     {
       name: 'priceUnit',

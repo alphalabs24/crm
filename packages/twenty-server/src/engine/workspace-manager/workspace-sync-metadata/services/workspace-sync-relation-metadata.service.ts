@@ -73,7 +73,7 @@ export class WorkspaceSyncRelationMetadataService {
     // Create standard relation metadata collection
     const standardRelationMetadataCollection =
       this.standardRelationFactory.create(
-        context.defaultMetadataWorkspaceId
+        context.defaultWorkspaceId
           ? await relationMetadataRepository
               .createQueryBuilder('relation')
               .leftJoinAndSelect(
@@ -98,7 +98,7 @@ export class WorkspaceSyncRelationMetadataService {
               )
               .leftJoinAndSelect('relation.toFieldMetadata', 'toFieldMetadata')
               .where('relation.workspaceId = :workspaceId', {
-                workspaceId: context.defaultMetadataWorkspaceId,
+                workspaceId: context.defaultWorkspaceId,
               })
               .andWhere(
                 `(fromObjectMetadata.id IS NULL 

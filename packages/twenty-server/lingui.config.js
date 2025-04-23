@@ -17,7 +17,14 @@ export default defineConfig({
       path: '<rootDir>/src/engine/core-modules/i18n/locales/{locale}',
       include: ['src'],
     },
+    {
+      path: '<rootDir>/src/engine/core-modules/i18n/manual-locales/{locale}',
+      include: [], // Empty include means no extraction happens for this catalog
+    },
   ],
+  extract: {
+    keepObsolete: true,
+  },
   catalogsMergePath:
     '<rootDir>/src/engine/core-modules/i18n/locales/generated/{locale}',
   compileNamespace: 'ts',

@@ -1,39 +1,138 @@
+import { AgencyCredential } from '@/publishers/components/modals/EditPublisherModal';
+import styled from '@emotion/styled';
 import { Trans } from '@lingui/react/macro';
+import { Link } from 'react-router-dom';
+import { ColorScheme } from 'twenty-ui';
+
+const StyledLink = styled(Link)`
+  color: ${({ theme }) => theme.color.blue};
+  text-decoration: underline;
+`;
 
 export type PlatformType = 'social_media' | 'real_estate' | 'smart_listing';
 
 // TODO adapt these to the actual values
 export enum PlatformId {
-  SocialMedia = 'Social Media',
-  SwissMarketplaceGroup = 'Swiss Marketplace Group (SMG)',
+  SocialMedia = 'SOCIAL MEDIA',
+  SwissMarketplaceGroup = 'SMG',
   Newhome = 'NEWHOME',
-  ImmoScout = 'ImmoScout',
-  Homegate = 'Homegate',
-  Instagram = 'Instagram',
-  Facebook = 'Facebook',
-  Comparis = 'Comparis',
-  Flatfox = 'Flatfox',
-  SmartListing = 'Smart Listing',
+  ImmoScout = 'IMMOSCOUT',
+  Homegate = 'HOMEGATE',
+  Instagram = 'INSTAGRAM',
+  Facebook = 'FACEBOOK',
+  Comparis = 'COMPARIS',
+  Flatfox = 'FLATFOX',
+  SmartListing = 'SMART LISTING',
 }
+
+export type PublishablePlatforms =
+  | PlatformId.SwissMarketplaceGroup
+  | PlatformId.Newhome
+  | PlatformId.Comparis;
+
+export const PUBLISHABLE_PLATFORMS = [
+  PlatformId.SwissMarketplaceGroup,
+  PlatformId.Newhome,
+  PlatformId.Comparis,
+];
+
+export type PlatformField = {
+  name: string;
+  helpText?: React.ReactNode;
+  action?: () => void;
+  type?: 'text' | 'password';
+};
+
+export type PlatformLocaleKey = 'en' | 'de-DE' | 'fr-FR' | 'it-IT';
+export type PlatformLogo = {
+  [key in PlatformLocaleKey]?: {
+    [key in ColorScheme]?: string;
+  };
+};
 
 export type Platform = {
   type: PlatformType;
   name: string;
   description: React.ReactNode;
-  logo?: string;
+  logo?: PlatformLogo;
   isConnected?: boolean;
   accountName?: string;
   isNew?: boolean;
   isBeta?: boolean;
+  backgroundColor?: string;
+  fieldsOnAgency?: PlatformField[];
+  getOfferListLink?: (credential: AgencyCredential) => string | null;
 };
 
 export const PLATFORMS: { [key in PlatformId]: Platform } = {
   [PlatformId.Newhome]: {
     type: 'real_estate',
     name: 'Newhome',
-    description: <Trans>List your property conveniently to newhome.ch.</Trans>,
+    description: (
+      <Trans>
+        List your property conveniently to newhome.ch. If you don't have newhome
+        credentials, create a new account{' '}
+        <StyledLink to="https://id.newhome.ch/Registration" target="_blank">
+          here
+        </StyledLink>{' '}
+        and set up an IDX interface by clicking on 'Import interfaces'.
+      </Trans>
+    ),
     isNew: true,
-    logo: '/logos/newhome.png',
+    // eslint-disable-next-line @nx/workspace-no-hardcoded-colors
+    backgroundColor: '#97DDD2',
+    logo: {
+      en: {
+        Dark: '/logos/newhome/newhome_dark_EN.png',
+        Light: '/logos/newhome/newhome_EN.png',
+      },
+      'de-DE': {
+        Dark: '/logos/newhome/newhome_dark_DE.png',
+        Light: '/logos/newhome/newhome_DE.png',
+      },
+      'fr-FR': {
+        Dark: '/logos/newhome/newhome_dark_FR.png',
+        Light: '/logos/newhome/newhome_FR.png',
+      },
+      'it-IT': {
+        Dark: '/logos/newhome/newhome_dark_IT.png',
+        Light: '/logos/newhome/newhome_IT.png',
+      },
+    },
+    fieldsOnAgency: [
+      {
+        name: 'username',
+        helpText: (
+          <Trans>
+            Your FTP username can be found under "Import interfaces" on
+            MyNewhome.
+          </Trans>
+        ),
+      },
+      {
+        name: 'password',
+        helpText: (
+          <Trans>
+            Your FTP password can be found under "Import interfaces" on
+            MyNewhome.
+          </Trans>
+        ),
+        type: 'password',
+      },
+      {
+        name: 'partnerId',
+        helpText: (
+          <Trans>
+            Your Partner ID is displayed in your MyNewhome dashboard under
+            "Integration of ads on your own website" under Short name.
+          </Trans>
+        ),
+      },
+    ],
+    getOfferListLink: (credential: AgencyCredential) =>
+      credential.partnerId
+        ? `https://newhome.ch/partner/${credential.partnerId}.aspx`
+        : null,
   },
   [PlatformId.SocialMedia]: {
     type: 'social_media',
@@ -47,22 +146,68 @@ export const PLATFORMS: { [key in PlatformId]: Platform } = {
     ),
 
     isConnected: true,
-    logo: '/logos/socials.png',
+    logo: {
+      en: {
+        Dark: '/logos/socials.png',
+        Light: '/logos/socials.png',
+      },
+    },
     accountName: '@nester.mind',
     isBeta: true,
   },
   [PlatformId.SwissMarketplaceGroup]: {
     type: 'real_estate',
     name: 'Swiss Marketplace Group',
-    logo: '/logos/smg.png',
     description: (
       <Trans>
         This includes the following platforms: ImmoScout24, Homegate, and more.
       </Trans>
     ),
-    isBeta: true,
+    isNew: true,
+    // eslint-disable-next-line @nx/workspace-no-hardcoded-colors
+    backgroundColor: '#97DDD2',
+    logo: {
+      en: {
+        Dark: '/logos/smg.png',
+        Light: '/logos/smg.png',
+      },
+      'de-DE': {
+        Dark: '/logos/smg.png',
+        Light: '/logos/smg.png',
+      },
+      'fr-FR': {
+        Dark: '/logos/smg.png',
+        Light: '/logos/smg.png',
+      },
+      'it-IT': {
+        Dark: '/logos/smg.png',
+        Light: '/logos/smg.png',
+      },
+    },
+    fieldsOnAgency: [
+      {
+        name: 'username',
+        helpText: (
+          <Trans>
+            Your FTP username can be found under "Import interfaces" on Smg.
+          </Trans>
+        ),
+      },
+      {
+        name: 'password',
+        helpText: (
+          <Trans>
+            Your FTP password can be found under "Import interfaces" on Smg.
+          </Trans>
+        ),
+        type: 'password',
+      },
+      {
+        name: 'platformAgencyId',
+        helpText: <Trans>Your Agencie's ID on Smg.</Trans>,
+      },
+    ],
   },
-
   [PlatformId.SmartListing]: {
     type: 'smart_listing',
     name: 'Smart Listing',
@@ -72,18 +217,6 @@ export const PLATFORMS: { [key in PlatformId]: Platform } = {
         reach with a tailored listing.
       </Trans>
     ),
-    isBeta: true,
-  },
-  [PlatformId.ImmoScout]: {
-    type: 'real_estate',
-    name: 'ImmoScout24',
-    description: <Trans>List your property on ImmoScout24.</Trans>,
-    isBeta: true,
-  },
-  [PlatformId.Homegate]: {
-    type: 'real_estate',
-    name: 'Homegate',
-    description: <Trans>List your property on Homegate.</Trans>,
     isBeta: true,
   },
   [PlatformId.Instagram]: {
@@ -101,13 +234,67 @@ export const PLATFORMS: { [key in PlatformId]: Platform } = {
   [PlatformId.Comparis]: {
     type: 'real_estate',
     name: 'Comparis',
-    description: <Trans>List your property on Comparis.</Trans>,
-    isBeta: true,
+    description: (
+      <Trans>
+        List your property on Comparis. If you don't have Comparis credentials,
+        contact Comparis{' '}
+        <StyledLink
+          to="https://www.comparis.ch/immobilien/inserieren/loesungen-fuer-agenturen"
+          target="_blank"
+        >
+          here
+        </StyledLink>{' '}
+        by clicking the 'Get in touch' button under 'Import via Real Estate
+        Software (CRM)'.
+      </Trans>
+    ),
+    isNew: true,
+    logo: {
+      en: {
+        Dark: '/logos/comparis.png',
+        Light: '/logos/comparis.png',
+      },
+    },
+    fieldsOnAgency: [
+      {
+        name: 'username',
+        helpText: (
+          <Trans>
+            Your FTP username can be found under "Import interfaces" on
+            Comparis.
+          </Trans>
+        ),
+      },
+      {
+        name: 'password',
+        helpText: (
+          <Trans>
+            Your FTP password can be found under "Import interfaces" on
+            Comparis.
+          </Trans>
+        ),
+        type: 'password',
+      },
+      {
+        name: 'platformAgencyId',
+        helpText: <Trans>Your Agencie's ID on Comparis.</Trans>,
+      },
+    ],
   },
   [PlatformId.Flatfox]: {
     type: 'real_estate',
     name: 'Flatfox',
     description: <Trans>List your property on Flatfox.</Trans>,
     isBeta: true,
+  },
+  [PlatformId.ImmoScout]: {
+    type: 'real_estate',
+    name: 'ImmoScout',
+    description: undefined,
+  },
+  [PlatformId.Homegate]: {
+    type: 'real_estate',
+    name: 'Homegate',
+    description: undefined,
   },
 };

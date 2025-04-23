@@ -31,7 +31,10 @@ const getViewId = (
 export const MainContextStoreProvider = () => {
   const { isMatchingLocation } = useIsMatchingLocation();
   const isRecordIndexPage = isMatchingLocation(AppPath.RecordIndexPage);
-  const isRecordShowPage = isMatchingLocation(AppPath.RecordShowPage);
+  const isRecordShowPage =
+    isMatchingLocation(AppPath.RecordShowPage) ||
+    isMatchingLocation(AppPath.RecordEditPage) ||
+    isMatchingLocation(AppPath.RecordShowPropertyPage);
 
   const pageName = isRecordIndexPage
     ? 'record-index'
@@ -73,7 +76,6 @@ export const MainContextStoreProvider = () => {
 
   return (
     <MainContextStoreProviderEffect
-      mainContextStoreComponentInstanceIdToSet={'main-context-store'}
       viewId={viewId}
       objectMetadataItem={objectMetadataItem}
       pageName={pageName}

@@ -59,6 +59,20 @@ export class ActivityQueryResultGetterHandler
         const imageProps = block.props;
         const imageUrl = new URL(imageProps.url);
 
+        const isPublic = Boolean(imageUrl.searchParams.get('workspaceId'));
+
+        if (isPublic) {
+          imageUrl.searchParams.delete('token');
+
+          return {
+            ...block,
+            props: {
+              ...imageProps,
+              url: imageUrl,
+            },
+          };
+        }
+
         imageUrl.searchParams.delete('token');
 
         const signedPayload = await this.fileService.encodeFileToken({

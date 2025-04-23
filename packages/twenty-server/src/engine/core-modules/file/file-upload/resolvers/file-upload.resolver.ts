@@ -23,6 +23,8 @@ export class FileUploadResolver {
     { createReadStream, filename, mimetype }: FileUpload,
     @Args('fileFolder', { type: () => FileFolder, nullable: true })
     fileFolder: FileFolder,
+    @Args('isPublic', { type: () => Boolean, nullable: true })
+    isPublic?: boolean,
   ): Promise<string> {
     const stream = createReadStream();
     const buffer = await streamToBuffer(stream);
@@ -33,6 +35,7 @@ export class FileUploadResolver {
       mimeType: mimetype,
       fileFolder,
       workspaceId,
+      isPublic,
     });
 
     return path;
@@ -45,6 +48,8 @@ export class FileUploadResolver {
     { createReadStream, filename, mimetype }: FileUpload,
     @Args('fileFolder', { type: () => FileFolder, nullable: true })
     fileFolder: FileFolder,
+    @Args('isPublic', { type: () => Boolean, nullable: true })
+    isPublic?: boolean,
   ): Promise<string> {
     const stream = createReadStream();
     const buffer = await streamToBuffer(stream);
@@ -55,6 +60,7 @@ export class FileUploadResolver {
       mimeType: mimetype,
       fileFolder,
       workspaceId,
+      isPublic,
     });
 
     return paths[0];

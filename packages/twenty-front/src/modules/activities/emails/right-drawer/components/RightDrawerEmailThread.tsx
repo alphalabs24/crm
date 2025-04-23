@@ -13,8 +13,6 @@ import { RIGHT_DRAWER_CLICK_OUTSIDE_LISTENER_ID } from '@/ui/layout/right-drawer
 import { messageThreadState } from '@/ui/layout/right-drawer/states/messageThreadState';
 import { useClickOutsideListener } from '@/ui/utilities/pointer-event/hooks/useClickOutsideListener';
 import { useIsMobile } from '@/ui/utilities/responsive/hooks/useIsMobile';
-import { assertUnreachable } from '@/workflow/utils/assertUnreachable';
-import { ConnectedAccountProvider } from 'twenty-shared';
 import { Button, IconArrowBackUp } from 'twenty-ui';
 
 const StyledWrapper = styled.div`
@@ -55,7 +53,6 @@ export const RightDrawerEmailThread = () => {
     connectedAccountHandle,
     messageChannelLoading,
     connectedAccountProvider,
-    lastMessageExternalId,
   } = useRightDrawerEmailThread();
 
   useEffect(() => {
@@ -115,21 +112,44 @@ export const RightDrawerEmailThread = () => {
       return;
     }
 
-    let url: string;
-    switch (connectedAccountProvider) {
-      case ConnectedAccountProvider.MICROSOFT:
-        url = `https://outlook.office.com/mail/deeplink?ItemID=${lastMessageExternalId}`;
-        window.open(url, '_blank');
-        break;
-      case ConnectedAccountProvider.GOOGLE:
-        url = `https://mail.google.com/mail/?authuser=${connectedAccountHandle}#all/${messageThreadExternalId}`;
-        window.open(url, '_blank');
-        break;
-      case null:
-        throw new Error('Account provider not provided');
-      default:
-        assertUnreachable(connectedAccountProvider);
+    if (!lastMessage.sender.handle) {
+      return;
     }
+
+    const senderName =
+      lastMessage.sender?.displayName || lastMessage.sender.handle || 'Sender';
+
+    const date = new Date(
+      lastMessage.receivedAt || Date.now(),
+    ).toLocaleString();
+
+    const quotedText = lastMessage.text
+      .split('\n')
+      .map((line) => `> ${line}`)
+      .join('\n');
+
+    const body = `\n\nOn ${date}, ${senderName} wrote:\n${quotedText}`;
+
+    const mailto = `mailto:${lastMessage.sender.handle}?subject=${encodeURIComponent('Re: ' + subject)}&body=${encodeURIComponent(body)}`;
+    window.open(mailto, '_blank');
+    // switch (connectedAccountProvider) {
+    //   case ConnectedAccountProvider.MICROSOFT:
+    //     url = `https://outlook.office.com/mail/deeplink?ItemID=${lastMessageExternalId}`;
+    //     window.open(url, '_blank');
+    //     break;
+    //   case ConnectedAccountProvider.GOOGLE:
+    //     console.log(lastMessage.messageParticipants);
+    //     url = `mailto:${lastMessage.messageParticipants[1].person.emails.primaryEmail}?subject=${'Re:' + encodeURIComponent(subject)}&body=${encodeURIComponent(lastMessage.text)}`;
+    //     window.open(url, '_blank');
+    //     break;
+    //   // url = `https://mail.google.com/mail/?authuser=${connectedAccountHandle}#all/${messageThreadExternalId}`;
+    //   // window.open(url, '_blank');
+    //   // break;
+    //   case null:
+    //     throw new Error('Account provider not provided');
+    //   default:
+    //     assertUnreachable(connectedAccountProvider);
+    // }
   };
   if (!thread || !messages.length) {
     return null;

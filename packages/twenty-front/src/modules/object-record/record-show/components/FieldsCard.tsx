@@ -17,6 +17,7 @@ import { RecordDetailRelationSection } from '@/object-record/record-show/record-
 import { isFieldCellSupported } from '@/object-record/utils/isFieldCellSupported';
 import { isDefined } from 'twenty-shared';
 import { FieldMetadataType } from '~/generated/graphql';
+import { CoreObjectNamePlural } from '@/object-metadata/types/CoreObjectNamePlural';
 
 type FieldsCardProps = {
   objectNameSingular: string;
@@ -79,9 +80,13 @@ export const FieldsCard = ({
     (fieldMetadataItem) =>
       !(
         (objectNameSingular === CoreObjectNameSingular.Note &&
-          fieldMetadataItem.name === 'noteTargets') ||
+          (fieldMetadataItem.name === 'noteTargets' ||
+            fieldMetadataItem.name === 'emailTemplateForPublications' ||
+            fieldMetadataItem.name === 'emailTemplateForProperties')) ||
         (objectNameSingular === CoreObjectNameSingular.Task &&
-          fieldMetadataItem.name === 'taskTargets')
+          fieldMetadataItem.name === 'taskTargets') ||
+        // Don't show buyer lead relation since it's not relevant to the user to see the underlying buyer lead record
+        fieldMetadataItem.name === CoreObjectNamePlural.BuyerLead
       ),
   );
 
@@ -121,6 +126,7 @@ export const FieldsCard = ({
                             | CoreObjectNameSingular.Note
                             | CoreObjectNameSingular.Task
                         }
+                        readonly
                         activity={recordFromStore as Task | Note}
                         showLabel={true}
                         maxWidth={200}

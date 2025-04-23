@@ -1,4 +1,4 @@
-import { UseGuards } from '@nestjs/common';
+import { BadRequestException, UseGuards } from '@nestjs/common';
 import {
   Args,
   Mutation,
@@ -11,9 +11,13 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 import crypto from 'crypto';
 
-import { GraphQLJSONObject } from 'graphql-type-json';
+import { GraphQLJSON, GraphQLJSONObject } from 'graphql-type-json';
 import { FileUpload, GraphQLUpload } from 'graphql-upload';
-import { PermissionsOnAllObjectRecords, SettingsFeatures } from 'twenty-shared';
+import {
+  PermissionsOnAllObjectRecords,
+  SettingsFeatures,
+  nestermindUserVars,
+} from 'twenty-shared';
 import { In, Repository } from 'typeorm';
 
 import { SupportDriver } from 'src/engine/core-modules/environment/interfaces/support.interface';
@@ -53,7 +57,6 @@ import { RoleDTO } from 'src/engine/metadata-modules/role/dtos/role.dto';
 import { UserRoleService } from 'src/engine/metadata-modules/user-role/user-role.service';
 import { AccountsToReconnectKeys } from 'src/modules/connected-account/types/accounts-to-reconnect-key-value.type';
 import { streamToBuffer } from 'src/utils/stream-to-buffer';
-
 const getHMACKey = (email?: string, key?: string | null) => {
   if (!email || !key) return null;
 
@@ -153,6 +156,7 @@ export class UserResolver {
       OnboardingStepKeys.ONBOARDING_CONNECT_ACCOUNT_PENDING,
       AccountsToReconnectKeys.ACCOUNTS_TO_RECONNECT_INSUFFICIENT_PERMISSIONS,
       AccountsToReconnectKeys.ACCOUNTS_TO_RECONNECT_EMAIL_ALIASES,
+      ...nestermindUserVars,
     ] as string[];
 
     const filteredMap = new Map(
@@ -160,6 +164,31 @@ export class UserResolver {
     );
 
     return Object.fromEntries(filteredMap);
+  }
+
+  @Mutation(() => GraphQLJSONObject)
+  async setUserVar(
+    @AuthUser() user: User,
+    @AuthWorkspace() workspace: Workspace,
+    @Args({ name: 'key', type: () => String })
+    key: string,
+    @Args({ name: 'value', type: () => GraphQLJSON })
+    value: any,
+  ): Promise<Record<string, any>> {
+    const userVarUpdateAllowList = [...nestermindUserVars] as string[];
+
+    if (!userVarUpdateAllowList.includes(key)) {
+      throw new BadRequestException(`User var key ${key} not allowed`);
+    }
+
+    await this.userVarService.set({
+      userId: user.id,
+      workspaceId: workspace.id,
+      key,
+      value,
+    });
+
+    return this.userVars(user, workspace);
   }
 
   @ResolveField(() => WorkspaceMember, {

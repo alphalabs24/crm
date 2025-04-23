@@ -1,5 +1,6 @@
 import assert from 'assert';
-
+import { JSDOM } from 'jsdom';
+import DOMPurify from 'dompurify';
 import addressparser from 'addressparser';
 import { gmail_v1 } from 'googleapis';
 
@@ -24,8 +25,11 @@ export const parseGmailMessage = (message: gmail_v1.Schema$Message) => {
   assert(historyId, 'History-ID is missing');
   assert(internalDate, 'Internal date is missing');
 
+  const window = new JSDOM('').window;
+  const purify = DOMPurify(window);
+
   const bodyData = getBodyData(message);
-  const text = bodyData ? Buffer.from(bodyData, 'base64').toString() : '';
+  const text = purify.sanitize(bodyData) || '';
 
   const attachments = getAttachmentData(message);
 

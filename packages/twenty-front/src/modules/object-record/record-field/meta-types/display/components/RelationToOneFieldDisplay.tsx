@@ -3,7 +3,11 @@ import { RecordChip } from '@/object-record/components/RecordChip';
 import { useRelationToOneFieldDisplay } from '@/object-record/record-field/meta-types/hooks/useRelationToOneFieldDisplay';
 import { PlatformBadge } from '@/object-record/record-show/components/nm/publication/PlatformBadge';
 
-export const RelationToOneFieldDisplay = () => {
+export const RelationToOneFieldDisplay = ({
+  canClick = true,
+}: {
+  canClick?: boolean;
+}) => {
   const { fieldValue, fieldDefinition, generateRecordChipData } =
     useRelationToOneFieldDisplay();
 
@@ -21,12 +25,13 @@ export const RelationToOneFieldDisplay = () => {
       key={recordChipData.recordId}
       objectNameSingular={recordChipData.objectNameSingular}
       record={fieldValue}
+      disabled={!canClick}
       LeftCustomComponent={
         isPublication(recordChipData.objectNameSingular) &&
         fieldValue.platform ? (
           <PlatformBadge
-            platformId={fieldValue.platform.toUpperCase()}
-            variant="small"
+            platformId={fieldValue.platform?.toUpperCase()}
+            size="small"
           />
         ) : undefined
       }

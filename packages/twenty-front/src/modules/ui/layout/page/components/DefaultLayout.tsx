@@ -16,6 +16,7 @@ import styled from '@emotion/styled';
 import { AnimatePresence, LayoutGroup, motion } from 'framer-motion';
 import { Outlet } from 'react-router-dom';
 import { useScreenSize } from 'twenty-ui';
+import { LocalePicker } from '~/pages/settings/profile/appearance/components/LocalePicker';
 
 const StyledLayout = styled.div`
   background: ${({ theme }) => theme.background.noisy};
@@ -61,6 +62,12 @@ const StyledMainContainer = styled.div`
   display: flex;
   flex: 0 1 100%;
   overflow: hidden;
+`;
+
+const StyledLocaleHeader = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
 `;
 
 export const DefaultLayout = () => {
@@ -111,6 +118,10 @@ export const DefaultLayout = () => {
               <AnimatePresence mode="wait">
                 <LayoutGroup>
                   <AuthModal>
+                    <StyledLocaleHeader>
+                      <LocalePicker />
+                    </StyledLocaleHeader>
+
                     <Outlet />
                   </AuthModal>
                 </LayoutGroup>

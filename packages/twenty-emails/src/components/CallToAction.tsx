@@ -13,6 +13,8 @@ const callToActionStyle = {
   color: emailTheme.font.colors.inverted,
   fontSize: emailTheme.font.size.md,
   fontWeight: emailTheme.font.weight.bold,
+  alignItems: 'center',
+  justifyContent: 'center',
 };
 
 type CallToActionProps = {

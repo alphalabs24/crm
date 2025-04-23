@@ -15,13 +15,14 @@ import {
   IconRocket,
   IconServer,
   IconSettings,
+  IconShare,
   IconUserCircle,
   IconUsers,
 } from 'twenty-ui';
 
 import { SettingsPath } from '@/types/SettingsPath';
 import { SettingsFeatures } from 'twenty-shared';
-import { FeatureFlagKey } from '~/generated-metadata/graphql';
+import { FeatureFlagKey } from '~/generated/graphql';
 
 import { currentUserState } from '@/auth/states/currentUserState';
 import { billingState } from '@/client-config/states/billingState';
@@ -29,6 +30,7 @@ import { labPublicFeatureFlagsState } from '@/client-config/states/labPublicFeat
 import { useSettingsPermissionMap } from '@/settings/roles/hooks/useSettingsPermissionMap';
 import { NavigationDrawerItemIndentationLevel } from '@/ui/navigation/navigation-drawer/components/NavigationDrawerItem';
 import { useFeatureFlagsMap } from '@/workspace/hooks/useFeatureFlagsMap';
+import { useIsFeatureEnabled } from '@/workspace/hooks/useIsFeatureEnabled';
 import { t } from '@lingui/core/macro';
 import { useRecoilValue } from 'recoil';
 
@@ -58,6 +60,21 @@ const useSettingsNavigationItems = (): SettingsNavigationSection[] => {
   const currentUser = useRecoilValue(currentUserState);
   const isAdminEnabled = currentUser?.canImpersonate ?? false;
   const labPublicFeatureFlags = useRecoilValue(labPublicFeatureFlagsState);
+  const isDataModelSettingsEnabled = useIsFeatureEnabled(
+    FeatureFlagKey.IsDataModelSettingsEnabled,
+  );
+
+  const isIntegrationSettingsEnabled = useIsFeatureEnabled(
+    FeatureFlagKey.IsIntegrationSettingsEnabled,
+  );
+
+  const isLaborSettingsEnabled = useIsFeatureEnabled(
+    FeatureFlagKey.IsLaborSettingsEnabled,
+  );
+
+  const isEmailSettingsPageEnabled = useIsFeatureEnabled(
+    FeatureFlagKey.IsEmailSettingsPageEnabled,
+  );
 
   const featureFlags = useFeatureFlagsMap();
   const permissionMap = useSettingsPermissionMap();
@@ -87,6 +104,7 @@ const useSettingsNavigationItems = (): SettingsNavigationSection[] => {
               path: SettingsPath.AccountsEmails,
               Icon: IconMail,
               indentationLevel: 2,
+              isHidden: !isEmailSettingsPageEnabled,
             },
             {
               label: t`Calendars`,
@@ -114,6 +132,18 @@ const useSettingsNavigationItems = (): SettingsNavigationSection[] => {
           isHidden: !permissionMap[SettingsFeatures.WORKSPACE_USERS],
         },
         {
+          label: t`Platforms`,
+          path: SettingsPath.Platforms,
+          Icon: IconShare,
+          isHidden: !permissionMap[SettingsFeatures.WORKSPACE],
+        },
+        {
+          label: t`Email Settings`,
+          path: SettingsPath.EmailTemplates,
+          Icon: IconMail,
+          isHidden: !permissionMap[SettingsFeatures.WORKSPACE],
+        },
+        {
           label: t`Billing`,
           path: SettingsPath.Billing,
           Icon: IconCurrencyDollar,
@@ -132,13 +162,17 @@ const useSettingsNavigationItems = (): SettingsNavigationSection[] => {
           label: t`Data model`,
           path: SettingsPath.Objects,
           Icon: IconHierarchy2,
-          isHidden: !permissionMap[SettingsFeatures.DATA_MODEL],
+          isHidden:
+            !permissionMap[SettingsFeatures.DATA_MODEL] ||
+            !isDataModelSettingsEnabled,
         },
         {
           label: t`Integrations`,
           path: SettingsPath.Integrations,
           Icon: IconApps,
-          isHidden: !permissionMap[SettingsFeatures.API_KEYS_AND_WEBHOOKS],
+          isHidden:
+            !permissionMap[SettingsFeatures.API_KEYS_AND_WEBHOOKS] ||
+            !isIntegrationSettingsEnabled,
         },
         {
           label: t`Security`,
@@ -184,12 +218,15 @@ const useSettingsNavigationItems = (): SettingsNavigationSection[] => {
           Icon: IconFlask,
           isHidden:
             !labPublicFeatureFlags.length ||
-            !permissionMap[SettingsFeatures.WORKSPACE],
+            !permissionMap[SettingsFeatures.WORKSPACE] ||
+            !isLaborSettingsEnabled,
         },
         {
           label: t`Releases`,
           path: SettingsPath.Releases,
           Icon: IconRocket,
+          // TODO: Create nestermind releases page!
+          isHidden: true,
         },
       ],
     },

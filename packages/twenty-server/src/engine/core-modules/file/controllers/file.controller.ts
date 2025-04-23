@@ -2,6 +2,7 @@ import {
   Controller,
   Get,
   Param,
+  Query,
   Req,
   Res,
   UseFilters,
@@ -20,6 +21,7 @@ import {
   FileExceptionCode,
 } from 'src/engine/core-modules/file/file.exception';
 import {
+  checkFileNamePublic,
   checkFilePath,
   checkFilename,
 } from 'src/engine/core-modules/file/file.utils';
@@ -29,10 +31,61 @@ import { FileService } from 'src/engine/core-modules/file/services/file.service'
 
 @Controller('files')
 @UseFilters(FileApiExceptionFilter)
-@UseGuards(FilePathGuard)
 export class FileController {
   constructor(private readonly fileService: FileService) {}
 
+  @Get('*/public/:filename')
+  async getPublicFile(
+    @Param() params: string[],
+    @Res() res: Response,
+    @Query() query: any,
+  ) {
+    // "public" gets filtered out by controller and is reattached after sanitization
+    const folderPath = checkFilePath(params[0]) + '/public';
+    const filename = checkFileNamePublic(params['filename']);
+    const workspaceId = query.workspaceId;
+
+    if (!workspaceId) {
+      throw new FileException(
+        'Unauthorized: missing workspaceId',
+        FileExceptionCode.UNAUTHENTICATED,
+      );
+    }
+
+    try {
+      const fileStream = await this.fileService.getFileStream(
+        folderPath,
+        filename,
+        workspaceId,
+      );
+
+      fileStream.on('error', () => {
+        throw new FileException(
+          'Error streaming file from storage',
+          FileExceptionCode.INTERNAL_SERVER_ERROR,
+        );
+      });
+
+      fileStream.pipe(res);
+    } catch (error) {
+      if (
+        error instanceof FileStorageException &&
+        error.code === FileStorageExceptionCode.FILE_NOT_FOUND
+      ) {
+        throw new FileException(
+          'File not found',
+          FileExceptionCode.FILE_NOT_FOUND,
+        );
+      }
+
+      throw new FileException(
+        `Error retrieving file: ${error.message}`,
+        FileExceptionCode.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  @UseGuards(FilePathGuard)
   @Get('*/:filename')
   async getFile(
     @Param() params: string[],

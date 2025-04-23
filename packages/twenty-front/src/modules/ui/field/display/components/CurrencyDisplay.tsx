@@ -1,4 +1,3 @@
-import { useTheme } from '@emotion/react';
 import { styled } from '@linaria/react';
 
 import { FieldCurrencyValue } from '@/object-record/record-field/types/FieldMetadata';
@@ -22,8 +21,6 @@ const StyledEllipsisDisplay = styled.div`
 `;
 
 export const CurrencyDisplay = ({ currencyValue }: CurrencyDisplayProps) => {
-  const theme = useTheme();
-
   const shouldDisplayCurrency = isDefined(currencyValue?.currencyCode);
 
   const CurrencyIcon = isDefined(currencyValue?.currencyCode)

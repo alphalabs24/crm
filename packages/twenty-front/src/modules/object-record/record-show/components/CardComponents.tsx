@@ -7,7 +7,10 @@ import { TimelineActivities } from '@/activities/timeline-activities/components/
 import { ActivityTargetableObject } from '@/activities/types/ActivityTargetableEntity';
 import { FieldsCard } from '@/object-record/record-show/components/FieldsCard';
 import { AISuite } from '@/object-record/record-show/components/nm/AISuite';
-import { ObjectOverview } from '@/object-record/record-show/components/nm/ObjectOverview';
+import { MobileInquiriesCard } from '@/object-record/record-show/components/nm/cards/MobileInquiriesCard';
+import { MobilePublicationsCard } from '@/object-record/record-show/components/nm/cards/MobilePublicationsCard';
+import { PublicationList } from '@/object-record/record-show/components/nm/cards/PublicationList';
+import { PropertyDetails } from '@/object-record/record-show/components/nm/PropertyDetails';
 import { PublicationDetails } from '@/object-record/record-show/components/nm/PublicationDetails';
 
 import { CardType } from '@/object-record/record-show/types/CardType';
@@ -105,7 +108,7 @@ export const CardComponents: Record<CardType, CardComponentType> = {
   ),
 
   [CardType.OverviewCard]: ({ targetableObject, isInRightDrawer }) => (
-    <ObjectOverview
+    <PropertyDetails
       targetableObject={targetableObject}
       isInRightDrawer={isInRightDrawer}
     />
@@ -123,6 +126,21 @@ export const CardComponents: Record<CardType, CardComponentType> = {
     isInRightDrawer,
   }) => (
     <PublicationDetails
+      targetableObject={targetableObject}
+      isInRightDrawer={isInRightDrawer}
+    />
+  ),
+
+  [CardType.MobileInquiriesCard]: ({ targetableObject }) => (
+    <MobileInquiriesCard targetableObject={targetableObject} />
+  ),
+
+  [CardType.MobilePublicationsCard]: ({ targetableObject }) => (
+    <MobilePublicationsCard targetableObject={targetableObject} />
+  ),
+
+  [CardType.PublicationListCard]: ({ targetableObject, isInRightDrawer }) => (
+    <PublicationList
       targetableObject={targetableObject}
       isInRightDrawer={isInRightDrawer}
     />

@@ -27,6 +27,7 @@ export default defineConfig(({ command, mode }) => {
     SSL_KEY_PATH,
     REACT_APP_PORT,
     REACT_APP_MAPBOX_ACCESS_TOKEN,
+    REACT_APP_NESTERMIND_SERVER_BASE_URL,
   } = env;
 
   const port = isNonEmptyString(REACT_APP_PORT)
@@ -159,6 +160,7 @@ export default defineConfig(({ command, mode }) => {
       'process.env': {
         REACT_APP_SERVER_BASE_URL,
         REACT_APP_MAPBOX_ACCESS_TOKEN,
+        REACT_APP_NESTERMIND_SERVER_BASE_URL,
       },
     },
     css: {

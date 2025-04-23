@@ -1,3 +1,5 @@
+import { getEnv } from '~/utils/get-env';
+
 declare global {
   interface Window {
     _env_?: Record<string, string>;
@@ -25,6 +27,4 @@ const getDefaultUrl = () => {
 };
 
 export const REACT_APP_SERVER_BASE_URL =
-  window._env_?.REACT_APP_SERVER_BASE_URL ||
-  process.env.REACT_APP_SERVER_BASE_URL ||
-  getDefaultUrl();
+  getEnv('REACT_APP_SERVER_BASE_URL') || getDefaultUrl();

@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: nestermind-crm\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-03-10 07:48\n"
+"PO-Revision-Date: 2025-04-22 11:48\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -29,6 +29,10 @@ msgstr ""
 #~ msgid "Create Draft"
 #~ msgstr "Create Draft"
 
+#: src/modules/object-record/hooks/useFormattedPropertyFields.ts
+#~ msgid ", "
+#~ msgstr ", "
+
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
 msgid "(coming soon)"
 msgstr "(bald verfügbar)"
@@ -41,6 +45,10 @@ msgstr "(bald verfügbar)"
 #~ msgid "(Updated)"
 #~ msgstr "(Updated)"
 
+#: src/modules/object-record/record-show/components/nm/PropertyDetails.tsx
+#~ msgid "{0} deleted successfully"
+#~ msgstr "{0} deleted successfully"
+
 #: src/modules/object-record/record-board/record-board-column/utils/computeAggregateValueAndLabel.ts
 msgid "{aggregateLabel} of {fieldLabel}"
 msgstr "{aggregateLabel} von {fieldLabel}"
@@ -49,26 +57,51 @@ msgstr "{aggregateLabel} von {fieldLabel}"
 msgid "{apiKeyName} API Key"
 msgstr "{apiKeyName} API-Schlüssel"
 
+#: src/modules/object-record/hooks/useFormattedPropertyFields.ts
+#~ msgid "{formattedAmount} {currencyCode}"
+#~ msgstr "{formattedAmount} {currencyCode}"
+
+#: src/modules/object-record/hooks/useFormattedPropertyFields.ts
+msgid "{formattedAmount} {currencyCode} / month"
+msgstr "{formattedAmount} {currencyCode} / Monat"
+
+#: src/modules/object-record/record-show/components/nm/cards/PropertyDetailsCard.tsx
+#~ msgid "{groupTitle}"
+#~ msgstr "{groupTitle}"
+
+#: src/modules/object-record/hooks/useFormattedPropertyFields.ts
+#~ msgid "{localString} m²"
+#~ msgstr "{localString} m²"
+
+#: src/modules/object-record/hooks/useFormattedPropertyFields.ts
+#~ msgid "{localString} m³"
+#~ msgstr "{localString} m³"
+
 #: src/modules/action-menu/actions/record-agnostic-actions/run-workflow-actions/hooks/useRunWorkflowActions.tsx
 #: src/modules/action-menu/actions/record-actions/workflow-run-record-actions/hooks/useWorkflowRunRecordActions.tsx
 msgid "{name}"
 msgstr "{name}"
 
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+#: src/modules/object-record/record-show/components/nm/PropertyDetails.tsx
 msgid "{objectNameSingular} deleted successfully"
 msgstr "{objectNameSingular} erfolgreich gelöscht"
 
 #: src/modules/record-edit/components/RecordEditContainer.tsx
-msgid "{objectNameSingular} saved successfully"
-msgstr "{objectNameSingular} erfolgreich gespeichert"
+#~ msgid "{objectNameSingular} saved successfully"
+#~ msgstr "{objectNameSingular} saved successfully"
 
 #: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
-msgid "{overviewLabel} Overview"
-msgstr "{overviewLabel} Übersicht"
+#~ msgid "{overviewLabel} Overview"
+#~ msgstr "{overviewLabel} Overview"
 
 #: src/pages/settings/roles/components/RoleAssignmentConfirmationModalSubtitle.tsx
 msgid "{workspaceMemberName} will be unassigned from the following role:"
 msgstr "{workspaceMemberName} wird von folgender Rolle abgezogen:"
+
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/Publishing.tsx
+msgid "*It can take up to 10 minutes until publications are visible."
+msgstr "*Es kann bis zu 10 Minuten dauern, bis Veröffentlichungen sichtbar sind auf der gewählten Plattform."
 
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
 #~ msgid "<0>{0}</0>"
@@ -96,11 +129,15 @@ msgstr "24h ({hour24Label})"
 
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/ContentCustomize.tsx
 msgid "3 videos have been generated and added to your carousel"
-msgstr "3 Videos wurden generiert und Ihrem Karussell hinzugefügt"
+msgstr "3 Videos wurden generiert und Deinem Karussell hinzugefügt"
+
+#: src/modules/onboarding-tutorial/constants/onboarding-steps.tsx
+msgid "A property in nestermind holds the master data about a property you want to publish."
+msgstr "Ein Objekt in nestermind enthält die Stammdaten über eine Immobilie, die Sie publizieren möchten."
 
 #: src/pages/onboarding/CreateWorkspace.tsx
 msgid "A shared environment where you will be able to manage your customer relations with your team."
-msgstr "Eine gemeinsame Umgebung, in der Sie Ihre Kundenbeziehungen zusammen mit Ihrem Team verwalten können."
+msgstr "Eine gemeinsame Umgebung, in der Du Deine Kundenbeziehungen zusammen mit Deinem Team verwalten kannst."
 
 #: src/pages/settings/roles/components/RolePermissions.tsx
 msgid "Ability to interact with each object"
@@ -155,7 +192,11 @@ msgstr "Aktiv"
 
 #: src/pages/settings/developers/SettingsDevelopers.tsx
 msgid "Active API keys created by you or your team."
-msgstr "Aktive API-Schlüssel, die von Ihnen oder Ihrem Team erstellt wurden."
+msgstr "Aktive API-Schlüssel, die von Dir oder Deinem Team erstellt wurden."
+
+#: src/modules/inquiries/components/sidebar/PropertyDetails.tsx
+msgid "Active Publications"
+msgstr "Aktive Publikationen"
 
 #: src/modules/ui/layout/page/components/PageAddButton.tsx
 msgid "Add"
@@ -176,7 +217,7 @@ msgstr "Fügen Sie alle anderen Dokumente hinzu, die in der Veröffentlichung en
 
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Add documents related to your property that will be visible in the publication."
-msgstr "Fügen Sie Dokumente zu Ihrer Immobilie hinzu, die in der Publikation sichtbar sein werden."
+msgstr "Füge Dokumente zu Deinem Objekt hinzu, die in der Publikation sichtbar sein werden."
 
 #: src/modules/settings/data-model/object-details/components/tabs/ObjectFields.tsx
 msgid "Add Field"
@@ -184,15 +225,19 @@ msgstr "Feld hinzufügen"
 
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 msgid "Add images of your property that will be visible in the publication."
-msgstr "Fügen Sie Bilder Ihrer Immobilie hinzu, die in der Publikation sichtbar sein werden."
+msgstr "Füge Bilder Deinem Objekt hinzu, die in der Publikation sichtbar sein werden."
 
 #: src/modules/object-record/record-show/components/nm/publication/CompletionProgress.tsx
 msgid "Add more details to improve your listing"
-msgstr "Fügen Sie weitere Details hinzu, um Ihr Angebot zu verbessern"
+msgstr "Füge weitere Details hinzu, um Dein Angebot zu verbessern"
 
 #: src/pages/settings/data-model/SettingsObjects.tsx
 msgid "Add object"
 msgstr "Objekt hinzufügen"
+
+#: src/pages/settings/publishers/components/PublishersListCard.tsx
+msgid "Add Publisher"
+msgstr "Anbieter hinzufügen"
 
 #: src/modules/settings/security/components/SettingsSSOIdentitiesProvidersListCard.tsx
 msgid "Add SSO Identity Provider"
@@ -217,8 +262,12 @@ msgid "Add to favorites"
 msgstr "Zu Favoriten hinzufügen"
 
 #: src/modules/object-record/record-table/empty-state/utils/getEmptyStateTitle.ts
-msgid "Add your first {objectLabel}"
-msgstr "Fügen Sie Ihr erstes {objectLabel} hinzu"
+msgid "Add your {objectLabel}"
+msgstr "Füge deine {objectLabel} hinzu"
+
+#: src/modules/object-record/record-table/empty-state/utils/getEmptyStateTitle.ts
+#~ msgid "Add your first {objectLabel}"
+#~ msgstr "Add your first {objectLabel}"
 
 #: src/modules/ui/layout/show-page/components/ShowPageSummaryCard.tsx
 msgid "Added {beautifiedCreatedAt}"
@@ -239,6 +288,10 @@ msgstr "Adresse"
 #: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
 msgid "Address City"
 msgstr "Adresse Stadt"
+
+#: src/modules/object-record/record-show/components/nm/cards/PropertyAddressCard.tsx
+msgid "Address copied to clipboard"
+msgstr "Adresse in die Zwischenablage kopiert"
 
 #: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
 msgid "Address Country"
@@ -269,8 +322,8 @@ msgstr "Erweitert:"
 #~ msgstr "Afrikaans"
 
 #: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
-msgid "Agency Credentials"
-msgstr "Agentur-Zugangsdaten"
+#~ msgid "Agency Credentials"
+#~ msgstr "Agency Credentials"
 
 #: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
 msgid "Agriculture Subtype"
@@ -283,6 +336,10 @@ msgstr "Alle"
 #: src/modules/object-record/record-show/record-detail-section/components/RecordDetailRelationSection.tsx
 msgid "All ({relationRecordsCount})"
 msgstr "Alle ({relationRecordsCount})"
+
+#: src/modules/onboarding-tutorial/components/modals/InquiryTutorialModal.tsx
+msgid "All emails related to the inquiry are stored here. Additionally, you can store files, notes, and other details directly on the inquiry – <0>everything in one place</0> and specifically related to this connection. This is how nestermind ensures that you can manage inquiries in a structured way and no important information is lost."
+msgstr "Hier werden alle E-Mails gespeichert, die im Zusammenhang mit der Anfrage stehen. Zudem kannst du Dateien, Notizen und weitere Details direkt auf der Afrage hinterlegen – alles an einem Ort und genau auf diese Verbindung bezogen. So sorgt Nestermind dafür, dass du Anfragen strukturiert verwalten kannst und keine wichtigen Informationen verloren gehen."
 
 #: src/pages/settings/roles/SettingsRoles.tsx
 msgid "All roles"
@@ -297,8 +354,12 @@ msgid "Allow logins through Microsoft's single sign-on functionality."
 msgstr "Anmeldungen über Microsoft Single Sign-On zulassen."
 
 #: src/pages/onboarding/CreateProfile.tsx
-msgid "Allow Nestermind to access and administer my data."
+msgid "Allow nestermind to access and administer my data."
 msgstr "nestermind den Zugriff und die Verwaltung meiner Daten gestatten."
+
+#: src/pages/onboarding/CreateProfile.tsx
+#~ msgid "Allow Nestermind to access and administer my data."
+#~ msgstr "Allow Nestermind to access and administer my data."
 
 #: src/modules/settings/security/components/SettingsSecurityOptionsList.tsx
 msgid "Allow the invitation of new users by sharing an invite link."
@@ -374,6 +435,14 @@ msgstr "Möchten Sie diese {objectNameSingularCapitalized} wirklich löschen?"
 msgid "Are you sure you want to delete this {objectNameSingularCapitalized}? <0>All it's publications will be deleted as well.</0>"
 msgstr "Sind Sie sicher, dass Sie diese {objectNameSingularCapitalized} löschen möchten? <0>Alle dazugehörigen Veröffentlichungen werden ebenfalls gelöscht.</0>"
 
+#: src/pages/settings/email-templates/components/SettingsEmailTemplatesContent.tsx
+msgid "Are you sure you want to delete this email template? This cannot be undone."
+msgstr "Bist Du sicher, dass Du diese Vorlage löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
+
+#: src/modules/inquiries/components/InquiryItem.tsx
+msgid "Are you sure you want to delete this inquiry? This cannot be undone."
+msgstr "Bist du sicher, dass du diese Anfrage löschen möchtest? Dies kann nicht rückgängig gemacht werden."
+
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
 #~ msgid "Are you sure you want to delete this property and all it's publications?"
 #~ msgstr "Are you sure you want to delete this property and all it's publications?"
@@ -381,6 +450,23 @@ msgstr "Sind Sie sicher, dass Sie diese {objectNameSingularCapitalized} löschen
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
 #~ msgid "Are you sure you want to delete this publication?"
 #~ msgstr "Are you sure you want to delete this publication?"
+
+#: src/modules/object-record/record-show/components/nm/publication/PublicationDetailPage.tsx
+msgid "Are you sure you want to delete this publication? This action cannot be undone."
+msgstr "Möchtest du diese Publikation wirklich löschen? Du kannst sie nicht wiederherstellen."
+
+#: src/pages/settings/publishers/SettingsPublishers.tsx
+msgid "Are you sure you want to delete this publisher? This action cannot be undone."
+msgstr "Bist Du sicher, dass Du diesen Anbieter löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
+
+#: src/modules/object-record/record-show/components/nm/publication/PublicationDetailPage.tsx
+msgid "Are you sure you want to revert all changes? This will delete the draft and any changes you've made. This action cannot be undone."
+msgstr "Alle Änderungen verwerfen? Der Entwurf wird gelöscht und alle Änderungen gehen verloren. Dies kann nicht rückgängig gemacht werden."
+
+#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+#: src/modules/object-record/record-show/components/nm/publication/PublicationDetailPage.tsx
+msgid "Are you sure you want to unpublish this publication? This will remove it from the published platform and make it unavailable to potential clients. You can always publish it again later."
+msgstr "Sicher, dass diese Veröffentlichung zurückgezogen werden soll? Dadurch wird sie von der Plattform entfernt und potenziellen Kunden nicht mehr zugänglich gemacht. Du kannst sie jederzeit wieder veröffentlichen."
 
 #: src/modules/object-record/object-sort-dropdown/components/ObjectSortDropdownButton.tsx
 #: src/modules/object-record/object-sort-dropdown/components/ObjectSortDropdownButton.tsx
@@ -427,6 +513,22 @@ msgstr "Authentifizierung"
 msgid "Authorize"
 msgstr "Autorisieren"
 
+#: src/modules/inquiries/components/sidebar/ConversationMessageItem.tsx
+#~ msgid "Auto Response"
+#~ msgstr "Auto Response"
+
+#: src/modules/onboarding-tutorial/components/modals/EmailTutorialModal.tsx
+msgid "Automatic creation of Inquiries"
+msgstr "Automatische Erstellung von Anfragen"
+
+#: src/modules/onboarding-tutorial/components/modals/EmailTutorialModal.tsx
+msgid "Automatic Synchronization of People and Emails"
+msgstr "Automatische Synchronisierung von Personen und E-Mails"
+
+#: src/modules/settings/accounts/components/SettingsAccountsMessageChannelDetails.tsx
+msgid "Automatically create People records when receiving or sending emails"
+msgstr "Personen beim Empfang oder Senden von E-Mails automatisch erstellen"
+
 #. placeholder {0}: images.length
 #: src/modules/object-record/record-show/components/nm/AISuite.tsx
 msgid "Available Assets ({0})"
@@ -441,6 +543,10 @@ msgstr "Durchschnitt"
 msgid "Back to content"
 msgstr "Zurück zum Inhalt"
 
+#: src/modules/object-record/hooks/useFormattedPropertyFields.ts
+msgid "Basement {absoluteValue}"
+msgstr "Keller {absoluteValue}"
+
 #: src/pages/settings/SettingsBilling.tsx
 #: src/pages/settings/SettingsBilling.tsx
 #: src/modules/settings/hooks/useSettingsNavigationItems.tsx
@@ -451,13 +557,17 @@ msgstr "Abrechnung"
 msgid "Blocklist"
 msgstr "Blockliste"
 
+#: src/modules/activities/components/ActivityRichTextEditorPlaceholderButtonBar.tsx
+msgid "Body"
+msgstr "Inhalt"
+
 #: src/pages/onboarding/ChooseYourPlan.tsx
 msgid "Book a Call"
 msgstr "Anruf buchen"
 
 #: src/modules/auth/sign-in-up/components/FooterNote.tsx
 msgid "By using nestermind, you agree to the"
-msgstr "Mit der Verwendung von nestermind, erklären Sie sich mit dem"
+msgstr "Durch die Nutzung von nestermind, erklärst Du Dich mit dem"
 
 #: src/modules/auth/sign-in-up/components/FooterNote.tsx
 #~ msgid "By using Twenty, you agree to the"
@@ -478,15 +588,20 @@ msgid "Calendars"
 msgstr "Kalender"
 
 #: src/pages/auth/Authorize.tsx
+#: src/modules/ui/layout/show-page/components/nm/PublishModal.tsx
 #: src/modules/ui/layout/show-page/components/nm/PublishDraftModal.tsx
+#: src/modules/ui/layout/show-page/components/nm/PublicationDifferencesModal.tsx
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
-#: src/modules/ui/layout/show-page/components/nm/DeleteConfirmationModal.tsx
 #: src/modules/ui/layout/modal/components/ConfirmationModal.tsx
 #: src/modules/settings/components/SaveAndCancelButtons/CancelButton.tsx
+#: src/modules/record-edit/contexts/UnsavedChangesContext.tsx
+#: src/modules/record-edit/contexts/UnsavedChangesContext.tsx
 #: src/modules/record-edit/components/custom/ImageEditModal.tsx
 #: src/modules/record-edit/components/custom/DocumentEditModal.tsx
+#: src/modules/publishers/components/modals/EditPublisherModal.tsx
 #: src/modules/object-record/record-show/components/nm/VideoGenerationModal.tsx
 #: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
+#: src/modules/object-record/record-index/components/CreatePropertyModal.tsx
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -548,17 +663,25 @@ msgstr "Anbieter auswählen"
 msgid "Choose your Trial"
 msgstr "Wählen Sie Ihre Testphase"
 
+#: src/modules/inquiries/components/InquiriesFilterHeader.tsx
+msgid "Clear filter"
+msgstr "Filter löschen"
+
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 #~ msgid "Click to select files"
 #~ msgstr "Click to select files"
 
-#: src/modules/ui/feedback/snack-bar-manager/components/SnackBar.tsx
-#~ msgid "Close"
-#~ msgstr "Close"
+#: src/modules/onboarding-tutorial/components/modals/TutorialModal.tsx
+msgid "Close"
+msgstr "Schliessen"
 
 #: src/modules/ui/layout/page-header/components/PageHeaderOpenCommandMenuButton.tsx
 msgid "Close command menu"
 msgstr "Befehlsmenü schließen"
+
+#: src/modules/publishers/components/PlatformCredentialItem.tsx
+msgid "Coming soon"
+msgstr "Bald verfügbar"
 
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
@@ -568,6 +691,27 @@ msgstr "Bald Verfügbar"
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
 msgid "Compare Changes"
 msgstr "Änderungen vergleichen"
+
+#: src/modules/object-record/record-table/components/nm/RecordListItem.tsx
+#: src/modules/object-record/record-table/components/nm/RecordList.tsx
+msgid "Complete ({percentage}%)"
+msgstr "Vollständig ({percentage}%)"
+
+#: src/pages/onboarding/tutorial.tsx
+msgid "Complete previous steps first"
+msgstr "Vervollständige zuerst die vorherigen Schritte"
+
+#: src/pages/onboarding/tutorial.tsx
+#~ msgid "Complete these steps to get started with nestermind and make the most of your CRM experience."
+#~ msgstr "Complete these steps to get started with nestermind and make the most of your CRM experience."
+
+#: src/pages/onboarding/tutorial.tsx
+msgid "Complete these steps to get started with nestermind and make the most of your experience."
+msgstr "Führe diese Schritte aus, um mit nestermind loszulegen und das Beste aus deinem Erlebnis zu machen."
+
+#: src/pages/onboarding/tutorial.tsx
+msgid "Completed"
+msgstr "Abgeschlossen"
 
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Concise property information overview sent to clients through the auto responder."
@@ -585,9 +729,17 @@ msgstr "Kalendereinstellungen konfigurieren und anpassen."
 msgid "Configure how dates are displayed across the app"
 msgstr "Anzeigen von Datumsangaben in der App konfigurieren"
 
+#: src/modules/publishers/components/modals/EditPublisherModal.tsx
+msgid "Configure Publisher"
+msgstr "Anbieter konfigurieren"
+
 #: src/modules/settings/accounts/components/SettingsAccountsSettingsSection.tsx
 msgid "Configure your emails and calendar settings."
 msgstr "E-Mail- und Kalendereinstellungen konfigurieren."
+
+#: src/modules/publishers/components/modals/EditPublisherModal.tsx
+msgid "Configure your publisher credentials that will be used across all platforms."
+msgstr "Konfiguriere deine Anbieter-Zugangsdaten, welche auf den Plattformen verwendet werden."
 
 #: src/pages/settings/roles/components/RoleAssignmentConfirmationModal.tsx
 msgid "Confirm"
@@ -605,6 +757,14 @@ msgstr "Mit Google verbinden"
 msgid "Connect with Microsoft"
 msgstr "Mit Microsoft verbinden"
 
+#: src/modules/onboarding-tutorial/constants/onboarding-steps.tsx
+msgid "Connect your email"
+msgstr "Verbinde deine E-Mail-Adresse"
+
+#: src/modules/onboarding-tutorial/constants/onboarding-steps.tsx
+msgid "Connect your email in order to synchronize your inbox with nestermind."
+msgstr "Verbinde deine E-Mail um deinen Posteingang mit nestermind zu synchronisieren."
+
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/ContentCustomize.tsx
 msgid "Connected"
 msgstr "Verbunden"
@@ -613,10 +773,15 @@ msgstr "Verbunden"
 msgid "Connected accounts"
 msgstr "Verbundene Konten"
 
+#: src/modules/settings/accounts/components/SettingsAccountsMessageChannelDetails.tsx
+msgid "Contact auto-creation"
+msgstr "Auto-Erstellung von Kontakten"
+
 #: src/modules/command-menu/components/CommandMenu.tsx
 msgid "Context"
 msgstr "Kontext"
 
+#: src/pages/onboarding/SyncEmails.tsx
 #: src/pages/onboarding/InviteTeam.tsx
 #: src/pages/onboarding/CreateWorkspace.tsx
 #: src/pages/onboarding/CreateProfile.tsx
@@ -637,9 +802,17 @@ msgstr "Mit Google fortfahren"
 msgid "Continue with Microsoft"
 msgstr "Mit Microsoft fortfahren"
 
+#: src/pages/onboarding/SyncEmails.tsx
+msgid "Continue without sync"
+msgstr "Ohne Sync fortfahren"
+
 #: src/modules/command-menu/components/CommandMenu.tsx
 msgid "Copilot"
 msgstr "Kopilot"
+
+#: src/modules/object-record/record-show/components/nm/cards/PropertyAddressCard.tsx
+msgid "Copy"
+msgstr "Kopieren"
 
 #: src/pages/onboarding/InviteTeam.tsx
 msgid "Copy invitation link"
@@ -674,6 +847,18 @@ msgstr "Nicht leere zählen"
 msgid "Count unique values"
 msgstr "Eindeutige Werte zählen"
 
+#: src/modules/object-record/record-index/components/CreatePropertyModal.tsx
+msgid "Create"
+msgstr "Erstellen"
+
+#: src/pages/settings/email-templates/SettingsEmailTemplateNew.tsx
+#~ msgid "Create a new email template."
+#~ msgstr "Create a new email template."
+
+#: src/modules/onboarding-tutorial/constants/onboarding-steps.tsx
+msgid "Create a publication draft and publish it to a platform."
+msgstr "Erstelle einen Veröffentlichungsentwurf und veröffentliche ihn auf einer Plattform."
+
 #: src/modules/object-record/record-table/empty-state/utils/getEmptyStateSubTitle.ts
 msgid "Create a workflow and return here to view its versions"
 msgstr "Erstellen Sie einen Workflow und kehren Sie hierher zurück, um die Versionen anzuzeigen"
@@ -685,6 +870,14 @@ msgstr "API-Schlüssel erstellen"
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
 msgid "Create Draft"
 msgstr "Entwurf erstellen"
+
+#: src/modules/object-record/record-index/components/CreatePropertyModal.tsx
+msgid "Create new property"
+msgstr "Neues Objekt erstellen"
+
+#: src/modules/object-record/record-show/components/ui/NewPublicationCard.tsx
+msgid "Create new publication"
+msgstr "Neue Publikation erstellen"
 
 #: src/modules/action-menu/actions/record-actions/constants/WorkflowActionsConfig.ts
 #: src/modules/action-menu/actions/record-actions/constants/DefaultActionsConfigV2.ts
@@ -699,13 +892,21 @@ msgstr "Profil erstellen"
 msgid "Create Role"
 msgstr "Rolle erstellen"
 
+#: src/pages/settings/email-templates/components/EmailTemplatesListCard.tsx
+msgid "Create Template"
+msgstr "Vorlage erstellen"
+
 #: src/pages/settings/developers/SettingsDevelopers.tsx
 msgid "Create Webhook"
 msgstr "Webhook erstellen"
 
+#: src/modules/onboarding-tutorial/constants/onboarding-steps.tsx
+msgid "Create your first property"
+msgstr "Erstelle Dein erstes Objekt"
+
 #: src/modules/object-record/record-table/empty-state/utils/getEmptyStateSubTitle.ts
 msgid "Create your first publication from a property"
-msgstr "Erstellen Sie Ihre erste Publikation von einem Objekt aus"
+msgstr "Erstelle deine erste Publikation von einem Objekt aus"
 
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/ContentCustomize.tsx
 msgid "Create your Instagram post with a compelling description and media"
@@ -715,9 +916,21 @@ msgstr "Erstellen Sie Ihren Instagram-Beitrag mit einer überzeugenden Beschreib
 msgid "Create your workspace"
 msgstr "Ihren Arbeitsbereich erstellen"
 
+#: src/modules/object-record/record-show/components/nm/cards/PropertyBasicInfoCard.tsx
+msgid "Created from property"
+msgstr "Erstellt von Objekt"
+
+#: src/modules/publishers/components/modals/EditPublisherModal.tsx
+msgid "Credentials saved successfully"
+msgstr "Zugangsdaten erfolgreich gespeichert!"
+
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
-msgid "Current draft values"
-msgstr "Aktuelle Entwurfswerte"
+#~ msgid "Current draft values"
+#~ msgstr "Current draft values"
+
+#: src/modules/ui/layout/show-page/components/nm/PublicationDifferencesModal.tsx
+msgid "Currently Published"
+msgstr "Aktuell veröffentlicht"
 
 #: src/pages/settings/workspace/SettingsCustomDomain.tsx
 msgid "Custom Domain"
@@ -781,9 +994,17 @@ msgstr "Datum"
 msgid "Date and time"
 msgstr "Datum und Uhrzeit"
 
+#: src/modules/inquiries/components/sidebar/ConversationMessageItem.tsx
+#~ msgid "day ago"
+#~ msgstr "day ago"
+
+#: src/modules/inquiries/components/sidebar/ConversationMessageItem.tsx
+#~ msgid "days ago"
+#~ msgstr "days ago"
+
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
-msgid "Days Published"
-msgstr "Tage veröffentlicht"
+#~ msgid "Days Published"
+#~ msgstr "Days Published"
 
 #: src/pages/settings/data-model/SettingsObjectFieldEdit.tsx
 #: src/modules/workflow/components/RecordShowPageWorkflowHeader.tsx
@@ -813,12 +1034,20 @@ msgstr "Workflow deaktivieren"
 msgid "Define the name and description of your object"
 msgstr "Namen und Beschreibung des Objekts definieren"
 
+#: src/modules/settings/accounts/components/SettingsAccountsMessageChannelDetails.tsx
+msgid "Define what will be visible to other users in your workspace"
+msgstr "Definiere, was für andere Benutzer in deinem Arbeitsbereich sichtbar ist"
+
+#: src/pages/settings/email-templates/components/SettingsEmailTemplatesContent.tsx
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
-#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
-#: src/modules/ui/layout/show-page/components/nm/DeleteConfirmationModal.tsx
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+#: src/modules/object-record/record-show/components/nm/PropertyDetails.tsx
+#: src/modules/object-record/record-show/components/nm/publication/PublicationDetailPage.tsx
+#: src/modules/object-record/record-show/components/nm/publication/PublicationDetailPage.tsx
+#: src/modules/inquiries/components/InquiryItem.tsx
+#: src/modules/inquiries/components/InquiryItem.tsx
 #: src/modules/action-menu/components/__stories__/RightDrawerActionMenuDropdown.stories.tsx
 #: src/modules/action-menu/components/__stories__/RecordIndexActionMenuDropdown.stories.tsx
 #: src/modules/action-menu/components/__stories__/RecordIndexActionMenuBarEntry.stories.tsx
@@ -835,6 +1064,8 @@ msgstr "Löschen"
 
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+#: src/modules/object-record/record-show/components/nm/PropertyDetails.tsx
+#: src/modules/object-record/record-show/components/nm/PropertyDetails.tsx
 msgid "Delete {capitalizedObjectNameSingular}"
 msgstr "Neue {capitalizedObjectNameSingular}"
 
@@ -851,6 +1082,23 @@ msgstr "Konto und alle zugehörigen Daten löschen"
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
 msgid "Delete API key"
 msgstr "API-Schlüssel löschen"
+
+#: src/pages/settings/email-templates/components/SettingsEmailTemplatesContent.tsx
+msgid "Delete email template"
+msgstr "E-Mail-Vorlage löschen"
+
+#: src/modules/inquiries/components/InquiryItem.tsx
+msgid "Delete inquiry"
+msgstr "Anfrage löschen"
+
+#: src/modules/object-record/record-show/components/nm/publication/PublicationDetailPage.tsx
+msgid "Delete Publication"
+msgstr "Publikation löschen"
+
+#: src/pages/settings/publishers/SettingsPublishers.tsx
+#: src/pages/settings/publishers/SettingsPublishers.tsx
+msgid "Delete Publisher"
+msgstr "Anbieter löschen"
 
 #: src/modules/action-menu/actions/record-actions/constants/DefaultActionsConfigV2.ts
 msgid "Delete record"
@@ -888,6 +1136,10 @@ msgstr "Arbeitsbereich löschen"
 msgid "Delete your whole workspace"
 msgstr "Gesamten Arbeitsbereich löschen"
 
+#: src/modules/object-record/object-options-dropdown/components/ObjectOptionsDropdownMenuContent.tsx
+msgid "Deleted {objectNamePlural}"
+msgstr "Gelöschte {objectNamePlural}"
+
 #: src/modules/object-record/object-sort-dropdown/components/ObjectSortDropdownButton.tsx
 #: src/modules/object-record/object-sort-dropdown/components/ObjectSortDropdownButton.tsx
 msgid "Descending"
@@ -911,6 +1163,10 @@ msgstr "Zerstören"
 msgid "Detailed property presentation document sent to potential buyers through the auto responder."
 msgstr "Eine detaillierte Übersicht über die Immobilie, die den Kunden über den Autoresponder, geschickt wird."
 
+#: src/modules/object-record/record-show/components/nm/cards/PropertyDetailsCard.tsx
+msgid "Details"
+msgstr "Details"
+
 #: src/pages/settings/developers/SettingsDevelopers.tsx
 #: src/pages/settings/developers/SettingsDevelopers.tsx
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx
@@ -921,8 +1177,12 @@ msgid "Developers"
 msgstr "Entwickler"
 
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
-msgid "Differences {differenceLength}"
-msgstr "Unterschiede {differenceLength}"
+#~ msgid "Differences {differenceLength}"
+#~ msgstr "Differences {differenceLength}"
+
+#: src/modules/record-edit/components/RecordEditContainer.tsx
+msgid "Discard"
+msgstr "Verwerfen"
 
 #: src/modules/workflow/components/RecordShowPageWorkflowHeader.tsx
 #: src/modules/action-menu/actions/record-actions/constants/WorkflowActionsConfig.ts
@@ -944,6 +1204,23 @@ msgstr "Als relatives Datum anzeigen"
 msgid "Domain"
 msgstr "Domäne"
 
+#: src/modules/settings/accounts/components/SettingsAccountsMessageAutoCreationCard.tsx
+msgid "Don’t auto-create contacts."
+msgstr "Kontakte nicht automatisch erstellen."
+
+#: src/modules/settings/accounts/components/SettingsAccountsMessageChannelDetails.tsx
+msgid "Don’t create contacts from/to Gmail, Outlook emails"
+msgstr "Keine Kontakte von/zu Gmail, Outlook E-Mails erstellen"
+
+#: src/modules/settings/accounts/components/SettingsAccountsMessageChannelDetails.tsx
+msgid "Don’t sync emails from team@ support@ noreply@..."
+msgstr "Synchronisieren Sie keine E-Mails von team@ support@ noreply@..."
+
+#: src/modules/ui/layout/show-page/components/nm/PublishModal.tsx
+#: src/modules/ui/layout/show-page/components/nm/PublicationDifferencesModal.tsx
+msgid "Done"
+msgstr "Fertig"
+
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Download"
@@ -957,6 +1234,10 @@ msgstr "Herunterladen"
 #~ msgid "Drag & drop images here, or click to select files"
 #~ msgstr "Drag & drop images here, or click to select files"
 
+#: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
+msgid "Drag and drop your file here, or click to browse"
+msgstr "Ziehe Deine Datei hierher oder klicke zum Durchsuchen"
+
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Drop documents here"
 msgstr "Dokumente hier ablegen"
@@ -966,11 +1247,19 @@ msgstr "Dokumente hier ablegen"
 msgid "Drop images here"
 msgstr "Bilder hier ablegen"
 
+#: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
+msgid "Drop the file here"
+msgstr "Lade die Datei hier hoch"
+
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 #~ msgid "Drop the files here..."
 #~ msgstr "Drop the files here..."
+
+#: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
+msgid "Drop your file to start analyzing"
+msgstr "Datei hier loslassen"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 #~ msgid "Dutch"
@@ -989,10 +1278,20 @@ msgstr "Früheste"
 msgid "Earliest date"
 msgstr "Frühestes Datum"
 
-#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+#: src/modules/onboarding-tutorial/components/modals/PublicationSyncTutorialModal.tsx
+msgid "Easy Synchronization"
+msgstr "Einfache Synchronisierung"
+
+#: src/pages/settings/email-templates/components/EmailTemplateSelect.tsx
+#: src/modules/ui/layout/show-page/components/nm/PublicationDifferencesModal.tsx
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/Publishing.tsx
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+#: src/modules/object-record/record-table/components/nm/RecordListItem.tsx
+#: src/modules/object-record/record-table/components/nm/RecordList.tsx
+#: src/modules/object-record/record-show/components/nm/PropertyDetails.tsx
+#: src/modules/object-record/record-show/components/nm/publication/PublicationDetailPage.tsx
 msgid "Edit"
 msgstr "Bearbeiten"
 
@@ -1020,6 +1319,10 @@ msgstr "Foto bearbeiten"
 msgid "Edit payment method, see your invoices and more"
 msgstr "Zahlungsmethode bearbeiten, Rechnungen einsehen und mehr"
 
+#: src/pages/settings/email-templates/SettingsEmailTemplateDetail.tsx
+msgid "Edit your email template."
+msgstr "E-Mail-Vorlage bearbeiten."
+
 #: src/pages/settings/SettingsWorkspace.tsx
 msgid "Edit your subdomain name or set a custom domain."
 msgstr "Bearbeiten Sie den Namen Ihrer Subdomain oder legen Sie eine benutzerdefinierte Domäne fest."
@@ -1029,8 +1332,13 @@ msgstr "Bearbeiten Sie den Namen Ihrer Subdomain oder legen Sie eine benutzerdef
 #: src/pages/settings/SettingsProfile.tsx
 #: src/pages/settings/roles/components/RoleAssignmentTableHeader.tsx
 #: src/pages/auth/PasswordReset.tsx
+#: src/modules/publishers/components/modals/EditPublisherModal.tsx
 msgid "Email"
 msgstr "E-Mail"
+
+#: src/modules/onboarding-tutorial/constants/onboarding-steps.tsx
+msgid "Email connected successfully"
+msgstr "E-Mail erfolgreich verbunden"
 
 #: src/pages/onboarding/ChooseYourPlan.tsx
 msgid "Email integration"
@@ -1040,12 +1348,46 @@ msgstr "E-Mail-Integration"
 msgid "Email or domain is already in blocklist"
 msgstr "E-Mail oder Domain ist bereits in der Blockliste"
 
+#: src/pages/settings/email-templates/components/SettingsEmailTemplatesContent.tsx
+#: src/pages/settings/email-templates/components/SettingsEmailTemplatesContent.tsx
+#: src/modules/settings/hooks/useSettingsNavigationItems.tsx
+msgid "Email Settings"
+msgstr "E-Mail Einstellungen"
+
+#: src/pages/settings/email-templates/components/EmailTemplateForm.tsx
+msgid "Email subject"
+msgstr "Betreff"
+
+#: src/modules/onboarding-tutorial/components/modals/EmailTutorialModal.tsx
+msgid "Email Synchronization"
+msgstr "E-Mail Synchronisation"
+
+#: src/modules/onboarding-tutorial/components/modals/EmailTutorialModal.tsx
+msgid "Email Synchronization with nestermind"
+msgstr "E-Mail Synchronisation mit nestermind"
+
+#: src/pages/settings/email-templates/SettingsEmailTemplateDetail.tsx
+#: src/pages/settings/email-templates/SettingsEmailTemplateDetail.tsx
+#: src/pages/settings/email-templates/SettingsEmailTemplateDetail.tsx
+#: src/pages/settings/email-templates/components/EmailTemplateSelect.tsx
+msgid "Email Template"
+msgstr "E-Mail-Vorlage"
+
+#: src/pages/settings/email-templates/SettingsEmailTemplateDetail.tsx
+#: src/pages/settings/email-templates/components/SettingsEmailTemplatesContent.tsx
+msgid "Email Templates"
+msgstr "E-Mail-Vorlagen"
+
 #: src/pages/settings/accounts/SettingsAccountsEmails.tsx
 #: src/pages/settings/accounts/SettingsAccountsEmails.tsx
 #: src/modules/settings/hooks/useSettingsNavigationItems.tsx
 #: src/modules/settings/accounts/components/SettingsAccountsSettingsSection.tsx
 msgid "Emails"
 msgstr "E-Mails"
+
+#: src/pages/onboarding/SyncEmails.tsx
+msgid "Emails and Calendar"
+msgstr "E-Mails und Kalender"
 
 #: src/modules/settings/data-model/fields/forms/components/SettingsDataModelFieldIconLabelForm.tsx
 msgid "employees"
@@ -1055,6 +1397,9 @@ msgstr "Mitarbeiter"
 msgid "Employees"
 msgstr "Mitarbeiter"
 
+#: src/modules/ui/layout/show-page/components/nm/PublicationDifferencesModal.tsx
+#: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
+#: src/modules/object-record/record-show/components/nm/cards/PropertyDetailsCard.tsx
 #: src/modules/object-record/record-inline-cell/components/RecordInlineCellDisplayMode.tsx
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationShortLabel.ts
 #: src/modules/activities/timeline-activities/rows/main-object/components/EventFieldDiff.tsx
@@ -1073,9 +1418,33 @@ msgstr "Englisch"
 msgid "Enjoy a {withCreditCardTrialPeriodDuration}-days free trial"
 msgstr "Genießen Sie eine {withCreditCardTrialPeriodDuration}-tägige kostenlose Testphase"
 
+#: src/modules/object-record/record-index/components/CreatePropertyModal.tsx
+msgid "Enter a name for the property"
+msgstr "Gib einen Namen für das Objekt ein"
+
 #: src/modules/record-edit/components/custom/DocumentEditModal.tsx
 msgid "Enter document name"
 msgstr "Dokumentnamen eingeben"
+
+#: src/modules/publishers/components/modals/EditPublisherModal.tsx
+msgid "Enter email"
+msgstr "E-Mail-Adresse eingeben"
+
+#: src/modules/publishers/components/modals/EditPublisherModal.tsx
+msgid "Enter publisher name"
+msgstr "Anbietername eingeben"
+
+#: src/modules/record-edit/components/custom/PropertyEmailsFormInput.tsx
+msgid "Enter test email address"
+msgstr "Test E-Mail-Adresse eingeben"
+
+#: src/modules/object-record/record-index/components/CreatePropertyModal.tsx
+msgid "Enter the address of the new property"
+msgstr "Gib die Adresse des neuen Objekts ein"
+
+#: src/pages/auth/SignInUp.tsx
+msgid "Enter your email to create a new account or sign in"
+msgstr "Gib deine E-Mail ein, um ein neues Konto zu erstellen oder dich anzumelden"
 
 #: src/pages/settings/security/SettingsSecurity.tsx
 msgid "Enterprise"
@@ -1085,6 +1454,10 @@ msgstr "Unternehmen"
 msgid "Error deleting api key: {err}"
 msgstr "Fehler beim Löschen des API-Schlüssels: {err}"
 
+#: src/pages/settings/publishers/SettingsPublishers.tsx
+msgid "Error deleting publisher"
+msgstr "Fehler beim Löschen des Anbieters"
+
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
 msgid "Error regenerating api key: {err}"
 msgstr "Fehler beim Regenerieren des API-Schlüssels: {err}"
@@ -1093,6 +1466,10 @@ msgstr "Fehler beim Regenerieren des API-Schlüssels: {err}"
 msgid "Error saving {objectNameSingular}"
 msgstr "Fehler beim Speichern von {objectNameSingular}"
 
+#: src/modules/publishers/components/modals/EditPublisherModal.tsx
+msgid "Error saving publisher"
+msgstr "Fehler beim Speichern des Anbieters"
+
 #: src/pages/settings/SettingsBilling.tsx
 msgid "Error while switching subscription {to}."
 msgstr "Fehler beim Wechseln des Abonnements {to}."
@@ -1100,6 +1477,19 @@ msgstr "Fehler beim Wechseln des Abonnements {to}."
 #: src/pages/settings/developers/SettingsDevelopers.tsx
 msgid "Establish Webhook endpoints for notifications on asynchronous events."
 msgstr "Erstellen Sie Webhook-Endpunkte für Benachrichtigungen über asynchrone Ereignisse."
+
+#: src/modules/settings/accounts/components/SettingsAccountsMessageVisibilityCard.tsx
+#: src/modules/onboarding/components/onboardingSyncEmailsOptions.tsx
+msgid "Everything"
+msgstr "Alles"
+
+#: src/modules/settings/accounts/components/SettingsAccountsMessageChannelDetails.tsx
+msgid "Exclude group emails"
+msgstr "Gruppen-E-Mails ausschliessen"
+
+#: src/modules/settings/accounts/components/SettingsAccountsMessageChannelDetails.tsx
+msgid "Exclude non-professional emails"
+msgstr "Nicht berufliche E-Mails ausschliessen"
 
 #: src/modules/settings/accounts/components/SettingsAccountsBlocklistSection.tsx
 #~ msgid "Exclude the following people and domains from my email sync"
@@ -1177,9 +1567,61 @@ msgstr "Ansicht exportieren"
 msgid "Export Workflows"
 msgstr "Workflows exportieren"
 
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
+#: src/modules/object-record/record-show/components/ui/NewPublicationCard.tsx
+msgid "Failed to create draft"
+msgstr "Fehler beim Erstellen des Entwurfs"
+
+#: src/modules/object-record/record-show/components/nm/publication/PublicationDetailPage.tsx
+msgid "Failed to create publication draft"
+msgstr "Erstellung des Veröffentlichungsentwurfs fehlgeschlagen"
+
+#: src/pages/onboarding/CreateProfile.tsx
+msgid "Failed to create workspace"
+msgstr "Fehler beim Erstellen des Arbeitsbereiches"
+
+#: src/modules/object-record/record-show/components/nm/publication/PublicationDetailPage.tsx
+msgid "Failed to delete changes"
+msgstr "Fehler beim Löschen der Änderungen"
+
+#: src/modules/ui/layout/show-page/hooks/useDeleteProperty.ts
+msgid "Failed to delete property"
+msgstr "Objekt konnte nicht gelöscht werden"
+
+#: src/modules/ui/layout/show-page/hooks/useDeleteProperty.ts
+msgid "Failed to delete publication"
+msgstr "Fehler beim Löschen der Publikation"
+
+#: src/modules/ui/layout/show-page/components/nm/PublicationDifferencesModal.tsx
+msgid "Failed to publish"
+msgstr "Veröffentlichung fehlgeschlagen"
+
+#: src/modules/record-edit/contexts/UnsavedChangesContext.tsx
+#: src/modules/record-edit/components/custom/PropertyEmailsFormInput.tsx
+msgid "Failed to save changes"
+msgstr "Änderungen konnten nicht gespeichert werden"
+
+#: src/modules/record-edit/components/custom/PropertyEmailsFormInput.tsx
+#: src/modules/record-edit/components/custom/PropertyEmailsFormInput.tsx
+msgid "Failed to send test email"
+msgstr "Fehler beim Senden der Test-E-Mail"
+
+#: src/modules/object-record/record-show/components/nm/PropertyDetails.tsx
+msgid "Failed to sync publications"
+msgstr "Fehler beim Synchronisieren der Publikationen"
+
+#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+#: src/modules/object-record/record-show/components/nm/publication/PublicationDetailPage.tsx
+msgid "Failed to unpublish publication"
+msgstr "Fehler beim Zurückziehen der Publikation"
+
 #: src/modules/favorites/components/CurrentWorkspaceMemberFavoritesFolders.tsx
 msgid "Favorites"
 msgstr "Favoriten"
+
+#: src/modules/object-record/record-show/components/nm/cards/PropertyDetailsCard.tsx
+msgid "Features"
+msgstr "Objekteigenschaften"
 
 #: src/pages/settings/data-model/SettingsObjectFieldTable.tsx
 msgid "Field type"
@@ -1202,9 +1644,17 @@ msgstr "Felderanzahl"
 msgid "Filter"
 msgstr "Filter"
 
+#: src/modules/inquiries/components/InquiriesFilterHeader.tsx
+msgid "Filtered by"
+msgstr "Gefiltert nach"
+
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx
 msgid "Filters"
 msgstr "Filter"
+
+#: src/modules/object-record/record-show/components/nm/cards/PropertyDetailsCard.tsx
+msgid "Financial"
+msgstr "Finanzen"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 #~ msgid "Finnish"
@@ -1213,6 +1663,20 @@ msgstr "Filter"
 #: src/pages/onboarding/CreateProfile.tsx
 msgid "First Name"
 msgstr "Vorname"
+
+#: src/pages/onboarding/tutorial.tsx
+#: src/modules/onboarding-tutorial/components/TutorialPageHeader.tsx
+#: src/modules/onboarding-tutorial/components/OnboardingSteps.tsx
+msgid "First steps on nestermind"
+msgstr "Erste Schritte auf nestermind"
+
+#: src/modules/object-record/hooks/useFormattedPropertyFields.ts
+msgid "For Sale"
+msgstr "Zum Verkauf"
+
+#: src/modules/object-record/hooks/useFormattedPropertyFields.ts
+msgid "For Sale (per m²)"
+msgstr "Zum Verkauf (pro m2)"
 
 #: src/modules/auth/sign-in-up/components/SignInUpWorkspaceScopeForm.tsx
 msgid "Forgot your password?"
@@ -1311,13 +1775,22 @@ msgstr "Abonnement abschließen"
 msgid "Global"
 msgstr "Global"
 
+#: src/modules/object-record/record-table/components/nm/RecordListItem.tsx
+#: src/modules/object-record/record-table/components/nm/RecordList.tsx
+msgid "Good Enough ({percentage}%)"
+msgstr "Gut genug ({percentage}%)"
+
 #: src/pages/settings/SettingsWorkspace.tsx
 msgid "Grant Twenty support temporary access to your workspace so we can troubleshoot problems or recover content on your behalf. You can revoke access at any time."
-msgstr "Gewähren Sie dem Twenty-Support vorübergehend Zugang zu Ihrem Arbeitsbereich, damit wir Probleme beheben oder Inhalte in Ihrem Namen wiederherstellen können. Sie können den Zugriff jederzeit widerrufen."
+msgstr "Gewähre dem nestermind-Support vorübergehend Zugang zu deinem Arbeitsbereich, damit wir Probleme beheben oder Inhalte in deinem Namen wiederherstellen können. Du kannst den Zugriff jederzeit widerrufen."
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 #~ msgid "Greek"
 #~ msgstr "Greek"
+
+#: src/modules/object-record/hooks/useFormattedPropertyFields.ts
+msgid "Ground Floor"
+msgstr "Erdgeschoss"
 
 #: src/pages/settings/admin-panel/SettingsAdminIndicatorHealthStatus.tsx
 msgid "Health Status"
@@ -1327,9 +1800,21 @@ msgstr "Gesundheitsstatus"
 #~ msgid "Hebrew"
 #~ msgstr "Hebrew"
 
+#: src/modules/object-record/record-show/components/nm/cards/PublicationList.tsx
+msgid "Here you can see all your publications."
+msgstr "Hier siehst du alle deine Publikationen."
+
 #: src/modules/object-record/record-table/record-table-header/components/RecordTableColumnHeadDropdownMenu.tsx
 msgid "Hide"
 msgstr "Ausblenden"
+
+#: src/modules/inquiries/components/sidebar/ConversationMessageItem.tsx
+#~ msgid "hour ago"
+#~ msgstr "hour ago"
+
+#: src/modules/inquiries/components/sidebar/ConversationMessageItem.tsx
+#~ msgid "hours ago"
+#~ msgstr "hours ago"
 
 #: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
 msgid "House Subtype"
@@ -1355,6 +1840,22 @@ msgstr "Kennung"
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
 msgid "If you’ve lost this key, you can regenerate it, but be aware that any script using this key will need to be updated. Please type\"{confirmationValue}\" to confirm."
 msgstr "Wenn Sie diesen Schlüssel verloren haben, können Sie ihn neu generieren, aber beachten Sie, dass jedes Skript, das diesen Schlüssel verwendet, aktualisiert werden muss. Bitte geben Sie zur Bestätigung \"{confirmationValue}\" ein."
+
+#: src/modules/object-record/record-show/components/nm/cards/PropertyImagesCard.tsx
+msgid "Images"
+msgstr "Bilder"
+
+#: src/modules/object-record/object-options-dropdown/components/ObjectOptionsDropdownMenuContent.tsx
+msgid "Import"
+msgstr "Importieren"
+
+#: src/pages/onboarding/tutorial.tsx
+msgid "In progress"
+msgstr "Im Gange"
+
+#: src/modules/inquiries/components/sidebar/ReplyEditor.tsx
+msgid "In-App reply functionality coming soon"
+msgstr "In-App-Antwort-Funktionalität bald verfügbar"
 
 #: src/pages/settings/data-model/SettingsObjects.tsx
 #: src/pages/settings/data-model/SettingsObjectFieldTable.tsx
@@ -1388,13 +1889,40 @@ msgstr "Industrie Kategorie"
 msgid "Input must be in camel case and cannot start with a number"
 msgstr "Die Eingabe muss im CamelCase-Format sein und darf nicht mit einer Zahl beginnen"
 
-#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+#: src/modules/onboarding-tutorial/components/modals/InquiryTutorialModal.tsx
+#: src/modules/object-record/record-show/components/nm/publication/ContactsByStageChart.tsx
+#: src/modules/object-record/record-show/components/nm/property/ContactsByPlatformChart.tsx
 msgid "Inquiries"
 msgstr "Anfragen"
+
+#: src/modules/onboarding-tutorial/components/modals/InquiryTutorialModal.tsx
+msgid "Inquiries are the central connection between interested parties and property listings. They are <0>automatically created</0> when an inquiry about a property is received and are <1>directly linked</1> to the relevant property, the specific publication, and the inquiring person."
+msgstr "Anfragen sind die zentrale Verbindung zwischen Interessenten und Immobilienlisten. Sie werden <0>automatisch erstellt</0> wenn eine Anfrage über ein Objekt empfangen wird und <1>direkt mit den relevanten CRM-Einträgen verknüpft</1>."
+
+#: src/modules/onboarding-tutorial/components/modals/InquiryTutorialModal.tsx
+msgid "Inquiries in nestermind"
+msgstr "Anfragen in nestermind"
+
+#: src/modules/object-record/record-show/components/nm/cards/PropertyInquiriesCard.tsx
+msgid "Inquiries Overview"
+msgstr "Anfragenübersicht"
+
+#: src/modules/inquiries/components/sidebar/ConversationSection.tsx
+msgid "Inquiry from"
+msgstr "Anfrage von"
 
 #: src/pages/settings/data-model/constants/SettingsObjectTableMetadata.ts
 msgid "Instances"
 msgstr "Instanzen"
+
+#: src/modules/object-record/record-table/components/nm/RecordListItem.tsx
+#: src/modules/object-record/record-table/components/nm/RecordList.tsx
+msgid "Insufficient Details ({percentage}%)"
+msgstr "Unzureichende Details ({percentage}%)"
+
+#: src/modules/publishers/components/PlatformCredentialItem.tsx
+msgid "Integration Coming Soon"
+msgstr "Integration bald verfügbar"
 
 #: src/pages/settings/integrations/SettingsIntegrations.tsx
 #: src/pages/settings/integrations/SettingsIntegrations.tsx
@@ -1455,6 +1983,22 @@ msgstr "Italienisch"
 #~ msgid "Japanese"
 #~ msgstr "Japanese"
 
+#: src/modules/inquiries/components/sidebar/ConversationMessageItem.tsx
+#~ msgid "Just now"
+#~ msgstr "Just now"
+
+#: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
+msgid "Keep in mind that only nestermind drafts will be synchronized. You will need to publish the drafts manually after synchronization."
+msgstr "Beachte, dass nur nestermind Entwürfe synchronisiert werden. Du musst die Entwürfe nach der Synchronisierung manuell veröffentlichen."
+
+#: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
+#~ msgid "Keep in mind that only nestermind drafts will be synchronized. You will need to publish the drafts manually again after synchronization."
+#~ msgstr "Keep in mind that only nestermind drafts will be synchronized. You will need to publish the drafts manually again after synchronization."
+
+#: src/modules/object-record/record-show/components/nm/cards/PropertyDetailsCard.tsx
+msgid "Key Details"
+msgstr "Wichtige Details"
+
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 #~ msgid "Korean"
 #~ msgstr "Korean"
@@ -1479,9 +2023,23 @@ msgstr "Neueste"
 msgid "Latest date"
 msgstr "Neuester Termin"
 
+#: src/modules/inquiries/components/InquiriesPreview.tsx
+#: src/modules/inquiries/components/InquiriesPreview.tsx
+#: src/modules/inquiries/components/InquiriesPreview.tsx
+msgid "Latest Inquiries"
+msgstr "Neueste Anfragen"
+
 #: src/modules/object-record/record-show/components/nm/AISuite.tsx
 msgid "Lead Insights"
 msgstr "Lead Einblicke"
+
+#: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
+msgid "Learn more"
+msgstr "Erfahre mehr"
+
+#: src/modules/record-edit/contexts/UnsavedChangesContext.tsx
+msgid "Leave without saving"
+msgstr "Ohne Speichern verlassen"
 
 #: src/pages/settings/profile/appearance/components/SettingsExperience.tsx
 msgid "Light"
@@ -1493,12 +2051,20 @@ msgid "Link copied to clipboard"
 msgstr "Link in die Zwischenablage kopiert"
 
 #: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
-msgid "List your property conveniently to newhome.ch."
-msgstr "Geben Sie Ihre Immobilie bequem auf newhome.ch auf."
+#~ msgid "List your property conveniently to newhome.ch."
+#~ msgstr "List your property conveniently to newhome.ch."
 
 #: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
-msgid "List your property on Comparis."
-msgstr "Publizieren Sie Ihre Immobilie auf Comparis"
+msgid "List your property conveniently to newhome.ch. If you don't have newhome credentials, create a new account <0>here</0> and set up an IDX interface by clicking on 'Import interfaces'."
+msgstr "Publiziere dein Objekt auf newhome.ch. Falls du noch keine Zugangsdaten hast, kannst du sie <0>hier</0> bestellen."
+
+#: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
+#~ msgid "List your property on Comparis."
+#~ msgstr "List your property on Comparis."
+
+#: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
+msgid "List your property on Comparis. If you don't have Comparis credentials, contact Comparis <0>here</0> by clicking the 'Get in touch' button under 'Import via Real Estate Software (CRM)'."
+msgstr "Publiziere dein Objekt auf Comparis. Falls du noch keine Zugangsdaten hast, kannst du sie <0>hier</0> bestellen."
 
 #: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
 msgid "List your property on Facebook."
@@ -1509,12 +2075,12 @@ msgid "List your property on Flatfox."
 msgstr "Publizieren Sie Ihre Immobilie auf Flatfox"
 
 #: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
-msgid "List your property on Homegate."
-msgstr "Publizieren Sie Ihre Immobilie auf Homegate"
+#~ msgid "List your property on Homegate."
+#~ msgstr "List your property on Homegate."
 
 #: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
-msgid "List your property on ImmoScout24."
-msgstr "Publizieren Sie Ihre Immobilie auf Immoscout24"
+#~ msgid "List your property on ImmoScout24."
+#~ msgstr "List your property on ImmoScout24."
 
 #: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
 msgid "List your property on Instagram."
@@ -1524,11 +2090,18 @@ msgstr "Publizieren Sie Ihre Immobilie auf Instagram"
 msgid "Listings"
 msgstr "Auflistungen"
 
+#: src/pages/settings/publishers/components/PublishersListCard.tsx
+#: src/pages/settings/email-templates/components/EmailTemplatesListCard.tsx
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
-#: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
+#: src/modules/object-record/record-show/components/nm/PropertyDetails.tsx
 #: src/modules/object-record/record-show/components/nm/AISuite.tsx
+#: src/modules/inquiries/components/sidebar/PropertyDetails.tsx
 msgid "Loading..."
 msgstr "Laden..."
+
+#: src/modules/object-record/record-show/components/nm/cards/PropertyAddressCard.tsx
+msgid "Location"
+msgstr "Standort"
 
 #: src/pages/onboarding/ChooseYourPlan.tsx
 msgid "Log out"
@@ -1550,13 +2123,25 @@ msgstr "Mitglieder verwalten"
 msgid "Manage the members of your space here"
 msgstr "Verwalten Sie hier die Mitglieder Ihres Bereichs"
 
+#: src/pages/settings/email-templates/components/SettingsEmailTemplatesContent.tsx
+msgid "Manage your email templates for properties and publications."
+msgstr "Verwalte Deine E-Mail-Vorlagen für Objekte und Publikationen"
+
 #: src/pages/settings/accounts/SettingsAccounts.tsx
 msgid "Manage your internet accounts."
 msgstr "Verwalten Sie Ihre Internetkonten."
 
+#: src/pages/settings/publishers/SettingsPublishers.tsx
+msgid "Manage your publishers and their platform credentials."
+msgstr "Verwalte Deine Anbieter und Zugangsdaten."
+
 #: src/pages/settings/SettingsBilling.tsx
 msgid "Manage your subscription"
 msgstr "Abonnement verwalten"
+
+#: src/modules/inquiries/components/InquiriesFilterHeader.tsx
+msgid "Mark all as read"
+msgstr "Alle als gelesen markieren"
 
 #: src/modules/action-menu/components/__stories__/RecordIndexActionMenuDropdown.stories.tsx
 #: src/modules/action-menu/components/__stories__/RecordIndexActionMenuBarEntry.stories.tsx
@@ -1586,6 +2171,11 @@ msgstr "Maximale Reichweite durch soziale Medien! Werben Sie Ihre Immobilie dire
 msgid "Members"
 msgstr "Mitglieder"
 
+#: src/modules/settings/accounts/components/SettingsAccountsMessageVisibilityCard.tsx
+#: src/modules/onboarding/components/onboardingSyncEmailsOptions.tsx
+msgid "Metadata"
+msgstr "Metadaten"
+
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationShortLabel.ts
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationLabel.ts
 msgid "Min"
@@ -1595,9 +2185,11 @@ msgstr "Min."
 msgid "Missing required fields: {missingFieldsString}"
 msgstr "Erforderliche Felder fehlen: {missingFieldsString}"
 
-#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
-#~ msgid "More"
-#~ msgstr "More"
+#: src/modules/ui/layout/show-page/components/nm/ActionDropdown.tsx
+#: src/modules/object-record/record-table/components/nm/RecordListItem.tsx
+#: src/modules/object-record/record-table/components/nm/RecordList.tsx
+msgid "More"
+msgstr "Mehr"
 
 #: src/modules/object-record/record-table/record-table-footer/components/RecordTableColumnAggregateFooterDropdownContent.tsx
 #: src/modules/object-record/record-board/record-board-column/components/RecordBoardColumnHeaderAggregateDropdownMenuContent.tsx
@@ -1620,6 +2212,7 @@ msgstr "Nach rechts verschieben"
 #: src/pages/settings/roles/components/RolePermissionsSettingsTableHeader.tsx
 #: src/pages/settings/roles/components/RolePermissionsObjectsTableHeader.tsx
 #: src/pages/settings/roles/components/RoleAssignmentTableHeader.tsx
+#: src/pages/settings/publishers/components/PublishersListCard.tsx
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeysNew.tsx
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
 #: src/pages/settings/data-model/SettingsObjectFieldTable.tsx
@@ -1627,8 +2220,13 @@ msgstr "Nach rechts verschieben"
 #: src/pages/settings/data-model/constants/SettingsObjectTableMetadata.ts
 #: src/pages/onboarding/CreateProfile.tsx
 #: src/modules/settings/workspace/components/NameField.tsx
+#: src/modules/publishers/components/modals/EditPublisherModal.tsx
 msgid "Name"
 msgstr "Name"
+
+#: src/modules/publishers/components/modals/EditPublisherModal.tsx
+msgid "Name and Email are internally used by nestermind to identify the publisher."
+msgstr "Name und E-Mail werden von nestermind intern verwendet, um den Anbieter zu identifizieren."
 
 #: src/pages/onboarding/CreateWorkspace.tsx
 msgid "Name can not be empty"
@@ -1637,6 +2235,10 @@ msgstr "Der Name darf nicht leer sein"
 #: src/modules/settings/data-model/object-details/components/tabs/ObjectSettings.tsx
 msgid "Name in both singular (e.g., 'Invoice') and plural (e.g., 'Invoices') forms."
 msgstr "Name in Einzahl (z.B. 'Rechnung') und Mehrzahl (z.B. 'Rechnungen')."
+
+#: src/modules/publishers/components/modals/EditPublisherModal.tsx
+msgid "Name is required"
+msgstr "Der Name ist erforderlich"
 
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeysNew.tsx
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
@@ -1673,6 +2275,10 @@ msgstr "Zur vorherigen Version navigieren"
 msgid "Navigate to previous workflow"
 msgstr "Zum vorherigen Workflow navigieren"
 
+#: src/modules/onboarding-tutorial/components/modals/EmailTutorialModal.tsx
+msgid "nestermind automatically recognizes relevant contacts and converts them into people in your CRM. Through granular settings, you can specify which types of emails should be considered."
+msgstr "nestermind erkennt automatisch relevante Kontakte und wandelt sie in Personen in deinem CRM um. Durch granulare Einstellungen kannst Du festlegen, welche Arten von E-Mails berücksichtigt werden sollen."
+
 #: src/pages/settings/data-model/SettingsNewObject.tsx
 msgid "New"
 msgstr "Neu"
@@ -1688,6 +2294,11 @@ msgstr "Neue {capitalizedObjectNameSingular}"
 #: src/modules/settings/accounts/components/SettingsNewAccountSection.tsx
 msgid "New account"
 msgstr "Neues Konto"
+
+#: src/modules/ui/layout/show-page/components/nm/PublicationDifferencesModal.tsx
+#: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
+msgid "New Draft Values"
+msgstr "Neue Entwurfswerte"
 
 #: src/pages/settings/data-model/SettingsObjectDetailPage.tsx
 msgid "New Field"
@@ -1709,10 +2320,14 @@ msgstr "Neues Objekt"
 msgid "New Password"
 msgstr "Neues Passwort"
 
+#: src/modules/object-record/record-show/components/nm/cards/PublicationList.tsx
+msgid "New publication"
+msgstr "Neue Publikation"
+
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
-msgid "New Publication"
-msgstr "Neue Veröffentlichung"
+#~ msgid "New Publication"
+#~ msgstr "New Publication"
 
 #: src/modules/ui/layout/page/components/PageAddButton.tsx
 #: src/modules/ui/layout/page/components/PageAddButton.tsx
@@ -1725,13 +2340,29 @@ msgstr "Neuer Datensatz"
 #~ msgid "New Role"
 #~ msgstr "New Role"
 
+#: src/pages/settings/email-templates/components/EmailTemplatesListCard.tsx
+msgid "New Template"
+msgstr "Neue Vorlage"
+
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhooksNew.tsx
 #~ msgid "New Webhook"
 #~ msgstr "New Webhook"
 
+#: src/modules/object-record/hooks/useFormattedPropertyFields.ts
+msgid "No"
+msgstr "Nein"
+
 #: src/modules/settings/accounts/components/SettingsAccountsListEmptyStateCard.tsx
 msgid "No connected account"
 msgstr "Kein verbundenes Konto"
+
+#: src/modules/object-record/record-show/components/nm/publication/ContactsByStageChart.tsx
+#~ msgid "No contacts data available"
+#~ msgstr "No contacts data available"
+
+#: src/pages/settings/email-templates/components/EmailTemplatesListCard.tsx
+msgid "No content"
+msgstr "Kein Inhalt"
 
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
@@ -1740,13 +2371,26 @@ msgstr "Kein verbundenes Konto"
 msgid "No description"
 msgstr "Keine Beschreibung"
 
+#: src/pages/settings/email-templates/components/EmailTemplatesListCard.tsx
+msgid "No email templates configured yet"
+msgstr "Noch keine E-Mail-Vorlagen konfiguriert"
+
 #: src/modules/ui/layout/show-page/components/nm/ShowPageImageBanner.tsx
+#: src/modules/object-record/record-show/components/nm/cards/PropertyImagesCard.tsx
 msgid "No images available"
 msgstr "Keine Bilder verfügbar"
 
-#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+#: src/modules/inquiries/components/InquiriesPreview.tsx
+msgid "No inquiries data available yet"
+msgstr "Es sind noch keine Daten für Anfragen verfügbar"
+
+#: src/modules/inquiries/components/InquiriesList.tsx
 msgid "No inquiries yet"
 msgstr "Noch keine Anfragen"
+
+#: src/modules/object-record/record-show/components/nm/cards/PropertyAddressCard.tsx
+msgid "No Map available"
+msgstr "Keine Karte verfügbar"
 
 #: src/pages/settings/roles/components/RoleAssignment.tsx
 #~ msgid "No members assigned to this role yet"
@@ -1760,6 +2404,10 @@ msgstr "Noch keine Anfragen"
 #~ msgid "No members matching your search"
 #~ msgstr "No members matching your search"
 
+#: src/modules/inquiries/components/sidebar/ConversationSection.tsx
+msgid "No messages yet"
+msgstr "Noch keine Nachrichten"
+
 #: src/pages/settings/roles/components/RoleWorkspaceMemberPickerDropdownContent.tsx
 #~ msgid "No more members to add"
 #~ msgstr "No more members to add"
@@ -1768,9 +2416,21 @@ msgstr "Noch keine Anfragen"
 msgid "No more members to assign"
 msgstr "Keine Mitglieder mehr zuzuweisen"
 
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
+msgid "No platform selected"
+msgstr "Keine Plattformen ausgewählt"
+
+#: src/modules/object-record/record-show/components/nm/cards/PropertyPublicationsCard.tsx
+msgid "No publications available"
+msgstr "Keine Publikationen verfügbar"
+
 #: src/modules/object-record/record-table/empty-state/utils/getEmptyStateTitle.ts
 msgid "No publications yet"
 msgstr "Noch keine Publikationen"
+
+#: src/pages/settings/publishers/components/PublishersListCard.tsx
+msgid "No publishers configured yet"
+msgstr "Noch keine Anbieter konfiguriert"
 
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
 #~ msgid "No recent visitors yet"
@@ -1789,8 +2449,12 @@ msgid "No Results"
 msgstr "Keine Ergebnisse"
 
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
-msgid "No similar properties found"
-msgstr "Keine ähnlichen Objekte gefunden"
+#~ msgid "No similar properties found"
+#~ msgstr "No similar properties found"
+
+#: src/pages/settings/email-templates/components/EmailTemplateSelect.tsx
+msgid "No template"
+msgstr "Keine Vorlage"
 
 #: src/modules/object-record/record-table/empty-state/utils/getEmptyStateTitle.ts
 msgid "No workflow runs yet"
@@ -1800,9 +2464,23 @@ msgstr "Noch keine Workflow-Ausführungen"
 msgid "No workflow versions yet"
 msgstr "Noch keine Workflow-Versionen"
 
+#: src/modules/settings/accounts/components/SettingsAccountsMessageAutoCreationCard.tsx
+msgid "None"
+msgstr "Keine"
+
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 #~ msgid "Norwegian"
 #~ msgstr "Norwegian"
+
+#: src/modules/object-record/object-options-dropdown/components/ObjectOptionsDropdownMenuContent.tsx
+#: src/modules/object-record/object-options-dropdown/components/ObjectOptionsDropdownMenuContent.tsx
+msgid "Not available for {objectNamePlural}"
+msgstr "Nicht verfügbar für {objectNamePlural}"
+
+#: src/modules/object-record/object-options-dropdown/components/ObjectOptionsDropdownMenuContent.tsx
+#: src/modules/object-record/object-options-dropdown/components/ObjectOptionsDropdownMenuContent.tsx
+msgid "Not available on Default View"
+msgstr "Nicht verfügbar in der Standardansicht"
 
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationShortLabel.ts
 msgid "Not empty"
@@ -1811,6 +2489,10 @@ msgstr "Nicht leer"
 #: src/modules/command-menu/components/CommandMenu.tsx
 msgid "Object"
 msgstr "Objekt"
+
+#: src/modules/object-record/record-show/components/nm/cards/PropertyDetailsCard.tsx
+msgid "Object Info"
+msgstr "Objektinfo"
 
 #: src/pages/settings/roles/components/RolePermissions.tsx
 #: src/pages/settings/data-model/SettingsObjects.tsx
@@ -1830,10 +2512,23 @@ msgid "Offer Type"
 msgstr "Angebotsart"
 
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
-msgid "Old"
-msgstr "Alt"
+#~ msgid "Old"
+#~ msgstr "Old"
+
+#: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
+msgid "Old Draft Values"
+msgstr "Alte Entwurfswerte"
+
+#: src/modules/inquiries/components/InquiriesList.tsx
+msgid "Once you receive an inquiry on your connected Email, it will appear here."
+msgstr "Anfragen auf deine verbundene E-Mail erscheinen hier."
+
+#: src/modules/onboarding/components/onboardingSyncEmailsOptions.tsx
+msgid "Only the timestamp & participants will be shared with your team."
+msgstr "Zeitpunkt und Teilnehmer werden mit deinem Team geteilt."
 
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+#: src/modules/inquiries/components/sidebar/PropertyDetails.tsx
 msgid "Open"
 msgstr "Öffnen"
 
@@ -1844,6 +2539,10 @@ msgstr "Befehlsmenü öffnen"
 #: src/modules/object-record/object-options-dropdown/components/ObjectOptionsDropdownViewSettingsOpenInContent.tsx
 msgid "Open in"
 msgstr "Öffnen in"
+
+#: src/modules/object-record/record-show/components/nm/cards/PropertyAddressCard.tsx
+msgid "Open in Google Maps"
+msgstr "In Google Maps öffnen"
 
 #: src/modules/object-metadata/components/NavigationDrawerOpenedSection.tsx
 msgid "Opened"
@@ -1864,6 +2563,10 @@ msgstr "oder"
 msgid "Other"
 msgstr "Andere"
 
+#: src/modules/object-record/record-show/components/nm/cards/PropertyBasicInfoCard.tsx
+msgid "Overview"
+msgstr "Übersicht"
+
 #: src/pages/not-found/NotFound.tsx
 msgid "Page Not Found"
 msgstr "Seite nicht gefunden"
@@ -1871,6 +2574,10 @@ msgstr "Seite nicht gefunden"
 #: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
 #~ msgid "Parking Space Subtype"
 #~ msgstr "Parking Space Subtype"
+
+#: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
+msgid "Partner Id"
+msgstr "Partner-ID"
 
 #: src/modules/settings/security/components/SettingsSecurityOptionsList.tsx
 msgid "Password"
@@ -1883,6 +2590,14 @@ msgstr "Das Passwort wurde aktualisiert"
 #: src/modules/settings/profile/components/ChangePassword.tsx
 msgid "Password reset link has been sent to the email"
 msgstr "Der Link zum Zurücksetzen des Passworts wurde an die E-Mail gesendet"
+
+#: src/modules/settings/accounts/components/SettingsAccountsMessageAutoCreationCard.tsx
+msgid "People I’ve sent emails to and received emails from."
+msgstr "Personen, mit denen ich E-Mails ausgetauscht habe."
+
+#: src/modules/settings/accounts/components/SettingsAccountsMessageAutoCreationCard.tsx
+msgid "People I’ve sent emails to."
+msgstr "Personen, an die ich E-Mails gesendet habe."
 
 #: src/modules/object-record/record-table/record-table-footer/components/RecordTableColumnAggregateFooterDropdownContent.tsx
 #: src/modules/object-record/record-board/record-board-column/components/RecordBoardColumnHeaderAggregateDropdownMenuContent.tsx
@@ -1926,6 +2641,33 @@ msgstr "Bild"
 #: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
 msgid "Platform"
 msgstr "Plattform"
+
+#: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
+msgid "Platform Agency Id"
+msgstr "Plattform Anbieter-ID"
+
+#: src/modules/publishers/components/modals/EditPublisherModal.tsx
+#: src/modules/onboarding-tutorial/components/modals/PublisherTutorialModal.tsx
+msgid "Platform Credentials"
+msgstr "Plattform-Zugangsdaten"
+
+#: src/modules/onboarding-tutorial/constants/onboarding-steps.tsx
+msgid "Platform credentials setup successfully"
+msgstr "Plattform-Zugangsdaten erfolgreich eingerichtet"
+
+#: src/pages/settings/publishers/SettingsPublishers.tsx
+#: src/pages/settings/publishers/SettingsPublishers.tsx
+#: src/pages/settings/publishers/components/PublishersListCard.tsx
+#: src/modules/settings/hooks/useSettingsNavigationItems.tsx
+msgid "Platforms"
+msgstr "Plattformen"
+
+#: src/modules/record-edit/components/custom/PropertyEmailsFormInput.tsx
+#: src/modules/record-edit/components/custom/PropertyEmailsFormInput.tsx
+#: src/modules/publishers/components/modals/EditPublisherModal.tsx
+#: src/modules/publishers/components/modals/EditPublisherModal.tsx
+msgid "Please enter a valid email address"
+msgstr "Bitte geben Sie eine gültige E-Mail-Adresse ein"
 
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx
 msgid "Please enter a valid URL"
@@ -1972,7 +2714,6 @@ msgstr "Mehrzahl"
 #~ msgstr "Portuguese (Portugal)"
 
 #: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
-#: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
 msgid "Prefill"
 msgstr "Vorfüllen"
 
@@ -1980,18 +2721,19 @@ msgstr "Vorfüllen"
 msgid "Prefill Property"
 msgstr "Objekt Vorfüllen"
 
+#: src/pages/settings/email-templates/components/EmailTemplatesListCard.tsx
 #: src/modules/settings/data-model/objects/forms/components/SettingsDataModelObjectSettingsFormCard.tsx
 #: src/modules/settings/data-model/components/SettingsDataModelPreviewFormCard.tsx
 msgid "Preview"
 msgstr "Vorschau"
 
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
-msgid "Price History"
-msgstr "Preisentwicklung"
+#~ msgid "Price History"
+#~ msgstr "Price History"
 
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
-msgid "Price history chart coming soon"
-msgstr "Preisverlauf bald verfügbar"
+#~ msgid "Price history chart coming soon"
+#~ msgstr "Price history chart coming soon"
 
 #: src/modules/auth/sign-in-up/components/FooterNote.tsx
 msgid "Privacy Policy"
@@ -2006,6 +2748,15 @@ msgstr "Profil"
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
 #~ msgid "Property"
 #~ msgstr "Property"
+
+#: src/modules/onboarding-tutorial/constants/onboarding-steps.tsx
+msgid "Property created successfully"
+msgstr "Objekt erfolgreich erstellt"
+
+#: src/modules/inquiries/components/sidebar/PropertyDetails.tsx
+#: src/modules/inquiries/components/sidebar/PropertyDetails.tsx
+msgid "Property Details"
+msgstr "Details der Immobilie"
 
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Property Documents"
@@ -2023,9 +2774,25 @@ msgstr "Flyer"
 msgid "Property Images"
 msgstr "Objektbilder"
 
+#: src/modules/inquiries/components/sidebar/PropertyDetails.tsx
+msgid "Property Information"
+msgstr "Immobilieninformation"
+
+#: src/modules/object-record/record-index/components/CreatePropertyModal.tsx
+msgid "Property name"
+msgstr "Objektname"
+
+#: src/modules/record-edit/components/RecordEditContainer.tsx
+msgid "Property saved successfully"
+msgstr "Objekt erfolgreich gespeichert"
+
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 msgid "Pseudo-English"
 msgstr "Pseudo-Englisch"
+
+#: src/modules/ui/layout/show-page/components/nm/PublicationDifferencesModal.tsx
+msgid "Publication Changes to Publish"
+msgstr "Veröffentlichungsänderungen zum Veröffentlichen"
 
 #: src/modules/object-record/record-show/components/nm/publication/CompletionProgress.tsx
 msgid "Publication completion"
@@ -2035,19 +2802,87 @@ msgstr "Vollständigkeit der Veröffentlichung"
 #~ msgid "Publication completion -"
 #~ msgstr "Publication completion -"
 
+#: src/modules/onboarding-tutorial/constants/onboarding-steps.tsx
+msgid "Publication created successfully"
+msgstr "Publikation erfolgreich erstellt"
+
+#: src/modules/object-record/record-show/components/nm/publication/PublicationDetailPage.tsx
+msgid "Publication deleted successfully"
+msgstr "Publikation erfolgreich erstellt"
+
 #: src/modules/ui/layout/show-page/components/nm/PublishModal.tsx
 msgid "Publication Draft"
 msgstr "Veröffentlichungsentwurf"
 
-#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
+#: src/modules/object-record/record-show/components/ui/NewPublicationCard.tsx
 msgid "Publication Draft created successfully"
 msgstr "Veröffentlichungsentwurf erfolgreich erstellt"
 
+#: src/modules/ui/layout/show-page/components/nm/PublicationDifferencesModal.tsx
+msgid "Publication published successfully"
+msgstr "Publikation erfolgreich veröffentlicht"
+
+#: src/modules/record-edit/components/RecordEditContainer.tsx
+#: src/modules/record-edit/components/RecordEditContainer.tsx
+msgid "Publication saved successfully"
+msgstr "Publikation erfolgreich gespeichert"
+
+#: src/modules/onboarding-tutorial/components/modals/PublicationSyncTutorialModal.tsx
+msgid "Publication Synchronization"
+msgstr "Synchronisation von Publikationen"
+
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+#: src/modules/object-record/record-show/components/nm/publication/PublicationDetailPage.tsx
+msgid "Publication unpublished successfully"
+msgstr "Publikation erfolgreich zurückgezogen"
+
+#: src/modules/object-record/record-show/components/nm/publication/PublicationBreadcrumb.tsx
+#: src/modules/object-record/record-show/components/nm/cards/PropertyPublicationsCard.tsx
+msgid "Publications"
+msgstr "Publikationen"
+
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/Publishing.tsx
+#: src/modules/object-record/record-show/components/nm/publication/PublicationDetailPage.tsx
+#: src/modules/object-record/record-show/components/nm/publication/PublicationDetailPage.tsx
 msgid "Publish"
 msgstr "Veröffentlichen"
+
+#: src/modules/ui/layout/show-page/components/nm/PublicationDifferencesModal.tsx
+msgid "Publish Changes"
+msgstr "Änderungen veröffentlichen"
+
+#: src/modules/object-record/record-show/components/nm/publication/PublicationDetailPage.tsx
+msgid "Publish Changes ({totalDifferenceCount})"
+msgstr "Änderungen veröffentlichen ({totalDifferenceCount})"
+
+#: src/modules/onboarding-tutorial/constants/onboarding-steps.tsx
+msgid "Publish your first property"
+msgstr "Veröffentliche Dein erstes Objekt"
+
+#: src/modules/object-record/record-show/components/nm/cards/PublicationList.tsx
+msgid "Publish your property on a new platform."
+msgstr "Veröffentliche dein Objekt auf einer neuen Immobilienplattform."
+
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/Publishing.tsx
+msgid "Published"
+msgstr "Veröffentlicht"
+
+#: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
+msgid "Publisher Credentials"
+msgstr "Anbieter Zugangsdaten"
+
+#: src/pages/settings/publishers/SettingsPublishers.tsx
+msgid "Publisher deleted successfully"
+msgstr "Anbieter erfolgreich gelöscht"
+
+#: src/modules/publishers/components/modals/EditPublisherModal.tsx
+msgid "Publisher Details"
+msgstr "Anbieter Details"
+
+#: src/pages/settings/publishers/SettingsPublishers.tsx
+msgid "Publishers"
+msgstr "Anbieter"
 
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/Publishing.tsx
 msgid "Publishing..."
@@ -2066,8 +2901,8 @@ msgid "Receive an email containing password update link"
 msgstr "Erhalten Sie eine E-Mail mit einem Link zur Passwortaktualisierung"
 
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
-msgid "Recent Inquiries"
-msgstr "Neueste Anfragen"
+#~ msgid "Recent Inquiries"
+#~ msgstr "Recent Inquiries"
 
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
 #~ msgid "Recent Visitors"
@@ -2076,6 +2911,10 @@ msgstr "Neueste Anfragen"
 #: src/modules/command-menu/components/CommandMenu.tsx
 msgid "Record Selection"
 msgstr "Datensatz-Auswahl"
+
+#: src/modules/inquiries/components/InquiriesFilterHeader.tsx
+msgid "Ref: {propertyRef}"
+msgstr "Ref: {propertyRef}"
 
 #: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
 msgid "Reference Property"
@@ -2123,6 +2962,27 @@ msgstr "{workspaceMemberName} entfernen?"
 msgid "Remove from favorites"
 msgstr "Aus Favoriten entfernen"
 
+#: src/modules/inquiries/components/sidebar/ConversationMessageItem.tsx
+msgid "Reply"
+msgstr "Antworten"
+
+#: src/modules/inquiries/components/sidebar/ReplyEditor.tsx
+#~ msgid "Reply functionality coming soon"
+#~ msgstr "Reply functionality coming soon"
+
+#: src/modules/object-record/record-show/components/nm/cards/PropertyReportingCard.tsx
+msgid "Reporting"
+msgstr "Reporting"
+
+#: src/modules/object-record/record-show/components/nm/cards/PropertyReportingCard.tsx
+msgid "Reporting coming soon"
+msgstr "Reporting kommt bald"
+
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/Publishing.tsx
+#: src/modules/object-record/record-show/components/nm/publication/PublicationDetailPage.tsx
+msgid "Republish"
+msgstr "Erneut veröffentlichen"
+
 #: src/pages/auth/PasswordReset.tsx
 msgid "Reset Password"
 msgstr "Passwort zurücksetzen"
@@ -2135,9 +2995,23 @@ msgstr "Zurücksetzen auf"
 msgid "Results"
 msgstr "Ergebnisse"
 
+#: src/modules/object-record/record-show/components/nm/publication/PublicationDetailPage.tsx
+#: src/modules/object-record/record-show/components/nm/publication/PublicationDetailPage.tsx
+#: src/modules/object-record/record-show/components/nm/publication/PublicationDetailPage.tsx
+msgid "Revert Changes"
+msgstr "Änderungen verwerfen"
+
+#: src/modules/ui/layout/show-page/components/nm/PublicationDifferencesModal.tsx
+msgid "Review Changes"
+msgstr "Änderungen überprüfen"
+
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
 msgid "Review differences between your property and its publication drafts. Syncing will update the publication drafts with the current property values."
 msgstr "Überprüfen Sie die Unterschiede zwischen Ihrem Objekt und seinen Veröffentlichungsentwürfen. Die Synchronisierung aktualisiert die Veröffentlichungsentwürfe mit den aktuellen Stammdaten."
+
+#: src/modules/ui/layout/show-page/components/nm/PublicationDifferencesModal.tsx
+msgid "Review the changes that will be published. These changes will update the published version of your property listing."
+msgstr "Überprüfe deine Änderungen. Diese Änderungen überschreiben die publizierte Version auf der Plattform."
 
 #: src/pages/settings/roles/SettingsRoles.tsx
 #: src/pages/settings/roles/SettingsRoles.tsx
@@ -2160,8 +3034,17 @@ msgstr "Führen Sie einen Workflow aus und kehren Sie zurück, um die Ausführun
 #: src/modules/record-edit/components/RecordEditContainer.tsx
 #: src/modules/record-edit/components/custom/ImageEditModal.tsx
 #: src/modules/record-edit/components/custom/DocumentEditModal.tsx
+#: src/modules/publishers/components/modals/EditPublisherModal.tsx
 msgid "Save"
 msgstr "Speichern"
+
+#: src/modules/record-edit/contexts/UnsavedChangesContext.tsx
+msgid "Save & Leave"
+msgstr "Speichern und verlassen"
+
+#: src/modules/record-edit/components/custom/PropertyEmailsFormInput.tsx
+msgid "Save and send"
+msgstr "Speichern und senden"
 
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 msgid "Scroll left"
@@ -2240,21 +3123,47 @@ msgstr "Versionen anzeigen"
 msgid "See versions history"
 msgstr "Versionsverlauf anzeigen"
 
+#: src/modules/object-record/record-table/components/nm/RecordListItem.tsx
+#: src/modules/object-record/record-table/components/nm/RecordList.tsx
+msgid "Select"
+msgstr "Auswählen"
+
+#: src/pages/settings/email-templates/components/EmailTemplateSelect.tsx
+msgid "Select a template"
+msgstr "Vorlage auswählen"
+
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx
 msgid "Select the events you wish to send to this endpoint"
 msgstr "Wählen Sie die Ereignisse aus, die Sie an diesen Endpunkt senden möchten"
 
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
 msgid "Select where you want to publish your property listing"
-msgstr "Wählen Sie aus, wo Sie Ihre Immobilie veröffentlichen möchten"
+msgstr "Wähle aus, wo Du Deine Immobilie veröffentlichen möchtest"
 
 #: src/pages/settings/profile/appearance/components/SettingsExperience.tsx
 msgid "Select your preferred language"
 msgstr "Bevorzugte Sprache auswählen"
 
+#: src/modules/object-record/record-table/components/nm/RecordListItem.tsx
+#: src/modules/object-record/record-table/components/nm/RecordList.tsx
+msgid "Selected"
+msgstr "Ausgewählt"
+
 #: src/pages/settings/SettingsWorkspaceMembers.tsx
 msgid "Send an invite email to your team"
 msgstr "Einladung per E-Mail an Ihr Team senden"
+
+#: src/modules/record-edit/components/custom/PropertyEmailsFormInput.tsx
+msgid "Send Test"
+msgstr "Test senden"
+
+#: src/modules/settings/accounts/components/SettingsAccountsMessageAutoCreationCard.tsx
+msgid "Sent"
+msgstr "Versendet"
+
+#: src/modules/settings/accounts/components/SettingsAccountsMessageAutoCreationCard.tsx
+msgid "Sent and Received"
+msgstr "Versendet und empfangen"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 #~ msgid "Serbian (Cyrillic)"
@@ -2286,6 +3195,14 @@ msgstr "Geben Sie den Namen Ihrer benutzerdefinierten Domäne ein und konfigurie
 msgid "Set the name of your subdomain"
 msgstr "Subdomainnamen festlegen"
 
+#: src/modules/record-edit/constants/EditSectionEmailsContent.tsx
+msgid "Set up an email template to send to interested buyers when they inquire about this property."
+msgstr "Richte eine E-Mail-Vorlage ein, die interessierten Käufern zugesandt wird, wenn sie nach dieser Immobilie fragen."
+
+#: src/modules/publishers/components/modals/EditPublisherModal.tsx
+msgid "Set up your credentials for each platforms where you want to publish your listings."
+msgstr "Richte deine Zugangsdaten ein für diejenigen Plattformen, auf denen du publizieren möchtest."
+
 #: src/pages/settings/roles/SettingsRoleEdit.tsx
 #: src/pages/settings/roles/components/RolePermissions.tsx
 #: src/pages/settings/data-model/SettingsObjectDetailPage.tsx
@@ -2299,6 +3216,22 @@ msgstr "Einstellungen"
 msgid "Settings permissions"
 msgstr "Einstellungen Berechtigungen"
 
+#: src/modules/onboarding-tutorial/components/modals/PublisherTutorialModal.tsx
+msgid "Setup Credentials"
+msgstr "Zugangsdaten einrichten"
+
+#: src/modules/onboarding-tutorial/components/modals/EmailTutorialModal.tsx
+msgid "Setup Email Sync"
+msgstr "E-Mail Synchronisation einrichten"
+
+#: src/modules/onboarding-tutorial/constants/onboarding-steps.tsx
+msgid "Setup your platform credentials"
+msgstr "Plattform-Zugangsdaten einrichten"
+
+#: src/modules/onboarding-tutorial/constants/onboarding-steps.tsx
+msgid "Setup your platform credentials in order to publish your properties."
+msgstr "Richte Deine Plattform-Zugangsdaten ein, um Deine Objekte zu veröffentlichen."
+
 #: src/pages/settings/SettingsWorkspaceMembers.tsx
 msgid "Share this link to invite users to join your workspace"
 msgstr "Teilen Sie diesen Link, um Benutzer in Ihren Arbeitsbereich einzuladen"
@@ -2311,6 +3244,19 @@ msgstr "Sollte die Änderung einer Feldbezeichnung auch den API-Namen ändern?"
 msgid "Should changing an object's label also change the API?"
 msgstr "Sollte die Änderung eines Objektnamens auch den API-Namen ändern?"
 
+#: src/modules/object-record/record-table/components/nm/RecordListItem.tsx
+#: src/modules/object-record/record-table/components/nm/RecordList.tsx
+msgid "Show Details"
+msgstr "Details anzeigen"
+
+#: src/modules/inquiries/components/sidebar/PropertyDetails.tsx
+msgid "Show less details"
+msgstr "Weniger Details anzeigen"
+
+#: src/modules/inquiries/components/sidebar/PropertyDetails.tsx
+msgid "Show more details"
+msgstr "Mehr Details anzeigen"
+
 #: src/modules/auth/sign-in-up/components/SignInUpWithCredentials.tsx
 msgid "Sign in"
 msgstr "Anmelden"
@@ -2320,8 +3266,8 @@ msgid "Sign up"
 msgstr "Registrieren"
 
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
-msgid "Similar Properties"
-msgstr "Ähnliche Eigenschaften"
+#~ msgid "Similar Properties"
+#~ msgstr "Similar Properties"
 
 #: src/modules/auth/sign-in-up/components/SignInUpWithSSO.tsx
 msgid "Single sign-on (SSO)"
@@ -2337,8 +3283,12 @@ msgid "Sort"
 msgstr "Sortieren"
 
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
-msgid "Source values"
-msgstr "Stammdaten"
+#~ msgid "Source values"
+#~ msgstr "Source values"
+
+#: src/modules/object-record/record-show/components/nm/cards/PropertyDetailsCard.tsx
+msgid "Space Details"
+msgstr "Raumdetails:"
 
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 #~ msgid "Spanish"
@@ -2348,7 +3298,11 @@ msgstr "Stammdaten"
 msgid "SSO"
 msgstr "SSO"
 
-#: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
+#: src/modules/object-record/record-show/components/nm/cards/PropertyRelationsCard.tsx
+msgid "Stakeholders"
+msgstr "Stakeholder"
+
+#: src/modules/object-record/record-show/components/nm/cards/PublicationStatusCard.tsx
 msgid "Status"
 msgstr "Status"
 
@@ -2369,6 +3323,24 @@ msgstr "Die Subdomain darf nicht länger als 30 Zeichen sein"
 msgid "Subdomain can not be shorter than 3 characters"
 msgstr "Die Subdomain darf nicht kürzer als 3 Zeichen sein"
 
+#: src/pages/settings/email-templates/components/EmailTemplatesListCard.tsx
+#: src/pages/settings/email-templates/components/EmailTemplateForm.tsx
+msgid "Subject"
+msgstr "Betreff"
+
+#: src/modules/settings/accounts/components/SettingsAccountsMessageVisibilityCard.tsx
+#: src/modules/onboarding/components/onboardingSyncEmailsOptions.tsx
+msgid "Subject and metadata"
+msgstr "Betreff und Metadaten"
+
+#: src/modules/settings/accounts/components/SettingsAccountsMessageVisibilityCard.tsx
+msgid "Subject and metadata will be shared with your team."
+msgstr "Betreff und Metadaten werden mit deinem Team geteilt."
+
+#: src/modules/settings/accounts/components/SettingsAccountsMessageVisibilityCard.tsx
+msgid "Subject, body and attachments will be shared with your team."
+msgstr "Betreff, Inhalt und Anhänge werden mit deinem Team geteilt."
+
 #: src/pages/settings/SettingsBilling.tsx
 msgid "Subscription has been switched {to}"
 msgstr "Abonnement wurde auf {to} umgestellt"
@@ -2376,6 +3348,10 @@ msgstr "Abonnement wurde auf {to} umgestellt"
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/Publishing.tsx
 msgid "Successfully published"
 msgstr "Erfolgreich veröffentlicht"
+
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/Publishing.tsx
+#~ msgid "Successfully published*"
+#~ msgstr "Successfully published*"
 
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationShortLabel.ts
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationLabel.ts
@@ -2411,8 +3387,28 @@ msgid "Sync Drafts with Property"
 msgstr "Entwürfe mit Objekt synchronisieren"
 
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
-msgid "Sync Publications"
-msgstr "Entwürfe synchronisieren"
+#~ msgid "Sync Publications"
+#~ msgstr "Sync Publications"
+
+#: src/modules/object-record/record-show/components/nm/PropertyDetails.tsx
+msgid "Sync Publications {differenceLength}"
+msgstr "Publikationen Synchronisieren {differenceLength}"
+
+#: src/pages/onboarding/SyncEmails.tsx
+msgid "Sync with Google"
+msgstr "Sync mit Google"
+
+#: src/pages/onboarding/SyncEmails.tsx
+msgid "Sync with Outlook"
+msgstr "Sync mit Outlook"
+
+#: src/pages/onboarding/SyncEmails.tsx
+msgid "Sync your Emails and Calendar with nestermind."
+msgstr "Synchronisiere deine E-Mails und deinen Kalender mit nestermind."
+
+#: src/pages/onboarding/SyncEmails.tsx
+msgid "Sync your Emails and Calendar with nestermind. Choose your privacy settings."
+msgstr "Synchronisiere deine E-Mails und deinen Kalender mit nestermind. Wähle deine Privatsphäre-Einstellungen"
 
 #: src/modules/settings/data-model/fields/forms/components/SettingsDataModelFieldIconLabelForm.tsx
 msgid "Synchronize Field Label and API Name"
@@ -2421,6 +3417,10 @@ msgstr "Feldbezeichnung und API-Name synchronisieren"
 #: src/modules/settings/data-model/objects/forms/components/SettingsDataModelObjectAboutForm.tsx
 msgid "Synchronize Objects Labels and API Names"
 msgstr "Objektbezeichnung und API-Namen synchronisieren"
+
+#: src/modules/onboarding-tutorial/components/modals/EmailTutorialModal.tsx
+msgid "Synchronized email threads are stored directly with the respective people in the CRM. This allows you to track the entire history of communication at any time. You can also individually set whether you want to see only the subject lines or the full email text in nestermind."
+msgstr "Synchronisierte E-Mail-Threads werden direkt mit den jeweiligen Personen im CRM gespeichert. So kannst Du jederzeit den gesamten Verlauf der Kommunikation verfolgen. Du kannst auch individuell einstellen, ob Du nur die Betreffzeilen oder den vollständigen E-Mail-Verlauf in nestermind sehen möchtest."
 
 #: src/pages/settings/profile/appearance/components/SettingsExperience.tsx
 msgid "System settings"
@@ -2443,6 +3443,11 @@ msgstr "Nutzungsbedingungen"
 msgid "Test"
 msgstr "Test"
 
+#: src/modules/record-edit/components/custom/PropertyEmailsFormInput.tsx
+#: src/modules/record-edit/components/custom/PropertyEmailsFormInput.tsx
+msgid "Test email sent successfully"
+msgstr "Test-E-Mail erfolgreich gesendet"
+
 #: src/modules/action-menu/actions/record-actions/constants/WorkflowActionsConfig.ts
 msgid "Test Workflow"
 msgstr "Test-Workflow"
@@ -2457,8 +3462,12 @@ msgid "The email associated to your account"
 msgstr "Die mit Ihrem Konto verknüpfte E-Mail"
 
 #: src/modules/record-edit/constants/EditSectionPropertyOverviewContent.tsx
-msgid "The location of the property. These fields are <0>required</0> in order to publish."
-msgstr "Der Standort des Objekts. Diese Felder sind <0>benötigt</0> um zu veröffentlichen."
+#~ msgid "The location of the property. These fields are <0>required</0> in order to publish."
+#~ msgstr "The location of the property. These fields are <0>required</0> in order to publish."
+
+#: src/modules/record-edit/constants/EditSectionLocationContent.tsx
+msgid "The location of the property. These fields are <0>required</0> in order to publish. (Except for the secondary address field)"
+msgstr "Der Standort des Objekts. Diese Felder sind <0>erforderlich</0> um zu veröffentlichen. (Ausser das sekundäre Adressfeld)"
 
 #: src/pages/settings/data-model/SettingsObjectFieldEdit.tsx
 #: src/pages/settings/data-model/SettingsObjectNewField/SettingsObjectNewFieldConfigure.tsx
@@ -2472,6 +3481,14 @@ msgstr "Der Name Ihrer Organisation"
 #: src/pages/not-found/NotFound.tsx
 msgid "The page you're seeking is either gone or never was. Let's get you back on track"
 msgstr "Die gesuchte Seite ist entweder nicht mehr vorhanden oder hat nie existiert. Lassen Sie uns Ihnen helfen, wieder auf den richtigen Weg zu kommen"
+
+#: src/modules/onboarding-tutorial/components/modals/PublicationSyncTutorialModal.tsx
+msgid "The synchronization ensures that titles, descriptions, prices, images and other relevant information are updated across all platforms - without having to manually edit each draft."
+msgstr "Die Synchronisation stellt sicher, dass Titel, Beschreibungen, Preise, Bilder und andere relevante Informationen auf allen Plattformen aktualisiert werden - ohne jeden Entwurf manuell bearbeiten zu müssen."
+
+#: src/modules/onboarding-tutorial/components/modals/PublicationSyncTutorialModal.tsx
+#~ msgid "The synchronization ensures that titles, descriptions, prices, images and other relevant information are updated across all platforms - without having to manually edit each publication."
+#~ msgstr "The synchronization ensures that titles, descriptions, prices, images and other relevant information are updated across all platforms - without having to manually edit each publication."
 
 #: src/pages/settings/data-model/SettingsObjectFieldEdit.tsx
 #: src/pages/settings/data-model/SettingsObjectNewField/SettingsObjectNewFieldConfigure.tsx
@@ -2490,6 +3507,10 @@ msgstr "Beim Aktualisieren des Passworts ist ein Fehler aufgetreten."
 msgid "There was an issue"
 msgstr "Es gab ein Problem"
 
+#: src/modules/ui/layout/show-page/components/nm/PublicationDifferencesModal.tsx
+msgid "These changes will update your published listing immediately. Make sure all details are correct before proceeding."
+msgstr "Diese Änderungen werden deine veröffentlichte Version unverzüglich aktualisieren. Stelle sicher, dass alle Details korrekt sind, bevor du fortfährst."
+
 #: src/pages/settings/SettingsWorkspaceMembers.tsx
 msgid "This action cannot be undone. This will permanently delete this user and remove them from all their assignments."
 msgstr "Diese Aktion kann nicht rückgängig gemacht werden. Dadurch wird dieser Benutzer dauerhaft gelöscht und aus allen seinen Aufgaben entfernt."
@@ -2502,13 +3523,21 @@ msgstr "Diese Aktion kann nicht rückgängig gemacht werden. Dadurch wird Ihr ge
 msgid "This includes the following platforms: ImmoScout24, Homegate, and more."
 msgstr "Dazu gehören folgende Plattformen: ImmoScout24, Homegate und mehr."
 
+#: src/modules/onboarding-tutorial/components/modals/PublicationSyncTutorialModal.tsx
+msgid "This keeps your property presentation always up-to-date and saves you valuable time!"
+msgstr "Das hält Ihre Immobilie immer aktuell und spart Ihnen wertvolle Zeit!"
+
 #: src/pages/settings/roles/components/RoleAssignmentConfirmationModalSubtitle.tsx
 msgid "This member will be unassigned from this role."
 msgstr "Dieses Mitglied wird von dieser Rolle abgezogen."
 
 #: src/pages/onboarding/CreateProfile.tsx
-msgid "This permission is required for Nestermind's automation and AI features to function properly."
+msgid "This permission is required for nestermind's automation and AI features to function properly."
 msgstr "Diese Berechtigung wird benötigt, damit Automatisierung und KI-Funktionen richtig funktionieren."
+
+#: src/pages/onboarding/CreateProfile.tsx
+#~ msgid "This permission is required for Nestermind's automation and AI features to function properly."
+#~ msgstr "This permission is required for Nestermind's automation and AI features to function properly."
 
 #: src/pages/settings/roles/components/RolePermissions.tsx
 #~ msgid "This Role has the following permissions."
@@ -2525,6 +3554,10 @@ msgstr "Diese Rolle ist diesen Arbeitsbereichsmitgliedern zugewiesen."
 #: src/pages/settings/profile/appearance/components/DateTimeSettingsTimeFormatSelect.tsx
 msgid "Time format"
 msgstr "Zeitformat"
+
+#: src/modules/settings/accounts/components/SettingsAccountsMessageVisibilityCard.tsx
+msgid "Timestamp and participants will be shared with your team."
+msgstr "Zeitpunkt und Teilnehmer werden mit deinem Team geteilt."
 
 #: src/pages/settings/SettingsBilling.tsx
 msgid "to monthly"
@@ -2560,6 +3593,11 @@ msgstr "Geben Sie irgendetwas ein"
 #~ msgid "Ukrainian"
 #~ msgstr "Ukrainian"
 
+#: src/modules/onboarding-tutorial/components/modals/PublicationSyncTutorialModal.tsx
+#: src/modules/onboarding-tutorial/components/modals/InquiryTutorialModal.tsx
+msgid "Understood"
+msgstr "Alles klar"
+
 #: src/pages/settings/data-model/SettingsObjectIndexTable.tsx
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationShortLabel.ts
 msgid "Unique"
@@ -2573,18 +3611,39 @@ msgstr "Unbekannter Fehler"
 msgid "Unlimited contacts"
 msgstr "Unbegrenzte Kontakte"
 
+#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+#: src/modules/object-record/record-show/components/nm/publication/PublicationDetailPage.tsx
+#: src/modules/object-record/record-show/components/nm/publication/PublicationDetailPage.tsx
+#: src/modules/object-record/record-show/components/nm/publication/PublicationDetailPage.tsx
+msgid "Unpublish"
+msgstr "Zurückziehen"
+
+#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+#: src/modules/object-record/record-show/components/nm/publication/PublicationDetailPage.tsx
+msgid "Unpublish Publication"
+msgstr "Veröffentlichung zurückziehen"
+
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/Publishing.tsx
 msgid "Unpublished"
 msgstr "Unveröffentlicht"
 
+#: src/modules/record-edit/contexts/UnsavedChangesContext.tsx
+#: src/modules/record-edit/components/custom/PropertyEmailsFormInput.tsx
+msgid "Unsaved Changes"
+msgstr "Ungespeicherte Änderungen"
+
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
-msgid "Updated"
-msgstr "Aktualisiert"
+#~ msgid "Updated"
+#~ msgstr "Updated"
 
 #: src/modules/ui/input/components/ImageInput.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Upload"
 msgstr "Hochladen"
+
+#: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
+msgid "Upload a file"
+msgstr "Datei hochladen"
 
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Upload Documents"
@@ -2608,8 +3667,12 @@ msgid "Use letter, number and dash only. Start and finish with a letter or a num
 msgstr "Verwenden Sie nur Buchstaben, Zahlen und Bindestriche. Beginnen und enden Sie mit einem Buchstaben oder einer Zahl"
 
 #: src/modules/object-record/record-table/empty-state/utils/getEmptyStateSubTitle.ts
-msgid "Use our API or add your first {objectLabel} manually"
-msgstr "Verwenden Sie unsere API oder fügen Sie Ihr erstes {objectLabel} manuell hinzu"
+msgid "Use our API or add your {objectLabel} manually"
+msgstr "Nutze unsere API oder füge deine {objectLabel} manuell hinzu"
+
+#: src/modules/object-record/record-table/empty-state/utils/getEmptyStateSubTitle.ts
+#~ msgid "Use our API or add your first {objectLabel} manually"
+#~ msgstr "Use our API or add your first {objectLabel} manually"
 
 #: src/pages/settings/SettingsProfile.tsx
 #: src/pages/settings/profile/appearance/components/SettingsExperience.tsx
@@ -2631,17 +3694,33 @@ msgstr "Benutzer ist nicht eingeloggt"
 msgid "Values"
 msgstr "Werte"
 
+#: src/modules/onboarding-tutorial/components/modals/PublicationSyncTutorialModal.tsx
+#~ msgid "Verstanden"
+#~ msgstr "Verstanden"
+
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 #~ msgid "Vietnamese"
 #~ msgstr "Vietnamese"
+
+#: src/modules/inquiries/components/InquiriesPreview.tsx
+msgid "View all ({totalRecords})"
+msgstr "Alle anzeigen ({totalRecords})"
 
 #: src/pages/settings/SettingsBilling.tsx
 msgid "View billing details"
 msgstr "Rechnungsdetails anzeigen"
 
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/Publishing.tsx
-msgid "View Publication"
-msgstr "Veröffentlichung anzeigen"
+#~ msgid "View Publication"
+#~ msgstr "View Publication"
+
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/Publishing.tsx
+msgid "View Publications"
+msgstr "Veröffentlichungen anzeigen"
+
+#: src/modules/settings/accounts/components/SettingsAccountsMessageChannelDetails.tsx
+msgid "Visibility"
+msgstr "Sichtbarkeit"
 
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
 #~ msgid "Visitor Activity"
@@ -2683,6 +3762,18 @@ msgstr "Webhooks"
 msgid "Welcome to {workspaceName}"
 msgstr "Willkommen bei {workspaceName}"
 
+#: src/modules/onboarding-tutorial/components/modals/InquiryTutorialModal.tsx
+msgid "What are inquiries created for?"
+msgstr "Wofür sind Anfragen?"
+
+#: src/modules/object-record/record-index/components/ObjectRecordTutorialButton.tsx
+msgid "What is an inquiry?"
+msgstr "Was ist eine Anfrage?"
+
+#: src/modules/onboarding-tutorial/components/modals/EmailTutorialModal.tsx
+msgid "When an inquiry comes through a real estate portal, nestermind automatically creates a CRM inquiry. This stores not only the inquiry details but also the entire email history specifically related to interest in a particular publication."
+msgstr "Geht eine Anfrage über ein Immobilienportal ein, erstellt nestermind automatisch eine Anfrage CRM. Dieser speichert nicht nur die Anfrage-Details, sondern auch den gesamten E-Mail-Verlauf, der sich speziell auf das Interesse an einer konkreten Publikation bezieht."
+
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeysNew.tsx
 msgid "When the API key will expire."
 msgstr "Wann der API-Schlüssel abläuft."
@@ -2691,9 +3782,46 @@ msgstr "Wann der API-Schlüssel abläuft."
 msgid "When the key will be disabled"
 msgstr "Wann der Schlüssel deaktiviert wird"
 
+#: src/modules/onboarding-tutorial/components/modals/PublicationSyncTutorialModal.tsx
+msgid "When you make changes to a property's master data, you can quickly and easily transfer these to your publications. All draft publications can be synchronized with a single click, ensuring that current data is displayed correctly everywhere."
+msgstr "Wenn Du Änderungen an den Stammdaten einer Immobilie vornimmst, kannst Du diese schnell und einfach auf Deine Publikationen übertragen. Alle Entwürfe können mit einem einzigen Klick synchronisiert werden, um sicherzustellen, dass die aktuellen Daten überall korrekt angezeigt werden."
+
+#: src/modules/onboarding-tutorial/components/modals/PublicationSyncTutorialModal.tsx
+#~ msgid "When you make changes to a property's master data, you can quickly and easily transfer these to your publications. All drafts and already published objects can be synchronized with a single click, ensuring that current data is displayed correctly everywhere."
+#~ msgstr "When you make changes to a property's master data, you can quickly and easily transfer these to your publications. All drafts and already published objects can be synchronized with a single click, ensuring that current data is displayed correctly everywhere."
+
 #: src/pages/onboarding/CreateProfile.tsx
 msgid "Why is this required?"
 msgstr "Warum wird das benötigt?"
+
+#: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
+msgid "Will be applied"
+msgstr "Wird angewendet"
+
+#: src/modules/ui/layout/show-page/components/nm/PublicationDifferencesModal.tsx
+msgid "Will be published"
+msgstr "Wird angewendet"
+
+#: src/modules/ui/layout/show-page/components/nm/PublicationDifferencesModal.tsx
+#: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
+msgid "Will be replaced"
+msgstr "Wird ersetzt"
+
+#: src/modules/onboarding-tutorial/components/modals/EmailTutorialModal.tsx
+msgid "With email synchronization in nestermind, you can seamlessly connect your emails and calendar events with the CRM. Microsoft, Outlook, and IMAP are supported, allowing you to efficiently manage your communication in nestermind – regardless of which email service you use."
+msgstr "Mit der E-Mail-Synchronisation in nestermind kannst Du Deine E-Mails und Kalenderereignisse nahtlos mit dem CRM verbinden. Unterstützt werden Microsoft, Outlook und IMAP, sodass Du Deine Kommunikation effizient in nestermind verwalten kannst – unabhängig davon, welchen E-Mail-Dienst Du verwendest."
+
+#: src/modules/onboarding-tutorial/components/modals/EmailTutorialModal.tsx
+msgid "With email synchronization in nestermind, your communication stays structured, efficient, and fully integrated."
+msgstr "Mit der E-Mail-Synchronisation in nestermind bleibt deine Kommunikation strukturiert, effizient und vollständig integriert."
+
+#: src/modules/onboarding-tutorial/components/modals/PublisherTutorialModal.tsx
+#~ msgid "With Nestermind, you can set up provider details to efficiently manage the publication of your properties on various platforms. The provider entity stores the required access credentials for each platform publication so you can reuse them for each listing."
+#~ msgstr "With Nestermind, you can set up provider details to efficiently manage the publication of your properties on various platforms. The provider entity stores the required access credentials for each platform publication so you can reuse them for each listing."
+
+#: src/modules/onboarding-tutorial/components/modals/PublisherTutorialModal.tsx
+msgid "With nestermind, you can set up publisher details to efficiently manage the publication of your properties on various platforms. The publisher entity stores the required access credentials for each platform publication so you can reuse them for each listing."
+msgstr "Mit nestermind kannst Du die Anbieter-Details festlegen, um die Veröffentlichung Deiner Immobilien auf verschiedenen Plattformen effizient zu verwalten. Ein Anbieter speichert die erforderlichen Zugangsdaten für jede Plattform-Publikation damit Du sie für jede Veröffentlichung wiederverwenden kannst."
 
 #: src/modules/workflow/components/RecordShowPageWorkflowHeader.tsx
 msgid "Workflow cannot be tested"
@@ -2706,7 +3834,10 @@ msgstr "Workflow kann nicht getestet werden"
 #: src/pages/settings/workspace/SettingsDomain.tsx
 #: src/pages/settings/security/SettingsSecurity.tsx
 #: src/pages/settings/roles/SettingsRoles.tsx
+#: src/pages/settings/publishers/SettingsPublishers.tsx
 #: src/pages/settings/integrations/SettingsIntegrations.tsx
+#: src/pages/settings/email-templates/SettingsEmailTemplateDetail.tsx
+#: src/pages/settings/email-templates/components/SettingsEmailTemplatesContent.tsx
 #: src/pages/settings/developers/SettingsDevelopers.tsx
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeysNew.tsx
@@ -2757,17 +3888,85 @@ msgstr "Schreiben Sie eine Beschreibung für Ihren Beitrag..."
 msgid "yes"
 msgstr "ja"
 
+#: src/modules/object-record/hooks/useFormattedPropertyFields.ts
+msgid "Yes"
+msgstr "Ja"
+
+#: src/modules/inquiries/components/sidebar/ConversationMessageItem.tsx
+#~ msgid "Yesterday"
+#~ msgstr "Yesterday"
+
 #: src/modules/object-record/record-table/empty-state/components/RecordTableEmptyStateReadOnly.tsx
 msgid "You are not allowed to create records in this object"
 msgstr "Sie sind nicht berechtigt, Einträge in diesem Objekt zu erstellen"
+
+#: src/pages/settings/email-templates/components/EmailTemplateSelect.tsx
+msgid "You can edit email templates in Settings → Email Templates"
+msgstr "E-Mail-Vorlagen können in Einstellungen → E-Mail-Vorlagen bearbeitet werden"
+
+#: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
+msgid "You have no email template set for this property."
+msgstr "Es ist noch keine E-Mail Vorlage für dieses Objekt gesetzt."
+
+#: src/modules/record-edit/components/custom/PropertyEmailsFormInput.tsx
+msgid "You have unsaved changes. Please save before sending the test email."
+msgstr "Sie haben ungespeicherte Änderungen. Bitte speichern Sie vor dem Senden der Test-E-Mail."
+
+#: src/modules/record-edit/contexts/UnsavedChangesContext.tsx
+msgid "You have unsaved changes. What would you like to do?"
+msgstr "Du hast ungespeicherte Änderungen. Was möchtest Du tun?"
 
 #: src/pages/settings/SettingsBilling.tsx
 msgid "You will be charged immediately for the full year."
 msgstr "Sie werden sofort für das gesamte Jahr belastet."
 
+#: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
+msgid "Your Agencie's ID on Comparis."
+msgstr "Ihre Anbieter-ID auf Comparis"
+
+#: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
+msgid "Your Agencie's ID on Smg."
+msgstr "ID des Anbieters auf SMG."
+
+#: src/modules/ui/layout/show-page/components/nm/PublicationDifferencesModal.tsx
+msgid "Your changes have been published successfully."
+msgstr "Deine Änderungen wurden erfolgreich veröffentlicht."
+
 #: src/pages/settings/SettingsBilling.tsx
 msgid "Your credit balance will be used to pay the monthly bills."
 msgstr "Ihr Guthaben wird zur Begleichung der monatlichen Rechnungen verwendet."
+
+#: src/modules/onboarding/components/onboardingSyncEmailsOptions.tsx
+msgid "Your email subjects and meeting titles will be shared with your team."
+msgstr "E-Mail-Betreff und Meeting-Titel werden mit deinem Team geteilt."
+
+#: src/modules/onboarding/components/onboardingSyncEmailsOptions.tsx
+msgid "Your emails and events content will be shared with your team."
+msgstr "E-Mails und Veranstaltungen werden mit deinem Team geteilt."
+
+#: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
+msgid "Your FTP password can be found under \"Import interfaces\" on Comparis."
+msgstr "Dein FTP-Passwort findest du unter \"Import-Schnittstellen\" auf MyNewhome."
+
+#: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
+msgid "Your FTP password can be found under \"Import interfaces\" on MyNewhome."
+msgstr "Dein FTP-Passwort findest Du unter \"Import-Schnittstellen\" auf MyNewhome."
+
+#: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
+msgid "Your FTP password can be found under \"Import interfaces\" on Smg."
+msgstr "Dein FTP-Passwort findest du unter \"Import-Schnittstellen\" auf MyNewhome."
+
+#: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
+msgid "Your FTP username can be found under \"Import interfaces\" on Comparis."
+msgstr "Dein FTP-Passwort findest du unter \"Import-Schnittstellen\" auf MyNewhome."
+
+#: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
+msgid "Your FTP username can be found under \"Import interfaces\" on MyNewhome."
+msgstr "Dein FTP Benutzername findest Du unter \"Import Interfaces\" auf MyNewhome."
+
+#: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
+msgid "Your FTP username can be found under \"Import interfaces\" on Smg."
+msgstr "Dein FTP-Username findest du unter \"Import-Schnittstellen\" auf MyNewhome."
 
 #: src/pages/settings/SettingsProfile.tsx
 msgid "Your name as it will be displayed"
@@ -2777,9 +3976,17 @@ msgstr "Ihr Name, wie er angezeigt wird"
 msgid "Your name as it will be displayed on the app"
 msgstr "Ihr Name, wie er in der App angezeigt wird"
 
-#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+#: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
+msgid "Your Partner ID is displayed in your MyNewhome dashboard under \"Integration of ads on your own website\" under Short name."
+msgstr "Deine Partner-ID wird im MyNewhome Dashboard unter \"Inserate-Einbindung auf eigener Webseite\" unter dem Kurznamen angezeigt."
+
+#: src/modules/object-record/record-show/components/nm/PropertyDetails.tsx
 msgid "Your Publication Drafts were synced successfully"
 msgstr "Ihre Veröffentlichungsentwürfe wurden erfolgreich synchronisiert"
+
+#: src/modules/object-record/record-show/components/nm/cards/PublicationList.tsx
+msgid "Your publications"
+msgstr "Deine Publikationen"
 
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
 #~ msgid "Your Publications Draft was synced successfully"

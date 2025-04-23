@@ -224,6 +224,9 @@ export const RecordDetailRelationSection = ({
                           onChange={updateRelation}
                           onSubmit={closeDropdown}
                           dropdownPlacement={dropdownPlacement}
+                          objectNameSingular={
+                            relationObjectMetadataNameSingular
+                          }
                         />
                       </>
                     )}

@@ -7,6 +7,8 @@ import { RecordShowContainerContextStoreTargetedRecordsEffect } from '@/object-r
 import { useRecordShowContainerData } from '@/object-record/record-show/hooks/useRecordShowContainerData';
 import { useRecordShowContainerTabs } from '@/object-record/record-show/hooks/useRecordShowContainerTabs';
 import { ShowPagePropertySubContainer } from '@/ui/layout/show-page/components/nm/ShowPagePropertySubContainer';
+import { PublicationsProvider } from '@/ui/layout/show-page/contexts/PublicationsProvider';
+import { useCustomPageGuard } from '~/pages/object-record/hooks/useCustomPageGuard';
 
 type RecordShowPropertyContainerProps = {
   objectNameSingular: string;
@@ -35,6 +37,11 @@ export const RecordShowPropertyContainer = ({
     objectRecordId,
   });
 
+  useCustomPageGuard({
+    objectNameSingular,
+    record: recordFromStore,
+  });
+
   const { layout, tabs } = useRecordShowContainerTabs(
     loading,
     objectNameSingular as CoreObjectNameSingular,
@@ -43,7 +50,12 @@ export const RecordShowPropertyContainer = ({
   );
 
   return (
-    <>
+    <PublicationsProvider
+      targetableObject={{
+        id: objectRecordId,
+        targetObjectNameSingular: objectMetadataItem?.nameSingular ?? '',
+      }}
+    >
       <RecordShowContainerContextStoreTargetedRecordsEffect
         recordId={objectRecordId}
       />
@@ -67,6 +79,6 @@ export const RecordShowPropertyContainer = ({
           isPublication={isPublication}
         />
       </ShowPageContainer>
-    </>
+    </PublicationsProvider>
   );
 };

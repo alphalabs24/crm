@@ -1,12 +1,18 @@
-import { ReactNode, useMemo } from 'react';
+import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
+import { useFindManyRecords } from '@/object-record/hooks/useFindManyRecords';
 import { ObjectRecord } from '@/object-record/types/ObjectRecord';
-import { PublicationDifferences } from './usePropertyAndPublicationDifferences';
-import { Trans, useLingui } from '@lingui/react/macro';
+import { SettingsPath } from '@/types/SettingsPath';
+import { PlatformId } from '@/ui/layout/show-page/components/nm/types/Platform';
+import { useLingui } from '@lingui/react/macro';
+import isEmpty from 'lodash.isempty';
+import { ReactNode, useMemo } from 'react';
+import { getSettingsPath } from '~/utils/navigation/getSettingsPath';
 
 export type ValidationResult = {
   isValid: boolean;
   missingFields: ReactNode[];
   message?: string;
+  path?: string;
 };
 
 export type PublicationValidationState = {
@@ -19,11 +25,22 @@ export type PublicationValidationState = {
 export const usePublicationValidation = ({
   record,
   isPublication = false,
+  platformId,
 }: {
   record?: ObjectRecord | null;
   isPublication?: boolean;
+  platformId?: PlatformId;
 }): PublicationValidationState => {
   const { t } = useLingui();
+
+  const { records: credentials } = useFindManyRecords({
+    objectNameSingular: CoreObjectNameSingular.Credential,
+    filter: {
+      agencyId: { eq: record?.agencyId },
+    },
+    skip: !record || !record.agencyId,
+  });
+
   const validationDetails = useMemo((): ValidationResult => {
     if (!record) {
       return {
@@ -101,14 +118,39 @@ export const usePublicationValidation = ({
       }
     }
 
-    // Check platform-specific requirements
-    if (record.platform?.toLowerCase() === 'newhome') {
-      if (
-        !record.agency?.newhomeFtpUser ||
-        !record.agency?.newhomeFtpPassword
-      ) {
-        missingFields.push(t`Agency Credentials`);
-      }
+    let path;
+    const platformIdToUse = platformId ?? record.platform;
+    const credential = credentials.find((c) => c.name === platformIdToUse);
+    if (!credential?.username || !credential?.password) {
+      if (isEmpty(missingFields))
+        path = getSettingsPath(
+          SettingsPath.Platforms,
+          {},
+          { id: record.agencyId },
+        );
+      missingFields.push(t`Publisher Credentials`);
+    }
+    // this only handles validation for Publication
+    if (record.platform === PlatformId.Newhome && !credential?.partnerId) {
+      if (isEmpty(missingFields))
+        path = getSettingsPath(
+          SettingsPath.Platforms,
+          {},
+          { id: record.agencyId },
+        );
+      missingFields.push(t`Partner Id`);
+    }
+    if (
+      record.platform === PlatformId.Comparis &&
+      !credential?.platformAgencyId
+    ) {
+      if (isEmpty(missingFields))
+        path = getSettingsPath(
+          SettingsPath.Platforms,
+          {},
+          { id: record.agencyId },
+        );
+      missingFields.push(t`Platform Agency Id`);
     }
 
     const missingFieldsString = missingFields.join(', ');
@@ -118,8 +160,9 @@ export const usePublicationValidation = ({
       message: missingFields.length
         ? t`Missing required fields: ${missingFieldsString}`
         : undefined,
+      path,
     };
-  }, [isPublication, record, t]);
+  }, [credentials, isPublication, platformId, record, t]);
 
   const showPublishButton = useMemo(() => {
     if (!record) return false;

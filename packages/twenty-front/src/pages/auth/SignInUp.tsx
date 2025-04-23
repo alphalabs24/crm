@@ -21,6 +21,7 @@ import { useMemo } from 'react';
 import { isDefined } from 'twenty-shared';
 import { AnimatedEaseIn } from 'twenty-ui';
 
+import { Description } from '@/auth/components/Description';
 import { useWorkspaceFromInviteHash } from '@/auth/sign-in-up/hooks/useWorkspaceFromInviteHash';
 import { useLingui } from '@lingui/react/macro';
 import { useSearchParams } from 'react-router-dom';
@@ -31,18 +32,23 @@ const StandardContent = ({
   signInUpForm,
   signInUpStep,
   title,
+  description,
 }: {
   workspacePublicData: PublicWorkspaceDataOutput | null;
   signInUpForm: JSX.Element | null;
   signInUpStep: SignInUpStep;
   title: string;
+  description?: string;
 }) => {
   return (
     <>
       <AnimatedEaseIn>
         <Logo secondaryLogo={workspacePublicData?.logo} />
       </AnimatedEaseIn>
-      <Title animate>{title}</Title>
+      <Title animate noMarginBottom={Boolean(description)}>
+        {title}
+      </Title>
+      {description && <Description animate>{description}</Description>}
       {signInUpForm}
       {signInUpStep !== SignInUpStep.Password && <FooterNote />}
     </>
@@ -80,6 +86,13 @@ export const SignInUp = () => {
     workspacePublicData?.displayName,
     t,
   ]);
+
+  const description = useMemo(() => {
+    if (isDefined(workspaceInviteHash)) {
+      return undefined;
+    }
+    return t`Enter your email to create a new account or sign in`;
+  }, [workspaceInviteHash, t]);
 
   const signInUpForm = useMemo(() => {
     if (loading) return null;
@@ -128,6 +141,7 @@ export const SignInUp = () => {
       signInUpForm={signInUpForm}
       signInUpStep={signInUpStep}
       title={title}
+      description={description}
     />
   );
 };

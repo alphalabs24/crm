@@ -1,4 +1,5 @@
 import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadataItem';
+import { useObjectTypeSpecificFilters } from '@/object-record/hooks/useObjectTypeSpecificFilters';
 import { turnSortsIntoOrderBy } from '@/object-record/object-sort-dropdown/utils/turnSortsIntoOrderBy';
 import { useFilterValueDependencies } from '@/object-record/record-filter/hooks/useFilterValueDependencies';
 import { currentRecordFiltersComponentState } from '@/object-record/record-filter/states/currentRecordFiltersComponentState';
@@ -57,11 +58,16 @@ export const useFindManyRecordIndexTableParams = (
 
   const orderBy = turnSortsIntoOrderBy(objectMetadataItem, sorts);
 
+  const { typeSpecificFilters } = useObjectTypeSpecificFilters({
+    objectNameSingular,
+  });
+
   return {
     objectNameSingular,
     filter: {
       ...stateFilter,
       ...recordGroupFilter,
+      ...typeSpecificFilters,
     },
     orderBy,
     // If we have a current record group definition, we only want to fetch 8 records by page

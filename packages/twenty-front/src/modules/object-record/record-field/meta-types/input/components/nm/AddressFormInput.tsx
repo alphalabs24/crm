@@ -4,6 +4,7 @@ import { AddressInput } from '@/ui/field/input/components/AddressInput';
 
 import { useAddressFieldDisplay } from '@/object-record/record-field/meta-types/hooks/useAddressFieldDisplay';
 import { useFieldValueAsDraft } from '@/object-record/record-field/meta-types/input/hooks/useFieldValueAsDraft';
+import { useMemo } from 'react';
 import { useRecordEdit } from '../../../../../../record-edit/contexts/RecordEditContext';
 import {
   FieldInputClickOutsideEvent,
@@ -25,14 +26,23 @@ export const AddressFormInput = ({
   onTab,
   onShiftTab,
 }: AddressFormInputProps) => {
-  const { hotkeyScope, draftValue, setDraftValue, fieldDefinition } =
-    useAddressField();
+  const { hotkeyScope, fieldDefinition } = useAddressField();
+
   const { fieldValue } = useAddressFieldDisplay();
 
-  const { updateField, getUpdatedFields } = useRecordEdit();
+  const { updateField, getUpdatedFields, draftValues, updateDraftValue } =
+    useRecordEdit();
+
+  const draftValue = useMemo(() => {
+    return draftValues[fieldDefinition.metadata.fieldName];
+  }, [draftValues, fieldDefinition.metadata.fieldName]);
 
   // Custom hook to get the field value and initalize the draft value used by the input field
-  useFieldValueAsDraft(fieldValue as FieldAddressDraftValue, setDraftValue);
+  useFieldValueAsDraft(
+    fieldDefinition.metadata.fieldName,
+    fieldValue as FieldAddressDraftValue,
+    updateDraftValue,
+  );
 
   const updateFieldInStore = (newAddress: FieldAddressDraftValue) => {
     const address = convertToAddress(newAddress);
@@ -79,7 +89,10 @@ export const AddressFormInput = ({
 
   const handleChange = (newAddress: FieldAddressDraftValue) => {
     updateFieldInStore(newAddress);
-    setDraftValue(convertToAddress(newAddress));
+    updateDraftValue(
+      fieldDefinition.metadata.fieldName,
+      convertToAddress(newAddress),
+    );
   };
 
   const editDraftValue = getUpdatedFields()[

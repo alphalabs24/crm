@@ -20,6 +20,7 @@ import { getTimelineThreadsFromCompanyId } from '@/activities/emails/graphql/que
 import { getTimelineThreadsFromPersonId } from '@/activities/emails/graphql/queries/getTimelineThreadsFromPersonId';
 import { useCustomResolver } from '@/activities/hooks/useCustomResolver';
 import { ActivityTargetableObject } from '@/activities/types/ActivityTargetableEntity';
+import { useNestermind } from '@/api/hooks/useNestermind';
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { TimelineThread, TimelineThreadsWithTotal } from '~/generated/graphql';
 
@@ -51,6 +52,31 @@ export const EmailThreads = ({
       ? [getTimelineThreadsFromPersonId, 'getTimelineThreadsFromPersonId']
       : [getTimelineThreadsFromCompanyId, 'getTimelineThreadsFromCompanyId'];
 
+  const { useQueries } = useNestermind();
+
+  const isPublication =
+    targetableObject.targetObjectNameSingular ===
+    CoreObjectNameSingular.Publication;
+
+  const isBuyerLead =
+    targetableObject.targetObjectNameSingular ===
+    CoreObjectNameSingular.BuyerLead;
+
+  const isProperty =
+    targetableObject.targetObjectNameSingular ===
+    CoreObjectNameSingular.Property;
+
+  const shouldGetAggregated = isPublication || isBuyerLead || isProperty;
+
+  const { data: emailThreads, isLoading: emailThreadsLoading } =
+    useQueries.useRecordMessageThreads(
+      shouldGetAggregated ? targetableObject.id : null,
+      shouldGetAggregated ? targetableObject.targetObjectNameSingular : null,
+      {
+        enabled: shouldGetAggregated,
+      },
+    );
+
   const { data, firstQueryLoading, isFetchingMore, fetchMoreRecords } =
     useCustomResolver<TimelineThreadsWithTotal>(
       query,
@@ -72,11 +98,11 @@ export const EmailThreads = ({
     }
   };
 
-  if (firstQueryLoading) {
+  if (firstQueryLoading || emailThreadsLoading) {
     return <SkeletonLoader />;
   }
 
-  if (!firstQueryLoading && !timelineThreads?.length) {
+  if (!firstQueryLoading && !emailThreads?.length && !timelineThreads?.length) {
     return (
       <AnimatedPlaceholderEmptyContainer
         // eslint-disable-next-line react/jsx-props-no-spreading
@@ -95,20 +121,28 @@ export const EmailThreads = ({
     );
   }
 
+  // Show either nestermind threads or people threads
+  const emailThreadsToShow =
+    emailThreads && emailThreads.length > 0 ? emailThreads : timelineThreads;
+
   return (
     <StyledContainer>
       <Section>
         <StyledH1Title
           title={
             <>
-              Inbox <StyledEmailCount>{totalNumberOfThreads}</StyledEmailCount>
+              Inbox{' '}
+              <StyledEmailCount>
+                {totalNumberOfThreads ||
+                  (emailThreadsToShow ? emailThreadsToShow.length : 0)}
+              </StyledEmailCount>
             </>
           }
           fontColor={H1TitleFontColor.Primary}
         />
         {!firstQueryLoading && (
           <ActivityList>
-            {timelineThreads?.map((thread: TimelineThread) => (
+            {emailThreadsToShow?.map((thread: TimelineThread) => (
               <EmailThreadPreview key={thread.id} thread={thread} />
             ))}
           </ActivityList>

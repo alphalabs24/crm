@@ -329,7 +329,9 @@ export class SignInUpService {
       isWorkEmail(user.email) && (await isLogoUrlValid()) ? logoUrl : undefined;
 
     const workspaceToCreate = this.workspaceRepository.create({
-      subdomain: await this.domainManagerService.generateSubdomain(),
+      subdomain: await this.domainManagerService.generateSubdomain({
+        email: user.email,
+      }),
       displayName: '',
       inviteHash: v4(),
       activationStatus: WorkspaceActivationStatus.PENDING_CREATION,

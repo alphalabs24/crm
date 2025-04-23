@@ -7,10 +7,11 @@ import { motion } from 'framer-motion';
 import { forwardRef, useState } from 'react';
 import { Button, IconUpload, LARGE_DESKTOP_VIEWPORT } from 'twenty-ui';
 
+import { PlatformBadge } from '@/object-record/record-show/components/nm/publication/PlatformBadge';
 import { Publishing } from '@/ui/layout/show-page/components/nm/modal-pages/Publishing';
-import { PlatformId } from './types/Platform';
-import { ValidationResult } from '../../hooks/usePublicationValidation';
 import { useLingui } from '@lingui/react/macro';
+import { ValidationResult } from '../../hooks/usePublicationValidation';
+import { PlatformId } from './types/Platform';
 
 const StyledModalContent = styled(motion.div)`
   background: ${({ theme }) => theme.background.secondary};
@@ -60,10 +61,21 @@ type PublishModalProps = {
     targetObjectNameSingular: string;
   };
   validationDetails: ValidationResult;
+  platformId: PlatformId;
+  hasDraftAndPublished?: boolean;
 };
 
 export const PublishModal = forwardRef<ModalRefType, PublishModalProps>(
-  ({ onClose, targetableObject, validationDetails }, ref) => {
+  (
+    {
+      onClose,
+      targetableObject,
+      validationDetails,
+      platformId,
+      hasDraftAndPublished,
+    },
+    ref,
+  ) => {
     const { t } = useLingui();
     const [isPublished, setIsPublished] = useState(false);
     return (
@@ -83,7 +95,11 @@ export const PublishModal = forwardRef<ModalRefType, PublishModalProps>(
             <StyledModalTitle>{t`Publication Draft`}</StyledModalTitle>
           </StyledModalTitleContainer>
           <StyledModalHeaderButtons>
-            <Button variant="tertiary" title={`Cancel`} onClick={onClose} />
+            <Button
+              variant="tertiary"
+              title={isPublished ? t`Done` : t`Cancel`}
+              onClick={onClose}
+            />
           </StyledModalHeaderButtons>
         </StyledModalHeader>
 
@@ -96,11 +112,14 @@ export const PublishModal = forwardRef<ModalRefType, PublishModalProps>(
         >
           <Publishing
             recordId={targetableObject.id}
-            renderPlatformIcon={() => <IconUpload size={16} />}
-            selectedPlatform={PlatformId.Newhome}
+            renderPlatformIcon={() => (
+              <PlatformBadge platformId={platformId} size="small" />
+            )}
+            selectedPlatform={platformId}
             validationDetails={validationDetails}
             isPublished={isPublished}
             setIsPublished={setIsPublished}
+            hasDraftAndPublished={hasDraftAndPublished}
           />
         </StyledModalContent>
       </Modal>

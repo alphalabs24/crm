@@ -109,6 +109,8 @@ export const RecordFormCell = ({ loading }: RecordFormCellProps) => {
     labelWidth: fieldDefinition.labelWidth,
     showLabel: fieldDefinition.showLabel,
     isCentered,
+    // By Default, we don't allow to create a new record from the edit screen for now.
+    canCreate: false,
     editModeContent: (
       <FormInput
         recordFieldInputdId={getRecordFieldInputId(
@@ -125,7 +127,7 @@ export const RecordFormCell = ({ loading }: RecordFormCellProps) => {
         isReadOnly={isFieldReadOnly}
       />
     ),
-    displayModeContent: <FormDisplay />,
+    displayModeContent: <FormDisplay canClick={false} />,
     isDisplayModeFixHeight: isDisplayModeFixHeight,
     editModeContentOnly: isFieldInputOnly,
     loading: loading,

@@ -17,5 +17,5 @@ export const getEmptyStateSubTitle = (
     return t`Create your first publication from a property`;
   }
 
-  return t`Use our API or add your first ${objectLabel} manually`;
+  return t`Use our API or add your ${objectLabel} manually`;
 };

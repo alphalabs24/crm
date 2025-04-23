@@ -8,18 +8,21 @@ import { RecordLayout } from '@/object-record/record-show/types/RecordLayout';
 import { SingleTabProps } from '@/ui/layout/tab/components/TabList';
 import { RecordLayoutTab } from '@/ui/layout/tab/types/RecordLayoutTab';
 import { useIsMobile } from '@/ui/utilities/responsive/hooks/useIsMobile';
+import { useIsFeatureEnabled } from '@/workspace/hooks/useIsFeatureEnabled';
 import { useRecoilValue } from 'recoil';
 import {
   IconCalendarEvent,
   IconCheckbox,
-  IconList,
+  IconHome,
+  IconHomeShare,
+  IconLayoutDashboard,
   IconMail,
+  IconMessageCircle2,
   IconNotes,
   IconPrinter,
   IconSettings,
   IconSparkles,
   IconTimelineEvent,
-  IconLayoutDashboard,
 } from 'twenty-ui';
 import { FieldMetadataType } from '~/generated-metadata/graphql';
 import { FeatureFlagKey } from '~/generated/graphql';
@@ -32,7 +35,7 @@ export const useRecordShowContainerTabs = (
 ): { layout: RecordLayout; tabs: SingleTabProps[] } => {
   const isMobile = useIsMobile();
   const objectMetadataItems = useRecoilValue(objectMetadataItemsState);
-
+  const isAIDemoEnabled = useIsFeatureEnabled(FeatureFlagKey.IsAIDemoEnabled);
   const currentWorkspace = useRecoilValue(currentWorkspaceState);
 
   // Object-specific layouts that override or extend the base layout
@@ -42,7 +45,7 @@ export const useRecordShowContainerTabs = (
     [CoreObjectNameSingular.Property]: {
       tabs: {
         overview: {
-          title: 'Overview',
+          title: 'Property',
           hide: {
             ifMobile: false,
             ifDesktop: false,
@@ -51,15 +54,15 @@ export const useRecordShowContainerTabs = (
             ifRequiredObjectsInactive: [],
             ifRelationsMissing: ['noteTargets', 'taskTargets'],
           },
-          Icon: IconList,
+          Icon: IconHome,
           position: 0,
           cards: [{ type: CardType.OverviewCard }],
         },
-        aiSuite: {
-          title: 'AI Suite',
-          position: 1,
-          Icon: IconSparkles,
-          cards: [{ type: CardType.AISuiteCard }],
+        publications: {
+          title: 'Publications',
+          position: 0,
+          Icon: IconHomeShare,
+          cards: [{ type: CardType.PublicationListCard }],
           hide: {
             ifMobile: false,
             ifDesktop: false,
@@ -69,13 +72,62 @@ export const useRecordShowContainerTabs = (
             ifRelationsMissing: [],
           },
         },
+        inquiries: {
+          title: 'Inquiries',
+          position: 0,
+          Icon: IconMessageCircle2,
+          cards: [{ type: CardType.MobileInquiriesCard }],
+          hide: {
+            ifMobile: false,
+            ifDesktop: true,
+            ifInRightDrawer: false,
+            ifFeaturesDisabled: [],
+            ifRequiredObjectsInactive: [],
+            ifRelationsMissing: [],
+          },
+        },
+        emails: {
+          title: 'Emails',
+          position: 600,
+          Icon: IconMail,
+          cards: [{ type: CardType.EmailCard }],
+          hide: {
+            ifMobile: false,
+            ifDesktop: false,
+            ifInRightDrawer: false,
+            ifFeaturesDisabled: [],
+            ifRequiredObjectsInactive: [],
+            ifRelationsMissing: [],
+          },
+        },
+        ...(isAIDemoEnabled
+          ? {
+              aiSuite: {
+                title: 'AI Suite',
+                position: 1,
+                Icon: IconSparkles,
+                cards: [{ type: CardType.AISuiteCard }],
+                hide: {
+                  ifMobile: false,
+                  ifDesktop: false,
+                  ifInRightDrawer: false,
+                  ifFeaturesDisabled: [],
+                  ifRequiredObjectsInactive: [],
+                  ifRelationsMissing: [],
+                },
+              },
+            }
+          : {}),
         fields: null,
       },
     },
-    [CoreObjectNameSingular.Publication]: {
+    [CoreObjectNameSingular.BuyerLead]: {
       tabs: {
-        overview: {
-          title: 'Overview',
+        emails: {
+          title: 'Emails',
+          position: 600,
+          Icon: IconMail,
+          cards: [{ type: CardType.EmailCard }],
           hide: {
             ifMobile: false,
             ifDesktop: false,
@@ -84,54 +136,7 @@ export const useRecordShowContainerTabs = (
             ifRequiredObjectsInactive: [],
             ifRelationsMissing: [],
           },
-          Icon: IconLayoutDashboard,
-          position: 0,
-          cards: [{ type: CardType.PublicationDetailsCard }],
         },
-
-        timeline: {
-          title: 'Timeline',
-          Icon: IconTimelineEvent,
-          position: 200,
-          cards: [{ type: CardType.TimelineCard }],
-          hide: {
-            ifMobile: false,
-            ifDesktop: false,
-            ifInRightDrawer: true,
-            ifFeaturesDisabled: [],
-            ifRequiredObjectsInactive: [],
-            ifRelationsMissing: [],
-          },
-        },
-        tasks: {
-          title: 'Tasks',
-          Icon: IconCheckbox,
-          position: 300,
-          cards: [{ type: CardType.TaskCard }],
-          hide: {
-            ifMobile: false,
-            ifDesktop: false,
-            ifInRightDrawer: false,
-            ifFeaturesDisabled: [],
-            ifRequiredObjectsInactive: [CoreObjectNameSingular.Task],
-            ifRelationsMissing: ['taskTargets'],
-          },
-        },
-        notes: {
-          title: 'Notes',
-          Icon: IconNotes,
-          position: 400,
-          cards: [{ type: CardType.NoteCard }],
-          hide: {
-            ifMobile: false,
-            ifDesktop: false,
-            ifInRightDrawer: false,
-            ifFeaturesDisabled: [],
-            ifRequiredObjectsInactive: [CoreObjectNameSingular.Note],
-            ifRelationsMissing: ['noteTargets'],
-          },
-        },
-        fields: null,
       },
     },
     [CoreObjectNameSingular.Note]: {

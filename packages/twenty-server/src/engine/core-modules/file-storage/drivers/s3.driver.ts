@@ -57,6 +57,10 @@ export class S3Driver implements StorageDriver {
     folder: string;
     mimeType: string | undefined;
   }): Promise<void> {
+    await this.createBucket({
+      Bucket: this.bucketName,
+    });
+
     const command = new PutObjectCommand({
       Key: `${params.folder}/${params.name}`,
       Body: params.file,

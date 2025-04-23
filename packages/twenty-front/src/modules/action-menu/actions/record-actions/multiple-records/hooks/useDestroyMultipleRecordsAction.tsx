@@ -4,6 +4,7 @@ import { contextStoreFiltersComponentState } from '@/context-store/states/contex
 import { contextStoreNumberOfSelectedRecordsComponentState } from '@/context-store/states/contextStoreNumberOfSelectedRecordsComponentState';
 import { contextStoreTargetedRecordsRuleComponentState } from '@/context-store/states/contextStoreTargetedRecordsRuleComponentState';
 import { computeContextStoreFilters } from '@/context-store/utils/computeContextStoreFilters';
+import { isPropertyOrPublication } from '@/object-metadata/utils/isPropertyOrPublication';
 import { BACKEND_BATCH_REQUEST_MAX_COUNT } from '@/object-record/constants/BackendBatchRequestMaxCount';
 import { DEFAULT_QUERY_PAGE_SIZE } from '@/object-record/constants/DefaultQueryPageSize';
 import { RecordGqlOperationFilter } from '@/object-record/graphql/types/RecordGqlOperationFilter';
@@ -92,6 +93,7 @@ export const useDestroyMultipleRecordsAction: ActionHookWithObjectMetadataItem =
       !hasObjectReadOnlyPermission &&
       !isRemoteObject &&
       isDeletedFilterActive &&
+      !isPropertyOrPublication(objectMetadataItem.nameSingular) &&
       isDefined(contextStoreNumberOfSelectedRecords) &&
       contextStoreNumberOfSelectedRecords < BACKEND_BATCH_REQUEST_MAX_COUNT &&
       contextStoreNumberOfSelectedRecords > 0;

@@ -4,6 +4,7 @@ import { useContext } from 'react';
 import { useRecoilValue } from 'recoil';
 
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
+import { isPropertyOrPublication } from '@/object-metadata/utils/isPropertyOrPublication';
 import { RecordBoardContext } from '@/object-record/record-board/contexts/RecordBoardContext';
 import { RecordBoardColumnCardContainerSkeletonLoader } from '@/object-record/record-board/record-board-column/components/RecordBoardColumnCardContainerSkeletonLoader';
 import { RecordBoardColumnCardsMemo } from '@/object-record/record-board/record-board-column/components/RecordBoardColumnCardsMemo';
@@ -151,11 +152,13 @@ export const RecordBoardColumnCardsContainer = ({
                 position="last"
               />
             )}
-            <StyledNewButtonContainer>
-              <RecordBoardColumnNewRecordButton
-                columnId={columnDefinition.id}
-              />
-            </StyledNewButtonContainer>
+            {!isPropertyOrPublication(objectMetadataItem.nameSingular) && (
+              <StyledNewButtonContainer>
+                <RecordBoardColumnNewRecordButton
+                  columnId={columnDefinition.id}
+                />
+              </StyledNewButtonContainer>
+            )}
           </div>
         )}
       </Draggable>

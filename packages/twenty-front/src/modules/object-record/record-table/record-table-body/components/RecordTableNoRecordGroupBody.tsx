@@ -10,8 +10,10 @@ import { useRecoilComponentValueV2 } from '@/ui/utilities/state/component-state/
 
 export const RecordTableNoRecordGroupBody = ({
   readonly,
+  objectNameSingular,
 }: {
   readonly?: boolean;
+  objectNameSingular: string;
 }) => {
   const allRecordIds = useRecoilComponentValueV2(
     recordIndexAllRecordIdsComponentSelector,
@@ -30,7 +32,10 @@ export const RecordTableNoRecordGroupBody = ({
       <RecordTableBodyDragDropContextProvider>
         <RecordTableBodyDroppable>
           <RecordTablePendingRow readonly={readonly} />
-          <RecordTableNoRecordGroupRows readonly={readonly} />
+          <RecordTableNoRecordGroupRows
+            readonly={readonly}
+            objectNameSingular={objectNameSingular}
+          />
         </RecordTableBodyDroppable>
       </RecordTableBodyDragDropContextProvider>
     </RecordTableNoRecordGroupBodyContextProvider>

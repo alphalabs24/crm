@@ -7,6 +7,7 @@ import { ExceptionHandlerProvider } from '@/error-handler/components/ExceptionHa
 import { SnackBarProviderScope } from '@/ui/feedback/snack-bar-manager/scopes/SnackBarProviderScope';
 import { i18n } from '@lingui/core';
 import { I18nProvider } from '@lingui/react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { HelmetProvider } from 'react-helmet-async';
 import { RecoilRoot } from 'recoil';
 import { RecoilURLSyncJSON } from 'recoil-sync';
@@ -15,6 +16,9 @@ import { initialI18nActivate } from '~/utils/i18n/initialI18nActivate';
 
 initialI18nActivate();
 
+// Create a client for tanstack query
+const queryClient = new QueryClient();
+
 export const App = () => {
   return (
     <RecoilRoot>
@@ -22,17 +26,19 @@ export const App = () => {
         <AppErrorBoundary>
           <I18nProvider i18n={i18n}>
             <CaptchaProvider>
-              <RecoilDebugObserverEffect />
-              <ApolloDevLogEffect />
-              <SnackBarProviderScope snackBarManagerScopeId="snack-bar-manager">
-                <IconsProvider>
-                  <ExceptionHandlerProvider>
-                    <HelmetProvider>
-                      <AppRouter />
-                    </HelmetProvider>
-                  </ExceptionHandlerProvider>
-                </IconsProvider>
-              </SnackBarProviderScope>
+              <QueryClientProvider client={queryClient}>
+                <RecoilDebugObserverEffect />
+                <ApolloDevLogEffect />
+                <SnackBarProviderScope snackBarManagerScopeId="snack-bar-manager">
+                  <IconsProvider>
+                    <ExceptionHandlerProvider>
+                      <HelmetProvider>
+                        <AppRouter />
+                      </HelmetProvider>
+                    </ExceptionHandlerProvider>
+                  </IconsProvider>
+                </SnackBarProviderScope>
+              </QueryClientProvider>
             </CaptchaProvider>
           </I18nProvider>
         </AppErrorBoundary>

@@ -9,18 +9,17 @@ export function generateFrontConfig(): void {
     window: {
       _env_: {
         REACT_APP_SERVER_BASE_URL: process.env.SERVER_URL,
-        REACT_APP_PUBLICATION_SERVER_BASE_URL:
-          process.env.NESTERMIND_SERVER_URL,
+        REACT_APP_NESTERMIND_SERVER_BASE_URL: process.env.NESTERMIND_SERVER_URL,
         REACT_APP_MAPBOX_ACCESS_TOKEN: process.env.MAPBOX_ACCESS_TOKEN,
       },
     },
   };
 
-  const configString = `<!-- BEGIN: Twenty Config -->
-    <script id="twenty-env-config">
+  const configString = `<!-- BEGIN: nestermind Config -->
+    <script id="nestermind-env-config">
       window._env_ = ${JSON.stringify(configObject.window._env_, null, 2)};
     </script>
-    <!-- END: Twenty Config -->`;
+    <!-- END: nestermind Config -->`;
 
   const distPath = path.join(__dirname, '../..', 'front');
   const indexPath = path.join(distPath, 'index.html');
@@ -37,7 +36,7 @@ export function generateFrontConfig(): void {
   let indexContent = fs.readFileSync(indexPath, 'utf8');
 
   indexContent = indexContent.replace(
-    /<!-- BEGIN: Twenty Config -->[\s\S]*?<!-- END: Twenty Config -->/,
+    /<!-- BEGIN: nestermind Config -->[\s\S]*?<!-- END: nestermind Config -->/,
     configString,
   );
 

@@ -5,7 +5,7 @@ import { SettingsProtectedRouteWrapper } from '@/settings/components/SettingsPro
 import { SettingsSkeletonLoader } from '@/settings/components/SettingsSkeletonLoader';
 import { SettingsPath } from '@/types/SettingsPath';
 import { SettingsFeatures } from 'twenty-shared';
-import { FeatureFlagKey } from '~/generated-metadata/graphql';
+import { FeatureFlagKey } from '~/generated/graphql';
 
 const SettingsAccountsCalendars = lazy(() =>
   import('~/pages/settings/accounts/SettingsAccountsCalendars').then(
@@ -274,6 +274,28 @@ const SettingsRoleEdit = lazy(() =>
   })),
 );
 
+const SettingsPublishers = lazy(() =>
+  import('~/pages/settings/publishers/SettingsPublishers').then((module) => ({
+    default: module.SettingsPublishers,
+  })),
+);
+
+const SettingsEmailTemplates = lazy(() =>
+  import('~/pages/settings/email-templates/SettingsEmailTemplates').then(
+    (module) => ({
+      default: module.SettingsEmailTemplates,
+    }),
+  ),
+);
+
+const SettingsEmailTemplateDetail = lazy(() =>
+  import('~/pages/settings/email-templates/SettingsEmailTemplateDetail').then(
+    (module) => ({
+      default: module.SettingsEmailTemplateDetail,
+    }),
+  ),
+);
+
 type SettingsRoutesProps = {
   isFunctionSettingsEnabled?: boolean;
   isAdminPageEnabled?: boolean;
@@ -294,9 +316,17 @@ export const SettingsRoutes = ({
         element={<SettingsAccountsCalendars />}
       />
       <Route
-        path={SettingsPath.AccountsEmails}
-        element={<SettingsAccountsEmails />}
-      />
+        element={
+          <SettingsProtectedRouteWrapper
+            requiredFeatureFlag={FeatureFlagKey.IsEmailSettingsPageEnabled}
+          />
+        }
+      >
+        <Route
+          path={SettingsPath.AccountsEmails}
+          element={<SettingsAccountsEmails />}
+        />
+      </Route>
       <Route
         element={
           <SettingsProtectedRouteWrapper
@@ -312,10 +342,12 @@ export const SettingsRoutes = ({
         path={SettingsPath.WorkspaceMembersPage}
         element={<SettingsWorkspaceMembers />}
       />
+      <Route path={SettingsPath.Platforms} element={<SettingsPublishers />} />
       <Route
         element={
           <SettingsProtectedRouteWrapper
             settingsPermission={SettingsFeatures.DATA_MODEL}
+            requiredFeatureFlag={FeatureFlagKey.IsDataModelSettingsEnabled}
           />
         }
       >
@@ -341,19 +373,30 @@ export const SettingsRoutes = ({
         <Route path={SettingsPath.Roles} element={<SettingsRoles />} />
         <Route path={SettingsPath.RoleDetail} element={<SettingsRoleEdit />} />
       </Route>
-      <Route path={SettingsPath.Developers} element={<SettingsDevelopers />} />
       <Route
-        path={SettingsPath.DevelopersNewApiKey}
-        element={<SettingsDevelopersApiKeysNew />}
-      />
-      <Route
-        path={SettingsPath.DevelopersApiKeyDetail}
-        element={<SettingsDevelopersApiKeyDetail />}
-      />
-      <Route
-        path={SettingsPath.DevelopersNewWebhookDetail}
-        element={<SettingsDevelopersWebhooksDetail />}
-      />
+        element={
+          <SettingsProtectedRouteWrapper
+            requiredFeatureFlag={FeatureFlagKey.IsAdvancedSettingsEnabled}
+          />
+        }
+      >
+        <Route
+          path={SettingsPath.Developers}
+          element={<SettingsDevelopers />}
+        />
+        <Route
+          path={SettingsPath.DevelopersNewApiKey}
+          element={<SettingsDevelopersApiKeysNew />}
+        />
+        <Route
+          path={SettingsPath.DevelopersApiKeyDetail}
+          element={<SettingsDevelopersApiKeyDetail />}
+        />
+        <Route
+          path={SettingsPath.DevelopersNewWebhookDetail}
+          element={<SettingsDevelopersWebhooksDetail />}
+        />
+      </Route>
       {isFunctionSettingsEnabled && (
         <>
           <Route
@@ -371,25 +414,34 @@ export const SettingsRoutes = ({
         </>
       )}
       <Route
-        path={SettingsPath.Integrations}
-        element={<SettingsIntegrations />}
-      />
-      <Route
-        path={SettingsPath.IntegrationDatabase}
-        element={<SettingsIntegrationDatabase />}
-      />
-      <Route
-        path={SettingsPath.IntegrationNewDatabaseConnection}
-        element={<SettingsIntegrationNewDatabaseConnection />}
-      />
-      <Route
-        path={SettingsPath.IntegrationEditDatabaseConnection}
-        element={<SettingsIntegrationEditDatabaseConnection />}
-      />
-      <Route
-        path={SettingsPath.IntegrationDatabaseConnection}
-        element={<SettingsIntegrationShowDatabaseConnection />}
-      />
+        element={
+          <SettingsProtectedRouteWrapper
+            requiredFeatureFlag={FeatureFlagKey.IsIntegrationSettingsEnabled}
+          />
+        }
+      >
+        <Route
+          path={SettingsPath.Integrations}
+          element={<SettingsIntegrations />}
+        />
+        <Route
+          path={SettingsPath.IntegrationDatabase}
+          element={<SettingsIntegrationDatabase />}
+        />
+        <Route
+          path={SettingsPath.IntegrationNewDatabaseConnection}
+          element={<SettingsIntegrationNewDatabaseConnection />}
+        />
+        <Route
+          path={SettingsPath.IntegrationEditDatabaseConnection}
+          element={<SettingsIntegrationEditDatabaseConnection />}
+        />
+        <Route
+          path={SettingsPath.IntegrationDatabaseConnection}
+          element={<SettingsIntegrationShowDatabaseConnection />}
+        />
+      </Route>
+
       <Route
         path={SettingsPath.ObjectNewFieldSelect}
         element={<SettingsObjectNewFieldSelect />}
@@ -425,11 +477,24 @@ export const SettingsRoutes = ({
         element={
           <SettingsProtectedRouteWrapper
             settingsPermission={SettingsFeatures.WORKSPACE}
+            requiredFeatureFlag={FeatureFlagKey.IsLaborSettingsEnabled}
           />
         }
       >
         <Route path={SettingsPath.Lab} element={<SettingsLab />} />
       </Route>
+      <Route
+        path={SettingsPath.EmailTemplates}
+        element={<SettingsEmailTemplates />}
+      />
+      <Route
+        path={SettingsPath.EmailTemplateDetail}
+        element={<SettingsEmailTemplateDetail />}
+      />
+      <Route
+        path={SettingsPath.EmailTemplateEdit}
+        element={<SettingsEmailTemplateDetail />}
+      />
     </Routes>
   </Suspense>
 );

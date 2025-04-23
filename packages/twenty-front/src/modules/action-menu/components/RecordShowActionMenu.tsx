@@ -1,4 +1,3 @@
-import { RecordActionMenuEntriesSetter } from '@/action-menu/actions/record-actions/components/RecordActionMenuEntriesSetter';
 import { RecordAgnosticActionMenuEntriesSetter } from '@/action-menu/actions/record-agnostic-actions/components/RecordAgnosticActionMenuEntriesSetter';
 import { RunWorkflowRecordAgnosticActionMenuEntriesSetter } from '@/action-menu/actions/record-agnostic-actions/components/RunWorkflowRecordAgnosticActionMenuEntriesSetter';
 import { ActionMenuConfirmationModals } from '@/action-menu/components/ActionMenuConfirmationModals';
@@ -62,7 +61,9 @@ export const RecordShowActionMenu = ({
             />
           )}
           <ActionMenuConfirmationModals />
-          <RecordActionMenuEntriesSetter />
+          {
+            //TODO find out why this is not working for show page - edit page: <RecordActionMenuEntriesSetter />
+          }
           <RecordAgnosticActionMenuEntriesSetter />
           {isWorkflowEnabled && (
             <RunWorkflowRecordAgnosticActionMenuEntriesSetter />

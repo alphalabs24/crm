@@ -5,6 +5,7 @@ import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadata
 import { FieldContext } from '@/object-record/record-field/contexts/FieldContext';
 import { FieldDefinition } from '@/object-record/record-field/types/FieldDefinition';
 import { FieldRelationMetadata } from '@/object-record/record-field/types/FieldMetadata';
+import { useRecordInlineCellContext } from '@/object-record/record-inline-cell/components/RecordInlineCellContext';
 import { SearchPickerInitialValueEffect } from '@/object-record/relation-picker/components/SearchPickerInitialValueEffect';
 import { SingleRecordSelect } from '@/object-record/relation-picker/components/SingleRecordSelect';
 import { useAddNewRecordAndOpenRightDrawer } from '@/object-record/relation-picker/hooks/useAddNewRecordAndOpenRightDrawer';
@@ -31,6 +32,8 @@ export const RelationPicker = ({
   fieldDefinition,
 }: RelationPickerProps) => {
   const recordPickerInstanceId = RelationPickerHotkeyScope.RelationPicker;
+
+  const { canCreate } = useRecordInlineCellContext();
 
   const handleRecordSelected = (
     selectedRecord: RecordForSelect | null | undefined,
@@ -67,7 +70,7 @@ export const RelationPicker = ({
         EmptyIcon={IconForbid}
         emptyLabel={'No ' + fieldDefinition.label}
         onCancel={onCancel}
-        onCreate={createNewRecordAndOpenRightDrawer}
+        onCreate={canCreate ? createNewRecordAndOpenRightDrawer : undefined}
         onRecordSelected={handleRecordSelected}
         width={width}
         objectNameSingular={

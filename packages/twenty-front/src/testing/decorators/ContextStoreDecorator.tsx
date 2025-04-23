@@ -6,6 +6,7 @@ import { ContextStoreComponentInstanceContext } from '@/context-store/states/con
 import { useSetRecoilComponentStateV2 } from '@/ui/utilities/state/component-state/hooks/useSetRecoilComponentStateV2';
 import { isUndefined } from '@sniptt/guards';
 import { getCompanyObjectMetadataItem } from '~/testing/mock-data/companies';
+import { MAIN_CONTEXT_STORE_INSTANCE_ID } from '@/context-store/constants/MainContextStoreInstanceId';
 
 export const ContextStoreDecorator: Decorator = (Story, context) => {
   const { contextStore } = context.parameters;
@@ -13,7 +14,7 @@ export const ContextStoreDecorator: Decorator = (Story, context) => {
   let componentInstanceId = contextStore?.componentInstanceId;
 
   if (isUndefined(componentInstanceId)) {
-    componentInstanceId = 'main-context-store';
+    componentInstanceId = MAIN_CONTEXT_STORE_INSTANCE_ID;
   }
 
   const setCurrentObjectMetadataItem = useSetRecoilComponentStateV2(

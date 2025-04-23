@@ -15,6 +15,7 @@ import { useListenClickOutside } from '@/ui/utilities/pointer-event/hooks/useLis
 import { useRecoilValue } from 'recoil';
 import { isDefined } from 'twenty-shared';
 import { MOBILE_VIEWPORT } from 'twenty-ui';
+import { getEnv } from '~/utils/get-env';
 
 const StyledAddressContainer = styled.div<{
   noPadding?: boolean;
@@ -69,6 +70,7 @@ const StyledSuggestion = styled.div<{ isHighlighted: boolean }>`
   cursor: pointer;
   padding: ${({ theme }) => theme.spacing(2)};
   transition: all 0.1s ease-in-out;
+  color: ${({ theme }) => theme.font.color.primary};
 
   &:hover {
     background: ${({ theme }) => theme.background.transparent.light};
@@ -81,14 +83,6 @@ const StyledSuggestion = styled.div<{ isHighlighted: boolean }>`
     color: ${theme.font.color.primary};
   `}
 `;
-
-// Add country mapping
-const COUNTRY_MAPPING: Record<string, string> = {
-  CH: 'Switzerland',
-  DE: 'Germany',
-  IT: 'Italy',
-  FR: 'France',
-};
 
 export type AddressInputProps = {
   value: FieldAddressValue;
@@ -109,7 +103,7 @@ export type AddressInputProps = {
   noPadding?: boolean;
 };
 
-const apiKey = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
+const apiKey = getEnv('REACT_APP_MAPBOX_ACCESS_TOKEN');
 
 export const AddressInput = ({
   value,
@@ -291,7 +285,9 @@ export const AddressInput = ({
       addressCity: city?.text || '',
       addressState: state?.text || '',
       addressPostcode: postcode?.text || '',
-      addressCountry: COUNTRY_MAPPING[countryCode] || '',
+      addressCountry: countryCode || '',
+      addressLat: suggestion.geometry.coordinates[1],
+      addressLng: suggestion.geometry.coordinates[0],
     };
 
     setInternalValue(newValue);

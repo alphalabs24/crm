@@ -7,7 +7,7 @@ import { render } from '@react-email/render';
 import { addMilliseconds } from 'date-fns';
 import ms from 'ms';
 import { SendInviteLinkEmail } from 'twenty-emails';
-import { APP_LOCALES } from 'twenty-shared';
+import { APP_LOCALES, isWorkspaceActiveOrSuspended } from 'twenty-shared';
 import { IsNull, Repository } from 'typeorm';
 
 import {
@@ -23,6 +23,7 @@ import { EmailService } from 'src/engine/core-modules/email/email.service';
 import { EnvironmentService } from 'src/engine/core-modules/environment/environment.service';
 import { OnboardingService } from 'src/engine/core-modules/onboarding/onboarding.service';
 import { UserWorkspace } from 'src/engine/core-modules/user-workspace/user-workspace.entity';
+import { WorkspaceMember } from 'src/engine/core-modules/user/dtos/workspace-member.dto';
 import { User } from 'src/engine/core-modules/user/user.entity';
 import { SendInvitationsOutput } from 'src/engine/core-modules/workspace-invitation/dtos/send-invitations.output';
 import { castAppTokenToWorkspaceInvitationUtil } from 'src/engine/core-modules/workspace-invitation/utils/cast-app-token-to-workspace-invitation.util';
@@ -31,6 +32,8 @@ import {
   WorkspaceInvitationExceptionCode,
 } from 'src/engine/core-modules/workspace-invitation/workspace-invitation.exception';
 import { Workspace } from 'src/engine/core-modules/workspace/workspace.entity';
+import { TwentyORMGlobalManager } from 'src/engine/twenty-orm/twenty-orm-global.manager';
+import { WorkspaceMemberWorkspaceEntity } from 'src/modules/workspace-member/standard-objects/workspace-member.workspace-entity';
 
 @Injectable()
 // eslint-disable-next-line @nx/workspace-inject-workspace-repository
@@ -44,6 +47,7 @@ export class WorkspaceInvitationService {
     private readonly emailService: EmailService,
     private readonly onboardingService: OnboardingService,
     private readonly domainManagerService: DomainManagerService,
+    private readonly twentyORMGlobalManager: TwentyORMGlobalManager,
   ) {}
 
   async validatePersonalInvitation({
@@ -247,6 +251,30 @@ export class WorkspaceInvitationService {
       };
     }
 
+    let senderFirstName: string | undefined = sender.firstName;
+    let senderLastName: string | undefined = sender.lastName;
+
+    if (
+      !senderFirstName &&
+      !senderLastName &&
+      isWorkspaceActiveOrSuspended(workspace)
+    ) {
+      const workspaceMemberRepository =
+        await this.twentyORMGlobalManager.getRepositoryForWorkspace<WorkspaceMemberWorkspaceEntity>(
+          workspace.id,
+          'workspaceMember',
+        );
+
+      const workspaceMember = await workspaceMemberRepository.findOne({
+        where: {
+          userId: sender.id,
+        },
+      });
+
+      senderFirstName = workspaceMember?.name.firstName;
+      senderLastName = workspaceMember?.name.lastName;
+    }
+
     const invitationsPr = await Promise.allSettled(
       emails.map(async (email) => {
         if (usePersonalInvitation) {
@@ -288,13 +316,14 @@ export class WorkspaceInvitationService {
               }
             : {},
         });
+
         const emailData = {
           link: link.toString(),
           workspace: { name: workspace.displayName, logo: workspace.logo },
           sender: {
             email: sender.email,
-            firstName: sender.firstName,
-            lastName: sender.lastName,
+            firstName: senderFirstName ?? '',
+            lastName: senderLastName ?? '',
           },
           serverUrl: this.environmentService.get('SERVER_URL'),
           locale: 'en' as keyof typeof APP_LOCALES,
@@ -307,7 +336,7 @@ export class WorkspaceInvitationService {
         });
 
         await this.emailService.send({
-          from: `${sender.firstName} ${sender.lastName} (via nestermind) <${this.environmentService.get('EMAIL_FROM_ADDRESS')}>`,
+          from: `${senderFirstName} ${senderLastName} via nestermind <${this.environmentService.get('EMAIL_FROM_ADDRESS')}>`,
           to: invitation.value.email,
           subject: 'Join your team on nestermind',
           text,

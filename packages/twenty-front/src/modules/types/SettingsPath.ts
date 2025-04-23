@@ -39,4 +39,8 @@ export enum SettingsPath {
   Lab = 'lab',
   Roles = 'roles',
   RoleDetail = 'roles/:roleId',
+  Platforms = 'platforms',
+  EmailTemplates = 'email-templates',
+  EmailTemplateDetail = 'email-templates/:emailTemplateId',
+  EmailTemplateEdit = 'email-templates/:emailTemplateId/edit',
 }

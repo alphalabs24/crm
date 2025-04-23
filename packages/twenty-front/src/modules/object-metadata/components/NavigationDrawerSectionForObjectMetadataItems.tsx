@@ -9,8 +9,10 @@ import { useRecoilValue } from 'recoil';
 
 const ORDERED_STANDARD_OBJECTS = [
   'person',
+  'buyerLead',
+  'property',
+  'publication',
   'company',
-  'opportunity',
   'task',
   'note',
 ];

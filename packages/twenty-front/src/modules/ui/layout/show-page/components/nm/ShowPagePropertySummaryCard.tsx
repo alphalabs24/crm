@@ -30,7 +30,6 @@ export const StyledShowPageSummaryCard = styled.div<{
     isMobile ? theme.spacing(2) : theme.spacing(3)};
   justify-content: center;
   padding-bottom: ${({ theme }) => theme.spacing(4)};
-  border-bottom: 1px solid ${({ theme }) => theme.border.color.light};
   box-sizing: border-box;
 `;
 
@@ -48,8 +47,7 @@ const StyledAddressContainer = styled.div`
   display: flex;
   align-items: center;
   flex-direction: row;
-  gap: ${({ theme }) => theme.spacing(1)};
-  flex-wrap: wrap;
+  gap: ${({ theme }) => theme.spacing(2)};
 `;
 
 const StyledInfoContainer = styled.div<{ isMobile: boolean }>`
@@ -64,7 +62,6 @@ const StyledDate = styled.div<{ isMobile: boolean }>`
   color: ${({ theme }) => theme.font.color.tertiary};
   cursor: pointer;
   font-size: ${({ theme }) => theme.font.size.sm};
-  padding-left: ${({ theme, isMobile }) => (isMobile ? theme.spacing(2) : 0)};
 `;
 
 const StyledTitle = styled.div<{ isMobile: boolean }>`

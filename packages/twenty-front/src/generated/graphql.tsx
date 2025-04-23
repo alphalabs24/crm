@@ -471,19 +471,29 @@ export type FeatureFlag = {
 };
 
 export enum FeatureFlagKey {
+  IsAIDemoEnabled = 'IsAIDemoEnabled',
   IsAdvancedFiltersEnabled = 'IsAdvancedFiltersEnabled',
+  IsAdvancedSettingsEnabled = 'IsAdvancedSettingsEnabled',
   IsAirtableIntegrationEnabled = 'IsAirtableIntegrationEnabled',
   IsAnalyticsV2Enabled = 'IsAnalyticsV2Enabled',
   IsBillingPlansEnabled = 'IsBillingPlansEnabled',
   IsCommandMenuV2Enabled = 'IsCommandMenuV2Enabled',
   IsCopilotEnabled = 'IsCopilotEnabled',
   IsCustomDomainEnabled = 'IsCustomDomainEnabled',
+  IsDataModelSettingsEnabled = 'IsDataModelSettingsEnabled',
+  IsDomainGeneralSettingsEnabled = 'IsDomainGeneralSettingsEnabled',
+  IsEmailSettingsPageEnabled = 'IsEmailSettingsPageEnabled',
   IsEventObjectEnabled = 'IsEventObjectEnabled',
+  IsIntegrationSettingsEnabled = 'IsIntegrationSettingsEnabled',
   IsJsonFilterEnabled = 'IsJsonFilterEnabled',
+  IsLaborSettingsEnabled = 'IsLaborSettingsEnabled',
+  IsMultiPublisherEnabled = 'IsMultiPublisherEnabled',
   IsNewRelationEnabled = 'IsNewRelationEnabled',
+  IsNonNestermindWorkspaceEnabled = 'IsNonNestermindWorkspaceEnabled',
   IsPermissionsEnabled = 'IsPermissionsEnabled',
   IsPostgreSQLIntegrationEnabled = 'IsPostgreSQLIntegrationEnabled',
   IsRichTextV2Enabled = 'IsRichTextV2Enabled',
+  IsSavePublishEnabled = 'IsSavePublishEnabled',
   IsStripeIntegrationEnabled = 'IsStripeIntegrationEnabled',
   IsUniqueIndexesEnabled = 'IsUniqueIndexesEnabled',
   IsWorkflowEnabled = 'IsWorkflowEnabled'
@@ -797,6 +807,7 @@ export type Mutation = {
   resendWorkspaceInvitation: SendInvitationsOutput;
   runWorkflowVersion: WorkflowRun;
   sendInvitations: SendInvitationsOutput;
+  setUserVar: Scalars['JSONObject'];
   signUp: SignUpOutput;
   skipSyncEmailOnboardingStep: OnboardingStepSuccess;
   track: Analytics;
@@ -993,6 +1004,12 @@ export type MutationSendInvitationsArgs = {
 };
 
 
+export type MutationSetUserVarArgs = {
+  key: Scalars['String'];
+  value: Scalars['JSON'];
+};
+
+
 export type MutationSignUpArgs = {
   captchaToken?: InputMaybe<Scalars['String']>;
   email: Scalars['String'];
@@ -1062,12 +1079,14 @@ export type MutationUpdateWorkspaceMemberRoleArgs = {
 export type MutationUploadFileArgs = {
   file: Scalars['Upload'];
   fileFolder?: InputMaybe<FileFolder>;
+  isPublic?: InputMaybe<Scalars['Boolean']>;
 };
 
 
 export type MutationUploadImageArgs = {
   file: Scalars['Upload'];
   fileFolder?: InputMaybe<FileFolder>;
+  isPublic?: InputMaybe<Scalars['Boolean']>;
 };
 
 
@@ -2097,6 +2116,7 @@ export type TrackMutation = { __typename?: 'Mutation', track: { __typename?: 'An
 export type UploadFileMutationVariables = Exact<{
   file: Scalars['Upload'];
   fileFolder?: InputMaybe<FileFolder>;
+  isPublic?: InputMaybe<Scalars['Boolean']>;
 }>;
 
 
@@ -2373,6 +2393,14 @@ export type DeleteUserAccountMutationVariables = Exact<{ [key: string]: never; }
 
 export type DeleteUserAccountMutation = { __typename?: 'Mutation', deleteUser: { __typename?: 'User', id: any } };
 
+export type SetUserVarMutationVariables = Exact<{
+  key: Scalars['String'];
+  value: Scalars['JSON'];
+}>;
+
+
+export type SetUserVarMutation = { __typename?: 'Mutation', setUserVar: any };
+
 export type UploadProfilePictureMutationVariables = Exact<{
   file: Scalars['Upload'];
 }>;
@@ -2384,6 +2412,11 @@ export type GetCurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetCurrentUserQuery = { __typename?: 'Query', currentUser: { __typename?: 'User', id: any, firstName: string, lastName: string, email: string, canImpersonate: boolean, supportUserHash?: string | null, onboardingStatus?: OnboardingStatus | null, userVars: any, analyticsTinybirdJwts?: { __typename?: 'AnalyticsTinybirdJwtMap', getWebhookAnalytics: string, getPageviewsAnalytics: string, getUsersAnalytics: string, getServerlessFunctionDuration: string, getServerlessFunctionSuccessRate: string, getServerlessFunctionErrorCount: string } | null, workspaceMember?: { __typename?: 'WorkspaceMember', id: any, colorScheme: string, avatarUrl?: string | null, locale?: string | null, userEmail: string, timeZone?: string | null, dateFormat?: WorkspaceMemberDateFormatEnum | null, timeFormat?: WorkspaceMemberTimeFormatEnum | null, name: { __typename?: 'FullName', firstName: string, lastName: string } } | null, workspaceMembers?: Array<{ __typename?: 'WorkspaceMember', id: any, colorScheme: string, avatarUrl?: string | null, locale?: string | null, userEmail: string, timeZone?: string | null, dateFormat?: WorkspaceMemberDateFormatEnum | null, timeFormat?: WorkspaceMemberTimeFormatEnum | null, name: { __typename?: 'FullName', firstName: string, lastName: string } }> | null, currentUserWorkspace?: { __typename?: 'UserWorkspace', settingsPermissions?: Array<SettingsFeatures> | null, objectRecordsPermissions?: Array<PermissionsOnAllObjectRecords> | null } | null, currentWorkspace?: { __typename?: 'Workspace', id: any, displayName?: string | null, logo?: string | null, inviteHash?: string | null, allowImpersonation: boolean, activationStatus: WorkspaceActivationStatus, isPublicInviteLinkEnabled: boolean, isGoogleAuthEnabled: boolean, isMicrosoftAuthEnabled: boolean, isPasswordAuthEnabled: boolean, subdomain: string, hasValidEnterpriseKey: boolean, customDomain?: string | null, metadataVersion: number, workspaceMembersCount?: number | null, workspaceUrls: { __typename?: 'workspaceUrls', subdomainUrl: string, customUrl?: string | null }, featureFlags?: Array<{ __typename?: 'FeatureFlag', id: any, key: FeatureFlagKey, value: boolean, workspaceId: string }> | null, currentBillingSubscription?: { __typename?: 'BillingSubscription', id: any, status: SubscriptionStatus, interval?: SubscriptionInterval | null } | null, billingSubscriptions: Array<{ __typename?: 'BillingSubscription', id: any, status: SubscriptionStatus }> } | null, workspaces: Array<{ __typename?: 'UserWorkspace', workspace?: { __typename?: 'Workspace', id: any, logo?: string | null, displayName?: string | null, subdomain: string, customDomain?: string | null, workspaceUrls: { __typename?: 'workspaceUrls', subdomainUrl: string, customUrl?: string | null } } | null }> } };
+
+export type GetCurrentUserKeyValueStoreQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetCurrentUserKeyValueStoreQuery = { __typename?: 'Query', currentUser: { __typename?: 'User', id: any, userVars: any } };
 
 export type ActivateWorkflowVersionMutationVariables = Exact<{
   workflowVersionId: Scalars['String'];
@@ -2913,8 +2946,8 @@ export type TrackMutationHookResult = ReturnType<typeof useTrackMutation>;
 export type TrackMutationResult = Apollo.MutationResult<TrackMutation>;
 export type TrackMutationOptions = Apollo.BaseMutationOptions<TrackMutation, TrackMutationVariables>;
 export const UploadFileDocument = gql`
-    mutation uploadFile($file: Upload!, $fileFolder: FileFolder) {
-  uploadFile(file: $file, fileFolder: $fileFolder)
+    mutation uploadFile($file: Upload!, $fileFolder: FileFolder, $isPublic: Boolean) {
+  uploadFile(file: $file, fileFolder: $fileFolder, isPublic: $isPublic)
 }
     `;
 export type UploadFileMutationFn = Apollo.MutationFunction<UploadFileMutation, UploadFileMutationVariables>;
@@ -2934,6 +2967,7 @@ export type UploadFileMutationFn = Apollo.MutationFunction<UploadFileMutation, U
  *   variables: {
  *      file: // value for 'file'
  *      fileFolder: // value for 'fileFolder'
+ *      isPublic: // value for 'isPublic'
  *   },
  * });
  */
@@ -4444,6 +4478,38 @@ export function useDeleteUserAccountMutation(baseOptions?: Apollo.MutationHookOp
 export type DeleteUserAccountMutationHookResult = ReturnType<typeof useDeleteUserAccountMutation>;
 export type DeleteUserAccountMutationResult = Apollo.MutationResult<DeleteUserAccountMutation>;
 export type DeleteUserAccountMutationOptions = Apollo.BaseMutationOptions<DeleteUserAccountMutation, DeleteUserAccountMutationVariables>;
+export const SetUserVarDocument = gql`
+    mutation SetUserVar($key: String!, $value: JSON!) {
+  setUserVar(key: $key, value: $value)
+}
+    `;
+export type SetUserVarMutationFn = Apollo.MutationFunction<SetUserVarMutation, SetUserVarMutationVariables>;
+
+/**
+ * __useSetUserVarMutation__
+ *
+ * To run a mutation, you first call `useSetUserVarMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSetUserVarMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [setUserVarMutation, { data, loading, error }] = useSetUserVarMutation({
+ *   variables: {
+ *      key: // value for 'key'
+ *      value: // value for 'value'
+ *   },
+ * });
+ */
+export function useSetUserVarMutation(baseOptions?: Apollo.MutationHookOptions<SetUserVarMutation, SetUserVarMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SetUserVarMutation, SetUserVarMutationVariables>(SetUserVarDocument, options);
+      }
+export type SetUserVarMutationHookResult = ReturnType<typeof useSetUserVarMutation>;
+export type SetUserVarMutationResult = Apollo.MutationResult<SetUserVarMutation>;
+export type SetUserVarMutationOptions = Apollo.BaseMutationOptions<SetUserVarMutation, SetUserVarMutationVariables>;
 export const UploadProfilePictureDocument = gql`
     mutation UploadProfilePicture($file: Upload!) {
   uploadProfilePicture(file: $file)
@@ -4509,6 +4575,41 @@ export function useGetCurrentUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type GetCurrentUserQueryHookResult = ReturnType<typeof useGetCurrentUserQuery>;
 export type GetCurrentUserLazyQueryHookResult = ReturnType<typeof useGetCurrentUserLazyQuery>;
 export type GetCurrentUserQueryResult = Apollo.QueryResult<GetCurrentUserQuery, GetCurrentUserQueryVariables>;
+export const GetCurrentUserKeyValueStoreDocument = gql`
+    query GetCurrentUserKeyValueStore {
+  currentUser {
+    id
+    userVars
+  }
+}
+    `;
+
+/**
+ * __useGetCurrentUserKeyValueStoreQuery__
+ *
+ * To run a query within a React component, call `useGetCurrentUserKeyValueStoreQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCurrentUserKeyValueStoreQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCurrentUserKeyValueStoreQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetCurrentUserKeyValueStoreQuery(baseOptions?: Apollo.QueryHookOptions<GetCurrentUserKeyValueStoreQuery, GetCurrentUserKeyValueStoreQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCurrentUserKeyValueStoreQuery, GetCurrentUserKeyValueStoreQueryVariables>(GetCurrentUserKeyValueStoreDocument, options);
+      }
+export function useGetCurrentUserKeyValueStoreLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCurrentUserKeyValueStoreQuery, GetCurrentUserKeyValueStoreQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCurrentUserKeyValueStoreQuery, GetCurrentUserKeyValueStoreQueryVariables>(GetCurrentUserKeyValueStoreDocument, options);
+        }
+export type GetCurrentUserKeyValueStoreQueryHookResult = ReturnType<typeof useGetCurrentUserKeyValueStoreQuery>;
+export type GetCurrentUserKeyValueStoreLazyQueryHookResult = ReturnType<typeof useGetCurrentUserKeyValueStoreLazyQuery>;
+export type GetCurrentUserKeyValueStoreQueryResult = Apollo.QueryResult<GetCurrentUserKeyValueStoreQuery, GetCurrentUserKeyValueStoreQueryVariables>;
 export const ActivateWorkflowVersionDocument = gql`
     mutation ActivateWorkflowVersion($workflowVersionId: String!) {
   activateWorkflowVersion(workflowVersionId: $workflowVersionId)
