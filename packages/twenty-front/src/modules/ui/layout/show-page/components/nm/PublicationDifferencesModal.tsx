@@ -442,14 +442,19 @@ export const PublicationDifferencesModal = forwardRef<
 
     // Using the mutation hook for publish
     const { mutate: publishPublication } = useMutations.usePublishPublication({
-      onSuccess: () => {
+      onSuccess: async () => {
         setIsPublished(true);
         setIsPublishing(false);
         enqueueSnackBar(t`Publication published successfully`, {
           variant: SnackBarVariant.Success,
         });
-        refetchDraft();
-        refetchPublished();
+        await refetchDraft();
+        await refetchPublished();
+
+        setIsPublished(false);
+        if (onPublish) {
+          onPublish();
+        }
       },
       onError: (error: Error) => {
         setIsPublishing(false);
@@ -467,9 +472,6 @@ export const PublicationDifferencesModal = forwardRef<
 
       setIsPublishing(true);
       publishPublication({ publicationId: draftId });
-      if (onPublish) {
-        onPublish();
-      }
     };
 
     const isValueEmpty = (value: unknown): boolean =>
