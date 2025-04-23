@@ -94,21 +94,22 @@ const bootstrap = async () => {
     ],
   });
 
+  // CURRENTLY TAKEN CARE OF NGINX
   // Add global security headers
-  app.use((req, res, next) => {
-    // Add security headers to all responses
-    // Anti-clickjacking
-    // https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/X-Frame-Options
-    res.setHeader('X-Frame-Options', 'DENY');
-    // Reducing MIME type security risks by setting the X-Content-Type-Options header to nosniff
-    // https://learn.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/compatibility/gg622941(v=vs.85)
-    res.setHeader('X-Content-Type-Options', 'nosniff');
-    // XSS protection
-    // https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Headers_Cheat_Sheet.html#x-xss-protection
-    res.setHeader('X-XSS-Protection', '0');
+  // app.use((req, res, next) => {
+  //   // Add security headers to all responses
+  //   // Anti-clickjacking
+  //   // https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/X-Frame-Options
+  //   res.setHeader('X-Frame-Options', 'DENY');
+  //   // Reducing MIME type security risks by setting the X-Content-Type-Options header to nosniff
+  //   // https://learn.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/compatibility/gg622941(v=vs.85)
+  //   res.setHeader('X-Content-Type-Options', 'nosniff');
+  //   // XSS protection
+  //   // https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Headers_Cheat_Sheet.html#x-xss-protection
+  //   res.setHeader('X-XSS-Protection', '0');
 
-    next();
-  });
+  //   next();
+  // });
 
   app.use(session(getSessionStorageOptions(environmentService)));
 
