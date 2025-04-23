@@ -481,6 +481,7 @@ const SpecialDocumentItem = ({
   document,
   onRemove,
   onSaveEdit,
+  onClick,
 }: {
   document: RecordEditPropertyDocument;
   onRemove: (doc: RecordEditPropertyDocument) => void;
@@ -488,6 +489,7 @@ const SpecialDocumentItem = ({
     id: string,
     updates: Partial<RecordEditPropertyDocument>,
   ) => void;
+  onClick?: () => void;
 }) => {
   const { t } = useLingui();
   const dropdownId = `document-dropdown-${document.id}`;
@@ -510,7 +512,11 @@ const SpecialDocumentItem = ({
   };
 
   const handleFileNameClick = () => {
-    window.open(document.previewUrl, '_blank');
+    if (onClick) {
+      onClick();
+    } else {
+      window.open(document.previewUrl, '_blank');
+    }
   };
 
   return (
@@ -621,14 +627,17 @@ export const PropertyDocumentFormInput = ({
     initialRecord: property,
   } = useRecordEdit();
 
-  const {
-    generatePdf,
-    isLoading: pdfLoading,
-    openPreview,
-    pdfPreviewModalRef,
-  } = usePropertyPdfGenerator({
+  const { generatePdf, isLoading: pdfLoading } = usePropertyPdfGenerator({
     record: property,
   });
+
+  const pdfPreviewModalRef = useRef<ModalRefType>(null);
+  const [previewIsFlyer, setPreviewIsFlyer] = useState(false);
+
+  const openPreview = (isFlyer: boolean) => {
+    setPreviewIsFlyer(isFlyer);
+    pdfPreviewModalRef.current?.open();
+  };
 
   const { objectMetadataItem } = useObjectMetadataItem({
     objectNameSingular: CoreObjectNameSingular.Property,
@@ -711,7 +720,7 @@ export const PropertyDocumentFormInput = ({
     if (!property) return;
 
     try {
-      const orientation = type === 'PropertyFlyer' ? 'landscape' : 'portrait';
+      const orientation = 'portrait';
       const result = await generatePdf(type, orientation, formattedFields);
 
       if (!result) throw new Error('Failed to generate document');
@@ -888,7 +897,9 @@ export const PropertyDocumentFormInput = ({
                         Icon={IconExternalLink}
                         title={t`Preview`}
                         disabled={!property}
-                        onClick={() => openPreview()}
+                        onClick={() =>
+                          openPreview(doc.type === 'PropertyFlyer')
+                        }
                       />
                       <Button
                         variant="primary"
@@ -913,26 +924,11 @@ export const PropertyDocumentFormInput = ({
                 </StyledSpecialDocumentHeader>
                 {specialDoc && (
                   <StyledSpecialDocumentContent>
-                    <div
-                      style={{
-                        display: 'flex',
-                        gap: '8px',
-                        marginBottom: theme.spacing(2),
-                      }}
-                    >
-                      <Button
-                        variant="secondary"
-                        size="small"
-                        Icon={IconExternalLink}
-                        title={t`Preview Template`}
-                        disabled={!property}
-                        onClick={openPreview}
-                      />
-                    </div>
                     <SpecialDocumentItem
                       document={specialDoc}
                       onRemove={onRemove}
                       onSaveEdit={onSaveEdit}
+                      onClick={() => openPreview(doc.type === 'PropertyFlyer')}
                     />
                   </StyledSpecialDocumentContent>
                 )}
@@ -1025,7 +1021,10 @@ export const PropertyDocumentFormInput = ({
                     }}
                   />
                 </StyledClosePdfModalHeader>
-                <PropertyPdfPreview property={property} isFlyer />
+                <PropertyPdfPreview
+                  property={property}
+                  isFlyer={previewIsFlyer}
+                />
               </StyledPdfPreviewContainer>
             </Modal>
           ) : null}

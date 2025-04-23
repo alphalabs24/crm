@@ -25,7 +25,6 @@ export const PDF_STYLES = StyleSheet.create({
     flexDirection: 'column',
     height: '100%',
     width: '100%',
-    paddingBottom: FOOTER_HEIGHT + 10,
   },
 
   // Typography System
@@ -229,6 +228,7 @@ export const PDF_STYLES = StyleSheet.create({
     paddingTop: DEFAULT_THEME.spacing.md,
     display: 'flex',
     flexDirection: 'column',
+    justifyContent: 'center',
     gap: DEFAULT_THEME.spacing.xxs,
     height: FOOTER_HEIGHT,
     position: 'absolute',
@@ -317,4 +317,19 @@ export const PDF_STYLES = StyleSheet.create({
   flex2: { flex: 2 },
   flexGrow: { flexGrow: 1 },
   contentPadding: { padding: DEFAULT_THEME.spacing.sm },
+
+  // Agency Logo
+  agencyLogoContainer: {
+    alignItems: 'flex-end',
+    padding: DEFAULT_THEME.spacing.xs,
+    height: '100%',
+    width: '100%',
+  },
+
+  agencyLogo: {
+    maxWidth: 120,
+    maxHeight: 60,
+    objectFit: 'contain',
+    objectPosition: 'right center',
+  },
 });

@@ -19,6 +19,8 @@ export const DefaultPropertyPdfTemplate = ({
   orientation = 'portrait',
   propertyImages,
   fields,
+  propertyFeatures,
+  agencyLogo,
 }: DefaultPropertyPdfTemplateProps) => (
   <Document>
     {type === 'PropertyFlyer' ? (
@@ -29,6 +31,8 @@ export const DefaultPropertyPdfTemplate = ({
         propertyImages={propertyImages}
         orientation={orientation}
         fields={fields}
+        propertyFeatures={propertyFeatures}
+        agencyLogo={agencyLogo}
       />
     ) : null}
   </Document>

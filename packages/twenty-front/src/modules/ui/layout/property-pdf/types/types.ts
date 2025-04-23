@@ -1,5 +1,6 @@
 import { Attachment } from '@/activities/files/types/Attachment';
 import { ObjectRecord } from '@/object-record/types/ObjectRecord';
+import { Maybe } from 'graphql/jsutils/Maybe';
 
 export type PropertyImageType = {
   id: string;
@@ -15,6 +16,11 @@ export type PropertyPdfResult = {
   previewUrl: string;
 };
 
+type PropertyFieldType = {
+  label?: string;
+  value?: string;
+  key?: string;
+};
 // Props for the main document component
 export type PropertyPdfProps = {
   property: ObjectRecord;
@@ -22,10 +28,9 @@ export type PropertyPdfProps = {
   propertyAddress: string;
   orientation: 'portrait' | 'landscape';
   propertyImages: Attachment[];
-  fields: {
-    label?: string;
-    value?: string;
-  }[];
+  fields: PropertyFieldType[];
+  propertyFeatures?: PropertyFieldType[];
+  agencyLogo?: Maybe<string>;
 };
 
 export type PropertyPdfTemplate = React.FC<

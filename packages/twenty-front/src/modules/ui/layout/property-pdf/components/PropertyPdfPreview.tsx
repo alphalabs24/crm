@@ -9,6 +9,8 @@ import styled from '@emotion/styled';
 import { PDFViewer } from '@react-pdf/renderer';
 import { useMemo } from 'react';
 import { DefaultPropertyPdfTemplate } from './templates/default/DefaultPropertyPdfTemplate';
+import { useRecoilState } from 'recoil';
+import { currentWorkspaceState } from '@/auth/states/currentWorkspaceState';
 
 const StyledPdfViewerContainer = styled.div`
   align-items: center;
@@ -57,8 +59,11 @@ export const PropertyPdfPreview = ({
     return fieldsToShowOnPdf.map((field) => ({
       label: objectMetadataItem.fields.find((f) => f.name === field)?.label,
       value: formatField(field, property[field]) ?? undefined,
+      key: field,
     }));
   }, [objectMetadataItem.fields, formatField, property]);
+
+  const [currentWorkspace] = useRecoilState(currentWorkspaceState);
 
   // Format the address for display
   const formattedAddress = useMemo(() => {
@@ -70,14 +75,27 @@ export const PropertyPdfPreview = ({
       : 'No address available';
   }, [property.address]);
 
-  // Format price if it's an object
+  // Format price for display
   const price = useMemo(() => {
+    // Simple string price
     if (typeof property.price === 'string') return property.price;
-    return property.sellingPrice?.amount
-      ? `${property.sellingPrice.currencyCode || 'CHF'} ${property.sellingPrice.amount}`
-      : property.rentNet?.amount
-        ? `${property.rentNet.currencyCode || 'CHF'} ${property.rentNet.amount} / month`
-        : 'Price on request';
+
+    // For sale properties
+    if (property.sellingPrice?.amountMicros) {
+      const amount = property.sellingPrice.amountMicros / 1000000;
+      const currencyCode = property.sellingPrice.currencyCode || 'CHF';
+      // Format with thousand separators
+      return `${currencyCode} ${amount.toLocaleString()}`;
+    }
+
+    // For rent properties
+    if (property.rentNet?.amountMicros) {
+      const amount = property.rentNet.amountMicros / 1000000;
+      const currencyCode = property.rentNet.currencyCode || 'CHF';
+      return `${currencyCode} ${amount.toLocaleString()} / month`;
+    }
+
+    return 'Price on request';
   }, [property.price, property.sellingPrice, property.rentNet]);
 
   // Ensure images are in the correct format
@@ -85,6 +103,24 @@ export const PropertyPdfPreview = ({
     id: property.id,
     targetObjectNameSingular: CoreObjectNameSingular.Property,
   });
+
+  const formattedFeatures = useMemo(() => {
+    const fieldMetadata = objectMetadataItem.fields.find(
+      (f) => f.name === 'features',
+    );
+    const formattedFeatures = [];
+    for (const feature of property.features) {
+      const featureMetadata = fieldMetadata?.options?.find(
+        (o) => o.value === feature,
+      );
+      formattedFeatures.push({
+        label: featureMetadata?.label,
+        value: feature,
+        key: feature,
+      });
+    }
+    return formattedFeatures;
+  }, [objectMetadataItem.fields, property.features]);
 
   const sortedImages = [...images].sort((a, b) => a.orderIndex - b.orderIndex);
 
@@ -98,7 +134,9 @@ export const PropertyPdfPreview = ({
           propertyPrice={price}
           propertyImages={sortedImages}
           fields={formattedFields}
+          propertyFeatures={formattedFeatures}
           orientation={'portrait'}
+          agencyLogo={currentWorkspace?.logo}
         />
       </StyledPDFViewer>
     </StyledPdfViewerContainer>

@@ -1,1 +1,1 @@
-export const FOOTER_HEIGHT = 60;
+export const FOOTER_HEIGHT = '6%';
