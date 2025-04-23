@@ -272,10 +272,10 @@ export const RecordEditProvider = ({
   }, []);
 
   const updateField = useCallback(
-    (update: FieldUpdate, fieldValue?: unknown) => {
+    (update: FieldUpdate) => {
       const { fieldName, value } = update;
 
-      if (fieldValue === update.value) {
+      if (initialRecord?.[fieldName] === value) {
         setFieldUpdates((prev) => {
           const { [fieldName]: _, ...rest } = prev;
           const hasRemainingUpdates = Object.keys(rest).length > 0;
@@ -290,7 +290,7 @@ export const RecordEditProvider = ({
       }));
       setIsDirty(true);
     },
-    [setIsDirty],
+    [initialRecord],
   );
 
   const addPropertyImage = useCallback((image: RecordEditPropertyImage) => {

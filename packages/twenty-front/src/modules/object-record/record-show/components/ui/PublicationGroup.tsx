@@ -8,6 +8,7 @@ import {
 } from '@/ui/layout/show-page/components/nm/types/Platform';
 import { useDraftPublishedDifferences } from '@/ui/layout/show-page/hooks/useDraftPublishedDifferences';
 import styled from '@emotion/styled';
+import { useLingui } from '@lingui/react/macro';
 import { IconButton, IconEdit } from 'twenty-ui';
 
 const StyledPublicationGroupContainer = styled.button`
@@ -32,10 +33,6 @@ const StyledPublicationGroupHeader = styled.div`
   justify-content: space-between;
 `;
 
-const StyledActionsSection = styled.div`
-  margin-left: ${({ theme }) => theme.spacing(2)};
-`;
-
 const StyledPublicationGroupHeaderLeft = styled.div`
   align-items: center;
   display: flex;
@@ -45,6 +42,7 @@ const StyledPublicationGroupHeaderLeft = styled.div`
 const StyledPublicationGroupTitle = styled.h3`
   font-size: ${({ theme }) => theme.font.size.md};
   font-weight: ${({ theme }) => theme.font.weight.semiBold};
+  text-align: left;
 `;
 
 const StyledPublicationGroupHeaderRight = styled.div`
@@ -53,24 +51,9 @@ const StyledPublicationGroupHeaderRight = styled.div`
   gap: ${({ theme }) => theme.spacing(2)};
 `;
 
-const StyledPropertyImageContainer = styled.div`
-  height: 40px;
-  width: 40px;
-  flex-shrink: 0;
-  border-radius: ${({ theme }) => theme.border.radius.sm};
-  overflow: hidden;
-  background-color: ${({ theme }) => theme.background.tertiary};
-`;
-
-const StyledIconButton = styled(IconButton)`
-  &:hover {
-    background: ${({ theme }) => theme.background.transparent.light};
-  }
-`;
-
 const StyledPlatformInfo = styled.div`
-  display: flex;
   align-items: center;
+  display: flex;
   gap: ${({ theme }) => theme.spacing(1)};
 `;
 
@@ -110,6 +93,8 @@ export const PublicationGroup = ({
     publishedRecord,
   );
 
+  const { t } = useLingui();
+
   return (
     <StyledPublicationGroupContainer onClick={onClick}>
       <StyledPublicationGroupHeader>
@@ -125,16 +110,14 @@ export const PublicationGroup = ({
             />
           </StyledPlatformInfo>
         </StyledPublicationGroupHeaderLeft>
-
         <StyledPublicationGroupHeaderRight>
           {hasDifferences ? (
             <StyledDifferenceBadge>
               <IconEdit size={12} />
-
               <StyledDifferenceText>
                 {totalDifferenceCount === 1
-                  ? '1 unpublished change'
-                  : `${totalDifferenceCount} unpublished changes`}
+                  ? t`1 unpublished change`
+                  : t`${totalDifferenceCount} unpublished changes`}
               </StyledDifferenceText>
             </StyledDifferenceBadge>
           ) : (

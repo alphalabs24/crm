@@ -8,6 +8,7 @@ const StyledOuterContainer = styled.div<{
   align-items: center;
   display: flex;
   height: 100%;
+
   overflow: hidden;
   padding-left: 8px;
   width: 100%;

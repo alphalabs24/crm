@@ -23,6 +23,7 @@ const StyledBaseContainer = styled.div<{
   display: flex;
   height: 32px;
   position: relative;
+
   user-select: none;
 
   background: ${({ hasSoftFocus, backgroundColorTransparentSecondary }) =>

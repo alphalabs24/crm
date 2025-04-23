@@ -349,8 +349,12 @@ msgid "Allow logins through Microsoft's single sign-on functionality."
 msgstr ""
 
 #: src/pages/onboarding/CreateProfile.tsx
-msgid "Allow Nestermind to access and administer my data."
+msgid "Allow nestermind to access and administer my data."
 msgstr ""
+
+#: src/pages/onboarding/CreateProfile.tsx
+#~ msgid "Allow Nestermind to access and administer my data."
+#~ msgstr ""
 
 #: src/modules/settings/security/components/SettingsSecurityOptionsList.tsx
 msgid "Allow the invitation of new users by sharing an invite link."
@@ -986,12 +990,12 @@ msgid "Date and time"
 msgstr ""
 
 #: src/modules/inquiries/components/sidebar/ConversationMessageItem.tsx
-msgid "day ago"
-msgstr ""
+#~ msgid "day ago"
+#~ msgstr ""
 
 #: src/modules/inquiries/components/sidebar/ConversationMessageItem.tsx
-msgid "days ago"
-msgstr ""
+#~ msgid "days ago"
+#~ msgstr ""
 
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
 #~ msgid "Days Published"
@@ -1800,12 +1804,12 @@ msgid "Hide"
 msgstr ""
 
 #: src/modules/inquiries/components/sidebar/ConversationMessageItem.tsx
-msgid "hour ago"
-msgstr ""
+#~ msgid "hour ago"
+#~ msgstr ""
 
 #: src/modules/inquiries/components/sidebar/ConversationMessageItem.tsx
-msgid "hours ago"
-msgstr ""
+#~ msgid "hours ago"
+#~ msgstr ""
 
 #: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
 msgid "House Subtype"
@@ -1972,8 +1976,8 @@ msgstr ""
 #~ msgstr ""
 
 #: src/modules/inquiries/components/sidebar/ConversationMessageItem.tsx
-msgid "Just now"
-msgstr ""
+#~ msgid "Just now"
+#~ msgstr ""
 
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
 msgid "Keep in mind that only nestermind drafts will be synchronized. You will need to publish the drafts manually after synchronization."
@@ -3391,6 +3395,10 @@ msgid "Sync with Outlook"
 msgstr ""
 
 #: src/pages/onboarding/SyncEmails.tsx
+msgid "Sync your Emails and Calendar with nestermind."
+msgstr ""
+
+#: src/pages/onboarding/SyncEmails.tsx
 msgid "Sync your Emails and Calendar with nestermind. Choose your privacy settings."
 msgstr ""
 
@@ -3516,8 +3524,12 @@ msgid "This member will be unassigned from this role."
 msgstr ""
 
 #: src/pages/onboarding/CreateProfile.tsx
-msgid "This permission is required for Nestermind's automation and AI features to function properly."
+msgid "This permission is required for nestermind's automation and AI features to function properly."
 msgstr ""
+
+#: src/pages/onboarding/CreateProfile.tsx
+#~ msgid "This permission is required for Nestermind's automation and AI features to function properly."
+#~ msgstr ""
 
 #: src/pages/settings/roles/components/RolePermissions.tsx
 #~ msgid "This Role has the following permissions."
@@ -3871,8 +3883,8 @@ msgid "Yes"
 msgstr ""
 
 #: src/modules/inquiries/components/sidebar/ConversationMessageItem.tsx
-msgid "Yesterday"
-msgstr ""
+#~ msgid "Yesterday"
+#~ msgstr ""
 
 #: src/modules/object-record/record-table/empty-state/components/RecordTableEmptyStateReadOnly.tsx
 msgid "You are not allowed to create records in this object"

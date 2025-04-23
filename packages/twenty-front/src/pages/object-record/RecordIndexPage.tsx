@@ -6,8 +6,17 @@ import { RecordIndexContainerGater } from '@/object-record/record-index/componen
 import { PageContainer } from '@/ui/layout/page/components/PageContainer';
 import { useRecoilComponentValueV2 } from '@/ui/utilities/state/component-state/hooks/useRecoilComponentValueV2';
 import { isNonEmptyString, isUndefined } from '@sniptt/guards';
+import { useParams } from 'react-router-dom';
+import { useCustomPageGuard } from './hooks/useCustomPageGuard';
 
 export const RecordIndexPage = () => {
+  const { objectNamePlural } = useParams();
+
+  // Guard generic pages for custom fields we don't want to be accessed
+  useCustomPageGuard({
+    objectNamePlural,
+  });
+
   const contextStoreCurrentViewId = useRecoilComponentValueV2(
     contextStoreCurrentViewIdComponentState,
     MAIN_CONTEXT_STORE_INSTANCE_ID,

@@ -20,6 +20,7 @@ import { ViewComponentInstanceContext } from '@/views/states/contexts/ViewCompon
 import styled from '@emotion/styled';
 import { useRecoilCallback } from 'recoil';
 import { capitalize } from 'twenty-shared';
+import { useCustomPageGuard } from '~/pages/object-record/hooks/useCustomPageGuard';
 
 const StyledIndexContainer = styled.div`
   display: flex;

@@ -1,5 +1,9 @@
 import { ObjectMetadataItem } from '@/object-metadata/types/ObjectMetadataItem';
 import { formatFieldMetadataItemAsColumnDefinition } from '@/object-metadata/utils/formatFieldMetadataItemAsColumnDefinition';
+import {
+  isProperty,
+  isPublication,
+} from '@/object-metadata/utils/isPropertyOrPublication';
 import { FieldContext } from '@/object-record/record-field/contexts/FieldContext';
 import { RecordInlineEntry } from '@/object-record/record-inline-cell/components/nm/RecordInlineEntry';
 import { InlineCellHotkeyScope } from '@/object-record/record-inline-cell/types/InlineCellHotkeyScope';
@@ -26,6 +30,7 @@ type PropertyRelationsCardProps = {
 
 const RELATION_FIELDS = ['agency', 'assignee', 'seller'];
 const REQUIRED_RELATION_FIELDS = ['agency'];
+const OMIT_FOR_PUBLICATION = ['assignee'];
 
 export const PropertyRelationsCard = ({
   record,
@@ -42,8 +47,11 @@ export const PropertyRelationsCard = ({
     return null;
   }
 
-  const relationFields = objectMetadataItem.fields.filter((field) =>
-    RELATION_FIELDS.includes(field.name),
+  const relationFields = objectMetadataItem.fields.filter(
+    (field) =>
+      (isProperty(objectMetadataItem.nameSingular) ||
+        !OMIT_FOR_PUBLICATION.includes(field.name)) &&
+      RELATION_FIELDS.includes(field.name),
   );
 
   if (relationFields.length === 0) return null;

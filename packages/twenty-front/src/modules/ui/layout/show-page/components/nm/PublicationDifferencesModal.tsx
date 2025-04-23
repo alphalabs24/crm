@@ -23,14 +23,18 @@ import { useSetRecoilState } from 'recoil';
 import {
   Button,
   IconAlertCircle,
+  IconButton,
   IconCheck,
   IconExchange,
+  IconFile,
+  IconFileText,
   IconLoader,
   IconPhoto,
   IconUpload,
   IconX,
   MOBILE_VIEWPORT,
   useIcons,
+  useIsMobile,
 } from 'twenty-ui';
 import { FieldDifference } from '../../hooks/useDraftPublishedDifferences';
 import { ValidationResult } from '../../hooks/usePublicationValidation';
@@ -85,14 +89,19 @@ const StyledValueComparison = styled.div`
   }
 `;
 
-const StyledValueColumn = styled.div<{ $isOld?: boolean; $isNew?: boolean }>`
+const StyledValueColumn = styled.div<{
+  $isOld?: boolean;
+  $isNew?: boolean;
+  $isAttachment?: boolean;
+}>`
   font-weight: ${({ $isNew }) => ($isNew ? 500 : 'normal')};
   min-width: 0;
   opacity: ${({ $isOld }) => ($isOld ? 0.7 : 1)};
   overflow: hidden;
   padding: ${({ theme }) => theme.spacing(2)};
   position: relative;
-  text-decoration: ${({ $isOld }) => ($isOld ? 'line-through' : 'none')};
+  text-decoration: ${({ $isOld, $isAttachment }) =>
+    $isOld && !$isAttachment ? 'line-through' : 'none'};
 `;
 
 const StyledEmptyValue = styled.span`
@@ -291,6 +300,80 @@ const StyledNoImages = styled.div`
   height: 100%;
 `;
 
+const StyledDocumentsGrid = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: ${({ theme }) => theme.spacing(2)};
+  width: 100%;
+`;
+
+const StyledDocumentCard = styled.div`
+  background-color: ${({ theme }) => theme.background.secondary};
+  border-radius: ${({ theme }) => theme.border.radius.sm};
+  border: 1px solid ${({ theme }) => theme.border.color.medium};
+  padding: ${({ theme }) => theme.spacing(1, 3)};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: ${({ theme }) => theme.spacing(1)};
+  max-width: 300px;
+`;
+
+const StyledDocumentIcon = styled.div`
+  align-items: center;
+  color: ${({ theme }) => theme.font.color.light};
+  display: flex;
+  height: 24px;
+  justify-content: center;
+  width: 24px;
+`;
+
+const StyledDocumentInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  gap: ${({ theme }) => theme.spacing(0.5)};
+`;
+
+const StyledDocumentName = styled.span`
+  color: ${({ theme }) => theme.font.color.primary};
+  font-size: ${({ theme }) => theme.font.size.sm};
+  font-weight: ${({ theme }) => theme.font.weight.medium};
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`;
+
+const StyledDocumentDesc = styled.span`
+  color: ${({ theme }) => theme.font.color.tertiary};
+  font-size: ${({ theme }) => theme.font.size.xs};
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`;
+
+const StyledNoDocuments = styled.div`
+  border-radius: ${({ theme }) => theme.border.radius.sm};
+  color: ${({ theme }) => theme.font.color.light};
+  display: flex;
+  font-size: ${({ theme }) => theme.font.size.sm};
+  gap: ${({ theme }) => theme.spacing(1)};
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  text-decoration: line-through;
+`;
+
+const StyledDocumentCount = styled.div`
+  align-items: center;
+  color: ${({ theme }) => theme.font.color.secondary};
+  display: flex;
+  font-size: ${({ theme }) => theme.font.size.xs};
+  font-weight: ${({ theme }) => theme.font.weight.medium};
+  padding: ${({ theme }) => theme.spacing(0.5, 1)};
+`;
+
 type PublicationDifferencesModalProps = {
   draftId: string;
   publishedId: string;
@@ -330,6 +413,8 @@ export const PublicationDifferencesModal = forwardRef<
       objectNameSingular: CoreObjectNameSingular.Publication,
     });
 
+    const isMobile = useIsMobile();
+
     const setDraftFields = useSetRecoilState(recordStoreFamilyState(draftId));
     const setPublishedFields = useSetRecoilState(
       recordStoreFamilyState(publishedId),
@@ -357,14 +442,19 @@ export const PublicationDifferencesModal = forwardRef<
 
     // Using the mutation hook for publish
     const { mutate: publishPublication } = useMutations.usePublishPublication({
-      onSuccess: () => {
+      onSuccess: async () => {
         setIsPublished(true);
         setIsPublishing(false);
         enqueueSnackBar(t`Publication published successfully`, {
           variant: SnackBarVariant.Success,
         });
-        refetchDraft();
-        refetchPublished();
+        await refetchDraft();
+        await refetchPublished();
+
+        setIsPublished(false);
+        if (onPublish) {
+          onPublish();
+        }
       },
       onError: (error: Error) => {
         setIsPublishing(false);
@@ -382,9 +472,6 @@ export const PublicationDifferencesModal = forwardRef<
 
       setIsPublishing(true);
       publishPublication({ publicationId: draftId });
-      if (onPublish) {
-        onPublish();
-      }
     };
 
     const isValueEmpty = (value: unknown): boolean =>
@@ -489,9 +576,62 @@ export const PublicationDifferencesModal = forwardRef<
       );
     };
 
+    // Component to display documents grid
+    const DocumentsGrid = ({ documents }: { documents: any[] }) => {
+      if (!documents || documents.length === 0) {
+        return (
+          <StyledNoDocuments>
+            <IconFileText size={24} />
+            Empty
+          </StyledNoDocuments>
+        );
+      }
+
+      // Sort documents by orderIndex
+      const sortedDocs = [...documents].sort((a, b) => {
+        const orderA = a.orderIndex ?? 0;
+        const orderB = b.orderIndex ?? 0;
+        return orderA - orderB;
+      });
+
+      // Show up to 2 documents + count
+      const displayDocs = sortedDocs.slice(0, 2);
+      const hasMoreDocs = sortedDocs.length > 2;
+
+      return (
+        <StyledDocumentsGrid>
+          {displayDocs.map((doc, index) => (
+            <StyledDocumentCard key={doc.id || index}>
+              <StyledDocumentIcon>
+                <IconFile size={20} />
+              </StyledDocumentIcon>
+              <StyledDocumentInfo>
+                <StyledDocumentName>
+                  {doc.name.slice(0, 20) || 'Document'}
+                  {doc.name.length > 20 && '...'}
+                  {
+                    // Show document file type if it's ellipsized
+                  }
+                  {doc.name.length > 22
+                    ? doc.name.split('.')[doc.name.split('.').length - 1]
+                    : ''}
+                </StyledDocumentName>
+                <StyledDocumentDesc>{doc.description || ''}</StyledDocumentDesc>
+              </StyledDocumentInfo>
+            </StyledDocumentCard>
+          ))}
+          {hasMoreDocs && (
+            <StyledDocumentCount>
+              +{sortedDocs.length - 2} more
+            </StyledDocumentCount>
+          )}
+        </StyledDocumentsGrid>
+      );
+    };
+
     // Custom component for displaying attachment differences
     const AttachmentDifference = ({ diff }: { diff: FieldDifference }) => {
-      // For now, only handle images (extendable for documents later)
+      // Handle images
       if (diff.key === 'PropertyImage') {
         return (
           <StyledDifferenceItem>
@@ -500,7 +640,7 @@ export const PublicationDifferencesModal = forwardRef<
               {diff.fieldLabel}
             </StyledDifferenceHeader>
             <StyledValueComparison>
-              <StyledValueColumn $isOld>
+              <StyledValueColumn $isOld $isAttachment>
                 {loading ? (
                   <Skeleton
                     height={100}
@@ -523,6 +663,58 @@ export const PublicationDifferencesModal = forwardRef<
                   />
                 ) : (
                   <ImagesGrid images={diff.draftValue || []} />
+                )}
+              </StyledValueColumn>
+            </StyledValueComparison>
+          </StyledDifferenceItem>
+        );
+      }
+
+      // Handle documents
+      if (
+        diff.key === 'PropertyDocument' ||
+        diff.key === 'PropertyDocumentation' ||
+        diff.key === 'PropertyFlyer'
+      ) {
+        // Map document types to more user-friendly labels
+        const documentTypeLabels: Record<string, string> = {
+          PropertyDocument: t`Additional Documents`,
+          PropertyDocumentation: t`Property Exposé`,
+          PropertyFlyer: t`Property Flyer`,
+        };
+
+        const fieldLabel = documentTypeLabels[diff.key] || diff.fieldLabel;
+
+        return (
+          <StyledDifferenceItem>
+            <StyledDifferenceHeader>
+              <IconFileText size={14} />
+              {fieldLabel}
+            </StyledDifferenceHeader>
+            <StyledValueComparison>
+              <StyledValueColumn $isOld $isAttachment>
+                {loading ? (
+                  <Skeleton
+                    height={80}
+                    width="100%"
+                    highlightColor={theme.background.secondary}
+                    baseColor={theme.background.tertiary}
+                  />
+                ) : (
+                  <DocumentsGrid documents={diff.publishedValue || []} />
+                )}
+              </StyledValueColumn>
+
+              <StyledValueColumn $isNew>
+                {loading ? (
+                  <Skeleton
+                    height={80}
+                    width="100%"
+                    highlightColor={theme.background.secondary}
+                    baseColor={theme.background.tertiary}
+                  />
+                ) : (
+                  <DocumentsGrid documents={diff.draftValue || []} />
                 )}
               </StyledValueColumn>
             </StyledValueComparison>
@@ -553,19 +745,24 @@ export const PublicationDifferencesModal = forwardRef<
               <StyledModalTitle>{t`Review Changes`}</StyledModalTitle>
             </StyledModalTitleContainer>
             <StyledModalHeaderButtons>
-              <Button
-                variant="tertiary"
-                title={isPublished ? t`Done` : t`Cancel`}
-                onClick={onClose}
-              />
+              {isMobile ? (
+                <IconButton Icon={IconX} onClick={onClose} />
+              ) : (
+                <Button
+                  variant="tertiary"
+                  title={isPublished ? t`Done` : t`Cancel`}
+                  onClick={onClose}
+                  disabled={isPublishing}
+                />
+              )}
               {!isPublished && (
                 <Button
                   variant="primary"
                   accent="blue"
                   title={t`Publish Changes`}
                   onClick={handlePublishClick}
-                  Icon={isPublishing ? IconLoader : IconUpload}
-                  disabled={isPublishing}
+                  Icon={IconUpload}
+                  loading={isPublishing}
                 />
               )}
             </StyledModalHeaderButtons>

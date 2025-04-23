@@ -1,19 +1,19 @@
-@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap');
+@import url('https://api.fontshare.com/v2/css?f[]=satoshi@1,900,700,500,301,701,300,501,401,901,400,2&display=swap');
 
 body {
   margin: 0;
-  font-family: 'Geist', sans-serif;
+  font-family: 'Satoshi', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 html {
-  font-size: 13px;
+  font-size: 14px;
 }
 
 button {
-  font-size: 13px;
-  font-family: 'Geist', sans-serif;
+  font-size: 14px;
+  font-family: 'Satoshi', sans-serif;
 }
 
 /* https://stackoverflow.com/questions/44543157/how-to-hide-the-google-invisible-recaptcha-badge */

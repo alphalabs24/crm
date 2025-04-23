@@ -20,6 +20,14 @@ export const DOCUMENTS_SECTION_CONTENT: SectionContent[] = [
       {
         fields: [{ name: 'virtualTour', type: 'field' }],
       },
+      {
+        fields: [
+          {
+            name: 'movies',
+            type: 'custom',
+          },
+        ],
+      },
     ],
   },
 ];

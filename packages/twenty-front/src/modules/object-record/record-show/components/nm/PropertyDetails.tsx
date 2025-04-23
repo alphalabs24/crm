@@ -7,6 +7,7 @@ import { useDeleteOneRecord } from '@/object-record/hooks/useDeleteOneRecord';
 import { PropertyAddressCard } from '@/object-record/record-show/components/nm/cards/PropertyAddressCard';
 import { PropertyBasicInfoCard } from '@/object-record/record-show/components/nm/cards/PropertyBasicInfoCard';
 import { PropertyDetailsCard } from '@/object-record/record-show/components/nm/cards/PropertyDetailsCard';
+import { PropertyDocumentsCard } from '@/object-record/record-show/components/nm/cards/PropertyDocumentsCard';
 import { PropertyImagesCard } from '@/object-record/record-show/components/nm/cards/PropertyImagesCard';
 import { PropertyInquiriesCard } from '@/object-record/record-show/components/nm/cards/PropertyInquiriesCard';
 import { PropertyRelationsCard } from '@/object-record/record-show/components/nm/cards/PropertyRelationsCard';
@@ -14,6 +15,7 @@ import { PropertyReportingCard } from '@/object-record/record-show/components/nm
 import { StyledLoadingContainer } from '@/object-record/record-show/components/ui/PropertyDetailsCardComponents';
 import { PublicationStage } from '@/object-record/record-show/constants/PublicationStage';
 import { useRecordShowContainerData } from '@/object-record/record-show/hooks/useRecordShowContainerData';
+import { ObjectRecord } from '@/object-record/types/ObjectRecord';
 import { SnackBarVariant } from '@/ui/feedback/snack-bar-manager/components/SnackBar';
 import { useSnackBar } from '@/ui/feedback/snack-bar-manager/hooks/useSnackBar';
 import { useDropdown } from '@/ui/layout/dropdown/hooks/useDropdown';
@@ -41,6 +43,8 @@ import {
   MOBILE_VIEWPORT,
   useIsMobile,
 } from 'twenty-ui';
+import { useSyncDrafts } from '../../hooks/useSyncDrafts';
+import { useSyncAndPublish } from '../../hooks/useSyncAndPublish';
 
 const StyledContentContainer = styled.div<{ isInRightDrawer?: boolean }>`
   display: flex;
@@ -227,6 +231,43 @@ export const PropertyDetails = ({
     return publicationGroups.all[PublicationStage.Draft];
   }, [publicationGroups]);
 
+  const publicationPublishedOfProperty = useMemo(() => {
+    return publicationGroups.all[PublicationStage.Published];
+  }, [publicationGroups]);
+
+  const publicationsToConsiderForDifferences = useMemo(() => {
+    const availablePlatforms = new Set<string>();
+
+    for (const publication of publicationDraftsOfProperty) {
+      availablePlatforms.add(publication.platform);
+    }
+
+    for (const publication of publicationPublishedOfProperty) {
+      availablePlatforms.add(publication.platform);
+    }
+
+    // Prioritize Drafts but if there is not draft, then use the published version if it exists.
+    const publicationPerPlatform: Record<string, ObjectRecord[]> = {};
+
+    for (const platform of availablePlatforms) {
+      const draft = publicationDraftsOfProperty.find(
+        (p) => p.platform === platform,
+      );
+      const published = publicationPublishedOfProperty.find(
+        (p) => p.platform === platform,
+      );
+
+      if (draft) {
+        publicationPerPlatform[platform] = [draft];
+      } else if (published) {
+        publicationPerPlatform[platform] = [published];
+      }
+    }
+
+    // return array of publications
+    return Object.values(publicationPerPlatform).flat();
+  }, [publicationDraftsOfProperty, publicationPublishedOfProperty]);
+
   const objectNameSingular = targetableObject.targetObjectNameSingular;
 
   // Delete handling
@@ -259,33 +300,22 @@ export const PropertyDetails = ({
     setIsDeleteModalOpen(false);
   };
 
-  // Sync publications
-  const { useMutations } = useNestermind();
+  const { syncPublicationDrafts, loading: loadingSyncDrafts } = useSyncDrafts({
+    targetableObject,
+    refetchPublications,
+  });
 
-  const { mutate: syncPublicationMutation, isPending: isSyncPending } =
-    useMutations.useSyncPublicationsWithProperty(targetableObject.id, {
-      onSuccess: () => {
-        enqueueSnackBar(t`Your Publication Drafts were synced successfully`, {
-          variant: SnackBarVariant.Success,
-        });
-        differencesModalRef.current?.close();
-        refetchPublications();
-      },
-      onError: (error: Error) => {
-        enqueueSnackBar(error?.message || t`Failed to sync publications`, {
-          variant: SnackBarVariant.Error,
-        });
-      },
-    });
-
-  const syncPublications = useCallback(async () => {
-    await syncPublicationMutation();
-    closeDropdown();
-  }, [syncPublicationMutation, closeDropdown]);
+  const { syncAndPublish, loading: loadingSyncAndPublish } = useSyncAndPublish({
+    targetableObject,
+    onSuccess: () => {
+      refetchPublications();
+      closeDropdown();
+    },
+  });
 
   // Publication differences
   const { differenceRecords } = usePropertyAndPublicationDifferences(
-    publicationDraftsOfProperty,
+    publicationsToConsiderForDifferences,
     property,
   );
 
@@ -359,6 +389,16 @@ export const PropertyDetails = ({
           <ActionDropdown
             dropdownId={dropdownId}
             actions={[
+              ...(!showSyncButton
+                ? [
+                    {
+                      title: t`Sync Publications ${differenceLength}`,
+                      Icon: IconRefresh,
+                      onClick: syncPublicationDrafts,
+                      disabled: loadingSyncDrafts || loadingSyncAndPublish,
+                    },
+                  ]
+                : []),
               ...(showDeleteButton
                 ? [
                     {
@@ -366,7 +406,10 @@ export const PropertyDetails = ({
                       Icon: IconTrash,
                       onClick: handleDelete,
                       distructive: true,
-                      disabled: loadingDelete,
+                      disabled:
+                        loadingDelete ||
+                        loadingSyncDrafts ||
+                        loadingSyncAndPublish,
                     },
                   ]
                 : []),
@@ -377,7 +420,7 @@ export const PropertyDetails = ({
                     title: t`Sync Publications ${differenceLength}`,
                     Icon: IconRefresh,
                     onClick: () => differencesModalRef.current?.open(),
-                    disabled: isSyncPending,
+                    disabled: loadingSyncDrafts || loadingSyncAndPublish,
                   }
                 : null
             }
@@ -394,7 +437,13 @@ export const PropertyDetails = ({
           </StyledImagesSection>
 
           <StyledDetailsSection>
-            <PropertyBasicInfoCard record={property} loading={recordLoading} />
+            <PropertyBasicInfoCard
+              record={property}
+              loading={recordLoading}
+              platforms={publicationGroups.all[PublicationStage.Published].map(
+                (publication) => publication.platform,
+              )}
+            />
             <PropertyDetailsCard
               record={property}
               loading={recordLoading}
@@ -411,12 +460,12 @@ export const PropertyDetails = ({
             <PropertyAddressCard record={property} loading={recordLoading} />
           </StyledDetailsSection>
 
-          {/* <StyledPublicationsSection>
-            <PropertyPublicationsCard
-              record={property}
+          <StyledDetailsSection>
+            <PropertyDocumentsCard
+              targetableObject={targetableObject}
               loading={recordLoading}
             />
-          </StyledPublicationsSection> */}
+          </StyledDetailsSection>
         </StyledMainContent>
 
         {isMobile ? null : (
@@ -433,7 +482,10 @@ export const PropertyDetails = ({
           ref={differencesModalRef}
           differences={differenceRecords}
           onClose={() => differencesModalRef.current?.close()}
-          onSync={syncPublications}
+          onSync={syncPublicationDrafts}
+          onSyncAndPublish={syncAndPublish}
+          loadingSync={loadingSyncDrafts}
+          loadingSyncAndPublish={loadingSyncAndPublish}
           propertyRecordId={property?.id ?? ''}
           publicationRecordId={publicationDraftsOfProperty?.[0]?.id ?? ''}
         />
