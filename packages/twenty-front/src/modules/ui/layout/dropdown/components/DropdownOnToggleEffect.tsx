@@ -5,7 +5,7 @@ import { useDropdown } from '@/ui/layout/dropdown/hooks/useDropdown';
 export const DropdownOnToggleEffect = ({
   onDropdownClose,
   onDropdownOpen,
-}: {
+}: { 
   onDropdownClose?: () => void;
   onDropdownOpen?: () => void;
 }) => {

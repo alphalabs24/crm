@@ -17,6 +17,7 @@ const StyledTd = styled.td<{
   hasBottomBorder?: boolean;
   width?: number;
 }>`
+  font-weight: 500;
   border-bottom: 1px solid
     ${({ borderColor, hasBottomBorder }) =>
       hasBottomBorder ? borderColor : 'transparent'};
