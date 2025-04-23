@@ -101,6 +101,9 @@ export class ClientConfig {
   @Field(() => String)
   frontDomain: string;
 
+  @Field(() => String, { nullable: true })
+  mapboxAccessToken: string | undefined;
+
   @Field(() => Boolean)
   debugMode: boolean;
 

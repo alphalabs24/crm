@@ -1,3 +1,4 @@
+import { mapboxAccessTokenState } from '@/client-config/states/mapboxAccessTokenState';
 import { Section } from '@/object-record/record-show/components/ui/PropertyDetailsCardComponents';
 import { SnackBarVariant } from '@/ui/feedback/snack-bar-manager/components/SnackBar';
 import { useSnackBar } from '@/ui/feedback/snack-bar-manager/hooks/useSnackBar';
@@ -5,8 +6,8 @@ import { useColorScheme } from '@/ui/theme/hooks/useColorScheme';
 import { useSystemColorScheme } from '@/ui/theme/hooks/useSystemColorScheme';
 import styled from '@emotion/styled';
 import { useLingui } from '@lingui/react/macro';
+import { useRecoilValue } from 'recoil';
 import { IconCopy, IconMap } from 'twenty-ui';
-import { getEnv } from '~/utils/get-env';
 
 const StyledAddressContainer = styled.div`
   display: flex;
@@ -111,7 +112,7 @@ export const PropertyAddressCard = ({
   loading = false,
 }: PropertyAddressCardProps) => {
   const { t } = useLingui();
-  const mapboxToken = getEnv('REACT_APP_MAPBOX_ACCESS_TOKEN');
+  const mapboxAccessToken = useRecoilValue(mapboxAccessTokenState);
   const { enqueueSnackBar } = useSnackBar();
   const { colorScheme } = useColorScheme();
   const systemColorScheme = useSystemColorScheme();
@@ -160,7 +161,7 @@ export const PropertyAddressCard = ({
   const mapStyle = colorSchemeToUse === 'Dark' ? 'dark-v11' : 'streets-v11';
 
   const mapUrl = hasCoordinates
-    ? `https://api.mapbox.com/styles/v1/mapbox/${mapStyle}/static/pin-s+ff0000(${address.addressLng},${address.addressLat})/${address.addressLng},${address.addressLat},16/600x400@2x?access_token=${mapboxToken}`
+    ? `https://api.mapbox.com/styles/v1/mapbox/${mapStyle}/static/pin-s+ff0000(${address.addressLng},${address.addressLat})/${address.addressLng},${address.addressLat},16/600x400@2x?access_token=${mapboxAccessToken}`
     : '';
 
   const handleMapClick = () => {

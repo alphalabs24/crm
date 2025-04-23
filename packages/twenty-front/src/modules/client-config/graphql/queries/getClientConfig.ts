@@ -31,6 +31,7 @@ export const GET_CLIENT_CONFIG = gql`
       debugMode
       analyticsEnabled
       isAttachmentPreviewEnabled
+      mapboxAccessToken
       support {
         supportDriver
         supportFrontChatId
