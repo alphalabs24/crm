@@ -37,6 +37,17 @@ export type PropertyPdfProps = {
   showPublisherPhone?: boolean;
 };
 
+export type PdfConfiguration = {
+  showAllImages: boolean;
+  includeFeatures: boolean;
+  selectedFields: string[];
+  orientation: 'portrait' | 'landscape';
+  // Publisher options
+  showPublisherBranding: boolean;
+  showPublisherEmail: boolean;
+  showPublisherPhone: boolean;
+};
+
 export type PropertyPdfTemplate = React.FC<
   PropertyPdfProps & {
     type: PropertyPdfType;
