@@ -20,17 +20,20 @@ import { UserTutorialExplanation } from 'twenty-shared';
 import {
   Button,
   IconAlertCircle,
+  IconButton,
   IconCheck,
   IconExchange,
   IconHelpCircle,
   IconHome,
   IconHomeShare,
+  IconNotes,
   IconPencil,
   IconRefresh,
   IconUpload,
   IconX,
   MOBILE_VIEWPORT,
   useIcons,
+  useIsMobile,
 } from 'twenty-ui';
 import {
   PropertyPublicationDifference,
@@ -529,6 +532,7 @@ export const PropertyDifferencesModal = forwardRef<
     ref,
   ) => {
     const { t } = useLingui();
+    const isMobile = useIsMobile();
     const { showTutorial } = useTutorial();
     const [activePublicationIndex, setActivePublicationIndex] = useState(0);
     const tabsContainerRef = useRef<HTMLDivElement>(null);
@@ -565,18 +569,28 @@ export const PropertyDifferencesModal = forwardRef<
               <StyledModalTitle>{t`Compare Changes`}</StyledModalTitle>
             </StyledModalTitleContainer>
             <StyledModalHeaderButtons>
-              <Button
-                variant="tertiary"
-                title={t`Cancel`}
-                onClick={onClose}
-                disabled={loadingSync || loadingSyncAndPublish}
-              />
+              {isMobile ? (
+                <IconButton
+                  Icon={IconX}
+                  onClick={onClose}
+                  size="small"
+                  disabled={loadingSync || loadingSyncAndPublish}
+                />
+              ) : (
+                <Button
+                  variant="tertiary"
+                  title={t`Cancel`}
+                  onClick={onClose}
+                  disabled={loadingSync || loadingSyncAndPublish}
+                />
+              )}
               {onSync && (
                 <Button
                   variant="primary"
-                  title={t`Sync as Drafts`}
+                  title={isMobile ? t`As Drafts` : t`Sync as Drafts`}
                   onClick={onSync}
-                  Icon={IconPencil}
+                  size={isMobile ? 'small' : 'medium'}
+                  Icon={IconNotes}
                   disabled={loadingSyncAndPublish}
                   loading={loadingSync}
                 />
@@ -585,7 +599,8 @@ export const PropertyDifferencesModal = forwardRef<
                 <Button
                   variant="primary"
                   accent="blue"
-                  title={t`Sync and Publish All`}
+                  size={isMobile ? 'small' : 'medium'}
+                  title={isMobile ? t`Publish All` : t`Sync and Publish All`}
                   onClick={onSyncAndPublish}
                   Icon={IconUpload}
                   disabled={loadingSync}

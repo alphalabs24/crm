@@ -6,6 +6,7 @@ import { useDeleteOneRecord } from '@/object-record/hooks/useDeleteOneRecord';
 import { PropertyAddressCard } from '@/object-record/record-show/components/nm/cards/PropertyAddressCard';
 import { PropertyBasicInfoCard } from '@/object-record/record-show/components/nm/cards/PropertyBasicInfoCard';
 import { PropertyDetailsCard } from '@/object-record/record-show/components/nm/cards/PropertyDetailsCard';
+import { PropertyDocumentsCard } from '@/object-record/record-show/components/nm/cards/PropertyDocumentsCard';
 import { PropertyImagesCard } from '@/object-record/record-show/components/nm/cards/PropertyImagesCard';
 import { PropertyInquiriesCard } from '@/object-record/record-show/components/nm/cards/PropertyInquiriesCard';
 import { PropertyRelationsCard } from '@/object-record/record-show/components/nm/cards/PropertyRelationsCard';
@@ -579,6 +580,16 @@ export const PublicationDetailPage = ({
               />
               <PropertyAddressCard
                 record={draftRecord || publication}
+                loading={recordLoading}
+              />
+            </StyledDetailsSection>
+
+            <StyledDetailsSection>
+              <PropertyDocumentsCard
+                targetableObject={{
+                  id: draftRecord?.id || publication.id,
+                  targetObjectNameSingular: CoreObjectNameSingular.Publication,
+                }}
                 loading={recordLoading}
               />
             </StyledDetailsSection>

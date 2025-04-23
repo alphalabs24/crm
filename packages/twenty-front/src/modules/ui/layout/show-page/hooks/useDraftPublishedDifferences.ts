@@ -1,10 +1,13 @@
 import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadataItem';
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { FieldMetadataItem } from '@/object-metadata/types/FieldMetadataItem';
+import { usePublicationDocuments } from '@/object-record/record-show/contexts/PublicationDocumentsProvider';
 import { usePublicationImages } from '@/object-record/record-show/contexts/PublicationImagesProvider';
 import { ObjectRecord } from '@/object-record/types/ObjectRecord';
 import { useMemo } from 'react';
 import { isDeeplyEqual } from '../../../../../utils/isDeeplyEqual';
+import { Attachment } from '@/activities/files/types/Attachment';
+import { useLingui } from '@lingui/react/macro';
 
 // These keys are ignored when comparing
 const IGNORE_FIELD_KEYS = [
@@ -41,9 +44,9 @@ const IGNORE_FIELD_KEYS = [
 ];
 
 export type AttachmentDifference = {
-  type: string; // 'image', 'document', etc.
-  draftAttachments: any[];
-  publishedAttachments: any[];
+  type: string; // 'PropertyImage', 'PropertyDocument'
+  draftAttachments: Attachment[];
+  publishedAttachments: Attachment[];
 };
 
 export type FieldDifference = {
@@ -148,8 +151,12 @@ export const useDraftPublishedDifferences = (
   const { objectMetadataItem } = useObjectMetadataItem({
     objectNameSingular: CoreObjectNameSingular.Publication,
   });
+  const { t } = useLingui();
 
   const { draftImages, publishedImages } = usePublicationImages();
+
+  const { draftDocumentsByType, publishedDocumentsByType } =
+    usePublicationDocuments();
 
   // Create a map of field labels for easier access
   const fieldMetadataLabels = useMemo(() => {
@@ -239,7 +246,36 @@ export const useDraftPublishedDifferences = (
           key: 'PropertyImage',
           draftValue: draftImages,
           publishedValue: publishedImages,
-          fieldLabel: 'PropertyImage',
+          fieldLabel: t`Property Images`,
+          fieldMetadataItem: undefined,
+          isCustomDiff: true,
+        });
+      }
+    }
+
+    // Handle document differences for each document type
+    const docType = 'PropertyDocument';
+
+    const draftDocs = draftDocumentsByType[docType] || [];
+    const publishedDocs = publishedDocumentsByType[docType] || [];
+
+    if (draftDocs.length > 0 || publishedDocs.length > 0) {
+      const hasDocChanges = !areAttachmentsEqual(draftDocs, publishedDocs);
+
+      if (hasDocChanges) {
+        // Store attachment differences for special rendering
+        attachmentDifferences[docType] = {
+          type: docType,
+          draftAttachments: draftDocs,
+          publishedAttachments: publishedDocs,
+        };
+
+        // Add a custom field difference for this document type
+        fieldDifferences.push({
+          key: docType,
+          draftValue: draftDocs,
+          publishedValue: publishedDocs,
+          fieldLabel: t`Property Documents`,
           fieldMetadataItem: undefined,
           isCustomDiff: true,
         });
@@ -262,9 +298,12 @@ export const useDraftPublishedDifferences = (
     draftRecord,
     publishedRecord,
     objectMetadataItem,
-    fieldMetadataLabels,
     draftImages,
     publishedImages,
+    fieldMetadataLabels,
+    t,
+    draftDocumentsByType,
+    publishedDocumentsByType,
   ]);
 
   return {

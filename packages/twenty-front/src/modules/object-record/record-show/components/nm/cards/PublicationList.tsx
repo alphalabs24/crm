@@ -3,6 +3,7 @@ import { PublicationDetailPage } from '@/object-record/record-show/components/nm
 import { NewPublicationCard } from '@/object-record/record-show/components/ui/NewPublicationCard';
 import { PublicationGroup } from '@/object-record/record-show/components/ui/PublicationGroup';
 import { PublicationStage } from '@/object-record/record-show/constants/PublicationStage';
+import { PublicationDocumentsProvider } from '@/object-record/record-show/contexts/PublicationDocumentsProvider';
 import { PublicationImagesProvider } from '@/object-record/record-show/contexts/PublicationImagesProvider';
 import {
   PlatformId,
@@ -300,6 +301,11 @@ export const PublicationList = ({
     return draftRecord && publishedRecord;
   }, [draftRecord, publishedRecord]);
 
+  // Handles wrapping with document provider - same condition as images
+  const provideDocuments = useMemo(() => {
+    return draftRecord && publishedRecord;
+  }, [draftRecord, publishedRecord]);
+
   const unpublishedPublishablePlatforms = useMemo(() => {
     return PUBLISHABLE_PLATFORMS.filter((platform) => {
       return !Object.keys(publicationGroups).includes(platform as PlatformId);
@@ -356,16 +362,26 @@ export const PublicationList = ({
           />
         }
       >
-        <PublicationDetailPage
-          publicationGroup={publicationGroups[selectedPlatformId]}
-          stage={computeStage(
-            publicationGroups[selectedPlatformId][PublicationStage.Published],
-          )}
-          selectedPlatformId={selectedPlatformId}
-          recordLoading={loading}
-          isInRightDrawer={isInRightDrawer}
-          refetch={refetch}
-        />
+        <OptionalWrap
+          condition={provideDocuments}
+          With={
+            <PublicationDocumentsProvider
+              draftRecord={draftRecord}
+              publishedRecord={publishedRecord}
+            />
+          }
+        >
+          <PublicationDetailPage
+            publicationGroup={publicationGroups[selectedPlatformId]}
+            stage={computeStage(
+              publicationGroups[selectedPlatformId][PublicationStage.Published],
+            )}
+            selectedPlatformId={selectedPlatformId}
+            recordLoading={loading}
+            isInRightDrawer={isInRightDrawer}
+            refetch={refetch}
+          />
+        </OptionalWrap>
       </OptionalWrap>
     );
   }
@@ -383,28 +399,55 @@ export const PublicationList = ({
             </StyledSectionDescription>
           </StyledPublicationListHeader>
           <StyledSectionList>
-            {Object.keys(publicationGroups).map((platform) => (
-              <PublicationGroup
-                key={platform}
-                platform={platform as PlatformId}
-                draftRecord={
-                  publicationGroups[platform as PlatformId][
-                    PublicationStage.Draft
-                  ]?.[0]
-                }
-                publishedRecord={
-                  publicationGroups[platform as PlatformId][
-                    PublicationStage.Published
-                  ]?.[0]
-                }
-                onClick={() => handlePlatformClick(platform as PlatformId)}
-                stage={computeStage(
-                  publicationGroups[platform as PlatformId][
-                    PublicationStage.Published
-                  ],
-                )}
-              />
-            ))}
+            {Object.keys(publicationGroups).map((platform) => {
+              // Handle these for each group
+              const draftRecord =
+                publicationGroups[platform as PlatformId][
+                  PublicationStage.Draft
+                ]?.[0];
+              const publishedRecord =
+                publicationGroups[platform as PlatformId][
+                  PublicationStage.Published
+                ]?.[0];
+              const provideImages = draftRecord && publishedRecord;
+              const provideDocuments = draftRecord && publishedRecord;
+              return (
+                <OptionalWrap
+                  condition={provideImages}
+                  With={
+                    <PublicationImagesProvider
+                      draftRecord={draftRecord}
+                      publishedRecord={publishedRecord}
+                    />
+                  }
+                >
+                  <OptionalWrap
+                    condition={provideDocuments}
+                    With={
+                      <PublicationDocumentsProvider
+                        draftRecord={draftRecord}
+                        publishedRecord={publishedRecord}
+                      />
+                    }
+                  >
+                    <PublicationGroup
+                      key={platform}
+                      platform={platform as PlatformId}
+                      draftRecord={draftRecord}
+                      publishedRecord={publishedRecord}
+                      onClick={() =>
+                        handlePlatformClick(platform as PlatformId)
+                      }
+                      stage={computeStage(
+                        publicationGroups[platform as PlatformId][
+                          PublicationStage.Published
+                        ],
+                      )}
+                    />
+                  </OptionalWrap>
+                </OptionalWrap>
+              );
+            })}
           </StyledSectionList>
         </StyledSection>
       )}

@@ -26,13 +26,32 @@ export const useNestermind = () => {
   );
 
   const api = useMemo(() => {
-    return axios.create({
+    const apiInstance = axios.create({
       baseURL: baseUrl,
       headers: {
         Authorization: `Bearer ${tokenPair?.accessToken?.token}`,
         'Content-Type': 'application/json',
       },
     });
+
+    // Add a response interceptor to handle unauthorized errors
+    apiInstance.interceptors.response.use(
+      (response) => response, // Return response normally for successful requests
+      (error) => {
+        // Check if the error is a 401 Unauthorized
+        if (error.response && error.response.status === 401) {
+          console.log('Session expired, reloading page...');
+          // Reload the page to force re-authentication
+          window.location.reload();
+          // Return a rejected promise to stop further processing
+          return Promise.reject(new Error('Session expired'));
+        }
+        // For other errors, reject the promise normally
+        return Promise.reject(error);
+      },
+    );
+
+    return apiInstance;
   }, [baseUrl, tokenPair?.accessToken?.token]);
 
   // Property routes
