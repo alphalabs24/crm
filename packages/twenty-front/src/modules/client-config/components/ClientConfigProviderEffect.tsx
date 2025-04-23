@@ -16,6 +16,7 @@ import { isMicrosoftCalendarEnabledState } from '@/client-config/states/isMicros
 import { isMicrosoftMessagingEnabledState } from '@/client-config/states/isMicrosoftMessagingEnabledState';
 import { isMultiWorkspaceEnabledState } from '@/client-config/states/isMultiWorkspaceEnabledState';
 import { labPublicFeatureFlagsState } from '@/client-config/states/labPublicFeatureFlagsState';
+import { mapboxAccessTokenState } from '@/client-config/states/mapboxAccessTokenState';
 import { sentryConfigState } from '@/client-config/states/sentryConfigState';
 import { supportChatState } from '@/client-config/states/supportChatState';
 import { domainConfigurationState } from '@/domain-manager/states/domainConfigurationState';
@@ -81,6 +82,8 @@ export const ClientConfigProviderEffect = () => {
   const setIsAttachmentPreviewEnabled = useSetRecoilState(
     isAttachmentPreviewEnabledState,
   );
+
+  const setMapboxAccessToken = useSetRecoilState(mapboxAccessTokenState);
 
   const { data, loading, error } = useGetClientConfigQuery({
     skip: clientConfigApiStatus.isLoaded,
@@ -157,6 +160,7 @@ export const ClientConfigProviderEffect = () => {
     setIsAttachmentPreviewEnabled(
       data?.clientConfig?.isAttachmentPreviewEnabled,
     );
+    setMapboxAccessToken(data?.clientConfig?.mapboxAccessToken);
   }, [
     data,
     setIsDebugMode,
@@ -182,6 +186,7 @@ export const ClientConfigProviderEffect = () => {
     setGoogleMessagingEnabled,
     setGoogleCalendarEnabled,
     setIsAttachmentPreviewEnabled,
+    setMapboxAccessToken,
   ]);
 
   return <></>;

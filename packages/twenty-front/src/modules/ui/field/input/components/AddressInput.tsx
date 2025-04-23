@@ -3,6 +3,7 @@ import { RefObject, useEffect, useRef, useState } from 'react';
 import { Key } from 'ts-key-enum';
 import { useDebounce } from 'use-debounce';
 
+import { mapboxAccessTokenState } from '@/client-config/states/mapboxAccessTokenState';
 import { FieldAddressDraftValue } from '@/object-record/record-field/types/FieldInputDraftValue';
 import { FieldAddressValue } from '@/object-record/record-field/types/FieldMetadata';
 import { CountrySelect } from '@/ui/input/components/internal/country/components/CountrySelect';
@@ -15,7 +16,6 @@ import { useListenClickOutside } from '@/ui/utilities/pointer-event/hooks/useLis
 import { useRecoilValue } from 'recoil';
 import { isDefined } from 'twenty-shared';
 import { MOBILE_VIEWPORT } from 'twenty-ui';
-import { getEnv } from '~/utils/get-env';
 
 const StyledAddressContainer = styled.div<{
   noPadding?: boolean;
@@ -103,8 +103,6 @@ export type AddressInputProps = {
   noPadding?: boolean;
 };
 
-const apiKey = getEnv('REACT_APP_MAPBOX_ACCESS_TOKEN');
-
 export const AddressInput = ({
   value,
   autofocus = true,
@@ -119,6 +117,7 @@ export const AddressInput = ({
   fullWidth,
   noPadding,
 }: AddressInputProps) => {
+  const mapboxAccessToken = useRecoilValue(mapboxAccessTokenState);
   const [internalValue, setInternalValue] = useState(value);
   const addressStreet1InputRef = useRef<HTMLInputElement>(null);
   const addressStreet2InputRef = useRef<HTMLInputElement>(null);
@@ -296,11 +295,11 @@ export const AddressInput = ({
 
   useEffect(() => {
     const fetchSuggestions = async () => {
-      if (!searchTerm || !apiKey) return;
+      if (!searchTerm || !mapboxAccessToken) return;
 
       const endpoint = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
         searchTerm,
-      )}.json?access_token=${apiKey}&types=address&country=ch,de,fr,it&proximity=8.5417,47.3769&limit=5`;
+      )}.json?access_token=${mapboxAccessToken}&types=address&country=ch,de,fr,it&proximity=8.5417,47.3769&limit=5`;
 
       try {
         const response = await fetch(endpoint);
@@ -312,7 +311,7 @@ export const AddressInput = ({
     };
 
     fetchSuggestions();
-  }, [searchTerm]);
+  }, [searchTerm, mapboxAccessToken]);
 
   const handleStreet1Focus = () => {
     if (suggestions.length > 0) {
