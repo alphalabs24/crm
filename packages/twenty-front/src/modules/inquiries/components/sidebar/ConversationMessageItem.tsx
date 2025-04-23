@@ -5,11 +5,13 @@ import { useSystemColorScheme } from '@/ui/theme/hooks/useSystemColorScheme';
 import styled from '@emotion/styled';
 import { Trans, useLingui } from '@lingui/react/macro';
 import { format } from 'date-fns';
+import { de, enUS, es, fr, it } from 'date-fns/locale';
 import DOMPurify from 'dompurify';
 import { useCallback, useMemo } from 'react';
 import { Link, To } from 'react-router-dom';
 import { isDefined } from 'twenty-shared';
 import { Button, ColorScheme, IconMessage } from 'twenty-ui';
+import { beautifyPastDateRelativeToNow } from '~/utils/date-utils';
 
 const StyledMessageContainer = styled.div<{ isCurrentUser?: boolean }>`
   display: flex;
@@ -107,13 +109,25 @@ export const ConversationMessageItem = ({
   subject = 'Your inquiry',
   senderEmail,
 }: ConversationMessageItemProps) => {
-  const { t } = useLingui();
+  const { t, i18n } = useLingui();
   const { colorScheme } = useColorScheme();
   const systemColorScheme = useSystemColorScheme();
   const colorSchemeToUse =
     colorScheme === 'System' ? systemColorScheme : colorScheme;
   const isHtml = /<([a-z]+)[\s>]|&[a-z]+;/i.test(message.text);
   const purify = DOMPurify(window);
+
+  // Map lingui locale to date-fns locale
+  const getDateFnsLocale = () => {
+    const currentLocale = i18n.locale;
+
+    if (currentLocale.startsWith('de')) return de;
+    if (currentLocale.startsWith('es')) return es;
+    if (currentLocale.startsWith('fr')) return fr;
+    if (currentLocale.startsWith('it')) return it;
+
+    return enUS; // Default to English
+  };
 
   const sanitizedBody = useMemo(
     () => purify.sanitize(message.text),
@@ -166,35 +180,6 @@ export const ConversationMessageItem = ({
     return body;
   };
 
-  // Format date to relative time (like "2 days ago", "Yesterday", "Just now")
-  const formatDateToRelative = (date: Date | string): string => {
-    const dateObj = typeof date === 'string' ? new Date(date) : date;
-    const now = new Date();
-    const diffInMilliseconds = now.getTime() - dateObj.getTime();
-    const diffInHours = diffInMilliseconds / (1000 * 60 * 60);
-    const diffInDays = diffInHours / 24;
-
-    if (diffInDays < 1) {
-      if (diffInHours < 1) {
-        return t`Just now`;
-      } else {
-        return `${Math.floor(diffInHours)} ${
-          Math.floor(diffInHours) !== 1 ? t`hours ago` : t`hour ago`
-        }`;
-      }
-    } else if (diffInDays < 2) {
-      return t`Yesterday`;
-    } else if (diffInDays < 7) {
-      return `${Math.floor(diffInDays)} ${
-        Math.floor(diffInDays) !== 1 ? t`days ago` : t`day ago`
-      }`;
-    } else {
-      return format(dateObj, 'MMM d, yyyy');
-    }
-  };
-
-  const isAutomatic = !message.sender.person && !message.sender.workspaceMember;
-
   const formattedBody = formatMessageBody(sanitizedBody);
 
   const canReply = Boolean(recipientEmail);
@@ -211,7 +196,10 @@ export const ConversationMessageItem = ({
           </OptionalWrap>
 
           <StyledMessageTime>
-            {formatDateToRelative(message.createdAt)}
+            {beautifyPastDateRelativeToNow(
+              message.createdAt,
+              getDateFnsLocale(),
+            )}
             {/* {isAutomatic && (
               <>
                 {' • '}

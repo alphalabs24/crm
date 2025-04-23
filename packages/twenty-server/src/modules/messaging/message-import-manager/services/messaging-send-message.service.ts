@@ -140,6 +140,7 @@ export class MessagingSendMessageService {
               contentType: sendMessageInput.isHtml ? 'HTML' : 'Text',
               content: sendMessageInput.body,
             },
+            toRecipients: [{ emailAddress: { address: sendMessageInput.to } }],
           };
 
           const response = await microsoftClient

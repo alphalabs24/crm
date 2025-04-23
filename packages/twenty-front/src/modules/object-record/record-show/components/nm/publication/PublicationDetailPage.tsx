@@ -6,6 +6,7 @@ import { useDeleteOneRecord } from '@/object-record/hooks/useDeleteOneRecord';
 import { PropertyAddressCard } from '@/object-record/record-show/components/nm/cards/PropertyAddressCard';
 import { PropertyBasicInfoCard } from '@/object-record/record-show/components/nm/cards/PropertyBasicInfoCard';
 import { PropertyDetailsCard } from '@/object-record/record-show/components/nm/cards/PropertyDetailsCard';
+import { PropertyDocumentsCard } from '@/object-record/record-show/components/nm/cards/PropertyDocumentsCard';
 import { PropertyImagesCard } from '@/object-record/record-show/components/nm/cards/PropertyImagesCard';
 import { PropertyInquiriesCard } from '@/object-record/record-show/components/nm/cards/PropertyInquiriesCard';
 import { PropertyRelationsCard } from '@/object-record/record-show/components/nm/cards/PropertyRelationsCard';
@@ -444,6 +445,10 @@ export const PublicationDetailPage = ({
 
   const dropdownId = `publication-detail-dropdown-${publication?.id}`;
 
+  if (!publication) {
+    return null;
+  }
+
   return (
     <RecordFieldValueSelectorContextProvider>
       <RecordValueSetterEffect recordId={publication.id} />
@@ -454,7 +459,7 @@ export const PublicationDetailPage = ({
             onBackClick={handleBackClick}
           />
           <StyledButtonContainer>
-            {publication && !publication.deletedAt && (
+            {!publication.deletedAt && (
               <Button
                 title={t`Edit`}
                 Icon={IconPencil}
@@ -548,7 +553,7 @@ export const PublicationDetailPage = ({
               <PropertyImagesCard
                 loading={recordLoading}
                 targetableObject={{
-                  id: publication.id,
+                  id: draftRecord?.id || publication.id,
                   targetObjectNameSingular: CoreObjectNameSingular.Publication,
                 }}
               />
@@ -556,12 +561,12 @@ export const PublicationDetailPage = ({
 
             <StyledOverviewSection>
               <PropertyBasicInfoCard
-                record={publication}
+                record={draftRecord || publication}
                 loading={recordLoading}
                 isPublication
               />
               <PropertyDetailsCard
-                record={publication}
+                record={draftRecord || publication}
                 loading={recordLoading}
                 objectMetadataItem={objectMetadataItem}
               />
@@ -574,18 +579,28 @@ export const PublicationDetailPage = ({
                 objectMetadataItem={objectMetadataItem}
               />
               <PropertyAddressCard
-                record={publication}
+                record={draftRecord || publication}
+                loading={recordLoading}
+              />
+            </StyledDetailsSection>
+
+            <StyledDetailsSection>
+              <PropertyDocumentsCard
+                targetableObject={{
+                  id: draftRecord?.id || publication.id,
+                  targetObjectNameSingular: CoreObjectNameSingular.Publication,
+                }}
                 loading={recordLoading}
               />
             </StyledDetailsSection>
           </StyledMainContent>
           <StyledSideContentMobile>
-            <PublicationCompletionCard record={publication} />
+            <PublicationCompletionCard record={draftRecord || publication} />
             <PublicationStatusCard stage={publication.stage} />
           </StyledSideContentMobile>
 
           <StyledSideContent isInRightDrawer={isInRightDrawer}>
-            <PublicationCompletionCard record={publication} />
+            <PublicationCompletionCard record={draftRecord || publication} />
             <PublicationStatusCard stage={publication.stage} />
 
             <PropertyInquiriesCard recordId={publication.id} isPublication />

@@ -20,15 +20,20 @@ import { UserTutorialExplanation } from 'twenty-shared';
 import {
   Button,
   IconAlertCircle,
+  IconButton,
   IconCheck,
   IconExchange,
   IconHelpCircle,
   IconHome,
   IconHomeShare,
+  IconNotes,
+  IconPencil,
   IconRefresh,
+  IconUpload,
   IconX,
   MOBILE_VIEWPORT,
   useIcons,
+  useIsMobile,
 } from 'twenty-ui';
 import {
   PropertyPublicationDifference,
@@ -288,6 +293,9 @@ type PropertyDifferencesModalProps = {
   differences: PublicationDifferences[];
   onClose: () => void;
   onSync?: () => void;
+  onSyncAndPublish?: () => void;
+  loadingSync?: boolean;
+  loadingSyncAndPublish?: boolean;
   propertyRecordId: string;
   publicationRecordId: string;
 };
@@ -347,7 +355,7 @@ const PublicationDiffView = ({
                 <StyledChangeIcon $type="old">
                   <IconX size={16} />
                 </StyledChangeIcon>
-                {t`Old Draft Values`}
+                {t`Old Values`}
               </StyledColumnTitle>
               <StyledColumnSubtitle>{t`Will be replaced`}</StyledColumnSubtitle>
             </div>
@@ -359,7 +367,7 @@ const PublicationDiffView = ({
                 <StyledChangeIcon $type="new">
                   <IconCheck size={16} />
                 </StyledChangeIcon>
-                {t`New Draft Values`}
+                {t`New Values`}
               </StyledColumnTitle>
               <StyledColumnSubtitle>{t`Will be applied`}</StyledColumnSubtitle>
             </div>
@@ -510,118 +518,163 @@ const PublicationDiffView = ({
 export const PropertyDifferencesModal = forwardRef<
   ModalRefType,
   PropertyDifferencesModalProps
->(({ differences, onClose, onSync, propertyRecordId }, ref) => {
-  const { t } = useLingui();
-  const { showTutorial } = useTutorial();
-  const [activePublicationIndex, setActivePublicationIndex] = useState(0);
-  const tabsContainerRef = useRef<HTMLDivElement>(null);
-  const activeTabRef = useRef<HTMLButtonElement>(null);
+>(
+  (
+    {
+      differences,
+      onClose,
+      onSync,
+      onSyncAndPublish,
+      propertyRecordId,
+      loadingSync,
+      loadingSyncAndPublish,
+    },
+    ref,
+  ) => {
+    const { t } = useLingui();
+    const isMobile = useIsMobile();
+    const { showTutorial } = useTutorial();
+    const [activePublicationIndex, setActivePublicationIndex] = useState(0);
+    const tabsContainerRef = useRef<HTMLDivElement>(null);
+    const activeTabRef = useRef<HTMLButtonElement>(null);
 
-  // Scroll active tab into view when it changes
-  useEffect(() => {
-    if (activeTabRef.current && tabsContainerRef.current) {
-      const activeTab = activeTabRef.current;
+    // Scroll active tab into view when it changes
+    useEffect(() => {
+      if (activeTabRef.current && tabsContainerRef.current) {
+        const activeTab = activeTabRef.current;
 
-      // Simply scroll the active tab into view with smooth behavior
-      activeTab.scrollIntoView({
-        behavior: 'smooth',
-        block: 'nearest',
-        inline: 'center',
-      });
-    }
-  }, [activePublicationIndex]);
+        // Simply scroll the active tab into view with smooth behavior
+        activeTab.scrollIntoView({
+          behavior: 'smooth',
+          block: 'nearest',
+          inline: 'center',
+        });
+      }
+    }, [activePublicationIndex]);
 
-  return (
-    <Modal
-      onClose={onClose}
-      isClosable
-      ref={ref}
-      closedOnMount
-      padding="none"
-      portal
-      size="large"
-    >
-      <StyledModalContainer>
-        <StyledModalHeader>
-          <StyledModalTitleContainer>
-            <IconExchange size={16} />
-            <StyledModalTitle>{t`Compare Changes`}</StyledModalTitle>
-          </StyledModalTitleContainer>
-          <StyledModalHeaderButtons>
-            <Button variant="tertiary" title={t`Cancel`} onClick={onClose} />
-            {onSync && (
-              <Button
-                variant="primary"
-                accent="blue"
-                title={t`Sync All`}
-                onClick={onSync}
-                Icon={IconRefresh}
+    return (
+      <Modal
+        onClose={onClose}
+        isClosable
+        ref={ref}
+        closedOnMount
+        padding="none"
+        portal
+        size="large"
+      >
+        <StyledModalContainer>
+          <StyledModalHeader>
+            <StyledModalTitleContainer>
+              <IconExchange size={16} />
+              <StyledModalTitle>{t`Compare Changes`}</StyledModalTitle>
+            </StyledModalTitleContainer>
+            <StyledModalHeaderButtons>
+              {isMobile ? (
+                <IconButton
+                  Icon={IconX}
+                  onClick={onClose}
+                  size="small"
+                  disabled={loadingSync || loadingSyncAndPublish}
+                />
+              ) : (
+                <Button
+                  variant="tertiary"
+                  title={t`Cancel`}
+                  onClick={onClose}
+                  disabled={loadingSync || loadingSyncAndPublish}
+                />
+              )}
+              {onSync && (
+                <Button
+                  variant="primary"
+                  title={isMobile ? t`As Drafts` : t`Sync as Drafts`}
+                  onClick={onSync}
+                  size={isMobile ? 'small' : 'medium'}
+                  Icon={IconNotes}
+                  disabled={loadingSyncAndPublish}
+                  loading={loadingSync}
+                />
+              )}
+              {onSyncAndPublish && (
+                <Button
+                  variant="primary"
+                  accent="blue"
+                  size={isMobile ? 'small' : 'medium'}
+                  title={isMobile ? t`Publish All` : t`Sync and Publish All`}
+                  onClick={onSyncAndPublish}
+                  Icon={IconUpload}
+                  disabled={loadingSync}
+                  loading={loadingSyncAndPublish}
+                />
+              )}
+            </StyledModalHeaderButtons>
+          </StyledModalHeader>
+
+          <StyledModalContent>
+            <StyledModalTopTitle>
+              {t`Sync Drafts with Property`}
+              <StyledHelpButton
+                onClick={() =>
+                  showTutorial(
+                    UserTutorialExplanation.TUTORIAL_PUBLICATION_SYNC,
+                  )
+                }
+              >
+                <IconHelpCircle size={16} />
+                <Trans>Learn more</Trans>
+              </StyledHelpButton>
+            </StyledModalTopTitle>
+            <StyledModalDescription>
+              {t`Review differences between your property and its publication drafts. Syncing will update the publication drafts with the current property values.`}
+            </StyledModalDescription>
+            <StyledTabsContainer>
+              <StyledPublicationTabs ref={tabsContainerRef}>
+                {differences.map((publicationDiff, index) => (
+                  <StyledPublicationTab
+                    key={publicationDiff.publicationId}
+                    isActive={index === activePublicationIndex}
+                    onClick={() => setActivePublicationIndex(index)}
+                    ref={index === activePublicationIndex ? activeTabRef : null}
+                  >
+                    <StyledPlatformIcon platform={publicationDiff.platform}>
+                      <PlatformBadge
+                        size="small"
+                        variant="no-background"
+                        platformId={
+                          (publicationDiff.platform as PlatformId) ??
+                          PlatformId.Newhome
+                        }
+                      />
+                    </StyledPlatformIcon>
+                    {PLATFORMS[publicationDiff.platform as PlatformId]?.name}
+                    <StyledDiffCount>
+                      {publicationDiff.differences.length}
+                    </StyledDiffCount>
+                  </StyledPublicationTab>
+                ))}
+              </StyledPublicationTabs>
+            </StyledTabsContainer>
+
+            {differences[activePublicationIndex] && (
+              <PublicationDiffView
+                differences={differences[activePublicationIndex].differences}
+                propertyRecordId={propertyRecordId}
+                publicationRecordId={
+                  differences[activePublicationIndex].publicationId
+                }
               />
             )}
-          </StyledModalHeaderButtons>
-        </StyledModalHeader>
-
-        <StyledModalContent>
-          <StyledModalTopTitle>
-            {t`Sync Drafts with Property`}
-            <StyledHelpButton
-              onClick={() =>
-                showTutorial(UserTutorialExplanation.TUTORIAL_PUBLICATION_SYNC)
-              }
-            >
-              <IconHelpCircle size={16} />
-              <Trans>Learn more</Trans>
-            </StyledHelpButton>
-          </StyledModalTopTitle>
-          <StyledModalDescription>
-            {t`Review differences between your property and its publication drafts. Syncing will update the publication drafts with the current property values.`}
-          </StyledModalDescription>
-          <StyledTabsContainer>
-            <StyledPublicationTabs ref={tabsContainerRef}>
-              {differences.map((publicationDiff, index) => (
-                <StyledPublicationTab
-                  key={publicationDiff.publicationId}
-                  isActive={index === activePublicationIndex}
-                  onClick={() => setActivePublicationIndex(index)}
-                  ref={index === activePublicationIndex ? activeTabRef : null}
-                >
-                  <StyledPlatformIcon platform={publicationDiff.platform}>
-                    <PlatformBadge
-                      size="small"
-                      variant="no-background"
-                      platformId={
-                        (publicationDiff.platform as PlatformId) ??
-                        PlatformId.Newhome
-                      }
-                    />
-                  </StyledPlatformIcon>
-                  {PLATFORMS[publicationDiff.platform as PlatformId]?.name}
-                  <StyledDiffCount>
-                    {publicationDiff.differences.length}
-                  </StyledDiffCount>
-                </StyledPublicationTab>
-              ))}
-            </StyledPublicationTabs>
-          </StyledTabsContainer>
-
-          {differences[activePublicationIndex] && (
-            <PublicationDiffView
-              differences={differences[activePublicationIndex].differences}
-              propertyRecordId={propertyRecordId}
-              publicationRecordId={
-                differences[activePublicationIndex].publicationId
-              }
-            />
-          )}
-          <StyledModalWarningText>
-            <IconAlertCircle size={12} />
-            <Trans>
-              Keep in mind that only nestermind drafts will be synchronized. You
-              will need to publish the drafts manually after synchronization.
-            </Trans>
-          </StyledModalWarningText>
-        </StyledModalContent>
-      </StyledModalContainer>
-    </Modal>
-  );
-});
+            <StyledModalWarningText>
+              <IconAlertCircle size={12} />
+              <Trans>
+                Keep in mind that only nestermind drafts will be synchronized.
+                You will need to publish the drafts manually after
+                synchronization.
+              </Trans>
+            </StyledModalWarningText>
+          </StyledModalContent>
+        </StyledModalContainer>
+      </Modal>
+    );
+  },
+);

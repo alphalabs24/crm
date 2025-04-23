@@ -3,6 +3,7 @@ import { css, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Pill } from '@ui/components/Pill/Pill';
 import { IconComponent } from '@ui/display/icon/types/IconComponent';
+import { CircularProgressBar } from '@ui/feedback';
 import { useIsMobile } from '@ui/utilities';
 import { getOsShortcutSeparator } from '@ui/utilities/device/getOsShortcutSeparator';
 import React from 'react';
@@ -34,6 +35,7 @@ export type ButtonProps = {
   dataTestId?: string;
   hotkeys?: string[];
   ariaLabel?: string;
+  loading?: boolean;
 } & React.ComponentProps<'button'>;
 
 const StyledButton = styled('button', {
@@ -542,10 +544,12 @@ export const Button = ({
   dataTestId,
   hotkeys,
   ariaLabel,
+  loading = false,
 }: ButtonProps) => {
   const theme = useTheme();
 
   const isMobile = useIsMobile();
+  const isDisabled = soon || disabled || loading;
 
   return (
     <StyledButton
@@ -554,7 +558,7 @@ export const Button = ({
       inverted={inverted}
       size={size}
       position={position}
-      disabled={soon || disabled}
+      disabled={isDisabled}
       focus={focus}
       justify={justify}
       accent={accent}
@@ -566,7 +570,12 @@ export const Button = ({
       data-testid={dataTestId}
       aria-label={ariaLabel}
     >
-      {Icon && <Icon size={theme.icon.size.sm} />}
+      {loading ? (
+        <CircularProgressBar size={14} barWidth={2} />
+      ) : (
+        Icon && <Icon size={theme.icon.size.sm} />
+      )}
+
       {title}
       {hotkeys && !isMobile && (
         <>

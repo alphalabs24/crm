@@ -88,18 +88,32 @@ export const useInquiries = ({
 
   const inquiriesWithMessageThreads = useMemo(() => {
     return (
-      records.map((record) => {
-        return {
-          ...record,
-          messageThreads: messageThreadsByInquiryId?.[record.id] ?? [],
-        };
-      }) as ObjectRecord[]
-    ).sort((a, b) => {
-      return (
-        new Date(b.messageThreads[0]?.lastMessageReceivedAt).getTime() -
-        new Date(a.messageThreads[0]?.lastMessageReceivedAt).getTime()
-      );
-    }) as ObjectRecord[];
+      (
+        records.map((record) => {
+          return {
+            ...record,
+            messageThreads: messageThreadsByInquiryId?.[record.id] ?? [],
+          };
+        }) as ObjectRecord[]
+      )
+        // Filter out inquiries without message threads
+        .filter(
+          (inquiry) =>
+            inquiry.messageThreads && inquiry.messageThreads.length > 0,
+        )
+        .sort((a, b) => {
+          // Sort in descending order (newest first)
+          const timeA = new Date(
+            a.messageThreads[0]?.lastMessageReceivedAt || 0,
+          ).getTime();
+          const timeB = new Date(
+            b.messageThreads[0]?.lastMessageReceivedAt || 0,
+          ).getTime();
+
+          // Return positive number if B is newer than A (B should come first)
+          return timeB - timeA;
+        }) as ObjectRecord[]
+    );
   }, [records, messageThreadsByInquiryId]);
 
   // Check for new messages and update read state

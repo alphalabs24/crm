@@ -29,11 +29,18 @@ const StyledPropertyLabel = styled.div`
   margin-bottom: ${({ theme }) => theme.spacing(2)};
 `;
 
+const StyledPlatformBadgesContainer = styled.div`
+  align-items: center;
+  display: flex;
+  gap: ${({ theme }) => theme.spacing(1)};
+`;
+
 type PropertyBasicInfoCardProps = {
   record: any;
   loading?: boolean;
   isPublication?: boolean;
   property?: ObjectRecord;
+  platforms?: PlatformId[];
 };
 
 export const PropertyBasicInfoCard = ({
@@ -41,6 +48,7 @@ export const PropertyBasicInfoCard = ({
   loading = false,
   isPublication,
   property,
+  platforms,
 }: PropertyBasicInfoCardProps) => {
   const { t } = useLingui();
   const isMobile = useIsMobile();
@@ -52,11 +60,27 @@ export const PropertyBasicInfoCard = ({
     />
   ) : null;
 
+  // Create the platforms badge component for the section header
+  const PlatformBadges = () => (
+    <StyledPlatformBadgesContainer>
+      {platforms?.map((platformId) => (
+        <PlatformBadge
+          key={platformId}
+          platformId={platformId}
+          size="small"
+          variant="default"
+        />
+      ))}
+    </StyledPlatformBadgesContainer>
+  );
+
   return (
     <Section
       title={t`Overview`}
       icon={<IconBuilding size={16} />}
-      rightComponent={platformBadge}
+      rightComponent={
+        platformBadge ? platformBadge : platforms ? <PlatformBadges /> : null
+      }
     >
       <StyledContent>
         <ShowPagePropertySummaryCard

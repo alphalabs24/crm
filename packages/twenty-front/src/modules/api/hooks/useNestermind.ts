@@ -26,13 +26,32 @@ export const useNestermind = () => {
   );
 
   const api = useMemo(() => {
-    return axios.create({
+    const apiInstance = axios.create({
       baseURL: baseUrl,
       headers: {
         Authorization: `Bearer ${tokenPair?.accessToken?.token}`,
         'Content-Type': 'application/json',
       },
     });
+
+    // Add a response interceptor to handle unauthorized errors
+    apiInstance.interceptors.response.use(
+      (response) => response, // Return response normally for successful requests
+      (error) => {
+        // Check if the error is a 401 Unauthorized
+        if (error.response && error.response.status === 401) {
+          console.log('Session expired, reloading page...');
+          // Reload the page to force re-authentication
+          window.location.reload();
+          // Return a rejected promise to stop further processing
+          return Promise.reject(new Error('Session expired'));
+        }
+        // For other errors, reject the promise normally
+        return Promise.reject(error);
+      },
+    );
+
+    return apiInstance;
   }, [baseUrl, tokenPair?.accessToken?.token]);
 
   // Property routes
@@ -54,6 +73,31 @@ export const useNestermind = () => {
       },
       onSuccess: () => {
         // Invalidate relevant queries after successful sync
+        queryClient.invalidateQueries({ queryKey: ['properties', propertyId] });
+        queryClient.invalidateQueries({ queryKey: ['publications'] });
+      },
+      ...options,
+    });
+  };
+
+  const syncAndPublishPublications = useCallback(
+    async (propertyId: string) => {
+      return api.post(`/properties/sync-publish?id=${propertyId}`);
+    },
+    [api],
+  );
+
+  const useSyncAndPublishPublications = (
+    propertyId: string | null,
+    options = {},
+  ) => {
+    return useMutation({
+      mutationFn: () => {
+        if (!propertyId) throw new Error('Property ID is required');
+        return syncAndPublishPublications(propertyId);
+      },
+      onSuccess: () => {
+        // Invalidate relevant queries after successful sync and publish
         queryClient.invalidateQueries({ queryKey: ['properties', propertyId] });
         queryClient.invalidateQueries({ queryKey: ['publications'] });
       },
@@ -482,6 +526,7 @@ export const useNestermind = () => {
     },
     useMutations: {
       useSyncPublicationsWithProperty,
+      useSyncAndPublishPublications,
       useDeleteProperty,
       useCreatePublicationDraft,
       useCreateEmailWebhook,

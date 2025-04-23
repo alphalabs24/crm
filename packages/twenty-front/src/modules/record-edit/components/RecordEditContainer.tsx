@@ -350,7 +350,7 @@ export const RecordEditContainer = ({
 
       const hasSectionFields = sectionFieldCount > 0;
 
-      if (!hasSectionFields) {
+      if (!hasSectionFields || (section.omitForPublications && isPublication)) {
         return null;
       }
       return (

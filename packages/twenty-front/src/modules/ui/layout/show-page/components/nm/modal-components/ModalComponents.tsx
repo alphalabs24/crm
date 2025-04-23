@@ -41,8 +41,13 @@ export const StyledModalHeader = styled(Modal.Header)`
 `;
 
 export const StyledModalHeaderButtons = styled.div`
+  align-items: center;
   display: flex;
   gap: ${({ theme }) => theme.spacing(2)};
+
+  @media only screen and (max-width: ${MOBILE_VIEWPORT}px) {
+    flex-direction: row-reverse;
+  }
 `;
 
 export const StyledModalTitle = styled.div`
