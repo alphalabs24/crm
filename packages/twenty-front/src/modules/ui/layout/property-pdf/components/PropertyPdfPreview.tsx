@@ -11,6 +11,7 @@ import { useMemo } from 'react';
 import { DefaultPropertyPdfTemplate } from './templates/default/DefaultPropertyPdfTemplate';
 import { useRecoilState } from 'recoil';
 import { currentWorkspaceState } from '@/auth/states/currentWorkspaceState';
+import { PdfConfiguration } from '../types/types';
 
 const StyledPdfViewerContainer = styled.div`
   align-items: center;
@@ -34,17 +35,18 @@ export const fieldsToShowOnPdf = [
   'offerType',
   'availableFrom',
   'constructionYear',
-  'features',
 ];
 
-type PropertyPdfPreviewProps = {
+export type PropertyPdfPreviewProps = {
   property: ObjectRecord;
   isFlyer?: boolean;
+  configuration?: PdfConfiguration;
 };
 
 export const PropertyPdfPreview = ({
   property,
   isFlyer = false,
+  configuration,
 }: PropertyPdfPreviewProps) => {
   const { objectMetadataItem } = useObjectMetadataItem({
     objectNameSingular: CoreObjectNameSingular.Property,
@@ -54,14 +56,22 @@ export const PropertyPdfPreview = ({
     objectMetadataItem,
   });
 
-  // Show these fields in the PDF
+  // Show these fields in the PDF based on configuration or defaults
   const formattedFields = useMemo(() => {
-    return fieldsToShowOnPdf.map((field) => ({
+    // Use selected fields from configuration if provided, otherwise use default fields
+    const fieldsToShow = configuration?.selectedFields || fieldsToShowOnPdf;
+
+    return fieldsToShow.map((field: string) => ({
       label: objectMetadataItem.fields.find((f) => f.name === field)?.label,
       value: formatField(field, property[field]) ?? undefined,
       key: field,
     }));
-  }, [objectMetadataItem.fields, formatField, property]);
+  }, [
+    objectMetadataItem.fields,
+    formatField,
+    property,
+    configuration?.selectedFields,
+  ]);
 
   const [currentWorkspace] = useRecoilState(currentWorkspaceState);
 
@@ -104,7 +114,13 @@ export const PropertyPdfPreview = ({
     targetObjectNameSingular: CoreObjectNameSingular.Property,
   });
 
+  // Format features if they should be included based on configuration
   const formattedFeatures = useMemo(() => {
+    // Skip features if configuration says not to include them
+    if (configuration && !configuration.includeFeatures) {
+      return [];
+    }
+
     const fieldMetadata = objectMetadataItem.fields.find(
       (f) => f.name === 'features',
     );
@@ -120,9 +136,40 @@ export const PropertyPdfPreview = ({
       });
     }
     return formattedFeatures;
-  }, [objectMetadataItem.fields, property.features]);
+  }, [objectMetadataItem.fields, property.features, configuration]);
 
-  const sortedImages = [...images].sort((a, b) => a.orderIndex - b.orderIndex);
+  // Sort images and limit them based on configuration
+  const propertyImages = useMemo(() => {
+    const sortedImages = [...images].sort(
+      (a, b) => a.orderIndex - b.orderIndex,
+    );
+
+    // If configuration says not to show all images, just show the first one (cover image)
+    if (configuration && !configuration.showAllImages) {
+      return sortedImages.length > 0 ? [sortedImages[0]] : [];
+    }
+
+    return sortedImages;
+  }, [images, configuration]);
+
+  // Get orientation from configuration
+  const orientation = configuration?.orientation || 'portrait';
+
+  // Get publisher configuration options with defaults
+  const showPublisherBranding =
+    configuration?.showPublisherBranding !== undefined
+      ? configuration.showPublisherBranding
+      : true;
+
+  const showPublisherEmail =
+    configuration?.showPublisherEmail !== undefined
+      ? configuration.showPublisherEmail
+      : true;
+
+  const showPublisherPhone =
+    configuration?.showPublisherPhone !== undefined
+      ? configuration.showPublisherPhone
+      : true;
 
   return (
     <StyledPdfViewerContainer>
@@ -132,11 +179,14 @@ export const PropertyPdfPreview = ({
           type={isFlyer ? 'PropertyFlyer' : 'PropertyDocumentation'}
           propertyAddress={formattedAddress}
           propertyPrice={price}
-          propertyImages={sortedImages}
+          propertyImages={propertyImages}
           fields={formattedFields}
           propertyFeatures={formattedFeatures}
-          orientation={'portrait'}
+          orientation={orientation}
           agencyLogo={currentWorkspace?.logo}
+          showPublisherBranding={showPublisherBranding}
+          showPublisherEmail={showPublisherEmail}
+          showPublisherPhone={showPublisherPhone}
         />
       </StyledPDFViewer>
     </StyledPdfViewerContainer>

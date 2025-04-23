@@ -31,6 +31,10 @@ export type PropertyPdfProps = {
   fields: PropertyFieldType[];
   propertyFeatures?: PropertyFieldType[];
   agencyLogo?: Maybe<string>;
+  // Publisher options
+  showPublisherBranding?: boolean;
+  showPublisherEmail?: boolean;
+  showPublisherPhone?: boolean;
 };
 
 export type PropertyPdfTemplate = React.FC<

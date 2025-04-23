@@ -91,18 +91,22 @@ export type PdfTheme = {
 
 // Register fonts
 Font.register({
-  family: 'Montserrat',
+  family: 'Geist',
   fonts: [
     {
-      src: 'https://fonts.gstatic.com/s/montserrat/v15/JTUSjIg1_i6t8kCHKm459Wlhzg.ttf',
+      src: '/fonts/Geist-Regular.ttf',
       fontWeight: 400,
     },
     {
-      src: 'https://fonts.gstatic.com/s/montserrat/v15/JTURjIg1_i6t8kCHKm45_bZF3gnD-w.ttf',
+      src: '/fonts/Geist-Medium.ttf',
+      fontWeight: 500,
+    },
+    {
+      src: '/fonts/Geist-SemiBold.ttf',
       fontWeight: 600,
     },
     {
-      src: 'https://fonts.gstatic.com/s/montserrat/v15/JTURjIg1_i6t8kCHKm45_dJE3gnD-w.ttf',
+      src: '/fonts/Geist-Bold.ttf',
       fontWeight: 700,
     },
   ],
@@ -135,7 +139,7 @@ export const DEFAULT_THEME: PdfTheme = {
     overlayBackground: 'rgba(0, 0, 0, 0.2)',
   },
   fonts: {
-    primary: 'Montserrat',
+    primary: 'Geist',
     fallback: 'Helvetica',
     sizes: {
       xs: 8,

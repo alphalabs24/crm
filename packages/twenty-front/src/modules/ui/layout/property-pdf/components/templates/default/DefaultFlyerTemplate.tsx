@@ -15,7 +15,12 @@ import { PropertyPdfProps } from '@/ui/layout/property-pdf/types/types';
 import { Image, Page, Text, View } from '@react-pdf/renderer';
 import { useMemo } from 'react';
 
-export type DefaultFlyerTemplateProps = PropertyPdfProps;
+export type DefaultFlyerTemplateProps = PropertyPdfProps & {
+  // Add publisher configuration options
+  showPublisherBranding?: boolean;
+  showPublisherEmail?: boolean;
+  showPublisherPhone?: boolean;
+};
 
 export const DefaultFlyerTemplate = ({
   property,
@@ -26,6 +31,10 @@ export const DefaultFlyerTemplate = ({
   orientation,
   fields,
   propertyFeatures,
+  // Publisher configuration options with defaults
+  showPublisherBranding = true,
+  showPublisherEmail = true,
+  showPublisherPhone = true,
 }: DefaultFlyerTemplateProps) => {
   const firstImage = useMemo(() => {
     if (!propertyImages || propertyImages.length === 0) return null;
@@ -57,6 +66,13 @@ export const DefaultFlyerTemplate = ({
     return property.description.substring(0, 750) + '...';
   }, [property?.description]);
 
+  // Determine if we need to show the footer based on publisher settings
+  const shouldShowFooter =
+    showPublisherBranding || showPublisherEmail || showPublisherPhone;
+
+  // Adjust content height based on footer visibility
+  const contentHeight = shouldShowFooter ? '30%' : '36%';
+
   return (
     <Page style={PDF_STYLES.flyerPage} orientation={orientation}>
       <Section height="14%">
@@ -66,7 +82,7 @@ export const DefaultFlyerTemplate = ({
             <H2>{propertyPrice}</H2>
             <H3>{propertyAddress}</H3>
           </Col>
-          {agencyLogo && (
+          {showPublisherBranding && agencyLogo && (
             <Col width="10%">
               <View style={PDF_STYLES.agencyLogoContainer}>
                 <Image
@@ -90,7 +106,7 @@ export const DefaultFlyerTemplate = ({
         </Row>
       </Section>
 
-      <Section height="30%">
+      <Section height={contentHeight}>
         <Row gap={4}>
           <Col width="66%">
             <H1 uppercase>Über das Objekt</H1>
@@ -122,35 +138,61 @@ export const DefaultFlyerTemplate = ({
         </Row>
       </Section>
 
-      <Section height={FOOTER_HEIGHT} style={PDF_STYLES.flyerFooter}>
-        <Row gap={2}>
-          <Col width="33%">
-            <Row style={{ alignItems: 'center' }}>
-              <View style={{ aspectRatio: 1, height: '100%' }}>
-                <Image
-                  src={'/logos/nestermind-logo.png'}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'contain',
-                  }}
-                />
-              </View>
-              <H3>{property?.agency?.name}</H3>
-            </Row>
-          </Col>
-          <Col width="33%" style={{ justifyContent: 'center' }}>
-            {property?.agency?.phone?.primaryPhone && (
-              <H2 align="center">{property?.agency?.phone?.primaryPhone}</H2>
+      {shouldShowFooter && (
+        <Section height={FOOTER_HEIGHT} style={PDF_STYLES.flyerFooter}>
+          <Row gap={2}>
+            {showPublisherBranding && (
+              <Col width="33%">
+                <Row style={{ alignItems: 'center' }}>
+                  <View style={{ aspectRatio: 1, height: '100%' }}>
+                    <Image
+                      src={'/logos/nestermind-logo.png'}
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'contain',
+                      }}
+                    />
+                  </View>
+                  <H3>{property?.agency?.name}</H3>
+                </Row>
+              </Col>
             )}
-          </Col>
-          <Col width="33%" style={{ justifyContent: 'center' }}>
-            {property?.agency?.email?.primaryEmail && (
-              <Body align="right">{property?.agency?.email?.primaryEmail}</Body>
+
+            <Col
+              width={
+                showPublisherBranding && showPublisherEmail
+                  ? '33%'
+                  : showPublisherBranding || showPublisherEmail
+                    ? '67%'
+                    : '100%'
+              }
+              style={{ justifyContent: 'center' }}
+            >
+              {showPublisherPhone && property?.agency?.phone?.primaryPhone && (
+                <H2 align="center">{property?.agency?.phone?.primaryPhone}</H2>
+              )}
+            </Col>
+
+            {showPublisherEmail && property?.agency?.email?.primaryEmail && (
+              <Col
+                width={
+                  showPublisherBranding && showPublisherPhone
+                    ? '33%'
+                    : showPublisherBranding || showPublisherPhone
+                      ? '67%'
+                      : '100%'
+                }
+                style={{ justifyContent: 'center' }}
+              >
+                <Body align="right">
+                  {property?.agency?.email?.primaryEmail}
+                </Body>
+              </Col>
             )}
-          </Col>
-        </Row>
-      </Section>
+          </Row>
+        </Section>
+      )}
     </Page>
   );
 };

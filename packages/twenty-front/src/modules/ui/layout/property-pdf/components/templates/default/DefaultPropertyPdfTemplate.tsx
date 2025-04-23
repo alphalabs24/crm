@@ -1,39 +1,57 @@
 /* eslint-disable @nx/workspace-no-hardcoded-colors */
-import { DefaultFlyerTemplate } from '@/ui/layout/property-pdf/components/templates/default/DefaultFlyerTemplate';
-import {
-  PropertyPdfProps,
-  PropertyPdfType,
-} from '@/ui/layout/property-pdf/types/types';
 import { Document } from '@react-pdf/renderer';
+import { PropertyPdfProps, PropertyPdfType } from '../../../types/types';
+import { DefaultFlyerTemplate } from './DefaultFlyerTemplate';
 
 export type DefaultPropertyPdfTemplateProps = PropertyPdfProps & {
   type: PropertyPdfType;
 };
 
-// Main Document Component
 export const DefaultPropertyPdfTemplate = ({
+  type,
   property,
   propertyPrice,
   propertyAddress,
-  type,
-  orientation = 'portrait',
+  orientation,
   propertyImages,
   fields,
   propertyFeatures,
   agencyLogo,
-}: DefaultPropertyPdfTemplateProps) => (
-  <Document>
-    {type === 'PropertyFlyer' ? (
-      <DefaultFlyerTemplate
-        property={property}
-        propertyPrice={propertyPrice}
-        propertyAddress={propertyAddress}
-        propertyImages={propertyImages}
-        orientation={orientation}
-        fields={fields}
-        propertyFeatures={propertyFeatures}
-        agencyLogo={agencyLogo}
-      />
-    ) : null}
-  </Document>
-);
+  showPublisherBranding = true,
+  showPublisherEmail = true,
+  showPublisherPhone = true,
+}: DefaultPropertyPdfTemplateProps) => {
+  return (
+    <Document>
+      {type === 'PropertyFlyer' ? (
+        <DefaultFlyerTemplate
+          property={property}
+          propertyPrice={propertyPrice}
+          propertyAddress={propertyAddress}
+          orientation={orientation}
+          propertyImages={propertyImages}
+          fields={fields}
+          propertyFeatures={propertyFeatures}
+          agencyLogo={agencyLogo}
+          showPublisherBranding={showPublisherBranding}
+          showPublisherEmail={showPublisherEmail}
+          showPublisherPhone={showPublisherPhone}
+        />
+      ) : (
+        <DefaultFlyerTemplate
+          property={property}
+          propertyPrice={propertyPrice}
+          propertyAddress={propertyAddress}
+          orientation={orientation}
+          propertyImages={propertyImages}
+          fields={fields}
+          propertyFeatures={propertyFeatures}
+          agencyLogo={agencyLogo}
+          showPublisherBranding={showPublisherBranding}
+          showPublisherEmail={showPublisherEmail}
+          showPublisherPhone={showPublisherPhone}
+        />
+      )}
+    </Document>
+  );
+};

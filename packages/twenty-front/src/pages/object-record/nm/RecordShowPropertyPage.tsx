@@ -128,14 +128,12 @@ export const RecordShowPropertyPage = () => {
     objectRecordId,
   );
 
-  console.log(record);
+  // const html = generatePropertyPdfTemplate(record, formatField);
 
-  const html = generatePropertyPdfTemplate(record, formatField);
-
-  const handleGeneratePdf = () => {
-    if (!record) return;
-    generatePdf({ html });
-  };
+  // const handleGeneratePdf = () => {
+  //   if (!record) return;
+  //   generatePdf({ html });
+  // };
 
   return (
     <RecordFieldValueSelectorContextProvider>
@@ -168,9 +166,6 @@ export const RecordShowPropertyPage = () => {
                     />
                   </StyledLeftContainer>
                   <StyledRightContainer>
-                    <StyledButton onClick={handleGeneratePdf}>
-                      Generate PDF
-                    </StyledButton>
                     {!isCommandMenuV2Enabled &&
                       objectNameSingular ===
                         CoreObjectNameSingular.Workflow && (

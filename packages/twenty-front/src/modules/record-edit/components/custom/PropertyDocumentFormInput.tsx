@@ -1,8 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { PropertyAttachmentType } from '@/activities/files/types/Attachment';
-import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadataItem';
-import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
-import { useFormattedPropertyFields } from '@/object-record/hooks/useFormattedPropertyFields';
 import {
   RecordEditPropertyDocument,
   useRecordEdit,
@@ -10,13 +7,13 @@ import {
 import { Dropdown } from '@/ui/layout/dropdown/components/Dropdown';
 import { DropdownMenuItemsContainer } from '@/ui/layout/dropdown/components/DropdownMenuItemsContainer';
 import { useDropdown } from '@/ui/layout/dropdown/hooks/useDropdown';
-import { Modal, ModalRefType } from '@/ui/layout/modal/components/Modal';
-import {
-  fieldsToShowOnPdf,
-  PropertyPdfPreview,
-} from '@/ui/layout/property-pdf/components/PropertyPdfPreview';
+import { ModalRefType } from '@/ui/layout/modal/components/Modal';
+
 import { usePropertyPdfGenerator } from '@/ui/layout/property-pdf/hooks/usePropertyPdfGenerator';
-import { PropertyPdfType } from '@/ui/layout/property-pdf/types/types';
+import {
+  PdfConfiguration,
+  PropertyPdfType,
+} from '@/ui/layout/property-pdf/types/types';
 import { css, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import {
@@ -26,7 +23,7 @@ import {
   DropResult,
 } from '@hello-pangea/dnd';
 import { useLingui } from '@lingui/react/macro';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import Skeleton from 'react-loading-skeleton';
 import {
@@ -48,7 +45,8 @@ import {
   TooltipDelay,
 } from 'twenty-ui';
 import { DocumentEditModal } from './DocumentEditModal';
-
+import { PdfConfigurationModal } from '@/ui/layout/property-pdf/components/PdfConfigurationModal';
+import { ObjectRecord } from '@/object-record/types/ObjectRecord';
 const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -482,6 +480,7 @@ const SpecialDocumentItem = ({
   onRemove,
   onSaveEdit,
   onClick,
+  onRegenerate,
 }: {
   document: RecordEditPropertyDocument;
   onRemove: (doc: RecordEditPropertyDocument) => void;
@@ -490,6 +489,7 @@ const SpecialDocumentItem = ({
     updates: Partial<RecordEditPropertyDocument>,
   ) => void;
   onClick?: () => void;
+  onRegenerate?: () => void;
 }) => {
   const { t } = useLingui();
   const dropdownId = `document-dropdown-${document.id}`;
@@ -509,6 +509,13 @@ const SpecialDocumentItem = ({
   const handleDownload = () => {
     window.open(document.previewUrl, '_blank');
     closeDropdown();
+  };
+
+  const handleRegenerate = () => {
+    if (onRegenerate) {
+      onRegenerate();
+      closeDropdown();
+    }
   };
 
   const handleFileNameClick = () => {
@@ -552,6 +559,13 @@ const SpecialDocumentItem = ({
                 LeftIcon={IconDownload}
                 onClick={handleDownload}
               />
+              {onRegenerate && (
+                <MenuItem
+                  text={t`Regenerate`}
+                  LeftIcon={IconRefresh}
+                  onClick={handleRegenerate}
+                />
+              )}
               <MenuItem
                 text={t`Remove`}
                 LeftIcon={IconTrash}
@@ -609,6 +623,48 @@ const StyledSectionHeader = styled.div`
   }
 `;
 
+const PdfConfigurationModalWrapper = ({
+  modalRef,
+  property,
+  pdfType,
+  onGenerate,
+}: {
+  modalRef: React.RefObject<ModalRefType>;
+  property: ObjectRecord;
+  pdfType: PropertyPdfType;
+  onGenerate: (result: {
+    blob: Blob;
+    fileName: string;
+    previewUrl: string;
+  }) => void;
+}) => {
+  const propertyPdfGenerator = usePropertyPdfGenerator({
+    record: property,
+  });
+
+  const handleGeneratePdf = async (config: PdfConfiguration): Promise<void> => {
+    try {
+      const result = await propertyPdfGenerator.generatePdf(pdfType, config);
+      if (result) {
+        // Process the generated PDF immediately
+        onGenerate(result);
+      }
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+    }
+  };
+
+  return (
+    <PdfConfigurationModal
+      ref={modalRef}
+      property={property}
+      pdfType={pdfType}
+      onClose={() => modalRef.current?.close()}
+      onGenerate={handleGeneratePdf}
+    />
+  );
+};
+
 export const PropertyDocumentFormInput = ({
   loading,
 }: {
@@ -631,35 +687,8 @@ export const PropertyDocumentFormInput = ({
     record: property,
   });
 
-  const pdfPreviewModalRef = useRef<ModalRefType>(null);
-  const [previewIsFlyer, setPreviewIsFlyer] = useState(false);
-
-  const openPreview = (isFlyer: boolean) => {
-    setPreviewIsFlyer(isFlyer);
-    pdfPreviewModalRef.current?.open();
-  };
-
-  const { objectMetadataItem } = useObjectMetadataItem({
-    objectNameSingular: CoreObjectNameSingular.Property,
-  });
-
-  const { formatField } = useFormattedPropertyFields({
-    objectMetadataItem,
-  });
-
-  // Show these fields in the PDF
-  const formattedFields = useMemo(() => {
-    if (!property) return [];
-    return fieldsToShowOnPdf.map((field) => ({
-      label: objectMetadataItem.fields.find((f) => f.name === field)?.label,
-      value: formatField(field, property[field]) ?? undefined,
-    }));
-  }, [objectMetadataItem.fields, formatField, property]);
-
-  // Store all URL objects to prevent garbage collection
   const urlObjectsRef = useRef<Map<string, string>>(new Map());
 
-  // Helper to create and store a persistent URL
   const createAndStorePersistentURL = (file: File): string => {
     const url = URL.createObjectURL(file);
     urlObjectsRef.current.set(url, file.name);
@@ -673,7 +702,6 @@ export const PropertyDocumentFormInput = ({
     setHasRefreshed(true);
 
     return () => {
-      // Only revoke URLs when component unmounts
       urlObjectsRef.current.forEach((_, url) => {
         URL.revokeObjectURL(url);
       });
@@ -703,7 +731,6 @@ export const PropertyDocumentFormInput = ({
 
   const onRemove = (propertyDocument: RecordEditPropertyDocument) => {
     if (propertyDocument.previewUrl) {
-      // Remove from the Map but don't revoke yet to avoid issues with multiple references
       urlObjectsRef.current.delete(propertyDocument.previewUrl);
     }
     removePropertyDocument(propertyDocument);
@@ -716,36 +743,83 @@ export const PropertyDocumentFormInput = ({
     updatePropertyDocument(id, updates);
   };
 
+  const exposePdfConfigModalRef = useRef<ModalRefType>(null);
+  const flyerPdfConfigModalRef = useRef<ModalRefType>(null);
+
+  const handleConfiguredPdfGeneration = (
+    result: {
+      blob: Blob;
+      fileName: string;
+      previewUrl: string;
+    },
+    type: PropertyPdfType,
+  ) => {
+    // Find and remove any existing document of this type before adding the new one
+    const existingDoc = propertyDocuments.find((doc) => doc.type === type);
+    if (existingDoc) {
+      onRemove(existingDoc);
+    }
+
+    const fileObj = new File([result.blob], result.fileName, {
+      type: 'application/pdf',
+    });
+
+    const url = createAndStorePersistentURL(fileObj);
+
+    const doc = {
+      id: crypto.randomUUID(),
+      isAttachment: false,
+      file: fileObj,
+      previewUrl: url,
+      fileName: result.fileName,
+      type: type,
+    };
+
+    addPropertyDocument(doc);
+  };
+
   const handleGenerateDocument = async (type: PropertyPdfType) => {
     if (!property) return;
 
-    try {
-      const orientation = 'portrait';
-      const result = await generatePdf(type, orientation, formattedFields);
+    // Opening the configuration modal only, without deleting the existing document
+    if (type === 'PropertyDocumentation' || type === 'PropertyFlyer') {
+      if (type === 'PropertyDocumentation') {
+        exposePdfConfigModalRef.current?.open();
+      } else {
+        flyerPdfConfigModalRef.current?.open();
+      }
+    } else {
+      try {
+        const orientation = 'portrait';
+        const result = await generatePdf(type, orientation);
 
-      if (!result) throw new Error('Failed to generate document');
+        if (!result) throw new Error('Failed to generate document');
 
-      // Create a file from the blob
-      const file = new File([result.blob], result.fileName, {
-        type: 'application/pdf',
-      });
+        // For other document types, still handle replacement here
+        const existingDoc = propertyDocuments.find((doc) => doc.type === type);
+        if (existingDoc) {
+          onRemove(existingDoc);
+        }
 
-      // Create a persistent URL for the file
-      const persistentUrl = createAndStorePersistentURL(file);
+        const file = new File([result.blob], result.fileName, {
+          type: 'application/pdf',
+        });
 
-      // Add the document to the property
-      const newDocument = {
-        id: crypto.randomUUID(),
-        isAttachment: false,
-        file,
-        previewUrl: persistentUrl,
-        fileName: result.fileName,
-        type: type,
-      };
+        const persistentUrl = createAndStorePersistentURL(file);
 
-      addPropertyDocument(newDocument);
-    } catch (error) {
-      console.error('Error generating document:', error);
+        const newDocument = {
+          id: crypto.randomUUID(),
+          isAttachment: false,
+          file,
+          previewUrl: persistentUrl,
+          fileName: result.fileName,
+          type: type,
+        };
+
+        addPropertyDocument(newDocument);
+      } catch (error) {
+        console.error('Error generating document:', error);
+      }
     }
   };
 
@@ -881,7 +955,7 @@ export const PropertyDocumentFormInput = ({
                       {doc.description}
                     </StyledDocumentDescription>
                   </StyledDocumentInfo>
-                  {!specialDocs[doc.type] && (
+                  {!specialDoc && (
                     <div style={{ display: 'flex', gap: '8px' }}>
                       <Button
                         variant="secondary"
@@ -890,16 +964,6 @@ export const PropertyDocumentFormInput = ({
                         title={t`Generate`}
                         disabled={pdfLoading || !property}
                         onClick={() => handleGenerateDocument(doc.type)}
-                      />
-                      <Button
-                        variant="secondary"
-                        size="small"
-                        Icon={IconExternalLink}
-                        title={t`Preview`}
-                        disabled={!property}
-                        onClick={() =>
-                          openPreview(doc.type === 'PropertyFlyer')
-                        }
                       />
                       <Button
                         variant="primary"
@@ -928,7 +992,10 @@ export const PropertyDocumentFormInput = ({
                       document={specialDoc}
                       onRemove={onRemove}
                       onSaveEdit={onSaveEdit}
-                      onClick={() => openPreview(doc.type === 'PropertyFlyer')}
+                      onClick={() =>
+                        window.open(specialDoc.previewUrl, '_blank')
+                      }
+                      onRegenerate={() => handleGenerateDocument(doc.type)}
                     />
                   </StyledSpecialDocumentContent>
                 )}
@@ -999,35 +1066,6 @@ export const PropertyDocumentFormInput = ({
               </Droppable>
             </DragDropContext>
           )}
-          {property ? (
-            <Modal
-              ref={pdfPreviewModalRef}
-              closedOnMount
-              onClose={() => {
-                pdfPreviewModalRef.current?.close();
-              }}
-              isClosable
-              size="large"
-            >
-              <StyledPdfPreviewContainer>
-                <StyledClosePdfModalHeader>
-                  <Button
-                    variant="secondary"
-                    size="small"
-                    Icon={IconX}
-                    title="Close"
-                    onClick={() => {
-                      pdfPreviewModalRef.current?.close();
-                    }}
-                  />
-                </StyledClosePdfModalHeader>
-                <PropertyPdfPreview
-                  property={property}
-                  isFlyer={previewIsFlyer}
-                />
-              </StyledPdfPreviewContainer>
-            </Modal>
-          ) : null}
         </StyledSectionContainer>
       </>
     );
@@ -1052,6 +1090,28 @@ export const PropertyDocumentFormInput = ({
           <IconUpload size={32} />
           <span>{t`Drop documents here`}</span>
         </StyledDragOverlay>
+      )}
+
+      {property && (
+        <>
+          <PdfConfigurationModalWrapper
+            modalRef={exposePdfConfigModalRef}
+            property={property}
+            pdfType="PropertyDocumentation"
+            onGenerate={(result) =>
+              handleConfiguredPdfGeneration(result, 'PropertyDocumentation')
+            }
+          />
+
+          <PdfConfigurationModalWrapper
+            modalRef={flyerPdfConfigModalRef}
+            property={property}
+            pdfType="PropertyFlyer"
+            onGenerate={(result) =>
+              handleConfiguredPdfGeneration(result, 'PropertyFlyer')
+            }
+          />
+        </>
       )}
     </div>
   );

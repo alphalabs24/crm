@@ -6,6 +6,7 @@ import { ModalRefType } from '@/ui/layout/modal/components/Modal';
 import { DefaultPropertyPdfTemplate } from '@/ui/layout/property-pdf/components/templates/default/DefaultPropertyPdfTemplate';
 import { PdfTheme } from '@/ui/layout/property-pdf/constants/defaultTheme';
 import {
+  PdfConfiguration,
   PropertyPdfResult,
   PropertyPdfTemplate,
   PropertyPdfType,
@@ -14,7 +15,35 @@ import { usePropertyImages } from '@/ui/layout/show-page/hooks/usePropertyImages
 import * as ReactPDF from '@react-pdf/renderer';
 import { saveAs } from 'file-saver';
 import { useCallback, useMemo, useRef, useState } from 'react';
-import { formatCurrency } from '~/utils/format';
+import { useRecoilState } from 'recoil';
+import { currentWorkspaceState } from '@/auth/states/currentWorkspaceState';
+import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadataItem';
+import { useFormattedPropertyFields } from '@/object-record/hooks/useFormattedPropertyFields';
+import { CATEGORY_SUBTYPES } from '@/record-edit/constants/CategorySubtypes';
+import { useSubcategoryByCategory } from '@/object-record/record-show/hooks/useSubcategoryByCategory';
+
+// Fields to show on PDF
+const fieldsToShowOnPdf = [
+  'category',
+  ...Object.values(CATEGORY_SUBTYPES),
+  'rooms',
+  'offerType',
+  'availableFrom',
+  'constructionYear',
+  'features',
+];
+
+// Default PDF configuration
+const defaultPdfConfiguration: PdfConfiguration = {
+  showAllImages: true,
+  includeFeatures: true,
+  selectedFields: fieldsToShowOnPdf,
+  orientation: 'portrait',
+  // Publisher options defaults
+  showPublisherBranding: true,
+  showPublisherEmail: true,
+  showPublisherPhone: true,
+};
 
 export type PropertyPdfGeneratorProps = {
   record: ObjectRecord | null;
@@ -30,6 +59,18 @@ export const usePropertyPdfGenerator = ({
   const [pdfFile, setPdfFile] = useState<PropertyPdfResult | null>(null);
   const PropertyDocumentTemplate = template;
   const pdfPreviewModalRef = useRef<ModalRefType>(null);
+  const [currentWorkspace] = useRecoilState(currentWorkspaceState);
+
+  const { objectMetadataItem } = useObjectMetadataItem({
+    objectNameSingular: CoreObjectNameSingular.Property,
+  });
+
+  const { formatField } = useFormattedPropertyFields({
+    objectMetadataItem,
+  });
+
+  // Get the subcategory field based on the property's category
+  const subcategoryField = useSubcategoryByCategory(record?.category);
 
   // Create targetable object for images
   const targetableObject: ActivityTargetableObject = useMemo(
@@ -54,13 +95,26 @@ export const usePropertyPdfGenerator = ({
   const generatePdf = useCallback(
     async (
       type: PropertyPdfType,
-      orientation: 'portrait' | 'landscape' = 'portrait',
-      fields: {
-        label?: string;
-        value?: string;
-      }[],
+      orientationOrConfig?: 'portrait' | 'landscape' | PdfConfiguration,
     ) => {
       if (!record) return null;
+
+      // Handle both old and new parameter formats for backward compatibility
+      let config: PdfConfiguration;
+      if (typeof orientationOrConfig === 'string') {
+        // Old format: just orientation was passed
+        config = {
+          ...defaultPdfConfiguration,
+          orientation: orientationOrConfig,
+        };
+      } else if (orientationOrConfig) {
+        // New format: full configuration object
+        config = orientationOrConfig;
+      } else {
+        // No config provided, use defaults
+        config = defaultPdfConfiguration;
+      }
+      console.log('config', config);
 
       setIsLoading(true);
 
@@ -73,30 +127,63 @@ export const usePropertyPdfGenerator = ({
             }, ${address.addressCountry || ''}`
           : 'No address available';
 
-        // Format the price for display
-        const currencyConfig = {
-          currency: 'CHF',
-          locale: 'de-CH',
-        };
-
-        // Handle price formatting with proper currency code
+        // Format price for display - following same logic as PropertyPdfPreview.tsx
         let price = 'Price on request';
-        if (record.sellingPrice?.amount) {
-          price = formatCurrency(
-            record.sellingPrice.amount,
-            record.sellingPrice.currencyCode || currencyConfig.currency,
-          );
-        } else if (record.rentNet?.amount) {
-          price = `${formatCurrency(
-            record.rentNet.amount,
-            record.rentNet.currencyCode || currencyConfig.currency,
-          )} / month`;
+
+        // Simple string price
+        if (typeof record.price === 'string') {
+          price = record.price;
+        }
+        // For sale properties
+        else if (record.sellingPrice?.amountMicros) {
+          const amount = record.sellingPrice.amountMicros / 1000000;
+          const currencyCode = record.sellingPrice.currencyCode || 'CHF';
+          price = `${currencyCode} ${amount.toLocaleString()}`;
+        }
+        // For rent properties
+        else if (record.rentNet?.amountMicros) {
+          const amount = record.rentNet.amountMicros / 1000000;
+          const currencyCode = record.rentNet.currencyCode || 'CHF';
+          price = `${currencyCode} ${amount.toLocaleString()} / month`;
         }
 
-        // Sort images by order
-        const sortedImages = [...propertyImages].sort(
+        // Sort images by order and limit them based on configuration
+        // Exactly matching PropertyPdfPreview.tsx behavior
+        let sortedImages = [...propertyImages].sort(
           (a, b) => a.orderIndex - b.orderIndex,
         );
+
+        // If configuration says not to show all images, just show the first one (cover image)
+        if (!config.showAllImages && sortedImages.length > 0) {
+          sortedImages = [sortedImages[0]];
+        }
+
+        // Format fields based on selected fields in configuration
+        // Using the selected fields from config, just like in PropertyPdfPreview.tsx
+        const formattedFields = config.selectedFields.map((field: string) => ({
+          label: objectMetadataItem.fields.find((f) => f.name === field)?.label,
+          value: formatField(field, record[field]) ?? undefined,
+          key: field,
+        }));
+
+        // Format features if they should be included based on configuration
+        // Following the same conditional logic as PropertyPdfPreview.tsx
+        let formattedFeatures = [];
+        if (config.includeFeatures && record.features) {
+          const fieldMetadata = objectMetadataItem.fields.find(
+            (f) => f.name === 'features',
+          );
+          formattedFeatures = record.features.map((feature: string) => {
+            const featureMetadata = fieldMetadata?.options?.find(
+              (o) => o.value === feature,
+            );
+            return {
+              label: featureMetadata?.label,
+              value: feature,
+              key: feature,
+            };
+          });
+        }
 
         // Create the PDF document using react-pdf
         const blob = await ReactPDF.pdf(
@@ -105,9 +192,14 @@ export const usePropertyPdfGenerator = ({
             property={record}
             propertyPrice={price}
             propertyAddress={formattedAddress}
-            orientation={orientation}
             propertyImages={sortedImages}
-            fields={fields}
+            fields={formattedFields}
+            propertyFeatures={formattedFeatures}
+            orientation={config.orientation}
+            agencyLogo={currentWorkspace?.logo}
+            showPublisherBranding={config.showPublisherBranding}
+            showPublisherEmail={config.showPublisherEmail}
+            showPublisherPhone={config.showPublisherPhone}
           />,
         ).toBlob();
 
@@ -134,19 +226,22 @@ export const usePropertyPdfGenerator = ({
         return null;
       }
     },
-    [record, propertyImages, PropertyDocumentTemplate],
+    [
+      record,
+      propertyImages,
+      PropertyDocumentTemplate,
+      formatField,
+      objectMetadataItem,
+      currentWorkspace?.logo,
+    ],
   );
 
   const downloadPdf = useCallback(
     async (
       type: PropertyPdfType,
-      orientation: 'portrait' | 'landscape' = 'portrait',
-      fields: {
-        label?: string;
-        value?: string;
-      }[],
+      orientationOrConfig?: 'portrait' | 'landscape' | PdfConfiguration,
     ) => {
-      const result = await generatePdf(type, orientation, fields);
+      const result = await generatePdf(type, orientationOrConfig);
       if (result) {
         saveAs(result.blob, result.fileName);
         return result;
@@ -163,5 +258,6 @@ export const usePropertyPdfGenerator = ({
     pdfFile,
     openPreview,
     pdfPreviewModalRef,
+    subcategoryField,
   };
 };
