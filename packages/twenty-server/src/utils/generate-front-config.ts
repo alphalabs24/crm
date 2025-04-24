@@ -15,7 +15,7 @@ export function generateFrontConfig(): void {
   };
 
   const configString = `<!-- BEGIN: nestermind Config -->
-    <script id="nestermind-env-config">
+    <script id="nestermind-env-config" nonce="NONCE_PLACEHOLDER">
       window._env_ = ${JSON.stringify(configObject.window._env_, null, 2)};
     </script>
     <!-- END: nestermind Config -->`;
