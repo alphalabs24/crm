@@ -8,6 +8,7 @@ import { GalleryPage } from './pages/GalleryPage';
 import { PropertyDetailsPage } from './pages/PropertyDetailsPage';
 import { PropertyDescriptionPage } from './pages/PropertyDescriptionPage';
 import { TableOfContentsPage } from './pages/TableOfContentsPage';
+import { MapPage } from './pages/MapPage';
 
 export const DefaultDocumentationTemplate = ({
   property,
@@ -82,7 +83,32 @@ export const DefaultDocumentationTemplate = ({
         Footer={footerComponent}
         hasGallery={galleryPages.length > 0}
         hasDescription={hasDescription}
+        showAddressMap={showAddressMap}
       />
+
+      <PropertyDetailsPage
+        property={property}
+        propertyPrice={propertyPrice}
+        propertyAddress={propertyAddress}
+        orientation={orientation}
+        propertyImages={propertyImages}
+        fields={fields}
+        showPublisherBranding={showPublisherBranding}
+        agencyLogo={agencyLogo}
+        propertyFeatures={propertyFeatures}
+        Footer={footerComponent}
+      />
+
+      {/* Display Map Page if enabled */}
+      {showAddressMap && addressMapUrl && (
+        <MapPage
+          property={property}
+          propertyAddress={propertyAddress}
+          orientation={orientation}
+          addressMapUrl={addressMapUrl}
+          Footer={footerComponent}
+        />
+      )}
 
       {/* Add the description page if a description exists */}
       {hasDescription && (
@@ -98,19 +124,6 @@ export const DefaultDocumentationTemplate = ({
           Footer={footerComponent}
         />
       )}
-
-      <PropertyDetailsPage
-        property={property}
-        propertyPrice={propertyPrice}
-        propertyAddress={propertyAddress}
-        orientation={orientation}
-        propertyImages={propertyImages}
-        fields={fields}
-        showPublisherBranding={showPublisherBranding}
-        agencyLogo={agencyLogo}
-        propertyFeatures={propertyFeatures}
-        Footer={footerComponent}
-      />
 
       {galleryPages.map(({ imagesSubset, pageIndex }) => (
         <GalleryPage

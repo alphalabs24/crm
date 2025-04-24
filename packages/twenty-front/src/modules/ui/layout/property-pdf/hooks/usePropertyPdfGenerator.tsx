@@ -6,6 +6,7 @@ import { ModalRefType } from '@/ui/layout/modal/components/Modal';
 import { DefaultPropertyPdfTemplate } from '@/ui/layout/property-pdf/components/templates/default/DefaultPropertyPdfTemplate';
 import { PdfTheme } from '@/ui/layout/property-pdf/constants/defaultTheme';
 import {
+  ConfigurationType,
   PdfFlyerConfiguration,
   PropertyPdfResult,
   PropertyPdfTemplate,
@@ -34,7 +35,7 @@ const fieldsToShowOnPdf = [
 ];
 
 // Default PDF configuration
-const defaultPdfConfiguration: PdfFlyerConfiguration = {
+const defaultPdfConfiguration: ConfigurationType = {
   showAllImages: true,
   includeFeatures: true,
   selectedFields: fieldsToShowOnPdf,
@@ -43,6 +44,12 @@ const defaultPdfConfiguration: PdfFlyerConfiguration = {
   showPublisherBranding: true,
   showPublisherEmail: true,
   showPublisherPhone: true,
+  showAddressMap: false,
+  showAdditionalDocuments: false,
+  showDescription: false,
+  showFloorplan: false,
+  addressMapUrl: '',
+  floorplanUrl: '',
 };
 
 export type PropertyPdfGeneratorProps = {
@@ -95,12 +102,12 @@ export const usePropertyPdfGenerator = ({
   const generatePdf = useCallback(
     async (
       type: PropertyPdfType,
-      orientationOrConfig?: 'portrait' | 'landscape' | PdfFlyerConfiguration,
+      orientationOrConfig?: 'portrait' | 'landscape' | ConfigurationType,
     ) => {
       if (!record) return null;
 
       // Handle both old and new parameter formats for backward compatibility
-      let config: PdfFlyerConfiguration;
+      let config: ConfigurationType;
       if (typeof orientationOrConfig === 'string') {
         // Old format: just orientation was passed
         config = {
@@ -112,9 +119,14 @@ export const usePropertyPdfGenerator = ({
         config = orientationOrConfig;
       } else {
         // No config provided, use defaults
-        config = defaultPdfConfiguration;
+        config = {
+          ...defaultPdfConfiguration,
+          showAddressMap: false,
+          showAdditionalDocuments: false,
+          showDescription: false,
+          showFloorplan: false,
+        };
       }
-      console.log('config', config);
 
       setIsLoading(true);
 
@@ -195,11 +207,13 @@ export const usePropertyPdfGenerator = ({
             propertyImages={sortedImages}
             fields={formattedFields}
             propertyFeatures={formattedFeatures}
-            orientation={config.orientation}
+            orientation={config.orientation || 'portrait'}
             agencyLogo={currentWorkspace?.logo}
             showPublisherBranding={config.showPublisherBranding}
             showPublisherEmail={config.showPublisherEmail}
             showPublisherPhone={config.showPublisherPhone}
+            showAddressMap={config.showAddressMap}
+            addressMapUrl={config.addressMapUrl}
           />,
         ).toBlob();
 
@@ -239,7 +253,7 @@ export const usePropertyPdfGenerator = ({
   const downloadPdf = useCallback(
     async (
       type: PropertyPdfType,
-      orientationOrConfig?: 'portrait' | 'landscape' | PdfFlyerConfiguration,
+      orientationOrConfig?: 'portrait' | 'landscape' | ConfigurationType,
     ) => {
       const result = await generatePdf(type, orientationOrConfig);
       if (result) {

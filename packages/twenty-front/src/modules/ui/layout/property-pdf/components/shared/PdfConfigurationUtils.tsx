@@ -60,6 +60,7 @@ type PublisherInformationSectionProps<T extends PdfBaseConfiguration> = {
   config: T;
   setConfig: ConfigUpdateFunction<T>;
   availability: AvailabilityChecks;
+  hideTitle?: boolean;
 };
 
 // Component for publisher information section
@@ -68,6 +69,7 @@ export const PublisherInformationSection = <T extends PdfBaseConfiguration>({
   config,
   setConfig,
   availability,
+  hideTitle = false,
 }: PublisherInformationSectionProps<T>) => {
   const { t } = useLingui();
   const { hasAgencyName, hasAgencyEmail, hasAgencyPhone, hasWorkspaceLogo } =
@@ -77,7 +79,9 @@ export const PublisherInformationSection = <T extends PdfBaseConfiguration>({
 
   return (
     <>
-      <StyledSectionTitle>{t`Publisher Information`}</StyledSectionTitle>
+      {!hideTitle && (
+        <StyledSectionTitle>{t`Publisher Information`}</StyledSectionTitle>
+      )}
       <StyledOptionsGroup>
         <PublisherOption
           isSelected={config.showPublisherBranding}

@@ -11,7 +11,11 @@ import { useMemo } from 'react';
 import { DefaultPropertyPdfTemplate } from './templates/default/DefaultPropertyPdfTemplate';
 import { useRecoilState } from 'recoil';
 import { currentWorkspaceState } from '@/auth/states/currentWorkspaceState';
-import { PdfFlyerConfiguration } from '../types/types';
+import {
+  ConfigurationType,
+  PdfDocumentationConfiguration,
+  PdfFlyerConfiguration,
+} from '../types/types';
 
 const StyledPdfViewerContainer = styled.div`
   align-items: center;
@@ -66,7 +70,7 @@ export const fieldsToShowOnDocumentation = [
 export type PropertyPdfPreviewProps = {
   property: ObjectRecord;
   isFlyer?: boolean;
-  configuration?: PdfFlyerConfiguration;
+  configuration?: ConfigurationType;
 };
 
 export const PropertyPdfPreview = ({
@@ -213,6 +217,9 @@ export const PropertyPdfPreview = ({
           showPublisherBranding={showPublisherBranding}
           showPublisherEmail={showPublisherEmail}
           showPublisherPhone={showPublisherPhone}
+          showAddressMap={configuration?.showAddressMap}
+          addressMapUrl={configuration?.addressMapUrl}
+          floorplanUrl={configuration?.floorplanUrl}
         />
       </StyledPDFViewer>
     </StyledPdfViewerContainer>

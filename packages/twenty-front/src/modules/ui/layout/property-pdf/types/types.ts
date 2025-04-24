@@ -54,20 +54,30 @@ export type PdfBaseConfiguration = {
 };
 
 // Specific configuration for the flyer PDF
-export type PdfFlyerConfiguration = PdfBaseConfiguration & {
+export type PdfFlyerConfiguration = {
   showAllImages: boolean;
   includeFeatures: boolean;
-  orientation: 'portrait' | 'landscape';
-};
+  selectedFields: string[];
+  orientation?: 'portrait' | 'landscape';
+} & PdfBaseConfiguration;
 
 // Specific configuration for the documentation PDF
 export type PdfDocumentationConfiguration = PdfBaseConfiguration & {
-  showAddressMap: boolean;
-  showAdditionalDocuments: boolean;
+  showAddressMap?: boolean;
+  showAdditionalDocuments?: boolean;
+  // Additional options for documentation
+  showAllImages?: boolean;
+  showDescription?: boolean;
+  showFloorplan?: boolean;
+  addressMapUrl?: string;
+  floorplanUrl?: string;
 };
 
+export type ConfigurationType = PdfFlyerConfiguration &
+  PdfDocumentationConfiguration;
+
 export type PropertyPdfTemplate = React.FC<
-  PropertyPdfProps & {
+  DefaultDocumentationTemplateProps & {
     type: PropertyPdfType;
   }
 >;

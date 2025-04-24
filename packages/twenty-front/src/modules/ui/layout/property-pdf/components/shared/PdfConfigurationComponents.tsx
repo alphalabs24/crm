@@ -53,7 +53,7 @@ export const StyledSelectionOrder = styled.div`
 `;
 
 // Option Card Components
-export const StyledOptionCard = styled.div<{ isSelected: boolean }>`
+export const StyledOptionCard = styled.div<{ isSelected?: boolean }>`
   align-items: center;
   background: ${({ theme, isSelected }) =>
     isSelected ? theme.background.tertiary : theme.background.secondary};
@@ -87,13 +87,13 @@ export const StyledOptionDescription = styled.span`
   font-size: ${({ theme }) => theme.font.size.xs};
 `;
 
-export const StyledOptionIcon = styled.div<{ isSelected: boolean }>`
+export const StyledOptionIcon = styled.div<{ isSelected?: boolean }>`
   color: ${({ theme, isSelected }) =>
     isSelected ? theme.color.blue : theme.font.color.secondary};
   display: flex;
 `;
 
-export const StyledOptionLabel = styled.span<{ isSelected: boolean }>`
+export const StyledOptionLabel = styled.span<{ isSelected?: boolean }>`
   color: ${({ theme, isSelected }) =>
     isSelected ? theme.font.color.primary : theme.font.color.secondary};
   font-size: ${({ theme }) => theme.font.size.sm};

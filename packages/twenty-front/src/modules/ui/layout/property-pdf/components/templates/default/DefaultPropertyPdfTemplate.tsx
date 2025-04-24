@@ -1,12 +1,17 @@
 /* eslint-disable @nx/workspace-no-hardcoded-colors */
 import { Document } from '@react-pdf/renderer';
-import { PropertyPdfProps, PropertyPdfType } from '../../../types/types';
+import {
+  DefaultDocumentationTemplateProps,
+  PropertyPdfProps,
+  PropertyPdfType,
+} from '../../../types/types';
 import { DefaultFlyerTemplate } from './DefaultFlyerTemplate';
 import { DefaultDocumentationTemplate } from './DefaultDocumentationTemplate';
 
-export type DefaultPropertyPdfTemplateProps = PropertyPdfProps & {
-  type: PropertyPdfType;
-};
+export type DefaultPropertyPdfTemplateProps =
+  DefaultDocumentationTemplateProps & {
+    type: PropertyPdfType;
+  };
 
 export const DefaultPropertyPdfTemplate = ({
   type,
@@ -21,6 +26,9 @@ export const DefaultPropertyPdfTemplate = ({
   showPublisherBranding = true,
   showPublisherEmail = true,
   showPublisherPhone = true,
+  showAddressMap = false,
+  addressMapUrl,
+  floorplanUrl,
 }: DefaultPropertyPdfTemplateProps) => {
   return (
     <Document>
@@ -51,6 +59,9 @@ export const DefaultPropertyPdfTemplate = ({
           showPublisherBranding={showPublisherBranding}
           showPublisherEmail={showPublisherEmail}
           showPublisherPhone={showPublisherPhone}
+          showAddressMap={showAddressMap}
+          addressMapUrl={addressMapUrl}
+          floorplanUrl={floorplanUrl}
         />
       )}
     </Document>

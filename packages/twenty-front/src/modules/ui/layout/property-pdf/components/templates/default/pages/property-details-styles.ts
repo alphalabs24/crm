@@ -135,4 +135,19 @@ export const PROPERTY_DETAILS_STYLES = StyleSheet.create({
     lineHeight: 1.5,
     marginBottom: 0,
   },
+
+  // Map styles
+  mapContainer: {
+    width: '100%',
+    height: 200,
+    marginTop: DEFAULT_THEME.spacing.sm,
+    borderRadius: DEFAULT_THEME.borders.radius.sm,
+    overflow: 'hidden',
+  },
+
+  mapImage: {
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
+  },
 });

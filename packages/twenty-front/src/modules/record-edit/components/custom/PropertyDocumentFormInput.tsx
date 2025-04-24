@@ -48,6 +48,7 @@ import {
 import { DocumentEditModal } from './DocumentEditModal';
 import { PdfConfigurationModal } from '@/ui/layout/property-pdf/components/PdfConfigurationModal';
 import { ObjectRecord } from '@/object-record/types/ObjectRecord';
+import { DocumentationConfigurationModal } from '@/ui/layout/property-pdf/components/DocumentationConfigurationModal';
 const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -654,11 +655,21 @@ const PdfConfigurationModalWrapper = ({
     }
   };
 
+  if (pdfType === 'PropertyDocumentation') {
+    return (
+      <DocumentationConfigurationModal
+        ref={modalRef}
+        property={property}
+        onClose={() => modalRef.current?.close()}
+        onGenerate={handleGeneratePdf}
+      />
+    );
+  }
+
   return (
     <PdfConfigurationModal
       ref={modalRef}
       property={property}
-      pdfType={pdfType}
       onClose={() => modalRef.current?.close()}
       onGenerate={handleGeneratePdf}
     />

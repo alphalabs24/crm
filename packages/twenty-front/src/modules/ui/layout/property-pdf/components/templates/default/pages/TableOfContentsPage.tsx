@@ -8,6 +8,7 @@ export type TableOfContentsPageProps =
   Partial<DefaultDocumentationTemplateProps> & {
     hasGallery: boolean;
     hasDescription?: boolean;
+    showAddressMap?: boolean;
   };
 
 export const TableOfContentsPage = ({
@@ -16,15 +17,17 @@ export const TableOfContentsPage = ({
   Footer,
   hasGallery,
   hasDescription = false,
+  showAddressMap = false,
 }: TableOfContentsPageProps) => {
   // Calculate page numbers based on what content is available
-  const detailsPageNumber = 3; // First page + TOC page + 1
-  const descriptionPageNumber = hasDescription ? detailsPageNumber + 1 : 0;
-  const galleryPageNumber = hasGallery
-    ? hasDescription
-      ? (descriptionPageNumber as number) + 1
-      : detailsPageNumber + 1
-    : 0;
+  let currentPage = 3; // First page + TOC page + 1
+
+  const detailsPageNumber = currentPage;
+  currentPage++;
+
+  const mapPageNumber = showAddressMap ? currentPage++ : 0;
+  const descriptionPageNumber = hasDescription ? currentPage++ : 0;
+  const galleryPageNumber = hasGallery ? currentPage : 0;
 
   return (
     <Page
@@ -42,6 +45,15 @@ export const TableOfContentsPage = ({
               <Text style={PDF_STYLES.tocItemPage}>{detailsPageNumber}</Text>
             </View>
           </Link>
+
+          {showAddressMap && (
+            <Link src="#location" style={PDF_STYLES.tocLink}>
+              <View style={PDF_STYLES.tocItem}>
+                <Text style={PDF_STYLES.tocItemText}>Standort & Umgebung</Text>
+                <Text style={PDF_STYLES.tocItemPage}>{mapPageNumber}</Text>
+              </View>
+            </Link>
+          )}
 
           {hasDescription && (
             <Link src="#propertyDescription" style={PDF_STYLES.tocLink}>

@@ -24,7 +24,11 @@ import {
   fieldsToShowOnDocumentation,
   fieldsToShowOnPdf,
 } from './PropertyPdfPreview';
-import { PdfFlyerConfiguration, PropertyPdfType } from '../types/types';
+import {
+  ConfigurationType,
+  PdfFlyerConfiguration,
+  PropertyPdfType,
+} from '../types/types';
 import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadataItem';
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { usePropertyImages } from '../../show-page/hooks/usePropertyImages';
@@ -59,7 +63,6 @@ const StyledModalContainer = styled(BaseModalContainer)`
 
 export type PdfConfigurationModalProps = {
   property: ObjectRecord;
-  pdfType: PropertyPdfType;
   onClose: () => void;
   onGenerate: (config: PdfFlyerConfiguration) => Promise<void>;
   isGenerating?: boolean;
@@ -68,7 +71,7 @@ export type PdfConfigurationModalProps = {
 export const PdfConfigurationModal = forwardRef<
   ModalRefType,
   PdfConfigurationModalProps
->(({ property, pdfType, onClose, onGenerate, isGenerating = false }, ref) => {
+>(({ property, onClose, onGenerate, isGenerating = false }, ref) => {
   const { t } = useLingui();
   const [localIsGenerating, setLocalIsGenerating] = useState(false);
 
@@ -100,12 +103,8 @@ export const PdfConfigurationModal = forwardRef<
 
   // Filter fields based on property category and subtype
   const relevantFields = useMemo(() => {
-    const fieldsToUse =
-      pdfType === 'PropertyFlyer'
-        ? fieldsToShowOnPdf
-        : fieldsToShowOnDocumentation;
     // Start with the basic fields without subtypes
-    const baseFields = fieldsToUse.filter(
+    const baseFields = fieldsToShowOnPdf.filter(
       (field) => !Object.values(CATEGORY_SUBTYPES).includes(field as any),
     );
 
@@ -128,7 +127,7 @@ export const PdfConfigurationModal = forwardRef<
   }, [subcategory]);
 
   // Configuration state
-  const [config, setConfig] = useState<PdfFlyerConfiguration>({
+  const [config, setConfig] = useState<ConfigurationType>({
     showAllImages: true,
     includeFeatures: true,
     selectedFields: [...relevantFields],
@@ -278,11 +277,7 @@ export const PdfConfigurationModal = forwardRef<
         <StyledModalHeader>
           <StyledModalTitleContainer>
             <IconSettings size={16} />
-            <StyledModalTitle>
-              {pdfType === 'PropertyDocumentation'
-                ? t`Exposé Configuration`
-                : t`Flyer Configuration`}
-            </StyledModalTitle>
+            <StyledModalTitle>{t`Flyer Configuration`}</StyledModalTitle>
           </StyledModalTitleContainer>
           <StyledModalHeaderButtons>
             <Button variant="tertiary" title={t`Cancel`} onClick={onClose} />
@@ -326,7 +321,7 @@ export const PdfConfigurationModal = forwardRef<
               <StyledPreviewContainer>
                 <PropertyPdfPreview
                   property={property}
-                  isFlyer={pdfType === 'PropertyFlyer'}
+                  isFlyer
                   configuration={config}
                 />
               </StyledPreviewContainer>
