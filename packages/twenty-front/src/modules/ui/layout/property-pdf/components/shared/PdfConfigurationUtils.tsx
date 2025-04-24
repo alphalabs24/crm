@@ -65,7 +65,6 @@ type PublisherInformationSectionProps<T extends PdfBaseConfiguration> = {
 
 // Component for publisher information section
 export const PublisherInformationSection = <T extends PdfBaseConfiguration>({
-  property,
   config,
   setConfig,
   availability,

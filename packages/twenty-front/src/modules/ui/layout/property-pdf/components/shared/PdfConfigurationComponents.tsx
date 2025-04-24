@@ -134,7 +134,7 @@ export const StyledCheckIcon = styled.div`
 export const StyledOptionsGroup = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(4)};
+  gap: ${({ theme }) => theme.spacing(2)};
 `;
 
 export const StyledOptionsPanel = styled.div`

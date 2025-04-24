@@ -27,6 +27,7 @@ export const DefaultPropertyPdfTemplate = ({
   showPublisherEmail = true,
   showPublisherPhone = true,
   showAddressMap = false,
+  showDescription = false,
   addressMapUrl,
   floorplanUrl,
 }: DefaultPropertyPdfTemplateProps) => {
@@ -60,6 +61,7 @@ export const DefaultPropertyPdfTemplate = ({
           showPublisherEmail={showPublisherEmail}
           showPublisherPhone={showPublisherPhone}
           showAddressMap={showAddressMap}
+          showDescription={showDescription}
           addressMapUrl={addressMapUrl}
           floorplanUrl={floorplanUrl}
         />

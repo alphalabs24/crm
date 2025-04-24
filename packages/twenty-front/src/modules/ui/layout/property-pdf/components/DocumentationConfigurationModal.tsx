@@ -175,7 +175,7 @@ export const DocumentationContentOptions = ({
                 config.showAllImages && availability.hasMultipleImages
               }
             >
-              {t`Multiple Property Images`}
+              {t`Image Gallery`}
             </StyledOptionLabel>
             <StyledOptionDescription>
               {!availability.hasMultipleImages
@@ -186,6 +186,46 @@ export const DocumentationContentOptions = ({
             </StyledOptionDescription>
           </StyledOptionContent>
           {config.showAllImages && availability.hasMultipleImages && (
+            <IconCheck size={16} color="blue" />
+          )}
+        </StyledOptionCard>
+
+        {/* Description Option */}
+        <StyledOptionCard
+          isSelected={config.showDescription}
+          onClick={() =>
+            hasDescription
+              ? setConfig((prev) => ({
+                  ...prev,
+                  showDescription: !prev.showDescription,
+                }))
+              : null
+          }
+          style={{
+            opacity: hasDescription ? 1 : 0.5,
+            cursor: hasDescription ? 'pointer' : 'not-allowed',
+          }}
+        >
+          <StyledOptionIcon
+            isSelected={config.showDescription && hasDescription}
+          >
+            <IconFileDescription size={18} />
+          </StyledOptionIcon>
+          <StyledOptionContent>
+            <StyledOptionLabel
+              isSelected={config.showDescription && hasDescription}
+            >
+              {t`Description`}
+            </StyledOptionLabel>
+            <StyledOptionDescription>
+              {!hasDescription
+                ? t`No description available`
+                : config.showDescription
+                  ? t`Including property description`
+                  : t`Excluding property description`}
+            </StyledOptionDescription>
+          </StyledOptionContent>
+          {config.showDescription && hasDescription && (
             <IconCheck size={16} color="blue" />
           )}
         </StyledOptionCard>
@@ -205,7 +245,7 @@ export const DocumentationContentOptions = ({
           </StyledOptionIcon>
           <StyledOptionContent>
             <StyledOptionLabel isSelected={config.includeFeatures}>
-              {t`Property Features`}
+              {t`Features`}
             </StyledOptionLabel>
             <StyledOptionDescription>
               {config.includeFeatures
@@ -237,14 +277,14 @@ export const DocumentationContentOptions = ({
           </StyledOptionIcon>
           <StyledOptionContent>
             <StyledOptionLabel isSelected={config.showAddressMap && hasMapData}>
-              {t`Address Map`}
+              {t`Address`}
             </StyledOptionLabel>
             <StyledOptionDescription>
               {!hasMapData
                 ? t`No location data available`
                 : config.showAddressMap
-                  ? t`Including property location map`
-                  : t`Excluding property location map`}
+                  ? t`Including property location`
+                  : t`Excluding property location`}
             </StyledOptionDescription>
           </StyledOptionContent>
           {config.showAddressMap && hasMapData && (
@@ -252,48 +292,8 @@ export const DocumentationContentOptions = ({
           )}
         </StyledOptionCard>
 
-        {/* Description Option */}
-        <StyledOptionCard
-          isSelected={config.showDescription}
-          onClick={() =>
-            hasDescription
-              ? setConfig((prev) => ({
-                  ...prev,
-                  showDescription: !prev.showDescription,
-                }))
-              : null
-          }
-          style={{
-            opacity: hasDescription ? 1 : 0.5,
-            cursor: hasDescription ? 'pointer' : 'not-allowed',
-          }}
-        >
-          <StyledOptionIcon
-            isSelected={config.showDescription && hasDescription}
-          >
-            <IconFileDescription size={18} />
-          </StyledOptionIcon>
-          <StyledOptionContent>
-            <StyledOptionLabel
-              isSelected={config.showDescription && hasDescription}
-            >
-              {t`Property Description`}
-            </StyledOptionLabel>
-            <StyledOptionDescription>
-              {!hasDescription
-                ? t`No description available`
-                : config.showDescription
-                  ? t`Including property description`
-                  : t`Excluding property description`}
-            </StyledOptionDescription>
-          </StyledOptionContent>
-          {config.showDescription && hasDescription && (
-            <IconCheck size={16} color="blue" />
-          )}
-        </StyledOptionCard>
-
         {/* Floorplan Option */}
-        <StyledOptionCard
+        {/* <StyledOptionCard
           isSelected={config.showFloorplan}
           onClick={() =>
             hasFloorplan
@@ -328,10 +328,10 @@ export const DocumentationContentOptions = ({
           {config.showFloorplan && hasFloorplan && (
             <IconCheck size={16} color="blue" />
           )}
-        </StyledOptionCard>
+        </StyledOptionCard> */}
 
         {/* Additional Documents Option */}
-        <StyledOptionCard
+        {/* <StyledOptionCard
           isSelected={config.showAdditionalDocuments}
           onClick={() =>
             setConfig((prev) => ({
@@ -356,7 +356,7 @@ export const DocumentationContentOptions = ({
           {config.showAdditionalDocuments && (
             <IconCheck size={16} color="blue" />
           )}
-        </StyledOptionCard>
+        </StyledOptionCard> */}
       </StyledOptionCardContainer>
     </CollapsibleSection>
   );
@@ -459,7 +459,7 @@ export const DocumentationConfigurationModal = forwardRef<
         ...prev,
         showAllImages: false,
       }));
-    } else if (hasMultipleImages) {
+    } else if (hasMultipleImages && config.showAllImages) {
       setConfig((prev) => ({
         ...prev,
         showAllImages: true,

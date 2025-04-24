@@ -42,6 +42,7 @@ export type DefaultDocumentationTemplateProps = PropertyPdfProps & {
   floorplanUrl?: string;
   showAddressMap?: boolean;
   showAdditionalDocuments?: boolean;
+  showDescription?: boolean;
   Footer?: React.ReactNode;
 };
 

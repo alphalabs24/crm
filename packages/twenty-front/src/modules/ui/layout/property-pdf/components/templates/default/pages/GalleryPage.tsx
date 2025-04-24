@@ -18,7 +18,7 @@ export const GalleryPage = ({
   property,
   Footer,
 }: GalleryPageProps) => {
-  const galleryTitle = `${property.name.slice(0, 25)} - Foto Gallerie ${pageIndex > 0 ? `(${pageIndex + 1})` : ''}`;
+  const galleryTitle = `Foto Gallerie ${pageIndex > 0 ? `(${pageIndex + 1})` : ''}`;
 
   return (
     <Page

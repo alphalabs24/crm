@@ -21,8 +21,7 @@ export const FirstPage = ({
   propertyAddress,
   orientation,
   propertyImages,
-  showPublisherBranding,
-  agencyLogo,
+  showAddressMap,
   Footer,
 }: FirstPageProps) => {
   const firstImage = useMemo(() => {
@@ -45,7 +44,7 @@ export const FirstPage = ({
           <Col gap={0.5}>
             <H1>{property.name}</H1>
             <H2>{propertyPrice}</H2>
-            <H3>{propertyAddress}</H3>
+            {showAddressMap && <H3>{propertyAddress}</H3>}
           </Col>
         </Row>
       </Section>

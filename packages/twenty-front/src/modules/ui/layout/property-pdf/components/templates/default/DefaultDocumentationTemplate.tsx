@@ -24,6 +24,7 @@ export const DefaultDocumentationTemplate = ({
   showPublisherEmail = true,
   showPublisherPhone = true,
   showAddressMap = false,
+  showDescription = false,
   showAdditionalDocuments = false,
   addressMapUrl,
   floorplanUrl,
@@ -49,7 +50,9 @@ export const DefaultDocumentationTemplate = ({
 
   // Check if there's a description to show
   const hasDescription =
-    !!property.description && property.description.trim().length > 0;
+    !!property.description &&
+    property.description.trim().length > 0 &&
+    showDescription;
 
   // Create footer component for reuse
   const footerComponent = (
@@ -75,6 +78,7 @@ export const DefaultDocumentationTemplate = ({
         showPublisherPhone={showPublisherPhone}
         agencyLogo={agencyLogo}
         Footer={footerComponent}
+        showAddressMap={showAddressMap}
       />
 
       <TableOfContentsPage
@@ -85,30 +89,6 @@ export const DefaultDocumentationTemplate = ({
         hasDescription={hasDescription}
         showAddressMap={showAddressMap}
       />
-
-      <PropertyDetailsPage
-        property={property}
-        propertyPrice={propertyPrice}
-        propertyAddress={propertyAddress}
-        orientation={orientation}
-        propertyImages={propertyImages}
-        fields={fields}
-        showPublisherBranding={showPublisherBranding}
-        agencyLogo={agencyLogo}
-        propertyFeatures={propertyFeatures}
-        Footer={footerComponent}
-      />
-
-      {/* Display Map Page if enabled */}
-      {showAddressMap && addressMapUrl && (
-        <MapPage
-          property={property}
-          propertyAddress={propertyAddress}
-          orientation={orientation}
-          addressMapUrl={addressMapUrl}
-          Footer={footerComponent}
-        />
-      )}
 
       {/* Add the description page if a description exists */}
       {hasDescription && (
@@ -124,6 +104,30 @@ export const DefaultDocumentationTemplate = ({
           Footer={footerComponent}
         />
       )}
+
+      {/* Display Map Page if enabled */}
+      {showAddressMap && addressMapUrl && (
+        <MapPage
+          property={property}
+          propertyAddress={propertyAddress}
+          orientation={orientation}
+          addressMapUrl={addressMapUrl}
+          Footer={footerComponent}
+        />
+      )}
+
+      <PropertyDetailsPage
+        property={property}
+        propertyPrice={propertyPrice}
+        propertyAddress={propertyAddress}
+        orientation={orientation}
+        propertyImages={propertyImages}
+        fields={fields}
+        showPublisherBranding={showPublisherBranding}
+        agencyLogo={agencyLogo}
+        propertyFeatures={propertyFeatures}
+        Footer={footerComponent}
+      />
 
       {galleryPages.map(({ imagesSubset, pageIndex }) => (
         <GalleryPage

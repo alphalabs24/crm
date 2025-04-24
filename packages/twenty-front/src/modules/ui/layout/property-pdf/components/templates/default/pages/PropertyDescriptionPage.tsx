@@ -33,7 +33,7 @@ export const PropertyDescriptionPage = ({
       <Section height="85%">
         <Row>
           <Col width="100%">
-            <H2 style={{ marginBottom: 20 }}>Über die Liegenschaft</H2>
+            <H2 style={{ marginBottom: 10 }}>Über die Liegenschaft</H2>
 
             <View style={PROPERTY_DETAILS_STYLES.detailsSection}>
               {/* Property description with paragraphs */}

@@ -220,6 +220,7 @@ export const PropertyPdfPreview = ({
           showAddressMap={configuration?.showAddressMap}
           addressMapUrl={configuration?.addressMapUrl}
           floorplanUrl={configuration?.floorplanUrl}
+          showDescription={configuration?.showDescription}
         />
       </StyledPDFViewer>
     </StyledPdfViewerContainer>

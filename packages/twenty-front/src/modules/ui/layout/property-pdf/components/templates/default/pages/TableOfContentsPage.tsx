@@ -12,7 +12,6 @@ export type TableOfContentsPageProps =
   };
 
 export const TableOfContentsPage = ({
-  property,
   orientation,
   Footer,
   hasGallery,
@@ -22,11 +21,16 @@ export const TableOfContentsPage = ({
   // Calculate page numbers based on what content is available
   let currentPage = 3; // First page + TOC page + 1
 
-  const detailsPageNumber = currentPage;
-  currentPage++;
-
-  const mapPageNumber = showAddressMap ? currentPage++ : 0;
+  // Description comes first if it exists
   const descriptionPageNumber = hasDescription ? currentPage++ : 0;
+
+  // Map comes second if enabled
+  const mapPageNumber = showAddressMap ? currentPage++ : 0;
+
+  // Property details always comes after description and map
+  const detailsPageNumber = currentPage++;
+
+  // Gallery comes last
   const galleryPageNumber = hasGallery ? currentPage : 0;
 
   return (
@@ -39,22 +43,7 @@ export const TableOfContentsPage = ({
         <H1 style={{ marginBottom: 10 }}>Inhaltsverzeichnis</H1>
 
         <View style={PDF_STYLES.tocContainer}>
-          <Link src="#propertyDetails" style={PDF_STYLES.tocLink}>
-            <View style={PDF_STYLES.tocItem}>
-              <Text style={PDF_STYLES.tocItemText}>Liegenschaftsdaten</Text>
-              <Text style={PDF_STYLES.tocItemPage}>{detailsPageNumber}</Text>
-            </View>
-          </Link>
-
-          {showAddressMap && (
-            <Link src="#location" style={PDF_STYLES.tocLink}>
-              <View style={PDF_STYLES.tocItem}>
-                <Text style={PDF_STYLES.tocItemText}>Standort & Umgebung</Text>
-                <Text style={PDF_STYLES.tocItemPage}>{mapPageNumber}</Text>
-              </View>
-            </Link>
-          )}
-
+          {/* Update the TOC links to reflect the new page order */}
           {hasDescription && (
             <Link src="#propertyDescription" style={PDF_STYLES.tocLink}>
               <View style={PDF_STYLES.tocItem}>
@@ -67,6 +56,22 @@ export const TableOfContentsPage = ({
               </View>
             </Link>
           )}
+
+          {showAddressMap && (
+            <Link src="#location" style={PDF_STYLES.tocLink}>
+              <View style={PDF_STYLES.tocItem}>
+                <Text style={PDF_STYLES.tocItemText}>Standort & Umgebung</Text>
+                <Text style={PDF_STYLES.tocItemPage}>{mapPageNumber}</Text>
+              </View>
+            </Link>
+          )}
+
+          <Link src="#propertyDetails" style={PDF_STYLES.tocLink}>
+            <View style={PDF_STYLES.tocItem}>
+              <Text style={PDF_STYLES.tocItemText}>Liegenschaftsdaten</Text>
+              <Text style={PDF_STYLES.tocItemPage}>{detailsPageNumber}</Text>
+            </View>
+          </Link>
 
           {hasGallery && (
             <Link src="#gallery" style={PDF_STYLES.tocLink}>

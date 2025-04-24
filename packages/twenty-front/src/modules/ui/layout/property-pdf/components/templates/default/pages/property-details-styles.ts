@@ -80,8 +80,6 @@ export const PROPERTY_DETAILS_STYLES = StyleSheet.create({
 
   // Financial highlights
   financialContainer: {
-    backgroundColor: DEFAULT_THEME.colors.background.light,
-    padding: DEFAULT_THEME.spacing.md,
     marginBottom: DEFAULT_THEME.spacing.md,
   },
 
@@ -102,7 +100,7 @@ export const PROPERTY_DETAILS_STYLES = StyleSheet.create({
   financialValue: {
     fontSize: DEFAULT_THEME.fonts.sizes.md,
     fontWeight: DEFAULT_THEME.fonts.weights.semibold,
-    color: DEFAULT_THEME.colors.primary,
+    color: DEFAULT_THEME.colors.textDark,
   },
 
   // Two-column layout
@@ -118,20 +116,17 @@ export const PROPERTY_DETAILS_STYLES = StyleSheet.create({
 
   // Description styles
   descriptionContainer: {
-    backgroundColor: DEFAULT_THEME.colors.background.light,
-    padding: DEFAULT_THEME.spacing.md,
-    borderRadius: DEFAULT_THEME.borders.radius.sm,
     marginTop: DEFAULT_THEME.spacing.sm,
   },
 
   descriptionParagraph: {
-    fontSize: DEFAULT_THEME.fonts.sizes.sm,
+    fontSize: DEFAULT_THEME.fonts.sizes.md,
     lineHeight: 1.5,
     marginBottom: DEFAULT_THEME.spacing.sm,
   },
 
   descriptionParagraphLast: {
-    fontSize: DEFAULT_THEME.fonts.sizes.sm,
+    fontSize: DEFAULT_THEME.fonts.sizes.md,
     lineHeight: 1.5,
     marginBottom: 0,
   },
