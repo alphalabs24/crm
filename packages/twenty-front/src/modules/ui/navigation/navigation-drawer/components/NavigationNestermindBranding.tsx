@@ -7,10 +7,11 @@ const StyledContainer = styled.div<{
   alignment: 'flex-start' | 'center' | 'flex-end';
 }>`
   align-items: ${({ alignment }) => alignment};
+  justify-content: center;
   display: flex;
-  flex-direction: column;
-  gap: ${({ theme }: { theme: Theme }) => theme.spacing(1)};
+  gap: ${({ theme }: { theme: Theme }) => theme.spacing(2)};
   padding: ${({ theme }: { theme: Theme }) => theme.spacing(2)};
+  position: relative;
 `;
 
 const StyledImage = styled.img<{ size: number }>`
@@ -18,14 +19,30 @@ const StyledImage = styled.img<{ size: number }>`
   width: ${({ size }) => size}px;
 `;
 
+// eslint-disable-next-line @nx/workspace-no-hardcoded-colors
+const bg = '#fffbeb';
+// eslint-disable-next-line @nx/workspace-no-hardcoded-colors
+const border = '#fee685';
+const StyledBoosterTag = styled.div`
+  background: ${bg};
+  border: 1px solid ${border};
+  border-radius: ${({ theme }: { theme: Theme }) => theme.border.radius.sm};
+  padding: 2px 5px;
+  font-size: ${({ theme }: { theme: Theme }) => theme.font.size.sm};
+  font-weight: ${({ theme }: { theme: Theme }) => theme.font.weight.semiBold};
+  color: ${({ theme }: { theme: Theme }) => theme.font.color.primary};
+`;
+
 type NestermindBrandingProps = {
   size?: number;
   alignment?: 'flex-start' | 'center' | 'flex-end';
+  showBooster?: boolean;
 };
 
 const NestermindBranding = ({
   size = 50,
   alignment = 'center',
+  showBooster = true,
 }: NestermindBrandingProps) => {
   const { colorScheme } = useColorScheme();
   const systemColorScheme = useSystemColorScheme();
@@ -40,6 +57,7 @@ const NestermindBranding = ({
         alt="Nestermind logo"
         size={size}
       />
+      {showBooster && <StyledBoosterTag>Booster</StyledBoosterTag>}
     </StyledContainer>
   );
 };
