@@ -131,13 +131,19 @@ export const DocumentationContentOptions = ({
 
   // Update config if map data becomes unavailable
   useEffect(() => {
-    if (!hasMapData && config.showAddressMap) {
+    if (config.showAddressMap && !hasMapData) {
       setConfig((prev) => ({
         ...prev,
         showAddressMap: false,
       }));
+    } else if (config.showAddressMap && hasMapData) {
+      setConfig((prev) => ({
+        ...prev,
+        showAddressMap: true,
+        addressMapUrl: mapUrl,
+      }));
     }
-  }, [hasMapData, config.showAddressMap, setConfig]);
+  }, [hasMapData, config.showAddressMap, setConfig, mapUrl]);
 
   return (
     <CollapsibleSection title={t`Content Options`}>
@@ -431,7 +437,7 @@ export const DocumentationConfigurationModal = forwardRef<
     showPublisherEmail: true,
     showPublisherPhone: true,
     // Documentation specific options
-    showAddressMap: false,
+    showAddressMap: true,
     showDescription: true,
     showFloorplan: true,
     showAdditionalDocuments: true,
@@ -493,22 +499,6 @@ export const DocumentationConfigurationModal = forwardRef<
     config.showPublisherPhone,
   ]);
 
-  const toggleField = (field: string) => {
-    setConfig((prev) => {
-      if (prev.selectedFields.includes(field)) {
-        return {
-          ...prev,
-          selectedFields: prev.selectedFields.filter((f) => f !== field),
-        };
-      } else {
-        return {
-          ...prev,
-          selectedFields: [...prev.selectedFields, field],
-        };
-      }
-    });
-  };
-
   // Handler for generating PDF with current config
   const handleGeneratePdf = useCallback(async () => {
     setLocalIsGenerating(true);
@@ -528,39 +518,6 @@ export const DocumentationConfigurationModal = forwardRef<
       setLocalIsGenerating(false);
     }
   }, [config, onGenerate, onClose]);
-
-  // Render fields selection section
-  const renderFieldsSection = () => {
-    return (
-      <CollapsibleSection title={t`Fields to Display`}>
-        <StyledFieldsGrid>
-          {relevantFields.map((field) => {
-            const isSelected = config.selectedFields.includes(field);
-            const index = config.selectedFields.indexOf(field);
-            return (
-              <StyledFieldCard
-                key={field}
-                isSelected={isSelected}
-                onClick={() => toggleField(field)}
-              >
-                <StyledFieldLabelContainer>
-                  <StyledFieldLabel isSelected={isSelected}>
-                    {
-                      objectMetadataItem?.fields.find((f) => f.name === field)
-                        ?.label
-                    }
-                  </StyledFieldLabel>
-                </StyledFieldLabelContainer>
-                {isSelected && (
-                  <StyledSelectionOrder>{index + 1}</StyledSelectionOrder>
-                )}
-              </StyledFieldCard>
-            );
-          })}
-        </StyledFieldsGrid>
-      </CollapsibleSection>
-    );
-  };
 
   return (
     <Modal
@@ -628,7 +585,7 @@ export const DocumentationConfigurationModal = forwardRef<
                 <PropertyPdfPreview
                   property={property}
                   isFlyer={false}
-                  configuration={config as any}
+                  configuration={config}
                 />
               </StyledPreviewContainer>
             </StyledPreviewPanel>
