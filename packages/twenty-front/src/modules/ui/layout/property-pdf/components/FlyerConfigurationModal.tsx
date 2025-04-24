@@ -258,6 +258,7 @@ export const FlyerConfigurationModal = forwardRef<
           <StyledModalHeaderButtons>
             <Button variant="tertiary" title={t`Cancel`} onClick={onClose} />
             <Button
+              accent="blue"
               variant="primary"
               title={t`Generate`}
               Icon={IconFile}

@@ -525,6 +525,7 @@ export const DocumentationConfigurationModal = forwardRef<
               variant="primary"
               title={t`Generate`}
               Icon={IconFile}
+              accent="blue"
               onClick={handleGeneratePdf}
               disabled={effectiveIsGenerating}
             />
