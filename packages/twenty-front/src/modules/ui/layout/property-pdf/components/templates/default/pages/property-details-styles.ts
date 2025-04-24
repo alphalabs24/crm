@@ -150,4 +150,51 @@ export const PROPERTY_DETAILS_STYLES = StyleSheet.create({
     height: '100%',
     objectFit: 'cover',
   },
+
+  // Map page styles
+  mapPageContainer: {
+    marginTop: DEFAULT_THEME.spacing.md,
+    marginBottom: DEFAULT_THEME.spacing.md,
+  },
+
+  mapPageAddress: {
+    fontSize: DEFAULT_THEME.fonts.sizes.md,
+    color: DEFAULT_THEME.colors.textDark,
+    marginBottom: DEFAULT_THEME.spacing.md,
+    lineHeight: 1.4,
+  },
+
+  mapImageWrapper: {
+    width: '100%',
+    marginTop: DEFAULT_THEME.spacing.md,
+    marginBottom: DEFAULT_THEME.spacing.lg,
+    borderRadius: DEFAULT_THEME.borders.radius.md,
+    overflow: 'hidden',
+    border: `1pt solid ${DEFAULT_THEME.colors.divider}`,
+  },
+
+  mapFullWidthImage: {
+    width: '100%',
+    height: 'auto',
+    minHeight: 300,
+    maxHeight: 400,
+  },
+
+  locationInfoSection: {
+    marginTop: DEFAULT_THEME.spacing.lg,
+  },
+
+  locationDescription: {
+    fontSize: DEFAULT_THEME.fonts.sizes.sm,
+    color: DEFAULT_THEME.colors.textDark,
+    lineHeight: 1.5,
+    marginTop: DEFAULT_THEME.spacing.xs,
+  },
+
+  transportationInfo: {
+    fontSize: DEFAULT_THEME.fonts.sizes.sm,
+    color: DEFAULT_THEME.colors.textDark,
+    lineHeight: 1.5,
+    marginTop: DEFAULT_THEME.spacing.xs,
+  },
 });

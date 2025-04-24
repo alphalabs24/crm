@@ -100,27 +100,6 @@ export const PropertyDetailsPage = ({
     return groups;
   }, [fields]);
 
-  // Format the property data for display
-  const formattedAddress = useMemo(() => {
-    if (!property.address) return '';
-
-    const {
-      addressStreet1,
-      addressStreet2,
-      addressCity,
-      addressPostcode,
-      addressCountry,
-    } = property.address;
-    const parts = [
-      addressStreet1 || '',
-      addressStreet2 || '',
-      [addressPostcode || '', addressCity || ''].filter(Boolean).join(' '),
-      addressCountry || '',
-    ].filter(Boolean);
-
-    return parts.join(', ');
-  }, [property.address]);
-
   return (
     <Page
       style={PDF_STYLES.page}
@@ -132,7 +111,6 @@ export const PropertyDetailsPage = ({
         <Row>
           <Col width="100%">
             <H2 style={{ marginBottom: 12 }}>Liegenschaftsdaten</H2>
-            <Text style={{ marginBottom: 16 }}>{formattedAddress}</Text>
 
             {/* Primary Details Section */}
             <View style={PROPERTY_DETAILS_STYLES.detailsSection}>

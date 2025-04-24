@@ -8,6 +8,7 @@ import {
   H3,
 } from '@/ui/layout/property-pdf/components/snippets/typography';
 import { PDF_STYLES } from '@/ui/layout/property-pdf/components/templates/default/styles';
+import { PROPERTY_DETAILS_STYLES } from '@/ui/layout/property-pdf/components/templates/default/pages/property-details-styles';
 import { DefaultDocumentationTemplateProps } from '@/ui/layout/property-pdf/types/types';
 import { Page, Text, View, Image } from '@react-pdf/renderer';
 import { useMemo } from 'react';
@@ -57,59 +58,46 @@ export const MapPage = ({
         <Row>
           <Col width="100%">
             <H2 style={{ marginBottom: 12 }}>Standort & Umgebung</H2>
-            <Text style={{ marginBottom: 16 }}>{formattedAddress}</Text>
 
-            {addressMapUrl && (
-              <View
-                style={{
-                  marginTop: 20,
-                  marginBottom: 20,
-                  border: '1pt solid #E5E5E5',
-                  borderRadius: 4,
-                  padding: 2,
-                  overflow: 'hidden',
-                }}
-              >
-                <Image
-                  src={addressMapUrl}
-                  style={{
-                    width: '100%',
-                    height: 400,
-                    objectFit: 'cover',
-                    borderRadius: 2,
-                  }}
-                />
-              </View>
-            )}
+            <View style={PROPERTY_DETAILS_STYLES.mapPageContainer}>
+              <Text style={PROPERTY_DETAILS_STYLES.mapPageAddress}>
+                {formattedAddress}
+              </Text>
 
-            {/* Additional location information if available */}
-            {property.address?.locationDescription && (
-              <View style={{ marginTop: 20 }}>
-                <H3 style={{ marginBottom: 8 }}>Lage</H3>
-                <Text style={{ lineHeight: 1.5 }}>
-                  {property.address.locationDescription}
-                </Text>
-              </View>
-            )}
+              {/* Map Image */}
+              {addressMapUrl && (
+                <View style={PROPERTY_DETAILS_STYLES.mapImageWrapper}>
+                  <Image
+                    src={addressMapUrl}
+                    style={PROPERTY_DETAILS_STYLES.mapFullWidthImage}
+                  />
+                </View>
+              )}
 
-            {/* Coordinates if available */}
-            {property.address?.addressLat && property.address?.addressLng && (
-              <View style={{ marginTop: 20 }}>
-                <H3 style={{ marginBottom: 8 }}>Koordinaten</H3>
-                <Text>Breitengrad: {property.address.addressLat}</Text>
-                <Text>Längengrad: {property.address.addressLng}</Text>
-              </View>
-            )}
+              {/* Location Description */}
+              {property.address?.locationDescription && (
+                <View style={PROPERTY_DETAILS_STYLES.locationInfoSection}>
+                  <H3 style={PROPERTY_DETAILS_STYLES.sectionTitle}>
+                    Lage & Umgebung
+                  </H3>
+                  <Text style={PROPERTY_DETAILS_STYLES.locationDescription}>
+                    {property.address.locationDescription}
+                  </Text>
+                </View>
+              )}
 
-            {/* Public transportation info if available */}
-            {property.address?.publicTransportation && (
-              <View style={{ marginTop: 20 }}>
-                <H3 style={{ marginBottom: 8 }}>Öffentlicher Verkehr</H3>
-                <Text style={{ lineHeight: 1.5 }}>
-                  {property.address.publicTransportation}
-                </Text>
-              </View>
-            )}
+              {/* Public Transportation Info */}
+              {property.address?.publicTransportation && (
+                <View style={PROPERTY_DETAILS_STYLES.locationInfoSection}>
+                  <H3 style={PROPERTY_DETAILS_STYLES.sectionTitle}>
+                    Öffentlicher Verkehr
+                  </H3>
+                  <Text style={PROPERTY_DETAILS_STYLES.transportationInfo}>
+                    {property.address.publicTransportation}
+                  </Text>
+                </View>
+              )}
+            </View>
           </Col>
         </Row>
       </Section>
