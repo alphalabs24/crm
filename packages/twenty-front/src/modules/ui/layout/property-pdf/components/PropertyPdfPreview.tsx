@@ -29,12 +29,38 @@ const StyledPDFViewer = styled(PDFViewer)`
 `;
 
 export const fieldsToShowOnPdf = [
+  // Primary information
   'category',
   ...Object.values(CATEGORY_SUBTYPES),
   'rooms',
   'offerType',
   'availableFrom',
   'constructionYear',
+];
+
+export const fieldsToShowOnDocumentation = [
+  ...fieldsToShowOnPdf,
+  'renovationYear',
+  'floor',
+  'numberOfFloors',
+
+  // Financial information
+  'sellingPrice',
+  'rentNet',
+  'rentExtra',
+
+  // Measurements
+  'livingSurface',
+  'usableSurface',
+  'surface',
+  'volume',
+  'ceilingHeight',
+  'hallHeight',
+
+  // Additional details
+  'maximalFloorLoading',
+  'carryingCapacityCrane',
+  'carryingCapacityElevator',
 ];
 
 export type PropertyPdfPreviewProps = {

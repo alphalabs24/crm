@@ -6,6 +6,7 @@ import { FirstPage } from './pages/FirstPage';
 import { Footer } from './pages/FooterComponent';
 import { GalleryPage } from './pages/GalleryPage';
 import { PropertyDetailsPage } from './pages/PropertyDetailsPage';
+import { PropertyDescriptionPage } from './pages/PropertyDescriptionPage';
 import { TableOfContentsPage } from './pages/TableOfContentsPage';
 
 export const DefaultDocumentationTemplate = ({
@@ -45,6 +46,10 @@ export const DefaultDocumentationTemplate = ({
     return pages;
   }, [additionalImages]);
 
+  // Check if there's a description to show
+  const hasDescription =
+    !!property.description && property.description.trim().length > 0;
+
   // Create footer component for reuse
   const footerComponent = (
     <Footer
@@ -76,7 +81,23 @@ export const DefaultDocumentationTemplate = ({
         orientation={orientation}
         Footer={footerComponent}
         hasGallery={galleryPages.length > 0}
+        hasDescription={hasDescription}
       />
+
+      {/* Add the description page if a description exists */}
+      {hasDescription && (
+        <PropertyDescriptionPage
+          property={property}
+          orientation={orientation}
+          propertyPrice={propertyPrice}
+          propertyAddress={propertyAddress}
+          propertyImages={propertyImages}
+          fields={fields}
+          propertyFeatures={propertyFeatures}
+          agencyLogo={agencyLogo}
+          Footer={footerComponent}
+        />
+      )}
 
       <PropertyDetailsPage
         property={property}
@@ -87,8 +108,8 @@ export const DefaultDocumentationTemplate = ({
         fields={fields}
         showPublisherBranding={showPublisherBranding}
         agencyLogo={agencyLogo}
-        Footer={footerComponent}
         propertyFeatures={propertyFeatures}
+        Footer={footerComponent}
       />
 
       {galleryPages.map(({ imagesSubset, pageIndex }) => (

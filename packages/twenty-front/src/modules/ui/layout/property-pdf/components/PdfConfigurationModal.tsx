@@ -19,7 +19,11 @@ import { useSubcategoryByCategory } from '@/object-record/record-show/hooks/useS
 import { CATEGORY_SUBTYPES } from '@/record-edit/constants/CategorySubtypes';
 import { currentWorkspaceState } from '@/auth/states/currentWorkspaceState';
 
-import { PropertyPdfPreview, fieldsToShowOnPdf } from './PropertyPdfPreview';
+import {
+  PropertyPdfPreview,
+  fieldsToShowOnDocumentation,
+  fieldsToShowOnPdf,
+} from './PropertyPdfPreview';
 import { PdfFlyerConfiguration, PropertyPdfType } from '../types/types';
 import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadataItem';
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
@@ -96,8 +100,12 @@ export const PdfConfigurationModal = forwardRef<
 
   // Filter fields based on property category and subtype
   const relevantFields = useMemo(() => {
+    const fieldsToUse =
+      pdfType === 'PropertyFlyer'
+        ? fieldsToShowOnPdf
+        : fieldsToShowOnDocumentation;
     // Start with the basic fields without subtypes
-    const baseFields = fieldsToShowOnPdf.filter(
+    const baseFields = fieldsToUse.filter(
       (field) => !Object.values(CATEGORY_SUBTYPES).includes(field as any),
     );
 

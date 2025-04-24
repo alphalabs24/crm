@@ -7,6 +7,7 @@ import { Link, Page, Text, View } from '@react-pdf/renderer';
 export type TableOfContentsPageProps =
   Partial<DefaultDocumentationTemplateProps> & {
     hasGallery: boolean;
+    hasDescription?: boolean;
   };
 
 export const TableOfContentsPage = ({
@@ -14,7 +15,17 @@ export const TableOfContentsPage = ({
   orientation,
   Footer,
   hasGallery,
+  hasDescription = false,
 }: TableOfContentsPageProps) => {
+  // Calculate page numbers based on what content is available
+  const detailsPageNumber = 3; // First page + TOC page + 1
+  const descriptionPageNumber = hasDescription ? detailsPageNumber + 1 : 0;
+  const galleryPageNumber = hasGallery
+    ? hasDescription
+      ? (descriptionPageNumber as number) + 1
+      : detailsPageNumber + 1
+    : 0;
+
   return (
     <Page
       style={PDF_STYLES.page}
@@ -27,16 +38,29 @@ export const TableOfContentsPage = ({
         <View style={PDF_STYLES.tocContainer}>
           <Link src="#propertyDetails" style={PDF_STYLES.tocLink}>
             <View style={PDF_STYLES.tocItem}>
-              <Text style={PDF_STYLES.tocItemText}>Über das Objekt</Text>
-              <Text style={PDF_STYLES.tocItemPage}>3</Text>
+              <Text style={PDF_STYLES.tocItemText}>Liegenschaftsdaten</Text>
+              <Text style={PDF_STYLES.tocItemPage}>{detailsPageNumber}</Text>
             </View>
           </Link>
+
+          {hasDescription && (
+            <Link src="#propertyDescription" style={PDF_STYLES.tocLink}>
+              <View style={PDF_STYLES.tocItem}>
+                <Text style={PDF_STYLES.tocItemText}>
+                  Über die Liegenschaft
+                </Text>
+                <Text style={PDF_STYLES.tocItemPage}>
+                  {descriptionPageNumber}
+                </Text>
+              </View>
+            </Link>
+          )}
 
           {hasGallery && (
             <Link src="#gallery" style={PDF_STYLES.tocLink}>
               <View style={PDF_STYLES.tocItem}>
                 <Text style={PDF_STYLES.tocItemText}>Bildergalerie</Text>
-                <Text style={PDF_STYLES.tocItemPage}>4</Text>
+                <Text style={PDF_STYLES.tocItemPage}>{galleryPageNumber}</Text>
               </View>
             </Link>
           )}
