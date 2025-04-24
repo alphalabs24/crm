@@ -37,15 +37,33 @@ export type PropertyPdfProps = {
   showPublisherPhone?: boolean;
 };
 
-export type PdfConfiguration = {
-  showAllImages: boolean;
-  includeFeatures: boolean;
+export type DefaultDocumentationTemplateProps = PropertyPdfProps & {
+  addressMapUrl?: string;
+  floorplanUrl?: string;
+  showAddressMap?: boolean;
+  showAdditionalDocuments?: boolean;
+  Footer?: React.ReactNode;
+};
+
+export type PdfBaseConfiguration = {
   selectedFields: string[];
-  orientation: 'portrait' | 'landscape';
   // Publisher options
   showPublisherBranding: boolean;
   showPublisherEmail: boolean;
   showPublisherPhone: boolean;
+};
+
+// Specific configuration for the flyer PDF
+export type PdfFlyerConfiguration = PdfBaseConfiguration & {
+  showAllImages: boolean;
+  includeFeatures: boolean;
+  orientation: 'portrait' | 'landscape';
+};
+
+// Specific configuration for the documentation PDF
+export type PdfDocumentationConfiguration = PdfBaseConfiguration & {
+  showAddressMap: boolean;
+  showAdditionalDocuments: boolean;
 };
 
 export type PropertyPdfTemplate = React.FC<
@@ -53,73 +71,3 @@ export type PropertyPdfTemplate = React.FC<
     type: PropertyPdfType;
   }
 >;
-
-// Props for various sections of the PDF document
-export type PropertyHeroProps = {
-  property: ObjectRecord;
-  formattedAddress: string;
-  price: string;
-  coverImage?: string;
-  isFlyer?: boolean;
-};
-
-export type FeatureTagsProps = {
-  features: string[];
-  isFlyer?: boolean;
-};
-
-export type PropertyOverviewProps = {
-  property: ObjectRecord;
-  isFlyer?: boolean;
-};
-
-export type PropertyDescriptionProps = {
-  description?: string;
-};
-
-export type PropertyGalleryProps = {
-  images: Attachment[];
-  isFlyer?: boolean;
-  startIndex?: number;
-};
-
-export type AgencyInfoProps = {
-  property: ObjectRecord;
-  isFlyer?: boolean;
-};
-
-export type FlyerContactInfoProps = {
-  property: ObjectRecord;
-  isFlyer?: boolean;
-};
-
-export type FlyerGalleryProps = {
-  images: Attachment[];
-};
-
-export type DocumentFooterProps = {
-  property: ObjectRecord;
-  isFlyer?: boolean;
-};
-
-export type PropertyDetailsProps = {
-  property: ObjectRecord;
-};
-
-export type BuildingInfoProps = {
-  property: ObjectRecord;
-};
-
-export type VirtualTourProps = {
-  virtualTour?: {
-    primaryLinkUrl?: string;
-  };
-};
-
-export type PropertyDocFirstPageProps = {
-  property: ObjectRecord;
-  formattedAddress: string;
-  price: string;
-  propertyImages?: Attachment[];
-  orientation: 'portrait' | 'landscape';
-};

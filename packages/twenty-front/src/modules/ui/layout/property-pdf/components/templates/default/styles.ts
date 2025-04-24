@@ -196,6 +196,42 @@ export const PDF_STYLES = StyleSheet.create({
     objectFit: 'cover',
   },
 
+  // Documentation image gallery - 2x3 grid (6 images per page)
+  imageGalleryGrid: {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: DEFAULT_THEME.spacing.md,
+    width: '100%',
+    height: '100%',
+    justifyContent: 'space-between',
+  },
+
+  imageGalleryItem: {
+    width: `45%`,
+    height: '30%',
+    marginBottom: DEFAULT_THEME.spacing.md,
+  },
+
+  imageGalleryImage: {
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
+  },
+
+  imageGalleryCaption: {
+    fontSize: DEFAULT_THEME.fonts.sizes.xs,
+    color: DEFAULT_THEME.colors.text.secondary,
+    marginTop: DEFAULT_THEME.spacing.xxs,
+    textAlign: 'center',
+  },
+
+  galleryPageTitle: {
+    borderBottom: `1px solid ${DEFAULT_THEME.colors.divider}`,
+    paddingBottom: DEFAULT_THEME.spacing.sm,
+    marginBottom: DEFAULT_THEME.spacing.md,
+  },
+
   // Flyer-specific gallery
   flyerGallery: {
     display: 'flex',
@@ -213,13 +249,18 @@ export const PDF_STYLES = StyleSheet.create({
 
   // Footer
   footer: {
-    borderTop: `1pt solid ${DEFAULT_THEME.colors.divider}`,
-    marginTop: 'auto',
+    borderTop: `0.5pt solid ${DEFAULT_THEME.colors.divider}`,
+    paddingHorizontal: DEFAULT_THEME.spacing.md,
     paddingTop: DEFAULT_THEME.spacing.md,
     display: 'flex',
     flexDirection: 'column',
-    gap: DEFAULT_THEME.spacing.xs,
-    alignItems: 'center',
+    justifyContent: 'center',
+    gap: DEFAULT_THEME.spacing.xxs,
+    height: FOOTER_HEIGHT,
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
   },
 
   flyerFooter: {
@@ -331,5 +372,46 @@ export const PDF_STYLES = StyleSheet.create({
     maxHeight: 60,
     objectFit: 'contain',
     objectPosition: 'right center',
+  },
+
+  // Table of Contents styles
+  tocContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: DEFAULT_THEME.spacing.sm,
+    marginTop: DEFAULT_THEME.spacing.lg,
+  },
+
+  tocItem: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: DEFAULT_THEME.spacing.xs,
+    borderBottom: `0.5pt dotted ${DEFAULT_THEME.colors.divider}`,
+  },
+
+  tocItemNumber: {
+    fontSize: DEFAULT_THEME.fonts.sizes.md,
+    fontWeight: DEFAULT_THEME.fonts.weights.semibold,
+    width: '30px',
+    color: DEFAULT_THEME.colors.primary,
+  },
+
+  tocItemText: {
+    fontSize: DEFAULT_THEME.fonts.sizes.lg,
+    color: DEFAULT_THEME.colors.textDark,
+    flex: 1,
+  },
+
+  tocItemPage: {
+    fontSize: DEFAULT_THEME.fonts.sizes.md,
+    fontWeight: DEFAULT_THEME.fonts.weights.normal,
+    width: '30px',
+    textAlign: 'right',
+    color: DEFAULT_THEME.colors.textMedium,
+  },
+
+  tocLink: {
+    textDecoration: 'none',
   },
 });

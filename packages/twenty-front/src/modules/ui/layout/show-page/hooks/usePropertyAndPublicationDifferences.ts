@@ -36,6 +36,7 @@ const doNotCompareKeys = [
   'deletedAt',
   'agency',
   'emailTemplateId',
+  'assignee',
 ];
 
 export type PropertyPublicationDifference = {

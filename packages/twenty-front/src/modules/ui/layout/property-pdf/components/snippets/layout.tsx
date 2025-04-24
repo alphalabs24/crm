@@ -25,12 +25,14 @@ export const Section = ({
   height = '25%',
   removePadding = false,
   backgroundColor = 'white',
+  fixed = false,
 }: {
   children: ReactNode;
   style?: Style;
   height?: string | number;
   removePadding?: boolean;
   backgroundColor?: string;
+  fixed?: boolean;
 }) => {
   return (
     <View
@@ -43,6 +45,7 @@ export const Section = ({
         },
         style,
       ]}
+      fixed={fixed}
     >
       {children}
     </View>
@@ -54,11 +57,13 @@ export const Col = ({
   style = {},
   width = '100%',
   gap = 1,
+  render,
 }: {
-  children: ReactNode;
+  children?: ReactNode;
   style?: Style;
   width?: string | number;
   gap?: number;
+  render?: (props: { pageNumber: number; subPageNumber: number }) => ReactNode;
 }) => {
   return (
     <View
@@ -67,6 +72,7 @@ export const Col = ({
         style,
         { width: width, gap: gap ? DEFAULT_THEME.spacing.sm * gap : undefined },
       ]}
+      render={render}
     >
       {children}
     </View>

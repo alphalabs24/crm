@@ -6,7 +6,7 @@ import { ModalRefType } from '@/ui/layout/modal/components/Modal';
 import { DefaultPropertyPdfTemplate } from '@/ui/layout/property-pdf/components/templates/default/DefaultPropertyPdfTemplate';
 import { PdfTheme } from '@/ui/layout/property-pdf/constants/defaultTheme';
 import {
-  PdfConfiguration,
+  PdfFlyerConfiguration,
   PropertyPdfResult,
   PropertyPdfTemplate,
   PropertyPdfType,
@@ -34,7 +34,7 @@ const fieldsToShowOnPdf = [
 ];
 
 // Default PDF configuration
-const defaultPdfConfiguration: PdfConfiguration = {
+const defaultPdfConfiguration: PdfFlyerConfiguration = {
   showAllImages: true,
   includeFeatures: true,
   selectedFields: fieldsToShowOnPdf,
@@ -95,12 +95,12 @@ export const usePropertyPdfGenerator = ({
   const generatePdf = useCallback(
     async (
       type: PropertyPdfType,
-      orientationOrConfig?: 'portrait' | 'landscape' | PdfConfiguration,
+      orientationOrConfig?: 'portrait' | 'landscape' | PdfFlyerConfiguration,
     ) => {
       if (!record) return null;
 
       // Handle both old and new parameter formats for backward compatibility
-      let config: PdfConfiguration;
+      let config: PdfFlyerConfiguration;
       if (typeof orientationOrConfig === 'string') {
         // Old format: just orientation was passed
         config = {
@@ -239,7 +239,7 @@ export const usePropertyPdfGenerator = ({
   const downloadPdf = useCallback(
     async (
       type: PropertyPdfType,
-      orientationOrConfig?: 'portrait' | 'landscape' | PdfConfiguration,
+      orientationOrConfig?: 'portrait' | 'landscape' | PdfFlyerConfiguration,
     ) => {
       const result = await generatePdf(type, orientationOrConfig);
       if (result) {

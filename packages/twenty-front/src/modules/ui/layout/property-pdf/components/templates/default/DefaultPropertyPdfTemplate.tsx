@@ -2,6 +2,7 @@
 import { Document } from '@react-pdf/renderer';
 import { PropertyPdfProps, PropertyPdfType } from '../../../types/types';
 import { DefaultFlyerTemplate } from './DefaultFlyerTemplate';
+import { DefaultDocumentationTemplate } from './DefaultDocumentationTemplate';
 
 export type DefaultPropertyPdfTemplateProps = PropertyPdfProps & {
   type: PropertyPdfType;
@@ -38,7 +39,7 @@ export const DefaultPropertyPdfTemplate = ({
           showPublisherPhone={showPublisherPhone}
         />
       ) : (
-        <DefaultFlyerTemplate
+        <DefaultDocumentationTemplate
           property={property}
           propertyPrice={propertyPrice}
           propertyAddress={propertyAddress}

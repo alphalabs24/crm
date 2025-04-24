@@ -1,7 +1,6 @@
 import { useLingui } from '@lingui/react/macro';
 import styled from '@emotion/styled';
 import { forwardRef, useState, useCallback, useMemo, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { useRecoilState } from 'recoil';
 
 import { ObjectRecord } from '@/object-record/types/ObjectRecord';
@@ -15,304 +14,51 @@ import {
   StyledModalTitle,
   StyledModalTitleContainer,
 } from '@/ui/layout/show-page/components/nm/modal-components/ModalComponents';
-import {
-  Button,
-  IconCheck,
-  IconFile,
-  IconSettings,
-  IconPhoto,
-  IconListCheck,
-  MOBILE_VIEWPORT,
-  IconChevronDown,
-  IconBuildingSkyscraper,
-  IconMail,
-  IconPhone,
-} from 'twenty-ui';
+import { Button, IconFile, IconSettings } from 'twenty-ui';
 import { useSubcategoryByCategory } from '@/object-record/record-show/hooks/useSubcategoryByCategory';
 import { CATEGORY_SUBTYPES } from '@/record-edit/constants/CategorySubtypes';
 import { currentWorkspaceState } from '@/auth/states/currentWorkspaceState';
 
 import { PropertyPdfPreview, fieldsToShowOnPdf } from './PropertyPdfPreview';
-import { PdfConfiguration, PropertyPdfType } from '../types/types';
+import { PdfFlyerConfiguration, PropertyPdfType } from '../types/types';
 import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadataItem';
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
-import { useTheme } from '@emotion/react';
 import { usePropertyImages } from '../../show-page/hooks/usePropertyImages';
+
+// Import our new shared components and utilities
+import {
+  StyledModalLayout,
+  StyledSectionDivider,
+  StyledSectionTitle,
+  StyledFieldsGrid,
+  StyledFieldCard,
+  StyledFieldLabelContainer,
+  StyledFieldLabel,
+  StyledSelectionOrder,
+  StyledOptionsGroup,
+  StyledOptionsPanel,
+  StyledPreviewContainer,
+  StyledPreviewPanel,
+  CollapsibleSection,
+} from './shared/PdfConfigurationComponents';
+
+import {
+  useAvailabilityChecks,
+  PublisherInformationSection,
+  FlyerContentOptions,
+} from './shared/PdfConfigurationUtils';
 
 // Extended modal container with minimum height
 const StyledModalContainer = styled(BaseModalContainer)`
   min-height: 80vh;
 `;
 
-const StyledFieldCard = styled.div<{ isSelected: boolean }>`
-  align-items: center;
-  background: ${({ theme, isSelected }) =>
-    isSelected ? theme.background.tertiary : theme.background.secondary};
-  border-radius: ${({ theme }) => theme.border.radius.sm};
-  border: 1px solid ${({ theme }) => theme.border.color.medium};
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  padding: ${({ theme }) => theme.spacing(1.5)};
-  transition: all 0.2s ease;
-
-  &:hover {
-    background: ${({ theme }) => theme.background.tertiary};
-    border-color: ${({ theme }) => theme.border.color.medium};
-  }
-`;
-
-const StyledFieldLabelContainer = styled.div`
-  display: flex;
-  align-items: center;
-  flex: 1;
-`;
-
-const StyledFieldLabel = styled.span<{ isSelected: boolean }>`
-  color: ${({ theme, isSelected }) =>
-    isSelected ? theme.font.color.primary : theme.font.color.secondary};
-  font-size: ${({ theme }) => theme.font.size.sm};
-  font-weight: ${({ theme }) => theme.font.weight.medium};
-`;
-
-const StyledFieldsGrid = styled.div`
-  display: grid;
-  gap: ${({ theme }) => theme.spacing(2)};
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  margin-bottom: ${({ theme }) => theme.spacing(2)};
-`;
-
-const StyledModalLayout = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: ${({ theme }) => theme.spacing(4)};
-  flex: 1;
-
-  @media (max-width: ${MOBILE_VIEWPORT}px) {
-    flex-direction: column;
-  }
-`;
-
-const StyledOptionCard = styled.div<{ isSelected: boolean }>`
-  align-items: center;
-  background: ${({ theme, isSelected }) =>
-    isSelected ? theme.background.tertiary : theme.background.secondary};
-  border-radius: ${({ theme }) => theme.border.radius.sm};
-  border: 1px solid ${({ theme }) => theme.border.color.medium};
-  cursor: pointer;
-  display: flex;
-  gap: ${({ theme }) => theme.spacing(2)};
-  padding: ${({ theme }) => theme.spacing(2)};
-  transition: all 0.2s ease;
-
-  &:hover {
-    background: ${({ theme }) => theme.background.tertiary};
-  }
-`;
-
-const StyledOptionCardContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(2)};
-`;
-
-const StyledOptionContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-`;
-
-const StyledOptionDescription = styled.span`
-  color: ${({ theme }) => theme.font.color.tertiary};
-  font-size: ${({ theme }) => theme.font.size.xs};
-`;
-
-const StyledOptionIcon = styled.div<{ isSelected: boolean }>`
-  color: ${({ theme, isSelected }) =>
-    isSelected ? theme.color.blue : theme.font.color.secondary};
-  display: flex;
-`;
-
-const StyledOptionLabel = styled.span<{ isSelected: boolean }>`
-  color: ${({ theme, isSelected }) =>
-    isSelected ? theme.font.color.primary : theme.font.color.secondary};
-  font-size: ${({ theme }) => theme.font.size.sm};
-  font-weight: ${({ theme }) => theme.font.weight.medium};
-`;
-
-const StyledOptionsGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(4)};
-`;
-
-const StyledOptionsPanel = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(4)};
-  overflow-y: auto;
-  padding-right: ${({ theme }) => theme.spacing(2)};
-  flex: 0.3;
-
-  @media (max-width: ${MOBILE_VIEWPORT}px) {
-    width: 100%;
-    padding-right: 0;
-  }
-`;
-
-const StyledPreviewContainer = styled.div`
-  border: 1px solid ${({ theme }) => theme.border.color.medium};
-  border-radius: ${({ theme }) => theme.border.radius.md};
-  box-shadow: ${({ theme }) => theme.boxShadow.light};
-  flex: 1;
-  height: 500px;
-  overflow: hidden;
-
-  @media (max-width: ${MOBILE_VIEWPORT}px) {
-    height: 400px;
-  }
-`;
-
-const StyledPreviewPanel = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-
-  @media (max-width: ${MOBILE_VIEWPORT}px) {
-    width: 100%;
-  }
-`;
-
-const StyledSectionDivider = styled.div`
-  background-color: ${({ theme }) => theme.border.color.light};
-  height: 1px;
-  margin: ${({ theme }) => theme.spacing(3)} 0;
-  width: 100%;
-`;
-
-const StyledSectionHeader = styled.div`
-  align-items: center;
-  color: ${({ theme }) => theme.font.color.primary};
-  cursor: pointer;
-  display: flex;
-  font-size: ${({ theme }) => theme.font.size.md};
-  font-weight: ${({ theme }) => theme.font.weight.medium};
-  justify-content: space-between;
-  margin: 0 0 ${({ theme }) => theme.spacing(2)};
-  user-select: none;
-`;
-
-const StyledSectionContent = styled(motion.div)`
-  overflow: hidden;
-`;
-
-const StyledChevron = styled(motion.div)`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const StyledSectionTitle = styled.h4`
-  color: ${({ theme }) => theme.font.color.primary};
-  font-size: ${({ theme }) => theme.font.size.md};
-  font-weight: ${({ theme }) => theme.font.weight.medium};
-  margin: 0 0 ${({ theme }) => theme.spacing(2)};
-`;
-
-const StyledSelectionOrder = styled.div`
-  align-items: center;
-  border-radius: 50%;
-  color: ${({ theme }) => theme.color.blue};
-  display: flex;
-  font-size: ${({ theme }) => theme.font.size.xs};
-`;
-
-const StyledOptionCardContent = styled.div<{ $disabled?: boolean }>`
-  align-items: center;
-  display: flex;
-  gap: ${({ theme }) => theme.spacing(2)};
-  width: 100%;
-  opacity: ${({ $disabled }) => ($disabled ? 0.5 : 1)};
-  cursor: ${({ $disabled }) => ($disabled ? 'not-allowed' : 'pointer')};
-`;
-
-const StyledOptionIconContainer = styled.div`
-  display: flex;
-`;
-
-const StyledOptionsInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const StyledOptionTitle = styled.span`
-  color: ${({ theme }) => theme.font.color.primary};
-  font-size: ${({ theme }) => theme.font.size.sm};
-  font-weight: ${({ theme }) => theme.font.weight.medium};
-`;
-
-const StyledCheckIcon = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
 export type PdfConfigurationModalProps = {
   property: ObjectRecord;
   pdfType: PropertyPdfType;
   onClose: () => void;
-  onGenerate: (config: PdfConfiguration) => Promise<void>;
+  onGenerate: (config: PdfFlyerConfiguration) => Promise<void>;
   isGenerating?: boolean;
-};
-
-// Collapsible section component
-interface CollapsibleSectionProps {
-  title: string;
-  children: React.ReactNode;
-  defaultOpen?: boolean;
-}
-
-const CollapsibleSection = ({
-  title,
-  children,
-  defaultOpen = true,
-}: CollapsibleSectionProps) => {
-  const [isOpen, setIsOpen] = useState(defaultOpen);
-  const [isHovering, setIsHovering] = useState(false);
-  const theme = useTheme();
-
-  return (
-    <>
-      <StyledSectionHeader
-        onClick={() => setIsOpen(!isOpen)}
-        onMouseEnter={() => setIsHovering(true)}
-        onMouseLeave={() => setIsHovering(false)}
-      >
-        {title}
-        {(isHovering || !isOpen) && (
-          <StyledChevron
-            animate={{ rotate: isOpen ? 0 : -90, opacity: 1 }}
-            transition={{ duration: 0.2 }}
-            initial={{ opacity: 0 }}
-          >
-            <IconChevronDown size={18} color={theme.font.color.secondary} />
-          </StyledChevron>
-        )}
-      </StyledSectionHeader>
-      <AnimatePresence initial={false}>
-        {isOpen && (
-          <StyledSectionContent
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.2 }}
-          >
-            {children}
-          </StyledSectionContent>
-        )}
-      </AnimatePresence>
-    </>
-  );
 };
 
 export const PdfConfigurationModal = forwardRef<
@@ -330,7 +76,12 @@ export const PdfConfigurationModal = forwardRef<
     targetObjectNameSingular: CoreObjectNameSingular.Property,
   });
 
-  const hasMultipleImages = (images?.length || 0) > 1;
+  // Use our utility to check for data availability
+  const availability = useAvailabilityChecks(
+    property,
+    currentWorkspace?.logo,
+    images?.length || 0,
+  );
 
   const { objectMetadataItem } = useObjectMetadataItem({
     objectNameSingular: CoreObjectNameSingular.Property,
@@ -369,7 +120,7 @@ export const PdfConfigurationModal = forwardRef<
   }, [subcategory]);
 
   // Configuration state
-  const [config, setConfig] = useState<PdfConfiguration>({
+  const [config, setConfig] = useState<PdfFlyerConfiguration>({
     showAllImages: true,
     includeFeatures: true,
     selectedFields: [...relevantFields],
@@ -390,22 +141,26 @@ export const PdfConfigurationModal = forwardRef<
 
   // Disable showAllImages if there aren't multiple images
   useEffect(() => {
+    const { hasMultipleImages } = availability;
     if (!hasMultipleImages && config.showAllImages) {
       setConfig((prev) => ({
         ...prev,
         showAllImages: false,
       }));
+    } else if (hasMultipleImages) {
+      setConfig((prev) => ({
+        ...prev,
+        showAllImages: true,
+      }));
     }
-  }, [hasMultipleImages, config.showAllImages]);
+  }, [availability, availability.hasMultipleImages, config.showAllImages]);
 
   // Disable publisher options when related data is not available
   useEffect(() => {
-    const hasAgencyName = !!property?.agency?.name;
-    const hasAgencyEmail = !!property?.agency?.email?.primaryEmail;
-    const hasAgencyPhone = !!property?.agency?.phone?.primaryPhone;
-    const hasWorkspaceLogo = !!currentWorkspace?.logo;
+    const { hasAgencyName, hasAgencyEmail, hasAgencyPhone, hasWorkspaceLogo } =
+      availability;
 
-    const updates: Partial<PdfConfiguration> = {};
+    const updates: Partial<PdfFlyerConfiguration> = {};
 
     if ((!hasAgencyName || !hasWorkspaceLogo) && config.showPublisherBranding) {
       updates.showPublisherBranding = false;
@@ -426,8 +181,7 @@ export const PdfConfigurationModal = forwardRef<
       }));
     }
   }, [
-    property?.agency,
-    currentWorkspace?.logo,
+    availability,
     config.showPublisherBranding,
     config.showPublisherEmail,
     config.showPublisherPhone,
@@ -469,138 +223,36 @@ export const PdfConfigurationModal = forwardRef<
     }
   }, [config, onGenerate, onClose]);
 
-  // Publisher Information Section
-  const renderPublisherInformationSection = () => {
-    const hasAgencyName = !!property?.agency?.name;
-    const hasAgencyEmail = !!property?.agency?.email?.primaryEmail;
-    const hasAgencyPhone = !!property?.agency?.phone?.primaryPhone;
-
+  // Render fields selection section
+  const renderFieldsSection = () => {
     return (
-      <>
-        <StyledSectionTitle>{t`Publisher Information`}</StyledSectionTitle>
-        <StyledOptionsGroup>
-          <StyledOptionCard
-            isSelected={config.showPublisherBranding}
-            onClick={() =>
-              hasAgencyName || currentWorkspace?.logo
-                ? setConfig((prev) => ({
-                    ...prev,
-                    showPublisherBranding: !prev.showPublisherBranding,
-                  }))
-                : null
-            }
-            style={{
-              opacity: hasAgencyName || currentWorkspace?.logo ? 1 : 0.5,
-              cursor:
-                hasAgencyName || currentWorkspace?.logo
-                  ? 'pointer'
-                  : 'not-allowed',
-            }}
-          >
-            <StyledOptionIcon
-              isSelected={
-                config.showPublisherBranding &&
-                (property?.agency?.name || currentWorkspace?.logo)
-              }
-            >
-              <IconBuildingSkyscraper size={18} />
-            </StyledOptionIcon>
-            <StyledOptionContent>
-              <StyledOptionLabel
-                isSelected={
-                  config.showPublisherBranding &&
-                  (property?.agency?.name || currentWorkspace?.logo)
-                }
-              >{t`Agency Branding`}</StyledOptionLabel>
-              <StyledOptionDescription>
-                {property?.agency?.name || currentWorkspace?.logo
-                  ? config.showPublisherBranding
-                    ? t`Including agency logo and name`
-                    : t`Excluding agency branding`
-                  : t`No agency details available`}
-              </StyledOptionDescription>
-            </StyledOptionContent>
-            {config.showPublisherBranding &&
-              (property?.agency?.name || currentWorkspace?.logo) && (
-                <IconCheck size={16} color="blue" />
-              )}
-          </StyledOptionCard>
-
-          <StyledOptionCard
-            isSelected={config.showPublisherEmail}
-            onClick={() =>
-              property?.agency?.email?.primaryEmail
-                ? setConfig((prev) => ({
-                    ...prev,
-                    showPublisherEmail: !prev.showPublisherEmail,
-                  }))
-                : null
-            }
-            style={{
-              opacity: hasAgencyEmail ? 1 : 0.5,
-              cursor: hasAgencyEmail ? 'pointer' : 'not-allowed',
-            }}
-          >
-            <StyledOptionIcon
-              isSelected={config.showPublisherEmail && hasAgencyEmail}
-            >
-              <IconMail size={18} />
-            </StyledOptionIcon>
-            <StyledOptionContent>
-              <StyledOptionLabel
-                isSelected={config.showPublisherEmail && hasAgencyEmail}
-              >{t`Contact Email`}</StyledOptionLabel>
-              <StyledOptionDescription>
-                {property?.agency?.email?.primaryEmail
-                  ? config.showPublisherEmail
-                    ? t`Including agency email address`
-                    : t`Excluding email contact details`
-                  : t`No email contact available`}
-              </StyledOptionDescription>
-            </StyledOptionContent>
-            {config.showPublisherEmail && hasAgencyEmail && (
-              <IconCheck size={16} color="blue" />
-            )}
-          </StyledOptionCard>
-
-          <StyledOptionCard
-            isSelected={config.showPublisherPhone}
-            onClick={() =>
-              hasAgencyPhone
-                ? setConfig((prev) => ({
-                    ...prev,
-                    showPublisherPhone: !prev.showPublisherPhone,
-                  }))
-                : null
-            }
-            style={{
-              opacity: hasAgencyPhone ? 1 : 0.5,
-              cursor: hasAgencyPhone ? 'pointer' : 'not-allowed',
-            }}
-          >
-            <StyledOptionIcon
-              isSelected={config.showPublisherPhone && hasAgencyPhone}
-            >
-              <IconPhone size={18} />
-            </StyledOptionIcon>
-            <StyledOptionContent>
-              <StyledOptionLabel
-                isSelected={config.showPublisherPhone && hasAgencyPhone}
-              >{t`Contact Phone`}</StyledOptionLabel>
-              <StyledOptionDescription>
-                {hasAgencyPhone
-                  ? config.showPublisherPhone
-                    ? t`Including agency phone number`
-                    : t`Excluding phone contact details`
-                  : t`No phone contact available`}
-              </StyledOptionDescription>
-            </StyledOptionContent>
-            {config.showPublisherPhone && hasAgencyPhone && (
-              <IconCheck size={16} color="blue" />
-            )}
-          </StyledOptionCard>
-        </StyledOptionsGroup>
-      </>
+      <CollapsibleSection title={t`Fields to Display`}>
+        <StyledFieldsGrid>
+          {relevantFields.map((field) => {
+            const isSelected = config.selectedFields.includes(field);
+            const index = config.selectedFields.indexOf(field);
+            return (
+              <StyledFieldCard
+                key={field}
+                isSelected={isSelected}
+                onClick={() => toggleField(field)}
+              >
+                <StyledFieldLabelContainer>
+                  <StyledFieldLabel isSelected={isSelected}>
+                    {
+                      objectMetadataItem?.fields.find((f) => f.name === field)
+                        ?.label
+                    }
+                  </StyledFieldLabel>
+                </StyledFieldLabelContainer>
+                {isSelected && (
+                  <StyledSelectionOrder>{index + 1}</StyledSelectionOrder>
+                )}
+              </StyledFieldCard>
+            );
+          })}
+        </StyledFieldsGrid>
+      </CollapsibleSection>
     );
   };
 
@@ -640,112 +292,24 @@ export const PdfConfigurationModal = forwardRef<
           <StyledModalLayout>
             <StyledOptionsPanel>
               <StyledOptionsGroup>
-                <CollapsibleSection title={t`Content Options`}>
-                  <StyledOptionCardContainer>
-                    <StyledOptionCard
-                      isSelected={config.showAllImages}
-                      onClick={() =>
-                        hasMultipleImages
-                          ? setConfig((prev) => ({
-                              ...prev,
-                              showAllImages: !prev.showAllImages,
-                            }))
-                          : null
-                      }
-                      style={{
-                        opacity: hasMultipleImages ? 1 : 0.5,
-                        cursor: hasMultipleImages ? 'pointer' : 'not-allowed',
-                      }}
-                    >
-                      <StyledOptionIcon
-                        isSelected={config.showAllImages && hasMultipleImages}
-                      >
-                        <IconPhoto size={18} />
-                      </StyledOptionIcon>
-                      <StyledOptionContent>
-                        <StyledOptionLabel
-                          isSelected={config.showAllImages && hasMultipleImages}
-                        >
-                          {t`Multiple Property Images`}
-                        </StyledOptionLabel>
-                        <StyledOptionDescription>
-                          {!hasMultipleImages
-                            ? t`Not enough images available`
-                            : config.showAllImages
-                              ? t`Showing all property images`
-                              : t`Showing only the main image`}
-                        </StyledOptionDescription>
-                      </StyledOptionContent>
-                      {config.showAllImages && hasMultipleImages && (
-                        <IconCheck size={16} color="blue" />
-                      )}
-                    </StyledOptionCard>
-
-                    <StyledOptionCard
-                      isSelected={config.includeFeatures}
-                      onClick={() =>
-                        setConfig((prev) => ({
-                          ...prev,
-                          includeFeatures: !prev.includeFeatures,
-                        }))
-                      }
-                    >
-                      <StyledOptionIcon isSelected={config.includeFeatures}>
-                        <IconListCheck size={18} />
-                      </StyledOptionIcon>
-                      <StyledOptionContent>
-                        <StyledOptionLabel
-                          isSelected={config.includeFeatures}
-                        >{t`Property Features`}</StyledOptionLabel>
-                        <StyledOptionDescription>
-                          {config.includeFeatures
-                            ? t`Including property features`
-                            : t`Excluding property features`}
-                        </StyledOptionDescription>
-                      </StyledOptionContent>
-                      {config.includeFeatures && (
-                        <IconCheck size={16} color="blue" />
-                      )}
-                    </StyledOptionCard>
-                  </StyledOptionCardContainer>
-                </CollapsibleSection>
+                <FlyerContentOptions
+                  config={config}
+                  setConfig={setConfig}
+                  availability={availability}
+                />
 
                 <StyledSectionDivider />
 
-                {renderPublisherInformationSection()}
+                <PublisherInformationSection
+                  property={property}
+                  config={config}
+                  setConfig={setConfig}
+                  availability={availability}
+                />
 
                 <StyledSectionDivider />
 
-                <CollapsibleSection title={t`Fields to Display`}>
-                  <StyledFieldsGrid>
-                    {relevantFields.map((field) => {
-                      const isSelected = config.selectedFields.includes(field);
-                      const index = config.selectedFields.indexOf(field);
-                      return (
-                        <StyledFieldCard
-                          key={field}
-                          isSelected={isSelected}
-                          onClick={() => toggleField(field)}
-                        >
-                          <StyledFieldLabelContainer>
-                            <StyledFieldLabel isSelected={isSelected}>
-                              {
-                                objectMetadataItem?.fields.find(
-                                  (f) => f.name === field,
-                                )?.label
-                              }
-                            </StyledFieldLabel>
-                          </StyledFieldLabelContainer>
-                          {isSelected && (
-                            <StyledSelectionOrder>
-                              {index + 1}
-                            </StyledSelectionOrder>
-                          )}
-                        </StyledFieldCard>
-                      );
-                    })}
-                  </StyledFieldsGrid>
-                </CollapsibleSection>
+                {renderFieldsSection()}
               </StyledOptionsGroup>
             </StyledOptionsPanel>
 

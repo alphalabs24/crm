@@ -9,9 +9,10 @@ import { DropdownMenuItemsContainer } from '@/ui/layout/dropdown/components/Drop
 import { useDropdown } from '@/ui/layout/dropdown/hooks/useDropdown';
 import { ModalRefType } from '@/ui/layout/modal/components/Modal';
 
+import { saveAs } from 'file-saver';
 import { usePropertyPdfGenerator } from '@/ui/layout/property-pdf/hooks/usePropertyPdfGenerator';
 import {
-  PdfConfiguration,
+  PdfFlyerConfiguration,
   PropertyPdfType,
 } from '@/ui/layout/property-pdf/types/types';
 import { css, useTheme } from '@emotion/react';
@@ -255,12 +256,9 @@ const DraggableDocumentItem = ({
   };
 
   const handleDownload = () => {
-    const a = window.document.createElement('a');
-    a.href = document.previewUrl;
-    a.download = document.file?.name || '';
-    window.document.body.appendChild(a);
-    a.click();
-    window.document.body.removeChild(a);
+    if (!document.file) return;
+    const blob = new Blob([document.file], { type: document.file.type });
+    saveAs(blob, document.file.name);
     closeDropdown();
   };
 
@@ -642,7 +640,9 @@ const PdfConfigurationModalWrapper = ({
     record: property,
   });
 
-  const handleGeneratePdf = async (config: PdfConfiguration): Promise<void> => {
+  const handleGeneratePdf = async (
+    config: PdfFlyerConfiguration,
+  ): Promise<void> => {
     try {
       const result = await propertyPdfGenerator.generatePdf(pdfType, config);
       if (result) {
