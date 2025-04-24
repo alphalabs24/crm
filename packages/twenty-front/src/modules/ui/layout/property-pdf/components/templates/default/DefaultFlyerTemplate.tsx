@@ -31,10 +31,7 @@ export const DefaultFlyerTemplate = ({
   orientation,
   fields,
   propertyFeatures,
-  // Publisher configuration options with defaults
-  showPublisherBranding = true,
-  showPublisherEmail = true,
-  showPublisherPhone = true,
+  configuration,
 }: DefaultFlyerTemplateProps) => {
   const firstImage = useMemo(() => {
     if (!propertyImages || propertyImages.length === 0) return null;
@@ -42,9 +39,10 @@ export const DefaultFlyerTemplate = ({
   }, [propertyImages]);
 
   const additionalImages = useMemo(() => {
+    if (!configuration?.showAllImages) return [];
     if (!propertyImages || propertyImages.length === 0) return [];
     return propertyImages.slice(1, 5);
-  }, [propertyImages]);
+  }, [configuration?.showAllImages, propertyImages]);
 
   const featuresForDisplay = useMemo(() => {
     if (!propertyFeatures || propertyFeatures.length === 0) return [];
@@ -68,7 +66,9 @@ export const DefaultFlyerTemplate = ({
 
   // Determine if we need to show the footer based on publisher settings
   const shouldShowFooter =
-    showPublisherBranding || showPublisherEmail || showPublisherPhone;
+    configuration?.showPublisherBranding ||
+    configuration?.showPublisherEmail ||
+    configuration?.showPublisherPhone;
 
   // Adjust content height based on footer visibility
   const contentHeight = shouldShowFooter ? '30%' : '36%';
@@ -82,7 +82,7 @@ export const DefaultFlyerTemplate = ({
             <H2>{propertyPrice}</H2>
             <H3>{propertyAddress}</H3>
           </Col>
-          {showPublisherBranding && agencyLogo && (
+          {configuration?.showPublisherBranding && agencyLogo && (
             <Col width="10%">
               <View style={PDF_STYLES.agencyLogoContainer}>
                 <Image
@@ -141,7 +141,7 @@ export const DefaultFlyerTemplate = ({
       {shouldShowFooter && (
         <Section height={FOOTER_HEIGHT} style={PDF_STYLES.flyerFooter}>
           <Row gap={2}>
-            {showPublisherBranding && (
+            {configuration?.showPublisherBranding && (
               <Col width="33%">
                 <Row style={{ alignItems: 'center' }}>
                   <View style={{ aspectRatio: 1, height: '100%' }}>
@@ -161,35 +161,43 @@ export const DefaultFlyerTemplate = ({
 
             <Col
               width={
-                showPublisherBranding && showPublisherEmail
+                configuration?.showPublisherBranding &&
+                configuration?.showPublisherEmail
                   ? '33%'
-                  : showPublisherBranding || showPublisherEmail
+                  : configuration?.showPublisherBranding ||
+                      configuration?.showPublisherEmail
                     ? '67%'
                     : '100%'
               }
               style={{ justifyContent: 'center' }}
             >
-              {showPublisherPhone && property?.agency?.phone?.primaryPhone && (
-                <H2 align="center">{property?.agency?.phone?.primaryPhone}</H2>
-              )}
+              {configuration?.showPublisherPhone &&
+                property?.agency?.phone?.primaryPhone && (
+                  <H2 align="center">
+                    {property?.agency?.phone?.primaryPhone}
+                  </H2>
+                )}
             </Col>
 
-            {showPublisherEmail && property?.agency?.email?.primaryEmail && (
-              <Col
-                width={
-                  showPublisherBranding && showPublisherPhone
-                    ? '33%'
-                    : showPublisherBranding || showPublisherPhone
-                      ? '67%'
-                      : '100%'
-                }
-                style={{ justifyContent: 'center' }}
-              >
-                <Body align="right">
-                  {property?.agency?.email?.primaryEmail}
-                </Body>
-              </Col>
-            )}
+            {configuration?.showPublisherEmail &&
+              property?.agency?.email?.primaryEmail && (
+                <Col
+                  width={
+                    configuration?.showPublisherBranding &&
+                    configuration?.showPublisherPhone
+                      ? '33%'
+                      : configuration?.showPublisherBranding ||
+                          configuration?.showPublisherPhone
+                        ? '67%'
+                        : '100%'
+                  }
+                  style={{ justifyContent: 'center' }}
+                >
+                  <Body align="right">
+                    {property?.agency?.email?.primaryEmail}
+                  </Body>
+                </Col>
+              )}
           </Row>
         </Section>
       )}

@@ -20,14 +20,7 @@ export const DefaultDocumentationTemplate = ({
   fields,
   propertyFeatures,
   // Publisher configuration options with defaults
-  showPublisherBranding = true,
-  showPublisherEmail = true,
-  showPublisherPhone = true,
-  showAddressMap = false,
-  showDescription = false,
-  showAdditionalDocuments = false,
-  addressMapUrl,
-  floorplanUrl,
+  configuration,
 }: DefaultDocumentationTemplateProps) => {
   // Get all images except the first one (which is used as hero image)
   const additionalImages = useMemo(() => {
@@ -52,16 +45,11 @@ export const DefaultDocumentationTemplate = ({
   const hasDescription =
     !!property.description &&
     property.description.trim().length > 0 &&
-    showDescription;
+    configuration?.showDescription;
 
   // Create footer component for reuse
   const footerComponent = (
-    <Footer
-      property={property}
-      showPublisherBranding={showPublisherBranding}
-      showPublisherEmail={showPublisherEmail}
-      showPublisherPhone={showPublisherPhone}
-    />
+    <Footer property={property} configuration={configuration} />
   );
 
   return (
@@ -73,12 +61,9 @@ export const DefaultDocumentationTemplate = ({
         orientation={orientation}
         propertyImages={propertyImages}
         fields={fields}
-        showPublisherBranding={showPublisherBranding}
-        showPublisherEmail={showPublisherEmail}
-        showPublisherPhone={showPublisherPhone}
+        configuration={configuration}
         agencyLogo={agencyLogo}
         Footer={footerComponent}
-        showAddressMap={showAddressMap}
       />
 
       <TableOfContentsPage
@@ -87,7 +72,7 @@ export const DefaultDocumentationTemplate = ({
         Footer={footerComponent}
         hasGallery={galleryPages.length > 0}
         hasDescription={hasDescription}
-        showAddressMap={showAddressMap}
+        configuration={configuration}
       />
 
       {/* Add the description page if a description exists */}
@@ -95,6 +80,7 @@ export const DefaultDocumentationTemplate = ({
         <PropertyDescriptionPage
           property={property}
           orientation={orientation}
+          configuration={configuration}
           propertyPrice={propertyPrice}
           propertyAddress={propertyAddress}
           propertyImages={propertyImages}
@@ -106,12 +92,12 @@ export const DefaultDocumentationTemplate = ({
       )}
 
       {/* Display Map Page if enabled */}
-      {showAddressMap && addressMapUrl && (
+      {configuration?.showAddressMap && configuration?.addressMapUrl && (
         <MapPage
           property={property}
           propertyAddress={propertyAddress}
           orientation={orientation}
-          addressMapUrl={addressMapUrl}
+          addressMapUrl={configuration.addressMapUrl}
           Footer={footerComponent}
         />
       )}
@@ -123,22 +109,22 @@ export const DefaultDocumentationTemplate = ({
         orientation={orientation}
         propertyImages={propertyImages}
         fields={fields}
-        showPublisherBranding={showPublisherBranding}
+        configuration={configuration}
         agencyLogo={agencyLogo}
         propertyFeatures={propertyFeatures}
         Footer={footerComponent}
       />
 
-      {galleryPages.map(({ imagesSubset, pageIndex }) => (
-        <GalleryPage
-          key={pageIndex}
-          orientation={orientation}
-          imagesSubset={imagesSubset}
-          pageIndex={pageIndex}
-          property={property}
-          Footer={footerComponent}
-        />
-      ))}
+      {configuration?.showAllImages &&
+        galleryPages.map(({ imagesSubset, pageIndex }) => (
+          <GalleryPage
+            key={pageIndex}
+            orientation={orientation}
+            imagesSubset={imagesSubset}
+            pageIndex={pageIndex}
+            Footer={footerComponent}
+          />
+        ))}
     </>
   );
 };

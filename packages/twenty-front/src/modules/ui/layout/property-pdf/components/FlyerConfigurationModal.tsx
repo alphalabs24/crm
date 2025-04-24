@@ -19,16 +19,8 @@ import { useSubcategoryByCategory } from '@/object-record/record-show/hooks/useS
 import { CATEGORY_SUBTYPES } from '@/record-edit/constants/CategorySubtypes';
 import { currentWorkspaceState } from '@/auth/states/currentWorkspaceState';
 
-import {
-  PropertyPdfPreview,
-  fieldsToShowOnDocumentation,
-  fieldsToShowOnPdf,
-} from './PropertyPdfPreview';
-import {
-  ConfigurationType,
-  PdfFlyerConfiguration,
-  PropertyPdfType,
-} from '../types/types';
+import { PropertyPdfPreview, fieldsToShowOnPdf } from './PropertyPdfPreview';
+import { ConfigurationType, PdfFlyerConfiguration } from '../types/types';
 import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadataItem';
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { usePropertyImages } from '../../show-page/hooks/usePropertyImages';
@@ -68,7 +60,7 @@ export type PdfConfigurationModalProps = {
   isGenerating?: boolean;
 };
 
-export const PdfConfigurationModal = forwardRef<
+export const FlyerConfigurationModal = forwardRef<
   ModalRefType,
   PdfConfigurationModalProps
 >(({ property, onClose, onGenerate, isGenerating = false }, ref) => {
@@ -145,22 +137,6 @@ export const PdfConfigurationModal = forwardRef<
       selectedFields: [...relevantFields],
     }));
   }, [relevantFields]);
-
-  // Disable showAllImages if there aren't multiple images
-  useEffect(() => {
-    const { hasMultipleImages } = availability;
-    if (!hasMultipleImages && config.showAllImages) {
-      setConfig((prev) => ({
-        ...prev,
-        showAllImages: false,
-      }));
-    } else if (hasMultipleImages) {
-      setConfig((prev) => ({
-        ...prev,
-        showAllImages: true,
-      }));
-    }
-  }, [availability, availability.hasMultipleImages, config.showAllImages]);
 
   // Disable publisher options when related data is not available
   useEffect(() => {
@@ -333,4 +309,4 @@ export const PdfConfigurationModal = forwardRef<
   );
 });
 
-PdfConfigurationModal.displayName = 'PdfConfigurationModal';
+FlyerConfigurationModal.displayName = 'FlyerConfigurationModal';

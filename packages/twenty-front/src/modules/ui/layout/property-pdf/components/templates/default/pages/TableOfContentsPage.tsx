@@ -8,7 +8,6 @@ export type TableOfContentsPageProps =
   Partial<DefaultDocumentationTemplateProps> & {
     hasGallery: boolean;
     hasDescription?: boolean;
-    showAddressMap?: boolean;
   };
 
 export const TableOfContentsPage = ({
@@ -16,7 +15,7 @@ export const TableOfContentsPage = ({
   Footer,
   hasGallery,
   hasDescription = false,
-  showAddressMap = false,
+  configuration,
 }: TableOfContentsPageProps) => {
   // Calculate page numbers based on what content is available
   let currentPage = 3; // First page + TOC page + 1
@@ -25,7 +24,7 @@ export const TableOfContentsPage = ({
   const descriptionPageNumber = hasDescription ? currentPage++ : 0;
 
   // Map comes second if enabled
-  const mapPageNumber = showAddressMap ? currentPage++ : 0;
+  const mapPageNumber = configuration?.showAddressMap ? currentPage++ : 0;
 
   // Property details always comes after description and map
   const detailsPageNumber = currentPage++;
@@ -57,7 +56,7 @@ export const TableOfContentsPage = ({
             </Link>
           )}
 
-          {showAddressMap && (
+          {configuration?.showAddressMap && (
             <Link src="#location" style={PDF_STYLES.tocLink}>
               <View style={PDF_STYLES.tocItem}>
                 <Text style={PDF_STYLES.tocItemText}>Standort & Umgebung</Text>

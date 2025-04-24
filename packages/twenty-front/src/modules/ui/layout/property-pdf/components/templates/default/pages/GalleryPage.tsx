@@ -8,14 +8,12 @@ import { Image, Page, Text, View } from '@react-pdf/renderer';
 export type GalleryPageProps = Partial<DefaultDocumentationTemplateProps> & {
   pageIndex: number;
   imagesSubset: Array<Attachment>;
-  property: any;
 };
 
 export const GalleryPage = ({
   orientation,
   imagesSubset,
   pageIndex,
-  property,
   Footer,
 }: GalleryPageProps) => {
   const galleryTitle = `Foto Gallerie ${pageIndex > 0 ? `(${pageIndex + 1})` : ''}`;

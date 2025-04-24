@@ -451,22 +451,6 @@ export const DocumentationConfigurationModal = forwardRef<
     }));
   }, [relevantFields]);
 
-  // Disable showAllImages if there aren't multiple images
-  useEffect(() => {
-    const { hasMultipleImages } = availability;
-    if (!hasMultipleImages && config.showAllImages) {
-      setConfig((prev) => ({
-        ...prev,
-        showAllImages: false,
-      }));
-    } else if (hasMultipleImages && config.showAllImages) {
-      setConfig((prev) => ({
-        ...prev,
-        showAllImages: true,
-      }));
-    }
-  }, [availability, availability.hasMultipleImages, config.showAllImages]);
-
   // Disable publisher options when related data is not available
   useEffect(() => {
     const { hasAgencyName, hasAgencyEmail, hasAgencyPhone, hasWorkspaceLogo } =

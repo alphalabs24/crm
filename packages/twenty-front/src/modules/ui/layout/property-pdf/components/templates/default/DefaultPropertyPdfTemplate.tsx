@@ -23,13 +23,7 @@ export const DefaultPropertyPdfTemplate = ({
   fields,
   propertyFeatures,
   agencyLogo,
-  showPublisherBranding = true,
-  showPublisherEmail = true,
-  showPublisherPhone = true,
-  showAddressMap = false,
-  showDescription = false,
-  addressMapUrl,
-  floorplanUrl,
+  configuration,
 }: DefaultPropertyPdfTemplateProps) => {
   return (
     <Document>
@@ -43,9 +37,7 @@ export const DefaultPropertyPdfTemplate = ({
           fields={fields}
           propertyFeatures={propertyFeatures}
           agencyLogo={agencyLogo}
-          showPublisherBranding={showPublisherBranding}
-          showPublisherEmail={showPublisherEmail}
-          showPublisherPhone={showPublisherPhone}
+          configuration={configuration}
         />
       ) : (
         <DefaultDocumentationTemplate
@@ -57,13 +49,7 @@ export const DefaultPropertyPdfTemplate = ({
           fields={fields}
           propertyFeatures={propertyFeatures}
           agencyLogo={agencyLogo}
-          showPublisherBranding={showPublisherBranding}
-          showPublisherEmail={showPublisherEmail}
-          showPublisherPhone={showPublisherPhone}
-          showAddressMap={showAddressMap}
-          showDescription={showDescription}
-          addressMapUrl={addressMapUrl}
-          floorplanUrl={floorplanUrl}
+          configuration={configuration}
         />
       )}
     </Document>

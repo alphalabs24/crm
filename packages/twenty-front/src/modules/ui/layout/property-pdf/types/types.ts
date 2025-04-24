@@ -35,6 +35,7 @@ export type PropertyPdfProps = {
   showPublisherBranding?: boolean;
   showPublisherEmail?: boolean;
   showPublisherPhone?: boolean;
+  configuration?: ConfigurationType;
 };
 
 export type DefaultDocumentationTemplateProps = PropertyPdfProps & {

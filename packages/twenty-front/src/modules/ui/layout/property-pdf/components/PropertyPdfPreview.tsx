@@ -174,32 +174,11 @@ export const PropertyPdfPreview = ({
       (a, b) => a.orderIndex - b.orderIndex,
     );
 
-    // If configuration says not to show all images, just show the first one (cover image)
-    if (configuration && !configuration.showAllImages) {
-      return sortedImages.length > 0 ? [sortedImages[0]] : [];
-    }
-
     return sortedImages;
-  }, [images, configuration]);
+  }, [images]);
 
   // Get orientation from configuration
   const orientation = configuration?.orientation || 'portrait';
-
-  // Get publisher configuration options with defaults
-  const showPublisherBranding =
-    configuration?.showPublisherBranding !== undefined
-      ? configuration.showPublisherBranding
-      : true;
-
-  const showPublisherEmail =
-    configuration?.showPublisherEmail !== undefined
-      ? configuration.showPublisherEmail
-      : true;
-
-  const showPublisherPhone =
-    configuration?.showPublisherPhone !== undefined
-      ? configuration.showPublisherPhone
-      : true;
 
   return (
     <StyledPdfViewerContainer>
@@ -214,13 +193,7 @@ export const PropertyPdfPreview = ({
           propertyFeatures={formattedFeatures}
           orientation={orientation}
           agencyLogo={currentWorkspace?.logo}
-          showPublisherBranding={showPublisherBranding}
-          showPublisherEmail={showPublisherEmail}
-          showPublisherPhone={showPublisherPhone}
-          showAddressMap={configuration?.showAddressMap}
-          addressMapUrl={configuration?.addressMapUrl}
-          floorplanUrl={configuration?.floorplanUrl}
-          showDescription={configuration?.showDescription}
+          configuration={configuration}
         />
       </StyledPDFViewer>
     </StyledPdfViewerContainer>

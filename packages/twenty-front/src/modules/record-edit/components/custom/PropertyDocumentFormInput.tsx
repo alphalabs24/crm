@@ -46,7 +46,7 @@ import {
   TooltipDelay,
 } from 'twenty-ui';
 import { DocumentEditModal } from './DocumentEditModal';
-import { PdfConfigurationModal } from '@/ui/layout/property-pdf/components/PdfConfigurationModal';
+import { FlyerConfigurationModal } from '@/ui/layout/property-pdf/components/FlyerConfigurationModal';
 import { ObjectRecord } from '@/object-record/types/ObjectRecord';
 import { DocumentationConfigurationModal } from '@/ui/layout/property-pdf/components/DocumentationConfigurationModal';
 const StyledContainer = styled.div`
@@ -667,7 +667,7 @@ const PdfConfigurationModalWrapper = ({
   }
 
   return (
-    <PdfConfigurationModal
+    <FlyerConfigurationModal
       ref={modalRef}
       property={property}
       onClose={() => modalRef.current?.close()}

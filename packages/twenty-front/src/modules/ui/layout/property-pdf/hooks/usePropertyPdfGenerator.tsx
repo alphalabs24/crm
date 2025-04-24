@@ -209,11 +209,7 @@ export const usePropertyPdfGenerator = ({
             propertyFeatures={formattedFeatures}
             orientation={config.orientation || 'portrait'}
             agencyLogo={currentWorkspace?.logo}
-            showPublisherBranding={config.showPublisherBranding}
-            showPublisherEmail={config.showPublisherEmail}
-            showPublisherPhone={config.showPublisherPhone}
-            showAddressMap={config.showAddressMap}
-            addressMapUrl={config.addressMapUrl}
+            configuration={config}
           />,
         ).toBlob();
 

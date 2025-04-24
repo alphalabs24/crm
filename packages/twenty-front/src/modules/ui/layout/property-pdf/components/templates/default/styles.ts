@@ -201,14 +201,14 @@ export const PDF_STYLES = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: DEFAULT_THEME.spacing.md,
+    gap: DEFAULT_THEME.spacing.sm,
     width: '100%',
     height: '100%',
     justifyContent: 'space-between',
   },
 
   imageGalleryItem: {
-    width: `45%`,
+    width: `49%`,
     height: '30%',
     marginBottom: DEFAULT_THEME.spacing.md,
   },
