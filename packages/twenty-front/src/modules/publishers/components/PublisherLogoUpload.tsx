@@ -429,34 +429,32 @@ export const PublisherLogoUpload = forwardRef<
                 </StyledDeleteButton>
               </StyledImageContainer>
             ) : logoAttachment && !isAttachmentMarkedForDeletion ? (
-              <motion.div
+              <StyledImageContainer
                 variants={imageContainerVariants}
                 initial="hidden"
                 animate="visible"
               >
-                <StyledImageContainer>
-                  <StyledImage
-                    src={logoAttachment.fullPath}
-                    alt="Publisher Logo"
-                  />
-                  <StyledEditButton
-                    className="image-button"
-                    onClick={handleClickUpload}
-                    variants={buttonVariants}
-                    whileHover="hover"
-                  >
-                    <IconEdit size={14} color={theme.font.color.tertiary} />
-                  </StyledEditButton>
-                  <StyledDeleteButton
-                    className="image-button"
-                    onClick={handleDeleteLogoAttachment}
-                    variants={buttonVariants}
-                    whileHover="hover"
-                  >
-                    <IconTrash size={14} color={theme.font.color.tertiary} />
-                  </StyledDeleteButton>
-                </StyledImageContainer>
-              </motion.div>
+                <StyledImage
+                  src={logoAttachment.fullPath}
+                  alt="Publisher Logo"
+                />
+                <StyledEditButton
+                  className="image-button"
+                  onClick={handleClickUpload}
+                  variants={buttonVariants}
+                  whileHover="hover"
+                >
+                  <IconEdit size={14} color={theme.font.color.tertiary} />
+                </StyledEditButton>
+                <StyledDeleteButton
+                  className="image-button"
+                  onClick={handleDeleteLogoAttachment}
+                  variants={buttonVariants}
+                  whileHover="hover"
+                >
+                  <IconTrash size={14} color={theme.font.color.tertiary} />
+                </StyledDeleteButton>
+              </StyledImageContainer>
             ) : (
               <StyledPlaceholder
                 variants={placeholderVariants}
