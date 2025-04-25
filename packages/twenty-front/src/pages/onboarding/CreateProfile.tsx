@@ -33,6 +33,7 @@ import { WorkspaceMember } from '@/workspace-member/types/WorkspaceMember';
 import { Trans, useLingui } from '@lingui/react/macro';
 import { isDefined } from 'twenty-shared';
 import { OnboardingStatus } from '~/generated/graphql';
+import { Link } from 'react-router-dom';
 
 const StyledContentContainer = styled.div`
   width: 100%;
@@ -66,15 +67,22 @@ const StyledCheckboxLabel = styled.div`
   align-items: center;
   color: ${({ theme }) => theme.font.color.primary};
   font-size: ${({ theme }) => theme.font.size.sm};
+  gap: ${({ theme }) => theme.spacing(1)};
 `;
 
 const StyledWhyNeeded = styled.span`
+  align-items: center;
   color: ${({ theme }) => theme.font.color.secondary};
+  display: flex;
   font-size: ${({ theme }) => theme.font.size.sm};
   font-style: italic;
-  display: flex;
-  align-items: center;
   gap: ${({ theme }) => theme.spacing(1)};
+  padding-top: ${({ theme }) => theme.spacing(1)};
+`;
+
+const StyledLink = styled(Link)`
+  color: ${({ theme }) => theme.font.color.primary};
+  text-decoration: underline;
 `;
 
 const validationSchema = z
@@ -265,7 +273,16 @@ export const CreateProfile = () => {
             onChange={(event) => setDataAccessChecked(event.target.checked)}
           />
           <StyledCheckboxLabel>
-            {t`Allow nestermind to access and administer my data.`}{' '}
+            <Trans>
+              Allow nestermind to access and administer my data and by clicking
+              continue you agree to the{' '}
+              <StyledLink
+                target="_blank"
+                to={'https://www.nestermind.com/terms-and-conditions'}
+              >
+                {t`terms of service`}
+              </StyledLink>
+            </Trans>
             <StyledWhyNeeded id="data-access-info">
               <IconInfoCircle size={14} color={theme.font.color.secondary} />
               {t`Why is this required?`}
