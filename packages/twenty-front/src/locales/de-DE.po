@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: nestermind-crm\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-04-22 11:48\n"
+"PO-Revision-Date: 2025-04-25 09:38\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -95,6 +95,10 @@ msgstr "{objectNameSingular} erfolgreich gelöscht"
 #~ msgid "{overviewLabel} Overview"
 #~ msgstr "{overviewLabel} Overview"
 
+#: src/modules/object-record/record-show/components/ui/PublicationGroup.tsx
+msgid "{totalDifferenceCount} unpublished changes"
+msgstr "{totalDifferenceCount} unveröffentlichte Änderungen"
+
 #: src/pages/settings/roles/components/RoleAssignmentConfirmationModalSubtitle.tsx
 msgid "{workspaceMemberName} will be unassigned from the following role:"
 msgstr "{workspaceMemberName} wird von folgender Rolle abgezogen:"
@@ -114,6 +118,10 @@ msgstr "<0>Nester</0> analysiert die verfügbaren Daten und schlägt Werte für 
 #: src/pages/onboarding/ChooseYourPlan.tsx
 msgid "1 000 workflow node executions"
 msgstr "1.000 Workflow-Knotenausführungen"
+
+#: src/modules/object-record/record-show/components/ui/PublicationGroup.tsx
+msgid "1 unpublished change"
+msgstr "1 unveröffentlichte Änderung"
 
 #: src/pages/settings/profile/appearance/components/DateTimeSettingsTimeFormatSelect.tsx
 msgid "12h ({hour12Label})"
@@ -273,7 +281,9 @@ msgstr "Füge deine {objectLabel} hinzu"
 msgid "Added {beautifiedCreatedAt}"
 msgstr "Hinzugefügt am {beautifiedCreatedAt}"
 
+#: src/modules/ui/layout/show-page/components/nm/PublicationDifferencesModal.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+#: src/modules/object-record/record-show/components/nm/cards/PropertyDocumentsCard.tsx
 msgid "Additional Documents"
 msgstr "Zusätzliche Dokumente"
 
@@ -282,6 +292,7 @@ msgid "Additional post settings"
 msgstr "Zusätzliche Beitragseinstellungen"
 
 #: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
+#: src/modules/ui/layout/property-pdf/components/DocumentationConfigurationModal.tsx
 msgid "Address"
 msgstr "Adresse"
 
@@ -321,6 +332,10 @@ msgstr "Erweitert:"
 #~ msgid "Afrikaans"
 #~ msgstr "Afrikaans"
 
+#: src/modules/ui/layout/property-pdf/components/shared/PdfConfigurationUtils.tsx
+msgid "Agency Branding"
+msgstr "Anbieter Branding"
+
 #: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
 #~ msgid "Agency Credentials"
 #~ msgstr "Agency Credentials"
@@ -353,9 +368,14 @@ msgstr "Anmeldungen über Google Single Sign-On zulassen."
 msgid "Allow logins through Microsoft's single sign-on functionality."
 msgstr "Anmeldungen über Microsoft Single Sign-On zulassen."
 
+#. placeholder {0}: import { useTheme } from '@emotion/react'; import styled from '@emotion/styled'; import { zodResolver } from '@hookform/resolvers/zod'; import { useCallback, useState } from 'react'; import { Controller, SubmitHandler, useForm } from 'react-hook-form'; import { useRecoilState } from 'recoil'; import { Key } from 'ts-key-enum'; import { AppTooltip, Checkbox, H2Title, IconInfoCircle, MainButton, TooltipDelay, } from 'twenty-ui'; import { z } from 'zod'; import { useNestermind } from '@/api/hooks/useNestermind'; import { SubTitle } from '@/auth/components/SubTitle'; import { Title } from '@/auth/components/Title'; import { currentWorkspaceMemberState } from '@/auth/states/currentWorkspaceMemberState'; import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular'; import { useUpdateOneRecord } from '@/object-record/hooks/useUpdateOneRecord'; import { useOnboardingStatus } from '@/onboarding/hooks/useOnboardingStatus'; import { useSetNextOnboardingStatus } from '@/onboarding/hooks/useSetNextOnboardingStatus'; import { ProfilePictureUploader } from '@/settings/profile/components/ProfilePictureUploader'; import { PageHotkeyScope } from '@/types/PageHotkeyScope'; import { SnackBarVariant } from '@/ui/feedback/snack-bar-manager/components/SnackBar'; import { useSnackBar } from '@/ui/feedback/snack-bar-manager/hooks/useSnackBar'; import { TextInputV2 } from '@/ui/input/components/TextInputV2'; import { useScopedHotkeys } from '@/ui/utilities/hotkey/hooks/useScopedHotkeys'; import { WorkspaceMember } from '@/workspace-member/types/WorkspaceMember'; import { Trans, useLingui } from '@lingui/react/macro'; import { isDefined } from 'twenty-shared'; import { OnboardingStatus } from '~/generated/graphql'; import { Link } from 'react-router-dom'; const StyledContentContainer = styled.div` width: 100%; `; const StyledSectionContainer = styled.div` margin-top: ${({ theme }) => theme.spacing(8)}; `; const StyledButtonContainer = styled.div` margin-top: ${({ theme }) => theme.spacing(8)}; width: 200px; `; const StyledComboInputContainer = styled.div` display: flex; flex-direction: row; > * + * { margin-left: ${({ theme }) => theme.spacing(4)}; } `; const StyledCheckboxContainer = styled.div` display: flex; align-items: center; gap: ${({ theme }) => theme.spacing(4)}; margin-top: ${({ theme }) => theme.spacing(4)}; `; const StyledCheckboxLabel = styled.div` align-items: center; color: ${({ theme }) => theme.font.color.primary}; font-size: ${({ theme }) => theme.font.size.sm}; gap: ${({ theme }) => theme.spacing(1)}; `; const StyledWhyNeeded = styled.span` align-items: center; color: ${({ theme }) => theme.font.color.secondary}; display: flex; font-size: ${({ theme }) => theme.font.size.sm}; font-style: italic; gap: ${({ theme }) => theme.spacing(1)}; padding-top: ${({ theme }) => theme.spacing(1)}; `; const StyledLink = styled(Link)` color: ${({ theme }) => theme.font.color.primary}; text-decoration: underline; `; const validationSchema = z .object({ firstName: z.string().min(1, { message: 'First name can not be empty' }), lastName: z.string().min(1, { message: 'Last name can not be empty' }), }) .required(); type Form = z.infer<typeof validationSchema>; export const CreateProfile = () => { const { t } = useLingui(); const onboardingStatus = useOnboardingStatus(); const setNextOnboardingStatus = useSetNextOnboardingStatus(); const { enqueueSnackBar } = useSnackBar(); const [currentWorkspaceMember, setCurrentWorkspaceMember] = useRecoilState( currentWorkspaceMemberState, ); const { updateOneRecord } = useUpdateOneRecord<WorkspaceMember>({ objectNameSingular: CoreObjectNameSingular.WorkspaceMember, }); const [dataAccessChecked, setDataAccessChecked] = useState(false); const theme = useTheme(); const { useMutations } = useNestermind(); const { mutate: createWorkspace } = useMutations.useCreateWorkspace({ onError: (error: Error) => { enqueueSnackBar(error?.message || t`Failed to create workspace`, { variant: SnackBarVariant.Error, }); }, }); const { control, handleSubmit, formState: { isValid, isSubmitting }, getValues, } = useForm<Form>({ mode: 'onChange', defaultValues: { firstName: currentWorkspaceMember?.name?.firstName ?? '', lastName: currentWorkspaceMember?.name?.lastName ?? '', }, resolver: zodResolver(validationSchema), }); const onSubmit: SubmitHandler<Form> = useCallback( async (data) => { try { if (!currentWorkspaceMember?.id) { throw new Error('User is not logged in'); } if (!data.firstName || !data.lastName) { throw new Error('First name or last name is missing'); } createWorkspace(); await updateOneRecord({ idToUpdate: currentWorkspaceMember?.id, updateOneRecordInput: { name: { firstName: data.firstName, lastName: data.lastName, }, colorScheme: 'System', }, }); setCurrentWorkspaceMember((current) => { if (isDefined(current)) { return { ...current, name: { firstName: data.firstName, lastName: data.lastName, }, colorScheme: 'System', }; } return current; }); setNextOnboardingStatus(); } catch (error: any) { enqueueSnackBar(error?.message, { variant: SnackBarVariant.Error, }); } }, [ currentWorkspaceMember?.id, updateOneRecord, setCurrentWorkspaceMember, setNextOnboardingStatus, enqueueSnackBar, createWorkspace, ], ); const [isEditingMode, setIsEditingMode] = useState(false); useScopedHotkeys( Key.Enter, () => { if (isEditingMode && dataAccessChecked && isValid) { onSubmit(getValues()); } }, PageHotkeyScope.CreateProfile, ); if (onboardingStatus !== OnboardingStatus.PROFILE_CREATION) { return null; } return ( <> <Title> <Trans>Create profile</Trans> </Title> <SubTitle> <Trans>How you'll be identified on the app.</Trans> </SubTitle> <StyledContentContainer> <StyledSectionContainer> <H2Title title="Picture" /> <ProfilePictureUploader /> </StyledSectionContainer> <StyledSectionContainer> <H2Title title={t`Name`} description={t`Your name as it will be displayed on the app`} /> {/* TODO: When react-web-hook-form is added to edit page we should create a dedicated component with context */} <StyledComboInputContainer> <Controller name="firstName" control={control} render={({ field: { onChange, onBlur, value }, fieldState: { error }, }) => ( <TextInputV2 autoFocus label={t`First Name`} value={value} onFocus={() => setIsEditingMode(true)} onBlur={() => { onBlur(); setIsEditingMode(false); }} onChange={onChange} placeholder="Tim" error={error?.message} fullWidth /> )} /> <Controller name="lastName" control={control} render={({ field: { onChange, onBlur, value }, fieldState: { error }, }) => ( <TextInputV2 label={t`Last Name`} value={value} onFocus={() => setIsEditingMode(true)} onBlur={() => { onBlur(); setIsEditingMode(false); }} onChange={onChange} placeholder="Cook" error={error?.message} fullWidth /> )} /> </StyledComboInputContainer> </StyledSectionContainer> <StyledCheckboxContainer> <Checkbox checked={dataAccessChecked} onChange={(event) => setDataAccessChecked(event.target.checked)} /> <StyledCheckboxLabel> <Trans> Allow nestermind to access and administer my data and by clicking continue you agree to the{' '} <StyledLink target="_blank" to={'https://www.nestermind.com/terms-and-conditions'} > {t`terms of service`} </StyledLink> </Trans> <StyledWhyNeeded id="data-access-info"> <IconInfoCircle size={14} color={theme.font.color.secondary} /> {t`Why is this required?`} </StyledWhyNeeded> </StyledCheckboxLabel> <AppTooltip anchorSelect={`${'#'}data-access-info`} content={t`This permission is required for nestermind's automation and AI features to function properly.`} place="bottom" noArrow delay={TooltipDelay.shortDelay} /> </StyledCheckboxContainer> </StyledContentContainer> <StyledButtonContainer> <MainButton title={t`Continue`} onClick={handleSubmit(onSubmit)} disabled={!isValid || isSubmitting || !dataAccessChecked} fullWidth /> </StyledButtonContainer> </> ); }; 
 #: src/pages/onboarding/CreateProfile.tsx
-msgid "Allow nestermind to access and administer my data."
-msgstr "nestermind den Zugriff und die Verwaltung meiner Daten gestatten."
+msgid "Allow nestermind to access and administer my data and by clicking continue you agree to the <0>{0}</0>"
+msgstr "Du erlaubst nestermind auf deine Daten zuzugreifen und sie zu verwalten und durch Klicken auf fortfahren akzeptierst du die <0>{0}</0>"
+
+#: src/pages/onboarding/CreateProfile.tsx
+#~ msgid "Allow nestermind to access and administer my data."
+#~ msgstr "Allow nestermind to access and administer my data."
 
 #: src/pages/onboarding/CreateProfile.tsx
 #~ msgid "Allow Nestermind to access and administer my data."
@@ -467,6 +487,10 @@ msgstr "Alle Änderungen verwerfen? Der Entwurf wird gelöscht und alle Änderun
 #: src/modules/object-record/record-show/components/nm/publication/PublicationDetailPage.tsx
 msgid "Are you sure you want to unpublish this publication? This will remove it from the published platform and make it unavailable to potential clients. You can always publish it again later."
 msgstr "Sicher, dass diese Veröffentlichung zurückgezogen werden soll? Dadurch wird sie von der Plattform entfernt und potenziellen Kunden nicht mehr zugänglich gemacht. Du kannst sie jederzeit wieder veröffentlichen."
+
+#: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
+msgid "As Drafts"
+msgstr "Als Entwürfe"
 
 #: src/modules/object-record/object-sort-dropdown/components/ObjectSortDropdownButton.tsx
 #: src/modules/object-record/object-sort-dropdown/components/ObjectSortDropdownButton.tsx
@@ -592,6 +616,8 @@ msgstr "Kalender"
 #: src/modules/ui/layout/show-page/components/nm/PublishDraftModal.tsx
 #: src/modules/ui/layout/show-page/components/nm/PublicationDifferencesModal.tsx
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
+#: src/modules/ui/layout/property-pdf/components/FlyerConfigurationModal.tsx
+#: src/modules/ui/layout/property-pdf/components/DocumentationConfigurationModal.tsx
 #: src/modules/ui/layout/modal/components/ConfirmationModal.tsx
 #: src/modules/settings/components/SaveAndCancelButtons/CancelButton.tsx
 #: src/modules/record-edit/contexts/UnsavedChangesContext.tsx
@@ -776,6 +802,20 @@ msgstr "Verbundene Konten"
 #: src/modules/settings/accounts/components/SettingsAccountsMessageChannelDetails.tsx
 msgid "Contact auto-creation"
 msgstr "Auto-Erstellung von Kontakten"
+
+#: src/modules/ui/layout/property-pdf/components/shared/PdfConfigurationUtils.tsx
+msgid "Contact Email"
+msgstr "Kontakt E-Mail"
+
+#: src/modules/ui/layout/property-pdf/components/shared/PdfConfigurationUtils.tsx
+msgid "Contact Phone"
+msgstr "Telefon-Kontakt"
+
+#: src/modules/ui/layout/property-pdf/components/DocumentationConfigurationModal.tsx
+#: src/modules/ui/layout/property-pdf/components/shared/PdfConfigurationUtils.tsx
+#: src/modules/ui/layout/property-pdf/components/shared/PdfConfigurationUtils.tsx
+msgid "Content Options"
+msgstr "Inhaltsoptionen"
 
 #: src/modules/command-menu/components/CommandMenu.tsx
 msgid "Context"
@@ -1149,6 +1189,7 @@ msgstr "Absteigend"
 #: src/pages/settings/data-model/SettingsObjectFieldEdit.tsx
 #: src/pages/settings/data-model/SettingsObjectNewField/SettingsObjectNewFieldConfigure.tsx
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/ContentCustomize.tsx
+#: src/modules/ui/layout/property-pdf/components/DocumentationConfigurationModal.tsx
 msgid "Description"
 msgstr "Beschreibung"
 
@@ -1198,6 +1239,11 @@ msgstr "Als relatives Datum anzeigen"
 #~ msgid "Document Description"
 #~ msgstr "Document Description"
 
+#: src/modules/object-record/record-show/components/nm/cards/PropertyDocumentsCard.tsx
+#: src/modules/object-record/record-show/components/nm/cards/PropertyDocumentsCard.tsx
+msgid "Documents"
+msgstr "Dokumente"
+
 #: src/pages/settings/SettingsWorkspace.tsx
 #: src/pages/settings/workspace/SettingsDomain.tsx
 #: src/pages/settings/workspace/SettingsDomain.tsx
@@ -1223,6 +1269,7 @@ msgstr "Fertig"
 
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+#: src/modules/object-record/record-show/components/nm/cards/PropertyDocumentsCard.tsx
 msgid "Download"
 msgstr "Herunterladen"
 
@@ -1246,6 +1293,10 @@ msgstr "Dokumente hier ablegen"
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 msgid "Drop images here"
 msgstr "Bilder hier ablegen"
+
+#: src/modules/publishers/components/PublisherLogoUpload.tsx
+msgid "Drop logo here"
+msgstr "Logo hier ablegen"
 
 #: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
 msgid "Drop the file here"
@@ -1499,6 +1550,39 @@ msgstr "Nicht berufliche E-Mails ausschliessen"
 msgid "Exclude the following people and domains from my email sync. Internal conversations will not be imported"
 msgstr "Folgende Personen und Domains von meiner E-Mail-Synchronisation ausschließen. Interne Gespräche werden nicht importiert"
 
+#: src/modules/ui/layout/property-pdf/components/shared/PdfConfigurationUtils.tsx
+msgid "Excluding agency branding"
+msgstr "Branding ausgeblendet"
+
+#: src/modules/ui/layout/property-pdf/components/shared/PdfConfigurationUtils.tsx
+msgid "Excluding email contact details"
+msgstr "E-Mail ausgeblendet"
+
+#: src/modules/ui/layout/property-pdf/components/shared/PdfConfigurationUtils.tsx
+msgid "Excluding location map"
+msgstr "Standortkarte wird ausgeblendet"
+
+#: src/modules/ui/layout/property-pdf/components/shared/PdfConfigurationUtils.tsx
+msgid "Excluding phone contact details"
+msgstr "Telefonnummer wird ausgeblendet"
+
+#: src/modules/ui/layout/property-pdf/components/DocumentationConfigurationModal.tsx
+msgid "Excluding property description"
+msgstr "Objektbeschreibung wird ausgeblendet"
+
+#: src/modules/ui/layout/property-pdf/components/shared/PdfConfigurationUtils.tsx
+msgid "Excluding property documents"
+msgstr "Dokumente werden ausgeblendet"
+
+#: src/modules/ui/layout/property-pdf/components/DocumentationConfigurationModal.tsx
+#: src/modules/ui/layout/property-pdf/components/shared/PdfConfigurationUtils.tsx
+msgid "Excluding property features"
+msgstr "Ausstattung wird ausgeblendet"
+
+#: src/modules/ui/layout/property-pdf/components/DocumentationConfigurationModal.tsx
+msgid "Excluding property location"
+msgstr "Objektstandort wird ausgeblendet"
+
 #: src/pages/settings/data-model/SettingsObjects.tsx
 msgid "Existing objects"
 msgstr "Vorhandene Objekte"
@@ -1567,6 +1651,10 @@ msgstr "Ansicht exportieren"
 msgid "Export Workflows"
 msgstr "Workflows exportieren"
 
+#: src/modules/ui/layout/property-pdf/components/DocumentationConfigurationModal.tsx
+msgid "Exposé Configuration"
+msgstr "Dokumentation Konfigurieren"
+
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
 #: src/modules/object-record/record-show/components/ui/NewPublicationCard.tsx
 msgid "Failed to create draft"
@@ -1606,7 +1694,11 @@ msgstr "Änderungen konnten nicht gespeichert werden"
 msgid "Failed to send test email"
 msgstr "Fehler beim Senden der Test-E-Mail"
 
-#: src/modules/object-record/record-show/components/nm/PropertyDetails.tsx
+#: src/modules/object-record/record-show/hooks/useSyncAndPublish.ts
+msgid "Failed to sync and publish"
+msgstr "Fehler beim Synchronisieren und Veröffentlichen"
+
+#: src/modules/object-record/record-show/hooks/useSyncDrafts.ts
 msgid "Failed to sync publications"
 msgstr "Fehler beim Synchronisieren der Publikationen"
 
@@ -1619,6 +1711,7 @@ msgstr "Fehler beim Zurückziehen der Publikation"
 msgid "Favorites"
 msgstr "Favoriten"
 
+#: src/modules/ui/layout/property-pdf/components/DocumentationConfigurationModal.tsx
 #: src/modules/object-record/record-show/components/nm/cards/PropertyDetailsCard.tsx
 msgid "Features"
 msgstr "Objekteigenschaften"
@@ -1637,6 +1730,10 @@ msgstr "Felder"
 #: src/testing/mock-data/tableData.ts
 msgid "Fields Count"
 msgstr "Felderanzahl"
+
+#: src/modules/ui/layout/property-pdf/components/FlyerConfigurationModal.tsx
+msgid "Fields to Display"
+msgstr "Felder zum Anzeigen"
 
 #: src/modules/object-record/record-table/record-table-header/components/RecordTableColumnHeadDropdownMenu.tsx
 #: src/modules/object-record/object-filter-dropdown/components/SingleEntityObjectFilterDropdownButton.tsx
@@ -1669,6 +1766,10 @@ msgstr "Vorname"
 #: src/modules/onboarding-tutorial/components/OnboardingSteps.tsx
 msgid "First steps on nestermind"
 msgstr "Erste Schritte auf nestermind"
+
+#: src/modules/ui/layout/property-pdf/components/FlyerConfigurationModal.tsx
+msgid "Flyer Configuration"
+msgstr "Flyer Konfiguration"
 
 #: src/modules/object-record/hooks/useFormattedPropertyFields.ts
 msgid "For Sale"
@@ -1714,6 +1815,8 @@ msgid "General"
 msgstr "Allgemein"
 
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/ContentCustomize.tsx
+#: src/modules/ui/layout/property-pdf/components/FlyerConfigurationModal.tsx
+#: src/modules/ui/layout/property-pdf/components/DocumentationConfigurationModal.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Generate"
 msgstr "Generieren"
@@ -1841,6 +1944,10 @@ msgstr "Kennung"
 msgid "If you’ve lost this key, you can regenerate it, but be aware that any script using this key will need to be updated. Please type\"{confirmationValue}\" to confirm."
 msgstr "Wenn Sie diesen Schlüssel verloren haben, können Sie ihn neu generieren, aber beachten Sie, dass jedes Skript, das diesen Schlüssel verwendet, aktualisiert werden muss. Bitte geben Sie zur Bestätigung \"{confirmationValue}\" ein."
 
+#: src/modules/ui/layout/property-pdf/components/DocumentationConfigurationModal.tsx
+msgid "Image Gallery"
+msgstr "Bildergalerie"
+
 #: src/modules/object-record/record-show/components/nm/cards/PropertyImagesCard.tsx
 msgid "Images"
 msgstr "Bilder"
@@ -1861,6 +1968,43 @@ msgstr "In-App-Antwort-Funktionalität bald verfügbar"
 #: src/pages/settings/data-model/SettingsObjectFieldTable.tsx
 msgid "Inactive"
 msgstr "Inaktiv"
+
+#: src/modules/ui/layout/property-pdf/components/shared/PdfConfigurationUtils.tsx
+msgid "Include Documents"
+msgstr "Dokumente einschliessen"
+
+#: src/modules/ui/layout/property-pdf/components/shared/PdfConfigurationUtils.tsx
+msgid "Including agency email address"
+msgstr "E-Mail wird angezeigt"
+
+#: src/modules/ui/layout/property-pdf/components/shared/PdfConfigurationUtils.tsx
+msgid "Including agency logo and name"
+msgstr "Logo und Name werden angezeigt"
+
+#: src/modules/ui/layout/property-pdf/components/shared/PdfConfigurationUtils.tsx
+msgid "Including agency phone number"
+msgstr "Telefonnummer werden angezeigt"
+
+#: src/modules/ui/layout/property-pdf/components/shared/PdfConfigurationUtils.tsx
+msgid "Including location map"
+msgstr "Standortkarte wird angezeigt"
+
+#: src/modules/ui/layout/property-pdf/components/DocumentationConfigurationModal.tsx
+msgid "Including property description"
+msgstr "Objektbeschreibung wird ausgeblendet"
+
+#: src/modules/ui/layout/property-pdf/components/shared/PdfConfigurationUtils.tsx
+msgid "Including property documents"
+msgstr "Dokumente werden angezeigt"
+
+#: src/modules/ui/layout/property-pdf/components/DocumentationConfigurationModal.tsx
+#: src/modules/ui/layout/property-pdf/components/shared/PdfConfigurationUtils.tsx
+msgid "Including property features"
+msgstr "Ausstattung wird angezeigt"
+
+#: src/modules/ui/layout/property-pdf/components/DocumentationConfigurationModal.tsx
+msgid "Including property location"
+msgstr "Standort wird angezeigt"
 
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
 msgid ""
@@ -2204,6 +2348,10 @@ msgstr "Nach links verschieben"
 msgid "Move right"
 msgstr "Nach rechts verschieben"
 
+#: src/modules/ui/layout/property-pdf/components/shared/PdfConfigurationUtils.tsx
+msgid "Multiple Property Images"
+msgstr "Mehrere Objektbilder"
+
 #: src/testing/mock-data/tableData.ts
 #: src/pages/settings/SettingsWorkspaceMembers.tsx
 #: src/pages/settings/SettingsWorkspace.tsx
@@ -2296,7 +2444,6 @@ msgid "New account"
 msgstr "Neues Konto"
 
 #: src/modules/ui/layout/show-page/components/nm/PublicationDifferencesModal.tsx
-#: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
 msgid "New Draft Values"
 msgstr "Neue Entwurfswerte"
 
@@ -2344,6 +2491,10 @@ msgstr "Neuer Datensatz"
 msgid "New Template"
 msgstr "Neue Vorlage"
 
+#: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
+msgid "New Values"
+msgstr "Neue Werte"
+
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhooksNew.tsx
 #~ msgid "New Webhook"
 #~ msgstr "New Webhook"
@@ -2351,6 +2502,10 @@ msgstr "Neue Vorlage"
 #: src/modules/object-record/hooks/useFormattedPropertyFields.ts
 msgid "No"
 msgstr "Nein"
+
+#: src/modules/ui/layout/property-pdf/components/shared/PdfConfigurationUtils.tsx
+msgid "No agency details available"
+msgstr "Keine Anbieterdetails verfügbar"
 
 #: src/modules/settings/accounts/components/SettingsAccountsListEmptyStateCard.tsx
 msgid "No connected account"
@@ -2371,6 +2526,18 @@ msgstr "Kein Inhalt"
 msgid "No description"
 msgstr "Keine Beschreibung"
 
+#: src/modules/ui/layout/property-pdf/components/DocumentationConfigurationModal.tsx
+msgid "No description available"
+msgstr "Keine Beschreibung verfügbar"
+
+#: src/modules/object-record/record-show/components/nm/cards/PropertyDocumentsCard.tsx
+msgid "No documents available"
+msgstr "Keine Dokumente verfügbar"
+
+#: src/modules/ui/layout/property-pdf/components/shared/PdfConfigurationUtils.tsx
+msgid "No email contact available"
+msgstr "Keine E-mail verfügbar"
+
 #: src/pages/settings/email-templates/components/EmailTemplatesListCard.tsx
 msgid "No email templates configured yet"
 msgstr "Noch keine E-Mail-Vorlagen konfiguriert"
@@ -2387,6 +2554,14 @@ msgstr "Es sind noch keine Daten für Anfragen verfügbar"
 #: src/modules/inquiries/components/InquiriesList.tsx
 msgid "No inquiries yet"
 msgstr "Noch keine Anfragen"
+
+#: src/modules/ui/layout/property-pdf/components/DocumentationConfigurationModal.tsx
+msgid "No location data available"
+msgstr "Kein Standort verfügbar"
+
+#: src/modules/publishers/components/PublisherLogoUpload.tsx
+msgid "No logo"
+msgstr "Kein Logo"
 
 #: src/modules/object-record/record-show/components/nm/cards/PropertyAddressCard.tsx
 msgid "No Map available"
@@ -2415,6 +2590,10 @@ msgstr "Noch keine Nachrichten"
 #: src/pages/settings/roles/components/RoleAssignment.tsx
 msgid "No more members to assign"
 msgstr "Keine Mitglieder mehr zuzuweisen"
+
+#: src/modules/ui/layout/property-pdf/components/shared/PdfConfigurationUtils.tsx
+msgid "No phone contact available"
+msgstr "Kein Telefonkontakt verfügbar"
 
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
 msgid "No platform selected"
@@ -2486,6 +2665,11 @@ msgstr "Nicht verfügbar in der Standardansicht"
 msgid "Not empty"
 msgstr "Nicht leer"
 
+#: src/modules/ui/layout/property-pdf/components/DocumentationConfigurationModal.tsx
+#: src/modules/ui/layout/property-pdf/components/shared/PdfConfigurationUtils.tsx
+msgid "Not enough images available"
+msgstr "Zu wenig Bilder"
+
 #: src/modules/command-menu/components/CommandMenu.tsx
 msgid "Object"
 msgstr "Objekt"
@@ -2516,8 +2700,12 @@ msgstr "Angebotsart"
 #~ msgstr "Old"
 
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
-msgid "Old Draft Values"
-msgstr "Alte Entwurfswerte"
+#~ msgid "Old Draft Values"
+#~ msgstr "Old Draft Values"
+
+#: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
+msgid "Old Values"
+msgstr "Alter Wert"
 
 #: src/modules/inquiries/components/InquiriesList.tsx
 msgid "Once you receive an inquiry on your connected Email, it will appear here."
@@ -2528,6 +2716,7 @@ msgid "Only the timestamp & participants will be shared with your team."
 msgstr "Zeitpunkt und Teilnehmer werden mit deinem Team geteilt."
 
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+#: src/modules/object-record/record-show/components/nm/cards/PropertyDocumentsCard.tsx
 #: src/modules/inquiries/components/sidebar/PropertyDetails.tsx
 msgid "Open"
 msgstr "Öffnen"
@@ -2722,6 +2911,8 @@ msgid "Prefill Property"
 msgstr "Objekt Vorfüllen"
 
 #: src/pages/settings/email-templates/components/EmailTemplatesListCard.tsx
+#: src/modules/ui/layout/property-pdf/components/FlyerConfigurationModal.tsx
+#: src/modules/ui/layout/property-pdf/components/DocumentationConfigurationModal.tsx
 #: src/modules/settings/data-model/objects/forms/components/SettingsDataModelObjectSettingsFormCard.tsx
 #: src/modules/settings/data-model/components/SettingsDataModelPreviewFormCard.tsx
 msgid "Preview"
@@ -2758,18 +2949,28 @@ msgstr "Objekt erfolgreich erstellt"
 msgid "Property Details"
 msgstr "Details der Immobilie"
 
+#: src/modules/ui/layout/show-page/hooks/useDraftPublishedDifferences.ts
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Property Documents"
 msgstr "Objektdokumente"
 
+#: src/modules/ui/layout/show-page/components/nm/PublicationDifferencesModal.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+#: src/modules/object-record/record-show/components/nm/cards/PropertyDocumentsCard.tsx
 msgid "Property Exposé"
 msgstr "Dokumentation"
 
+#: src/modules/ui/layout/property-pdf/components/shared/PdfConfigurationUtils.tsx
+msgid "Property Features"
+msgstr "Objekt Ausstattung"
+
+#: src/modules/ui/layout/show-page/components/nm/PublicationDifferencesModal.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+#: src/modules/object-record/record-show/components/nm/cards/PropertyDocumentsCard.tsx
 msgid "Property Flyer"
 msgstr "Flyer"
 
+#: src/modules/ui/layout/show-page/hooks/useDraftPublishedDifferences.ts
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 msgid "Property Images"
 msgstr "Objektbilder"
@@ -2848,6 +3049,10 @@ msgstr "Publikationen"
 msgid "Publish"
 msgstr "Veröffentlichen"
 
+#: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
+msgid "Publish All"
+msgstr "Alles veröffentlichen"
+
 #: src/modules/ui/layout/show-page/components/nm/PublicationDifferencesModal.tsx
 msgid "Publish Changes"
 msgstr "Änderungen veröffentlichen"
@@ -2879,6 +3084,15 @@ msgstr "Anbieter erfolgreich gelöscht"
 #: src/modules/publishers/components/modals/EditPublisherModal.tsx
 msgid "Publisher Details"
 msgstr "Anbieter Details"
+
+#: src/modules/ui/layout/property-pdf/components/DocumentationConfigurationModal.tsx
+#: src/modules/ui/layout/property-pdf/components/shared/PdfConfigurationUtils.tsx
+msgid "Publisher Information"
+msgstr "Anbieter Informationen"
+
+#: src/modules/publishers/components/PublisherLogoUpload.tsx
+msgid "Publisher Logo"
+msgstr "Anbieter Branding"
 
 #: src/pages/settings/publishers/SettingsPublishers.tsx
 msgid "Publishers"
@@ -2919,6 +3133,10 @@ msgstr "Ref: {propertyRef}"
 #: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
 msgid "Reference Property"
 msgstr "Liegenschaftsreferenz"
+
+#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+msgid "Regenerate"
+msgstr "Erneut generieren"
 
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
@@ -3244,6 +3462,10 @@ msgstr "Sollte die Änderung einer Feldbezeichnung auch den API-Namen ändern?"
 msgid "Should changing an object's label also change the API?"
 msgstr "Sollte die Änderung eines Objektnamens auch den API-Namen ändern?"
 
+#: src/modules/ui/layout/property-pdf/components/shared/PdfConfigurationUtils.tsx
+msgid "Show Address Map"
+msgstr "Standortkarte anzeigen"
+
 #: src/modules/object-record/record-table/components/nm/RecordListItem.tsx
 #: src/modules/object-record/record-table/components/nm/RecordList.tsx
 msgid "Show Details"
@@ -3256,6 +3478,16 @@ msgstr "Weniger Details anzeigen"
 #: src/modules/inquiries/components/sidebar/PropertyDetails.tsx
 msgid "Show more details"
 msgstr "Mehr Details anzeigen"
+
+#: src/modules/ui/layout/property-pdf/components/DocumentationConfigurationModal.tsx
+#: src/modules/ui/layout/property-pdf/components/shared/PdfConfigurationUtils.tsx
+msgid "Showing all property images"
+msgstr "Alle Bilder werden angezeigt"
+
+#: src/modules/ui/layout/property-pdf/components/DocumentationConfigurationModal.tsx
+#: src/modules/ui/layout/property-pdf/components/shared/PdfConfigurationUtils.tsx
+msgid "Showing only the main image"
+msgstr "Nur das Hauptbild wird angezeigt"
 
 #: src/modules/auth/sign-in-up/components/SignInUpWithCredentials.tsx
 msgid "Sign in"
@@ -3379,8 +3611,16 @@ msgid "Switch billing {to}"
 msgstr "Abrechnung auf {to} umstellen"
 
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
-msgid "Sync All"
-msgstr "Alle synchronisieren"
+#~ msgid "Sync All"
+#~ msgstr "Sync All"
+
+#: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
+msgid "Sync and Publish All"
+msgstr "Alle synchronisieren und veröffentlichen"
+
+#: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
+msgid "Sync as Drafts"
+msgstr "Als Entwürfe synchronisieren"
 
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
 msgid "Sync Drafts with Property"
@@ -3390,6 +3630,7 @@ msgstr "Entwürfe mit Objekt synchronisieren"
 #~ msgid "Sync Publications"
 #~ msgstr "Sync Publications"
 
+#: src/modules/object-record/record-show/components/nm/PropertyDetails.tsx
 #: src/modules/object-record/record-show/components/nm/PropertyDetails.tsx
 msgid "Sync Publications {differenceLength}"
 msgstr "Publikationen Synchronisieren {differenceLength}"
@@ -3433,6 +3674,10 @@ msgstr "Systemeinstellungen - {systemDateFormatLabel}"
 #: src/pages/settings/profile/appearance/components/DateTimeSettingsTimeFormatSelect.tsx
 msgid "System Settings - {systemTimeFormatLabel}"
 msgstr "Systemeinstellungen - {systemTimeFormatLabel}"
+
+#: src/pages/onboarding/CreateProfile.tsx
+msgid "terms of service"
+msgstr "Nutzungsbedingungen"
 
 #: src/modules/auth/sign-in-up/components/FooterNote.tsx
 msgid "Terms of Service"
@@ -3653,6 +3898,14 @@ msgstr "Dokumente hochladen"
 msgid "Upload Images"
 msgstr "Bilder hochladen"
 
+#: src/modules/publishers/components/PublisherLogoUpload.tsx
+msgid "Upload Logo"
+msgstr "Logo hochladen"
+
+#: src/modules/publishers/components/PublisherLogoUpload.tsx
+msgid "Upload your publisher logo that will be used in PDFs, documentation and flyers. A square logo with <0>256x256px</0> size is recommended."
+msgstr "Laden Sie Ihr Logo hoch, das in PDFs, Dokumentation und Flyer verwendet wird. Ein quadratisches Logo mit <0>256x256px</0> Größe wird empfohlen."
+
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx
 msgid "URL"
 msgstr "URL"
@@ -3701,6 +3954,10 @@ msgstr "Werte"
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 #~ msgid "Vietnamese"
 #~ msgstr "Vietnamese"
+
+#: src/modules/object-record/record-show/components/nm/cards/PropertyDocumentsCard.tsx
+msgid "View"
+msgstr "Anzeigen"
 
 #: src/modules/inquiries/components/InquiriesPreview.tsx
 msgid "View all ({totalRecords})"
@@ -3980,7 +4237,7 @@ msgstr "Ihr Name, wie er in der App angezeigt wird"
 msgid "Your Partner ID is displayed in your MyNewhome dashboard under \"Integration of ads on your own website\" under Short name."
 msgstr "Deine Partner-ID wird im MyNewhome Dashboard unter \"Inserate-Einbindung auf eigener Webseite\" unter dem Kurznamen angezeigt."
 
-#: src/modules/object-record/record-show/components/nm/PropertyDetails.tsx
+#: src/modules/object-record/record-show/hooks/useSyncDrafts.ts
 msgid "Your Publication Drafts were synced successfully"
 msgstr "Ihre Veröffentlichungsentwürfe wurden erfolgreich synchronisiert"
 
@@ -3991,6 +4248,10 @@ msgstr "Deine Publikationen"
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
 #~ msgid "Your Publications Draft was synced successfully"
 #~ msgstr "Your Publications Draft was synced successfully"
+
+#: src/modules/object-record/record-show/hooks/useSyncAndPublish.ts
+msgid "Your publications were synced and published successfully"
+msgstr "Publikationen wurden synchronisiert und erfolgreich veröffentlicht"
 
 #: src/pages/auth/SignInUp.tsx
 msgid "Your Workspace"

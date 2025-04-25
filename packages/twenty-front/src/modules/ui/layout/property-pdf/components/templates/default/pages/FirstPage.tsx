@@ -23,6 +23,7 @@ export const FirstPage = ({
   propertyImages,
   configuration,
   Footer,
+  Header,
 }: FirstPageProps) => {
   const firstImage = useMemo(() => {
     if (!propertyImages || propertyImages.length === 0) return null;
@@ -35,11 +36,11 @@ export const FirstPage = ({
       orientation={orientation}
       bookmark={{ title: property.name, fit: true }}
     >
+      {Header && Header}
       <Section height="70%">
         <Image src={firstImage?.fullPath} style={PDF_STYLES.heroImage} />
       </Section>
-      {/* Header Section with Property Title and Price */}
-      <Section height="15%">
+      <Section height="20%">
         <Row>
           <Col gap={0.5}>
             <H1>{property.name}</H1>

@@ -375,6 +375,12 @@ export const PDF_STYLES = StyleSheet.create({
     objectPosition: 'right center',
   },
 
+  firstPageAgencyLogo: {
+    width: 60,
+    objectFit: 'contain',
+    paddingBottom: DEFAULT_THEME.spacing.sm,
+  },
+
   // Header style
   header: {
     display: 'flex',
