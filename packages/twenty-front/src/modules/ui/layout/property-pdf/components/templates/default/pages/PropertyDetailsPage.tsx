@@ -23,13 +23,11 @@ type PropertyField = {
 };
 
 export const PropertyDetailsPage = ({
-  property,
-  propertyPrice,
-  propertyAddress,
   orientation,
   fields,
   propertyFeatures = [],
   Footer,
+  Header,
 }: PropertyDetailsPageProps) => {
   // Group fields into categories
   const groupedFields = useMemo(() => {
@@ -107,6 +105,7 @@ export const PropertyDetailsPage = ({
       bookmark="Über das Objekt"
       id="propertyDetails"
     >
+      {Header && Header}
       <Section height="85%">
         <Row>
           <Col width="100%">

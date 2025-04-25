@@ -4,11 +4,13 @@ import { useMemo } from 'react';
 // Import page components from the pages directory
 import { FirstPage } from './pages/FirstPage';
 import { Footer } from './pages/FooterComponent';
+import { Header } from './pages/HeaderComponent';
 import { GalleryPage } from './pages/GalleryPage';
 import { PropertyDetailsPage } from './pages/PropertyDetailsPage';
 import { PropertyDescriptionPage } from './pages/PropertyDescriptionPage';
 import { TableOfContentsPage } from './pages/TableOfContentsPage';
 import { MapPage } from './pages/MapPage';
+import { config } from 'process';
 
 export const DefaultDocumentationTemplate = ({
   property,
@@ -49,8 +51,17 @@ export const DefaultDocumentationTemplate = ({
 
   // Create footer component for reuse
   const footerComponent = (
-    <Footer property={property} configuration={configuration} />
+    <Footer
+      property={property}
+      configuration={configuration}
+      agencyLogo={agencyLogo}
+    />
   );
+
+  // Create header component for reuse
+  const headerComponent = configuration?.showPublisherBranding ? (
+    <Header agencyLogo={agencyLogo} />
+  ) : null;
 
   return (
     <>
@@ -73,6 +84,7 @@ export const DefaultDocumentationTemplate = ({
         hasGallery={galleryPages.length > 0}
         hasDescription={hasDescription}
         configuration={configuration}
+        Header={headerComponent}
       />
 
       {/* Add the description page if a description exists */}
@@ -88,6 +100,7 @@ export const DefaultDocumentationTemplate = ({
           propertyFeatures={propertyFeatures}
           agencyLogo={agencyLogo}
           Footer={footerComponent}
+          Header={headerComponent}
         />
       )}
 
@@ -99,6 +112,7 @@ export const DefaultDocumentationTemplate = ({
           orientation={orientation}
           addressMapUrl={configuration.addressMapUrl}
           Footer={footerComponent}
+          Header={headerComponent}
         />
       )}
 
@@ -113,6 +127,7 @@ export const DefaultDocumentationTemplate = ({
         agencyLogo={agencyLogo}
         propertyFeatures={propertyFeatures}
         Footer={footerComponent}
+        Header={headerComponent}
       />
 
       {configuration?.showAllImages &&

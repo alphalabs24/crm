@@ -16,6 +16,7 @@ export const PropertyDescriptionPage = ({
   property,
   orientation,
   Footer,
+  Header,
 }: PropertyDescriptionPageProps) => {
   // Default text if no description is available
   const description = property.description || 'Keine Beschreibung verfügbar';
@@ -30,6 +31,7 @@ export const PropertyDescriptionPage = ({
       bookmark="Beschreibung"
       id="propertyDescription"
     >
+      {Header && Header}
       <Section height="85%">
         <Row>
           <Col width="100%">

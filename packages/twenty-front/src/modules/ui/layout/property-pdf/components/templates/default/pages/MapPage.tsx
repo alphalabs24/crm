@@ -15,7 +15,12 @@ import { useMemo } from 'react';
 
 export type MapPageProps = Pick<
   DefaultDocumentationTemplateProps,
-  'property' | 'orientation' | 'propertyAddress' | 'Footer' | 'addressMapUrl'
+  | 'property'
+  | 'orientation'
+  | 'propertyAddress'
+  | 'Footer'
+  | 'addressMapUrl'
+  | 'Header'
 >;
 
 export const MapPage = ({
@@ -24,6 +29,7 @@ export const MapPage = ({
   propertyAddress,
   Footer,
   addressMapUrl,
+  Header,
 }: MapPageProps) => {
   // Format the property address for display
   const formattedAddress = useMemo(() => {
@@ -54,6 +60,7 @@ export const MapPage = ({
       bookmark="Standort"
       id="location"
     >
+      {Header && Header}
       <Section height="85%">
         <Row>
           <Col width="100%">

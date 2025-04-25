@@ -15,17 +15,21 @@ import { Image, View } from '@react-pdf/renderer';
 
 export type FooterProps = Partial<DefaultDocumentationTemplateProps>;
 
-export const Footer = ({ property, configuration }: FooterProps) => {
+export const Footer = ({
+  property,
+  configuration,
+  agencyLogo,
+}: FooterProps) => {
   return (
     // fixed will repeat the footer on each page if the page wraps
     <Section height={FOOTER_HEIGHT} style={PDF_STYLES.footer} fixed>
       <Row gap={2}>
-        {configuration?.showPublisherBranding && (
+        {configuration?.showPublisherBranding && agencyLogo && (
           <Col width="33%">
             <Row style={{ alignItems: 'center' }}>
               <View style={{ aspectRatio: 1, height: '100%' }}>
                 <Image
-                  src={'/logos/nestermind-logo.png'}
+                  src={agencyLogo}
                   style={{
                     width: '100%',
                     height: '100%',

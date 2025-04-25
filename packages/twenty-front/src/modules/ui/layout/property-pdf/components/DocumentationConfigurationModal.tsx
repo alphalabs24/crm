@@ -391,10 +391,6 @@ export const DocumentationConfigurationModal = forwardRef<
     images?.length || 0,
   );
 
-  const { objectMetadataItem } = useObjectMetadataItem({
-    objectNameSingular: CoreObjectNameSingular.Property,
-  });
-
   // Use either the external or local loading state
   const effectiveIsGenerating = isGenerating || localIsGenerating;
 
@@ -542,9 +538,7 @@ export const DocumentationConfigurationModal = forwardRef<
                   availability={availability}
                   property={property}
                   mapboxAccessToken={mapboxAccessToken ?? undefined}
-                  colorSchemeToUse={
-                    colorSchemeToUse === 'Dark' ? 'dark' : 'light'
-                  }
+                  colorSchemeToUse={'light'}
                 />
 
                 <StyledSectionDivider />

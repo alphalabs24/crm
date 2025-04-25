@@ -13,6 +13,7 @@ export type TableOfContentsPageProps =
 export const TableOfContentsPage = ({
   orientation,
   Footer,
+  Header,
   hasGallery,
   hasDescription = false,
   configuration,
@@ -38,6 +39,7 @@ export const TableOfContentsPage = ({
       orientation={orientation}
       bookmark="Inhaltsverzeichnis"
     >
+      {Header && Header}
       <Section height="75%">
         <H1 style={{ marginBottom: 10 }}>Inhaltsverzeichnis</H1>
 

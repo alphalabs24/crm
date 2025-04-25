@@ -85,10 +85,7 @@ export const DefaultFlyerTemplate = ({
           {configuration?.showPublisherBranding && agencyLogo && (
             <Col width="10%">
               <View style={PDF_STYLES.agencyLogoContainer}>
-                <Image
-                  src={'/logos/nestermind-logo.png'}
-                  style={PDF_STYLES.agencyLogo}
-                />
+                <Image src={agencyLogo} style={PDF_STYLES.agencyLogo} />
               </View>
             </Col>
           )}
@@ -141,12 +138,12 @@ export const DefaultFlyerTemplate = ({
       {shouldShowFooter && (
         <Section height={FOOTER_HEIGHT} style={PDF_STYLES.flyerFooter}>
           <Row gap={2}>
-            {configuration?.showPublisherBranding && (
+            {configuration?.showPublisherBranding && agencyLogo && (
               <Col width="33%">
                 <Row style={{ alignItems: 'center' }}>
                   <View style={{ aspectRatio: 1, height: '100%' }}>
                     <Image
-                      src={'/logos/nestermind-logo.png'}
+                      src={agencyLogo}
                       style={{
                         width: '100%',
                         height: '100%',

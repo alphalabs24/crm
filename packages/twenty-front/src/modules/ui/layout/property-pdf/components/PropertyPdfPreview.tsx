@@ -16,6 +16,7 @@ import {
   PdfDocumentationConfiguration,
   PdfFlyerConfiguration,
 } from '../types/types';
+import { useAttachments } from '@/activities/files/hooks/useAttachments';
 
 const StyledPdfViewerContainer = styled.div`
   align-items: center;
@@ -81,6 +82,15 @@ export const PropertyPdfPreview = ({
   const { objectMetadataItem } = useObjectMetadataItem({
     objectNameSingular: CoreObjectNameSingular.Property,
   });
+
+  const { attachments } = useAttachments({
+    id: property.agency?.id,
+    targetObjectNameSingular: CoreObjectNameSingular.Agency,
+  });
+
+  const agencyLogo = useMemo(() => {
+    return attachments?.find((a) => a.type === 'PublisherLogo');
+  }, [attachments]);
 
   const { formatField } = useFormattedPropertyFields({
     objectMetadataItem,
@@ -192,7 +202,7 @@ export const PropertyPdfPreview = ({
           fields={formattedFields}
           propertyFeatures={formattedFeatures}
           orientation={orientation}
-          agencyLogo={currentWorkspace?.logo}
+          agencyLogo={agencyLogo?.fullPath}
           configuration={configuration}
         />
       </StyledPDFViewer>

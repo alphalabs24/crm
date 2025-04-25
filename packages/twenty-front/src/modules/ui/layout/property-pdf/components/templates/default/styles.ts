@@ -1,5 +1,6 @@
 import { DEFAULT_THEME } from '@/ui/layout/property-pdf/constants/defaultTheme';
 import { FOOTER_HEIGHT } from '@/ui/layout/property-pdf/constants/footer';
+import { HEADER_HEIGHT } from '@/ui/layout/property-pdf/constants/header';
 import { StyleSheet } from '@react-pdf/renderer';
 
 // Create styles with improved DEFAULT_THEME system
@@ -372,6 +373,17 @@ export const PDF_STYLES = StyleSheet.create({
     maxHeight: 60,
     objectFit: 'contain',
     objectPosition: 'right center',
+  },
+
+  // Header style
+  header: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    gap: DEFAULT_THEME.spacing.xxs,
+    height: HEADER_HEIGHT,
+    paddingVertical: DEFAULT_THEME.spacing.sm,
+    paddingHorizontal: DEFAULT_THEME.spacing.md,
   },
 
   // Table of Contents styles

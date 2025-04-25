@@ -45,6 +45,7 @@ export type DefaultDocumentationTemplateProps = PropertyPdfProps & {
   showAdditionalDocuments?: boolean;
   showDescription?: boolean;
   Footer?: React.ReactNode;
+  Header?: React.ReactNode;
 };
 
 export type PdfBaseConfiguration = {

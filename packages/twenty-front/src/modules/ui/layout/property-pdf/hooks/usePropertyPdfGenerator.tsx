@@ -22,6 +22,7 @@ import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadata
 import { useFormattedPropertyFields } from '@/object-record/hooks/useFormattedPropertyFields';
 import { CATEGORY_SUBTYPES } from '@/record-edit/constants/CategorySubtypes';
 import { useSubcategoryByCategory } from '@/object-record/record-show/hooks/useSubcategoryByCategory';
+import { useAttachments } from '@/activities/files/hooks/useAttachments';
 
 // Fields to show on PDF
 const fieldsToShowOnPdf = [
@@ -75,6 +76,15 @@ export const usePropertyPdfGenerator = ({
   const { formatField } = useFormattedPropertyFields({
     objectMetadataItem,
   });
+
+  const { attachments } = useAttachments({
+    id: record?.agency?.id,
+    targetObjectNameSingular: CoreObjectNameSingular.Agency,
+  });
+
+  const agencyLogo = useMemo(() => {
+    return attachments?.find((a) => a.type === 'PublisherLogo');
+  }, [attachments]);
 
   // Get the subcategory field based on the property's category
   const subcategoryField = useSubcategoryByCategory(record?.category);
@@ -208,7 +218,7 @@ export const usePropertyPdfGenerator = ({
             fields={formattedFields}
             propertyFeatures={formattedFeatures}
             orientation={config.orientation || 'portrait'}
-            agencyLogo={currentWorkspace?.logo}
+            agencyLogo={agencyLogo?.fullPath}
             configuration={config}
           />,
         ).toBlob();
