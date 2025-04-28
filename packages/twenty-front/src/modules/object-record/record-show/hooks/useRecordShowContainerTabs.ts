@@ -9,6 +9,7 @@ import { SingleTabProps } from '@/ui/layout/tab/components/TabList';
 import { RecordLayoutTab } from '@/ui/layout/tab/types/RecordLayoutTab';
 import { useIsMobile } from '@/ui/utilities/responsive/hooks/useIsMobile';
 import { useIsFeatureEnabled } from '@/workspace/hooks/useIsFeatureEnabled';
+import { useLingui } from '@lingui/react/macro';
 import { useRecoilValue } from 'recoil';
 import {
   IconCalendarEvent,
@@ -38,6 +39,7 @@ export const useRecordShowContainerTabs = (
   const isAIDemoEnabled = useIsFeatureEnabled(FeatureFlagKey.IsAIDemoEnabled);
   const currentWorkspace = useRecoilValue(currentWorkspaceState);
 
+  const { t } = useLingui();
   // Object-specific layouts that override or extend the base layout
   const OBJECT_SPECIFIC_LAYOUTS: Partial<
     Record<CoreObjectNameSingular, RecordLayout>
@@ -45,7 +47,7 @@ export const useRecordShowContainerTabs = (
     [CoreObjectNameSingular.Property]: {
       tabs: {
         overview: {
-          title: 'Property',
+          title: t`Property`,
           hide: {
             ifMobile: false,
             ifDesktop: false,
@@ -59,7 +61,7 @@ export const useRecordShowContainerTabs = (
           cards: [{ type: CardType.OverviewCard }],
         },
         publications: {
-          title: 'Publications',
+          title: t`Publications`,
           position: 0,
           Icon: IconHomeShare,
           cards: [{ type: CardType.PublicationListCard }],
@@ -73,7 +75,7 @@ export const useRecordShowContainerTabs = (
           },
         },
         inquiries: {
-          title: 'Inquiries',
+          title: t`Inquiries`,
           position: 0,
           Icon: IconMessageCircle2,
           cards: [{ type: CardType.MobileInquiriesCard }],
@@ -103,7 +105,7 @@ export const useRecordShowContainerTabs = (
         ...(isAIDemoEnabled
           ? {
               aiSuite: {
-                title: 'AI Suite',
+                title: t`AI Suite`,
                 position: 1,
                 Icon: IconSparkles,
                 cards: [{ type: CardType.AISuiteCard }],
@@ -124,7 +126,7 @@ export const useRecordShowContainerTabs = (
     [CoreObjectNameSingular.BuyerLead]: {
       tabs: {
         emails: {
-          title: 'Emails',
+          title: t`Emails`,
           position: 600,
           Icon: IconMail,
           cards: [{ type: CardType.EmailCard }],
@@ -142,7 +144,7 @@ export const useRecordShowContainerTabs = (
     [CoreObjectNameSingular.Note]: {
       tabs: {
         richText: {
-          title: 'Note',
+          title: t`Note`,
           position: 0,
           Icon: IconNotes,
           cards: [{ type: CardType.RichTextCard }],
@@ -162,7 +164,7 @@ export const useRecordShowContainerTabs = (
     [CoreObjectNameSingular.Task]: {
       tabs: {
         richText: {
-          title: 'Note',
+          title: t`Note`,
           position: 0,
           Icon: IconNotes,
           cards: [{ type: CardType.RichTextCard }],
@@ -182,7 +184,7 @@ export const useRecordShowContainerTabs = (
     [CoreObjectNameSingular.Company]: {
       tabs: {
         emails: {
-          title: 'Emails',
+          title: t`Emails`,
           position: 600,
           Icon: IconMail,
           cards: [{ type: CardType.EmailCard }],
@@ -196,7 +198,7 @@ export const useRecordShowContainerTabs = (
           },
         },
         calendar: {
-          title: 'Calendar',
+          title: t`Calendar`,
           position: 700,
           Icon: IconCalendarEvent,
           cards: [{ type: CardType.CalendarCard }],
@@ -214,7 +216,7 @@ export const useRecordShowContainerTabs = (
     [CoreObjectNameSingular.Person]: {
       tabs: {
         emails: {
-          title: 'Emails',
+          title: t`Emails`,
           position: 600,
           Icon: IconMail,
           cards: [{ type: CardType.EmailCard }],
@@ -228,7 +230,7 @@ export const useRecordShowContainerTabs = (
           },
         },
         calendar: {
-          title: 'Calendar',
+          title: t`Calendar`,
           position: 700,
           Icon: IconCalendarEvent,
           cards: [{ type: CardType.CalendarCard }],
@@ -247,7 +249,7 @@ export const useRecordShowContainerTabs = (
       hideSummaryAndFields: true,
       tabs: {
         workflow: {
-          title: 'Flow',
+          title: t`Flow`,
           position: 0,
           Icon: IconSettings,
           cards: [{ type: CardType.WorkflowCard }],
@@ -267,7 +269,7 @@ export const useRecordShowContainerTabs = (
     [CoreObjectNameSingular.WorkflowVersion]: {
       tabs: {
         workflowVersion: {
-          title: 'Flow',
+          title: t`Flow`,
           position: 0,
           Icon: IconSettings,
           cards: [{ type: CardType.WorkflowVersionCard }],
@@ -286,7 +288,7 @@ export const useRecordShowContainerTabs = (
     [CoreObjectNameSingular.WorkflowRun]: {
       tabs: {
         workflowRunOutput: {
-          title: 'Output',
+          title: t`Output`,
           position: 0,
           Icon: IconPrinter,
           cards: [{ type: CardType.WorkflowRunOutputCard }],
@@ -300,7 +302,7 @@ export const useRecordShowContainerTabs = (
           },
         },
         workflowRunFlow: {
-          title: 'Flow',
+          title: t`Flow`,
           position: 0,
           Icon: IconSettings,
           cards: [{ type: CardType.WorkflowRunCard }],
