@@ -40,7 +40,6 @@ import {
   IconRefresh,
   IconTrash,
   IconUpload,
-  IconX,
   LARGE_DESKTOP_VIEWPORT,
   MenuItem,
   TooltipDelay,
@@ -49,6 +48,7 @@ import { DocumentEditModal } from './DocumentEditModal';
 import { FlyerConfigurationModal } from '@/ui/layout/property-pdf/components/FlyerConfigurationModal';
 import { ObjectRecord } from '@/object-record/types/ObjectRecord';
 import { DocumentationConfigurationModal } from '@/ui/layout/property-pdf/components/DocumentationConfigurationModal';
+
 const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;

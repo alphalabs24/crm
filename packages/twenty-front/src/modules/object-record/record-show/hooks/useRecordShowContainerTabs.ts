@@ -74,6 +74,20 @@ export const useRecordShowContainerTabs = (
             ifRelationsMissing: [],
           },
         },
+        marketingSuite: {
+          title: t`Marketing Suite`,
+          position: 0,
+          Icon: IconSparkles,
+          cards: [{ type: CardType.MarketingSuiteCard }],
+          hide: {
+            ifMobile: false,
+            ifDesktop: false,
+            ifInRightDrawer: true,
+            ifFeaturesDisabled: [],
+            ifRequiredObjectsInactive: [],
+            ifRelationsMissing: [],
+          },
+        },
         inquiries: {
           title: t`Inquiries`,
           position: 0,

@@ -54,7 +54,7 @@ const defaultPdfConfiguration: ConfigurationType = {
 };
 
 export type PropertyPdfGeneratorProps = {
-  record: ObjectRecord | null;
+  record?: ObjectRecord | null;
   template?: PropertyPdfTemplate;
   theme?: PdfTheme;
 };
