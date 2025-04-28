@@ -339,6 +339,10 @@ msgstr ""
 msgid "Agriculture Subtype"
 msgstr ""
 
+#: src/modules/object-record/record-show/hooks/useRecordShowContainerTabs.ts
+msgid "AI Suite"
+msgstr ""
+
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationShortLabel.ts
 msgid "All"
 msgstr ""
@@ -597,6 +601,8 @@ msgid "Calculate"
 msgstr ""
 
 #: src/modules/settings/accounts/components/SettingsAccountsSettingsSection.tsx
+#: src/modules/object-record/record-show/hooks/useRecordShowContainerTabs.ts
+#: src/modules/object-record/record-show/hooks/useRecordShowContainerTabs.ts
 msgid "Calendar"
 msgstr ""
 
@@ -1428,6 +1434,9 @@ msgstr ""
 #: src/pages/settings/accounts/SettingsAccountsEmails.tsx
 #: src/modules/settings/hooks/useSettingsNavigationItems.tsx
 #: src/modules/settings/accounts/components/SettingsAccountsSettingsSection.tsx
+#: src/modules/object-record/record-show/hooks/useRecordShowContainerTabs.ts
+#: src/modules/object-record/record-show/hooks/useRecordShowContainerTabs.ts
+#: src/modules/object-record/record-show/hooks/useRecordShowContainerTabs.ts
 msgid "Emails"
 msgstr ""
 
@@ -1719,6 +1728,7 @@ msgstr ""
 #: src/pages/settings/data-model/SettingsObjectDetailPage.tsx
 #: src/pages/settings/data-model/constants/SettingsObjectTableMetadata.ts
 #: src/modules/settings/data-model/object-details/components/tabs/ObjectFields.tsx
+#: src/modules/object-record/record-show/hooks/useRecordShowContainerTabs.ts
 msgid "Fields"
 msgstr ""
 
@@ -1728,6 +1738,10 @@ msgstr ""
 
 #: src/modules/ui/layout/property-pdf/components/FlyerConfigurationModal.tsx
 msgid "Fields to Display"
+msgstr ""
+
+#: src/modules/object-record/record-show/hooks/useRecordShowContainerTabs.ts
+msgid "Files"
 msgstr ""
 
 #: src/modules/object-record/record-table/record-table-header/components/RecordTableColumnHeadDropdownMenu.tsx
@@ -1760,6 +1774,12 @@ msgstr ""
 #: src/modules/onboarding-tutorial/components/TutorialPageHeader.tsx
 #: src/modules/onboarding-tutorial/components/OnboardingSteps.tsx
 msgid "First steps on nestermind"
+msgstr ""
+
+#: src/modules/object-record/record-show/hooks/useRecordShowContainerTabs.ts
+#: src/modules/object-record/record-show/hooks/useRecordShowContainerTabs.ts
+#: src/modules/object-record/record-show/hooks/useRecordShowContainerTabs.ts
+msgid "Flow"
 msgstr ""
 
 #: src/modules/ui/layout/property-pdf/components/FlyerConfigurationModal.tsx
@@ -2026,6 +2046,7 @@ msgid "Input must be in camel case and cannot start with a number"
 msgstr ""
 
 #: src/modules/onboarding-tutorial/components/modals/InquiryTutorialModal.tsx
+#: src/modules/object-record/record-show/hooks/useRecordShowContainerTabs.ts
 #: src/modules/object-record/record-show/components/nm/publication/ContactsByStageChart.tsx
 #: src/modules/object-record/record-show/components/nm/property/ContactsByPlatformChart.tsx
 msgid "Inquiries"
@@ -2662,6 +2683,15 @@ msgstr ""
 msgid "Not enough images available"
 msgstr ""
 
+#: src/modules/object-record/record-show/hooks/useRecordShowContainerTabs.ts
+#: src/modules/object-record/record-show/hooks/useRecordShowContainerTabs.ts
+msgid "Note"
+msgstr ""
+
+#: src/modules/object-record/record-show/hooks/useRecordShowContainerTabs.ts
+msgid "Notes"
+msgstr ""
+
 #: src/modules/command-menu/components/CommandMenu.tsx
 msgid "Object"
 msgstr ""
@@ -2742,6 +2772,10 @@ msgstr ""
 #: src/pages/settings/admin-panel/SettingsAdmin.tsx
 #: src/modules/settings/hooks/useSettingsNavigationItems.tsx
 msgid "Other"
+msgstr ""
+
+#: src/modules/object-record/record-show/hooks/useRecordShowContainerTabs.ts
+msgid "Output"
 msgstr ""
 
 #: src/modules/object-record/record-show/components/nm/cards/PropertyBasicInfoCard.tsx
@@ -2928,9 +2962,9 @@ msgstr ""
 msgid "Profile"
 msgstr ""
 
-#: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
-#~ msgid "Property"
-#~ msgstr ""
+#: src/modules/object-record/record-show/hooks/useRecordShowContainerTabs.ts
+msgid "Property"
+msgstr ""
 
 #: src/modules/onboarding-tutorial/constants/onboarding-steps.tsx
 msgid "Property created successfully"
@@ -3030,6 +3064,7 @@ msgstr ""
 msgid "Publication unpublished successfully"
 msgstr ""
 
+#: src/modules/object-record/record-show/hooks/useRecordShowContainerTabs.ts
 #: src/modules/object-record/record-show/components/nm/publication/PublicationBreadcrumb.tsx
 #: src/modules/object-record/record-show/components/nm/cards/PropertyPublicationsCard.tsx
 msgid "Publications"
@@ -3667,6 +3702,10 @@ msgstr ""
 msgid "System Settings - {systemTimeFormatLabel}"
 msgstr ""
 
+#: src/modules/object-record/record-show/hooks/useRecordShowContainerTabs.ts
+msgid "Tasks"
+msgstr ""
+
 #: src/pages/onboarding/CreateProfile.tsx
 msgid "terms of service"
 msgstr ""
@@ -3790,6 +3829,10 @@ msgstr ""
 
 #: src/pages/settings/profile/appearance/components/DateTimeSettingsTimeFormatSelect.tsx
 msgid "Time format"
+msgstr ""
+
+#: src/modules/object-record/record-show/hooks/useRecordShowContainerTabs.ts
+msgid "Timeline"
 msgstr ""
 
 #: src/modules/settings/accounts/components/SettingsAccountsMessageVisibilityCard.tsx

@@ -10,7 +10,6 @@ export function generateFrontConfig(): void {
       _env_: {
         REACT_APP_SERVER_BASE_URL: process.env.SERVER_URL,
         REACT_APP_NESTERMIND_SERVER_BASE_URL: process.env.NESTERMIND_SERVER_URL,
-        REACT_APP_MAPBOX_ACCESS_TOKEN: process.env.MAPBOX_ACCESS_TOKEN,
       },
     },
   };
