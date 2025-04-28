@@ -30,7 +30,6 @@ const StyledBoosterTag = styled.div`
   padding: 2px 5px;
   font-size: ${({ theme }: { theme: Theme }) => theme.font.size.sm};
   font-weight: ${({ theme }: { theme: Theme }) => theme.font.weight.semiBold};
-  color: ${({ theme }: { theme: Theme }) => theme.font.color.primary};
 `;
 
 type NestermindBrandingProps = {
