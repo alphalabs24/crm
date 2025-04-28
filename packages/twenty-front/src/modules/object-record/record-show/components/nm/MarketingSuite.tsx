@@ -29,35 +29,35 @@ import { Dropdown } from '@/ui/layout/dropdown/components/Dropdown';
 import { DropdownMenuItemsContainer } from '@/ui/layout/dropdown/components/DropdownMenuItemsContainer';
 import { useDropdown } from '@/ui/layout/dropdown/hooks/useDropdown';
 import { useDestroyOneRecord } from '@/object-record/hooks/useDestroyOneRecord';
+import { PdfPreview } from './PdfPreview';
+import { DocumentTypeIcon } from './DocumentTypeIcon';
 
-// Reuse styled components from PropertyDocumentFormInput
+// Styled components sorted alphabetically
+const StyledActionButton = styled.button`
+  background: transparent;
+  border: none;
+  padding: ${({ theme }) => theme.spacing(1)};
+  color: ${({ theme }) => theme.font.color.tertiary};
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    color: ${({ theme }) => theme.font.color.secondary};
+  }
+`;
+
 const StyledContainer = styled.div`
   color: ${({ theme }) => theme.font.color.primary};
   display: flex;
   flex-direction: column;
   padding: ${({ theme }) => theme.spacing(4)};
-  gap: ${({ theme }) => theme.spacing(8)};
+  gap: ${({ theme }) => theme.spacing(4)};
 
   @media (min-width: ${LARGE_DESKTOP_VIEWPORT}px) {
     max-width: 1250px;
   }
-`;
-
-const StyledSection = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(4)};
-`;
-
-const StyledHeader = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(0.5)};
-`;
-
-const StyledTitle = styled.span`
-  font-size: ${({ theme }) => theme.font.size.md};
-  font-weight: ${({ theme }) => theme.font.weight.semiBold};
 `;
 
 const StyledDescription = styled.span`
@@ -65,36 +65,9 @@ const StyledDescription = styled.span`
   font-size: ${({ theme }) => theme.font.size.sm};
 `;
 
-const StyledSpecialDocumentContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(4)};
-  margin-bottom: ${({ theme }) => theme.spacing(4)};
-  padding: ${({ theme }) => theme.spacing(3)} 0;
-`;
-
-const StyledSpecialDocumentRow = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(2)};
-`;
-
-const StyledSpecialDocumentContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(1)};
-`;
-
-const StyledSpecialDocumentHeader = styled.div`
-  align-items: flex-start;
-  display: flex;
-  gap: ${({ theme }) => theme.spacing(2)};
-  justify-content: space-between;
-  flex-direction: column;
-
-  @media (min-width: ${LARGE_DESKTOP_VIEWPORT}px) {
-    flex-direction: row;
-  }
+const StyledDocumentDescription = styled.span`
+  color: ${({ theme }) => theme.font.color.tertiary};
+  font-size: ${({ theme }) => theme.font.size.sm};
 `;
 
 const StyledDocumentInfo = styled.div`
@@ -109,9 +82,20 @@ const StyledDocumentTitle = styled.span`
   font-weight: ${({ theme }) => theme.font.weight.medium};
 `;
 
-const StyledDocumentDescription = styled.span`
-  color: ${({ theme }) => theme.font.color.tertiary};
+const StyledErrorMessage = styled.div`
+  color: ${({ theme }) => theme.color.red};
   font-size: ${({ theme }) => theme.font.size.sm};
+  margin-top: ${({ theme }) => theme.spacing(1)};
+`;
+
+const StyledFileDescription = styled.span`
+  color: ${({ theme }) => theme.font.color.tertiary};
+  font-size: ${({ theme }) => theme.font.size.xs};
+  word-break: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 `;
 
 const StyledFileIcon = styled.div`
@@ -148,28 +132,48 @@ const StyledFileName = styled.span`
   }
 `;
 
-const StyledFileDescription = styled.span`
-  color: ${({ theme }) => theme.font.color.tertiary};
-  font-size: ${({ theme }) => theme.font.size.xs};
-  word-break: break-word;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+const StyledHeader = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(0.5)};
 `;
 
-const StyledActionButton = styled.button`
-  background: transparent;
-  border: none;
-  padding: ${({ theme }) => theme.spacing(1)};
-  color: ${({ theme }) => theme.font.color.tertiary};
-  cursor: pointer;
+const StyledPreviewSection = styled.div`
+  margin-top: ${({ theme }) => theme.spacing(2)};
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(2)};
+`;
 
-  &:hover {
-    color: ${({ theme }) => theme.font.color.secondary};
+const StyledSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(4)};
+`;
+
+const StyledSpecialDocumentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(4)};
+  margin-bottom: ${({ theme }) => theme.spacing(4)};
+  padding: ${({ theme }) => theme.spacing(3)} 0;
+`;
+
+const StyledSpecialDocumentContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(1)};
+`;
+
+const StyledSpecialDocumentHeader = styled.div`
+  align-items: flex-start;
+  display: flex;
+  gap: ${({ theme }) => theme.spacing(2)};
+  justify-content: space-between;
+  flex-direction: column;
+
+  @media (min-width: ${LARGE_DESKTOP_VIEWPORT}px) {
+    flex-direction: row;
   }
 `;
 
@@ -183,6 +187,126 @@ const StyledSpecialDocumentListItem = styled.div`
   justify-content: space-between;
   padding: ${({ theme }) => theme.spacing(2)};
 `;
+
+const StyledSpecialDocumentRow = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(2)};
+`;
+
+const StyledTitle = styled.span`
+  font-size: ${({ theme }) => theme.font.size.md};
+  font-weight: ${({ theme }) => theme.font.weight.semiBold};
+`;
+
+const StyledDocumentCard = styled.div`
+  background: ${({ theme }) => theme.background.secondary};
+  border: 1px solid ${({ theme }) => theme.border.color.medium};
+  border-radius: ${({ theme }) => theme.border.radius.md};
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(3)};
+  padding: ${({ theme }) => theme.spacing(3)};
+  transition: all 0.2s ease-in-out;
+  width: 380px;
+
+  &:hover {
+    border-color: ${({ theme }) => theme.border.color.strong};
+    transform: translateY(-2px);
+  }
+`;
+
+const StyledDocumentHeader = styled.div`
+  align-items: flex-start;
+  display: flex;
+  gap: ${({ theme }) => theme.spacing(3)};
+`;
+
+const StyledDocumentIconContainer = styled.div`
+  background: ${({ theme }) => theme.background.tertiary};
+  border-radius: ${({ theme }) => theme.border.radius.sm};
+  padding: ${({ theme }) => theme.spacing(1)};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+`;
+
+const StyledPreviewContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(3)};
+  margin-top: ${({ theme }) => theme.spacing(2)};
+`;
+
+const StyledPreviewWrapper = styled.div`
+  background: ${({ theme }) => theme.background.tertiary};
+  border-radius: ${({ theme }) => theme.border.radius.sm};
+  padding: ${({ theme }) => theme.spacing(2)};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+`;
+
+const StyledPreviewActions = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: ${({ theme }) => theme.spacing(1)};
+`;
+
+const StyledEmptyState = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing(3)};
+  padding: ${({ theme }) => theme.spacing(4)};
+  background: ${({ theme }) => theme.background.tertiary};
+  border-radius: ${({ theme }) => theme.border.radius.sm};
+  text-align: center;
+`;
+
+const StyledEmptyStateIcon = styled.div`
+  color: ${({ theme }) => theme.font.color.light};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+`;
+
+const StyledEmptyStateText = styled.div`
+  color: ${({ theme }) => theme.font.color.secondary};
+  font-size: ${({ theme }) => theme.font.size.sm};
+`;
+
+const StyledEmptyStateActions = styled.div`
+  display: flex;
+  gap: ${({ theme }) => theme.spacing(2)};
+`;
+
+const StyledDocumentGrid = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: ${({ theme }) => theme.spacing(4)};
+  width: 100%;
+`;
+
+type DocumentAttachment = {
+  id: string;
+  fullPath: string;
+  name: string;
+  description?: string;
+  type: PropertyAttachmentType;
+};
+
+type SpecialDocument = {
+  type: PropertyPdfType;
+  iconType: 'expose' | 'flyer';
+  title: string;
+  description: string;
+  attachment?: DocumentAttachment;
+};
 
 type SpecialDocumentItemProps = {
   attachment: any;
@@ -399,7 +523,9 @@ export const MarketingSuite = ({ targetableObject }: MarketingSuiteProps) => {
     }
   };
 
-  const handleRemoveAttachment = async (attachmentId: string) => {
+  const handleRemoveAttachment = async (attachmentId?: string) => {
+    if (!attachmentId) return;
+
     try {
       await destroyOneAttachment(attachmentId);
     } catch (error) {
@@ -407,20 +533,22 @@ export const MarketingSuite = ({ targetableObject }: MarketingSuiteProps) => {
     }
   };
 
-  const specialDocuments = [
+  const specialDocuments: SpecialDocument[] = [
     {
-      type: 'PropertyDocumentation' as PropertyPdfType,
+      type: 'PropertyDocumentation',
+      iconType: 'expose',
       title: 'Property Exposé',
       description:
         'Detailed property presentation document sent to potential buyers through the auto responder.',
-      attachment: propertyDocumentation,
+      attachment: propertyDocumentation as DocumentAttachment | undefined,
     },
     {
-      type: 'PropertyFlyer' as PropertyPdfType,
+      type: 'PropertyFlyer',
+      iconType: 'flyer',
       title: 'Property Flyer',
       description:
         'Concise property information overview sent to clients through the auto responder.',
-      attachment: propertyFlyer,
+      attachment: propertyFlyer as DocumentAttachment | undefined,
     },
   ];
 
@@ -437,10 +565,13 @@ export const MarketingSuite = ({ targetableObject }: MarketingSuiteProps) => {
         </StyledHeader>
       </StyledSection>
       <StyledSection>
-        <StyledSpecialDocumentContainer>
+        <StyledDocumentGrid>
           {specialDocuments.map((doc) => (
-            <StyledSpecialDocumentRow key={doc.type}>
-              <StyledSpecialDocumentHeader>
+            <StyledDocumentCard key={doc.type}>
+              <StyledDocumentHeader>
+                <StyledDocumentIconContainer>
+                  <DocumentTypeIcon type={doc.iconType} />
+                </StyledDocumentIconContainer>
                 <StyledDocumentInfo>
                   <StyledDocumentTitle>
                     <Trans id={doc.title}>{doc.title}</Trans>
@@ -449,21 +580,73 @@ export const MarketingSuite = ({ targetableObject }: MarketingSuiteProps) => {
                     <Trans id={doc.description}>{doc.description}</Trans>
                   </StyledDocumentDescription>
                 </StyledDocumentInfo>
-                {!doc.attachment && (
-                  <div style={{ display: 'flex', gap: '8px' }}>
+              </StyledDocumentHeader>
+
+              {doc.attachment ? (
+                <StyledPreviewContainer>
+                  <StyledPreviewWrapper>
+                    <PdfPreview url={doc.attachment.fullPath} />
+                  </StyledPreviewWrapper>
+                  <StyledPreviewActions>
                     <Button
                       variant="secondary"
                       size="small"
                       Icon={IconRefresh}
-                      title="Generate"
-                      disabled={pdfLoading || !record}
+                      title={t`Regenerate`}
                       onClick={() => handleGenerateDocument(doc.type)}
                     />
+                    <Button
+                      variant="secondary"
+                      size="small"
+                      Icon={IconDownload}
+                      title={t`Download`}
+                      onClick={() => {
+                        window.open(doc.attachment?.fullPath, '_blank');
+                      }}
+                    />
+                    <Button
+                      variant="secondary"
+                      size="small"
+                      Icon={IconTrash}
+                      title={t`Remove`}
+                      accent="danger"
+                      onClick={() => handleRemoveAttachment(doc.attachment?.id)}
+                    />
+                  </StyledPreviewActions>
+                </StyledPreviewContainer>
+              ) : (
+                <StyledEmptyState>
+                  <StyledEmptyStateIcon>
+                    <IconFileText size={32} />
+                  </StyledEmptyStateIcon>
+                  <StyledEmptyStateText>
+                    {doc.iconType === 'expose' ? (
+                      <Trans>
+                        Create a detailed property exposé to showcase all the
+                        features and details.
+                      </Trans>
+                    ) : (
+                      <Trans>
+                        Generate a concise property flyer for quick overview.
+                      </Trans>
+                    )}
+                  </StyledEmptyStateText>
+                  <StyledEmptyStateActions>
+                    <Button
+                      variant="secondary"
+                      size="small"
+                      Icon={IconRefresh}
+                      title={t`Generate`}
+                      disabled={pdfLoading || !record}
+                      onClick={() => handleGenerateDocument(doc.type)}
+                    >
+                      {t`Generate`}
+                    </Button>
                     <Button
                       variant="primary"
                       size="small"
                       Icon={IconFileText}
-                      title="Upload"
+                      title={t`Upload`}
                       onClick={() => {
                         const input = document.createElement('input');
                         input.type = 'file';
@@ -488,22 +671,15 @@ export const MarketingSuite = ({ targetableObject }: MarketingSuiteProps) => {
                         };
                         input.click();
                       }}
-                    />
-                  </div>
-                )}
-              </StyledSpecialDocumentHeader>
-              {doc.attachment && (
-                <StyledSpecialDocumentContent>
-                  <SpecialDocumentItem
-                    attachment={doc.attachment}
-                    onRemove={handleRemoveAttachment}
-                    onRegenerate={() => handleGenerateDocument(doc.type)}
-                  />
-                </StyledSpecialDocumentContent>
+                    >
+                      {t`Upload`}
+                    </Button>
+                  </StyledEmptyStateActions>
+                </StyledEmptyState>
               )}
-            </StyledSpecialDocumentRow>
+            </StyledDocumentCard>
           ))}
-        </StyledSpecialDocumentContainer>
+        </StyledDocumentGrid>
       </StyledSection>
       {record && (
         <>
@@ -517,7 +693,6 @@ export const MarketingSuite = ({ targetableObject }: MarketingSuiteProps) => {
                 'portrait',
               );
               if (result) {
-                // Remove the old attachment if it exists before adding the new one
                 if (propertyDocumentation) {
                   await handleRemoveAttachment(propertyDocumentation.id);
                 }
@@ -535,7 +710,6 @@ export const MarketingSuite = ({ targetableObject }: MarketingSuiteProps) => {
             onGenerate={async (config) => {
               const result = await generatePdf('PropertyFlyer', 'portrait');
               if (result) {
-                // Remove the old attachment if it exists before adding the new one
                 if (propertyFlyer) {
                   await handleRemoveAttachment(propertyFlyer.id);
                 }
