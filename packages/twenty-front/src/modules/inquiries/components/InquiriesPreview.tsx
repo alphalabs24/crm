@@ -197,15 +197,17 @@ export const InquiriesPreview = ({
         <StyledSectionTitle>
           <Trans>Latest Inquiries</Trans>
         </StyledSectionTitle>
-        <StyledViewAll
-          to={`${AppPath.RecordInquiriesPage}?${
-            propertyId
-              ? `propertyId=${propertyId}`
-              : `publicationId=${publicationId}`
-          }`}
-        >
-          <Trans>View all ({totalRecords})</Trans>
-        </StyledViewAll>
+        {totalRecords > maxItems && (
+          <StyledViewAll
+            to={`${AppPath.RecordInquiriesPage}?${
+              propertyId
+                ? `propertyId=${propertyId}`
+                : `publicationId=${publicationId}`
+            }`}
+          >
+            <Trans>View all ({totalRecords})</Trans>
+          </StyledViewAll>
+        )}
       </StyledSectionHeader>
       <StyledList>
         {recordsWithPersonAndPublication.map((record, index) => (

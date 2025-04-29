@@ -7,7 +7,7 @@ import { TimelineActivities } from '@/activities/timeline-activities/components/
 import { ActivityTargetableObject } from '@/activities/types/ActivityTargetableEntity';
 import { FieldsCard } from '@/object-record/record-show/components/FieldsCard';
 import { AISuite } from '@/object-record/record-show/components/nm/AISuite';
-import { MobileInquiriesCard } from '@/object-record/record-show/components/nm/cards/MobileInquiriesCard';
+import { PropertyInquiriesListCard } from '@/object-record/record-show/components/nm/cards/PropertyInquiriesListCard';
 import { MobilePublicationsCard } from '@/object-record/record-show/components/nm/cards/MobilePublicationsCard';
 import { PublicationList } from '@/object-record/record-show/components/nm/cards/PublicationList';
 import { PropertyDetails } from '@/object-record/record-show/components/nm/PropertyDetails';
@@ -131,8 +131,8 @@ export const CardComponents: Record<CardType, CardComponentType> = {
     />
   ),
 
-  [CardType.MobileInquiriesCard]: ({ targetableObject }) => (
-    <MobileInquiriesCard targetableObject={targetableObject} />
+  [CardType.PropertyInquiriesListCard]: ({ targetableObject }) => (
+    <PropertyInquiriesListCard targetableObject={targetableObject} />
   ),
 
   [CardType.MobilePublicationsCard]: ({ targetableObject }) => (

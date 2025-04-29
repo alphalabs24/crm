@@ -12,17 +12,14 @@ import { useIsFeatureEnabled } from '@/workspace/hooks/useIsFeatureEnabled';
 import { useRecoilValue } from 'recoil';
 import {
   IconCalendarEvent,
-  IconCheckbox,
   IconHome,
   IconHomeShare,
-  IconLayoutDashboard,
   IconMail,
   IconMessageCircle2,
   IconNotes,
   IconPrinter,
   IconSettings,
   IconSparkles,
-  IconTimelineEvent,
 } from 'twenty-ui';
 import { FieldMetadataType } from '~/generated-metadata/graphql';
 import { FeatureFlagKey } from '~/generated/graphql';
@@ -76,21 +73,7 @@ export const useRecordShowContainerTabs = (
           title: 'Inquiries',
           position: 0,
           Icon: IconMessageCircle2,
-          cards: [{ type: CardType.MobileInquiriesCard }],
-          hide: {
-            ifMobile: false,
-            ifDesktop: true,
-            ifInRightDrawer: false,
-            ifFeaturesDisabled: [],
-            ifRequiredObjectsInactive: [],
-            ifRelationsMissing: [],
-          },
-        },
-        emails: {
-          title: 'Emails',
-          position: 600,
-          Icon: IconMail,
-          cards: [{ type: CardType.EmailCard }],
+          cards: [{ type: CardType.PropertyInquiriesListCard }],
           hide: {
             ifMobile: false,
             ifDesktop: false,
