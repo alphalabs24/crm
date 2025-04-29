@@ -1,7 +1,10 @@
 import { useAttachments } from '@/activities/files/hooks/useAttachments';
+import { useDeleteMessage } from '@/action-menu/actions/record-actions/single-record/hooks/useDeleteMessage';
 import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadataItem';
 import { getLinkToShowPage } from '@/object-metadata/utils/getLinkToShowPage';
+import { isProperty } from '@/object-metadata/utils/isPropertyOrPublication';
 import { useFormattedPropertyFields } from '@/object-record/hooks/useFormattedPropertyFields';
+import { useDeleteOneRecord } from '@/object-record/hooks/useDeleteOneRecord';
 import { recordIndexAllRecordIdsComponentSelector } from '@/object-record/record-index/states/selectors/recordIndexAllRecordIdsComponentSelector';
 import { PlatformBadge } from '@/object-record/record-show/components/nm/publication/PlatformBadge';
 import { StatusBadge } from '@/object-record/record-show/components/nm/publication/StatusBadge';
@@ -14,9 +17,12 @@ import { isRecordTableInitialLoadingComponentState } from '@/object-record/recor
 import { hasPendingRecordComponentSelector } from '@/object-record/record-table/states/selectors/hasPendingRecordComponentSelector';
 import { selectedRowIdsComponentSelector } from '@/object-record/record-table/states/selectors/selectedRowIdsComponentSelector';
 import { calculateCompletionLevel } from '@/object-record/utils/calculateCompletionLevel';
+import { ConfirmationModal } from '@/ui/layout/modal/components/ConfirmationModal';
 import { Dropdown } from '@/ui/layout/dropdown/components/Dropdown';
 import { DropdownMenuItemsContainer } from '@/ui/layout/dropdown/components/DropdownMenuItemsContainer';
 import { useDropdown } from '@/ui/layout/dropdown/hooks/useDropdown';
+import { useSnackBar } from '@/ui/feedback/snack-bar-manager/hooks/useSnackBar';
+import { SnackBarVariant } from '@/ui/feedback/snack-bar-manager/components/SnackBar';
 import { DragSelect } from '@/ui/utilities/drag-select/components/DragSelect';
 import { useClickOutsideListener } from '@/ui/utilities/pointer-event/hooks/useClickOutsideListener';
 import { useRecoilComponentValueV2 } from '@/ui/utilities/state/component-state/hooks/useRecoilComponentValueV2';
@@ -26,7 +32,7 @@ import { useLingui } from '@lingui/react/macro';
 import { useIcons } from '@ui/display/icon/hooks/useIcons';
 import { format } from 'date-fns';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useMemo, useRef } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -39,12 +45,15 @@ import {
   IconPencil,
   IconPhoto,
   IconSquare,
+  IconTrash,
   LARGE_DESKTOP_VIEWPORT,
   MenuItem,
   MOBILE_VIEWPORT,
   useIsMobile,
 } from 'twenty-ui';
 import { formatAmount } from '~/utils/format/formatAmount';
+import { useDeleteProperty } from '@/ui/layout/show-page/hooks/useDeleteProperty';
+import { capitalize } from 'twenty-shared';
 
 import { RecordListDataLoaderEffect } from './RecordListDataLoaderEffect';
 import { RecordListSkeletonLoader } from './RecordListSkeletonLoader';
@@ -574,6 +583,42 @@ const RecordListItem = ({
     objectRecordId: recordId,
   });
 
+  const [isDeleteRecordsModalOpen, setIsDeleteRecordsModalOpen] =
+    useState(false);
+  const { enqueueSnackBar } = useSnackBar();
+  const { deleteOneRecord } = useDeleteOneRecord({
+    objectNameSingular: objectNameSingular,
+  });
+
+  const { objectMetadataItem } = useObjectMetadataItem({
+    objectNameSingular,
+  });
+
+  const deleteMessage = useDeleteMessage(objectMetadataItem);
+
+  const label = objectMetadataItem.labelSingular;
+  // Property delete callback
+  const onDelete = async () => {
+    enqueueSnackBar(t`${objectNameSingular} deleted successfully`, {
+      variant: SnackBarVariant.Success,
+    });
+    // We don't need to refetch publications here as this is a property list
+    setIsDeleteRecordsModalOpen(false);
+  };
+
+  const { deletePropertyAndAllPublications, loading: loadingDelete } =
+    useDeleteProperty({
+      objectRecordId: recordId,
+      onDelete,
+    });
+
+  // When user confirms deletion
+  const handleConfirmDelete = async () => {
+    await deletePropertyAndAllPublications();
+    await deleteOneRecord(recordId);
+    setIsDeleteRecordsModalOpen(false);
+  };
+
   const { attachments = [] } = useAttachments({
     id: recordId,
     targetObjectNameSingular: objectNameSingular,
@@ -660,171 +705,196 @@ const RecordListItem = ({
     return record?.category === 'Rental';
   }, [record]);
 
+  console.log(objectMetadataItem);
+
   return (
-    <StyledCard
-      isSelected={isSelected}
-      onClick={handleCardClick}
-      initial={{ opacity: 0, y: 5 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -5 }}
-      transition={{ duration: 0.15 }}
-      whileHover={{
-        boxShadow: theme.boxShadow.light,
-      }}
-      layout
-      data-selectable-id={recordId}
-    >
-      <StyledSelectionIndicator
-        initial={{ x: -40, width: 0, opacity: 0 }}
-        animate={{
-          x: isSelected ? 4 : -40,
-          width: isSelected ? 45 : 0,
-          opacity: isSelected ? 1 : 0,
+    <>
+      <StyledCard
+        isSelected={isSelected}
+        onClick={handleCardClick}
+        initial={{ opacity: 0, y: 5 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -5 }}
+        transition={{ duration: 0.15 }}
+        whileHover={{
+          boxShadow: theme.boxShadow.light,
         }}
-        transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+        layout
+        data-selectable-id={recordId}
       >
-        <StyledSelectionCircle isSelected={isSelected}>
-          {isSelected && <IconCheck size={14} />}
-        </StyledSelectionCircle>
-      </StyledSelectionIndicator>
-      <StyledImageSection>
-        <StyledImageContainer>
-          {mainImage ? (
-            <StyledImage src={mainImage} alt={record?.name} />
-          ) : (
-            <IconPhoto
-              size={40}
-              color={theme.font.color.light}
-              style={{
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)',
-              }}
-            />
-          )}
-          {record?.stage && (
-            <StyledStageTag>
-              <StatusBadge status={record.stage} size="small" />
-            </StyledStageTag>
-          )}
-        </StyledImageContainer>
-      </StyledImageSection>
-
-      <StyledContentContainer>
-        <StyledUpperContentContainer>
-          <StyledHeaderContainer>
-            <StyledDate>{createdAtFormatted}</StyledDate>
-            <StyledTitleContainer>
-              <StyledTitle onClick={handleViewDetails}>
-                {record?.name}
-              </StyledTitle>
-              {record?.platform && (
-                <StyledPlatformBadgeContainer>
-                  <PlatformBadge
-                    platformId={record?.platform}
-                    size="small"
-                    variant="no-background"
-                  />
-                </StyledPlatformBadgeContainer>
-              )}
-            </StyledTitleContainer>
-
-            {record?.address && (
-              <StyledLocationContainer>
-                <IconMap size={12} color={theme.font.color.tertiary} />
-                <StyledAddress>
-                  {[
-                    record.address.addressStreet1,
-                    record.address.addressCity,
-                    record.address.addressPostcode,
-                  ]
-                    .filter(Boolean)
-                    .join(', ')}
-                </StyledAddress>
-              </StyledLocationContainer>
-            )}
-
-            {/* Display price information if available */}
-            {formattedPrice && (
-              <StyledPriceContainer>
-                <StyledPrice>{formattedPrice}</StyledPrice>
-                {isRental && <StyledRentalLabel>/month</StyledRentalLabel>}
-              </StyledPriceContainer>
-            )}
-          </StyledHeaderContainer>
-        </StyledUpperContentContainer>
-
-        <StyledLowerContentContainer>
-          <StyledFooterContainer>
-            <StyledCompletionStatus level={completionInfo.level}>
-              {completionInfo.level === 'low' && (
-                <IconAlertTriangle size={14} />
-              )}
-              {completionInfo.level === 'medium' && <IconCheck size={14} />}
-              {completionInfo.level === 'high' && <IconCheck size={14} />}
-              {completionLabel}
-            </StyledCompletionStatus>
-          </StyledFooterContainer>
-        </StyledLowerContentContainer>
-      </StyledContentContainer>
-      <StyledMiddleSection>
-        {priorityFields.length > 0 && (
-          <StyledDetails>
-            {priorityFields.map((fieldName) => (
-              <FieldDetailItem
-                key={fieldName}
-                fieldName={fieldName}
-                value={record?.[fieldName]}
-                objectNameSingular={objectNameSingular}
-              />
-            ))}
-          </StyledDetails>
-        )}
-      </StyledMiddleSection>
-      <StyledRightSection>
-        <Button
-          title={t`Edit`}
-          Icon={IconPencil}
-          size="small"
-          variant="secondary"
-          onClick={handleEdit}
-        />
-        <Button
-          title={t`Show Details`}
-          Icon={IconEye}
-          size="small"
-          variant="secondary"
-          onClick={handleViewDetails}
-        />
-        <Dropdown
-          dropdownId={dropdownId}
-          clickableComponent={
-            <Button
-              title={t`More`}
-              Icon={IconDots}
-              size="small"
-              variant="secondary"
-            />
-          }
-          dropdownMenuWidth={160}
-          dropdownComponents={[
-            <DropdownMenuItemsContainer>
-              <MenuItem
-                text={isSelected ? t`Selected` : t`Select`}
-                LeftIcon={isSelected ? IconCheck : IconSquare}
-                onClick={() => {
-                  onSelect(!isSelected);
-                  closeDropdown();
+        <StyledSelectionIndicator
+          initial={{ x: -40, width: 0, opacity: 0 }}
+          animate={{
+            x: isSelected ? 4 : -40,
+            width: isSelected ? 45 : 0,
+            opacity: isSelected ? 1 : 0,
+          }}
+          transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+        >
+          <StyledSelectionCircle isSelected={isSelected}>
+            {isSelected && <IconCheck size={14} />}
+          </StyledSelectionCircle>
+        </StyledSelectionIndicator>
+        <StyledImageSection>
+          <StyledImageContainer>
+            {mainImage ? (
+              <StyledImage src={mainImage} alt={record?.name} />
+            ) : (
+              <IconPhoto
+                size={40}
+                color={theme.font.color.light}
+                style={{
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
                 }}
-                disabled={false}
-                accent={isSelected ? 'active' : 'default'}
               />
-            </DropdownMenuItemsContainer>,
-          ]}
-          dropdownHotkeyScope={{ scope: dropdownId }}
-        />
-      </StyledRightSection>
-    </StyledCard>
+            )}
+            {record?.stage && (
+              <StyledStageTag>
+                <StatusBadge status={record.stage} size="small" />
+              </StyledStageTag>
+            )}
+          </StyledImageContainer>
+        </StyledImageSection>
+
+        <StyledContentContainer>
+          <StyledUpperContentContainer>
+            <StyledHeaderContainer>
+              <StyledDate>{createdAtFormatted}</StyledDate>
+              <StyledTitleContainer>
+                <StyledTitle onClick={handleViewDetails}>
+                  {record?.name}
+                </StyledTitle>
+                {record?.platform && (
+                  <StyledPlatformBadgeContainer>
+                    <PlatformBadge
+                      platformId={record?.platform}
+                      size="small"
+                      variant="no-background"
+                    />
+                  </StyledPlatformBadgeContainer>
+                )}
+              </StyledTitleContainer>
+
+              {record?.address && (
+                <StyledLocationContainer>
+                  <IconMap size={12} color={theme.font.color.tertiary} />
+                  <StyledAddress>
+                    {[
+                      record.address.addressStreet1,
+                      record.address.addressCity,
+                      record.address.addressPostcode,
+                    ]
+                      .filter(Boolean)
+                      .join(', ')}
+                  </StyledAddress>
+                </StyledLocationContainer>
+              )}
+
+              {/* Display price information if available */}
+              {formattedPrice && (
+                <StyledPriceContainer>
+                  <StyledPrice>{formattedPrice}</StyledPrice>
+                  {isRental && <StyledRentalLabel>/month</StyledRentalLabel>}
+                </StyledPriceContainer>
+              )}
+            </StyledHeaderContainer>
+          </StyledUpperContentContainer>
+
+          <StyledLowerContentContainer>
+            <StyledFooterContainer>
+              <StyledCompletionStatus level={completionInfo.level}>
+                {completionInfo.level === 'low' && (
+                  <IconAlertTriangle size={14} />
+                )}
+                {completionInfo.level === 'medium' && <IconCheck size={14} />}
+                {completionInfo.level === 'high' && <IconCheck size={14} />}
+                {completionLabel}
+              </StyledCompletionStatus>
+            </StyledFooterContainer>
+          </StyledLowerContentContainer>
+        </StyledContentContainer>
+        <StyledMiddleSection>
+          {priorityFields.length > 0 && (
+            <StyledDetails>
+              {priorityFields.map((fieldName) => (
+                <FieldDetailItem
+                  key={fieldName}
+                  fieldName={fieldName}
+                  value={record?.[fieldName]}
+                  objectNameSingular={objectNameSingular}
+                />
+              ))}
+            </StyledDetails>
+          )}
+        </StyledMiddleSection>
+        <StyledRightSection>
+          <Button
+            title={t`Edit`}
+            Icon={IconPencil}
+            size="small"
+            variant="secondary"
+            onClick={handleEdit}
+          />
+          <Button
+            title={t`Show Details`}
+            Icon={IconEye}
+            size="small"
+            variant="secondary"
+            onClick={handleViewDetails}
+          />
+          <Dropdown
+            dropdownId={dropdownId}
+            clickableComponent={
+              <Button
+                title={t`More`}
+                Icon={IconDots}
+                size="small"
+                variant="secondary"
+              />
+            }
+            dropdownMenuWidth={160}
+            dropdownComponents={[
+              <DropdownMenuItemsContainer>
+                <MenuItem
+                  text={isSelected ? t`Selected` : t`Select`}
+                  LeftIcon={isSelected ? IconCheck : IconSquare}
+                  onClick={() => {
+                    onSelect(!isSelected);
+                    closeDropdown();
+                  }}
+                  disabled={false}
+                  accent={isSelected ? 'active' : 'default'}
+                />
+                {isProperty(objectNameSingular) && (
+                  <MenuItem
+                    text={t`Delete`}
+                    LeftIcon={IconTrash}
+                    onClick={() => {
+                      setIsDeleteRecordsModalOpen(true);
+                      closeDropdown();
+                    }}
+                    accent="danger"
+                  />
+                )}
+              </DropdownMenuItemsContainer>,
+            ]}
+            dropdownHotkeyScope={{ scope: dropdownId }}
+          />
+        </StyledRightSection>
+      </StyledCard>
+
+      <ConfirmationModal
+        isOpen={isDeleteRecordsModalOpen}
+        setIsOpen={setIsDeleteRecordsModalOpen}
+        title={t`Delete ${label}`}
+        subtitle={deleteMessage}
+        loading={loadingDelete}
+        onConfirmClick={handleConfirmDelete}
+        deleteButtonText={t`Delete ${label}`}
+      />
+    </>
   );
 };

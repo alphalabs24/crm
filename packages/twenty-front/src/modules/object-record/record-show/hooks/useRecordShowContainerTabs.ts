@@ -2,21 +2,23 @@ import { currentWorkspaceState } from '@/auth/states/currentWorkspaceState';
 import { objectMetadataItemsState } from '@/object-metadata/states/objectMetadataItemsState';
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { ObjectMetadataItem } from '@/object-metadata/types/ObjectMetadataItem';
-import { BASE_RECORD_LAYOUT } from '@/object-record/record-show/constants/BaseRecordLayout';
 import { CardType } from '@/object-record/record-show/types/CardType';
 import { RecordLayout } from '@/object-record/record-show/types/RecordLayout';
 import { SingleTabProps } from '@/ui/layout/tab/components/TabList';
 import { RecordLayoutTab } from '@/ui/layout/tab/types/RecordLayoutTab';
 import { useIsMobile } from '@/ui/utilities/responsive/hooks/useIsMobile';
 import { useIsFeatureEnabled } from '@/workspace/hooks/useIsFeatureEnabled';
+import { useLingui } from '@lingui/react/macro';
 import { useRecoilValue } from 'recoil';
 import {
   IconCalendarEvent,
   IconHome,
   IconHomeShare,
+  IconList,
   IconMail,
   IconMessageCircle2,
   IconNotes,
+  IconPaperclip,
   IconPrinter,
   IconSettings,
   IconSparkles,
@@ -35,6 +37,7 @@ export const useRecordShowContainerTabs = (
   const isAIDemoEnabled = useIsFeatureEnabled(FeatureFlagKey.IsAIDemoEnabled);
   const currentWorkspace = useRecoilValue(currentWorkspaceState);
 
+  const { t } = useLingui();
   // Object-specific layouts that override or extend the base layout
   const OBJECT_SPECIFIC_LAYOUTS: Partial<
     Record<CoreObjectNameSingular, RecordLayout>
@@ -42,7 +45,7 @@ export const useRecordShowContainerTabs = (
     [CoreObjectNameSingular.Property]: {
       tabs: {
         overview: {
-          title: 'Property',
+          title: t`Property`,
           hide: {
             ifMobile: false,
             ifDesktop: false,
@@ -56,7 +59,7 @@ export const useRecordShowContainerTabs = (
           cards: [{ type: CardType.OverviewCard }],
         },
         publications: {
-          title: 'Publications',
+          title: t`Publications`,
           position: 0,
           Icon: IconHomeShare,
           cards: [{ type: CardType.PublicationListCard }],
@@ -69,8 +72,22 @@ export const useRecordShowContainerTabs = (
             ifRelationsMissing: [],
           },
         },
+        marketingSuite: {
+          title: t`Marketing Suite`,
+          position: 0,
+          Icon: IconSparkles,
+          cards: [{ type: CardType.MarketingSuiteCard }],
+          hide: {
+            ifMobile: false,
+            ifDesktop: false,
+            ifInRightDrawer: true,
+            ifFeaturesDisabled: [],
+            ifRequiredObjectsInactive: [],
+            ifRelationsMissing: [],
+          },
+        },
         inquiries: {
-          title: 'Inquiries',
+          title: t`Inquiries`,
           position: 0,
           Icon: IconMessageCircle2,
           cards: [{ type: CardType.PropertyInquiriesListCard }],
@@ -86,7 +103,7 @@ export const useRecordShowContainerTabs = (
         ...(isAIDemoEnabled
           ? {
               aiSuite: {
-                title: 'AI Suite',
+                title: t`AI Suite`,
                 position: 1,
                 Icon: IconSparkles,
                 cards: [{ type: CardType.AISuiteCard }],
@@ -107,7 +124,7 @@ export const useRecordShowContainerTabs = (
     [CoreObjectNameSingular.BuyerLead]: {
       tabs: {
         emails: {
-          title: 'Emails',
+          title: t`Emails`,
           position: 600,
           Icon: IconMail,
           cards: [{ type: CardType.EmailCard }],
@@ -125,7 +142,7 @@ export const useRecordShowContainerTabs = (
     [CoreObjectNameSingular.Note]: {
       tabs: {
         richText: {
-          title: 'Note',
+          title: t`Note`,
           position: 0,
           Icon: IconNotes,
           cards: [{ type: CardType.RichTextCard }],
@@ -145,7 +162,7 @@ export const useRecordShowContainerTabs = (
     [CoreObjectNameSingular.Task]: {
       tabs: {
         richText: {
-          title: 'Note',
+          title: t`Note`,
           position: 0,
           Icon: IconNotes,
           cards: [{ type: CardType.RichTextCard }],
@@ -165,7 +182,7 @@ export const useRecordShowContainerTabs = (
     [CoreObjectNameSingular.Company]: {
       tabs: {
         emails: {
-          title: 'Emails',
+          title: t`Emails`,
           position: 600,
           Icon: IconMail,
           cards: [{ type: CardType.EmailCard }],
@@ -179,7 +196,7 @@ export const useRecordShowContainerTabs = (
           },
         },
         calendar: {
-          title: 'Calendar',
+          title: t`Calendar`,
           position: 700,
           Icon: IconCalendarEvent,
           cards: [{ type: CardType.CalendarCard }],
@@ -197,7 +214,7 @@ export const useRecordShowContainerTabs = (
     [CoreObjectNameSingular.Person]: {
       tabs: {
         emails: {
-          title: 'Emails',
+          title: t`Emails`,
           position: 600,
           Icon: IconMail,
           cards: [{ type: CardType.EmailCard }],
@@ -211,7 +228,7 @@ export const useRecordShowContainerTabs = (
           },
         },
         calendar: {
-          title: 'Calendar',
+          title: t`Calendar`,
           position: 700,
           Icon: IconCalendarEvent,
           cards: [{ type: CardType.CalendarCard }],
@@ -230,7 +247,7 @@ export const useRecordShowContainerTabs = (
       hideSummaryAndFields: true,
       tabs: {
         workflow: {
-          title: 'Flow',
+          title: t`Flow`,
           position: 0,
           Icon: IconSettings,
           cards: [{ type: CardType.WorkflowCard }],
@@ -250,7 +267,7 @@ export const useRecordShowContainerTabs = (
     [CoreObjectNameSingular.WorkflowVersion]: {
       tabs: {
         workflowVersion: {
-          title: 'Flow',
+          title: t`Flow`,
           position: 0,
           Icon: IconSettings,
           cards: [{ type: CardType.WorkflowVersionCard }],
@@ -269,7 +286,7 @@ export const useRecordShowContainerTabs = (
     [CoreObjectNameSingular.WorkflowRun]: {
       tabs: {
         workflowRunOutput: {
-          title: 'Output',
+          title: t`Output`,
           position: 0,
           Icon: IconPrinter,
           cards: [{ type: CardType.WorkflowRunOutputCard }],
@@ -283,7 +300,7 @@ export const useRecordShowContainerTabs = (
           },
         },
         workflowRunFlow: {
-          title: 'Flow',
+          title: t`Flow`,
           position: 0,
           Icon: IconSettings,
           cards: [{ type: CardType.WorkflowRunCard }],
@@ -297,6 +314,81 @@ export const useRecordShowContainerTabs = (
           },
         },
         timeline: null,
+      },
+    },
+  };
+
+  const BASE_RECORD_LAYOUT: RecordLayout = {
+    tabs: {
+      fields: {
+        title: t`Fields`,
+        Icon: IconList,
+        position: 100,
+        cards: [{ type: CardType.FieldCard }],
+        hide: {
+          ifMobile: false,
+          ifDesktop: true,
+          ifInRightDrawer: false,
+          ifFeaturesDisabled: [],
+          ifRequiredObjectsInactive: [],
+          ifRelationsMissing: [],
+        },
+      },
+      timeline: {
+        title: t`Timeline`,
+        Icon: IconTimelineEvent,
+        position: 200,
+        cards: [{ type: CardType.TimelineCard }],
+        hide: {
+          ifMobile: false,
+          ifDesktop: false,
+          ifInRightDrawer: true,
+          ifFeaturesDisabled: [],
+          ifRequiredObjectsInactive: [],
+          ifRelationsMissing: [],
+        },
+      },
+      tasks: {
+        title: t`Tasks`,
+        Icon: IconCheckbox,
+        position: 300,
+        cards: [{ type: CardType.TaskCard }],
+        hide: {
+          ifMobile: false,
+          ifDesktop: false,
+          ifInRightDrawer: false,
+          ifFeaturesDisabled: [],
+          ifRequiredObjectsInactive: [CoreObjectNameSingular.Task],
+          ifRelationsMissing: ['taskTargets'],
+        },
+      },
+      notes: {
+        title: t`Notes`,
+        Icon: IconNotes,
+        position: 400,
+        cards: [{ type: CardType.NoteCard }],
+        hide: {
+          ifMobile: false,
+          ifDesktop: false,
+          ifInRightDrawer: false,
+          ifFeaturesDisabled: [],
+          ifRequiredObjectsInactive: [CoreObjectNameSingular.Note],
+          ifRelationsMissing: ['noteTargets'],
+        },
+      },
+      files: {
+        title: t`Files`,
+        Icon: IconPaperclip,
+        position: 500,
+        cards: [{ type: CardType.FileCard }],
+        hide: {
+          ifMobile: false,
+          ifDesktop: false,
+          ifInRightDrawer: false,
+          ifFeaturesDisabled: [],
+          ifRequiredObjectsInactive: [CoreObjectNameSingular.Attachment],
+          ifRelationsMissing: ['attachments'],
+        },
       },
     },
   };

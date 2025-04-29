@@ -104,6 +104,9 @@ export class ClientConfig {
   @Field(() => String, { nullable: true })
   mapboxAccessToken: string | undefined;
 
+  @Field(() => String, { nullable: true })
+  cannyAppId: string | undefined;
+
   @Field(() => Boolean)
   debugMode: boolean;
 

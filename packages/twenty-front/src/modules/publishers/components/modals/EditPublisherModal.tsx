@@ -5,6 +5,10 @@ import { useUpdateOneRecord } from '@/object-record/hooks/useUpdateOneRecord';
 import { emailSchema } from '@/object-record/record-field/validation-schemas/emailSchema';
 import { PlatformCredentialItem } from '@/publishers/components/PlatformCredentialItem';
 import { PlatformCredentialItemSkeleton } from '@/publishers/components/PlatformCredentialItemSkeleton';
+import {
+  PublisherLogoUpload,
+  PublisherLogoUploadHandle,
+} from '@/publishers/components/PublisherLogoUpload';
 import { SnackBarVariant } from '@/ui/feedback/snack-bar-manager/components/SnackBar';
 import { useSnackBar } from '@/ui/feedback/snack-bar-manager/hooks/useSnackBar';
 import { TextInputV2 } from '@/ui/input/components/TextInputV2';
@@ -46,6 +50,12 @@ const StyledSectionTitle = styled.div`
 const StyledSectionDescription = styled.div`
   color: ${({ theme }) => theme.font.color.secondary};
   font-size: ${({ theme }) => theme.font.size.sm};
+  margin-bottom: ${({ theme }) => theme.spacing(4)};
+`;
+
+const StyledSubDescription = styled.div`
+  color: ${({ theme }) => theme.font.color.secondary};
+  font-size: ${({ theme }) => theme.font.size.xs};
   margin-bottom: ${({ theme }) => theme.spacing(4)};
 `;
 
@@ -91,9 +101,12 @@ export const EditPublisherModal = forwardRef<ModalRefType, Props>(
     const [platformCredentials, setPlatformCredentials] = useState<
       Record<string, AgencyCredential>
     >({});
+    const [hasLogoChanges, setHasLogoChanges] = useState(false);
 
     const initialStateRef = useRef<InitialState | null>(null);
+    const publisherLogoRef = useRef<PublisherLogoUploadHandle>(null);
 
+    const [isSaving, setIsSaving] = useState(false);
     const { enqueueSnackBar } = useSnackBar();
 
     const {
@@ -187,8 +200,8 @@ export const EditPublisherModal = forwardRef<ModalRefType, Props>(
         platformCredentials,
       };
 
-      return !isEqual(currentState, initialStateRef.current);
-    }, [name, email, platformCredentials, publisherId]);
+      return !isEqual(currentState, initialStateRef.current) || hasLogoChanges;
+    }, [name, email, platformCredentials, publisherId, hasLogoChanges]);
 
     const handleNameChange = useCallback(
       (value: string) => {
@@ -232,6 +245,7 @@ export const EditPublisherModal = forwardRef<ModalRefType, Props>(
       setName('');
       setEmail('');
       setPlatformCredentials({});
+      setHasLogoChanges(false);
       onClose();
     };
 
@@ -239,6 +253,8 @@ export const EditPublisherModal = forwardRef<ModalRefType, Props>(
       if (!validateFields()) {
         return;
       }
+
+      setIsSaving(true);
 
       try {
         let publisherIdToUse = publisherId;
@@ -295,6 +311,17 @@ export const EditPublisherModal = forwardRef<ModalRefType, Props>(
           }),
         );
 
+        // Save logo changes if needed
+        if (hasLogoChanges && publisherLogoRef.current) {
+          // For a new publisher, we need to make sure the new ID is used
+          if (!publisherId && publisherIdToUse) {
+            // We need to wait for the refetch to complete to get the latest data
+            await refetchAgencyRecord();
+          }
+          // Now save the logo changes
+          await publisherLogoRef.current.saveChanges();
+        }
+
         refetchAgencyRecord();
 
         enqueueSnackBar(t`Credentials saved successfully`, {
@@ -307,6 +334,8 @@ export const EditPublisherModal = forwardRef<ModalRefType, Props>(
         enqueueSnackBar(t`Error saving publisher`, {
           variant: SnackBarVariant.Error,
         });
+      } finally {
+        setIsSaving(false);
       }
     };
 
@@ -324,8 +353,6 @@ export const EditPublisherModal = forwardRef<ModalRefType, Props>(
       }));
     };
 
-    const isLoading = loadingAgencyRecord || creatingAgencyRecord;
-
     return (
       <Modal
         ref={ref}
@@ -341,12 +368,18 @@ export const EditPublisherModal = forwardRef<ModalRefType, Props>(
             <StyledModalTitle>{t`Configure Publisher`}</StyledModalTitle>
           </StyledModalTitleContainer>
           <StyledModalHeaderButtons>
-            <Button variant="tertiary" title={t`Cancel`} onClick={closeModal} />
+            <Button
+              variant="tertiary"
+              title={t`Cancel`}
+              onClick={closeModal}
+              disabled={isSaving || creatingAgencyRecord}
+            />
             <Button
               title={t`Save`}
               onClick={handleSave}
               accent="blue"
-              disabled={isLoading || !hasChanges}
+              loading={isSaving || creatingAgencyRecord}
+              disabled={!hasChanges}
             />
           </StyledModalHeaderButtons>
         </StyledModalHeader>
@@ -398,12 +431,21 @@ export const EditPublisherModal = forwardRef<ModalRefType, Props>(
                 </>
               )}
             </StyledInputContainer>
-            <StyledSectionDescription>
+            <StyledSubDescription>
               <Trans>
                 Name and Email are internally used by nestermind to identify the
                 publisher.
               </Trans>
-            </StyledSectionDescription>
+            </StyledSubDescription>
+          </StyledSection>
+
+          {/* Add PublisherLogoUpload section */}
+          <StyledSection>
+            <PublisherLogoUpload
+              ref={publisherLogoRef}
+              publisherId={publisherId || ''}
+              onImageChange={setHasLogoChanges}
+            />
           </StyledSection>
 
           <StyledSection>

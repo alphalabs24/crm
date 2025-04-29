@@ -32,6 +32,7 @@ export const GET_CLIENT_CONFIG = gql`
       analyticsEnabled
       isAttachmentPreviewEnabled
       mapboxAccessToken
+      cannyAppId
       support {
         supportDriver
         supportFrontChatId

@@ -972,6 +972,14 @@ export class EnvironmentVariables {
   MAPBOX_ACCESS_TOKEN: string;
 
   @EnvironmentVariablesMetadata({
+    group: EnvironmentVariablesGroup.Other,
+    description: 'Canny app ID for feedback integration',
+  })
+  @IsString()
+  @IsOptional()
+  CANNY_APP_ID: string;
+
+  @EnvironmentVariablesMetadata({
     group: EnvironmentVariablesGroup.ServerConfig,
     sensitive: true,
     description: 'License key for the Enterprise version',
