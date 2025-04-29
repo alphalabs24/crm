@@ -14,7 +14,7 @@ export enum CardType {
   OverviewCard = 'OverviewCard',
   AISuiteCard = 'AISuiteCard',
   PublicationDetailsCard = 'PublicationDetailsCard',
-  MobileInquiriesCard = 'MobileInquiriesCard',
+  PropertyInquiriesListCard = 'PropertyInquiriesListCard',
   MobilePublicationsCard = 'MobilePublicationsCard',
   PublicationListCard = 'PublicationListCard',
   MarketingSuiteCard = 'MarketingSuiteCard',

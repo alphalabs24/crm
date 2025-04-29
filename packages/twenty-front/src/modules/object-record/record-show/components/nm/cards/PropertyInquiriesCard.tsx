@@ -11,11 +11,15 @@ import { IconMessageCircle2 } from 'twenty-ui';
 type PropertyInquiriesCardProps = {
   recordId: string;
   isPublication?: boolean;
+  maxItems?: number;
+  showGraph?: boolean;
 };
 
 export const PropertyInquiriesCard = ({
   recordId,
   isPublication,
+  maxItems = 5,
+  showGraph = true,
 }: PropertyInquiriesCardProps) => {
   const { t } = useLingui();
 
@@ -31,22 +35,23 @@ export const PropertyInquiriesCard = ({
       icon={<IconMessageCircle2 size={16} />}
       preserveHeight
     >
-      {isPublication
-        ? publicationMetrics?.contactsByStage && (
-            <ContactsByStageChart
-              contactsByStage={publicationMetrics.contactsByStage}
-            />
-          )
-        : propertyPlatformMetrics?.contactsByPlatform && (
-            <ContactsByPlatformChart
-              contactsByPlatform={propertyPlatformMetrics.contactsByPlatform}
-              totalContacts={propertyPlatformMetrics.contacts}
-            />
-          )}
+      {showGraph &&
+        (isPublication
+          ? publicationMetrics?.contactsByStage && (
+              <ContactsByStageChart
+                contactsByStage={publicationMetrics.contactsByStage}
+              />
+            )
+          : propertyPlatformMetrics?.contactsByPlatform && (
+              <ContactsByPlatformChart
+                contactsByPlatform={propertyPlatformMetrics.contactsByPlatform}
+                totalContacts={propertyPlatformMetrics.contacts}
+              />
+            ))}
       <InquiriesPreview
         propertyId={!isPublication ? recordId : undefined}
         publicationId={isPublication ? recordId : undefined}
-        maxItems={5}
+        maxItems={maxItems}
       />
     </Section>
   );

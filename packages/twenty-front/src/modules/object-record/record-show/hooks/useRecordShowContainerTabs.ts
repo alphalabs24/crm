@@ -92,21 +92,7 @@ export const useRecordShowContainerTabs = (
           title: t`Inquiries`,
           position: 0,
           Icon: IconMessageCircle2,
-          cards: [{ type: CardType.MobileInquiriesCard }],
-          hide: {
-            ifMobile: false,
-            ifDesktop: true,
-            ifInRightDrawer: false,
-            ifFeaturesDisabled: [],
-            ifRequiredObjectsInactive: [],
-            ifRelationsMissing: [],
-          },
-        },
-        emails: {
-          title: 'Emails',
-          position: 600,
-          Icon: IconMail,
-          cards: [{ type: CardType.EmailCard }],
+          cards: [{ type: CardType.PropertyInquiriesListCard }],
           hide: {
             ifMobile: false,
             ifDesktop: false,
