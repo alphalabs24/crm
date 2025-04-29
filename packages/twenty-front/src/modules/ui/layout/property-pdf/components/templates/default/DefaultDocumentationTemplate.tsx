@@ -10,7 +10,6 @@ import { PropertyDetailsPage } from './pages/PropertyDetailsPage';
 import { PropertyDescriptionPage } from './pages/PropertyDescriptionPage';
 import { TableOfContentsPage } from './pages/TableOfContentsPage';
 import { MapPage } from './pages/MapPage';
-import { config } from 'process';
 
 export const DefaultDocumentationTemplate = ({
   property,
