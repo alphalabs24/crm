@@ -98,7 +98,7 @@ export const PublisherInformationSection = <T extends PdfBaseConfiguration>({
           unavailableDescription={t`No agency details available`}
         />
 
-        <PublisherOption
+        {/*  <PublisherOption
           isSelected={config.showPublisherEmail}
           isAvailable={hasAgencyEmail}
           onClick={() =>
@@ -128,7 +128,7 @@ export const PublisherInformationSection = <T extends PdfBaseConfiguration>({
           enabledDescription={t`Including agency phone number`}
           disabledDescription={t`Excluding phone contact details`}
           unavailableDescription={t`No phone contact available`}
-        />
+        /> */}
       </StyledOptionsGroup>
     </>
   );

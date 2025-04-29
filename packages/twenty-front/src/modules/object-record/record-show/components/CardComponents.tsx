@@ -147,7 +147,8 @@ export const CardComponents: Record<CardType, CardComponentType> = {
     />
   ),
 
-  [CardType.MarketingSuiteCard]: ({ targetableObject }) => (
-    <MarketingSuite targetableObject={targetableObject} />
-  ),
+  [CardType.MarketingSuiteCard]: ({ targetableObject }) =>
+    targetableObject.id ? (
+      <MarketingSuite targetableObject={targetableObject} />
+    ) : null,
 };

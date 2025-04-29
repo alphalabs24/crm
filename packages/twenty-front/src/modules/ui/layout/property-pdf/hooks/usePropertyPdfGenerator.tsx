@@ -23,6 +23,7 @@ import { useFormattedPropertyFields } from '@/object-record/hooks/useFormattedPr
 import { CATEGORY_SUBTYPES } from '@/record-edit/constants/CategorySubtypes';
 import { useSubcategoryByCategory } from '@/object-record/record-show/hooks/useSubcategoryByCategory';
 import { useAttachments } from '@/activities/files/hooks/useAttachments';
+import { Attachment } from '@/activities/files/types/Attachment';
 
 // Fields to show on PDF
 const fieldsToShowOnPdf = [
@@ -54,7 +55,7 @@ const defaultPdfConfiguration: ConfigurationType = {
 };
 
 export type PropertyPdfGeneratorProps = {
-  record?: ObjectRecord | null;
+  record: ObjectRecord;
   template?: PropertyPdfTemplate;
   theme?: PdfTheme;
 };
@@ -89,14 +90,12 @@ export const usePropertyPdfGenerator = ({
   // Get the subcategory field based on the property's category
   const subcategoryField = useSubcategoryByCategory(record?.category);
 
-  // Create targetable object for images
-  const targetableObject: ActivityTargetableObject = useMemo(
-    () => ({
-      id: record?.id || '',
+  const targetableObject = useMemo(() => {
+    return {
+      id: record.id,
       targetObjectNameSingular: CoreObjectNameSingular.Property,
-    }),
-    [record?.id],
-  );
+    };
+  }, [record?.id]);
 
   // Hook for loading property images
   const propertyImages = usePropertyImages(targetableObject);
@@ -206,6 +205,8 @@ export const usePropertyPdfGenerator = ({
             };
           });
         }
+        console.log(agencyLogo);
+        console.log(config);
 
         // Create the PDF document using react-pdf
         const blob = await ReactPDF.pdf(

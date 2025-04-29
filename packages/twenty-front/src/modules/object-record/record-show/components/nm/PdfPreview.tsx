@@ -66,7 +66,7 @@ const StyledErrorContainer = styled.div`
   min-height: 200px;
 `;
 
-const StyledPageControls = styled.div`
+const StyledPageControls = styled.div<{ $visible: boolean }>`
   align-items: center;
   background: ${({ theme }) => theme.background.primary};
   border-radius: ${({ theme }) => theme.border.radius.sm};
@@ -75,6 +75,9 @@ const StyledPageControls = styled.div`
   gap: ${({ theme }) => theme.spacing(1)};
   justify-content: center;
   padding: ${({ theme }) => theme.spacing(1)};
+  opacity: ${({ $visible }) => ($visible ? 1 : 0)};
+  pointer-events: ${({ $visible }) => ($visible ? 'auto' : 'none')};
+  transition: opacity 0.3s ease;
 `;
 
 const StyledPageButton = styled.button<{ disabled: boolean }>`
@@ -175,28 +178,26 @@ export const PdfPreview = ({ url }: PdfPreviewProps) => {
         }
         error={<StyledErrorContainer>Error loading PDF</StyledErrorContainer>}
       >
-        <Page pageNumber={currentPage} width={200} />
+        <Page pageNumber={currentPage} width={200} height={320} />
       </Document>
 
-      {numPages > 0 && (
-        <StyledPageControls>
-          <StyledPageButton
-            onClick={goToPreviousPage}
-            disabled={currentPage <= 1}
-          >
-            <IconChevronLeft size={16} />
-          </StyledPageButton>
-          <StyledPageIndicator>
-            {currentPage} / {numPages}
-          </StyledPageIndicator>
-          <StyledPageButton
-            onClick={goToNextPage}
-            disabled={currentPage >= numPages}
-          >
-            <IconChevronRight size={16} />
-          </StyledPageButton>
-        </StyledPageControls>
-      )}
+      <StyledPageControls $visible={numPages > 1}>
+        <StyledPageButton
+          onClick={goToPreviousPage}
+          disabled={currentPage <= 1}
+        >
+          <IconChevronLeft size={16} />
+        </StyledPageButton>
+        <StyledPageIndicator>
+          {currentPage} / {numPages}
+        </StyledPageIndicator>
+        <StyledPageButton
+          onClick={goToNextPage}
+          disabled={currentPage >= numPages}
+        >
+          <IconChevronRight size={16} />
+        </StyledPageButton>
+      </StyledPageControls>
     </StyledPreviewContainer>
   );
 };

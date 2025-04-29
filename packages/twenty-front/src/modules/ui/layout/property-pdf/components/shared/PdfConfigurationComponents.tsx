@@ -148,6 +148,7 @@ export const StyledOptionsPanel = styled.div`
   @media (max-width: ${MOBILE_VIEWPORT}px) {
     width: 100%;
     padding-right: 0;
+    flex: 1;
   }
 `;
 
@@ -295,8 +296,6 @@ export const PublisherOption = ({
   disabledDescription,
   unavailableDescription,
 }: PublisherOptionProps) => {
-  const theme = useTheme();
-
   return (
     <StyledOptionCard
       isSelected={isSelected}

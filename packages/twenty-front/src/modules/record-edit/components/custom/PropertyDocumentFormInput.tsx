@@ -10,11 +10,6 @@ import { useDropdown } from '@/ui/layout/dropdown/hooks/useDropdown';
 import { ModalRefType } from '@/ui/layout/modal/components/Modal';
 
 import { saveAs } from 'file-saver';
-import { usePropertyPdfGenerator } from '@/ui/layout/property-pdf/hooks/usePropertyPdfGenerator';
-import {
-  PdfFlyerConfiguration,
-  PropertyPdfType,
-} from '@/ui/layout/property-pdf/types/types';
 import { css, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import {
@@ -37,7 +32,6 @@ import {
   IconFile,
   IconFileText,
   IconFileZip,
-  IconRefresh,
   IconTrash,
   IconUpload,
   LARGE_DESKTOP_VIEWPORT,
@@ -45,9 +39,7 @@ import {
   TooltipDelay,
 } from 'twenty-ui';
 import { DocumentEditModal } from './DocumentEditModal';
-import { FlyerConfigurationModal } from '@/ui/layout/property-pdf/components/FlyerConfigurationModal';
-import { ObjectRecord } from '@/object-record/types/ObjectRecord';
-import { DocumentationConfigurationModal } from '@/ui/layout/property-pdf/components/DocumentationConfigurationModal';
+import { downloadFile } from '@/activities/files/utils/downloadFile';
 
 const StyledContainer = styled.div`
   display: flex;
@@ -185,20 +177,6 @@ const StyledActionButton = styled.button`
   }
 `;
 
-const StyledClosePdfModalHeader = styled.div`
-  align-items: center;
-  display: flex;
-  gap: ${({ theme }) => theme.spacing(2)};
-  justify-content: flex-end;
-`;
-
-const StyledPdfPreviewContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(2)};
-  height: 95vh;
-`;
-
 const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
   userSelect: 'none' as const,
   transform: isDragging ? 'scale(1.02)' : 'scale(1)',
@@ -257,9 +235,14 @@ const DraggableDocumentItem = ({
   };
 
   const handleDownload = () => {
-    if (!document.file) return;
-    const blob = new Blob([document.file], { type: document.file.type });
-    saveAs(blob, document.file.name);
+    if (document.attachment) {
+      // Handle remote files
+      downloadFile(document.attachment.fullPath, document.attachment.name);
+    } else if (document.file) {
+      // Handle local files
+      const blob = new Blob([document.file], { type: document.file.type });
+      saveAs(blob, document.file.name);
+    }
     closeDropdown();
   };
 
@@ -414,178 +397,6 @@ const StyledDragOverlay = styled.div<{
   z-index: 1;
 `;
 
-const StyledSpecialDocumentContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(4)};
-  margin-bottom: ${({ theme }) => theme.spacing(4)};
-  padding: ${({ theme }) => theme.spacing(3)} 0;
-`;
-
-const StyledSpecialDocumentRow = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(2)};
-`;
-
-const StyledSpecialDocumentHeader = styled.div`
-  align-items: flex-start;
-  display: flex;
-  gap: ${({ theme }) => theme.spacing(2)};
-  justify-content: space-between;
-  flex-direction: column;
-
-  @media (min-width: ${LARGE_DESKTOP_VIEWPORT}px) {
-    flex-direction: row;
-  }
-`;
-
-const StyledSpecialDocumentContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(1)};
-`;
-
-const StyledDocumentInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(1)};
-`;
-
-const StyledDocumentTitle = styled.span`
-  color: ${({ theme }) => theme.font.color.primary};
-  font-size: ${({ theme }) => theme.font.size.md};
-  font-weight: ${({ theme }) => theme.font.weight.medium};
-`;
-
-const StyledDocumentDescription = styled.span`
-  color: ${({ theme }) => theme.font.color.tertiary};
-  font-size: ${({ theme }) => theme.font.size.sm};
-`;
-
-const StyledSpecialDocumentListItem = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: ${({ theme }) => theme.spacing(2)};
-  padding: ${({ theme }) => theme.spacing(2)};
-  background: ${({ theme }) => theme.background.primary};
-  border-radius: ${({ theme }) => theme.border.radius.sm};
-  width: 100%;
-`;
-
-const SpecialDocumentItem = ({
-  document,
-  onRemove,
-  onSaveEdit,
-  onClick,
-  onRegenerate,
-}: {
-  document: RecordEditPropertyDocument;
-  onRemove: (doc: RecordEditPropertyDocument) => void;
-  onSaveEdit: (
-    id: string,
-    updates: Partial<RecordEditPropertyDocument>,
-  ) => void;
-  onClick?: () => void;
-  onRegenerate?: () => void;
-}) => {
-  const { t } = useLingui();
-  const dropdownId = `document-dropdown-${document.id}`;
-  const { closeDropdown } = useDropdown(dropdownId);
-  const modalRef = useRef<ModalRefType>(null);
-
-  const handleDelete = () => {
-    onRemove(document);
-    closeDropdown();
-  };
-
-  const handleEdit = () => {
-    modalRef.current?.open();
-    closeDropdown();
-  };
-
-  const handleDownload = () => {
-    window.open(document.previewUrl, '_blank');
-    closeDropdown();
-  };
-
-  const handleRegenerate = () => {
-    if (onRegenerate) {
-      onRegenerate();
-      closeDropdown();
-    }
-  };
-
-  const handleFileNameClick = () => {
-    if (onClick) {
-      onClick();
-    } else {
-      window.open(document.previewUrl, '_blank');
-    }
-  };
-
-  return (
-    <>
-      <StyledSpecialDocumentListItem>
-        <StyledFileIcon>{getFileIcon(document.fileName || '')}</StyledFileIcon>
-        <StyledFileInfo>
-          <StyledFileName onClick={handleFileNameClick}>
-            {document.fileName}
-          </StyledFileName>
-          <StyledFileDescription>
-            {document.description || t`No description`}
-          </StyledFileDescription>
-        </StyledFileInfo>
-        <Dropdown
-          dropdownHotkeyScope={{ scope: dropdownId }}
-          dropdownId={dropdownId}
-          clickableComponent={
-            <StyledActionButton>
-              <IconDotsVertical size={16} />
-            </StyledActionButton>
-          }
-          dropdownMenuWidth={160}
-          dropdownComponents={
-            <DropdownMenuItemsContainer>
-              <MenuItem
-                text={t`Edit`}
-                LeftIcon={IconEdit}
-                onClick={handleEdit}
-              />
-              <MenuItem
-                text={t`Download`}
-                LeftIcon={IconDownload}
-                onClick={handleDownload}
-              />
-              {onRegenerate && (
-                <MenuItem
-                  text={t`Regenerate`}
-                  LeftIcon={IconRefresh}
-                  onClick={handleRegenerate}
-                />
-              )}
-              <MenuItem
-                text={t`Remove`}
-                LeftIcon={IconTrash}
-                accent="danger"
-                onClick={handleDelete}
-              />
-            </DropdownMenuItemsContainer>
-          }
-        />
-      </StyledSpecialDocumentListItem>
-
-      <DocumentEditModal
-        ref={modalRef}
-        document={document}
-        onClose={() => modalRef.current?.close()}
-        onSave={(updates) => onSaveEdit(document.id, updates)}
-      />
-    </>
-  );
-};
-
 const StyledSectionContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -605,12 +416,6 @@ const StyledSectionDescription = styled.p`
   margin: 0 0 ${({ theme }) => theme.spacing(2)} 0;
 `;
 
-const StyledDivider = styled.div`
-  height: 1px;
-  background: ${({ theme }) => theme.border.color.medium};
-  margin: ${({ theme }) => theme.spacing(2)} 0;
-`;
-
 const StyledSectionHeader = styled.div`
   align-items: flex-start;
   display: flex;
@@ -621,60 +426,6 @@ const StyledSectionHeader = styled.div`
     flex-direction: row;
   }
 `;
-
-const PdfConfigurationModalWrapper = ({
-  modalRef,
-  property,
-  pdfType,
-  onGenerate,
-}: {
-  modalRef: React.RefObject<ModalRefType>;
-  property: ObjectRecord;
-  pdfType: PropertyPdfType;
-  onGenerate: (result: {
-    blob: Blob;
-    fileName: string;
-    previewUrl: string;
-  }) => void;
-}) => {
-  const propertyPdfGenerator = usePropertyPdfGenerator({
-    record: property,
-  });
-
-  const handleGeneratePdf = async (
-    config: PdfFlyerConfiguration,
-  ): Promise<void> => {
-    try {
-      const result = await propertyPdfGenerator.generatePdf(pdfType, config);
-      if (result) {
-        // Process the generated PDF immediately
-        onGenerate(result);
-      }
-    } catch (error) {
-      console.error('Error generating PDF:', error);
-    }
-  };
-
-  if (pdfType === 'PropertyDocumentation') {
-    return (
-      <DocumentationConfigurationModal
-        ref={modalRef}
-        property={property}
-        onClose={() => modalRef.current?.close()}
-        onGenerate={handleGeneratePdf}
-      />
-    );
-  }
-
-  return (
-    <FlyerConfigurationModal
-      ref={modalRef}
-      property={property}
-      onClose={() => modalRef.current?.close()}
-      onGenerate={handleGeneratePdf}
-    />
-  );
-};
 
 export const PropertyDocumentFormInput = ({
   loading,
@@ -691,12 +442,7 @@ export const PropertyDocumentFormInput = ({
     refreshPropertyDocumentUrls,
     updatePropertyDocumentOrder,
     updatePropertyDocument,
-    initialRecord: property,
   } = useRecordEdit();
-
-  const { generatePdf, isLoading: pdfLoading } = usePropertyPdfGenerator({
-    record: property,
-  });
 
   const urlObjectsRef = useRef<Map<string, string>>(new Map());
 
@@ -754,84 +500,20 @@ export const PropertyDocumentFormInput = ({
     updatePropertyDocument(id, updates);
   };
 
-  const exposePdfConfigModalRef = useRef<ModalRefType>(null);
-  const flyerPdfConfigModalRef = useRef<ModalRefType>(null);
+  const onDragEnd = (result: DropResult) => {
+    const { destination, source } = result;
 
-  const handleConfiguredPdfGeneration = (
-    result: {
-      blob: Blob;
-      fileName: string;
-      previewUrl: string;
-    },
-    type: PropertyPdfType,
-  ) => {
-    // Find and remove any existing document of this type before adding the new one
-    const existingDoc = propertyDocuments.find((doc) => doc.type === type);
-    if (existingDoc) {
-      onRemove(existingDoc);
+    if (!destination || destination.index === source.index) {
+      return;
     }
 
-    const fileObj = new File([result.blob], result.fileName, {
-      type: 'application/pdf',
-    });
+    const updatedDocuments = reorderDocuments(
+      propertyDocuments,
+      source.index,
+      destination.index,
+    );
 
-    const url = createAndStorePersistentURL(fileObj);
-
-    const doc = {
-      id: crypto.randomUUID(),
-      isAttachment: false,
-      file: fileObj,
-      previewUrl: url,
-      fileName: result.fileName,
-      type: type,
-    };
-
-    addPropertyDocument(doc);
-  };
-
-  const handleGenerateDocument = async (type: PropertyPdfType) => {
-    if (!property) return;
-
-    // Opening the configuration modal only, without deleting the existing document
-    if (type === 'PropertyDocumentation' || type === 'PropertyFlyer') {
-      if (type === 'PropertyDocumentation') {
-        exposePdfConfigModalRef.current?.open();
-      } else {
-        flyerPdfConfigModalRef.current?.open();
-      }
-    } else {
-      try {
-        const orientation = 'portrait';
-        const result = await generatePdf(type, orientation);
-
-        if (!result) throw new Error('Failed to generate document');
-
-        // For other document types, still handle replacement here
-        const existingDoc = propertyDocuments.find((doc) => doc.type === type);
-        if (existingDoc) {
-          onRemove(existingDoc);
-        }
-
-        const file = new File([result.blob], result.fileName, {
-          type: 'application/pdf',
-        });
-
-        const persistentUrl = createAndStorePersistentURL(file);
-
-        const newDocument = {
-          id: crypto.randomUUID(),
-          isAttachment: false,
-          file,
-          previewUrl: persistentUrl,
-          fileName: result.fileName,
-          type: type,
-        };
-
-        addPropertyDocument(newDocument);
-      } catch (error) {
-        console.error('Error generating document:', error);
-      }
-    }
+    updatePropertyDocumentOrder(updatedDocuments);
   };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -852,277 +534,99 @@ export const PropertyDocumentFormInput = ({
     noDragEventsBubbling: true,
   });
 
-  const onDragEnd = (result: DropResult) => {
-    const { destination, source } = result;
-
-    if (!destination || destination.index === source.index) {
-      return;
-    }
-
-    const updatedDocuments = reorderDocuments(
-      propertyDocuments,
-      source.index,
-      destination.index,
-    );
-
-    updatePropertyDocumentOrder(updatedDocuments);
-  };
-
-  const specialDocuments = [
-    {
-      type: 'PropertyDocumentation' as PropertyPdfType,
-      title: t`Property Exposé`,
-      description: t`Detailed property presentation document sent to potential buyers through the auto responder.`,
-    },
-    {
-      type: 'PropertyFlyer' as PropertyPdfType,
-      title: t`Property Flyer`,
-      description: t`Concise property information overview sent to clients through the auto responder.`,
-    },
-  ];
+  const standardDocuments = propertyDocuments.filter(
+    (doc) => doc.type === 'PropertyDocument',
+  );
 
   const renderContent = () => {
     if (!hasRefreshed || loading) {
       return (
-        <>
-          <StyledSpecialDocumentContainer>
-            {[1, 2].map((index) => (
-              <StyledSpecialDocumentRow key={index}>
-                <StyledSpecialDocumentHeader>
-                  <StyledDocumentInfo>
-                    <Skeleton
-                      width={200}
-                      height={24}
-                      baseColor={theme.background.secondary}
-                      highlightColor={theme.background.transparent.lighter}
-                    />
-                    <Skeleton
-                      width={300}
-                      height={20}
-                      baseColor={theme.background.secondary}
-                      highlightColor={theme.background.transparent.lighter}
-                    />
-                  </StyledDocumentInfo>
-                  <div style={{ display: 'flex', gap: '8px' }}>
-                    <Skeleton
-                      width={80}
-                      height={32}
-                      baseColor={theme.background.secondary}
-                      highlightColor={theme.background.transparent.lighter}
-                    />
-                    <Skeleton
-                      width={80}
-                      height={32}
-                      baseColor={theme.background.secondary}
-                      highlightColor={theme.background.transparent.lighter}
-                    />
-                  </div>
-                </StyledSpecialDocumentHeader>
-              </StyledSpecialDocumentRow>
-            ))}
-          </StyledSpecialDocumentContainer>
-
-          <StyledDivider />
-
-          <StyledSectionContainer>
-            <Skeleton
-              height={200}
-              width={'100%'}
-              baseColor={theme.background.secondary}
-              highlightColor={theme.background.transparent.lighter}
-            />
-          </StyledSectionContainer>
-        </>
+        <StyledSectionContainer>
+          <Skeleton
+            height={200}
+            width={'100%'}
+            baseColor={theme.background.secondary}
+            highlightColor={theme.background.transparent.lighter}
+          />
+        </StyledSectionContainer>
       );
     }
 
-    const standardDocuments = propertyDocuments.filter(
-      (doc) => doc.type === 'PropertyDocument',
-    );
-
-    const specialDocumentTypes = [
-      'PropertyDocumentation',
-      'PropertyFlyer',
-    ] as const;
-    const specialDocs = Object.fromEntries(
-      specialDocumentTypes.map((type) => [
-        type,
-        propertyDocuments.find((doc) => doc.type === type),
-      ]),
-    );
-
     return (
-      <>
-        <StyledSpecialDocumentContainer>
-          {specialDocuments.map((doc) => {
-            const docType = doc.type;
-            const specialDoc = specialDocs[docType];
-            return (
-              <StyledSpecialDocumentRow key={docType}>
-                <StyledSpecialDocumentHeader>
-                  <StyledDocumentInfo>
-                    <StyledDocumentTitle>{doc.title}</StyledDocumentTitle>
-                    <StyledDocumentDescription>
-                      {doc.description}
-                    </StyledDocumentDescription>
-                  </StyledDocumentInfo>
-                  {!specialDoc && (
-                    <div style={{ display: 'flex', gap: '8px' }}>
-                      <Button
-                        variant="secondary"
-                        size="small"
-                        Icon={IconRefresh}
-                        title={t`Generate`}
-                        disabled={pdfLoading || !property}
-                        onClick={() => handleGenerateDocument(doc.type)}
+      <StyledSectionContainer>
+        <StyledSectionHeader>
+          <div>
+            <StyledSectionTitle>{t`Property Documents`}</StyledSectionTitle>
+            <StyledSectionDescription>
+              {t`Add any other documents that should be included in the publication.`}
+            </StyledSectionDescription>
+          </div>
+          <Button
+            onClick={(e) => {
+              e.stopPropagation();
+              const input = document.createElement('input');
+              input.type = 'file';
+              input.multiple = true;
+              input.accept = '.pdf,.doc,.docx,.xls,.xlsx';
+              input.onchange = (e) => {
+                const files = (e.target as HTMLInputElement).files;
+                if (files) onAdd(Array.from(files), 'PropertyDocument');
+              };
+              input.click();
+            }}
+            variant="secondary"
+            Icon={IconUpload}
+            title={t`Upload Documents`}
+          />
+        </StyledSectionHeader>
+
+        {standardDocuments.length > 0 && (
+          <DragDropContext onDragEnd={onDragEnd}>
+            <Droppable droppableId="property-documents">
+              {(provided, snapshot) => (
+                <StyledDocumentList
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                  isDraggingOver={snapshot.isDraggingOver}
+                >
+                  {standardDocuments.map((document, index) =>
+                    !loading && hasRefreshed ? (
+                      <DraggableDocumentItem
+                        key={document.id}
+                        document={document}
+                        index={index}
+                        onRemove={onRemove}
+                        onSaveEdit={onSaveEdit}
                       />
-                      <Button
-                        variant="primary"
-                        size="small"
-                        Icon={IconFileText}
-                        title={t`Upload`}
-                        onClick={() => {
-                          const input = document.createElement('input');
-                          input.type = 'file';
-                          input.accept = '.pdf,.doc,.docx';
-                          input.onchange = (e) => {
-                            const files = (e.target as HTMLInputElement).files;
-                            if (files?.[0]) {
-                              onAdd([files[0]], doc.type);
-                            }
-                          };
-                          input.click();
-                        }}
+                    ) : (
+                      <Skeleton
+                        key={index}
+                        height={56}
+                        baseColor={theme.background.secondary}
+                        highlightColor={theme.background.transparent.lighter}
                       />
-                    </div>
+                    ),
                   )}
-                </StyledSpecialDocumentHeader>
-                {specialDoc && (
-                  <StyledSpecialDocumentContent>
-                    <SpecialDocumentItem
-                      document={specialDoc}
-                      onRemove={onRemove}
-                      onSaveEdit={onSaveEdit}
-                      onClick={() =>
-                        window.open(specialDoc.previewUrl, '_blank')
-                      }
-                      onRegenerate={() => handleGenerateDocument(doc.type)}
-                    />
-                  </StyledSpecialDocumentContent>
-                )}
-              </StyledSpecialDocumentRow>
-            );
-          })}
-        </StyledSpecialDocumentContainer>
-
-        <StyledDivider />
-
-        <StyledSectionContainer>
-          <StyledSectionHeader>
-            <div>
-              <StyledSectionTitle>{t`Additional Documents`}</StyledSectionTitle>
-              <StyledSectionDescription>
-                {t`Add any other documents that should be included in the publication.`}
-              </StyledSectionDescription>
-            </div>
-            <Button
-              onClick={(e) => {
-                e.stopPropagation();
-                const input = document.createElement('input');
-                input.type = 'file';
-                input.multiple = true;
-                input.accept = '.pdf,.doc,.docx,.xls,.xlsx';
-                input.onchange = (e) => {
-                  const files = (e.target as HTMLInputElement).files;
-                  if (files) onAdd(Array.from(files), 'PropertyDocument');
-                };
-                input.click();
-              }}
-              variant="secondary"
-              Icon={IconUpload}
-              title={t`Upload Documents`}
-            />
-          </StyledSectionHeader>
-
-          {standardDocuments.length > 0 && (
-            <DragDropContext onDragEnd={onDragEnd}>
-              <Droppable droppableId="property-documents">
-                {(provided, snapshot) => (
-                  <StyledDocumentList
-                    ref={provided.innerRef}
-                    {...provided.droppableProps}
-                    isDraggingOver={snapshot.isDraggingOver}
-                  >
-                    {standardDocuments.map((document, index) =>
-                      !loading && hasRefreshed ? (
-                        <DraggableDocumentItem
-                          key={document.id}
-                          document={document}
-                          index={index}
-                          onRemove={onRemove}
-                          onSaveEdit={onSaveEdit}
-                        />
-                      ) : (
-                        <Skeleton
-                          key={index}
-                          height={56}
-                          baseColor={theme.background.secondary}
-                          highlightColor={theme.background.transparent.lighter}
-                        />
-                      ),
-                    )}
-                    {provided.placeholder}
-                  </StyledDocumentList>
-                )}
-              </Droppable>
-            </DragDropContext>
-          )}
-        </StyledSectionContainer>
-      </>
+                  {provided.placeholder}
+                </StyledDocumentList>
+              )}
+            </Droppable>
+          </DragDropContext>
+        )}
+      </StyledSectionContainer>
     );
   };
 
   return (
     <div {...getRootProps()} style={{ position: 'relative' }}>
       <input {...getInputProps()} />
-      <StyledContainer>
-        <StyledTitleContainer>
-          <StyledTitle>{t`Property Documents`}</StyledTitle>
-          <StyledDescription>
-            {t`Add documents related to your property that will be visible in the publication.`}
-          </StyledDescription>
-        </StyledTitleContainer>
-
-        {renderContent()}
-      </StyledContainer>
+      <StyledContainer>{renderContent()}</StyledContainer>
 
       {isDragActive && propertyDocuments.length > 0 && (
         <StyledDragOverlay>
           <IconUpload size={32} />
           <span>{t`Drop documents here`}</span>
         </StyledDragOverlay>
-      )}
-
-      {property && (
-        <>
-          <PdfConfigurationModalWrapper
-            modalRef={exposePdfConfigModalRef}
-            property={property}
-            pdfType="PropertyDocumentation"
-            onGenerate={(result) =>
-              handleConfiguredPdfGeneration(result, 'PropertyDocumentation')
-            }
-          />
-
-          <PdfConfigurationModalWrapper
-            modalRef={flyerPdfConfigModalRef}
-            property={property}
-            pdfType="PropertyFlyer"
-            onGenerate={(result) =>
-              handleConfiguredPdfGeneration(result, 'PropertyFlyer')
-            }
-          />
-        </>
       )}
     </div>
   );

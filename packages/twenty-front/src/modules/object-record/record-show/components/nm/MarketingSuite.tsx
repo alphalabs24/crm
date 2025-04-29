@@ -6,7 +6,7 @@ import { PropertyPdfType } from '@/ui/layout/property-pdf/types/types';
 import { DocumentationConfigurationModal } from '@/ui/layout/property-pdf/components/DocumentationConfigurationModal';
 import { FlyerConfigurationModal } from '@/ui/layout/property-pdf/components/FlyerConfigurationModal';
 import { ModalRefType } from '@/ui/layout/modal/components/Modal';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { Trans, useLingui } from '@lingui/react/macro';
 import styled from '@emotion/styled';
 import { useTheme } from '@emotion/react';
@@ -15,14 +15,14 @@ import {
   Button,
   IconFileText,
   IconRefresh,
-  IconFile,
   IconDotsVertical,
-  IconEdit,
   IconDownload,
   IconTrash,
   IconExternalLink,
   MenuItem,
   MOBILE_VIEWPORT,
+  IconButton,
+  IconUpload,
 } from 'twenty-ui';
 import { useFindOneRecord } from '@/object-record/hooks/useFindOneRecord';
 import { useAttachments } from '@/activities/files/hooks/useAttachments';
@@ -32,6 +32,10 @@ import { useDropdown } from '@/ui/layout/dropdown/hooks/useDropdown';
 import { useDestroyOneRecord } from '@/object-record/hooks/useDestroyOneRecord';
 import { PdfPreview } from './PdfPreview';
 import { DocumentTypeIcon } from './DocumentTypeIcon';
+import { ConfirmationModal } from '@/ui/layout/modal/components/ConfirmationModal';
+import saveAs from 'file-saver';
+import { downloadFile } from '@/activities/files/utils/downloadFile';
+import { DefaultPropertyPdfTemplate } from '@/ui/layout/property-pdf/components/templates/default/DefaultPropertyPdfTemplate';
 
 // Styled components sorted alphabetically
 const StyledActionButton = styled.button`
@@ -140,10 +144,10 @@ const StyledHeader = styled.div`
 `;
 
 const StyledPreviewSection = styled.div`
-  margin-top: ${({ theme }) => theme.spacing(2)};
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(2)};
+  margin-top: ${({ theme }) => theme.spacing(2)};
 `;
 
 const StyledSection = styled.div`
@@ -217,21 +221,10 @@ const StyledDocumentHeader = styled.div`
   max-width: 400px;
 `;
 
-const StyledDocumentIconContainer = styled.div`
-  background: ${({ theme }) => theme.background.tertiary};
-  border-radius: ${({ theme }) => theme.border.radius.sm};
-  padding: ${({ theme }) => theme.spacing(1)};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-`;
-
 const StyledPreviewContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(3)};
-  height: 100%;
 `;
 
 const StyledPreviewWrapper = styled.div`
@@ -322,7 +315,18 @@ export const MarketingSuite = ({ targetableObject }: MarketingSuiteProps) => {
   const { uploadAttachmentFile } = useUploadAttachmentFile();
   const { t } = useLingui();
 
+  // Create dropdown instances for each document type
+  const exposeDropdownId = 'document-dropdown-PropertyDocumentation';
+  const flyerDropdownId = 'document-dropdown-PropertyFlyer';
+  const { closeDropdown: closeExposeDropdown } = useDropdown(exposeDropdownId);
+  const { closeDropdown: closeFlyerDropdown } = useDropdown(flyerDropdownId);
+
+  const [documentToDelete, setDocumentToDelete] =
+    useState<DocumentAttachment | null>(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
   const { attachments } = useAttachments(targetableObject);
+
   const propertyDocumentation = attachments.find(
     (attachment) => attachment.type === 'PropertyDocumentation',
   );
@@ -333,10 +337,6 @@ export const MarketingSuite = ({ targetableObject }: MarketingSuiteProps) => {
   const { record } = useFindOneRecord({
     objectNameSingular: targetableObject.targetObjectNameSingular,
     objectRecordId: targetableObject.id,
-  });
-
-  const { generatePdf, isLoading: pdfLoading } = usePropertyPdfGenerator({
-    record,
   });
 
   const { destroyOneRecord: destroyOneAttachment } = useDestroyOneRecord({
@@ -381,43 +381,78 @@ export const MarketingSuite = ({ targetableObject }: MarketingSuiteProps) => {
       } else {
         flyerPdfConfigModalRef.current?.open();
       }
-    } else {
-      try {
-        const orientation = 'portrait';
-        const result = await generatePdf(type, orientation);
-
-        if (!result) throw new Error('Failed to generate document');
-
-        const file = new File([result.blob], result.fileName, {
-          type: 'application/pdf',
-        });
-
-        await uploadAttachmentFile(
-          file,
-          {
-            id: targetableObject.id,
-            targetObjectNameSingular: targetableObject.targetObjectNameSingular,
-          },
-          type,
-          0,
-          result.fileName,
-          '',
-          true,
-        );
-      } catch (error) {
-        console.error('Error generating document:', error);
-      }
     }
   };
 
-  const handleRemoveAttachment = async (attachmentId?: string) => {
-    if (!attachmentId) return;
+  const handleConfirmDeleteAttachment = async () => {
+    if (!documentToDelete?.id) return;
 
     try {
-      await destroyOneAttachment(attachmentId);
+      await destroyOneAttachment(documentToDelete.id);
+      setIsDeleteModalOpen(false);
+      setDocumentToDelete(null);
     } catch (error) {
       console.error('Error removing attachment:', error);
     }
+  };
+
+  const handleDownload = (document: DocumentAttachment) => {
+    if (!document.fullPath) return;
+
+    downloadFile(document.fullPath, document.name);
+  };
+
+  const handleOpenDeleteModal = (attachment?: DocumentAttachment) => {
+    if (!attachment) return;
+    setDocumentToDelete(attachment);
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleReplaceDocument = async (type: PropertyPdfType) => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.pdf,.doc,.docx';
+    input.onchange = async (e) => {
+      const files = (e.target as HTMLInputElement).files;
+      if (!files?.[0]) return;
+
+      // Find existing attachment of this type
+      const existingAttachment = attachments.find(
+        (attachment) => attachment.type === type,
+      );
+
+      // If there's an existing attachment, delete it first
+      if (existingAttachment) {
+        await destroyOneAttachment(existingAttachment.id);
+      }
+
+      // Upload the new file
+      await uploadAttachmentFile(
+        files[0],
+        {
+          id: targetableObject.id,
+          targetObjectNameSingular: targetableObject.targetObjectNameSingular,
+        },
+        type,
+        0,
+        files[0].name,
+        '',
+        true,
+      );
+    };
+    input.click();
+  };
+
+  const getDropdownForType = (type: PropertyPdfType) => {
+    return type === 'PropertyDocumentation'
+      ? closeExposeDropdown
+      : closeFlyerDropdown;
+  };
+
+  const getDropdownIdForType = (type: PropertyPdfType) => {
+    return type === 'PropertyDocumentation'
+      ? exposeDropdownId
+      : flyerDropdownId;
   };
 
   const specialDocuments: SpecialDocument[] = [
@@ -451,136 +486,189 @@ export const MarketingSuite = ({ targetableObject }: MarketingSuiteProps) => {
       </StyledSection>
       <StyledSection>
         <StyledDocumentGrid>
-          {specialDocuments.map((doc) => (
-            <StyledDocumentCard key={doc.type}>
-              <StyledDocumentHeader>
-                <StyledDocumentIconContainer>
-                  <DocumentTypeIcon type={doc.iconType} />
-                </StyledDocumentIconContainer>
-                <StyledDocumentInfo>
-                  <StyledDocumentTitle>{doc.title}</StyledDocumentTitle>
-                  <StyledDocumentDescription>
-                    {doc.description}
-                  </StyledDocumentDescription>
-                </StyledDocumentInfo>
-              </StyledDocumentHeader>
+          {specialDocuments.map((doc) => {
+            const dropdownId = getDropdownIdForType(doc.type);
+            const closeDropdown = getDropdownForType(doc.type);
 
-              {doc.attachment ? (
-                <StyledPreviewContainer>
-                  <StyledPreviewWrapper>
-                    <PdfPreview url={doc.attachment.fullPath} />
-                  </StyledPreviewWrapper>
-                  <StyledPreviewActions>
-                    <Button
-                      variant="secondary"
-                      size="small"
-                      Icon={IconRefresh}
-                      title={t`Regenerate`}
-                      onClick={() => handleGenerateDocument(doc.type)}
-                    />
-                    <Button
-                      variant="secondary"
-                      size="small"
-                      Icon={IconExternalLink}
-                      title={t`Open`}
-                      onClick={() => {
-                        window.open(doc.attachment?.fullPath, '_blank');
-                      }}
-                    />
-                    <Button
-                      variant="secondary"
-                      size="small"
-                      Icon={IconTrash}
-                      title={t`Remove`}
-                      accent="danger"
-                      onClick={() => handleRemoveAttachment(doc.attachment?.id)}
-                    />
-                  </StyledPreviewActions>
-                </StyledPreviewContainer>
-              ) : (
-                <>
-                  <StyledEmptyState>
-                    <StyledEmptyStateIcon>
-                      <IconFileText size={32} />
-                    </StyledEmptyStateIcon>
-                    <StyledEmptyStateText>
-                      {doc.iconType === 'expose' ? (
-                        <Trans>
-                          Create a detailed property exposé to showcase all the
-                          features and details.
-                        </Trans>
-                      ) : (
-                        <Trans>
-                          Generate a concise property flyer for quick overview.
-                        </Trans>
-                      )}
-                    </StyledEmptyStateText>
-                    <StyledEmptyStateActions>
+            return (
+              <StyledDocumentCard key={doc.type}>
+                <StyledDocumentHeader>
+                  <DocumentTypeIcon type={doc.iconType} />
+                  <StyledDocumentInfo>
+                    <StyledDocumentTitle>{doc.title}</StyledDocumentTitle>
+                    <StyledDocumentDescription>
+                      {doc.description}
+                    </StyledDocumentDescription>
+                  </StyledDocumentInfo>
+                </StyledDocumentHeader>
+
+                {doc.attachment ? (
+                  <StyledPreviewContainer>
+                    <StyledPreviewWrapper>
+                      <PdfPreview url={doc.attachment.fullPath} />
+                    </StyledPreviewWrapper>
+                    <StyledPreviewActions>
                       <Button
                         variant="secondary"
                         size="small"
                         Icon={IconRefresh}
-                        title={t`Generate`}
-                        disabled={pdfLoading || !record}
+                        title={t`Regenerate`}
                         onClick={() => handleGenerateDocument(doc.type)}
-                      >
-                        {t`Generate`}
-                      </Button>
+                      />
                       <Button
                         variant="secondary"
                         size="small"
-                        Icon={IconFileText}
-                        title={t`Upload`}
+                        Icon={IconExternalLink}
+                        title={t`Open`}
                         onClick={() => {
-                          const input = document.createElement('input');
-                          input.type = 'file';
-                          input.accept = '.pdf,.doc,.docx';
-                          input.onchange = async (e) => {
-                            const files = (e.target as HTMLInputElement).files;
-                            if (files?.[0]) {
-                              await uploadAttachmentFile(
-                                files[0],
-                                {
-                                  id: targetableObject.id,
-                                  targetObjectNameSingular:
-                                    targetableObject.targetObjectNameSingular,
-                                },
-                                doc.type,
-                                0,
-                                files[0].name,
-                                '',
-                                true,
-                              );
-                            }
-                          };
-                          input.click();
+                          window.open(doc.attachment?.fullPath, '_blank');
                         }}
-                      >
-                        {t`Upload`}
-                      </Button>
-                    </StyledEmptyStateActions>
-                  </StyledEmptyState>
-                  <StyledPreviewActions />
-                </>
-              )}
-            </StyledDocumentCard>
-          ))}
+                      />
+                      <Dropdown
+                        dropdownId={dropdownId}
+                        clickableComponent={
+                          <IconButton
+                            variant="secondary"
+                            Icon={IconDotsVertical}
+                            size="small"
+                            ariaLabel={t`More actions`}
+                          />
+                        }
+                        dropdownMenuWidth={160}
+                        dropdownComponents={
+                          <DropdownMenuItemsContainer>
+                            <MenuItem
+                              text={t`Download`}
+                              LeftIcon={IconDownload}
+                              onClick={() => {
+                                if (doc.attachment) {
+                                  handleDownload(doc.attachment);
+                                }
+                                closeDropdown();
+                              }}
+                            />
+                            <MenuItem
+                              text={t`Replace`}
+                              LeftIcon={IconUpload}
+                              onClick={() => {
+                                handleReplaceDocument(doc.type);
+                                closeDropdown();
+                              }}
+                            />
+                            <MenuItem
+                              text={t`Delete`}
+                              LeftIcon={IconTrash}
+                              accent="danger"
+                              onClick={() => {
+                                handleOpenDeleteModal(doc.attachment);
+                                closeDropdown();
+                              }}
+                            />
+                          </DropdownMenuItemsContainer>
+                        }
+                        dropdownHotkeyScope={{ scope: dropdownId }}
+                      />
+                    </StyledPreviewActions>
+                  </StyledPreviewContainer>
+                ) : (
+                  <>
+                    <StyledEmptyState>
+                      <StyledEmptyStateIcon>
+                        <IconFileText size={32} />
+                      </StyledEmptyStateIcon>
+                      <StyledEmptyStateText>
+                        {doc.iconType === 'expose' ? (
+                          <Trans>
+                            Create a detailed property exposé to showcase all
+                            the features and details.
+                          </Trans>
+                        ) : (
+                          <Trans>
+                            Generate a concise property flyer for quick
+                            overview.
+                          </Trans>
+                        )}
+                      </StyledEmptyStateText>
+                      <StyledEmptyStateActions>
+                        <Button
+                          variant="secondary"
+                          size="small"
+                          Icon={IconRefresh}
+                          title={t`Generate`}
+                          disabled={!record}
+                          onClick={() => handleGenerateDocument(doc.type)}
+                        >
+                          {t`Generate`}
+                        </Button>
+                        <Button
+                          variant="secondary"
+                          size="small"
+                          Icon={IconFileText}
+                          title={t`Upload`}
+                          onClick={() => {
+                            const input = document.createElement('input');
+                            input.type = 'file';
+                            input.accept = '.pdf,.doc,.docx';
+                            input.onchange = async (e) => {
+                              const files = (e.target as HTMLInputElement)
+                                .files;
+                              if (files?.[0]) {
+                                await uploadAttachmentFile(
+                                  files[0],
+                                  {
+                                    id: targetableObject.id,
+                                    targetObjectNameSingular:
+                                      targetableObject.targetObjectNameSingular,
+                                  },
+                                  doc.type,
+                                  0,
+                                  files[0].name,
+                                  '',
+                                  true,
+                                );
+                              }
+                            };
+                            input.click();
+                          }}
+                        >
+                          {t`Upload`}
+                        </Button>
+                      </StyledEmptyStateActions>
+                    </StyledEmptyState>
+                    <StyledPreviewActions />
+                  </>
+                )}
+              </StyledDocumentCard>
+            );
+          })}
         </StyledDocumentGrid>
       </StyledSection>
+
+      <ConfirmationModal
+        isOpen={isDeleteModalOpen}
+        setIsOpen={setIsDeleteModalOpen}
+        title={t`Delete Document`}
+        subtitle={
+          <Trans>
+            Are you sure you want to delete this document? This action cannot be
+            undone.
+          </Trans>
+        }
+        loading={false}
+        onConfirmClick={handleConfirmDeleteAttachment}
+        deleteButtonText={t`Delete`}
+      />
+
       {record && (
         <>
           <DocumentationConfigurationModal
             ref={exposePdfConfigModalRef}
             property={record}
             onClose={() => exposePdfConfigModalRef.current?.close()}
-            onGenerate={async () => {
-              const result = await generatePdf(
-                'PropertyDocumentation',
-                'portrait',
-              );
+            onGenerate={async (result) => {
               if (result) {
                 if (propertyDocumentation) {
-                  await handleRemoveAttachment(propertyDocumentation.id);
+                  await destroyOneAttachment(propertyDocumentation.id);
                 }
                 await handleConfiguredPdfGeneration(
                   result,
@@ -593,11 +681,10 @@ export const MarketingSuite = ({ targetableObject }: MarketingSuiteProps) => {
             ref={flyerPdfConfigModalRef}
             property={record}
             onClose={() => flyerPdfConfigModalRef.current?.close()}
-            onGenerate={async () => {
-              const result = await generatePdf('PropertyFlyer', 'portrait');
+            onGenerate={async (result) => {
               if (result) {
                 if (propertyFlyer) {
-                  await handleRemoveAttachment(propertyFlyer.id);
+                  await destroyOneAttachment(propertyFlyer.id);
                 }
                 await handleConfiguredPdfGeneration(result, 'PropertyFlyer');
               }

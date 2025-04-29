@@ -14,7 +14,7 @@ import {
   StyledModalTitle,
   StyledModalTitleContainer,
 } from '@/ui/layout/show-page/components/nm/modal-components/ModalComponents';
-import { Button, IconFile, IconSettings } from 'twenty-ui';
+import { Button, IconFile, IconSettings, useIsMobile } from 'twenty-ui';
 import { useSubcategoryByCategory } from '@/object-record/record-show/hooks/useSubcategoryByCategory';
 import { CATEGORY_SUBTYPES } from '@/record-edit/constants/CategorySubtypes';
 import { currentWorkspaceState } from '@/auth/states/currentWorkspaceState';
@@ -47,6 +47,7 @@ import {
   PublisherInformationSection,
   FlyerContentOptions,
 } from './shared/PdfConfigurationUtils';
+import { usePropertyPdfGenerator } from '../hooks/usePropertyPdfGenerator';
 
 // Extended modal container with minimum height
 const StyledModalContainer = styled(BaseModalContainer)`
@@ -56,7 +57,13 @@ const StyledModalContainer = styled(BaseModalContainer)`
 export type PdfConfigurationModalProps = {
   property: ObjectRecord;
   onClose: () => void;
-  onGenerate: (config: PdfFlyerConfiguration) => Promise<void>;
+  onGenerate: (
+    result: {
+      blob: Blob;
+      fileName: string;
+      previewUrl: string;
+    } | null,
+  ) => Promise<void>;
   isGenerating?: boolean;
 };
 
@@ -65,8 +72,13 @@ export const FlyerConfigurationModal = forwardRef<
   PdfConfigurationModalProps
 >(({ property, onClose, onGenerate, isGenerating = false }, ref) => {
   const { t } = useLingui();
-  const [localIsGenerating, setLocalIsGenerating] = useState(false);
 
+  const { generatePdf, isLoading: pdfLoading } = usePropertyPdfGenerator({
+    record: property,
+  });
+
+  const [localIsGenerating, setLocalIsGenerating] = useState(false);
+  const isMobile = useIsMobile();
   // TODO Refactor this to never use workspace logo but use the agency logo once available
   const [currentWorkspace] = useRecoilState(currentWorkspaceState);
 
@@ -126,8 +138,9 @@ export const FlyerConfigurationModal = forwardRef<
     orientation: 'portrait',
     // Publisher options - default all to true
     showPublisherBranding: true,
-    showPublisherEmail: true,
-    showPublisherPhone: true,
+    // TODO: Set those to default to true once we want to show them
+    showPublisherEmail: false,
+    showPublisherPhone: false,
   });
 
   // Update selected fields when relevantFields change
@@ -196,7 +209,8 @@ export const FlyerConfigurationModal = forwardRef<
         selectedFields: [...config.selectedFields],
       };
 
-      await onGenerate(configCopy);
+      const result = await generatePdf('PropertyFlyer', configCopy);
+      await onGenerate(result);
       // Close the modal after successful generation
       onClose();
     } catch (error) {
@@ -246,6 +260,7 @@ export const FlyerConfigurationModal = forwardRef<
       isClosable
       onClose={onClose}
       closedOnMount
+      portal
       hotkeyScope={ModalHotkeyScope.Default}
       padding="none"
     >
@@ -293,16 +308,18 @@ export const FlyerConfigurationModal = forwardRef<
               </StyledOptionsGroup>
             </StyledOptionsPanel>
 
-            <StyledPreviewPanel>
-              <StyledSectionTitle>{t`Preview`}</StyledSectionTitle>
-              <StyledPreviewContainer>
-                <PropertyPdfPreview
-                  property={property}
-                  isFlyer
-                  configuration={config}
-                />
-              </StyledPreviewContainer>
-            </StyledPreviewPanel>
+            {isMobile ? null : (
+              <StyledPreviewPanel>
+                <StyledSectionTitle>{t`Preview`}</StyledSectionTitle>
+                <StyledPreviewContainer>
+                  <PropertyPdfPreview
+                    property={property}
+                    isFlyer
+                    configuration={config}
+                  />
+                </StyledPreviewContainer>
+              </StyledPreviewPanel>
+            )}
           </StyledModalLayout>
         </StyledModalContent>
       </StyledModalContainer>

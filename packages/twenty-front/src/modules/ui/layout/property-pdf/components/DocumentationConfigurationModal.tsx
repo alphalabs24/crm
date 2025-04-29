@@ -24,6 +24,7 @@ import {
   IconFileDescription,
   IconLayoutGrid,
   IconCheck,
+  useIsMobile,
 } from 'twenty-ui';
 import { useSubcategoryByCategory } from '@/object-record/record-show/hooks/useSubcategoryByCategory';
 import { CATEGORY_SUBTYPES } from '@/record-edit/constants/CategorySubtypes';
@@ -71,6 +72,7 @@ import {
   useAvailabilityChecks,
   PublisherInformationSection,
 } from './shared/PdfConfigurationUtils';
+import { usePropertyPdfGenerator } from '../hooks/usePropertyPdfGenerator';
 
 // Extended modal container with minimum height
 const StyledModalContainer = styled(BaseModalContainer)`
@@ -80,7 +82,13 @@ const StyledModalContainer = styled(BaseModalContainer)`
 export type DocumentationConfigurationModalProps = {
   property: ObjectRecord;
   onClose: () => void;
-  onGenerate: (config: ConfigurationType) => Promise<void>;
+  onGenerate: (
+    result: {
+      blob: Blob;
+      fileName: string;
+      previewUrl: string;
+    } | null,
+  ) => Promise<void>;
   isGenerating?: boolean;
 };
 
@@ -368,16 +376,14 @@ export const DocumentationConfigurationModal = forwardRef<
 >(({ property, onClose, onGenerate, isGenerating = false }, ref) => {
   const { t } = useLingui();
   const [localIsGenerating, setLocalIsGenerating] = useState(false);
-
+  const isMobile = useIsMobile();
   // TODO Refactor this to never use workspace logo but use the agency logo once available
   const [currentWorkspace] = useRecoilState(currentWorkspaceState);
   const mapboxAccessToken = useRecoilValue(mapboxAccessTokenState);
 
-  // Color scheme handling for map display
-  const { colorScheme } = useColorScheme();
-  const systemColorScheme = useSystemColorScheme();
-  const colorSchemeToUse =
-    colorScheme === 'System' ? systemColorScheme : colorScheme;
+  const { generatePdf, isLoading: pdfLoading } = usePropertyPdfGenerator({
+    record: property,
+  });
 
   const images = usePropertyImages({
     id: property.id,
@@ -430,8 +436,9 @@ export const DocumentationConfigurationModal = forwardRef<
     selectedFields: [...relevantFields],
     // Publisher options - default all to true
     showPublisherBranding: true,
-    showPublisherEmail: true,
-    showPublisherPhone: true,
+    // TODO: Set those to default to true once we want to show them
+    showPublisherEmail: false,
+    showPublisherPhone: false,
     // Documentation specific options
     showAddressMap: true,
     showDescription: true,
@@ -489,7 +496,8 @@ export const DocumentationConfigurationModal = forwardRef<
         selectedFields: [...config.selectedFields],
       };
 
-      await onGenerate(configCopy);
+      const result = await generatePdf('PropertyDocumentation', configCopy);
+      await onGenerate(result);
       // Close the modal after successful generation
       onClose();
     } catch (error) {
@@ -508,6 +516,7 @@ export const DocumentationConfigurationModal = forwardRef<
       closedOnMount
       hotkeyScope={ModalHotkeyScope.Default}
       padding="none"
+      portal
     >
       <StyledModalContainer adaptiveHeight>
         <StyledModalHeader>
@@ -558,16 +567,18 @@ export const DocumentationConfigurationModal = forwardRef<
               </StyledOptionsGroup>
             </StyledOptionsPanel>
 
-            <StyledPreviewPanel>
-              <StyledSectionTitle>{t`Preview`}</StyledSectionTitle>
-              <StyledPreviewContainer>
-                <PropertyPdfPreview
-                  property={property}
-                  isFlyer={false}
-                  configuration={config}
-                />
-              </StyledPreviewContainer>
-            </StyledPreviewPanel>
+            {isMobile ? null : (
+              <StyledPreviewPanel>
+                <StyledSectionTitle>{t`Preview`}</StyledSectionTitle>
+                <StyledPreviewContainer>
+                  <PropertyPdfPreview
+                    property={property}
+                    isFlyer={false}
+                    configuration={config}
+                  />
+                </StyledPreviewContainer>
+              </StyledPreviewPanel>
+            )}
           </StyledModalLayout>
         </StyledModalContent>
       </StyledModalContainer>
