@@ -17,6 +17,7 @@ import {
   PdfFlyerConfiguration,
 } from '../types/types';
 import { useAttachments } from '@/activities/files/hooks/useAttachments';
+import { isArray } from 'util';
 
 const StyledPdfViewerContainer = styled.div`
   align-items: center;
@@ -165,15 +166,17 @@ export const PropertyPdfPreview = ({
       (f) => f.name === 'features',
     );
     const formattedFeatures = [];
-    for (const feature of property.features) {
-      const featureMetadata = fieldMetadata?.options?.find(
-        (o) => o.value === feature,
-      );
-      formattedFeatures.push({
-        label: featureMetadata?.label,
-        value: feature,
-        key: feature,
-      });
+    if (property?.features) {
+      for (const feature of property.features) {
+        const featureMetadata = fieldMetadata?.options?.find(
+          (o) => o.value === feature,
+        );
+        formattedFeatures.push({
+          label: featureMetadata?.label,
+          value: feature,
+          key: feature,
+        });
+      }
     }
     return formattedFeatures;
   }, [objectMetadataItem.fields, property.features, configuration]);
