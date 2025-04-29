@@ -30,7 +30,6 @@ import {
   IconEdit,
   IconExternalLink,
   IconFile,
-  IconFileText,
   IconFileZip,
   IconTrash,
   IconUpload,
