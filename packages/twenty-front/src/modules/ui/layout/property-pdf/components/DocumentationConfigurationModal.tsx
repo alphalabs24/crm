@@ -25,6 +25,8 @@ import {
   IconLayoutGrid,
   IconCheck,
   useIsMobile,
+  IconRefresh,
+  IconBolt,
 } from 'twenty-ui';
 import { useSubcategoryByCategory } from '@/object-record/record-show/hooks/useSubcategoryByCategory';
 import { CATEGORY_SUBTYPES } from '@/record-edit/constants/CategorySubtypes';
@@ -529,10 +531,10 @@ export const DocumentationConfigurationModal = forwardRef<
             <Button
               variant="primary"
               title={t`Generate`}
-              Icon={IconFile}
+              Icon={IconBolt}
               accent="blue"
               onClick={handleGeneratePdf}
-              disabled={effectiveIsGenerating}
+              loading={effectiveIsGenerating}
             />
           </StyledModalHeaderButtons>
         </StyledModalHeader>

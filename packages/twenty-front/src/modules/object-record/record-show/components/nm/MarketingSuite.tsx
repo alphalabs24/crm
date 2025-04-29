@@ -1,7 +1,6 @@
 import { ActivityTargetableObject } from '@/activities/types/ActivityTargetableEntity';
 import { useUploadAttachmentFile } from '@/activities/files/hooks/useUploadAttachmentFile';
 import { PropertyAttachmentType } from '@/activities/files/types/Attachment';
-import { usePropertyPdfGenerator } from '@/ui/layout/property-pdf/hooks/usePropertyPdfGenerator';
 import { PropertyPdfType } from '@/ui/layout/property-pdf/types/types';
 import { DocumentationConfigurationModal } from '@/ui/layout/property-pdf/components/DocumentationConfigurationModal';
 import { FlyerConfigurationModal } from '@/ui/layout/property-pdf/components/FlyerConfigurationModal';
@@ -9,7 +8,6 @@ import { ModalRefType } from '@/ui/layout/modal/components/Modal';
 import { useRef, useState } from 'react';
 import { Trans, useLingui } from '@lingui/react/macro';
 import styled from '@emotion/styled';
-import { useTheme } from '@emotion/react';
 import {
   LARGE_DESKTOP_VIEWPORT,
   Button,
@@ -23,6 +21,7 @@ import {
   MOBILE_VIEWPORT,
   IconButton,
   IconUpload,
+  IconBolt,
 } from 'twenty-ui';
 import { useFindOneRecord } from '@/object-record/hooks/useFindOneRecord';
 import { useAttachments } from '@/activities/files/hooks/useAttachments';
@@ -33,25 +32,7 @@ import { useDestroyOneRecord } from '@/object-record/hooks/useDestroyOneRecord';
 import { PdfPreview } from './PdfPreview';
 import { DocumentTypeIcon } from './DocumentTypeIcon';
 import { ConfirmationModal } from '@/ui/layout/modal/components/ConfirmationModal';
-import saveAs from 'file-saver';
 import { downloadFile } from '@/activities/files/utils/downloadFile';
-import { DefaultPropertyPdfTemplate } from '@/ui/layout/property-pdf/components/templates/default/DefaultPropertyPdfTemplate';
-
-// Styled components sorted alphabetically
-const StyledActionButton = styled.button`
-  background: transparent;
-  border: none;
-  padding: ${({ theme }) => theme.spacing(1)};
-  color: ${({ theme }) => theme.font.color.tertiary};
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  &:hover {
-    color: ${({ theme }) => theme.font.color.secondary};
-  }
-`;
 
 const StyledContainer = styled.div`
   color: ${({ theme }) => theme.font.color.primary};
@@ -87,110 +68,16 @@ const StyledDocumentTitle = styled.span`
   font-weight: ${({ theme }) => theme.font.weight.medium};
 `;
 
-const StyledErrorMessage = styled.div`
-  color: ${({ theme }) => theme.color.red};
-  font-size: ${({ theme }) => theme.font.size.sm};
-  margin-top: ${({ theme }) => theme.spacing(1)};
-`;
-
-const StyledFileDescription = styled.span`
-  color: ${({ theme }) => theme.font.color.tertiary};
-  font-size: ${({ theme }) => theme.font.size.xs};
-  word-break: break-word;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-`;
-
-const StyledFileIcon = styled.div`
-  align-items: center;
-  color: ${({ theme }) => theme.font.color.light};
-  display: flex;
-  height: 32px;
-  justify-content: center;
-  width: 32px;
-`;
-
-const StyledFileInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  min-width: 0;
-  gap: ${({ theme }) => theme.spacing(0.5)};
-`;
-
-const StyledFileName = styled.span`
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  color: ${({ theme }) => theme.font.color.primary};
-  display: -webkit-box;
-  font-size: ${({ theme }) => theme.font.size.sm};
-  font-weight: ${({ theme }) => theme.font.weight.medium};
-  overflow: hidden;
-  word-break: break-word;
-  cursor: pointer;
-
-  &:hover {
-    color: ${({ theme }) => theme.color.blue};
-    text-decoration: underline;
-  }
-`;
-
 const StyledHeader = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(0.5)};
 `;
 
-const StyledPreviewSection = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(2)};
-  margin-top: ${({ theme }) => theme.spacing(2)};
-`;
-
 const StyledSection = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(4)};
-`;
-
-const StyledSpecialDocumentContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(4)};
-  margin-bottom: ${({ theme }) => theme.spacing(4)};
-  padding: ${({ theme }) => theme.spacing(3)} 0;
-`;
-
-const StyledSpecialDocumentContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(1)};
-`;
-
-const StyledSpecialDocumentHeader = styled.div`
-  align-items: flex-start;
-  display: flex;
-  gap: ${({ theme }) => theme.spacing(2)};
-  justify-content: space-between;
-  flex-direction: column;
-
-  @media (min-width: ${LARGE_DESKTOP_VIEWPORT}px) {
-    flex-direction: row;
-  }
-`;
-
-const StyledSpecialDocumentListItem = styled.div`
-  align-items: center;
-  background: ${({ theme }) => theme.background.secondary};
-  border: 1px solid ${({ theme }) => theme.border.color.medium};
-  border-radius: ${({ theme }) => theme.border.radius.sm};
-  display: flex;
-  gap: ${({ theme }) => theme.spacing(2)};
-  justify-content: space-between;
-  padding: ${({ theme }) => theme.spacing(2)};
 `;
 
 const StyledTitle = styled.span`
@@ -460,14 +347,14 @@ export const MarketingSuite = ({ targetableObject }: MarketingSuiteProps) => {
       type: 'PropertyDocumentation',
       iconType: 'expose',
       title: t`Property Exposé`,
-      description: t`Detailed property presentation document sent to potential buyers through the auto responder.`,
+      description: t`Detailed property presentation document that can be sent to potential buyers through the auto responder.`,
       attachment: propertyDocumentation as DocumentAttachment | undefined,
     },
     {
       type: 'PropertyFlyer',
       iconType: 'flyer',
       title: t`Property Flyer`,
-      description: t`Concise property information overview sent to clients through the auto responder.`,
+      description: t`Concise property information overview that can be sent to clients through the auto responder.`,
       attachment: propertyFlyer as DocumentAttachment | undefined,
     },
   ];
@@ -593,7 +480,7 @@ export const MarketingSuite = ({ targetableObject }: MarketingSuiteProps) => {
                         <Button
                           variant="secondary"
                           size="small"
-                          Icon={IconRefresh}
+                          Icon={IconBolt}
                           title={t`Generate`}
                           disabled={!record}
                           onClick={() => handleGenerateDocument(doc.type)}

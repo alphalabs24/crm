@@ -14,7 +14,14 @@ import {
   StyledModalTitle,
   StyledModalTitleContainer,
 } from '@/ui/layout/show-page/components/nm/modal-components/ModalComponents';
-import { Button, IconFile, IconSettings, useIsMobile } from 'twenty-ui';
+import {
+  Button,
+  IconBolt,
+  IconFile,
+  IconRefresh,
+  IconSettings,
+  useIsMobile,
+} from 'twenty-ui';
 import { useSubcategoryByCategory } from '@/object-record/record-show/hooks/useSubcategoryByCategory';
 import { CATEGORY_SUBTYPES } from '@/record-edit/constants/CategorySubtypes';
 import { currentWorkspaceState } from '@/auth/states/currentWorkspaceState';
@@ -276,9 +283,9 @@ export const FlyerConfigurationModal = forwardRef<
               accent="blue"
               variant="primary"
               title={t`Generate`}
-              Icon={IconFile}
+              Icon={IconBolt}
+              loading={effectiveIsGenerating}
               onClick={handleGeneratePdf}
-              disabled={effectiveIsGenerating}
             />
           </StyledModalHeaderButtons>
         </StyledModalHeader>

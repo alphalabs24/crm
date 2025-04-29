@@ -9,11 +9,21 @@ import {
   IconChevronRight,
 } from 'twenty-ui';
 
-// Set up pdf.js worker
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  'pdfjs-dist/build/pdf.worker.min.mjs',
-  import.meta.url,
-).toString();
+// Ensure worker is set up properly so no race condition is happening
+let workerInitialized = false;
+
+try {
+  if (!workerInitialized) {
+    // Set up pdf.js worker
+    pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+      'pdfjs-dist/build/pdf.worker.min.mjs',
+      import.meta.url,
+    ).toString();
+    workerInitialized = true;
+  }
+} catch (error) {
+  console.error('Error initializing PDF.js worker:', error);
+}
 
 interface PdfPreviewProps {
   url: string;
@@ -110,8 +120,36 @@ export const PdfPreview = ({ url }: PdfPreviewProps) => {
   const [numPages, setNumPages] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [hasError, setHasError] = useState(false);
+  const [isWorkerReady, setIsWorkerReady] = useState(false);
+
+  // Check if worker is properly initialized before fetching PDF
+  useEffect(() => {
+    const checkWorker = async () => {
+      if (!workerInitialized) {
+        try {
+          // Try to reinitialize worker if it failed before
+          pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+            'pdfjs-dist/build/pdf.worker.min.mjs',
+            import.meta.url,
+          ).toString();
+          workerInitialized = true;
+        } catch (error) {
+          console.error('Error reinitializing PDF.js worker:', error);
+          setHasError(true);
+          return;
+        }
+      }
+
+      setIsWorkerReady(true);
+    };
+
+    checkWorker();
+  }, []);
 
   useEffect(() => {
+    // Only fetch PDF if worker is ready
+    if (!isWorkerReady || !url) return;
+
     const fetchPdf = async () => {
       try {
         const response = await fetch(url);
@@ -125,7 +163,7 @@ export const PdfPreview = ({ url }: PdfPreviewProps) => {
     };
 
     fetchPdf();
-  }, [url]);
+  }, [url, isWorkerReady]);
 
   const goToPreviousPage = () => {
     if (currentPage > 1) {
@@ -150,7 +188,7 @@ export const PdfPreview = ({ url }: PdfPreviewProps) => {
     );
   }
 
-  if (!pdfBlob) {
+  if (!isWorkerReady || !pdfBlob) {
     return (
       <StyledPreviewContainer>
         <StyledLoadingContainer>
@@ -168,6 +206,10 @@ export const PdfPreview = ({ url }: PdfPreviewProps) => {
       <Document
         file={pdfBlob}
         onLoadSuccess={({ numPages }) => setNumPages(numPages)}
+        onLoadError={(error) => {
+          console.error('Error loading PDF document:', error);
+          setHasError(true);
+        }}
         loading={
           <StyledLoadingContainer>
             <StyledSpinner>
@@ -178,7 +220,9 @@ export const PdfPreview = ({ url }: PdfPreviewProps) => {
         }
         error={<StyledErrorContainer>Error loading PDF</StyledErrorContainer>}
       >
-        <Page pageNumber={currentPage} width={200} height={320} />
+        {numPages > 0 && (
+          <Page pageNumber={currentPage} width={200} height={320} />
+        )}
       </Document>
 
       <StyledPageControls $visible={numPages > 1}>
