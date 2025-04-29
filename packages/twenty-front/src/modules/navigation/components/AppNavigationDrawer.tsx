@@ -16,8 +16,10 @@ import { OnboardingSteps } from '@/onboarding-tutorial/components/OnboardingStep
 import NestermindBranding from '@/ui/navigation/navigation-drawer/components/NavigationNestermindBranding';
 import { useIsFeatureEnabled } from '@/workspace/hooks/useIsFeatureEnabled';
 import { useLingui } from '@lingui/react/macro';
-import { AdvancedSettingsToggle } from 'twenty-ui';
+import { AdvancedSettingsToggle, IconExternalLink } from 'twenty-ui';
 import { FeatureFlagKey } from '~/generated/graphql';
+import styled from '@emotion/styled';
+import { Feedback } from '@/ui/navigation/navigation-drawer/components/Feedback';
 
 export type AppNavigationDrawerProps = {
   className?: string;
@@ -66,6 +68,7 @@ export const AppNavigationDrawer = ({
             <SupportDropdown />
             <OnboardingSteps />
             <NestermindBranding size={75} />
+            <Feedback />
           </>
         ),
       };

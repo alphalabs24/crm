@@ -37,6 +37,7 @@ export class ClientConfigResolver {
         ],
       },
       mapboxAccessToken: this.environmentService.get('MAPBOX_ACCESS_TOKEN'),
+      cannyAppId: this.environmentService.get('CANNY_APP_ID'),
       authProviders: {
         google: this.environmentService.get('AUTH_GOOGLE_ENABLED'),
         magicLink: false,

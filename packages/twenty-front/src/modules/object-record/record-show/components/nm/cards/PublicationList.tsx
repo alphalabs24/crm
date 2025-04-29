@@ -413,15 +413,18 @@ export const PublicationList = ({
               const provideDocuments = draftRecord && publishedRecord;
               return (
                 <OptionalWrap
+                  key={platform}
                   condition={provideImages}
                   With={
                     <PublicationImagesProvider
+                      key={platform}
                       draftRecord={draftRecord}
                       publishedRecord={publishedRecord}
                     />
                   }
                 >
                   <OptionalWrap
+                    key={platform}
                     condition={provideDocuments}
                     With={
                       <PublicationDocumentsProvider

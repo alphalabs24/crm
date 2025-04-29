@@ -24,6 +24,7 @@ import { useEffect } from 'react';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { isDefined } from 'twenty-shared';
 import { useGetClientConfigQuery } from '~/generated/graphql';
+import { cannyAppIdState } from '../states/cannyAppIdState';
 
 export const ClientConfigProviderEffect = () => {
   const setIsDebugMode = useSetRecoilState(isDebugModeState);
@@ -84,6 +85,8 @@ export const ClientConfigProviderEffect = () => {
   );
 
   const setMapboxAccessToken = useSetRecoilState(mapboxAccessTokenState);
+
+  const setCannyAppId = useSetRecoilState(cannyAppIdState);
 
   const { data, loading, error } = useGetClientConfigQuery({
     skip: clientConfigApiStatus.isLoaded,
@@ -161,6 +164,7 @@ export const ClientConfigProviderEffect = () => {
       data?.clientConfig?.isAttachmentPreviewEnabled,
     );
     setMapboxAccessToken(data?.clientConfig?.mapboxAccessToken);
+    setCannyAppId(data?.clientConfig?.cannyAppId);
   }, [
     data,
     setIsDebugMode,
@@ -187,6 +191,7 @@ export const ClientConfigProviderEffect = () => {
     setGoogleCalendarEnabled,
     setIsAttachmentPreviewEnabled,
     setMapboxAccessToken,
+    setCannyAppId,
   ]);
 
   return <></>;

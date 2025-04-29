@@ -29,7 +29,7 @@ import { usePropertyAndPublicationDifferences } from '@/ui/layout/show-page/hook
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { capitalize } from 'twenty-shared';
 import {
@@ -170,6 +170,7 @@ const StyledButtonContainer = styled.div`
   display: flex;
   gap: ${({ theme }) => theme.spacing(2)};
   margin-left: auto;
+  flex-wrap: wrap;
 `;
 
 const StyledPageContainer = styled.div<{ isInRightDrawer?: boolean }>`

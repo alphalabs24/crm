@@ -1,4 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
+import { PropertyAttachmentType } from '@/activities/files/types/Attachment';
 import {
   RecordEditPropertyDocument,
   useRecordEdit,
@@ -6,6 +7,10 @@ import {
 import { Dropdown } from '@/ui/layout/dropdown/components/Dropdown';
 import { DropdownMenuItemsContainer } from '@/ui/layout/dropdown/components/DropdownMenuItemsContainer';
 import { useDropdown } from '@/ui/layout/dropdown/hooks/useDropdown';
+import { ModalRefType } from '@/ui/layout/modal/components/Modal';
+
+import { saveAs } from 'file-saver';
+import { css, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import {
   DragDropContext,
@@ -17,7 +22,6 @@ import { useLingui } from '@lingui/react/macro';
 import { useEffect, useRef, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import Skeleton from 'react-loading-skeleton';
-import { isDefined } from 'twenty-shared';
 import {
   AppTooltip,
   Button,
@@ -26,19 +30,16 @@ import {
   IconEdit,
   IconExternalLink,
   IconFile,
+  IconFileText,
   IconFileZip,
   IconTrash,
   IconUpload,
+  LARGE_DESKTOP_VIEWPORT,
   MenuItem,
   TooltipDelay,
-  IconFileText,
-  IconRefresh,
-  LARGE_DESKTOP_VIEWPORT,
 } from 'twenty-ui';
 import { DocumentEditModal } from './DocumentEditModal';
-import { ModalRefType } from '@/ui/layout/modal/components/Modal';
-import { css, useTheme } from '@emotion/react';
-import { PropertyAttachmentType } from '@/activities/files/types/Attachment';
+import { downloadFile } from '@/activities/files/utils/downloadFile';
 
 const StyledContainer = styled.div`
   display: flex;
@@ -143,6 +144,12 @@ const StyledFileName = styled.span`
   font-weight: ${({ theme }) => theme.font.weight.medium};
   overflow: hidden;
   word-break: break-word;
+  cursor: pointer;
+
+  &:hover {
+    color: ${({ theme }) => theme.color.blue};
+    text-decoration: underline;
+  }
 `;
 
 const StyledFileDescription = styled.span`
@@ -228,12 +235,14 @@ const DraggableDocumentItem = ({
   };
 
   const handleDownload = () => {
-    const a = window.document.createElement('a');
-    a.href = document.previewUrl;
-    a.download = document.file?.name || '';
-    window.document.body.appendChild(a);
-    a.click();
-    window.document.body.removeChild(a);
+    if (document.attachment) {
+      // Handle remote files
+      downloadFile(document.attachment.fullPath, document.attachment.name);
+    } else if (document.file) {
+      // Handle local files
+      const blob = new Blob([document.file], { type: document.file.type });
+      saveAs(blob, document.file.name);
+    }
     closeDropdown();
   };
 
@@ -247,6 +256,10 @@ const DraggableDocumentItem = ({
   const handleOpen = () => {
     window.open(document.previewUrl, '_blank');
     closeDropdown();
+  };
+
+  const handleFileNameClick = () => {
+    window.open(document.previewUrl, '_blank');
   };
 
   return (
@@ -279,7 +292,9 @@ const DraggableDocumentItem = ({
               {getFileIcon(document.file?.name || '')}
             </StyledFileIcon>
             <StyledFileInfo>
-              <StyledFileName>{document.fileName}</StyledFileName>
+              <StyledFileName onClick={handleFileNameClick}>
+                {document.fileName}
+              </StyledFileName>
               <StyledFileDescription>
                 {document.description || t`No description`}
               </StyledFileDescription>
@@ -311,8 +326,8 @@ const DraggableDocumentItem = ({
                   />
                   <MenuItem
                     text={t`Delete`}
-                    accent="danger"
                     LeftIcon={IconTrash}
+                    accent="danger"
                     onClick={handleDelete}
                   />
                 </DropdownMenuItemsContainer>
@@ -382,143 +397,6 @@ const StyledDragOverlay = styled.div<{
   z-index: 1;
 `;
 
-const StyledSpecialDocumentContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(4)};
-  margin-bottom: ${({ theme }) => theme.spacing(4)};
-  padding: ${({ theme }) => theme.spacing(3)} 0;
-`;
-
-const StyledSpecialDocumentRow = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(2)};
-`;
-
-const StyledSpecialDocumentHeader = styled.div`
-  align-items: flex-start;
-  display: flex;
-  gap: ${({ theme }) => theme.spacing(2)};
-  justify-content: space-between;
-  flex-direction: column;
-
-  @media (min-width: ${LARGE_DESKTOP_VIEWPORT}px) {
-    flex-direction: row;
-  }
-`;
-
-const StyledSpecialDocumentContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(1)};
-`;
-
-const StyledDocumentInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(1)};
-`;
-
-const StyledDocumentTitle = styled.span`
-  color: ${({ theme }) => theme.font.color.primary};
-  font-size: ${({ theme }) => theme.font.size.md};
-  font-weight: ${({ theme }) => theme.font.weight.medium};
-`;
-
-const StyledDocumentDescription = styled.span`
-  color: ${({ theme }) => theme.font.color.tertiary};
-  font-size: ${({ theme }) => theme.font.size.sm};
-`;
-
-const StyledSpecialDocumentListItem = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: ${({ theme }) => theme.spacing(2)};
-  padding: ${({ theme }) => theme.spacing(2)};
-  background: ${({ theme }) => theme.background.primary};
-  border-radius: ${({ theme }) => theme.border.radius.sm};
-  width: 100%;
-`;
-
-const SpecialDocumentItem = ({
-  document,
-  onRemove,
-  onSaveEdit,
-}: {
-  document: RecordEditPropertyDocument;
-  onRemove: (doc: RecordEditPropertyDocument) => void;
-  onSaveEdit: (
-    id: string,
-    updates: Partial<RecordEditPropertyDocument>,
-  ) => void;
-}) => {
-  const { t } = useLingui();
-  const dropdownId = `document-dropdown-${document.id}`;
-  const { closeDropdown } = useDropdown(dropdownId);
-  const modalRef = useRef<ModalRefType>(null);
-
-  const handleDelete = () => {
-    onRemove(document);
-    closeDropdown();
-  };
-
-  const handleEdit = () => {
-    modalRef.current?.open();
-    closeDropdown();
-  };
-
-  const handleDownload = () => {
-    window.open(document.previewUrl, '_blank');
-    closeDropdown();
-  };
-
-  return (
-    <StyledSpecialDocumentListItem>
-      <StyledFileIcon>{getFileIcon(document.fileName || '')}</StyledFileIcon>
-      <StyledFileInfo>
-        <StyledFileName>{document.fileName}</StyledFileName>
-        <StyledFileDescription>
-          {document.description || t`No description`}
-        </StyledFileDescription>
-      </StyledFileInfo>
-      <Dropdown
-        dropdownHotkeyScope={{ scope: dropdownId }}
-        dropdownId={dropdownId}
-        clickableComponent={
-          <StyledActionButton>
-            <IconDotsVertical size={16} />
-          </StyledActionButton>
-        }
-        dropdownMenuWidth={160}
-        dropdownComponents={
-          <DropdownMenuItemsContainer>
-            <MenuItem text={t`Edit`} LeftIcon={IconEdit} onClick={handleEdit} />
-            <MenuItem
-              text={t`Download`}
-              LeftIcon={IconDownload}
-              onClick={handleDownload}
-            />
-            <MenuItem
-              text={t`Remove`}
-              LeftIcon={IconTrash}
-              accent="danger"
-              onClick={handleDelete}
-            />
-          </DropdownMenuItemsContainer>
-        }
-      />
-      <DocumentEditModal
-        ref={modalRef}
-        document={document}
-        onClose={() => modalRef.current?.close()}
-        onSave={(updates) => onSaveEdit(document.id, updates)}
-      />
-    </StyledSpecialDocumentListItem>
-  );
-};
-
 const StyledSectionContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -536,12 +414,6 @@ const StyledSectionDescription = styled.p`
   color: ${({ theme }) => theme.font.color.tertiary};
   font-size: ${({ theme }) => theme.font.size.sm};
   margin: 0 0 ${({ theme }) => theme.spacing(2)} 0;
-`;
-
-const StyledDivider = styled.div`
-  height: 1px;
-  background: ${({ theme }) => theme.border.color.medium};
-  margin: ${({ theme }) => theme.spacing(2)} 0;
 `;
 
 const StyledSectionHeader = styled.div`
@@ -572,36 +444,42 @@ export const PropertyDocumentFormInput = ({
     updatePropertyDocument,
   } = useRecordEdit();
 
-  const previewFileUrls = propertyDocuments
-    .filter((doc) => !doc.isAttachment)
-    .map((doc) => doc.previewUrl);
+  const urlObjectsRef = useRef<Map<string, string>>(new Map());
+
+  const createAndStorePersistentURL = (file: File): string => {
+    const url = URL.createObjectURL(file);
+    urlObjectsRef.current.set(url, file.name);
+    return url;
+  };
 
   useEffect(() => {
     if (hasRefreshed) return;
 
     refreshPropertyDocumentUrls();
     setHasRefreshed(true);
+
     return () => {
-      previewFileUrls.forEach((previewFileUrl) => {
-        if (isDefined(previewFileUrl)) {
-          URL.revokeObjectURL(previewFileUrl);
-        }
+      urlObjectsRef.current.forEach((_, url) => {
+        URL.revokeObjectURL(url);
       });
     };
-  }, [hasRefreshed, previewFileUrls, refreshPropertyDocumentUrls]);
+  }, [hasRefreshed, refreshPropertyDocumentUrls]);
 
   const onAdd = (files: File[], type: PropertyAttachmentType) => {
-    const newDocuments = files.map((file) => ({
-      id: crypto.randomUUID(),
-      isAttachment: false,
-      file,
-      downloadUrl: URL.createObjectURL(file),
-      previewUrl: URL.createObjectURL(file),
-      fileName: file.name,
-      fileType: file.type,
-      description: '',
-      type,
-    }));
+    const newDocuments = files.map((file) => {
+      const url = createAndStorePersistentURL(file);
+      return {
+        id: crypto.randomUUID(),
+        isAttachment: false,
+        file,
+        downloadUrl: url,
+        previewUrl: url,
+        fileName: file.name,
+        fileType: file.type,
+        description: '',
+        type,
+      };
+    });
 
     newDocuments.forEach((doc) => {
       addPropertyDocument(doc);
@@ -609,7 +487,9 @@ export const PropertyDocumentFormInput = ({
   };
 
   const onRemove = (propertyDocument: RecordEditPropertyDocument) => {
-    URL.revokeObjectURL(propertyDocument.previewUrl);
+    if (propertyDocument.previewUrl) {
+      urlObjectsRef.current.delete(propertyDocument.previewUrl);
+    }
     removePropertyDocument(propertyDocument);
   };
 
@@ -618,6 +498,22 @@ export const PropertyDocumentFormInput = ({
     updates: Partial<RecordEditPropertyDocument>,
   ) => {
     updatePropertyDocument(id, updates);
+  };
+
+  const onDragEnd = (result: DropResult) => {
+    const { destination, source } = result;
+
+    if (!destination || destination.index === source.index) {
+      return;
+    }
+
+    const updatedDocuments = reorderDocuments(
+      propertyDocuments,
+      source.index,
+      destination.index,
+    );
+
+    updatePropertyDocumentOrder(updatedDocuments);
   };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -638,250 +534,93 @@ export const PropertyDocumentFormInput = ({
     noDragEventsBubbling: true,
   });
 
-  const onDragEnd = (result: DropResult) => {
-    const { destination, source } = result;
-
-    if (!destination || destination.index === source.index) {
-      return;
-    }
-
-    const updatedDocuments = reorderDocuments(
-      propertyDocuments,
-      source.index,
-      destination.index,
-    );
-
-    updatePropertyDocumentOrder(updatedDocuments);
-  };
-
-  const handleGenerateDocument = (type: PropertyAttachmentType) => {
-    // To be implemented later
-    console.log(`Generate ${type} document`);
-  };
-
-  const specialDocuments = [
-    {
-      type: 'PropertyDocumentation' as const,
-      title: t`Property Exposé`,
-      description: t`Detailed property presentation document sent to potential buyers through the auto responder.`,
-    },
-    {
-      type: 'PropertyFlyer' as const,
-      title: t`Property Flyer`,
-      description: t`Concise property information overview sent to clients through the auto responder.`,
-    },
-  ];
+  const standardDocuments = propertyDocuments.filter(
+    (doc) => doc.type === 'PropertyDocument',
+  );
 
   const renderContent = () => {
     if (!hasRefreshed || loading) {
       return (
-        <>
-          <StyledSpecialDocumentContainer>
-            {[1, 2].map((index) => (
-              <StyledSpecialDocumentRow key={index}>
-                <StyledSpecialDocumentHeader>
-                  <StyledDocumentInfo>
-                    <Skeleton
-                      width={200}
-                      height={24}
-                      baseColor={theme.background.secondary}
-                      highlightColor={theme.background.transparent.lighter}
-                    />
-                    <Skeleton
-                      width={300}
-                      height={20}
-                      baseColor={theme.background.secondary}
-                      highlightColor={theme.background.transparent.lighter}
-                    />
-                  </StyledDocumentInfo>
-                  <div style={{ display: 'flex', gap: '8px' }}>
-                    <Skeleton
-                      width={80}
-                      height={32}
-                      baseColor={theme.background.secondary}
-                      highlightColor={theme.background.transparent.lighter}
-                    />
-                    <Skeleton
-                      width={80}
-                      height={32}
-                      baseColor={theme.background.secondary}
-                      highlightColor={theme.background.transparent.lighter}
-                    />
-                  </div>
-                </StyledSpecialDocumentHeader>
-              </StyledSpecialDocumentRow>
-            ))}
-          </StyledSpecialDocumentContainer>
-
-          <StyledDivider />
-
-          <StyledSectionContainer>
-            <Skeleton
-              height={200}
-              width={'100%'}
-              baseColor={theme.background.secondary}
-              highlightColor={theme.background.transparent.lighter}
-            />
-          </StyledSectionContainer>
-        </>
+        <StyledSectionContainer>
+          <Skeleton
+            height={200}
+            width={'100%'}
+            baseColor={theme.background.secondary}
+            highlightColor={theme.background.transparent.lighter}
+          />
+        </StyledSectionContainer>
       );
     }
 
-    const standardDocuments = propertyDocuments.filter(
-      (doc) => doc.type === 'PropertyDocument',
-    );
-
-    const specialDocumentTypes = [
-      'PropertyDocumentation',
-      'PropertyFlyer',
-    ] as const;
-    const specialDocs = Object.fromEntries(
-      specialDocumentTypes.map((type) => [
-        type,
-        propertyDocuments.find((doc) => doc.type === type),
-      ]),
-    );
-
     return (
-      <>
-        <StyledSpecialDocumentContainer>
-          {specialDocuments.map((doc) => {
-            const docType = doc.type;
-            const specialDoc = specialDocs[docType];
-            return (
-              <StyledSpecialDocumentRow key={docType}>
-                <StyledSpecialDocumentHeader>
-                  <StyledDocumentInfo>
-                    <StyledDocumentTitle>{doc.title}</StyledDocumentTitle>
-                    <StyledDocumentDescription>
-                      {doc.description}
-                    </StyledDocumentDescription>
-                  </StyledDocumentInfo>
-                  {!specialDocs[doc.type] && (
-                    <div style={{ display: 'flex', gap: '8px' }}>
-                      <Button
-                        variant="secondary"
-                        size="small"
-                        Icon={IconRefresh}
-                        title={t`Generate`}
-                        disabled
-                        onClick={() => handleGenerateDocument(doc.type)}
+      <StyledSectionContainer>
+        <StyledSectionHeader>
+          <div>
+            <StyledSectionTitle>{t`Property Documents`}</StyledSectionTitle>
+            <StyledSectionDescription>
+              {t`Add any other documents that should be included in the publication.`}
+            </StyledSectionDescription>
+          </div>
+          <Button
+            onClick={(e) => {
+              e.stopPropagation();
+              const input = document.createElement('input');
+              input.type = 'file';
+              input.multiple = true;
+              input.accept = '.pdf,.doc,.docx,.xls,.xlsx';
+              input.onchange = (e) => {
+                const files = (e.target as HTMLInputElement).files;
+                if (files) onAdd(Array.from(files), 'PropertyDocument');
+              };
+              input.click();
+            }}
+            variant="secondary"
+            Icon={IconUpload}
+            title={t`Upload Documents`}
+          />
+        </StyledSectionHeader>
+
+        {standardDocuments.length > 0 && (
+          <DragDropContext onDragEnd={onDragEnd}>
+            <Droppable droppableId="property-documents">
+              {(provided, snapshot) => (
+                <StyledDocumentList
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                  isDraggingOver={snapshot.isDraggingOver}
+                >
+                  {standardDocuments.map((document, index) =>
+                    !loading && hasRefreshed ? (
+                      <DraggableDocumentItem
+                        key={document.id}
+                        document={document}
+                        index={index}
+                        onRemove={onRemove}
+                        onSaveEdit={onSaveEdit}
                       />
-                      <Button
-                        variant="primary"
-                        size="small"
-                        Icon={IconFileText}
-                        title={t`Upload`}
-                        onClick={() => {
-                          const input = document.createElement('input');
-                          input.type = 'file';
-                          input.accept = '.pdf,.doc,.docx';
-                          input.onchange = (e) => {
-                            const files = (e.target as HTMLInputElement).files;
-                            if (files?.[0]) {
-                              onAdd([files[0]], doc.type);
-                            }
-                          };
-                          input.click();
-                        }}
+                    ) : (
+                      <Skeleton
+                        key={index}
+                        height={56}
+                        baseColor={theme.background.secondary}
+                        highlightColor={theme.background.transparent.lighter}
                       />
-                    </div>
+                    ),
                   )}
-                </StyledSpecialDocumentHeader>
-                {specialDoc && (
-                  <StyledSpecialDocumentContent>
-                    <SpecialDocumentItem
-                      document={specialDoc}
-                      onRemove={onRemove}
-                      onSaveEdit={onSaveEdit}
-                    />
-                  </StyledSpecialDocumentContent>
-                )}
-              </StyledSpecialDocumentRow>
-            );
-          })}
-        </StyledSpecialDocumentContainer>
-
-        <StyledDivider />
-
-        <StyledSectionContainer>
-          <StyledSectionHeader>
-            <div>
-              <StyledSectionTitle>{t`Additional Documents`}</StyledSectionTitle>
-              <StyledSectionDescription>
-                {t`Add any other documents that should be included in the publication.`}
-              </StyledSectionDescription>
-            </div>
-            <Button
-              onClick={(e) => {
-                e.stopPropagation();
-                const input = document.createElement('input');
-                input.type = 'file';
-                input.multiple = true;
-                input.accept = '.pdf,.doc,.docx,.xls,.xlsx';
-                input.onchange = (e) => {
-                  const files = (e.target as HTMLInputElement).files;
-                  if (files) onAdd(Array.from(files), 'PropertyDocument');
-                };
-                input.click();
-              }}
-              variant="secondary"
-              Icon={IconUpload}
-              title={t`Upload Documents`}
-            />
-          </StyledSectionHeader>
-
-          {standardDocuments.length > 0 && (
-            <DragDropContext onDragEnd={onDragEnd}>
-              <Droppable droppableId="property-documents">
-                {(provided, snapshot) => (
-                  <StyledDocumentList
-                    ref={provided.innerRef}
-                    {...provided.droppableProps}
-                    isDraggingOver={snapshot.isDraggingOver}
-                  >
-                    {standardDocuments.map((document, index) =>
-                      !loading && hasRefreshed ? (
-                        <DraggableDocumentItem
-                          key={document.id}
-                          document={document}
-                          index={index}
-                          onRemove={onRemove}
-                          onSaveEdit={onSaveEdit}
-                        />
-                      ) : (
-                        <Skeleton
-                          key={index}
-                          height={56}
-                          baseColor={theme.background.secondary}
-                          highlightColor={theme.background.transparent.lighter}
-                        />
-                      ),
-                    )}
-                    {provided.placeholder}
-                  </StyledDocumentList>
-                )}
-              </Droppable>
-            </DragDropContext>
-          )}
-        </StyledSectionContainer>
-      </>
+                  {provided.placeholder}
+                </StyledDocumentList>
+              )}
+            </Droppable>
+          </DragDropContext>
+        )}
+      </StyledSectionContainer>
     );
   };
 
   return (
     <div {...getRootProps()} style={{ position: 'relative' }}>
       <input {...getInputProps()} />
-      <StyledContainer>
-        <StyledTitleContainer>
-          <StyledTitle>{t`Property Documents`}</StyledTitle>
-          <StyledDescription>
-            {t`Add documents related to your property that will be visible in the publication.`}
-          </StyledDescription>
-        </StyledTitleContainer>
-
-        {renderContent()}
-      </StyledContainer>
+      <StyledContainer>{renderContent()}</StyledContainer>
 
       {isDragActive && propertyDocuments.length > 0 && (
         <StyledDragOverlay>

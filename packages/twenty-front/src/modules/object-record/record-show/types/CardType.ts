@@ -17,4 +17,5 @@ export enum CardType {
   PropertyInquiriesListCard = 'PropertyInquiriesListCard',
   MobilePublicationsCard = 'MobilePublicationsCard',
   PublicationListCard = 'PublicationListCard',
+  MarketingSuiteCard = 'MarketingSuiteCard',
 }

@@ -66,6 +66,7 @@ import { useLingui } from '@lingui/react/macro';
 import { useSearchParams } from 'react-router-dom';
 import { getWorkspaceUrl } from '~/utils/getWorkspaceUrl';
 import { dynamicActivate } from '~/utils/i18n/dynamicActivate';
+import { cannyAppIdState } from '@/client-config/states/cannyAppIdState';
 
 export const useAuth = () => {
   const setTokenPair = useSetRecoilState(tokenPairState);
@@ -137,6 +138,7 @@ export const useAuth = () => {
         const mapboxAccessToken = snapshot
           .getLoadable(mapboxAccessTokenState)
           .getValue();
+        const cannyAppId = snapshot.getLoadable(cannyAppIdState).getValue();
         const clientConfigApiStatus = snapshot
           .getLoadable(clientConfigApiStatusState)
           .getValue();
@@ -162,6 +164,7 @@ export const useAuth = () => {
           set(captchaState, captcha);
           set(clientConfigApiStatusState, clientConfigApiStatus);
           set(mapboxAccessTokenState, mapboxAccessToken);
+          set(cannyAppIdState, cannyAppId);
           set(isCurrentUserLoadedState, isCurrentUserLoaded);
           set(isMultiWorkspaceEnabledState, isMultiWorkspaceEnabled);
           set(domainConfigurationState, domainConfiguration);
