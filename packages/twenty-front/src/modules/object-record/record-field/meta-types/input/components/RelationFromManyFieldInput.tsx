@@ -60,6 +60,7 @@ export const RelationFromManyFieldInput = ({
       >
         <RelationFromManyFieldInputMultiRecordsEffect />
         <MultiRecordSelect
+          objectNameSingular={relationObjectMetadataItem.nameSingular}
           onSubmit={handleSubmit}
           onChange={updateRelation}
           onCreate={createNewRecordAndOpenRightDrawer}

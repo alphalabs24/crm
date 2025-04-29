@@ -5,4 +5,8 @@ export type WorkflowSendEmailActionInput = {
   body?: string;
   workspaceId?: string;
   isHtml?: boolean;
+  inReplyTo?: string;
+  references?: string[];
+  externalThreadId?: string;
+  externalMessageId?: string;
 };

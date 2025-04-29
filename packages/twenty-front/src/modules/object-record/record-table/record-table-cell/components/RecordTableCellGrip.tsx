@@ -9,7 +9,7 @@ import { IconListViewGrip } from 'twenty-ui';
 export const TABLE_CELL_GRIP_WIDTH = '16px';
 
 const StyledContainer = styled.div<{ isPendingRow?: boolean }>`
-  height: 32px;
+  height: 42px;
   width: ${TABLE_CELL_GRIP_WIDTH};
   border-color: transparent;
   cursor: grab;

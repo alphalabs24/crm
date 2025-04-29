@@ -1,5 +1,4 @@
 import { t } from '@lingui/core/macro';
-import { Trans } from '@lingui/react/macro';
 import { Img } from '@react-email/components';
 import { emailTheme } from 'src/common-style';
 
@@ -39,7 +38,7 @@ export const SendInviteLinkEmail = ({
 
   return (
     <BaseEmail width={333} locale={locale}>
-      <Title value={t`Join your team on Twenty`} />
+      <Title value={t`Join your team on nestermind`} />
       <MainText>
         {capitalize(sender.firstName)} (
         <Link
@@ -47,8 +46,8 @@ export const SendInviteLinkEmail = ({
           value={sender.email}
           color={emailTheme.font.colors.blue}
         />
-        )<Trans>has invited you to join a workspace called </Trans>
-        <b>{workspace.name}</b>
+        ) {t`has invited you to join a workspace called`}
+        <b> {workspace.name}</b>
         <br />
       </MainText>
       <HighlightedContainer>

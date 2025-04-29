@@ -10,13 +10,12 @@ export function generateFrontConfig(): void {
       _env_: {
         REACT_APP_SERVER_BASE_URL: process.env.SERVER_URL,
         REACT_APP_NESTERMIND_SERVER_BASE_URL: process.env.NESTERMIND_SERVER_URL,
-        REACT_APP_MAPBOX_ACCESS_TOKEN: process.env.MAPBOX_ACCESS_TOKEN,
       },
     },
   };
 
   const configString = `<!-- BEGIN: nestermind Config -->
-    <script id="nestermind-env-config">
+    <script id="nestermind-env-config" nonce="NONCE_PLACEHOLDER">
       window._env_ = ${JSON.stringify(configObject.window._env_, null, 2)};
     </script>
     <!-- END: nestermind Config -->`;

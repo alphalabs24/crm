@@ -1,16 +1,20 @@
-import { tokenPairState } from '@/auth/states/tokenPairState';
+import { useNestermind } from '@/api/hooks/useNestermind';
+import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
+import { getLinkToShowPage } from '@/object-metadata/utils/getLinkToShowPage';
 import { useFindOneRecord } from '@/object-record/hooks/useFindOneRecord';
 import { SnackBarVariant } from '@/ui/feedback/snack-bar-manager/components/SnackBar';
 import { useSnackBar } from '@/ui/feedback/snack-bar-manager/hooks/useSnackBar';
+
+import { useFindManyRecords } from '@/object-record/hooks/useFindManyRecords';
+import { AgencyCredential } from '@/publishers/components/modals/EditPublisherModal';
 import {
   PlatformId,
   PLATFORMS,
 } from '@/ui/layout/show-page/components/nm/types/Platform';
 import styled from '@emotion/styled';
 import { Trans, useLingui } from '@lingui/react/macro';
-import axios from 'axios';
 import { useState } from 'react';
-import { useRecoilValue } from 'recoil';
+import { Link } from 'react-router-dom';
 import {
   Button,
   CircularProgressBar,
@@ -18,9 +22,7 @@ import {
   IconExternalLink,
 } from 'twenty-ui';
 import { ValidationResult } from '../../../hooks/usePublicationValidation';
-import { getLinkToShowPage } from '@/object-metadata/utils/getLinkToShowPage';
-import { Link } from 'react-router-dom';
-import { getEnv } from '~/utils/get-env';
+import { useTheme } from '@emotion/react';
 
 const StyledPublishingProcess = styled.div`
   display: flex;
@@ -119,6 +121,7 @@ type PublishingProps = {
   validationDetails: ValidationResult;
   isPublished: boolean;
   setIsPublished: (isPublished: boolean) => void;
+  hasDraftAndPublished?: boolean;
 };
 
 export const Publishing = ({
@@ -128,50 +131,68 @@ export const Publishing = ({
   validationDetails,
   isPublished,
   setIsPublished,
+  hasDraftAndPublished,
 }: PublishingProps) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const { enqueueSnackBar } = useSnackBar();
-  const { t } = useLingui();
-  const tokenPair = useRecoilValue(tokenPairState);
   const [showError, setShowError] = useState(false);
+  const { enqueueSnackBar } = useSnackBar();
+  const theme = useTheme();
+  const { t } = useLingui();
 
   const { record, refetch } = useFindOneRecord({
-    objectNameSingular: 'publication',
+    objectNameSingular: CoreObjectNameSingular.Publication,
     objectRecordId: recordId,
   });
 
+  const { records: credentialRecords } = useFindManyRecords({
+    objectNameSingular: CoreObjectNameSingular.Credential,
+    filter: {
+      name: {
+        eq: selectedPlatform,
+      },
+      agencyId: {
+        eq: record?.agencyId,
+      },
+    },
+    skip: !record?.agencyId,
+  });
+
+  const { useMutations } = useNestermind();
+
+  // Using the mutation hook for publish
+  const { mutate: publishPublication, isPending: isLoading } =
+    useMutations.usePublishPublication({
+      onSuccess: () => {
+        setIsPublished(true);
+        enqueueSnackBar(`Publication created successfully`, {
+          variant: SnackBarVariant.Success,
+        });
+        refetch();
+      },
+      onError: (error: Error) => {
+        enqueueSnackBar(error?.message || 'Failed to publish', {
+          variant: SnackBarVariant.Error,
+        });
+      },
+    });
+
   const publishDraft = async () => {
-    try {
-      if (validationDetails?.missingFields?.length > 0) {
-        setShowError(true);
-        return;
-      }
-      setIsLoading(true);
-      const response = await axios.post(
-        `${getEnv('REACT_APP_NESTERMIND_SERVER_BASE_URL') ?? 'http://api.localhost'}/publications/upload?id=${recordId}`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${tokenPair?.accessToken?.token}`,
-          },
-        },
-      );
-      if (response.status !== 201) {
-        throw new Error('Failed to publish');
-      }
-      setIsPublished(true);
-      enqueueSnackBar(`Publication created successfully`, {
-        variant: SnackBarVariant.Success,
-      });
-      await refetch();
-    } catch (error: any) {
-      enqueueSnackBar(error?.message, {
-        variant: SnackBarVariant.Error,
-      });
-    } finally {
-      setIsLoading(false);
+    if (validationDetails?.missingFields?.length > 0) {
+      setShowError(true);
+      return;
     }
+
+    publishPublication({ publicationId: recordId });
   };
+
+  const platform = PLATFORMS[selectedPlatform];
+
+  const offerListLink =
+    platform.getOfferListLink && credentialRecords.length > 0
+      ? platform.getOfferListLink(
+          credentialRecords[0] as unknown as AgencyCredential,
+        )
+      : null;
+
   return (
     <StyledPublishingProcess>
       <StyledPlatformPublishItem key={selectedPlatform}>
@@ -179,9 +200,7 @@ export const Publishing = ({
           {renderPlatformIcon(selectedPlatform)}
         </StyledPlatformPublishIcon>
         <StyledPlatformPublishInfo>
-          <StyledPlatformPublishName>
-            {PLATFORMS[selectedPlatform].name}
-          </StyledPlatformPublishName>
+          <StyledPlatformPublishName>{platform.name}</StyledPlatformPublishName>
           <StyledPlatformPublishStatus isPublished={isPublished}>
             {isPublished ? (
               <>
@@ -190,6 +209,8 @@ export const Publishing = ({
               </>
             ) : isLoading ? (
               t`Publishing...`
+            ) : hasDraftAndPublished ? (
+              t`Published`
             ) : (
               t`Unpublished`
             )}
@@ -199,7 +220,10 @@ export const Publishing = ({
           <StyledValidationDetails>
             {validationDetails?.message}
             <StyledEditLink
-              to={`${getLinkToShowPage('publication', { id: recordId })}/edit`}
+              to={
+                validationDetails?.path ??
+                `${getLinkToShowPage('publication', { id: recordId })}/edit`
+              }
             >
               {t`Edit`}
             </StyledEditLink>
@@ -207,22 +231,23 @@ export const Publishing = ({
         )}
         <StyledPlatformPublishStatusIcon>
           {isPublished ? (
-            record?.agency.newhomePartnerId ? (
-              <StyledViewPublicationButton
-                to={`https://test.newhome.ch/partner/${record?.agency.newhomePartnerId}.aspx`}
-                target="_blank"
-              >
+            offerListLink ? (
+              <StyledViewPublicationButton to={offerListLink} target="_blank">
                 {t`View Publications`}
                 <IconExternalLink size={14} />
               </StyledViewPublicationButton>
             ) : null
           ) : isLoading ? (
-            <CircularProgressBar size={16} barWidth={2} barColor="black" />
+            <CircularProgressBar
+              size={16}
+              barWidth={2}
+              barColor={theme.background.invertedPrimary}
+            />
           ) : (
             <Button
               variant="primary"
               accent="blue"
-              title={t`Publish`}
+              title={hasDraftAndPublished ? t`Republish` : t`Publish`}
               onClick={publishDraft}
             />
           )}

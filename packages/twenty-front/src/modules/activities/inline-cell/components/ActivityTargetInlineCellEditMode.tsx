@@ -269,7 +269,11 @@ export const ActivityTargetInlineCellEditMode = ({
           selectedObjectRecordIds={selectedTargetObjectIds}
         />
         <ActivityTargetInlineCellEditModeMultiRecordsSearchFilterEffect />
-        <MultiRecordSelect onSubmit={handleSubmit} onChange={handleChange} />
+        <MultiRecordSelect
+          onSubmit={handleSubmit}
+          onChange={handleChange}
+          objectNameSingular={activityObjectNameSingular}
+        />
       </RecordPickerComponentInstanceContext.Provider>
     </>
   );

@@ -15,8 +15,8 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { Key } from 'ts-key-enum';
 import { createPortal } from 'react-dom';
+import { Key } from 'ts-key-enum';
 import { OptionalWrap } from '../../utilities/components/OptionalWrapWith';
 
 const StyledModalDiv = styled(motion.div)<{

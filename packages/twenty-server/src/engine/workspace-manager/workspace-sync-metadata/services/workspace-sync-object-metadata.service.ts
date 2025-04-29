@@ -81,10 +81,10 @@ export class WorkspaceSyncObjectMetadataService {
 
     // Create standard object metadata collection
     const standardObjectMetadataCollection = this.standardObjectFactory.create(
-      context.defaultMetadataWorkspaceId
+      context.defaultWorkspaceId
         ? await objectMetadataRepository.find({
             where: {
-              workspaceId: context.defaultMetadataWorkspaceId,
+              workspaceId: context.defaultWorkspaceId,
               isCustom: false,
               // standardObjectFactory.create function needs to have standardId to map the objects
               standardId: Not(IsNull()),

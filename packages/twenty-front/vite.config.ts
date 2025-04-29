@@ -26,7 +26,6 @@ export default defineConfig(({ command, mode }) => {
     SSL_CERT_PATH,
     SSL_KEY_PATH,
     REACT_APP_PORT,
-    REACT_APP_MAPBOX_ACCESS_TOKEN,
     REACT_APP_NESTERMIND_SERVER_BASE_URL,
   } = env;
 
@@ -149,6 +148,11 @@ export default defineConfig(({ command, mode }) => {
     build: {
       outDir: 'build',
       sourcemap: VITE_BUILD_SOURCEMAP === 'true',
+      assetsInlineLimit: 0,
+    },
+
+    html: {
+      cspNonce: 'NONCE_PLACEHOLDER',
     },
 
     envPrefix: 'REACT_APP_',
@@ -159,7 +163,6 @@ export default defineConfig(({ command, mode }) => {
       },
       'process.env': {
         REACT_APP_SERVER_BASE_URL,
-        REACT_APP_MAPBOX_ACCESS_TOKEN,
         REACT_APP_NESTERMIND_SERVER_BASE_URL,
       },
     },

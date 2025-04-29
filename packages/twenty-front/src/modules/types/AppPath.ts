@@ -14,6 +14,9 @@ export enum AppPath {
   PlanRequired = '/plan-required',
   PlanRequiredSuccess = '/plan-required/payment-success',
 
+  // Tutorial Onboarding
+  Tutorial = '/learn-about-nestermind',
+
   // Onboarded
   Index = '/',
   TasksPage = '/objects/tasks',
@@ -21,9 +24,9 @@ export enum AppPath {
 
   RecordIndexPage = '/objects/:objectNamePlural',
   RecordShowPage = '/object/:objectNameSingular/:objectRecordId',
-  RecordShowPropertyPage = '/property/:objectRecordId',
-  RecordShowPublicationPage = '/publication/:objectRecordId',
-  RecordEditPage = '/:objectNameSingular/:objectRecordId/edit',
+  RecordShowPropertyPage = '/details/:objectNameSingular/:objectRecordId',
+  RecordEditPage = '/details/:objectNameSingular/:objectRecordId/edit',
+  RecordInquiriesPage = '/inquiries',
 
   Settings = `settings`,
   SettingsCatchAll = `/${Settings}/*`,

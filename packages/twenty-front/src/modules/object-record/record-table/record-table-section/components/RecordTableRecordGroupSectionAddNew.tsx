@@ -1,3 +1,4 @@
+import { BLOCKED_OBJECTS_FROM_CREATION } from '@/object-record/constants/BlockedObjects';
 import { useCurrentRecordGroupId } from '@/object-record/record-group/hooks/useCurrentRecordGroupId';
 import { recordIndexAllRecordIdsComponentSelector } from '@/object-record/record-index/states/selectors/recordIndexAllRecordIdsComponentSelector';
 import { useRecordTableContextOrThrow } from '@/object-record/record-table/contexts/RecordTableContext';
@@ -23,11 +24,16 @@ export const RecordTableRecordGroupSectionAddNew = () => {
     recordTableId,
   });
 
+  // TODO Check if this is correct
+  const isBlocked = BLOCKED_OBJECTS_FROM_CREATION.includes(
+    objectMetadataItem.nameSingular,
+  );
+
   const handleAddNewRecord = () => {
     createNewTableRecordInGroup(currentRecordGroupId);
   };
 
-  if (hasObjectReadOnlyPermission) {
+  if (hasObjectReadOnlyPermission || isBlocked) {
     return null;
   }
 

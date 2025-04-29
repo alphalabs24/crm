@@ -3,7 +3,7 @@
 echo "Injecting runtime environment variables into index.html..."
 
 CONFIG_BLOCK=$(cat << EOF
-    <script id="nestermind-env-config">
+    <script id="nestermind-env-config" nonce="NONCE_PLACEHOLDER">
       window._env_ = {
         REACT_APP_SERVER_BASE_URL: "$REACT_APP_SERVER_BASE_URL"
       };

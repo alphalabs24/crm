@@ -26,6 +26,7 @@ export type AvatarChipProps = {
   to?: string;
   maxWidth?: number;
   LeftCustomComponent?: ReactElement;
+  disabled?: boolean;
 };
 
 export enum AvatarChipVariant {
@@ -34,13 +35,13 @@ export enum AvatarChipVariant {
 }
 
 const StyledInvertedIconContainer = styled.div<{ backgroundColor: string }>`
-  display: flex;
   align-items: center;
+  background-color: ${({ backgroundColor }) => backgroundColor};
+  border-radius: 4px;
+  display: flex;
+  height: 14px;
   justify-content: center;
   width: 14px;
-  height: 14px;
-  border-radius: 4px;
-  background-color: ${({ backgroundColor }) => backgroundColor};
 `;
 
 // Ideally we would use the UndecoratedLink component from @ui/navigation
@@ -64,6 +65,7 @@ export const AvatarChip = ({
   size = ChipSize.Small,
   maxWidth,
   LeftCustomComponent,
+  disabled,
 }: AvatarChipProps) => {
   const { theme } = useContext(ThemeContext);
 
@@ -77,6 +79,7 @@ export const AvatarChip = ({
             : ChipVariant.Regular
           : ChipVariant.Transparent
       }
+      disabled={disabled}
       size={size}
       leftComponent={
         isDefined(LeftCustomComponent) ? (
@@ -104,7 +107,7 @@ export const AvatarChip = ({
             avatarUrl={avatarUrl}
             placeholderColorSeed={placeholderColorSeed}
             placeholder={name}
-            size="sm"
+            size="md"
             type={avatarType}
           />
         )

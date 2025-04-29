@@ -54,6 +54,7 @@ import { BillingCheckoutSession } from '@/auth/types/billingCheckoutSession.type
 import { captchaState } from '@/client-config/states/captchaState';
 import { isEmailVerificationRequiredState } from '@/client-config/states/isEmailVerificationRequiredState';
 import { isMultiWorkspaceEnabledState } from '@/client-config/states/isMultiWorkspaceEnabledState';
+import { mapboxAccessTokenState } from '@/client-config/states/mapboxAccessTokenState';
 import { useIsCurrentLocationOnAWorkspace } from '@/domain-manager/hooks/useIsCurrentLocationOnAWorkspace';
 import { useLastAuthenticatedWorkspaceDomain } from '@/domain-manager/hooks/useLastAuthenticatedWorkspaceDomain';
 import { useRedirect } from '@/domain-manager/hooks/useRedirect';
@@ -61,7 +62,7 @@ import { useRedirectToWorkspaceDomain } from '@/domain-manager/hooks/useRedirect
 import { domainConfigurationState } from '@/domain-manager/states/domainConfigurationState';
 import { isAppWaitingForFreshObjectMetadataState } from '@/object-metadata/states/isAppWaitingForFreshObjectMetadataState';
 import { workspaceAuthProvidersState } from '@/workspace/states/workspaceAuthProvidersState';
-import { i18n } from '@lingui/core';
+import { useLingui } from '@lingui/react/macro';
 import { useSearchParams } from 'react-router-dom';
 import { getWorkspaceUrl } from '~/utils/getWorkspaceUrl';
 import { dynamicActivate } from '~/utils/i18n/dynamicActivate';
@@ -72,6 +73,7 @@ export const useAuth = () => {
   const setCurrentWorkspaceMember = useSetRecoilState(
     currentWorkspaceMemberState,
   );
+  const { i18n } = useLingui();
   const setCurrentUserWorkspace = useSetRecoilState(currentUserWorkspaceState);
   const setIsAppWaitingForFreshObjectMetadataState = useSetRecoilState(
     isAppWaitingForFreshObjectMetadataState,
@@ -132,6 +134,9 @@ export const useAuth = () => {
         const supportChat = snapshot.getLoadable(supportChatState).getValue();
         const isDebugMode = snapshot.getLoadable(isDebugModeState).getValue();
         const captcha = snapshot.getLoadable(captchaState).getValue();
+        const mapboxAccessToken = snapshot
+          .getLoadable(mapboxAccessTokenState)
+          .getValue();
         const clientConfigApiStatus = snapshot
           .getLoadable(clientConfigApiStatusState)
           .getValue();
@@ -156,6 +161,7 @@ export const useAuth = () => {
           set(isDebugModeState, isDebugMode);
           set(captchaState, captcha);
           set(clientConfigApiStatusState, clientConfigApiStatus);
+          set(mapboxAccessTokenState, mapboxAccessToken);
           set(isCurrentUserLoadedState, isCurrentUserLoaded);
           set(isMultiWorkspaceEnabledState, isMultiWorkspaceEnabled);
           set(domainConfigurationState, domainConfiguration);
@@ -430,6 +436,7 @@ export const useAuth = () => {
               loginToken: signUpResult.data.signUp.loginToken.token,
             }),
             email,
+            locale: i18n.locale,
           },
         );
       }
@@ -448,6 +455,7 @@ export const useAuth = () => {
       setSearchParams,
       isEmailVerificationRequired,
       redirectToWorkspaceDomain,
+      i18n.locale,
     ],
   );
 
@@ -481,9 +489,11 @@ export const useAuth = () => {
         url.searchParams.set('workspaceId', workspacePublicData.id);
       }
 
+      url.searchParams.set('locale', i18n.locale);
+
       return url.toString();
     },
-    [workspacePublicData],
+    [workspacePublicData, i18n.locale],
   );
 
   const handleGoogleLogin = useCallback(

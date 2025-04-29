@@ -2,6 +2,7 @@ import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadata
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { ObjectMetadataItem } from '@/object-metadata/types/ObjectMetadataItem';
 import { getObjectMetadataIdentifierFields } from '@/object-metadata/utils/getObjectMetadataIdentifierFields';
+import { isPropertyOrPublication } from '@/object-metadata/utils/isPropertyOrPublication';
 import { generateDepthOneRecordGqlFields } from '@/object-record/graphql/utils/generateDepthOneRecordGqlFields';
 import { visibleTableColumnsComponentSelector } from '@/object-record/record-table/states/selectors/visibleTableColumnsComponentSelector';
 import { useRecoilComponentValueV2 } from '@/ui/utilities/state/component-state/hooks/useRecoilComponentValueV2';
@@ -39,12 +40,31 @@ export const useRecordTableRecordGqlFields = ({
       objectNameSingular: CoreObjectNameSingular.TaskTarget,
     });
 
+  // Check if the object is a property or publication
+  const isPropertyOrPub = isPropertyOrPublication(
+    objectMetadataItem.nameSingular,
+  );
+
+  let fieldEntries: Record<string, boolean> = {};
+
+  // For properties and publications, include all fields
+  if (isPropertyOrPub) {
+    fieldEntries = Object.fromEntries(
+      objectMetadataItem.fields.map((field) => [field.name, true]),
+    );
+  } else {
+    // For other objects, only include visible columns
+    fieldEntries = Object.fromEntries(
+      visibleTableColumns.map((column) => [column.metadata.fieldName, true]),
+    );
+  }
+
   const recordGqlFields: Record<string, any> = {
     id: true,
+    createdAt: true,
+    updatedAt: true,
     deletedAt: true,
-    ...Object.fromEntries(
-      visibleTableColumns.map((column) => [column.metadata.fieldName, true]),
-    ),
+    ...fieldEntries,
     ...identifierQueryFields,
     position: true,
     noteTargets: generateDepthOneRecordGqlFields({

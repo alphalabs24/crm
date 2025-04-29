@@ -1,0 +1,254 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: nestermind-crm\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2025-04-29 06:30\n"
+"Last-Translator: \n"
+"Language: de_DE\n"
+"Language-Team: German\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Crowdin-Project: nestermind-crm\n"
+"X-Crowdin-Project-ID: 765211\n"
+"X-Crowdin-Language: de\n"
+"X-Crowdin-File: /packages/twenty-server/src/engine/core-modules/i18n/manual-locales/en.po\n"
+"X-Crowdin-File-ID: 35\n"
+
+# object singular agency
+msgid "Agency"
+msgstr "Anbieter"
+
+# object plural agencies
+msgid "Agencies"
+msgstr "Anbieter"
+
+# field description "Contact Person (Visible On Publication)" of agencyReference on agency
+msgid "Contact Person (Visible On Publication)"
+msgstr "Kontaktperson (Auf Publikation sichtbar)"
+
+# field "agencyReference" of agency
+msgid "Agency Reference"
+msgstr "Anbieterreferenz"
+
+# field "newhomeFtpPassword" of agency
+msgid "Newhome Ftp Password"
+msgstr "Newhome FTP Passwort"
+
+# field "newhomeFtpUser" of agency
+msgid "Newhome Ftp User"
+msgstr "Newhome FTP Username"
+
+# field "newhomePartnerId" of agency
+msgid "Newhome Partner ID"
+msgstr "Newhome Partner ID"
+
+# object singular buyerLead
+msgid "Buyer Lead"
+msgstr "Kaufanfrage"
+
+# object plural buyerLeads
+msgid "Buyer Leads"
+msgstr "Kaufanfragen"
+
+# object singular property
+msgid "Property"
+msgstr "Objekt"
+
+# object plural properties
+msgid "Properties"
+msgstr "Objekte"
+
+# field "agricultureSubtype" of property
+msgid "Agriculture Subtype"
+msgstr "Landstücktyp"
+
+# field "apartments" of property
+msgid "Apartments"
+msgstr "Anzahl Wohnungen"
+
+# field "apartmentSubtype" of property
+msgid "Apartment Subtype"
+msgstr "Wohnungstyp"
+
+# field "assignee" of property
+msgid "Assignee"
+msgstr "Zugewiesener Makler"
+
+# field "availableFrom" of property
+msgid "Available From"
+msgstr "Verfügbar ab"
+
+# field "carryingCapacityCrane" of property
+msgid "Carrying Capacity Crane"
+msgstr "Tragekapazität des Hebekrans"
+
+# field description "In kg" of carryingCapacityCrane on property
+msgid "In kg"
+msgstr "in kg"
+
+# field "carryingCapacityElevator" of property
+msgid "Carrying Capacity Elevator"
+msgstr "Tragekapazität des Lifts"
+
+# field "category" of property
+msgid "Category"
+msgstr "Kategorie"
+
+# field description "Height of room in meters" of ceilingHeight on property
+msgid "Height of room in meters"
+msgstr "Die Höhe des Raumes in Metern"
+
+# field "ceilingHeight" of property
+msgid "Ceiling Height"
+msgstr "Raumhöhe"
+
+# field "constructionYear" of property
+msgid "Construction Year"
+msgstr "Baujahr"
+
+# field "distances" of property
+msgid "Distances"
+msgstr "Entfernungen"
+
+# field "emailSender" of property
+msgid "Email Sender"
+msgstr "Sender der automatischen Anfrageantwort (E-Mail)"
+
+# field "emailTemplate" of property
+msgid "Email Template"
+msgstr "E-Mail-Vorlage für die automatische Anfrageantwort"
+
+# field "features" of property
+msgid "Features"
+msgstr "Objekteigenschaften"
+
+# field "floor" of property
+msgid "Floor"
+msgstr "Stockwerk"
+
+# field "gastronomySubtype" of property
+msgid "Gastronomy Subtype"
+msgstr "Gastronomietyp"
+
+# field description "Height of hall in meters" of hallHeight on property
+msgid "Height of hall in meters"
+msgstr "Die Höhe des Gangs in Metern"
+
+# field "hallHeight" of property
+msgid "Hall Height"
+msgstr "Ganghöhe"
+
+# field "houseSubtype" of property
+msgid "House Subtype"
+msgstr "Haustyp"
+
+# field "industrialSubtype" of property
+msgid "Industrial Subtype"
+msgstr "Industrietyp"
+
+# field "links" of property
+msgid "Links"
+msgstr "Links"
+
+# field "livingSurface" of property
+msgid "Living Surface"
+msgstr "Wohnfläche"
+
+# field description "kg/m2" of maximalFloorLoading on property
+msgid "kg/m2"
+msgstr "kg/m2"
+
+# field "maximalFloorLoading" of property
+msgid "Maximal Floor Loading"
+msgstr "Maximale Bodenbeladung"
+
+# field "messageParticipations" of property
+msgid "Message Participations"
+msgstr "Konversationsteilnehmer"
+
+# field "numberOfFloors" of property
+msgid "Number Of Floors"
+msgstr "Anzahl Stockwerke"
+
+# field "offerType" of property
+msgid "Offer Type"
+msgstr "Angebotsart"
+
+# field "parkingSubtype" of property
+msgid "Parking Subtype"
+msgstr "Parkplatztyp"
+
+# field "plotSubtype" of property
+msgid "Plot Subtype"
+msgstr "Grundstücktyp"
+
+# field "priceUnit" of property
+msgid "Price Unit"
+msgstr "Preiseinheit"
+
+# field "propertySubtype" of property
+msgid "Property Subtype"
+msgstr "Objekttyp"
+
+# field "refProperty" of property
+msgid "Ref Property"
+msgstr "Objekt-Referenz"
+
+# field "renovationYear" of property
+msgid "Renovation Year"
+msgstr "Renovationsjahr"
+
+# field "rentExtra" of property
+msgid "Rent Extra"
+msgstr "Nebenkosten"
+
+# field "rentNet" of property
+msgid "Rent Net"
+msgstr "Nettomiete"
+
+# field "rooms" of property
+msgid "Rooms"
+msgstr "Zimmer"
+
+# field "secondaryRoomsSubtype" of property
+msgid "Secondary Rooms Subtype"
+msgstr "Sekundärraum Kategorie"
+
+# field "seller" of property
+msgid "Seller"
+msgstr "Verkäufer"
+
+# field "sellingPrice" of property
+msgid "Selling Price"
+msgstr "Verkaufspreis"
+
+# field "surface" of property
+msgid "Surface"
+msgstr "Fläche"
+
+# field "usableSurface" of property
+msgid "Usable Surface"
+msgstr "Nutzbare Fläche"
+
+# field "valuation" of property
+msgid "Valuation"
+msgstr "Bewertung"
+
+# field "virtualTour" of property
+msgid "Virtual Tour"
+msgstr "Virtuelle Tour"
+
+# field "volume" of property
+msgid "Volume"
+msgstr "Volumen"
+
+# object singular publication
+msgid "Publication"
+msgstr "Publikation"
+
+# object plural publications
+msgid "Publications"
+msgstr "Publikationen"
+

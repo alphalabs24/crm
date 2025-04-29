@@ -7,6 +7,7 @@ import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadata
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { generateDepthOneRecordGqlFields } from '@/object-record/graphql/utils/generateDepthOneRecordGqlFields';
 import { useFindManyRecords } from '@/object-record/hooks/useFindManyRecords';
+import { useTutorialSteps } from '@/onboarding-tutorial/hooks/useTutorialSteps';
 import { SettingsAccountLoader } from '@/settings/accounts/components/SettingsAccountLoader';
 import { SettingsAccountsBlocklistSection } from '@/settings/accounts/components/SettingsAccountsBlocklistSection';
 import { SettingsAccountsConnectedAccountsListCard } from '@/settings/accounts/components/SettingsAccountsConnectedAccountsListCard';
@@ -15,11 +16,15 @@ import { SettingsPageContainer } from '@/settings/components/SettingsPageContain
 import { SettingsPath } from '@/types/SettingsPath';
 import { SubMenuTopBarContainer } from '@/ui/layout/page/components/SubMenuTopBarContainer';
 import { useLingui } from '@lingui/react/macro';
+import { useEffect } from 'react';
+import { UserTutorialTask } from 'twenty-shared';
 import { getSettingsPath } from '~/utils/navigation/getSettingsPath';
 
 export const SettingsAccounts = () => {
   const { t } = useLingui();
   const currentWorkspaceMember = useRecoilValue(currentWorkspaceMemberState);
+
+  const { setAsCompleted } = useTutorialSteps();
 
   const { objectMetadataItem } = useObjectMetadataItem({
     objectNameSingular: CoreObjectNameSingular.ConnectedAccount,
@@ -34,6 +39,15 @@ export const SettingsAccounts = () => {
     },
     recordGqlFields: generateDepthOneRecordGqlFields({ objectMetadataItem }),
   });
+
+  // If there are accounts, set the tutorial step as completed
+  useEffect(() => {
+    if (accounts.length > 0) {
+      setAsCompleted({
+        step: UserTutorialTask.TUTORIAL_EMAIL,
+      });
+    }
+  }, [accounts, setAsCompleted]);
 
   return (
     <SubMenuTopBarContainer

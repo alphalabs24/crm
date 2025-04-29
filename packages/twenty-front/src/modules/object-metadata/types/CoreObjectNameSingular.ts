@@ -8,6 +8,7 @@ export enum CoreObjectNameSingular {
   BuyerLead = 'buyerLead',
   CalendarChannel = 'calendarChannel',
   CalendarEvent = 'calendarEvent',
+  Credential = 'credential',
   Comment = 'comment',
   Company = 'company',
   ConnectedAccount = 'connectedAccount',

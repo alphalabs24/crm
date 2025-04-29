@@ -7,7 +7,6 @@ import { useRecoilCallback, useRecoilState } from 'recoil';
 import { Key } from 'ts-key-enum';
 import { useDebouncedCallback } from 'use-debounce';
 import { v4 } from 'uuid';
-
 import { useUpsertActivity } from '@/activities/hooks/useUpsertActivity';
 import { canCreateActivityState } from '@/activities/states/canCreateActivityState';
 import { ActivityEditorHotkeyScope } from '@/activities/types/ActivityEditorHotkeyScope';
@@ -25,15 +24,15 @@ import { ActivityRichTextEditorChangeOnActivityIdEffect } from '@/activities/com
 import { useUploadAttachmentFile } from '@/activities/files/hooks/useUploadAttachmentFile';
 import { Note } from '@/activities/types/Note';
 import { Task } from '@/activities/types/Task';
+import { usePrevious } from '@/hooks/local-state/usePrevious';
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
+import { EmailBlockEditor } from '@/ui/input/editor/components/EmailBlockEditor';
 import { AppHotkeyScope } from '@/ui/utilities/hotkey/types/AppHotkeyScope';
 import { useIsFeatureEnabled } from '@/workspace/hooks/useIsFeatureEnabled';
 import '@blocknote/core/fonts/inter.css';
 import '@blocknote/mantine/style.css';
 import '@blocknote/react/style.css';
 import { FeatureFlagKey } from '~/generated/graphql';
-import { usePrevious } from '@/hooks/local-state/usePrevious';
-import { EmailBlockEditor } from '@/ui/input/editor/components/EmailBlockEditor';
 
 type EmailFormRichTextEditorProps = {
   activityToSet?: Task | Note | null;
@@ -42,12 +41,14 @@ type EmailFormRichTextEditorProps = {
     | CoreObjectNameSingular.Task
     | CoreObjectNameSingular.Note;
   showPlaceholderButtonBar?: boolean;
+  isReadOnly?: boolean;
 };
 
 export const EmailFormRichTextEditor = ({
   activityId,
   activityObjectNameSingular,
   activityToSet,
+  isReadOnly,
 }: EmailFormRichTextEditorProps) => {
   const [activityInStore] = useRecoilState(recordStoreFamilyState(activityId));
 
@@ -77,6 +78,7 @@ export const EmailFormRichTextEditor = ({
   });
 
   const persistBodyDebounced = useDebouncedCallback((blocknote: string) => {
+    console.log(blocknote);
     const input = isRichTextV2Enabled
       ? {
           bodyV2: {
@@ -101,10 +103,18 @@ export const EmailFormRichTextEditor = ({
   const { uploadAttachmentFile } = useUploadAttachmentFile();
 
   const handleUploadAttachment = async (file: File) => {
-    return await uploadAttachmentFile(file, {
-      id: activityId,
-      targetObjectNameSingular: activityObjectNameSingular,
-    });
+    return await uploadAttachmentFile(
+      file,
+      {
+        id: activityId,
+        targetObjectNameSingular: activityObjectNameSingular,
+      },
+      'EmailTemplateImage',
+      undefined,
+      undefined,
+      undefined,
+      true,
+    );
   };
 
   const prepareBody = (newStringifiedBody: string) => {
@@ -335,6 +345,7 @@ export const EmailFormRichTextEditor = ({
         onBlur={handlerBlockEditorBlur}
         onChange={handleEditorChange}
         editor={editor}
+        readonly={isReadOnly}
       />
     </>
   );

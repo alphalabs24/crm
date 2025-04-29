@@ -5,6 +5,7 @@ import { useRecordEdit } from '@/record-edit/contexts/RecordEditContext';
 import { FieldInputContainer } from '@/ui/field/input/components/FieldInputContainer';
 import { TextAreaFormInput } from '@/ui/field/input/components/TextAreaFormInput';
 import { TextInputV2 } from '@/ui/input/components/TextInputV2';
+import { useMemo } from 'react';
 import { IconComponent } from 'twenty-ui';
 import { turnIntoUndefinedIfWhitespacesOnly } from '~/utils/string/turnIntoUndefinedIfWhitespacesOnly';
 import {
@@ -29,22 +30,21 @@ export const TextFormInput = ({
   onTab,
   onShiftTab,
 }: TextFormInputProps) => {
-  const {
-    fieldDefinition,
-    draftValue,
-    hotkeyScope,
-    setDraftValue,
-    maxWidth,
-    formType,
-  } = useTextField();
+  const { fieldDefinition, hotkeyScope, maxWidth, formType } = useTextField();
 
   const { fieldValue } = useTextFieldDisplay();
 
-  const { updateField, getUpdatedFields } = useRecordEdit();
+  const { updateField, getUpdatedFields, draftValues, updateDraftValue } =
+    useRecordEdit();
+
+  const draftValue = useMemo(() => {
+    return draftValues[fieldDefinition.metadata.fieldName];
+  }, [draftValues, fieldDefinition.metadata.fieldName]);
 
   const initialized = useFieldValueAsDraft(
+    fieldDefinition.metadata.fieldName,
     turnIntoUndefinedIfWhitespacesOnly(fieldValue) ?? '',
-    setDraftValue,
+    updateDraftValue,
   );
 
   const updateFieldInStore = (newText: string) => {
@@ -85,7 +85,7 @@ export const TextFormInput = ({
 
   const handleChange = (newText: string) => {
     const value = turnIntoUndefinedIfWhitespacesOnly(newText);
-    setDraftValue(value);
+    updateDraftValue(fieldDefinition.metadata.fieldName, value);
     updateFieldInStore(value ?? '');
   };
 

@@ -17,7 +17,8 @@ export type PropertyAttachmentType =
   | 'PropertyDocument'
   | 'PropertyVideo'
   | 'PropertyDocumentation'
-  | 'PropertyFlyer';
+  | 'PropertyFlyer'
+  | 'EmailTemplateImage';
 
 export type AttachmentType =
   | 'Archive'

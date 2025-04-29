@@ -26,8 +26,7 @@ export const DateTimeFormInput = ({
   onClear,
   onSubmit,
 }: DateTimeFormInputProps) => {
-  const { fieldValue, setDraftValue, hotkeyScope, fieldDefinition } =
-    useDateTimeField();
+  const { fieldValue, hotkeyScope, fieldDefinition } = useDateTimeField();
 
   const { getUpdatedFields, updateField } = useRecordEdit();
 
@@ -51,6 +50,10 @@ export const DateTimeFormInput = ({
     onEnter?.(() => persistDate(newDate));
   };
 
+  const handleChange = (newDate: Nullable<Date>) => {
+    persistDate(newDate);
+  };
+
   const handleEscape = (newDate: Nullable<Date>) => {
     onEscape?.(() => persistDate(newDate));
   };
@@ -60,10 +63,6 @@ export const DateTimeFormInput = ({
     newDate: Nullable<Date>,
   ) => {
     onClickOutside?.(() => persistDate(newDate), event);
-  };
-
-  const handleChange = (newDate: Nullable<Date>) => {
-    setDraftValue(newDate?.toDateString() ?? '');
   };
 
   const handleClear = () => {
@@ -87,9 +86,9 @@ export const DateTimeFormInput = ({
       onClickOutside={handleClickOutside}
       onEnter={handleEnter}
       onEscape={handleEscape}
+      onChange={handleChange}
       value={dateValue}
       clearable
-      onChange={handleChange}
       isDateTimeInput
       onClear={handleClear}
       onSubmit={handleSubmit}

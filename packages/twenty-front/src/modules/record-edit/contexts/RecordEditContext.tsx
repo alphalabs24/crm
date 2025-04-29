@@ -5,9 +5,12 @@ import {
   PropertyAttachmentType,
 } from '@/activities/files/types/Attachment';
 import { Note } from '@/activities/types/Note';
+import { mapboxAccessTokenState } from '@/client-config/states/mapboxAccessTokenState';
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { ObjectMetadataItem } from '@/object-metadata/types/ObjectMetadataItem';
+import { useAttachRelatedRecordFromRecord } from '@/object-record/hooks/useAttachRelatedRecordFromRecord';
 import { useDestroyOneRecord } from '@/object-record/hooks/useDestroyOneRecord';
+import { useDetachRelatedRecordFromRecord } from '@/object-record/hooks/useDetachRelatedRecordFromRecord';
 import { useUpdateOneRecord } from '@/object-record/hooks/useUpdateOneRecord';
 import { ObjectRecord } from '@/object-record/types/ObjectRecord';
 import {
@@ -19,8 +22,9 @@ import {
   useMemo,
   useState,
 } from 'react';
-import { useBlocker, useParams } from 'react-router-dom';
-import { isDefined } from 'twenty-shared';
+import { useParams } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import { isDefined, isPublicAttachmentType } from 'twenty-shared';
 
 type FieldUpdate = {
   fieldName: string;
@@ -49,11 +53,6 @@ export type RecordEditPropertyDocument = {
   fileName?: string;
 };
 
-export type RecordEditPropertyEmail = {
-  id: string;
-  template: Note;
-};
-
 export type RecordEditContextType = {
   objectMetadataItem: ObjectMetadataItem;
   updateField: (update: FieldUpdate) => void;
@@ -72,7 +71,7 @@ export type RecordEditContextType = {
     updates: Partial<RecordEditPropertyImage>,
   ) => void;
   loading: boolean;
-  saveRecord: () => Promise<void>;
+  saveRecord: () => Promise<Error | undefined>;
   propertyDocuments: RecordEditPropertyDocument[];
   addPropertyDocument: (document: RecordEditPropertyDocument) => void;
   removePropertyDocument: (document: RecordEditPropertyDocument) => void;
@@ -84,11 +83,10 @@ export type RecordEditContextType = {
     documentId: string,
     updates: Partial<RecordEditPropertyDocument>,
   ) => void;
-  emailTemplate: RecordEditPropertyEmail | null;
-  emailTemplateSubject: string;
-  setEmailTemplate: (emailTemplate: RecordEditPropertyEmail) => void;
-  updateEmailTemplateSubject: (emailTemplateSubject: string) => void;
-  setEmailTemplateSubject: (emailTemplateSubject: string) => void;
+  emailTemplate: Note | null;
+  setEmailTemplate: (template: Note | null) => void;
+  updateDraftValue: (fieldName: string, value: unknown) => void;
+  draftValues: Record<string, unknown>;
 };
 
 export const RecordEditContext = createContext<RecordEditContextType | null>(
@@ -107,29 +105,60 @@ export const RecordEditProvider = ({
 }: RecordEditProviderProps) => {
   const [loading, setLoading] = useState(false);
   const [fieldUpdates, setFieldUpdates] = useState<Record<string, unknown>>({});
+  const [draftValues, setDraftValues] = useState<Record<string, unknown>>({});
   const [isDirty, setIsDirty] = useState(false);
   const { objectRecordId, objectNameSingular } = useParams();
+  const mapboxAccessToken = useRecoilValue(mapboxAccessTokenState);
 
   const [attachmentsToDelete, setAttachmentsToDelete] = useState<Attachment[]>(
     [],
   );
 
-  const [emailTemplate, setEmailTemplate] =
-    useState<RecordEditPropertyEmail | null>(null);
-  const [emailTemplateSubject, setEmailTemplateSubject] = useState<string>('');
+  // Track both current and previous email template
+  const [emailTemplate, setEmailTemplate] = useState<Note | null>(null);
+  const [previousEmailTemplate, setPreviousEmailTemplate] =
+    useState<Note | null>(null);
+
+  // Update previous template when current template changes
+  const handleSetEmailTemplate = useCallback((template: Note | null) => {
+    setEmailTemplate(template);
+    setIsDirty(true);
+  }, []);
 
   // Record Handling
   const { updateOneRecord } = useUpdateOneRecord({
     objectNameSingular: objectNameSingular ?? '',
   });
 
+  // Email Template Relations
+  const { updateOneRecordAndAttachRelations: attachTemplateToProperty } =
+    useAttachRelatedRecordFromRecord({
+      recordObjectNameSingular: CoreObjectNameSingular.Note,
+      fieldNameOnRecordObject: 'emailTemplateForProperties',
+    });
+
+  const { updateOneRecordAndAttachRelations: attachTemplateToPublication } =
+    useAttachRelatedRecordFromRecord({
+      recordObjectNameSingular: CoreObjectNameSingular.Note,
+      fieldNameOnRecordObject: 'emailTemplateForPublications',
+    });
+
+  const { updateOneRecordAndDetachRelations: detachTemplateFromProperty } =
+    useDetachRelatedRecordFromRecord({
+      recordObjectNameSingular: CoreObjectNameSingular.Note,
+      fieldNameOnRecordObject: 'emailTemplateForProperties',
+    });
+
+  const { updateOneRecordAndDetachRelations: detachTemplateFromPublication } =
+    useDetachRelatedRecordFromRecord({
+      recordObjectNameSingular: CoreObjectNameSingular.Note,
+      fieldNameOnRecordObject: 'emailTemplateForPublications',
+    });
+
   // Attachment Handling
   const { uploadAttachmentFile } = useUploadAttachmentFile();
   const { updateOneRecord: updateOneAttachment } = useUpdateOneRecord({
     objectNameSingular: CoreObjectNameSingular.Attachment,
-  });
-  const { updateOneRecord: updateOneNote } = useUpdateOneRecord({
-    objectNameSingular: CoreObjectNameSingular.Note,
   });
   const { destroyOneRecord: destroyOneAttachment } = useDestroyOneRecord({
     objectNameSingular: CoreObjectNameSingular.Attachment,
@@ -197,10 +226,10 @@ export const RecordEditProvider = ({
   }, []);
 
   const updateField = useCallback(
-    (update: FieldUpdate, fieldValue?: unknown) => {
+    (update: FieldUpdate) => {
       const { fieldName, value } = update;
 
-      if (fieldValue === update.value) {
+      if (initialRecord?.[fieldName] === value) {
         setFieldUpdates((prev) => {
           const { [fieldName]: _, ...rest } = prev;
           const hasRemainingUpdates = Object.keys(rest).length > 0;
@@ -215,7 +244,7 @@ export const RecordEditProvider = ({
       }));
       setIsDirty(true);
     },
-    [],
+    [initialRecord],
   );
 
   const addPropertyImage = useCallback((image: RecordEditPropertyImage) => {
@@ -266,43 +295,10 @@ export const RecordEditProvider = ({
     );
   }, [attachmentDocuments]);
 
-  // Email Template Handling
-  const resetEmailTemplate = useCallback(() => {
-    setEmailTemplate(null);
-    setEmailTemplateSubject('');
-  }, []);
-
-  const updateEmailTemplateSubject = useCallback(
-    (emailTemplateSubject: string) => {
-      setEmailTemplateSubject(emailTemplateSubject);
-      setIsDirty(true);
-    },
-    [],
-  );
-
   const resetFields = useCallback(() => {
     setFieldUpdates({});
-    resetEmailTemplate();
     setIsDirty(false);
-  }, [resetEmailTemplate]);
-
-  // This is used to block the user from leaving the page if there are unsaved changes
-  useBlocker(({ currentLocation, nextLocation }) => {
-    // If there are no unsaved changes or the user is navigating to the same page, don't block
-    if (!isDirty || nextLocation.pathname.includes(currentLocation.pathname))
-      return false;
-
-    const confirmLeave = window.confirm(
-      'You have unsaved changes. Are you sure you want to leave?',
-    );
-
-    if (confirmLeave) {
-      resetFields();
-      return false; // Allow navigation
-    }
-
-    return true; // Block navigation
-  });
+  }, []);
 
   const [propertyDocuments, setPropertyDocuments] = useState<
     RecordEditPropertyDocument[]
@@ -386,105 +382,222 @@ export const RecordEditProvider = ({
 
   // This saves the whole record with the updated fields from the form
   const saveRecord = async () => {
-    setLoading(true);
-    if (isDirty) {
-      const updatedFields = getUpdatedFields();
-      await updateOneRecord({
-        idToUpdate: objectRecordId ?? '',
-        updateOneRecordInput: updatedFields,
-      });
+    try {
+      setLoading(true);
+      if (isDirty) {
+        const updatedFields = getUpdatedFields();
 
-      // First delete removed images
-      await Promise.all(
-        attachmentsToDelete.map((attachment: Attachment) => {
-          return destroyOneAttachment(attachment.id);
-        }),
-      );
+        // Check if address was modified
+        if (hasAddressChanged(updatedFields)) {
+          const addressUpdate = updatedFields.address as Record<
+            string,
+            unknown
+          >;
 
-      // Then process remaining/new images
-      let orderIndex = 0;
-      for (const image of propertyImages) {
-        if (image.isAttachment && isDefined(image.attachment)) {
-          await updateOneAttachment({
-            idToUpdate: image.attachment.id,
-            updateOneRecordInput: {
-              orderIndex,
-              description: image.description,
-            },
-          });
-        } else if (isDefined(image.file)) {
-          await uploadAttachmentFile(
-            image.file,
-            {
-              id: objectRecordId ?? '',
-              targetObjectNameSingular: objectNameSingular ?? '',
-            },
-            'PropertyImage',
-            orderIndex,
-            image.fileName,
-            image.description,
-          );
+          // Only geocode if coordinates are not already provided
+          const coordinates = await geocodeAddress(addressUpdate);
+          if (coordinates) {
+            updatedFields.address = {
+              ...addressUpdate,
+              ...coordinates,
+            };
+          }
         }
-        orderIndex++;
-      }
 
-      // First delete removed documents
-      await Promise.all(
-        documentsToDelete.map((attachment: Attachment) => {
-          return destroyOneAttachment(attachment.id);
-        }),
-      );
-
-      // Then process remaining/new documents
-      for (const document of propertyDocuments) {
-        if (document.isAttachment && isDefined(document.attachment)) {
-          await updateOneAttachment({
-            idToUpdate: document.attachment.id,
-            updateOneRecordInput: {
-              orderIndex,
-              name:
-                document.fileName ??
-                document.file?.name ??
-                document.attachment.name,
-              description: document.description,
-            },
-          });
-        } else if (isDefined(document.file)) {
-          await uploadAttachmentFile(
-            document.file,
-            {
-              id: objectRecordId ?? '',
-              targetObjectNameSingular: objectNameSingular ?? '',
-            },
-            document.type ?? 'PropertyDocument',
-            orderIndex,
-            document.fileName,
-            document.description,
-          );
-        }
-        orderIndex++;
-      }
-
-      // Update email template
-      // TODO check what if emailTemplate is undefined
-      if (emailTemplate) {
-        await updateOneNote({
-          idToUpdate: emailTemplate.id,
-          updateOneRecordInput: {
-            title: emailTemplateSubject,
-          },
+        await updateOneRecord({
+          idToUpdate: objectRecordId ?? '',
+          updateOneRecordInput: updatedFields,
         });
-      }
 
+        // Handle email template relations
+        if (previousEmailTemplate) {
+          // Detach the previous template based on the record type
+          if (objectNameSingular === CoreObjectNameSingular.Property) {
+            await detachTemplateFromProperty({
+              recordId: previousEmailTemplate.id,
+              relatedRecordId: objectRecordId ?? '',
+            });
+          } else if (
+            objectNameSingular === CoreObjectNameSingular.Publication
+          ) {
+            await detachTemplateFromPublication({
+              recordId: previousEmailTemplate.id,
+              relatedRecordId: objectRecordId ?? '',
+            });
+          }
+        }
+
+        // Attach new template if it exists
+        if (emailTemplate) {
+          if (objectNameSingular === CoreObjectNameSingular.Property) {
+            await attachTemplateToProperty({
+              recordId: emailTemplate.id,
+              relatedRecordId: objectRecordId ?? '',
+            });
+          } else if (
+            objectNameSingular === CoreObjectNameSingular.Publication
+          ) {
+            await attachTemplateToPublication({
+              recordId: emailTemplate.id,
+              relatedRecordId: objectRecordId ?? '',
+            });
+          }
+        }
+
+        // First delete removed images
+        await Promise.all(
+          attachmentsToDelete.map((attachment: Attachment) => {
+            return destroyOneAttachment(attachment.id);
+          }),
+        );
+
+        // Then process remaining/new images
+        let orderIndex = 0;
+        for (const image of propertyImages) {
+          if (image.isAttachment && isDefined(image.attachment)) {
+            await updateOneAttachment({
+              idToUpdate: image.attachment.id,
+              updateOneRecordInput: {
+                orderIndex,
+                description: image.description,
+              },
+            });
+          } else if (isDefined(image.file)) {
+            if (isDefined(objectRecordId) && isDefined(objectNameSingular)) {
+              await uploadAttachmentFile(
+                image.file,
+                {
+                  id: objectRecordId,
+                  targetObjectNameSingular: objectNameSingular,
+                },
+                'PropertyImage',
+                orderIndex,
+                image.fileName,
+                image.description,
+              );
+            }
+          }
+          orderIndex++;
+        }
+
+        // First delete removed documents
+        await Promise.all(
+          documentsToDelete.map((attachment: Attachment) => {
+            return destroyOneAttachment(attachment.id);
+          }),
+        );
+
+        // Then process remaining/new documents
+        for (const document of propertyDocuments) {
+          if (document.isAttachment && isDefined(document.attachment)) {
+            await updateOneAttachment({
+              idToUpdate: document.attachment.id,
+              updateOneRecordInput: {
+                orderIndex,
+                name:
+                  document.fileName ??
+                  document.file?.name ??
+                  document.attachment.name,
+                description: document.description,
+              },
+            });
+          } else if (isDefined(document.file)) {
+            const isPublic = isPublicAttachmentType(document.type);
+
+            await uploadAttachmentFile(
+              document.file,
+              {
+                id: objectRecordId ?? '',
+                targetObjectNameSingular: objectNameSingular ?? '',
+              },
+              document.type ?? 'PropertyDocument',
+              orderIndex,
+              document.fileName,
+              document.description,
+              isPublic,
+            );
+          }
+          orderIndex++;
+        }
+
+        resetFields();
+      }
+    } catch (error) {
+      return error as Error;
+    } finally {
       setLoading(false);
-      resetFields();
     }
   };
+
+  const updateDraftValue = useCallback((fieldName: string, value: unknown) => {
+    setDraftValues((prev) => ({
+      ...prev,
+      [fieldName]: value,
+    }));
+  }, []);
+
+  // Initialize email template from the record when loaded
+  useEffect(() => {
+    if (initialRecord) {
+      // Assuming the template relation is loaded with the record
+      // You might need to adjust this based on your actual data structure
+      const initialTemplate = initialRecord.emailTemplate ?? null;
+      setEmailTemplate(initialTemplate);
+      setPreviousEmailTemplate(initialTemplate);
+    }
+  }, [initialRecord]);
 
   useEffect(() => {
     resetImages();
     resetDocuments();
   }, [resetImages, resetDocuments]);
+
+  const geocodeAddress = async (address: {
+    addressStreet1?: string | null;
+    addressStreet2?: string | null;
+    addressCity?: string | null;
+    addressState?: string | null;
+    addressPostcode?: string | null;
+    addressCountry?: string | null;
+  }) => {
+    if (!mapboxAccessToken) return null;
+
+    // Only geocode if we have at least a street and city
+    if (!address.addressStreet1 || !address.addressCity) return null;
+
+    const addressString = [
+      address.addressStreet1,
+      address.addressStreet2,
+      address.addressCity,
+      address.addressState,
+      address.addressPostcode,
+      address.addressCountry,
+    ]
+      .filter(Boolean)
+      .join(', ');
+
+    const endpoint = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
+      addressString,
+    )}.json?access_token=${mapboxAccessToken}&types=address&country=ch,de,fr,it&proximity=8.5417,47.3769&limit=1`;
+
+    try {
+      const response = await fetch(endpoint);
+      const data = await response.json();
+
+      if (data.features && data.features.length > 0) {
+        const [lng, lat] = data.features[0].geometry.coordinates;
+        return { addressLat: lat, addressLng: lng };
+      }
+    } catch (error) {
+      console.error('Error geocoding address:', error);
+    }
+
+    return null;
+  };
+
+  const hasAddressChanged = (updates: Record<string, unknown>) => {
+    return 'address' in updates;
+  };
 
   return (
     <RecordEditContext.Provider
@@ -511,10 +624,9 @@ export const RecordEditProvider = ({
         refreshPropertyDocumentUrls,
         updatePropertyDocument,
         emailTemplate,
-        emailTemplateSubject,
-        setEmailTemplate,
-        updateEmailTemplateSubject,
-        setEmailTemplateSubject,
+        setEmailTemplate: handleSetEmailTemplate,
+        updateDraftValue,
+        draftValues,
       }}
     >
       {children}

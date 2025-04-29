@@ -119,7 +119,7 @@ export class SyncWorkspaceMetadataCommand extends ActiveWorkspacesCommandRunner 
             {
               workspaceId,
               dataSourceId: dataSourceMetadata.id,
-              defaultMetadataWorkspaceId,
+              defaultWorkspaceId: defaultMetadataWorkspaceId,
             },
             { applyChanges: !options.dryRun },
           );

@@ -1,7 +1,8 @@
-# Twenty Development Rules
+# nestermind Development Rules
 
 ## General
-- Twenty is an open source CRM built with Typescript (React, NestJS)
+
+nestermind and the nestermind-platform is marketing software for real estate agents. It consists of a CRM in the nestermind-crm folder and the nestermind-server in the nestermind folder. the nestermind frontend in nestermind-crm/packages/twenty-front connects to the crm-server as well as the nestermind-server.
 
 ### Main Packages / folders
 - packages/twenty-front: Main Frontend (React)

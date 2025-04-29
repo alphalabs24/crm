@@ -17,8 +17,8 @@ import { PasswordReset } from '~/pages/auth/PasswordReset';
 import { SignInUp } from '~/pages/auth/SignInUp';
 import { NotFound } from '~/pages/not-found/NotFound';
 import { RecordEditPage } from '~/pages/object-record/nm/RecordEditPage';
+import { RecordInquiriesPage } from '~/pages/object-record/nm/RecordInquiriesPage';
 import { RecordShowPropertyPage } from '~/pages/object-record/nm/RecordShowPropertyPage';
-import { RecordShowPublicationPage } from '~/pages/object-record/nm/RecordShowPublicationPage';
 import { RecordIndexPage } from '~/pages/object-record/RecordIndexPage';
 import { RecordShowPage } from '~/pages/object-record/RecordShowPage';
 import { ChooseYourPlan } from '~/pages/onboarding/ChooseYourPlan';
@@ -27,6 +27,7 @@ import { CreateWorkspace } from '~/pages/onboarding/CreateWorkspace';
 import { InviteTeam } from '~/pages/onboarding/InviteTeam';
 import { PaymentSuccess } from '~/pages/onboarding/PaymentSuccess';
 import { SyncEmails } from '~/pages/onboarding/SyncEmails';
+import { Tutorial } from '~/pages/onboarding/tutorial';
 
 export const useCreateAppRouter = (
   isFunctionSettingsEnabled?: boolean,
@@ -51,20 +52,21 @@ export const useCreateAppRouter = (
           <Route path={AppPath.SyncEmails} element={<SyncEmails />} />
           <Route path={AppPath.InviteTeam} element={<InviteTeam />} />
           <Route path={AppPath.PlanRequired} element={<ChooseYourPlan />} />
+          <Route path={AppPath.Tutorial} element={<Tutorial />} />
           <Route
             path={AppPath.PlanRequiredSuccess}
             element={<PaymentSuccess />}
           />
           <Route path={indexAppPath.getIndexAppPath()} element={<></>} />
           <Route path={AppPath.RecordIndexPage} element={<RecordIndexPage />} />
+          <Route
+            path={AppPath.RecordInquiriesPage}
+            element={<RecordInquiriesPage />}
+          />
           <Route path={AppPath.RecordShowPage} element={<RecordShowPage />} />
           <Route
             path={AppPath.RecordShowPropertyPage}
             element={<RecordShowPropertyPage />}
-          />
-          <Route
-            path={AppPath.RecordShowPublicationPage}
-            element={<RecordShowPublicationPage />}
           />
           <Route path={AppPath.RecordEditPage} element={<RecordEditPage />} />
           <Route

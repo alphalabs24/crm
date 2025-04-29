@@ -50,6 +50,11 @@ export const StyledMenuItemBase = styled.div<MenuItemBaseProps>`
     }
 
     switch (accent) {
+      case 'active': {
+        return css`
+          color: ${theme.color.blue};
+        `;
+      }
       case 'danger': {
         return css`
           color: ${theme.font.color.danger};

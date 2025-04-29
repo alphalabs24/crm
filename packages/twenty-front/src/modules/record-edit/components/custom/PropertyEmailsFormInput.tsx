@@ -1,19 +1,19 @@
 import styled from '@emotion/styled';
 
-import { useEmailTemplateContextOrThrow } from '@/record-edit/contexts/EmailTemplateContext';
-import { ActivityRichTextEditor } from '@/activities/components/ActivityRichTextEditor';
-import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
-import { TextInputV2 } from '@/ui/input/components/TextInputV2';
-import { useRecordEdit } from '@/record-edit/contexts/RecordEditContext';
-import { EmailTemplateSetDefaultValuesEffect } from '../EmailTemplateSetDefaultValuesEffect';
-import { Trans, useLingui } from '@lingui/react/macro';
 import { EmailFormRichTextEditor } from '@/activities/components/EmailFormRichTextEditor';
-import { Button } from '@ui/input/button/components/Button';
-import { useCreateActivityInDB } from '@/activities/hooks/useCreateActivityInDB';
-import { useCreateOneRecord } from '@/object-record/hooks/useCreateOneRecord';
-import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadataItem';
-import { v4 } from 'uuid';
-import { useUpdateOneRecord } from '@/object-record/hooks/useUpdateOneRecord';
+import { useNestermind } from '@/api/hooks/useNestermind';
+import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
+import { emailSchema } from '@/object-record/record-field/validation-schemas/emailSchema';
+import { useRecordEdit } from '@/record-edit/contexts/RecordEditContext';
+import { useUnsavedChanges } from '@/record-edit/contexts/UnsavedChangesContext';
+import { SnackBarVariant } from '@/ui/feedback/snack-bar-manager/components/SnackBar';
+import { useSnackBar } from '@/ui/feedback/snack-bar-manager/hooks/useSnackBar';
+import { TextInputV2 } from '@/ui/input/components/TextInputV2';
+import { useLingui } from '@lingui/react/macro';
+import { useCallback, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { Button, IconSend } from 'twenty-ui';
+import { EmailTemplateSelect } from '~/pages/settings/email-templates/components/EmailTemplateSelect';
 
 const StyledContainer = styled.div`
   display: flex;
@@ -22,117 +22,171 @@ const StyledContainer = styled.div`
   position: relative;
 `;
 
-const StyledEmailEntryContainer = styled.div`
+const StyledEmailPreviewContainer = styled.div`
   border: 1px solid ${({ theme }) => theme.border.color.light};
   border-radius: ${({ theme }) => theme.border.radius.md};
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(2)};
   padding: ${({ theme }) => theme.spacing(2)} 0;
+  margin-top: ${({ theme }) => theme.spacing(2)};
 `;
 
-const StyledTitle = styled.div`
-  font-size: ${({ theme }) => theme.font.size.md};
-  color: ${({ theme }) => theme.font.color.primary};
-  font-weight: ${({ theme }) => theme.font.weight.regular};
-`;
-
-const StyledEmailBody = styled.div`
+const StyledTestEmailContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(1)};
+  gap: ${({ theme }) => theme.spacing(2)};
+  margin-top: ${({ theme }) => theme.spacing(2)};
 `;
 
 export const PropertyEmailsFormInput = ({ loading }: { loading?: boolean }) => {
-  const { emailTemplateId, emailTemplate, propertyId, publicationId } =
-    useEmailTemplateContextOrThrow();
+  const { setEmailTemplate, emailTemplate, isDirty, saveRecord } =
+    useRecordEdit();
+  const { openActionModal } = useUnsavedChanges();
+  const { objectRecordId, objectNameSingular } = useParams();
+  const [testEmail, setTestEmail] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const { t } = useLingui();
 
-  const { emailTemplateSubject, updateEmailTemplateSubject } = useRecordEdit();
+  const { useMutations } = useNestermind();
+  const { enqueueSnackBar } = useSnackBar();
 
-  const { createOneRecord, loading: loadingCreation } = useCreateOneRecord({
-    objectNameSingular: CoreObjectNameSingular.Note,
-  });
-
-  const { updateOneRecord: updatePropertyEmailTemplate } = useUpdateOneRecord({
-    objectNameSingular: CoreObjectNameSingular.Property,
-  });
-
-  const { updateOneRecord: updatePublicationEmailTemplate } =
-    useUpdateOneRecord({
-      objectNameSingular: CoreObjectNameSingular.Publication,
+  // Use mutation hooks
+  const { mutate: sendTestEmailPublication, isPending: isSendingPublication } =
+    useMutations.useSendTestEmailPublication({
+      onSuccess: () => {
+        enqueueSnackBar(t`Test email sent successfully`, {
+          variant: SnackBarVariant.Success,
+        });
+      },
+      onError: () => {
+        enqueueSnackBar(t`Failed to send test email`, {
+          variant: SnackBarVariant.Error,
+        });
+      },
     });
 
-  const createEmailTemplate = async () => {
-    const newRecordId = v4();
-    const createRecordPayload: {
-      id: string;
-      title: string;
-      [key: string]: any;
-    } = {
-      id: newRecordId,
-      title: '',
-    };
+  const { mutate: sendTestEmailProperty, isPending: isSendingProperty } =
+    useMutations.useSendTestEmailProperty({
+      onSuccess: () => {
+        enqueueSnackBar(t`Test email sent successfully`, {
+          variant: SnackBarVariant.Success,
+        });
+      },
+      onError: () => {
+        enqueueSnackBar(t`Failed to send test email`, {
+          variant: SnackBarVariant.Error,
+        });
+      },
+    });
 
-    await createOneRecord(createRecordPayload);
+  const isSending = isSendingPublication || isSendingProperty;
 
-    if (propertyId) {
-      await updatePropertyEmailTemplate({
-        idToUpdate: propertyId,
-        updateOneRecordInput: {
-          emailTemplateId: newRecordId,
-        },
+  const handleEmailChange = useCallback(
+    (value: string) => {
+      setTestEmail(value);
+      if (value && !emailSchema.safeParse(value).success) {
+        setEmailError(t`Please enter a valid email address`);
+      } else {
+        setEmailError('');
+      }
+    },
+    [t],
+  );
+
+  const sendTestEmail = async () => {
+    if (objectNameSingular === CoreObjectNameSingular.Property) {
+      sendTestEmailProperty({
+        propertyId: objectRecordId ?? '',
+        toEmail: testEmail,
       });
-    }
-
-    if (publicationId) {
-      await updatePublicationEmailTemplate({
-        idToUpdate: publicationId,
-        updateOneRecordInput: {
-          emailTemplateId: newRecordId,
-        },
+    } else {
+      sendTestEmailPublication({
+        publicationId: objectRecordId ?? '',
+        toEmail: testEmail,
       });
     }
   };
 
+  const handleSendTestEmail = async () => {
+    if (!testEmail || !emailSchema.safeParse(testEmail).success) {
+      setEmailError(t`Please enter a valid email address`);
+      return;
+    }
+
+    if (isDirty) {
+      openActionModal({
+        title: t`Unsaved Changes`,
+        message: t`You have unsaved changes. Please save before sending the test email.`,
+        actions: [
+          {
+            label: t`Save and send`,
+            onClick: async () => {
+              const error = await saveRecord();
+              if (error) {
+                enqueueSnackBar(t`Failed to save changes`, {
+                  variant: SnackBarVariant.Error,
+                });
+              } else {
+                sendTestEmail();
+              }
+            },
+            variant: 'secondary',
+            accent: 'blue',
+            disabled: isSending,
+          },
+        ],
+      });
+    } else {
+      sendTestEmail();
+    }
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter' && testEmail && !emailError && !isSending) {
+      handleSendTestEmail();
+    }
+  };
+
   if (loading) {
-    // TODO: Add loading state
-    return null;
+    return null; // TODO: Add loading state
   }
+
   return (
-    <>
-      <EmailTemplateSetDefaultValuesEffect />
-      <StyledContainer>
-        <StyledTitle>
-          <Trans>Email Template</Trans>
-        </StyledTitle>
-        {emailTemplateId ? (
-          <>
+    <StyledContainer>
+      <EmailTemplateSelect
+        selectedTemplateId={emailTemplate?.id}
+        onSelect={setEmailTemplate}
+      />
+      {emailTemplate && (
+        <>
+          <StyledTestEmailContainer>
             <TextInputV2
-              label="Subject"
-              value={emailTemplateSubject}
-              onChange={(text) => updateEmailTemplateSubject(text)}
+              value={testEmail}
+              onChange={handleEmailChange}
+              onKeyDown={handleKeyDown}
+              placeholder={t`Enter test email address`}
+              error={emailError}
+              fullWidth
+              disabled={isSending}
             />
-            <StyledEmailBody>
-              <StyledEmailEntryContainer>
-                <EmailFormRichTextEditor
-                  showPlaceholderButtonBar
-                  activityToSet={emailTemplate}
-                  activityObjectNameSingular={CoreObjectNameSingular.Note}
-                  activityId={emailTemplateId}
-                />
-              </StyledEmailEntryContainer>
-            </StyledEmailBody>
-          </>
-        ) : (
-          <div>
             <Button
-              title="Create Email Template"
-              onClick={createEmailTemplate}
-              disabled={loadingCreation}
+              Icon={IconSend}
+              title={t`Send Test`}
+              variant="secondary"
+              onClick={handleSendTestEmail}
+              disabled={!testEmail || !!emailError || isSending}
             />
-          </div>
-        )}
-      </StyledContainer>
-    </>
+          </StyledTestEmailContainer>
+          <StyledEmailPreviewContainer>
+            <EmailFormRichTextEditor
+              activityToSet={emailTemplate}
+              activityObjectNameSingular={CoreObjectNameSingular.Note}
+              activityId={emailTemplate.id}
+              isReadOnly
+            />
+          </StyledEmailPreviewContainer>
+        </>
+      )}
+    </StyledContainer>
   );
 };

@@ -12,8 +12,12 @@ import { isAdvancedModeEnabledState } from '@/ui/navigation/navigation-drawer/st
 import { useIsSettingsDrawer } from '@/navigation/hooks/useIsSettingsDrawer';
 
 import { MainNavigationDrawerItems } from '@/navigation/components/MainNavigationDrawerItems';
+import { OnboardingSteps } from '@/onboarding-tutorial/components/OnboardingSteps';
+import NestermindBranding from '@/ui/navigation/navigation-drawer/components/NavigationNestermindBranding';
+import { useIsFeatureEnabled } from '@/workspace/hooks/useIsFeatureEnabled';
 import { useLingui } from '@lingui/react/macro';
 import { AdvancedSettingsToggle } from 'twenty-ui';
+import { FeatureFlagKey } from '~/generated/graphql';
 
 export type AppNavigationDrawerProps = {
   className?: string;
@@ -29,6 +33,10 @@ export const AppNavigationDrawer = ({
     isAdvancedModeEnabledState,
   );
 
+  const isAdvancedSettingsFlagEnabled = useIsFeatureEnabled(
+    FeatureFlagKey.IsAdvancedSettingsEnabled,
+  );
+
   const { t } = useLingui();
 
   const drawerProps: NavigationDrawerProps = isSettingsDrawer
@@ -36,11 +44,16 @@ export const AppNavigationDrawer = ({
         title: t`Exit Settings`,
         children: <SettingsNavigationDrawerItems />,
         footer: (
-          <AdvancedSettingsToggle
-            isAdvancedModeEnabled={isAdvancedModeEnabled}
-            setIsAdvancedModeEnabled={setIsAdvancedModeEnabled}
-            label={t`Advanced:`}
-          />
+          <>
+            {isAdvancedSettingsFlagEnabled && (
+              <AdvancedSettingsToggle
+                isAdvancedModeEnabled={isAdvancedModeEnabled}
+                setIsAdvancedModeEnabled={setIsAdvancedModeEnabled}
+                label={t`Advanced:`}
+              />
+            )}
+            <NestermindBranding size={75} />
+          </>
         ),
         logo: '',
       }
@@ -48,7 +61,13 @@ export const AppNavigationDrawer = ({
         logo: currentWorkspace?.logo ?? '',
         title: currentWorkspace?.displayName ?? '',
         children: <MainNavigationDrawerItems />,
-        footer: <SupportDropdown />,
+        footer: (
+          <>
+            <SupportDropdown />
+            <OnboardingSteps />
+            <NestermindBranding size={75} />
+          </>
+        ),
       };
 
   return (

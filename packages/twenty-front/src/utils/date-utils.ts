@@ -1,6 +1,11 @@
 /* eslint-disable @nx/workspace-explicit-boolean-predicates-in-if */
 import { isDate, isNumber, isString } from '@sniptt/guards';
-import { differenceInCalendarDays, formatDistanceToNow } from 'date-fns';
+import {
+  differenceInCalendarDays,
+  formatDistanceToNow,
+  Locale,
+} from 'date-fns';
+import { enUS } from 'date-fns/locale';
 import { DateTime } from 'luxon';
 import moize from 'moize';
 
@@ -68,12 +73,14 @@ export const beautifyExactDate = (dateToBeautify: Date | string | number) => {
 
 export const beautifyPastDateRelativeToNow = (
   pastDate: Date | string | number,
+  locale?: Locale,
 ) => {
   try {
     const parsedDate = parseDate(pastDate);
 
     return formatDistanceToNow(parsedDate.toJSDate(), {
       addSuffix: true,
+      locale: locale || enUS,
     }).replace('less than a minute ago', 'now');
   } catch (error) {
     logError(error);

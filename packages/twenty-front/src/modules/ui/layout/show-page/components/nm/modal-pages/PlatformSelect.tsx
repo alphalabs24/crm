@@ -1,28 +1,31 @@
+import { useNestermind } from '@/api/hooks/useNestermind';
+import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
+import { getLinkToShowPage } from '@/object-metadata/utils/getLinkToShowPage';
+import { useFindOneRecord } from '@/object-record/hooks/useFindOneRecord';
+import { PlatformBadge } from '@/object-record/record-show/components/nm/publication/PlatformBadge';
+import { SnackBarVariant } from '@/ui/feedback/snack-bar-manager/components/SnackBar';
+import { useSnackBar } from '@/ui/feedback/snack-bar-manager/hooks/useSnackBar';
 import {
   PlatformId,
   PLATFORMS,
 } from '@/ui/layout/show-page/components/nm/types/Platform';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
-import { Trans, useLingui } from '@lingui/react/macro';
-import { tokenPairState } from '@/auth/states/tokenPairState';
-import { getLinkToShowPage } from '@/object-metadata/utils/getLinkToShowPage';
-import { SnackBarVariant } from '@/ui/feedback/snack-bar-manager/components/SnackBar';
-import { useSnackBar } from '@/ui/feedback/snack-bar-manager/hooks/useSnackBar';
-import axios from 'axios';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { useLingui } from '@lingui/react/macro';
+import { AxiosResponse } from 'axios';
+import { Dispatch, SetStateAction, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
 import {
   Button,
+  IconAlertCircle,
+  IconAlertTriangle,
   IconCheck,
+  IconLayoutGrid,
   IconWand,
   LARGE_DESKTOP_VIEWPORT,
-  IconLayoutGrid,
 } from 'twenty-ui';
-import { ValidationResult } from '../../../hooks/usePublicationValidation';
-import { useColorScheme } from '@/ui/theme/hooks/useColorScheme';
-import { getEnv } from '~/utils/get-env';
+import { usePublicationValidation } from '../../../hooks/usePublicationValidation';
+
 const StyledPlatformSelectionContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -80,9 +83,8 @@ const StyledPlatformTypeActionsContainer = styled.div`
 `;
 
 const StyledPlatformTypeActions = styled.div`
-  display: flex;
-  gap: ${({ theme }) => theme.spacing(2)};
   align-items: center;
+  display: flex;
   gap: ${({ theme }) => theme.spacing(4)};
 `;
 
@@ -210,28 +212,22 @@ const StyledSmartListingIcon = styled.div`
   padding: ${({ theme }) => theme.spacing(0.5)};
 `;
 
-const StyledPlatformLogoImage = styled.img`
-  width: 100%;
-`;
-
-const StyledValidationDetails = styled.div`
-  color: ${({ theme }) => theme.font.color.danger};
+const StyledValidationDetails = styled.div<{ variant?: 'warning' }>`
+  color: ${({ theme, variant }) =>
+    variant === 'warning' ? theme.font.color.warning : theme.font.color.danger};
   font-size: ${({ theme }) => theme.font.size.sm};
   display: flex;
   align-items: center;
-  gap: ${({ theme }) => theme.spacing(2)};
+  gap: ${({ theme }) => theme.spacing(1.5)};
 `;
 
-const StyledEditLink = styled(Link)`
-  color: ${({ theme }) => theme.font.color.primary};
+const StyledEditLink = styled(Link)<{ variant?: 'warning' }>`
+  color: ${({ theme, variant }) =>
+    variant === 'warning'
+      ? theme.font.color.warning
+      : theme.font.color.primary};
   font-size: ${({ theme }) => theme.font.size.sm};
 `;
-
-// TODO: Remove this once we have the actual type form standard graphql
-type Agency = {
-  id: string;
-  name: string;
-};
 
 type PlatformSelectProps = {
   handlePlatformSelect: (platform: PlatformId) => void;
@@ -239,7 +235,6 @@ type PlatformSelectProps = {
   setSelectedPlatforms: Dispatch<SetStateAction<PlatformId[] | null>>;
   recordId: string;
   closeModal?: () => void;
-  validationDetails?: ValidationResult;
 };
 
 export const PlatformSelect = ({
@@ -247,16 +242,54 @@ export const PlatformSelect = ({
   selectedPlatforms,
   recordId,
   closeModal,
-  validationDetails,
 }: PlatformSelectProps) => {
   const navigate = useNavigate();
   const theme = useTheme();
-  const tokenPair = useRecoilValue(tokenPairState);
   const { enqueueSnackBar } = useSnackBar();
-  const [loading, setLoading] = useState(false);
   const { t } = useLingui();
   const [showError, setShowError] = useState(false);
-  const { colorScheme } = useColorScheme();
+  const { useMutations } = useNestermind();
+
+  const { mutate: createPublicationDraft, isPending } =
+    useMutations.useCreatePublicationDraft({
+      onSuccess: (response: AxiosResponse<string>) => {
+        enqueueSnackBar(t`Publication Draft created successfully`, {
+          variant: SnackBarVariant.Success,
+        });
+
+        const route = getLinkToShowPage('publication', {
+          id: response.data,
+        });
+
+        setTimeout(() => {
+          closeModal?.();
+        }, 1000);
+
+        navigate(route);
+      },
+      onError: (error: Error) => {
+        enqueueSnackBar(error?.message || t`Failed to create draft`, {
+          variant: SnackBarVariant.Error,
+        });
+      },
+    });
+
+  const { record } = useFindOneRecord({
+    objectNameSingular: CoreObjectNameSingular.Property,
+    objectRecordId: recordId,
+  });
+
+  const { validationDetails } = usePublicationValidation({
+    record,
+    isPublication: false,
+    platformId: selectedPlatforms?.[0],
+  });
+
+  const hasEmailTemplate = useMemo(
+    () => Boolean(record?.emailTemplateId),
+    [record?.emailTemplateId],
+  );
+
   const realEstatePlatforms = Object.keys(PLATFORMS)
     .filter(
       (platform) => PLATFORMS[platform as PlatformId].type === 'real_estate',
@@ -279,50 +312,25 @@ export const PlatformSelect = ({
   };
 
   const createDraft = async () => {
-    try {
-      if (
-        validationDetails?.missingFields &&
-        validationDetails?.missingFields?.length > 0
-      ) {
-        setShowError(true);
-        return;
-      }
-      setLoading(true);
-      // TODO: This will be changed to a loop that creates all drafts and consolidates them into one show page later. For now only newhome works anyway.
-      const response = await axios.post(
-        // TODO: Replace the selectedPlatforms with an actual enum of platforms from the backend once we have standard entities.
-        `${getEnv('REACT_APP_NESTERMIND_SERVER_BASE_URL') ?? 'http://api.localhost'}/properties/publish?id=${recordId}&platform=${selectedPlatforms?.[0].toUpperCase()}`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${tokenPair?.accessToken?.token}`,
-          },
-        },
-      );
-      if (response.status !== 201) {
-        throw new Error('Failed to create draft, id was not returned');
-      }
+    if (
+      validationDetails?.missingFields &&
+      validationDetails?.missingFields?.length > 0
+    ) {
+      setShowError(true);
+      return;
+    }
 
-      enqueueSnackBar(t`Publication Draft created successfully`, {
-        variant: SnackBarVariant.Success,
-      });
-
-      const route = getLinkToShowPage('publication', {
-        id: response.data,
-      });
-
-      setTimeout(() => {
-        closeModal?.();
-      }, 1000);
-
-      navigate(route);
-    } catch (error: any) {
-      enqueueSnackBar(error?.message, {
+    if (!selectedPlatforms || selectedPlatforms.length === 0) {
+      enqueueSnackBar(t`No platform selected`, {
         variant: SnackBarVariant.Error,
       });
-    } finally {
-      setLoading(false);
+      return;
     }
+
+    createPublicationDraft({
+      propertyId: recordId,
+      platform: selectedPlatforms[0],
+    });
   };
 
   return (
@@ -365,16 +373,10 @@ export const PlatformSelect = ({
                 >
                   <StyledPlatformCardContent>
                     <StyledPlatformIconContainer>
-                      <StyledPlatformLogo dark={colorScheme === 'Dark'}>
-                        {platform.logo ? (
-                          <StyledPlatformLogoImage
-                            src={platform.logo}
-                            alt={platform.name}
-                          />
-                        ) : (
-                          platform.name.slice(0, 2)
-                        )}
-                      </StyledPlatformLogo>
+                      <PlatformBadge
+                        platformId={platform.id}
+                        variant="no-background"
+                      />
                     </StyledPlatformIconContainer>
                     <StyledPlatformInfo>
                       <StyledPlatformName comingSoon={platform.isBeta}>
@@ -403,23 +405,40 @@ export const PlatformSelect = ({
         </StyledPlatformGrid>
         <StyledPlatformTypeActionsContainer>
           <StyledPlatformTypeActions>
-            {showError && (
+            {showError ? (
               <StyledValidationDetails>
+                <IconAlertTriangle size={16} />
                 {validationDetails?.message}
                 <StyledEditLink
-                  to={`${getLinkToShowPage('property', { id: recordId })}/edit`}
+                  to={`${getLinkToShowPage('property', { id: recordId })}/edit#property-overview`}
                 >
                   {t`Edit`}
                 </StyledEditLink>
               </StyledValidationDetails>
+            ) : (
+              !hasEmailTemplate && (
+                <StyledValidationDetails variant="warning">
+                  <IconAlertCircle size={16} />
+                  {t`You have no email template set for this property.`}{' '}
+                  <StyledEditLink
+                    to={`${getLinkToShowPage('property', { id: recordId })}/edit#property-emails`}
+                    variant="warning"
+                  >
+                    {t`Edit`}
+                  </StyledEditLink>
+                </StyledValidationDetails>
+              )
             )}
+
             <Button
               variant="primary"
               accent="blue"
               title={t`Create Draft`}
               onClick={createDraft}
               disabled={
-                selectedPlatforms?.length === 0 || !selectedPlatforms || loading
+                selectedPlatforms?.length === 0 ||
+                !selectedPlatforms ||
+                isPending
               }
             />
           </StyledPlatformTypeActions>
@@ -433,9 +452,10 @@ export const PlatformSelect = ({
               {socialMediaPlatform.name}
               <StyledPlatformIconContainer width={50}>
                 <StyledPlatformLogo>
-                  <StyledPlatformLogoImage
-                    src={socialMediaPlatform.logo}
-                    alt={socialMediaPlatform.name}
+                  <PlatformBadge
+                    platformId={PlatformId.SocialMedia}
+                    size="small"
+                    variant="no-background"
                   />
                 </StyledPlatformLogo>
               </StyledPlatformIconContainer>

@@ -1,20 +1,21 @@
+import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCallback, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { Key } from 'ts-key-enum';
 import {
-  H2Title,
-  MainButton,
-  IconInfoCircle,
-  Checkbox,
   AppTooltip,
+  Checkbox,
+  H2Title,
+  IconInfoCircle,
+  MainButton,
   TooltipDelay,
 } from 'twenty-ui';
 import { z } from 'zod';
-import { useTheme } from '@emotion/react';
 
+import { useNestermind } from '@/api/hooks/useNestermind';
 import { SubTitle } from '@/auth/components/SubTitle';
 import { Title } from '@/auth/components/Title';
 import { currentWorkspaceMemberState } from '@/auth/states/currentWorkspaceMemberState';
@@ -32,9 +33,7 @@ import { WorkspaceMember } from '@/workspace-member/types/WorkspaceMember';
 import { Trans, useLingui } from '@lingui/react/macro';
 import { isDefined } from 'twenty-shared';
 import { OnboardingStatus } from '~/generated/graphql';
-import axios from 'axios';
-import { tokenPairState } from '@/auth/states/tokenPairState';
-import { getEnv } from '~/utils/get-env';
+import { Link } from 'react-router-dom';
 
 const StyledContentContainer = styled.div`
   width: 100%;
@@ -68,15 +67,22 @@ const StyledCheckboxLabel = styled.div`
   align-items: center;
   color: ${({ theme }) => theme.font.color.primary};
   font-size: ${({ theme }) => theme.font.size.sm};
+  gap: ${({ theme }) => theme.spacing(1)};
 `;
 
 const StyledWhyNeeded = styled.span`
+  align-items: center;
   color: ${({ theme }) => theme.font.color.secondary};
+  display: flex;
   font-size: ${({ theme }) => theme.font.size.sm};
   font-style: italic;
-  display: flex;
-  align-items: center;
   gap: ${({ theme }) => theme.spacing(1)};
+  padding-top: ${({ theme }) => theme.spacing(1)};
+`;
+
+const StyledLink = styled(Link)`
+  color: ${({ theme }) => theme.font.color.primary};
+  text-decoration: underline;
 `;
 
 const validationSchema = z
@@ -93,7 +99,6 @@ export const CreateProfile = () => {
   const onboardingStatus = useOnboardingStatus();
   const setNextOnboardingStatus = useSetNextOnboardingStatus();
   const { enqueueSnackBar } = useSnackBar();
-  const tokenPair = useRecoilValue(tokenPairState);
   const [currentWorkspaceMember, setCurrentWorkspaceMember] = useRecoilState(
     currentWorkspaceMemberState,
   );
@@ -102,21 +107,15 @@ export const CreateProfile = () => {
   });
   const [dataAccessChecked, setDataAccessChecked] = useState(false);
   const theme = useTheme();
+  const { useMutations } = useNestermind();
 
-  const acceptTermsAndConditions = useCallback(async () => {
-    const response = await axios.post(
-      `${getEnv('REACT_APP_NESTERMIND_SERVER_BASE_URL') ?? 'http://api.localhost'}/setup/create-workspace`,
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${tokenPair?.accessToken?.token}`,
-        },
-      },
-    );
-    if (response.status !== 201) {
-      throw new Error('Failed to publish');
-    }
-  }, [tokenPair?.accessToken?.token]);
+  const { mutate: createWorkspace } = useMutations.useCreateWorkspace({
+    onError: (error: Error) => {
+      enqueueSnackBar(error?.message || t`Failed to create workspace`, {
+        variant: SnackBarVariant.Error,
+      });
+    },
+  });
 
   const {
     control,
@@ -142,7 +141,7 @@ export const CreateProfile = () => {
           throw new Error('First name or last name is missing');
         }
 
-        await acceptTermsAndConditions();
+        createWorkspace();
 
         await updateOneRecord({
           idToUpdate: currentWorkspaceMember?.id,
@@ -177,11 +176,11 @@ export const CreateProfile = () => {
     },
     [
       currentWorkspaceMember?.id,
-      acceptTermsAndConditions,
       updateOneRecord,
       setCurrentWorkspaceMember,
       setNextOnboardingStatus,
       enqueueSnackBar,
+      createWorkspace,
     ],
   );
 
@@ -190,7 +189,7 @@ export const CreateProfile = () => {
   useScopedHotkeys(
     Key.Enter,
     () => {
-      if (isEditingMode) {
+      if (isEditingMode && dataAccessChecked && isValid) {
         onSubmit(getValues());
       }
     },
@@ -203,7 +202,7 @@ export const CreateProfile = () => {
 
   return (
     <>
-      <Title noMarginTop>
+      <Title>
         <Trans>Create profile</Trans>
       </Title>
       <SubTitle>
@@ -274,7 +273,16 @@ export const CreateProfile = () => {
             onChange={(event) => setDataAccessChecked(event.target.checked)}
           />
           <StyledCheckboxLabel>
-            {t`Allow Nestermind to access and administer my data.`}{' '}
+            <Trans>
+              Allow nestermind to access and administer my data and by clicking
+              continue you agree to the{' '}
+              <StyledLink
+                target="_blank"
+                to={'https://www.nestermind.com/terms-and-conditions'}
+              >
+                {t`terms of service`}
+              </StyledLink>
+            </Trans>
             <StyledWhyNeeded id="data-access-info">
               <IconInfoCircle size={14} color={theme.font.color.secondary} />
               {t`Why is this required?`}
@@ -282,7 +290,7 @@ export const CreateProfile = () => {
           </StyledCheckboxLabel>
           <AppTooltip
             anchorSelect={`${'#'}data-access-info`}
-            content={t`This permission is required for Nestermind's automation and AI features to function properly.`}
+            content={t`This permission is required for nestermind's automation and AI features to function properly.`}
             place="bottom"
             noArrow
             delay={TooltipDelay.shortDelay}

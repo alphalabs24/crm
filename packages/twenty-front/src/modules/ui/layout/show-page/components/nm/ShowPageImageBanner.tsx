@@ -1,12 +1,9 @@
-import { useAttachments } from '@/activities/files/hooks/useAttachments';
 import { ActivityTargetableObject } from '@/activities/types/ActivityTargetableEntity';
-import { useMemo } from 'react';
-import styled from '@emotion/styled';
-import Skeleton from 'react-loading-skeleton';
-import { LARGE_DESKTOP_VIEWPORT, MOBILE_VIEWPORT } from 'twenty-ui';
-import { IconPhoto } from '@tabler/icons-react';
+import { usePropertyImages } from '@/ui/layout/show-page/hooks/usePropertyImages';
 import { useTheme } from '@emotion/react';
+import styled from '@emotion/styled';
 import { useLingui } from '@lingui/react/macro';
+import { IconPhoto, LARGE_DESKTOP_VIEWPORT, MOBILE_VIEWPORT } from 'twenty-ui';
 
 type ShowPageImageBannerProps = {
   targetableObject: ActivityTargetableObject;
@@ -69,21 +66,6 @@ const StyledImageContainer = styled.div`
   }
 `;
 
-const StyledDropZoneContent = styled.div`
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(2)};
-  justify-content: center;
-  pointer-events: none;
-`;
-
-const StyledUploadTitle = styled.div`
-  color: ${({ theme }) => theme.font.color.primary};
-  font-size: ${({ theme }) => theme.font.size.lg};
-  font-weight: ${({ theme }) => theme.font.weight.medium};
-`;
-
 const StyledPlaceholderContainer = styled.div`
   align-items: center;
   background-color: ${({ theme }) => theme.background.tertiary};
@@ -105,14 +87,7 @@ export const ShowPageImageBanner = ({
 }: ShowPageImageBannerProps) => {
   const theme = useTheme();
   const { t } = useLingui();
-  const { attachments = [] } = useAttachments(targetableObject);
-  const images = useMemo(
-    () =>
-      attachments
-        .filter((attachment) => attachment.type === 'PropertyImage')
-        .sort((a, b) => a.orderIndex - b.orderIndex),
-    [attachments],
-  );
+  const images = usePropertyImages(targetableObject);
 
   return (
     <div style={{ position: 'relative' }}>

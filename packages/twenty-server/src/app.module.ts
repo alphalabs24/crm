@@ -80,6 +80,14 @@ export class AppModule {
       modules.push(
         ServeStaticModule.forRoot({
           rootPath: frontPath,
+          serveStaticOptions: {
+            fallthrough: true, // default is true, with false it does not work
+            // because of fallthrough, curling dot files still return 200 status code -> we handle that in the nginx proxy
+            dotfiles: 'deny',
+            index: false,
+          },
+          // we could not make it work with exclude property, so we're using the nginx proxy to address the security issues
+          // exclude: [],
         }),
       );
     }

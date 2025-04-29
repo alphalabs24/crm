@@ -9,6 +9,7 @@ import { emailThreadIdWhenEmailThreadWasClosedState } from '@/activities/emails/
 import { useRightDrawer } from '@/ui/layout/right-drawer/hooks/useRightDrawer';
 import { MessageChannelVisibility, TimelineThread } from '~/generated/graphql';
 import { formatToHumanReadableDate } from '~/utils/date-utils';
+import { useMemo } from 'react';
 
 const StyledHeading = styled.div<{ unread: boolean }>`
   display: flex;
@@ -124,6 +125,28 @@ export const EmailThreadPreview = ({ thread }: EmailThreadPreviewProps) => {
 
   const isDisabled = visibility !== MessageChannelVisibility.SHARE_EVERYTHING;
 
+  const lastMessageBodyFormatted = useMemo(() => {
+    const isHTML = /<[a-z][\s\S]*>/i.test(thread.lastMessageBody);
+    if (isHTML) {
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = thread.lastMessageBody;
+
+      const allElements = tempDiv.querySelectorAll('*');
+      let extractedText = '';
+
+      // Process first few elements to extract text
+      for (let i = 0; i < Math.min(3, allElements.length); i++) {
+        if (allElements[i].textContent) {
+          extractedText += allElements[i].textContent + ' ';
+        }
+      }
+
+      return extractedText.trim();
+    } else {
+      return thread.lastMessageBody;
+    }
+  }, [thread.lastMessageBody]);
+
   return (
     <ActivityRow
       onClick={(event) => handleThreadClick(event)}
@@ -171,7 +194,7 @@ export const EmailThreadPreview = ({ thread }: EmailThreadPreviewProps) => {
           <StyledSubject>{thread.subject}</StyledSubject>
         )}
         {visibility === MessageChannelVisibility.SHARE_EVERYTHING && (
-          <StyledBody>{thread.lastMessageBody}</StyledBody>
+          <StyledBody>{lastMessageBodyFormatted}</StyledBody>
         )}
         {visibility !== MessageChannelVisibility.SHARE_EVERYTHING && (
           <EmailThreadNotShared />

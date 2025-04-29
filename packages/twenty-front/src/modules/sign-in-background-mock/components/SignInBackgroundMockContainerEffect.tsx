@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 
+import { MAIN_CONTEXT_STORE_INSTANCE_ID } from '@/context-store/constants/MainContextStoreInstanceId';
 import { contextStoreCurrentObjectMetadataItemComponentState } from '@/context-store/states/contextStoreCurrentObjectMetadataItemComponentState';
 import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadataItem';
 import { useObjectNameSingularFromPlural } from '@/object-metadata/hooks/useObjectNameSingularFromPlural';
@@ -26,7 +27,7 @@ export const SignInBackgroundMockContainerEffect = ({
 }: SignInBackgroundMockContainerEffectProps) => {
   const setContextStoreCurrentObjectMetadataItem = useSetRecoilComponentStateV2(
     contextStoreCurrentObjectMetadataItemComponentState,
-    'main-context-store',
+    MAIN_CONTEXT_STORE_INSTANCE_ID,
   );
 
   const { setAvailableTableColumns, setOnEntityCountChange } = useRecordTable({
@@ -67,7 +68,8 @@ export const SignInBackgroundMockContainerEffect = ({
       recordTableId,
     );
 
-    setContextStoreCurrentObjectMetadataItem(objectMetadataItem);
+    // TODO: think about how we can solve this differently and show data in the background that fits our app.
+    //setContextStoreCurrentObjectMetadataItem(objectMetadataItem);
   }, [
     setViewObjectMetadataId,
     setAvailableSortDefinitions,

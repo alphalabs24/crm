@@ -18,4 +18,5 @@ export enum PageHotkeyScope {
   PublicationShowPage = 'publication-show-page',
   WorkspaceMemberPage = 'workspace-member-page',
   TaskPage = 'task-page',
+  Tutorial = 'tutorial',
 }

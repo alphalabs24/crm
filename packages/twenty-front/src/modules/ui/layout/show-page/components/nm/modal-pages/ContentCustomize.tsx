@@ -2,6 +2,7 @@ import { InstagramCarousel } from '@/object-record/record-show/components/nm/Ins
 import { TextAreaFormInput } from '@/ui/field/input/components/TextAreaFormInput';
 import { ModalHotkeyScope } from '@/ui/layout/modal/components/types/ModalHotkeyScope';
 import { useColorScheme } from '@/ui/theme/hooks/useColorScheme';
+import { useSystemColorScheme } from '@/ui/theme/hooks/useSystemColorScheme';
 import styled from '@emotion/styled';
 import { useLingui } from '@lingui/react/macro';
 import { Dispatch, SetStateAction } from 'react';
@@ -252,6 +253,9 @@ export const ContentCustomize = ({
   setIsVideoSelected,
 }: ContentCustomizeProps) => {
   const { colorScheme } = useColorScheme();
+  const systemColorScheme = useSystemColorScheme();
+  const colorSchemeToUse =
+    colorScheme === 'System' ? systemColorScheme : colorScheme;
   const { t } = useLingui();
   return (
     <StyledContentLayout>
@@ -330,7 +334,7 @@ export const ContentCustomize = ({
           </StyledDescriptionContainer>
         </StyledSettingsSectionContainer>
 
-        <StyledVideoGeneratorContainer colorScheme={colorScheme}>
+        <StyledVideoGeneratorContainer colorScheme={colorSchemeToUse}>
           <StyledSettingsSectionContainer>
             <StyledVideoGeneratorTitle>
               <IconSparkles size={16} />

@@ -17,5 +17,5 @@ export const getEmptyStateTitle = (
     return t`No publications yet`;
   }
 
-  return t`Add your first ${objectLabel}`;
+  return t`Add your ${objectLabel}`;
 };

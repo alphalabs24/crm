@@ -1,6 +1,7 @@
 export enum CardType {
-  FieldCard = 'FieldCard',
   TimelineCard = 'TimelineCard',
+  FieldCard = 'FieldCard',
+  RichTextCard = 'RichTextCard',
   TaskCard = 'TaskCard',
   NoteCard = 'NoteCard',
   FileCard = 'FileCard',
@@ -10,8 +11,10 @@ export enum CardType {
   WorkflowVersionCard = 'WorkflowVersionCard',
   WorkflowRunCard = 'WorkflowRunCard',
   WorkflowRunOutputCard = 'WorkflowRunOutputCard',
-  RichTextCard = 'RichTextCard',
   OverviewCard = 'OverviewCard',
   AISuiteCard = 'AISuiteCard',
   PublicationDetailsCard = 'PublicationDetailsCard',
+  PropertyInquiriesListCard = 'PropertyInquiriesListCard',
+  MobilePublicationsCard = 'MobilePublicationsCard',
+  PublicationListCard = 'PublicationListCard',
 }

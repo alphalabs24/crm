@@ -109,7 +109,7 @@ export const CreateWorkspace = () => {
 
   return (
     <>
-      <Title noMarginTop>
+      <Title>
         <Trans>Create your workspace</Trans>
       </Title>
       <SubTitle>

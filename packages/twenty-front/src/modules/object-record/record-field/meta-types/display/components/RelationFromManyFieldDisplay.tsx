@@ -9,14 +9,16 @@ import { useRelationFromManyFieldDisplay } from '@/object-record/record-field/me
 import { PlatformBadge } from '@/object-record/record-show/components/nm/publication/PlatformBadge';
 import { ExpandableList } from '@/ui/layout/expandable-list/components/ExpandableList';
 import { isNull } from '@sniptt/guards';
-import { IconHomeShare } from 'twenty-ui';
 
 export const RelationFromManyFieldDisplay = ({
   wrap = false,
+  canClick = true,
 }: {
   wrap?: boolean;
+  canClick?: boolean;
 }) => {
   const { fieldValue, fieldDefinition } = useRelationFromManyFieldDisplay();
+
   const { isFocused } = useFieldFocus();
 
   const { fieldName, objectMetadataNameSingular } = fieldDefinition.metadata;
@@ -62,6 +64,7 @@ export const RelationFromManyFieldDisplay = ({
               key={record.id}
               objectNameSingular={objectNameSingular}
               record={record[relationFieldName]}
+              disabled={!canClick}
             />
           ))}
       </ExpandableList>
@@ -76,6 +79,7 @@ export const RelationFromManyFieldDisplay = ({
               key={record.targetObject.id}
               objectNameSingular={record.targetObjectMetadataItem.nameSingular}
               record={record.targetObject}
+              disabled={!canClick}
             />
           ))}
       </ExpandableList>
@@ -90,11 +94,12 @@ export const RelationFromManyFieldDisplay = ({
               key={record.id}
               objectNameSingular={objectNameSingular}
               record={record}
+              disabled={!canClick}
               LeftCustomComponent={
                 isPublication(objectNameSingular) ? (
                   <PlatformBadge
                     platformId={record.platform?.toUpperCase()}
-                    variant="small"
+                    size="small"
                   />
                 ) : undefined
               }

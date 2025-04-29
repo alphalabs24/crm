@@ -7,6 +7,7 @@ import { triggerDestroyRecordsOptimisticEffect } from '@/apollo/optimistic-effec
 import { currentWorkspaceMemberState } from '@/auth/states/currentWorkspaceMemberState';
 import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadataItem';
 import { useObjectMetadataItems } from '@/object-metadata/hooks/useObjectMetadataItems';
+import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { checkObjectMetadataItemHasFieldCreatedBy } from '@/object-metadata/utils/checkObjectMetadataItemHasFieldCreatedBy';
 import { useCreateOneRecordInCache } from '@/object-record/cache/hooks/useCreateOneRecordInCache';
 import { deleteRecordFromCache } from '@/object-record/cache/utils/deleteRecordFromCache';
@@ -21,6 +22,7 @@ import { ObjectRecord } from '@/object-record/types/ObjectRecord';
 import { computeOptimisticRecordFromInput } from '@/object-record/utils/computeOptimisticRecordFromInput';
 import { getCreateOneRecordMutationResponseField } from '@/object-record/utils/getCreateOneRecordMutationResponseField';
 import { sanitizeRecordInput } from '@/object-record/utils/sanitizeRecordInput';
+import { useTutorialSteps } from '@/onboarding-tutorial/hooks/useTutorialSteps';
 import { useRecoilValue } from 'recoil';
 import { isDefined } from 'twenty-shared';
 
@@ -45,6 +47,8 @@ export const useCreateOneRecord = <
   const { objectMetadataItem } = useObjectMetadataItem({
     objectNameSingular,
   });
+
+  const { setAsCompleted } = useTutorialSteps();
 
   const objectMetadataHasCreatedByField =
     checkObjectMetadataItemHasFieldCreatedBy(objectMetadataItem);
@@ -179,6 +183,10 @@ export const useCreateOneRecord = <
       });
 
     await refetchAggregateQueries();
+    // Complete Tutorial Step
+    setAsCompleted({
+      objectNameSingular: objectNameSingular as CoreObjectNameSingular,
+    });
     return createdObject.data?.[mutationResponseField] ?? null;
   };
 

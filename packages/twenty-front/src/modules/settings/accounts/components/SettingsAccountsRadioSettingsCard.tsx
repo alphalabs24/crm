@@ -40,8 +40,8 @@ const StyledRadio = styled(Radio)`
 export const SettingsAccountsRadioSettingsCard = <
   Option extends {
     cardMedia: ReactNode;
-    description: string;
-    title: string;
+    description: ReactNode;
+    title: ReactNode;
     value: string;
   },
 >({

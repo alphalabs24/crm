@@ -10,6 +10,7 @@ export enum CoreObjectNamePlural {
   CalendarEvent = 'calendarEvents',
   Comment = 'comments',
   Company = 'companies',
+  Credential = 'credentials',
   ConnectedAccount = 'connectedAccounts',
   TimelineActivity = 'timelineActivities',
   Favorite = 'favorites',

@@ -183,7 +183,17 @@ export class DomainManagerService {
 
   private extractSubdomain(params?: { email?: string; displayName?: string }) {
     if (params?.email) {
-      return getSubdomainFromEmail(params.email);
+      const subdomain = getSubdomainFromEmail(params.email);
+
+      if (!subdomain) {
+        const subdomainName = getSubdomainNameFromDisplayName(
+          params.email.split('@')[0].replace('.', '-'),
+        );
+
+        return subdomainName;
+      }
+
+      return subdomain;
     }
 
     if (params?.displayName) {

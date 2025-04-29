@@ -7,11 +7,11 @@ import { motion } from 'framer-motion';
 import { forwardRef, useState } from 'react';
 import { Button, IconUpload, LARGE_DESKTOP_VIEWPORT } from 'twenty-ui';
 
-import { Publishing } from '@/ui/layout/show-page/components/nm/modal-pages/Publishing';
-import { PlatformId, PLATFORMS } from './types/Platform';
-import { ValidationResult } from '../../hooks/usePublicationValidation';
-import { useLingui } from '@lingui/react/macro';
 import { PlatformBadge } from '@/object-record/record-show/components/nm/publication/PlatformBadge';
+import { Publishing } from '@/ui/layout/show-page/components/nm/modal-pages/Publishing';
+import { useLingui } from '@lingui/react/macro';
+import { ValidationResult } from '../../hooks/usePublicationValidation';
+import { PlatformId } from './types/Platform';
 
 const StyledModalContent = styled(motion.div)`
   background: ${({ theme }) => theme.background.secondary};
@@ -62,10 +62,20 @@ type PublishModalProps = {
   };
   validationDetails: ValidationResult;
   platformId: PlatformId;
+  hasDraftAndPublished?: boolean;
 };
 
 export const PublishModal = forwardRef<ModalRefType, PublishModalProps>(
-  ({ onClose, targetableObject, validationDetails, platformId }, ref) => {
+  (
+    {
+      onClose,
+      targetableObject,
+      validationDetails,
+      platformId,
+      hasDraftAndPublished,
+    },
+    ref,
+  ) => {
     const { t } = useLingui();
     const [isPublished, setIsPublished] = useState(false);
     return (
@@ -103,12 +113,13 @@ export const PublishModal = forwardRef<ModalRefType, PublishModalProps>(
           <Publishing
             recordId={targetableObject.id}
             renderPlatformIcon={() => (
-              <PlatformBadge platformId={platformId} variant="small" />
+              <PlatformBadge platformId={platformId} size="small" />
             )}
             selectedPlatform={platformId}
             validationDetails={validationDetails}
             isPublished={isPublished}
             setIsPublished={setIsPublished}
+            hasDraftAndPublished={hasDraftAndPublished}
           />
         </StyledModalContent>
       </Modal>

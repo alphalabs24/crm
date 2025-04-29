@@ -1,6 +1,31 @@
 import { AGGREGATE_OPERATIONS } from 'src/engine/api/graphql/graphql-query-runner/constants/aggregate-operations.constant';
 import { ViewOpenRecordInType } from 'src/modules/view/standard-objects/view.workspace-entity';
 
+export interface ViewField {
+  id?: string;
+  fieldMetadataId: string;
+  position: number;
+  isVisible: boolean;
+  size: number;
+  aggregateOperation?: AGGREGATE_OPERATIONS;
+}
+
+export interface ViewFilter {
+  id?: string;
+  fieldMetadataId: string;
+  displayValue: string;
+  operand: string;
+  value: string;
+}
+
+export interface ViewGroup {
+  id?: string;
+  fieldMetadataId: string;
+  isVisible: boolean;
+  fieldValue: string;
+  position: number;
+}
+
 export interface ViewDefinition {
   id?: string;
   name: string;
@@ -13,26 +38,7 @@ export interface ViewDefinition {
   kanbanFieldMetadataId?: string;
   kanbanAggregateOperation?: AGGREGATE_OPERATIONS;
   kanbanAggregateOperationFieldMetadataId?: string;
-  fields?: {
-    id?: string;
-    fieldMetadataId: string;
-    position: number;
-    isVisible: boolean;
-    size: number;
-    aggregateOperation?: AGGREGATE_OPERATIONS;
-  }[];
-  filters?: {
-    id?: string;
-    fieldMetadataId: string;
-    displayValue: string;
-    operand: string;
-    value: string;
-  }[];
-  groups?: {
-    id?: string;
-    fieldMetadataId: string;
-    isVisible: boolean;
-    fieldValue: string;
-    position: number;
-  }[];
+  fields?: ViewField[];
+  filters?: ViewFilter[];
+  groups?: ViewGroup[];
 }

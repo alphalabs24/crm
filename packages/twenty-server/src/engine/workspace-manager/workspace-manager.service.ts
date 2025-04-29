@@ -27,7 +27,7 @@ import { PETS_METADATA_SEEDS } from 'src/engine/seeder/metadata-seeds/pets-metad
 import { SURVEY_RESULTS_METADATA_SEEDS } from 'src/engine/seeder/metadata-seeds/survey-results-metadata-seeds';
 import { SeederService } from 'src/engine/seeder/seeder.service';
 import { WorkspaceDataSourceService } from 'src/engine/workspace-datasource/workspace-datasource.service';
-import { defaultWorkspacePrefillData } from 'src/engine/workspace-manager/default-workspace-prefill-data/default-workspace-prefill-data';
+import { fillWorkspaceWithDefaultWorkspaceData } from 'src/engine/workspace-manager/default-workspace-prefill-data/fill-workspace-with-default-workspace-data';
 import { seedWorkspaceWithDemoData } from 'src/engine/workspace-manager/demo-objects-prefill-data/seed-workspace-with-demo-data';
 import { standardObjectsPrefillData } from 'src/engine/workspace-manager/standard-objects-prefill-data/standard-objects-prefill-data';
 import { WorkspaceSyncMetadataService } from 'src/engine/workspace-manager/workspace-sync-metadata/workspace-sync-metadata.service';
@@ -77,23 +77,23 @@ export class WorkspaceManagerService {
         schemaName,
       );
 
-    let defaultMetadataWorkspaceId = this.environmentService.get(
+    let defaultWorkspaceId = this.environmentService.get(
       'DEFAULT_METADATA_WORKSPACE_ID',
     );
 
     if (
-      defaultMetadataWorkspaceId &&
+      defaultWorkspaceId &&
       !(await this.workspaceDataSourceService.checkSchemaExists(
-        defaultMetadataWorkspaceId,
+        defaultWorkspaceId,
       ))
     ) {
-      defaultMetadataWorkspaceId = '';
+      defaultWorkspaceId = '';
     }
 
     await this.workspaceSyncMetadataService.synchronize({
       workspaceId,
       dataSourceId: dataSourceMetadata.id,
-      defaultMetadataWorkspaceId,
+      defaultWorkspaceId,
     });
 
     const permissionsEnabled =
@@ -103,7 +103,7 @@ export class WorkspaceManagerService {
       await this.initPermissions({ workspaceId, userId });
     }
 
-    if (!defaultMetadataWorkspaceId) {
+    if (!defaultWorkspaceId) {
       await this.prefillWorkspaceWithStandardObjects(
         dataSourceMetadata,
         workspaceId,
@@ -112,7 +112,7 @@ export class WorkspaceManagerService {
       await this.prefillWorkspaceWithDefaultWorkspaceData(
         dataSourceMetadata,
         workspaceId,
-        defaultMetadataWorkspaceId,
+        defaultWorkspaceId,
       );
     }
   }
@@ -207,7 +207,7 @@ export class WorkspaceManagerService {
   private async prefillWorkspaceWithDefaultWorkspaceData(
     dataSourceMetadata: DataSourceEntity,
     workspaceId: string,
-    defaultMetadataWorkspaceId: string,
+    defaultWorkspaceId: string,
   ) {
     const workspaceDataSource =
       await this.workspaceDataSourceService.connectToWorkspaceDataSource(
@@ -228,7 +228,7 @@ export class WorkspaceManagerService {
     // see: typeorm.service.ts, connectToDataSource method, isMultiDatasourceEnabled = false
     const defaultWorkspaceDataSource =
       await this.workspaceDataSourceService.connectToWorkspaceDataSource(
-        defaultMetadataWorkspaceId,
+        defaultWorkspaceId,
       );
 
     if (!defaultWorkspaceDataSource) {
@@ -237,12 +237,12 @@ export class WorkspaceManagerService {
 
     const defaultWorkspaceDataSourceMetadata =
       await this.dataSourceService.getLastDataSourceMetadataFromWorkspaceIdOrFail(
-        defaultMetadataWorkspaceId,
+        defaultWorkspaceId,
       );
 
     const defaultWorkspaceObjectMetadata =
       await this.objectMetadataService.findManyWithinWorkspace(
-        defaultMetadataWorkspaceId,
+        defaultWorkspaceId,
         {
           where: {
             isCustom: false,
@@ -255,14 +255,17 @@ export class WorkspaceManagerService {
         },
       );
 
-    await defaultWorkspacePrefillData(
+    await fillWorkspaceWithDefaultWorkspaceData({
+      workspaceId,
       workspaceDataSource,
-      dataSourceMetadata.schema,
-      createdObjectMetadata,
+      schemaName: dataSourceMetadata.schema,
+      objectMetadata: createdObjectMetadata,
+      defaultWorkspaceId,
       defaultWorkspaceDataSource,
-      defaultWorkspaceDataSourceMetadata.schema,
+      defaultWorkspaceDataSourceSchemaName:
+        defaultWorkspaceDataSourceMetadata.schema,
       defaultWorkspaceObjectMetadata,
-    );
+    });
   }
 
   /**

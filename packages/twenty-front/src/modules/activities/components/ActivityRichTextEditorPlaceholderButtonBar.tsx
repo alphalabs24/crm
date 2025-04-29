@@ -1,15 +1,16 @@
 import styled from '@emotion/styled';
-import { BLOCK_SCHEMA } from '../blocks/constants/Schema';
+import { Trans } from '@lingui/react/macro';
 import {
-  IconUser,
-  IconFileText,
-  IconMailShare,
   AppTooltip,
   IconFile,
+  IconFileText,
+  IconHome,
+  IconMailShare,
+  IconUser,
   TooltipDelay,
 } from 'twenty-ui';
-import { Trans } from '@lingui/react/macro';
 import { v4 as uuidV4 } from 'uuid';
+import { BLOCK_SCHEMA } from '../blocks/constants/Schema';
 
 const StyledButtonBar = styled.div`
   border-bottom: 1px solid ${({ theme }) => theme.border.color.light};
@@ -21,6 +22,7 @@ const StyledButtonBar = styled.div`
   margin-bottom: ${({ theme }) => theme.spacing(4)};
   padding: 0 ${({ theme }) => theme.spacing(2)}
     ${({ theme }) => theme.spacing(1)};
+  min-height: 34px;
 `;
 
 const StyledButtonsContainer = styled.div`
@@ -74,12 +76,17 @@ const PLACEHOLDERS = [
     icon: <IconMailShare size={16} />,
   },
   {
-    label: 'Insert Property Flyer',
+    label: 'Insert Object Name',
+    placeholder: '{{object_name}}',
+    icon: <IconHome size={16} />,
+  },
+  {
+    label: 'Insert Object Flyer',
     placeholder: '{{link_to_flyer}}',
     icon: <IconFile size={16} />,
   },
   {
-    label: 'Insert Property Documentation',
+    label: 'Insert Object Documentation',
     placeholder: '{{link_to_documentation}}',
     icon: <IconFileText size={16} />,
   },
@@ -115,10 +122,12 @@ const PlaceholderButton = ({
 
 type ActivityRichTextEditorPlaceholderButtonBarProps = {
   editor: typeof BLOCK_SCHEMA.BlockNoteEditor;
+  readonly?: boolean;
 };
 
 export const ActivityRichTextEditorPlaceholderButtonBar = ({
   editor,
+  readonly,
 }: ActivityRichTextEditorPlaceholderButtonBarProps) => {
   const handlePlaceholderClick = (placeholder: string) => {
     if (!editor) return;
@@ -137,15 +146,17 @@ export const ActivityRichTextEditorPlaceholderButtonBar = ({
         <Trans>Body</Trans>
       </StyledDescription>
       <StyledButtonsContainer>
-        {PLACEHOLDERS.map(({ label, placeholder, icon }) => (
-          <PlaceholderButton
-            key={placeholder}
-            label={label}
-            placeholder={placeholder}
-            icon={icon}
-            onClick={handlePlaceholderClick}
-          />
-        ))}
+        {readonly
+          ? null
+          : PLACEHOLDERS.map(({ label, placeholder, icon }) => (
+              <PlaceholderButton
+                key={placeholder}
+                label={label}
+                placeholder={placeholder}
+                icon={icon}
+                onClick={handlePlaceholderClick}
+              />
+            ))}
       </StyledButtonsContainer>
     </StyledButtonBar>
   );

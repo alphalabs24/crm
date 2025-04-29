@@ -1,6 +1,7 @@
+import { MAIN_CONTEXT_STORE_INSTANCE_ID } from '@/context-store/constants/MainContextStoreInstanceId';
 import { contextStoreCurrentViewIdComponentState } from '@/context-store/states/contextStoreCurrentViewIdComponentState';
-import { mainContextStoreComponentInstanceIdState } from '@/context-store/states/mainContextStoreComponentInstanceId';
 import { lastVisitedViewPerObjectMetadataItemState } from '@/navigation/states/lastVisitedViewPerObjectMetadataItemState';
+import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { ObjectMetadataItem } from '@/object-metadata/types/ObjectMetadataItem';
 import { prefetchViewsFromObjectMetadataItemFamilySelector } from '@/prefetch/states/selector/prefetchViewsFromObjectMetadataItemFamilySelector';
 import { AppPath } from '@/types/AppPath';
@@ -27,13 +28,9 @@ export const NavigationDrawerItemForObjectMetadataItem = ({
     }),
   );
 
-  const mainContextStoreComponentInstanceId = useRecoilValue(
-    mainContextStoreComponentInstanceIdState,
-  );
-
   const contextStoreCurrentViewId = useRecoilComponentValueV2(
     contextStoreCurrentViewIdComponentState,
-    mainContextStoreComponentInstanceId,
+    MAIN_CONTEXT_STORE_INSTANCE_ID,
   );
 
   const lastVisitedViewPerObjectMetadataItem = useRecoilValue(
@@ -46,13 +43,20 @@ export const NavigationDrawerItemForObjectMetadataItem = ({
   const { getIcon } = useIcons();
   const currentPath = useLocation().pathname;
 
-  const navigationPath = getAppPath(
-    AppPath.RecordIndexPage,
-    { objectNamePlural: objectMetadataItem.namePlural },
-    lastVisitedViewId ? { viewId: lastVisitedViewId } : undefined,
-  );
+  // TODO This is a bit hacky, we should find a better way to handle this
+  const isBuyerLead =
+    objectMetadataItem.nameSingular === CoreObjectNameSingular.BuyerLead;
+
+  const navigationPath = isBuyerLead
+    ? getAppPath(AppPath.RecordInquiriesPage)
+    : getAppPath(
+        AppPath.RecordIndexPage,
+        { objectNamePlural: objectMetadataItem.namePlural },
+        lastVisitedViewId ? { viewId: lastVisitedViewId } : undefined,
+      );
 
   const isActive =
+    (isBuyerLead && currentPath === getAppPath(AppPath.RecordInquiriesPage)) ||
     currentPath ===
       getAppPath(AppPath.RecordIndexPage, {
         objectNamePlural: objectMetadataItem.namePlural,

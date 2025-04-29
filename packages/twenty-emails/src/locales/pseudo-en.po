@@ -13,6 +13,10 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#: src/components/Footer.tsx
+msgid "Academy"
+msgstr ""
+
 #: src/emails/send-invite-link.email.tsx
 msgid "Accept invite"
 msgstr ""
@@ -26,8 +30,12 @@ msgid "Confirm your email address"
 msgstr ""
 
 #: src/emails/password-update-notify.email.tsx
-msgid "Connect to Twenty"
+msgid "Connect to nestermind"
 msgstr ""
+
+#: src/emails/password-update-notify.email.tsx
+#~ msgid "Connect to Twenty"
+#~ msgstr ""
 
 #: src/emails/password-update-notify.email.tsx
 #~ msgid "Dear"
@@ -37,9 +45,21 @@ msgstr ""
 msgid "Dear {userName}"
 msgstr ""
 
-#: src/emails/send-invite-link.email.tsx
-msgid "has invited you to join a workspace called "
+#: src/components/Footer.tsx
+msgid "Follow us"
 msgstr ""
+
+#: src/components/Footer.tsx
+msgid "Follow us on Linkedin"
+msgstr ""
+
+#: src/emails/send-invite-link.email.tsx
+msgid "has invited you to join a workspace called"
+msgstr ""
+
+#: src/emails/send-invite-link.email.tsx
+#~ msgid "has invited you to join a workspace called "
+#~ msgstr ""
 
 #: src/emails/password-update-notify.email.tsx
 msgid "Hello"
@@ -50,20 +70,32 @@ msgid "If you did not initiate this change, please contact your workspace owner 
 msgstr ""
 
 #: src/emails/warn-suspended-workspace.email.tsx
-msgid "If you wish to continue using Twenty, please update your subscription within the next {remainingDays} {dayOrDays}."
+msgid "If you wish to continue using nestermind, please update your subscription within the next {remainingDays} {dayOrDays}."
+msgstr ""
+
+#: src/emails/warn-suspended-workspace.email.tsx
+#~ msgid "If you wish to continue using Twenty, please update your subscription within the next {remainingDays} {dayOrDays}."
+#~ msgstr ""
+
+#: src/emails/clean-suspended-workspace.email.tsx
+msgid "If you wish to use nestermind again, you can create a new workspace."
 msgstr ""
 
 #: src/emails/clean-suspended-workspace.email.tsx
-msgid "If you wish to use Twenty again, you can create a new workspace."
-msgstr ""
+#~ msgid "If you wish to use Twenty again, you can create a new workspace."
+#~ msgstr ""
 
 #: src/emails/warn-suspended-workspace.email.tsx
 msgid "It appears that your workspace <0>{workspaceDisplayName}</0> has been suspended for {daysSinceInactive} days."
 msgstr ""
 
 #: src/emails/send-invite-link.email.tsx
-msgid "Join your team on Twenty"
+msgid "Join your team on nestermind"
 msgstr ""
+
+#: src/emails/send-invite-link.email.tsx
+#~ msgid "Join your team on Twenty"
+#~ msgstr ""
 
 #: src/emails/password-update-notify.email.tsx
 msgid "Password updated"
@@ -78,7 +110,15 @@ msgid "Reset your password 🗝"
 msgstr ""
 
 #: src/emails/send-email-verification-link.email.tsx
-msgid "Thanks for registering for an account on Twenty! Before we get started, we just need to confirm that this is you. Click above to verify your email address."
+msgid "Thanks for registering for an account on nestermind! Before we get started, we just need to confirm that this is you. Click above to verify your email address."
+msgstr ""
+
+#: src/emails/send-email-verification-link.email.tsx
+#~ msgid "Thanks for registering for an account on Twenty! Before we get started, we just need to confirm that this is you. Click above to verify your email address."
+#~ msgstr ""
+
+#: src/components/WhatIsTwenty.tsx
+msgid "The AI real estate software for innovative agents."
 msgstr ""
 
 #: src/emails/warn-suspended-workspace.email.tsx
@@ -107,6 +147,22 @@ msgstr ""
 
 #: src/emails/send-email-verification-link.email.tsx
 msgid "Verify Email"
+msgstr ""
+
+#: src/components/Footer.tsx
+msgid "Visit nestermind's academy"
+msgstr ""
+
+#: src/components/Footer.tsx
+msgid "Visit nestermind's website"
+msgstr ""
+
+#: src/components/Footer.tsx
+msgid "Website"
+msgstr ""
+
+#: src/components/WhatIsTwenty.tsx
+msgid "What is nestermind?"
 msgstr ""
 
 #: src/emails/clean-suspended-workspace.email.tsx

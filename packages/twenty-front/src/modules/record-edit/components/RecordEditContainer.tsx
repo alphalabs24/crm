@@ -1,7 +1,8 @@
 import styled from '@emotion/styled';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadataItem';
+import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { getLinkToShowPage } from '@/object-metadata/utils/getLinkToShowPage';
 import { isNewViewableRecordLoadingState } from '@/object-record/record-right-drawer/states/isNewViewableRecordLoading';
 import { useRecordShowPage } from '@/object-record/record-show/hooks/useRecordShowPage';
@@ -10,7 +11,6 @@ import { useRecordEdit } from '@/record-edit/contexts/RecordEditContext';
 import { EditSectionContentWidth } from '@/record-edit/types/EditSectionTypes';
 import { SnackBarVariant } from '@/ui/feedback/snack-bar-manager/components/SnackBar';
 import { useSnackBar } from '@/ui/feedback/snack-bar-manager/hooks/useSnackBar';
-import { ShowPageImageBanner } from '@/ui/layout/show-page/components/nm/ShowPageImageBanner';
 import { SingleTabProps, TabList } from '@/ui/layout/tab/components/TabList';
 import { useTabList } from '@/ui/layout/tab/hooks/useTabList';
 import { useLingui } from '@lingui/react/macro';
@@ -18,11 +18,7 @@ import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { isDefined } from 'twenty-shared';
 import { Button, LARGE_DESKTOP_VIEWPORT, MOBILE_VIEWPORT } from 'twenty-ui';
-import { useMemo } from 'react';
-import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
-import { FieldDefinition } from '@/object-record/record-field/types/FieldDefinition';
 import { RecordEditContainerContext } from '../contexts/RecordEditContainerContext';
-import { useNotes } from '@/activities/notes/hooks/useNotes';
 
 export const EDIT_CONTAINER_WIDTH = 1440;
 
@@ -140,6 +136,11 @@ const StyledGroup = styled.div<{ isHorizontal?: boolean }>`
   gap: ${({ theme }) => theme.spacing(4)};
 `;
 
+const StyledButtonsContainer = styled.div`
+  display: flex;
+  gap: ${({ theme }) => theme.spacing(2)};
+`;
+
 export const TAB_LIST_COMPONENT_ID = 'edit-record-right-tab-list';
 
 type RecordEditContainerProps = {
@@ -223,6 +224,10 @@ export const RecordEditContainer = ({
                     '',
                 ).toLowerCase();
 
+                if (conditionValues?.length === 0) {
+                  return Boolean(conditionFieldValue);
+                }
+
                 return conditionValues?.some(
                   (value) =>
                     String(value ?? '').toLowerCase() === conditionFieldValue,
@@ -249,25 +254,80 @@ export const RecordEditContainer = ({
   }, [tabs, activeTabId, fieldsByName, getUpdatedFields, record, updateField]);
 
   const handleSave = async () => {
-    try {
-      await saveRecord();
+    const error = await saveRecord();
 
-      const link = getLinkToShowPage(objectNameSingular ?? '', {
-        id: recordId ?? '',
+    if (error) {
+      enqueueSnackBar(t`Error saving ${objectNameSingular}`, {
+        variant: SnackBarVariant.Error,
       });
+      return;
+    }
 
-      enqueueSnackBar(t`${objectNameSingular} saved successfully`, {
+    if (isPublication && record?.propertyId && record?.platform) {
+      // For publications, navigate back to the property page with hash and search params
+      const propertyLink = getLinkToShowPage(
+        CoreObjectNameSingular.Property,
+        {
+          id: record.propertyId,
+        },
+        {
+          hash: '#publications',
+          searchParams: {
+            platform: record.platform,
+          },
+        },
+      );
+
+      enqueueSnackBar(t`Publication saved successfully`, {
         variant: SnackBarVariant.Success,
       });
 
       setTimeout(() => {
+        navigate(propertyLink);
+      }, 100);
+    } else {
+      // Standard behavior for non-publications
+      const link = getLinkToShowPage(objectNameSingular ?? '', {
+        id: recordId ?? '',
+      });
+
+      enqueueSnackBar(
+        isPublication
+          ? t`Publication saved successfully`
+          : t`Property saved successfully`,
+        {
+          variant: SnackBarVariant.Success,
+        },
+      );
+
+      setTimeout(() => {
         navigate(link);
       }, 100);
-    } catch (error) {
-      console.error(error);
-      enqueueSnackBar(t`Error saving ${objectNameSingular}`, {
-        variant: SnackBarVariant.Error,
+    }
+  };
+
+  const handleDiscard = () => {
+    if (isPublication && record?.propertyId && record?.platform) {
+      // For publications, navigate back to the property page with hash and search params
+      const propertyLink = getLinkToShowPage(
+        CoreObjectNameSingular.Property,
+        {
+          id: record.propertyId,
+        },
+        {
+          hash: '#publications',
+          searchParams: {
+            platform: record.platform,
+          },
+        },
+      );
+      navigate(propertyLink);
+    } else {
+      // Standard behavior for non-publications
+      const link = getLinkToShowPage(objectNameSingular ?? '', {
+        id: recordId ?? '',
       });
+      navigate(link);
     }
   };
 
@@ -290,7 +350,7 @@ export const RecordEditContainer = ({
 
       const hasSectionFields = sectionFieldCount > 0;
 
-      if (!hasSectionFields) {
+      if (!hasSectionFields || (section.omitForPublications && isPublication)) {
         return null;
       }
       return (
@@ -317,6 +377,7 @@ export const RecordEditContainer = ({
                   conditionValues: field.conditionValues,
                   omitForPublication: field.omitForPublication,
                   required: field.required,
+                  showDescription: field.showDescription,
                 }))
                 .filter(({ field }) => isDefined(field));
 
@@ -334,6 +395,7 @@ export const RecordEditContainer = ({
                       conditionValues,
                       omitForPublication,
                       required,
+                      showDescription,
                     }) => {
                       const conditionFields = conditionFieldNames?.map(
                         (conditionFieldName) =>
@@ -348,6 +410,13 @@ export const RecordEditContainer = ({
                               record?.[conditionField?.name] ??
                               '',
                           ).toLowerCase();
+
+                          if (
+                            !conditionValues ||
+                            conditionValues?.length === 0
+                          ) {
+                            return Boolean(conditionFieldValue);
+                          }
 
                           return conditionValues?.some(
                             (value) =>
@@ -367,6 +436,7 @@ export const RecordEditContainer = ({
                           objectMetadataItem={objectMetadataItem}
                           record={record}
                           isRequired={required}
+                          showDescription={showDescription}
                           objectNameSingular={objectNameSingular}
                           loading={
                             loading ||
@@ -393,15 +463,6 @@ export const RecordEditContainer = ({
       }}
     >
       <StyledEditContainer>
-        {record && (
-          <ShowPageImageBanner
-            targetableObject={{
-              id: record.id,
-              targetObjectNameSingular: objectNameSingular,
-            }}
-          />
-        )}
-
         <StyledTabListContainer shouldDisplay={true}>
           <TabList
             behaveAsLinks={!isInRightDrawer}
@@ -411,14 +472,23 @@ export const RecordEditContainer = ({
             isInRightDrawer={isInRightDrawer}
           />
           <StyledButtonContainer>
-            <Button
-              title={t`Save`}
-              variant="primary"
-              accent="blue"
-              size="small"
-              onClick={handleSave}
-              disabled={loading}
-            />
+            <StyledButtonsContainer>
+              <Button
+                title={t`Discard`}
+                variant="secondary"
+                size="small"
+                onClick={handleDiscard}
+                disabled={loading}
+              />
+              <Button
+                title={t`Save`}
+                variant="primary"
+                accent="blue"
+                size="small"
+                onClick={handleSave}
+                disabled={loading}
+              />
+            </StyledButtonsContainer>
           </StyledButtonContainer>
         </StyledTabListContainer>
 

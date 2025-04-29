@@ -81,8 +81,11 @@ export const getRecordChipGenerators = (
 
           return [
             fieldMetadataItem.name,
-            (record: ObjectRecord) =>
-              ({
+            (record: ObjectRecord) => {
+              // TODO check why this can be undefined sometimes here
+              if (!record) return {} as any;
+
+              return {
                 recordId: record.id,
                 name: getLabelIdentifierFieldValue(
                   record,
@@ -97,7 +100,8 @@ export const getRecordChipGenerators = (
                 avatarType,
                 isLabelIdentifier,
                 objectNameSingular: objectNameSingularToFind,
-              }) satisfies RecordChipData,
+              } satisfies RecordChipData;
+            },
           ];
         }),
     );
