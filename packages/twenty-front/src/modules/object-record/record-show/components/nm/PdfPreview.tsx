@@ -15,10 +15,10 @@ let workerInitialized = false;
 try {
   if (!workerInitialized) {
     // Set up pdf.js worker
-    pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-      'pdfjs-dist/build/pdf.worker.min.mjs',
-      import.meta.url,
-    ).toString();
+    // https://github.com/wojtekmaj/react-pdf/blob/main/packages/react-pdf/README.md#copy-worker-to-public-directory
+    // download the worker from here
+    // https://unpkg.com/pdfjs-dist@4.3.136/build/pdf.worker.min.mjs
+    pdfjs.GlobalWorkerOptions.workerSrc = '/assets/pdfjs-worker.min.js';
     workerInitialized = true;
   }
 } catch (error) {
@@ -128,10 +128,10 @@ export const PdfPreview = ({ url }: PdfPreviewProps) => {
       if (!workerInitialized) {
         try {
           // Try to reinitialize worker if it failed before
-          pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-            'pdfjs-dist/build/pdf.worker.min.mjs',
-            import.meta.url,
-          ).toString();
+          // https://github.com/wojtekmaj/react-pdf/blob/main/packages/react-pdf/README.md#copy-worker-to-public-directory
+          // download the worker from here
+          // https://unpkg.com/pdfjs-dist@4.3.136/build/pdf.worker.min.mjs
+          pdfjs.GlobalWorkerOptions.workerSrc = '/assets/pdfjs-worker.min.js';
           workerInitialized = true;
         } catch (error) {
           console.error('Error reinitializing PDF.js worker:', error);
