@@ -91,6 +91,9 @@ const bootstrap = async () => {
       'X-Requested-With',
       'x-locale',
       'x-schema-version',
+      // these headers are added by the sentry
+      'Baggage',
+      'sentry-trace',
     ],
   });
 
