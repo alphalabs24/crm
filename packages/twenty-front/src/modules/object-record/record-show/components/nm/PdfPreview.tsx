@@ -1,46 +1,48 @@
-import DocViewer, { DocViewerRenderers } from '@cyntler/react-doc-viewer';
-import '@cyntler/react-doc-viewer/dist/index.css';
-import { useTheme } from '@emotion/react';
+import { useState, useEffect } from 'react';
+import { Document, Page, pdfjs } from 'react-pdf';
 import styled from '@emotion/styled';
 import { Trans } from '@lingui/react/macro';
-import { IconLoader, IconAlertTriangle } from 'twenty-ui';
-import { useState, useEffect } from 'react';
+import {
+  IconAlertTriangle,
+  IconLoader,
+  IconChevronLeft,
+  IconChevronRight,
+} from 'twenty-ui';
 
+// Set up pdf.js worker
+pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+  'pdfjs-dist/build/pdf.worker.min.mjs',
+  import.meta.url,
+).toString();
+
+interface PdfPreviewProps {
+  url: string;
+}
+
+// Styled components
 const StyledPreviewContainer = styled.div`
-  width: 100%;
-  max-width: 300px;
+  align-items: center;
+  background: ${({ theme }) => theme.background.tertiary};
   border-radius: ${({ theme }) => theme.border.radius.sm};
+  display: flex;
+  padding: ${({ theme }) => theme.spacing(4)};
+  flex-direction: column;
+  justify-content: center;
   overflow: hidden;
-  background: ${({ theme }) => theme.background.secondary};
-
-  .react-doc-viewer {
-    height: 200px;
-    width: 100%;
-    overflow: auto;
-    background: none;
-  }
-
-  #react-doc-viewer #header-bar {
-    display: none;
-  }
-
-  #react-doc-viewer #pdf-controls {
-    display: none !important;
-  }
+  width: 100%;
+  min-height: 320px;
+  gap: ${({ theme }) => theme.spacing(2)};
+  position: relative;
 `;
 
 const StyledLoadingContainer = styled.div`
-  align-items: center;
-  color: ${({ theme }) => theme.font.color.tertiary};
   display: flex;
   flex-direction: column;
-  font-size: ${({ theme }) => theme.font.size.sm};
-  gap: ${({ theme }) => theme.spacing(2)};
+  align-items: center;
   justify-content: center;
+  font-size: ${({ theme }) => theme.font.size.sm};
+  color: ${({ theme }) => theme.font.color.tertiary};
   min-height: 200px;
-  padding: ${({ theme }) => theme.spacing(2)};
-  text-align: center;
-  width: 100%;
 `;
 
 const StyledSpinner = styled.div`
@@ -55,80 +57,97 @@ const StyledSpinner = styled.div`
 `;
 
 const StyledErrorContainer = styled.div`
-  align-items: center;
-  color: ${({ theme }) => theme.color.red};
   display: flex;
   flex-direction: column;
-  font-size: ${({ theme }) => theme.font.size.sm};
-  gap: ${({ theme }) => theme.spacing(2)};
+  align-items: center;
   justify-content: center;
+  font-size: ${({ theme }) => theme.font.size.sm};
+  color: ${({ theme }) => theme.color.red};
   min-height: 200px;
-  padding: ${({ theme }) => theme.spacing(2)};
-  text-align: center;
 `;
 
-interface PdfPreviewProps {
-  url: string;
-}
+const StyledPageControls = styled.div`
+  align-items: center;
+  background: ${({ theme }) => theme.background.primary};
+  border-radius: ${({ theme }) => theme.border.radius.sm};
+  box-shadow: ${({ theme }) => theme.boxShadow.light};
+  display: flex;
+  gap: ${({ theme }) => theme.spacing(1)};
+  justify-content: center;
+  padding: ${({ theme }) => theme.spacing(1)};
+`;
+
+const StyledPageButton = styled.button<{ disabled: boolean }>`
+  align-items: center;
+  background: ${({ theme, disabled }) =>
+    disabled ? theme.background.tertiary : theme.background.secondary};
+  border: 1px solid ${({ theme }) => theme.border.color.light};
+  border-radius: ${({ theme }) => theme.border.radius.sm};
+  color: ${({ theme, disabled }) =>
+    disabled ? theme.font.color.light : theme.font.color.primary};
+  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
+  display: flex;
+  justify-content: center;
+  padding: ${({ theme }) => theme.spacing(0.5)};
+
+  &:hover:not(:disabled) {
+    background: ${({ theme }) => theme.background.tertiary};
+  }
+`;
+
+const StyledPageIndicator = styled.div`
+  font-size: ${({ theme }) => theme.font.size.sm};
+  font-weight: ${({ theme }) => theme.font.weight.medium};
+  color: ${({ theme }) => theme.font.color.secondary};
+  padding: 0 ${({ theme }) => theme.spacing(1)};
+`;
 
 export const PdfPreview = ({ url }: PdfPreviewProps) => {
-  const theme = useTheme();
-  const [isLoading, setIsLoading] = useState(true);
+  const [pdfBlob, setPdfBlob] = useState<Blob | null>(null);
+  const [numPages, setNumPages] = useState<number>(0);
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
-    // Check if URL is empty, undefined, or not a string
-    if (!url || typeof url !== 'string') {
-      setHasError(true);
-      setIsLoading(false);
-      return;
-    }
-
-    const checkUrl = async () => {
+    const fetchPdf = async () => {
       try {
-        // Try to validate the URL
-        const isValidUrl =
-          url.startsWith('http://') ||
-          url.startsWith('https://') ||
-          url.startsWith('blob:') ||
-          url.startsWith('data:') ||
-          url.startsWith('/');
-
-        if (!isValidUrl) {
-          setHasError(true);
-          setIsLoading(false);
-          return;
-        }
-
-        // For HTTP/HTTPS URLs, check if they're accessible
-        if (url.startsWith('http')) {
-          const response = await fetch(url, { method: 'HEAD' });
-          if (!response.ok) {
-            setHasError(true);
-          }
-        }
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('Failed to fetch PDF');
+        const blob = await response.blob();
+        setPdfBlob(blob);
       } catch (error) {
+        console.error('Error fetching PDF:', error);
         setHasError(true);
-      } finally {
-        setIsLoading(false);
       }
     };
 
-    checkUrl();
+    fetchPdf();
   }, [url]);
+
+  const goToPreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const goToNextPage = () => {
+    if (currentPage < numPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
 
   if (hasError) {
     return (
       <StyledPreviewContainer>
         <StyledErrorContainer>
           <IconAlertTriangle size={24} />
-          <Trans>Error loading document</Trans>
+          <Trans>Error loading PDF</Trans>
         </StyledErrorContainer>
       </StyledPreviewContainer>
     );
   }
 
-  if (isLoading) {
+  if (!pdfBlob) {
     return (
       <StyledPreviewContainer>
         <StyledLoadingContainer>
@@ -141,49 +160,43 @@ export const PdfPreview = ({ url }: PdfPreviewProps) => {
     );
   }
 
-  // Determine if the URL is a PDF by checking the extension or URL pattern
-  const isPdf =
-    url.toLowerCase().endsWith('.pdf') ||
-    url.toLowerCase().includes('pdf') ||
-    url.toLowerCase().includes('application/pdf');
-
-  // Get the filename from the URL if possible
-  const fileName = url.split('/').pop() || 'preview.pdf';
-
   return (
     <StyledPreviewContainer>
-      <DocViewer
-        documents={[
-          {
-            uri: url,
-            fileName: fileName,
-            fileType: isPdf ? 'application/pdf' : undefined,
-          },
-        ]}
-        pluginRenderers={DocViewerRenderers}
-        style={{ height: '100%' }}
-        config={{
-          header: {
-            disableHeader: true,
-            disableFileName: true,
-            retainURLParams: false,
-          },
-          pdfVerticalScrollByDefault: true,
-          pdfZoom: {
-            defaultZoom: 1,
-            zoomJump: 0.1,
-          },
-        }}
-        theme={{
-          primary: theme.background.primary,
-          secondary: theme.background.secondary,
-          tertiary: theme.background.tertiary,
-          textPrimary: theme.font.color.primary,
-          textSecondary: theme.font.color.secondary,
-          textTertiary: theme.font.color.tertiary,
-          disableThemeScrollbar: true,
-        }}
-      />
+      <Document
+        file={pdfBlob}
+        onLoadSuccess={({ numPages }) => setNumPages(numPages)}
+        loading={
+          <StyledLoadingContainer>
+            <StyledSpinner>
+              <IconLoader size={24} />
+            </StyledSpinner>
+            <Trans>Loading document...</Trans>
+          </StyledLoadingContainer>
+        }
+        error={<StyledErrorContainer>Error loading PDF</StyledErrorContainer>}
+      >
+        <Page pageNumber={currentPage} width={200} />
+      </Document>
+
+      {numPages > 0 && (
+        <StyledPageControls>
+          <StyledPageButton
+            onClick={goToPreviousPage}
+            disabled={currentPage <= 1}
+          >
+            <IconChevronLeft size={16} />
+          </StyledPageButton>
+          <StyledPageIndicator>
+            {currentPage} / {numPages}
+          </StyledPageIndicator>
+          <StyledPageButton
+            onClick={goToNextPage}
+            disabled={currentPage >= numPages}
+          >
+            <IconChevronRight size={16} />
+          </StyledPageButton>
+        </StyledPageControls>
+      )}
     </StyledPreviewContainer>
   );
 };

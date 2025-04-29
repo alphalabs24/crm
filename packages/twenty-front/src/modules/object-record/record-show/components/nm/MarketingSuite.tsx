@@ -22,6 +22,7 @@ import {
   IconTrash,
   IconExternalLink,
   MenuItem,
+  MOBILE_VIEWPORT,
 } from 'twenty-ui';
 import { useFindOneRecord } from '@/object-record/hooks/useFindOneRecord';
 import { useAttachments } from '@/activities/files/hooks/useAttachments';
@@ -188,12 +189,6 @@ const StyledSpecialDocumentListItem = styled.div`
   padding: ${({ theme }) => theme.spacing(2)};
 `;
 
-const StyledSpecialDocumentRow = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(2)};
-`;
-
 const StyledTitle = styled.span`
   font-size: ${({ theme }) => theme.font.size.md};
   font-weight: ${({ theme }) => theme.font.weight.semiBold};
@@ -208,11 +203,10 @@ const StyledDocumentCard = styled.div`
   gap: ${({ theme }) => theme.spacing(3)};
   padding: ${({ theme }) => theme.spacing(3)};
   transition: all 0.2s ease-in-out;
-  width: 380px;
+  max-width: 380px;
 
-  &:hover {
-    border-color: ${({ theme }) => theme.border.color.strong};
-    transform: translateY(-2px);
+  @media only screen and (min-width: ${LARGE_DESKTOP_VIEWPORT}px) {
+    max-width: unset;
   }
 `;
 
@@ -220,6 +214,7 @@ const StyledDocumentHeader = styled.div`
   align-items: flex-start;
   display: flex;
   gap: ${({ theme }) => theme.spacing(3)};
+  max-width: 400px;
 `;
 
 const StyledDocumentIconContainer = styled.div`
@@ -236,48 +231,56 @@ const StyledPreviewContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(3)};
-  margin-top: ${({ theme }) => theme.spacing(2)};
+  height: 100%;
 `;
 
 const StyledPreviewWrapper = styled.div`
-  background: ${({ theme }) => theme.background.tertiary};
+  background: ${({ theme }) => theme.background.secondary};
   border-radius: ${({ theme }) => theme.border.radius.sm};
-  padding: ${({ theme }) => theme.spacing(2)};
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 200px;
+  min-height: 320px;
 `;
 
 const StyledPreviewActions = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  align-items: center;
+  display: flex;
   gap: ${({ theme }) => theme.spacing(1)};
+  min-height: 30px;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  @media only screen and (min-width: ${MOBILE_VIEWPORT}px) {
+    flex-wrap: nowrap;
+  }
 `;
 
 const StyledEmptyState = styled.div`
-  display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: ${({ theme }) => theme.spacing(3)};
-  padding: ${({ theme }) => theme.spacing(4)};
+  min-height: 320px;
   background: ${({ theme }) => theme.background.tertiary};
   border-radius: ${({ theme }) => theme.border.radius.sm};
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(3)};
+  padding: ${({ theme }) => theme.spacing(4)};
   text-align: center;
+  justify-content: center;
 `;
 
 const StyledEmptyStateIcon = styled.div`
+  align-items: center;
   color: ${({ theme }) => theme.font.color.light};
   display: flex;
-  align-items: center;
+  height: 48px;
   justify-content: center;
   width: 48px;
-  height: 48px;
 `;
 
 const StyledEmptyStateText = styled.div`
   color: ${({ theme }) => theme.font.color.secondary};
   font-size: ${({ theme }) => theme.font.size.sm};
+  max-width: 380px;
 `;
 
 const StyledEmptyStateActions = styled.div`
@@ -306,122 +309,6 @@ type SpecialDocument = {
   title: string;
   description: string;
   attachment?: DocumentAttachment;
-};
-
-type SpecialDocumentItemProps = {
-  attachment: any;
-  onRemove: (attachmentId: string) => void;
-  onRegenerate: () => void;
-};
-
-const SpecialDocumentItem = ({
-  attachment,
-  onRemove,
-  onRegenerate,
-}: SpecialDocumentItemProps) => {
-  const { t } = useLingui();
-  const dropdownId = `document-dropdown-${attachment.id}`;
-  const { closeDropdown } = useDropdown(dropdownId);
-
-  const handleDelete = () => {
-    onRemove(attachment.id);
-    closeDropdown();
-  };
-
-  const handleDownload = async () => {
-    try {
-      // Fetch the file
-      const response = await fetch(attachment.fullPath);
-
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-
-      // Get the blob
-      const blob = await response.blob();
-
-      // Create a temporary link
-      const downloadUrl = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = downloadUrl;
-      link.download = attachment.name;
-
-      // Append to the document and trigger download
-      document.body.appendChild(link);
-      link.click();
-
-      // Clean up
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(downloadUrl);
-
-      closeDropdown();
-    } catch (error) {
-      console.error('Error downloading file:', error);
-    }
-  };
-
-  const handleRegenerate = () => {
-    onRegenerate();
-    closeDropdown();
-  };
-
-  const handleFileNameClick = () => {
-    window.open(attachment.fullPath, '_blank');
-  };
-
-  return (
-    <StyledSpecialDocumentListItem>
-      <StyledFileIcon>
-        <IconFile size={24} />
-      </StyledFileIcon>
-      <StyledFileInfo>
-        <StyledFileName onClick={handleFileNameClick}>
-          {attachment.name}
-        </StyledFileName>
-        <StyledFileDescription>
-          {attachment.description || t`No description`}
-        </StyledFileDescription>
-      </StyledFileInfo>
-      <Dropdown
-        dropdownHotkeyScope={{ scope: dropdownId }}
-        dropdownId={dropdownId}
-        clickableComponent={
-          <StyledActionButton>
-            <IconDotsVertical size={16} />
-          </StyledActionButton>
-        }
-        dropdownMenuWidth={160}
-        dropdownComponents={
-          <DropdownMenuItemsContainer>
-            <MenuItem
-              text={t`Open`}
-              LeftIcon={IconExternalLink}
-              onClick={() => {
-                window.open(attachment.fullPath, '_blank');
-                closeDropdown();
-              }}
-            />
-            <MenuItem
-              text={t`Download`}
-              LeftIcon={IconDownload}
-              onClick={handleDownload}
-            />
-            <MenuItem
-              text={t`Regenerate`}
-              LeftIcon={IconRefresh}
-              onClick={handleRegenerate}
-            />
-            <MenuItem
-              text={t`Remove`}
-              LeftIcon={IconTrash}
-              accent="danger"
-              onClick={handleDelete}
-            />
-          </DropdownMenuItemsContainer>
-        }
-      />
-    </StyledSpecialDocumentListItem>
-  );
 };
 
 type MarketingSuiteProps = {
@@ -594,8 +481,8 @@ export const MarketingSuite = ({ targetableObject }: MarketingSuiteProps) => {
                     <Button
                       variant="secondary"
                       size="small"
-                      Icon={IconDownload}
-                      title={t`Download`}
+                      Icon={IconExternalLink}
+                      title={t`Open`}
                       onClick={() => {
                         window.open(doc.attachment?.fullPath, '_blank');
                       }}
@@ -611,67 +498,70 @@ export const MarketingSuite = ({ targetableObject }: MarketingSuiteProps) => {
                   </StyledPreviewActions>
                 </StyledPreviewContainer>
               ) : (
-                <StyledEmptyState>
-                  <StyledEmptyStateIcon>
-                    <IconFileText size={32} />
-                  </StyledEmptyStateIcon>
-                  <StyledEmptyStateText>
-                    {doc.iconType === 'expose' ? (
-                      <Trans>
-                        Create a detailed property exposé to showcase all the
-                        features and details.
-                      </Trans>
-                    ) : (
-                      <Trans>
-                        Generate a concise property flyer for quick overview.
-                      </Trans>
-                    )}
-                  </StyledEmptyStateText>
-                  <StyledEmptyStateActions>
-                    <Button
-                      variant="secondary"
-                      size="small"
-                      Icon={IconRefresh}
-                      title={t`Generate`}
-                      disabled={pdfLoading || !record}
-                      onClick={() => handleGenerateDocument(doc.type)}
-                    >
-                      {t`Generate`}
-                    </Button>
-                    <Button
-                      variant="primary"
-                      size="small"
-                      Icon={IconFileText}
-                      title={t`Upload`}
-                      onClick={() => {
-                        const input = document.createElement('input');
-                        input.type = 'file';
-                        input.accept = '.pdf,.doc,.docx';
-                        input.onchange = async (e) => {
-                          const files = (e.target as HTMLInputElement).files;
-                          if (files?.[0]) {
-                            await uploadAttachmentFile(
-                              files[0],
-                              {
-                                id: targetableObject.id,
-                                targetObjectNameSingular:
-                                  targetableObject.targetObjectNameSingular,
-                              },
-                              doc.type,
-                              0,
-                              files[0].name,
-                              '',
-                              true,
-                            );
-                          }
-                        };
-                        input.click();
-                      }}
-                    >
-                      {t`Upload`}
-                    </Button>
-                  </StyledEmptyStateActions>
-                </StyledEmptyState>
+                <>
+                  <StyledEmptyState>
+                    <StyledEmptyStateIcon>
+                      <IconFileText size={32} />
+                    </StyledEmptyStateIcon>
+                    <StyledEmptyStateText>
+                      {doc.iconType === 'expose' ? (
+                        <Trans>
+                          Create a detailed property exposé to showcase all the
+                          features and details.
+                        </Trans>
+                      ) : (
+                        <Trans>
+                          Generate a concise property flyer for quick overview.
+                        </Trans>
+                      )}
+                    </StyledEmptyStateText>
+                    <StyledEmptyStateActions>
+                      <Button
+                        variant="secondary"
+                        size="small"
+                        Icon={IconRefresh}
+                        title={t`Generate`}
+                        disabled={pdfLoading || !record}
+                        onClick={() => handleGenerateDocument(doc.type)}
+                      >
+                        {t`Generate`}
+                      </Button>
+                      <Button
+                        variant="secondary"
+                        size="small"
+                        Icon={IconFileText}
+                        title={t`Upload`}
+                        onClick={() => {
+                          const input = document.createElement('input');
+                          input.type = 'file';
+                          input.accept = '.pdf,.doc,.docx';
+                          input.onchange = async (e) => {
+                            const files = (e.target as HTMLInputElement).files;
+                            if (files?.[0]) {
+                              await uploadAttachmentFile(
+                                files[0],
+                                {
+                                  id: targetableObject.id,
+                                  targetObjectNameSingular:
+                                    targetableObject.targetObjectNameSingular,
+                                },
+                                doc.type,
+                                0,
+                                files[0].name,
+                                '',
+                                true,
+                              );
+                            }
+                          };
+                          input.click();
+                        }}
+                      >
+                        {t`Upload`}
+                      </Button>
+                    </StyledEmptyStateActions>
+                  </StyledEmptyState>
+                  <StyledPreviewActions />
+                </>
               )}
             </StyledDocumentCard>
           ))}
@@ -683,7 +573,7 @@ export const MarketingSuite = ({ targetableObject }: MarketingSuiteProps) => {
             ref={exposePdfConfigModalRef}
             property={record}
             onClose={() => exposePdfConfigModalRef.current?.close()}
-            onGenerate={async (config) => {
+            onGenerate={async () => {
               const result = await generatePdf(
                 'PropertyDocumentation',
                 'portrait',
@@ -703,7 +593,7 @@ export const MarketingSuite = ({ targetableObject }: MarketingSuiteProps) => {
             ref={flyerPdfConfigModalRef}
             property={record}
             onClose={() => flyerPdfConfigModalRef.current?.close()}
-            onGenerate={async (config) => {
+            onGenerate={async () => {
               const result = await generatePdf('PropertyFlyer', 'portrait');
               if (result) {
                 if (propertyFlyer) {
