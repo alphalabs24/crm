@@ -40,6 +40,11 @@ msgstr ""
 #~ msgid "(Updated)"
 #~ msgstr ""
 
+#: src/modules/object-record/record-show/components/nm/MarketingSuite.tsx
+#: src/modules/object-record/record-show/components/nm/MarketingSuite.tsx
+#~ msgid "{0}"
+#~ msgstr ""
+
 #: src/modules/object-record/record-show/components/nm/PropertyDetails.tsx
 #~ msgid "{0} deleted successfully"
 #~ msgstr ""
@@ -78,6 +83,7 @@ msgid "{name}"
 msgstr ""
 
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+#: src/modules/object-record/record-table/components/nm/RecordList.tsx
 #: src/modules/object-record/record-show/components/nm/PropertyDetails.tsx
 msgid "{objectNameSingular} deleted successfully"
 msgstr ""
@@ -447,12 +453,20 @@ msgid "Are you sure you want to assign this role?"
 msgstr ""
 
 #: src/modules/action-menu/actions/record-actions/single-record/hooks/useDeleteMessage.tsx
-msgid "Are you sure you want to delete this {objectNameSingularCapitalized}?"
+msgid "Are you sure you want to delete this {label}?"
 msgstr ""
 
 #: src/modules/action-menu/actions/record-actions/single-record/hooks/useDeleteMessage.tsx
-msgid "Are you sure you want to delete this {objectNameSingularCapitalized}? <0>All it's publications will be deleted as well.</0>"
+msgid "Are you sure you want to delete this {label}? <0>All it's publications will be deleted as well.</0>"
 msgstr ""
+
+#: src/modules/action-menu/actions/record-actions/single-record/hooks/useDeleteMessage.tsx
+#~ msgid "Are you sure you want to delete this {objectNameSingularCapitalized}?"
+#~ msgstr ""
+
+#: src/modules/action-menu/actions/record-actions/single-record/hooks/useDeleteMessage.tsx
+#~ msgid "Are you sure you want to delete this {objectNameSingularCapitalized}? <0>All it's publications will be deleted as well.</0>"
+#~ msgstr ""
 
 #: src/pages/settings/email-templates/components/SettingsEmailTemplatesContent.tsx
 msgid "Are you sure you want to delete this email template? This cannot be undone."
@@ -741,6 +755,7 @@ msgid "Completed"
 msgstr ""
 
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+#: src/modules/object-record/record-show/components/nm/MarketingSuite.tsx
 msgid "Concise property information overview sent to clients through the auto responder."
 msgstr ""
 
@@ -892,6 +907,10 @@ msgstr ""
 msgid "Create"
 msgstr ""
 
+#: src/modules/object-record/record-show/components/nm/MarketingSuite.tsx
+msgid "Create a detailed property exposé to showcase all the features and details."
+msgstr ""
+
 #: src/pages/settings/email-templates/SettingsEmailTemplateNew.tsx
 #~ msgid "Create a new email template."
 #~ msgstr ""
@@ -902,6 +921,10 @@ msgstr ""
 
 #: src/modules/object-record/record-table/empty-state/utils/getEmptyStateSubTitle.ts
 msgid "Create a workflow and return here to view its versions"
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/MarketingSuite.tsx
+msgid "Create and manage your property marketing documents."
 msgstr ""
 
 #: src/pages/settings/developers/SettingsDevelopers.tsx
@@ -1084,6 +1107,7 @@ msgstr ""
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+#: src/modules/object-record/record-table/components/nm/RecordList.tsx
 #: src/modules/object-record/record-show/components/nm/PropertyDetails.tsx
 #: src/modules/object-record/record-show/components/nm/publication/PublicationDetailPage.tsx
 #: src/modules/object-record/record-show/components/nm/publication/PublicationDetailPage.tsx
@@ -1103,11 +1127,16 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
-#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
-#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
 #: src/modules/object-record/record-show/components/nm/PropertyDetails.tsx
 #: src/modules/object-record/record-show/components/nm/PropertyDetails.tsx
 msgid "Delete {capitalizedObjectNameSingular}"
+msgstr ""
+
+#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+#: src/modules/object-record/record-table/components/nm/RecordList.tsx
+#: src/modules/object-record/record-table/components/nm/RecordList.tsx
+msgid "Delete {label}"
 msgstr ""
 
 #: src/pages/settings/SettingsWorkspaceMembers.tsx
@@ -1202,6 +1231,7 @@ msgid "Destroy"
 msgstr ""
 
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+#: src/modules/object-record/record-show/components/nm/MarketingSuite.tsx
 msgid "Detailed property presentation document sent to potential buyers through the auto responder."
 msgstr ""
 
@@ -1270,6 +1300,8 @@ msgstr ""
 
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+#: src/modules/object-record/record-show/components/nm/MarketingSuite.tsx
+#: src/modules/object-record/record-show/components/nm/MarketingSuite.tsx
 #: src/modules/object-record/record-show/components/nm/cards/PropertyDocumentsCard.tsx
 msgid "Download"
 msgstr ""
@@ -1511,6 +1543,10 @@ msgstr ""
 
 #: src/pages/settings/publishers/SettingsPublishers.tsx
 msgid "Error deleting publisher"
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/PdfPreview.tsx
+msgid "Error loading document"
 msgstr ""
 
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
@@ -1833,7 +1869,13 @@ msgstr ""
 #: src/modules/ui/layout/property-pdf/components/FlyerConfigurationModal.tsx
 #: src/modules/ui/layout/property-pdf/components/DocumentationConfigurationModal.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+#: src/modules/object-record/record-show/components/nm/MarketingSuite.tsx
+#: src/modules/object-record/record-show/components/nm/MarketingSuite.tsx
 msgid "Generate"
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/MarketingSuite.tsx
+msgid "Generate a concise property flyer for quick overview."
 msgstr ""
 
 #: src/modules/object-record/record-show/components/nm/AISuite.tsx
@@ -1887,6 +1929,10 @@ msgstr ""
 
 #: src/pages/onboarding/ChooseYourPlan.tsx
 msgid "Get your subscription"
+msgstr ""
+
+#: src/modules/ui/navigation/navigation-drawer/components/Feedback.tsx
+msgid "Give us feedback"
 msgstr ""
 
 #: src/modules/command-menu/components/CommandMenu.tsx
@@ -2247,6 +2293,10 @@ msgstr ""
 msgid "Listings"
 msgstr ""
 
+#: src/modules/object-record/record-show/components/nm/PdfPreview.tsx
+msgid "Loading document..."
+msgstr ""
+
 #: src/pages/settings/publishers/components/PublishersListCard.tsx
 #: src/pages/settings/email-templates/components/EmailTemplatesListCard.tsx
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
@@ -2307,6 +2357,11 @@ msgstr ""
 
 #: src/modules/object-record/record-show/components/nm/AISuite.tsx
 msgid "Market Analysis"
+msgstr ""
+
+#: src/modules/object-record/record-show/hooks/useRecordShowContainerTabs.ts
+#: src/modules/object-record/record-show/components/nm/MarketingSuite.tsx
+msgid "Marketing Suite"
 msgstr ""
 
 #: src/modules/object-record/record-show/components/nm/AISuite.tsx
@@ -2536,6 +2591,7 @@ msgstr ""
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+#: src/modules/object-record/record-show/components/nm/MarketingSuite.tsx
 msgid "No description"
 msgstr ""
 
@@ -2738,6 +2794,7 @@ msgid "Only the timestamp & participants will be shared with your team."
 msgstr ""
 
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+#: src/modules/object-record/record-show/components/nm/MarketingSuite.tsx
 #: src/modules/object-record/record-show/components/nm/cards/PropertyDocumentsCard.tsx
 #: src/modules/inquiries/components/sidebar/PropertyDetails.tsx
 msgid "Open"
@@ -2982,6 +3039,7 @@ msgstr ""
 
 #: src/modules/ui/layout/show-page/components/nm/PublicationDifferencesModal.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+#: src/modules/object-record/record-show/components/nm/MarketingSuite.tsx
 #: src/modules/object-record/record-show/components/nm/cards/PropertyDocumentsCard.tsx
 msgid "Property Exposé"
 msgstr ""
@@ -2992,6 +3050,7 @@ msgstr ""
 
 #: src/modules/ui/layout/show-page/components/nm/PublicationDifferencesModal.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+#: src/modules/object-record/record-show/components/nm/MarketingSuite.tsx
 #: src/modules/object-record/record-show/components/nm/cards/PropertyDocumentsCard.tsx
 msgid "Property Flyer"
 msgstr ""
@@ -3162,6 +3221,8 @@ msgid "Reference Property"
 msgstr ""
 
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+#: src/modules/object-record/record-show/components/nm/MarketingSuite.tsx
+#: src/modules/object-record/record-show/components/nm/MarketingSuite.tsx
 msgid "Regenerate"
 msgstr ""
 
@@ -3188,6 +3249,8 @@ msgstr ""
 #: src/pages/settings/roles/components/RoleAssignmentConfirmationModal.tsx
 #: src/modules/ui/input/components/ImageInput.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+#: src/modules/object-record/record-show/components/nm/MarketingSuite.tsx
+#: src/modules/object-record/record-show/components/nm/MarketingSuite.tsx
 msgid "Remove"
 msgstr ""
 
@@ -3918,6 +3981,8 @@ msgstr ""
 
 #: src/modules/ui/input/components/ImageInput.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+#: src/modules/object-record/record-show/components/nm/MarketingSuite.tsx
+#: src/modules/object-record/record-show/components/nm/MarketingSuite.tsx
 msgid "Upload"
 msgstr ""
 

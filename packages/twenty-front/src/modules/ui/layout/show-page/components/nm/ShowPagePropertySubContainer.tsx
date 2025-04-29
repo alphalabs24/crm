@@ -134,6 +134,8 @@ export const ShowPagePropertySubContainer = ({
     objectNameSingular,
   });
 
+  const label = objectMetadataItem.labelSingular;
+
   // Record
   const { record: recordFromStore, refetch: refetchRecord } = useRecordShowPage(
     targetableObject.targetObjectNameSingular,
@@ -236,13 +238,13 @@ export const ShowPagePropertySubContainer = ({
       <ConfirmationModal
         isOpen={isDeleteRecordsModalOpen}
         setIsOpen={setIsDeleteRecordsModalOpen}
-        title={t`Delete ${capitalizedObjectNameSingular}`}
+        title={t`Delete ${label}`}
         subtitle={deleteMessage}
         loading={loadingDelete}
         onConfirmClick={() => {
           handleConfirmDelete();
         }}
-        deleteButtonText={t`Delete ${capitalizedObjectNameSingular}`}
+        deleteButtonText={t`Delete ${label}`}
       />
 
       <ConfirmationModal

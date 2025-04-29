@@ -537,17 +537,15 @@ export const MarketingSuite = ({ targetableObject }: MarketingSuiteProps) => {
     {
       type: 'PropertyDocumentation',
       iconType: 'expose',
-      title: 'Property Exposé',
-      description:
-        'Detailed property presentation document sent to potential buyers through the auto responder.',
+      title: t`Property Exposé`,
+      description: t`Detailed property presentation document sent to potential buyers through the auto responder.`,
       attachment: propertyDocumentation as DocumentAttachment | undefined,
     },
     {
       type: 'PropertyFlyer',
       iconType: 'flyer',
-      title: 'Property Flyer',
-      description:
-        'Concise property information overview sent to clients through the auto responder.',
+      title: t`Property Flyer`,
+      description: t`Concise property information overview sent to clients through the auto responder.`,
       attachment: propertyFlyer as DocumentAttachment | undefined,
     },
   ];
@@ -573,11 +571,9 @@ export const MarketingSuite = ({ targetableObject }: MarketingSuiteProps) => {
                   <DocumentTypeIcon type={doc.iconType} />
                 </StyledDocumentIconContainer>
                 <StyledDocumentInfo>
-                  <StyledDocumentTitle>
-                    <Trans id={doc.title}>{doc.title}</Trans>
-                  </StyledDocumentTitle>
+                  <StyledDocumentTitle>{doc.title}</StyledDocumentTitle>
                   <StyledDocumentDescription>
-                    <Trans id={doc.description}>{doc.description}</Trans>
+                    {doc.description}
                   </StyledDocumentDescription>
                 </StyledDocumentInfo>
               </StyledDocumentHeader>

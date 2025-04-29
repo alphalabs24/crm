@@ -119,6 +119,7 @@ export const ConfirmationModal = ({
             onEnter={handleEnter}
             isClosable={true}
             padding="large"
+            portal
             modalVariant={modalVariant}
             className="confirmation-modal"
           >
