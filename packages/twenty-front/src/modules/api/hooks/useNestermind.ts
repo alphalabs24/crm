@@ -372,7 +372,8 @@ export const useNestermind = () => {
       toEmail: string;
     }) => {
       return api.post(
-        `/email-sender/test-autoresponse?publicationId=${publicationId}&email=${toEmail}`,
+        `/email-sender/test-autoresponse?publicationId=${publicationId}`,
+        { email: toEmail },
       );
     },
     [api],
@@ -394,7 +395,8 @@ export const useNestermind = () => {
       toEmail: string;
     }) => {
       return api.post(
-        `/email-sender/test-autoresponse?propertyId=${propertyId}&email=${toEmail}`,
+        `/email-sender/test-autoresponse?propertyId=${propertyId}`,
+        { email: toEmail },
       );
     },
     [api],
