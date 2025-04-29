@@ -27,7 +27,12 @@ export const SentryInitEffect = () => {
         dsn: sentryConfig?.dsn,
         integrations: [
           Sentry.browserTracingIntegration({}),
-          Sentry.replayIntegration(),
+          Sentry.replayIntegration({
+            // download the worker from sentry github
+            // https://docs.sentry.io/platforms/javascript/guides/astro/session-replay/configuration/#using-a-custom-compression-worker
+            // https://github.com/getsentry/sentry-javascript/blob/develop/packages/replay-worker/examples/worker.min.js
+            workerUrl: '/assets/worker.min.js',
+          }),
         ],
         tracePropagationTargets: ['localhost:3001', REACT_APP_SERVER_BASE_URL],
         tracesSampleRate: 1.0,
