@@ -205,8 +205,6 @@ export const usePropertyPdfGenerator = ({
             };
           });
         }
-        console.log(agencyLogo);
-        console.log(config);
 
         // Create the PDF document using react-pdf
         const blob = await ReactPDF.pdf(

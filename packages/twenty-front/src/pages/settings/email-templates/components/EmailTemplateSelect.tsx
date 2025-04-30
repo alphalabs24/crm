@@ -130,7 +130,6 @@ export const EmailTemplateSelect = ({
 
   const handleTemplateSelect = useCallback(
     (template: Note | null) => {
-      console.log('Selecting template:', template);
       onSelect(template);
       closeDropdown();
     },

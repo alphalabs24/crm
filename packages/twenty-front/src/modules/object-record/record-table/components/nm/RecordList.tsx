@@ -705,8 +705,6 @@ const RecordListItem = ({
     return record?.category === 'Rental';
   }, [record]);
 
-  console.log(objectMetadataItem);
-
   return (
     <>
       <StyledCard
