@@ -24,7 +24,7 @@ export const OVERVIEW_SECTION_CONTENT: SectionContent[] = [
       {
         fields: [
           { name: 'name', type: 'input', fieldWidth: 0, required: true },
-          { name: 'description', type: 'multiLine', fieldWidth: 0 },
+          { name: 'description', type: 'custom', fieldWidth: 0 },
         ],
       },
       {

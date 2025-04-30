@@ -22,6 +22,7 @@ import { PropertyDocumentFormInput } from './custom/PropertyDocumentFormInput';
 import { PropertyEmailsFormInput } from './custom/PropertyEmailsFormInput';
 import { PropertyImageFormInput } from './custom/PropertyImageFormInput';
 import { PropertyMoviesFormInput } from './custom/PropertyMoviesFormInput';
+import { PropertyDescriptionFormInput } from './custom/PropertyDescriptionFormInput';
 
 const StyledFieldContainer = styled.div<{ isHorizontal?: boolean }>`
   display: flex;
@@ -111,6 +112,8 @@ export const RecordEditField = ({
         return PropertyDocumentFormInput;
       case 'emailTemplate':
         return PropertyEmailsFormInput;
+      case 'description':
+        return PropertyDescriptionFormInput;
       case 'movies':
         return PropertyMoviesFormInput;
       default:
@@ -198,7 +201,7 @@ export const RecordEditField = ({
                   : undefined,
             }}
           >
-            <CustomComponent loading={loading} />
+            <CustomComponent loading={loading} recordId={record.id} />
           </EmailTemplateContextProvider>
         ) : type === 'field' ? (
           <StyledVerticalAligner>
