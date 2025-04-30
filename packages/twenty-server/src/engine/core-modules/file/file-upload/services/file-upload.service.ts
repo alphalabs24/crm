@@ -74,9 +74,8 @@ export class FileUploadService {
     workspaceId: string;
     isPublic?: boolean;
   }) {
-    const ext = filename.split('.')?.[1];
-    const id = uuidV4();
-    const name = `${id}${ext ? `.${ext}` : ''}`;
+    const { ext, name, id } = this.getFileParts(filename);
+
     const folder = this.getWorkspaceFolderName(workspaceId, fileFolder);
 
     await this._uploadFile({
@@ -113,9 +112,7 @@ export class FileUploadService {
     workspaceId: string;
     isPublic?: boolean;
   }) {
-    const ext = filename.split('.')?.[1];
-    const id = uuidV4();
-    const name = `${id}${ext ? `.${ext}` : ''}`;
+    const { name, id } = this.getFileParts(filename);
 
     const cropSizes = settings.storage.imageCropSizes[fileFolder];
 
@@ -156,6 +153,15 @@ export class FileUploadService {
       mimeType,
       paths,
     };
+  }
+
+  private getFileParts(filename: string) {
+    const splittedFilename = filename.split('.');
+    const ext = splittedFilename?.[splittedFilename.length - 1];
+    const id = uuidV4();
+    const name = `${id}${ext ? `.${ext}` : ''}`;
+
+    return { ext, name, id };
   }
 
   private getWorkspaceFolderName(workspaceId: string, fileFolder: FileFolder) {
