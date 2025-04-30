@@ -34,12 +34,15 @@ interface DescriptionBlockEditorProps {
 
 const StyledEditor = styled.div`
   width: 100%;
+  position: relative;
 
   & .editor {
     background: ${({ theme }) => theme.background.primary};
     font-size: 13px;
     color: ${({ theme }) => theme.font.color.primary};
-    min-height: 400px;
+    max-height: 250px;
+    min-height: 100px;
+    overflow-y: auto;
   }
   & .editor [class^='_inlineContent']:before {
     color: ${({ theme }) => theme.font.color.tertiary};

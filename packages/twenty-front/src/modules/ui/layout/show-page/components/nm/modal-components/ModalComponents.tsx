@@ -14,8 +14,10 @@ export const StyledModalContainer = styled.div<{ adaptiveHeight?: boolean }>`
   }
 `;
 
-export const StyledModalContent = styled(motion.div)`
-  background: ${({ theme }) => theme.background.secondary};
+export const StyledModalContent = styled(motion.div)<{
+  showScrollbar?: boolean;
+}>`
+  background: ${({ theme }) => theme.background.noisy};
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(2)};
@@ -24,6 +26,28 @@ export const StyledModalContent = styled(motion.div)`
   height: 100%;
   flex: 1;
   padding-bottom: ${({ theme }) => theme.spacing(20)};
+  backdrop-filter: blur(20px);
+  border-radius: 12px;
+
+  &::-webkit-scrollbar {
+    width: ${({ showScrollbar = false }) => (showScrollbar ? '8px' : '0px')};
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border: none;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.2);
+    transition: background 0.2s ease;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.3);
+  }
 
   @media only screen and (min-width: ${MOBILE_VIEWPORT}px) {
     padding-bottom: ${({ theme }) => theme.spacing(4)};

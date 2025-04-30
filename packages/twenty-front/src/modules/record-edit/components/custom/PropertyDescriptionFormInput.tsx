@@ -1,13 +1,11 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
-import { Trans, useLingui } from '@lingui/react/macro';
+import { Trans } from '@lingui/react/macro';
+import { useTheme } from '@emotion/react';
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 
 import { DescriptionFormRichTextEditor } from '@/activities/components/DescriptionFormRichTextEditor';
 import { useRecordEdit } from '@/record-edit/contexts/RecordEditContext';
-import { Section, SectionAlignment, SectionFontColor } from 'twenty-ui';
-import { useFindOneRecord } from '@/object-record/hooks/useFindOneRecord';
-import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
-import { useParams } from 'react-router-dom';
+import { SKELETON_LOADER_HEIGHT_SIZES } from '@/activities/components/SkeletonLoader';
 
 const StyledContainer = styled.div`
   display: flex;
@@ -30,6 +28,13 @@ const StyledTitle = styled.div`
   font-weight: ${({ theme }) => theme.font.weight.regular};
 `;
 
+const StyledSkeletonContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(2)};
+  width: 100%;
+`;
+
 export const PropertyDescriptionFormInput = ({
   loading,
   recordId,
@@ -37,25 +42,40 @@ export const PropertyDescriptionFormInput = ({
   loading?: boolean;
   recordId: string;
 }) => {
-  //const ... useRecordEdit();
-  const { objectNameSingular } = useParams();
+  const theme = useTheme();
+  const { initialRecord, updateField } = useRecordEdit();
 
-  const { record } = useFindOneRecord({
-    objectNameSingular: objectNameSingular ?? CoreObjectNameSingular.Property,
-    objectRecordId: recordId,
-  });
-
-  const handleChange = (
-    input: { bodyV2: { blocknote: string; markdown: null } } | { body: string },
-  ) => {
+  const handleChange = (input: {
+    bodyV2: { blocknote: string; markdown: null };
+  }) => {
     // Log changes to console for now
-    console.log('Description changed:', input);
-
-    // TODO Update record in the form context
+    updateField({
+      fieldName: 'descriptionv2',
+      value: input.bodyV2,
+    });
   };
 
   if (loading) {
-    return null; // TODO: Add loading state
+    return (
+      <StyledContainer>
+        <StyledTitle>
+          <Trans>Description</Trans>
+        </StyledTitle>
+        <StyledSkeletonContainer>
+          <SkeletonTheme
+            baseColor={theme.background.tertiary}
+            highlightColor={theme.background.transparent.lighter}
+            borderRadius={4}
+          >
+            <Skeleton
+              width="100%"
+              height={SKELETON_LOADER_HEIGHT_SIZES.standard.xl}
+              count={4}
+            />
+          </SkeletonTheme>
+        </StyledSkeletonContainer>
+      </StyledContainer>
+    );
   }
 
   return (
@@ -66,7 +86,7 @@ export const PropertyDescriptionFormInput = ({
       <StyledEditorContainer>
         <DescriptionFormRichTextEditor
           recordId={recordId}
-          recordToSet={record}
+          recordToSet={initialRecord}
           onChange={handleChange}
         />
       </StyledEditorContainer>

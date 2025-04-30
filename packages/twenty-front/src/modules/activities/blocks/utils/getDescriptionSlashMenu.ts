@@ -13,7 +13,7 @@ export const getDescriptionSlashMenu = (
   // Try to get default bullet list items
   const defaultItems = getDefaultReactSlashMenuItems(editor);
 
-  // Either find the bullet list from default items or create our own
+  // Find the bullet list from default items or create our own
   const bulletListItem = defaultItems.find(
     (item) => item.title === 'Bullet List',
   ) || {

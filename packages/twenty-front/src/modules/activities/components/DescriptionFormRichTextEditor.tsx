@@ -23,14 +23,11 @@ import '@blocknote/core/fonts/inter.css';
 import '@blocknote/mantine/style.css';
 import '@blocknote/react/style.css';
 import { FeatureFlagKey } from '~/generated/graphql';
-import { useLingui } from '@lingui/react/macro';
 
 type DescriptionFormRichTextEditorProps = {
   recordToSet?: ObjectRecord | null;
   recordId: string;
-  onChange?: (
-    input: { bodyV2: { blocknote: string; markdown: null } } | { body: string },
-  ) => void;
+  onChange?: (input: { bodyV2: { blocknote: string; markdown: null } }) => void;
   isReadOnly?: boolean;
 };
 
@@ -40,8 +37,8 @@ export const DescriptionFormRichTextEditor = ({
   onChange,
   isReadOnly,
 }: DescriptionFormRichTextEditorProps) => {
-  const [activityInStore] = useRecoilState(recordStoreFamilyState(recordId));
-  const record = (recordToSet ?? activityInStore) as ObjectRecord | null;
+  const [recordInStore] = useRecoilState(recordStoreFamilyState(recordId));
+  const record = (recordToSet ?? recordInStore) as ObjectRecord | null;
 
   const isRichTextV2Enabled = useIsFeatureEnabled(
     FeatureFlagKey.IsRichTextV2Enabled,
@@ -58,14 +55,12 @@ export const DescriptionFormRichTextEditor = ({
 
   const persistBodyDebounced = useDebouncedCallback((blocknote: string) => {
     // Handle onChange
-    const input = isRichTextV2Enabled
-      ? {
-          bodyV2: {
-            blocknote,
-            markdown: null,
-          },
-        }
-      : { body: blocknote };
+    const input = {
+      bodyV2: {
+        blocknote,
+        markdown: null,
+      },
+    };
 
     onChange?.(input);
   }, 300);
@@ -85,9 +80,7 @@ export const DescriptionFormRichTextEditor = ({
   // Process the initial content with proper paragraph-only structure
   const getInitialContent = () => {
     try {
-      const blocknote = isRichTextV2Enabled
-        ? record?.descriptionV2?.bodyV2?.blocknote
-        : record?.descriptionV2?.body;
+      const blocknote = record?.descriptionv2?.blocknote;
 
       if (
         isDefined(record) &&

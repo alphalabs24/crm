@@ -88,6 +88,7 @@ export const PropertyBasicInfoCard = ({
           loading={loading}
           title={record.name?.firstName ? record.name.firstName : record.name}
           description={record.description}
+          descriptionV2={record.descriptionv2}
           address={
             record.address &&
             (record.address.addressStreet1 || record.address.addressCity)
