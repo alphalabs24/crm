@@ -8,7 +8,7 @@ msgstr ""
 "Language: de\n"
 "Project-Id-Version: nestermind-crm\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-04-29 15:21\n"
+"PO-Revision-Date: 2025-04-30 07:57\n"
 "Last-Translator: \n"
 "Language-Team: German\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -1714,6 +1714,10 @@ msgstr "Ansicht exportieren"
 msgid "Export Workflows"
 msgstr "Workflows exportieren"
 
+#: src/modules/object-record/record-show/hooks/useRecordShowContainerTabs.ts
+msgid "Exposé & Flyer"
+msgstr "Exposé & Flyer"
+
 #: src/modules/ui/layout/property-pdf/components/DocumentationConfigurationModal.tsx
 msgid "Exposé Configuration"
 msgstr "Dokumentation Konfigurieren"
@@ -2098,10 +2102,12 @@ msgid "Including property location"
 msgstr "Standort wird angezeigt"
 
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
-msgid "Increase your reach and target potential buyers and tenants through\n"
+msgid ""
+"Increase your reach and target potential buyers and tenants through\n"
 "            the largest real estate platforms. Choose the platforms you want to\n"
 "            publish on."
-msgstr "Erhöhen Sie Ihre Reichweite und zielen Sie potenzielle Käufer und Mieter über\n"
+msgstr ""
+"Erhöhen Sie Ihre Reichweite und zielen Sie potenzielle Käufer und Mieter über\n"
 "            die größten Immobilienplattformen an. Wählen Sie die Plattformen, auf denen Sie\n"
 "            publizieren möchten."
 
@@ -2391,7 +2397,6 @@ msgstr "Als erledigt markieren"
 msgid "Market Analysis"
 msgstr "Marktanalyse"
 
-#: src/modules/object-record/record-show/hooks/useRecordShowContainerTabs.ts
 #: src/modules/object-record/record-show/components/nm/MarketingSuite.tsx
 msgid "Marketing Suite"
 msgstr "Marketing-Suite"
@@ -4253,9 +4258,11 @@ msgid "Workspace name"
 msgstr "Arbeitsbereichsname"
 
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/ContentCustomize.tsx
-msgid "Write a compelling description that highlights the key features of\n"
+msgid ""
+"Write a compelling description that highlights the key features of\n"
 "            your property"
-msgstr "Schreibe eine überzeugende Beschreibung, die die Schlüsselfunktionen von\n"
+msgstr ""
+"Schreibe eine überzeugende Beschreibung, die die Schlüsselfunktionen von\n"
 "            Ihrer Immobilie hervorhebt"
 
 #: src/pages/settings/roles/components/RoleSettings.tsx
@@ -4388,4 +4395,3 @@ msgstr "Ihr Arbeitsbereich"
 #: src/pages/settings/SettingsBilling.tsx
 msgid "Your workspace will be disabled"
 msgstr "Ihr Arbeitsbereich wird deaktiviert"
-

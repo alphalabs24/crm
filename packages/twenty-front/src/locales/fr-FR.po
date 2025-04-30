@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: nestermind-crm\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-04-29 15:21\n"
+"PO-Revision-Date: 2025-04-30 07:57\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -1714,6 +1714,10 @@ msgstr "Exporter la vue"
 msgid "Export Workflows"
 msgstr "Exporter les workflows"
 
+#: src/modules/object-record/record-show/hooks/useRecordShowContainerTabs.ts
+msgid "Exposé & Flyer"
+msgstr ""
+
 #: src/modules/ui/layout/property-pdf/components/DocumentationConfigurationModal.tsx
 msgid "Exposé Configuration"
 msgstr ""
@@ -2098,7 +2102,8 @@ msgid "Including property location"
 msgstr ""
 
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
-msgid "Increase your reach and target potential buyers and tenants through\n"
+msgid ""
+"Increase your reach and target potential buyers and tenants through\n"
 "            the largest real estate platforms. Choose the platforms you want to\n"
 "            publish on."
 msgstr ""
@@ -2389,7 +2394,6 @@ msgstr "Marquer comme terminé"
 msgid "Market Analysis"
 msgstr ""
 
-#: src/modules/object-record/record-show/hooks/useRecordShowContainerTabs.ts
 #: src/modules/object-record/record-show/components/nm/MarketingSuite.tsx
 msgid "Marketing Suite"
 msgstr ""
@@ -4251,7 +4255,8 @@ msgid "Workspace name"
 msgstr "Nom de l'espace de travail"
 
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/ContentCustomize.tsx
-msgid "Write a compelling description that highlights the key features of\n"
+msgid ""
+"Write a compelling description that highlights the key features of\n"
 "            your property"
 msgstr ""
 
@@ -4385,4 +4390,3 @@ msgstr "Votre espace de travail"
 #: src/pages/settings/SettingsBilling.tsx
 msgid "Your workspace will be disabled"
 msgstr "Votre espace de travail sera désactivé"
-

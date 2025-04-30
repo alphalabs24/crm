@@ -477,7 +477,7 @@ export const MarketingSuite = ({ targetableObject }: MarketingSuiteProps) => {
       <StyledSection>
         <StyledHeader>
           <StyledTitle>
-            <Trans>Marketing Suite</Trans>
+            <Trans>Exposé & Flyer</Trans>
           </StyledTitle>
           <StyledDescription>
             <Trans>Create and manage your property marketing documents.</Trans>

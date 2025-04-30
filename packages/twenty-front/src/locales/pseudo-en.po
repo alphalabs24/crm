@@ -1709,6 +1709,10 @@ msgstr ""
 msgid "Export Workflows"
 msgstr ""
 
+#: src/modules/object-record/record-show/hooks/useRecordShowContainerTabs.ts
+msgid "Exposé & Flyer"
+msgstr ""
+
 #: src/modules/ui/layout/property-pdf/components/DocumentationConfigurationModal.tsx
 msgid "Exposé Configuration"
 msgstr ""
@@ -2385,7 +2389,6 @@ msgstr ""
 msgid "Market Analysis"
 msgstr ""
 
-#: src/modules/object-record/record-show/hooks/useRecordShowContainerTabs.ts
 #: src/modules/object-record/record-show/components/nm/MarketingSuite.tsx
 msgid "Marketing Suite"
 msgstr ""

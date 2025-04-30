@@ -75,7 +75,7 @@ export const useRecordShowContainerTabs = (
           },
         },
         marketingSuite: {
-          title: t`Marketing Suite`,
+          title: t`Exposé & Flyer`,
           position: 0,
           Icon: IconSparkles,
           cards: [{ type: CardType.MarketingSuiteCard }],
