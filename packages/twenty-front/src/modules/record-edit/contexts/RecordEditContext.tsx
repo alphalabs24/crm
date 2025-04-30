@@ -229,7 +229,7 @@ export const RecordEditProvider = ({
     (update: FieldUpdate) => {
       const { fieldName, value } = update;
 
-      if (initialRecord?.[fieldName] === value) {
+      if (initialRecord?.[fieldName] === value && value) {
         setFieldUpdates((prev) => {
           const { [fieldName]: _, ...rest } = prev;
           const hasRemainingUpdates = Object.keys(rest).length > 0;
