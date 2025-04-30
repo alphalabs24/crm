@@ -67,11 +67,7 @@ export const PropertyDescriptionFormInput = ({
             highlightColor={theme.background.transparent.lighter}
             borderRadius={4}
           >
-            <Skeleton
-              width="100%"
-              height={SKELETON_LOADER_HEIGHT_SIZES.standard.xl}
-              count={4}
-            />
+            <Skeleton width="100%" height={280} />
           </SkeletonTheme>
         </StyledSkeletonContainer>
       </StyledContainer>
