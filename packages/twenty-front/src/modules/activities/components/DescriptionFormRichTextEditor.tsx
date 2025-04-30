@@ -1,15 +1,12 @@
-import { useApolloClient } from '@apollo/client';
 import { useCreateBlockNote } from '@blocknote/react';
 import { isArray, isNonEmptyString } from '@sniptt/guards';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useRecoilCallback, useRecoilState } from 'recoil';
+import { useCallback } from 'react';
+import { useRecoilState } from 'recoil';
 import { Key } from 'ts-key-enum';
 import { useDebouncedCallback } from 'use-debounce';
 import { v4 } from 'uuid';
 
-import { canCreateActivityState } from '@/activities/states/canCreateActivityState';
 import { ActivityEditorHotkeyScope } from '@/activities/types/ActivityEditorHotkeyScope';
-import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadataItem';
 import { recordStoreFamilyState } from '@/object-record/record-store/states/recordStoreFamilyState';
 import { RightDrawerHotkeyScope } from '@/ui/layout/right-drawer/types/RightDrawerHotkeyScope';
 import { usePreviousHotkeyScope } from '@/ui/utilities/hotkey/hooks/usePreviousHotkeyScope';
@@ -20,7 +17,6 @@ import { isDefined } from 'twenty-shared';
 import { DescriptionBlockEditor } from '@/ui/input/editor/components/DescriptionBlockEditor';
 import { ObjectRecord } from '@/object-record/types/ObjectRecord';
 import { DESCRIPTION_BLOCK_SCHEMA } from '../blocks/constants/DescriptionSchema';
-import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { AppHotkeyScope } from '@/ui/utilities/hotkey/types/AppHotkeyScope';
 import { useIsFeatureEnabled } from '@/workspace/hooks/useIsFeatureEnabled';
 import '@blocknote/core/fonts/inter.css';
@@ -45,7 +41,6 @@ export const DescriptionFormRichTextEditor = ({
   isReadOnly,
 }: DescriptionFormRichTextEditorProps) => {
   const [activityInStore] = useRecoilState(recordStoreFamilyState(recordId));
-  const { t } = useLingui();
   const record = (recordToSet ?? activityInStore) as ObjectRecord | null;
 
   const isRichTextV2Enabled = useIsFeatureEnabled(
@@ -91,8 +86,8 @@ export const DescriptionFormRichTextEditor = ({
   const getInitialContent = () => {
     try {
       const blocknote = isRichTextV2Enabled
-        ? record?.description?.bodyV2?.blocknote
-        : record?.description?.body;
+        ? record?.descriptionV2?.bodyV2?.blocknote
+        : record?.descriptionV2?.body;
 
       if (
         isDefined(record) &&

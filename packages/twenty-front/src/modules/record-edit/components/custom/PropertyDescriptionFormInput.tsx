@@ -5,6 +5,9 @@ import { Trans, useLingui } from '@lingui/react/macro';
 import { DescriptionFormRichTextEditor } from '@/activities/components/DescriptionFormRichTextEditor';
 import { useRecordEdit } from '@/record-edit/contexts/RecordEditContext';
 import { Section, SectionAlignment, SectionFontColor } from 'twenty-ui';
+import { useFindOneRecord } from '@/object-record/hooks/useFindOneRecord';
+import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
+import { useParams } from 'react-router-dom';
 
 const StyledContainer = styled.div`
   display: flex;
@@ -34,8 +37,13 @@ export const PropertyDescriptionFormInput = ({
   loading?: boolean;
   recordId: string;
 }) => {
-  const { t } = useLingui();
   //const ... useRecordEdit();
+  const { objectNameSingular } = useParams();
+
+  const { record } = useFindOneRecord({
+    objectNameSingular: objectNameSingular ?? CoreObjectNameSingular.Property,
+    objectRecordId: recordId,
+  });
 
   const handleChange = (
     input: { bodyV2: { blocknote: string; markdown: null } } | { body: string },
@@ -58,7 +66,7 @@ export const PropertyDescriptionFormInput = ({
       <StyledEditorContainer>
         <DescriptionFormRichTextEditor
           recordId={recordId}
-          //recordToSet={record}
+          recordToSet={record}
           onChange={handleChange}
         />
       </StyledEditorContainer>
