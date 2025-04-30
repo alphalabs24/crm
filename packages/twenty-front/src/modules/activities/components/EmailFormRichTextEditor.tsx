@@ -78,7 +78,6 @@ export const EmailFormRichTextEditor = ({
   });
 
   const persistBodyDebounced = useDebouncedCallback((blocknote: string) => {
-    console.log(blocknote);
     const input = isRichTextV2Enabled
       ? {
           bodyV2: {
