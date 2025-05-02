@@ -4,8 +4,8 @@ import { PropertyAttachmentType } from '@/activities/files/types/Attachment';
 import { PropertyPdfType } from '@/ui/layout/property-pdf/types/types';
 import { DocumentationConfigurationModal } from '@/ui/layout/property-pdf/components/DocumentationConfigurationModal';
 import { FlyerConfigurationModal } from '@/ui/layout/property-pdf/components/FlyerConfigurationModal';
-import { ModalRefType } from '@/ui/layout/modal/components/Modal';
-import { useRef, useState } from 'react';
+import { Modal, ModalRefType } from '@/ui/layout/modal/components/Modal';
+import { useRef, useState, Suspense, lazy } from 'react';
 import { Trans, useLingui } from '@lingui/react/macro';
 import styled from '@emotion/styled';
 import { useTheme } from '@emotion/react';
@@ -23,6 +23,7 @@ import {
   IconButton,
   IconUpload,
   IconBolt,
+  IconX,
 } from 'twenty-ui';
 import { useFindOneRecord } from '@/object-record/hooks/useFindOneRecord';
 import { useAttachments } from '@/activities/files/hooks/useAttachments';
@@ -35,6 +36,12 @@ import { DocumentTypeIcon } from './DocumentTypeIcon';
 import { ConfirmationModal } from '@/ui/layout/modal/components/ConfirmationModal';
 import { downloadFile } from '@/activities/files/utils/downloadFile';
 import Skeleton from 'react-loading-skeleton';
+
+const DocumentViewer = lazy(() =>
+  import('@/activities/files/components/DocumentViewer').then((module) => ({
+    default: module.DocumentViewer,
+  })),
+);
 
 // Styled components sorted alphabetically
 const StyledContainer = styled.div`
@@ -135,9 +142,41 @@ const StyledEmptyStateText = styled.div`
 `;
 
 const StyledHeader = styled.div`
+  align-items: center;
   display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(0.5)};
+  justify-content: space-between;
+  width: 100%;
+  padding: ${({ theme }) => theme.spacing(3, 0)};
+`;
+
+const StyledLoadingContainer = styled.div`
+  align-items: center;
+  background: ${({ theme }) => theme.background.primary};
+  display: flex;
+  height: 80vh;
+  justify-content: center;
+  width: 100%;
+`;
+
+const StyledLoadingText = styled.div`
+  color: ${({ theme }) => theme.font.color.secondary};
+  font-size: ${({ theme }) => theme.font.size.lg};
+  font-weight: ${({ theme }) => theme.font.weight.medium};
+`;
+
+const StyledModalTitle = styled.span`
+  color: ${({ theme }) => theme.font.color.primary};
+  font-size: ${({ theme }) => theme.font.size.lg};
+  font-weight: ${({ theme }) => theme.font.weight.medium};
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing(2)};
+`;
+
+const StyledButtonContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: ${({ theme }) => theme.spacing(1)};
 `;
 
 const StyledPreviewActions = styled.div`
@@ -261,6 +300,8 @@ export const MarketingSuite = ({ targetableObject }: MarketingSuiteProps) => {
   const [documentToDelete, setDocumentToDelete] =
     useState<DocumentAttachment | null>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [selectedDocument, setSelectedDocument] =
+    useState<DocumentAttachment | null>(null);
 
   const { attachments, loading: isLoading } = useAttachments(targetableObject);
 
@@ -378,6 +419,16 @@ export const MarketingSuite = ({ targetableObject }: MarketingSuiteProps) => {
       );
     };
     input.click();
+  };
+
+  // Open document viewer
+  const openDocumentViewer = (doc: DocumentAttachment) => {
+    setSelectedDocument(doc);
+  };
+
+  // Close document viewer
+  const closeDocumentViewer = () => {
+    setSelectedDocument(null);
   };
 
   const getDropdownForType = (type: PropertyPdfType) => {
@@ -524,7 +575,7 @@ export const MarketingSuite = ({ targetableObject }: MarketingSuiteProps) => {
                           Icon={IconExternalLink}
                           title={t`Open`}
                           onClick={() => {
-                            window.open(doc.attachment?.fullPath, '_blank');
+                            openDocumentViewer(doc.attachment!);
                           }}
                         />
                         <Dropdown
@@ -695,6 +746,45 @@ export const MarketingSuite = ({ targetableObject }: MarketingSuiteProps) => {
             }}
           />
         </>
+      )}
+
+      {/* Document Viewer Modal */}
+      {selectedDocument && (
+        <Modal size="large" isClosable onClose={closeDocumentViewer}>
+          <StyledHeader>
+            <StyledModalTitle>
+              <IconFileText size={20} />
+              {selectedDocument.name || 'Document'}
+            </StyledModalTitle>
+            <StyledButtonContainer>
+              <IconButton
+                Icon={IconDownload}
+                onClick={() => handleDownload(selectedDocument)}
+                size="small"
+              />
+              <IconButton
+                Icon={IconX}
+                onClick={closeDocumentViewer}
+                size="small"
+              />
+            </StyledButtonContainer>
+          </StyledHeader>
+
+          <Suspense
+            fallback={
+              <StyledLoadingContainer>
+                <StyledLoadingText>
+                  Loading document viewer...
+                </StyledLoadingText>
+              </StyledLoadingContainer>
+            }
+          >
+            <DocumentViewer
+              documentName={selectedDocument.name || 'Document'}
+              documentUrl={selectedDocument.fullPath}
+            />
+          </Suspense>
+        </Modal>
       )}
     </StyledContainer>
   );
