@@ -5,7 +5,7 @@ import { PropertyPdfType } from '@/ui/layout/property-pdf/types/types';
 import { DocumentationConfigurationModal } from '@/ui/layout/property-pdf/components/DocumentationConfigurationModal';
 import { FlyerConfigurationModal } from '@/ui/layout/property-pdf/components/FlyerConfigurationModal';
 import { ModalRefType } from '@/ui/layout/modal/components/Modal';
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState } from 'react';
 import { Trans, useLingui } from '@lingui/react/macro';
 import styled from '@emotion/styled';
 import { useTheme } from '@emotion/react';
