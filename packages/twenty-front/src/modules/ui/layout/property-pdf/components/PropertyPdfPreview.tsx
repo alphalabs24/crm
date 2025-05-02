@@ -18,6 +18,7 @@ import {
 } from '../types/types';
 import { useAttachments } from '@/activities/files/hooks/useAttachments';
 import { isArray } from 'util';
+import { useLocalizedStaticTexts } from '../hooks/useLocalizedStaticTexts';
 
 const StyledPdfViewerContainer = styled.div`
   align-items: center;
@@ -84,6 +85,10 @@ export const PropertyPdfPreview = ({
     objectNameSingular: CoreObjectNameSingular.Property,
   });
 
+  const localizedStaticTexts = useLocalizedStaticTexts({
+    type: isFlyer ? 'PropertyFlyer' : 'PropertyDocumentation',
+  });
+
   const { attachments } = useAttachments({
     id: property.agency?.id,
     targetObjectNameSingular: CoreObjectNameSingular.Agency,
@@ -113,8 +118,6 @@ export const PropertyPdfPreview = ({
     property,
     configuration?.selectedFields,
   ]);
-
-  const [currentWorkspace] = useRecoilState(currentWorkspaceState);
 
   // Format the address for display
   const formattedAddress = useMemo(() => {
@@ -207,6 +210,7 @@ export const PropertyPdfPreview = ({
           orientation={orientation}
           agencyLogo={agencyLogo?.fullPath}
           configuration={configuration}
+          localizedStaticTexts={localizedStaticTexts}
         />
       </StyledPDFViewer>
     </StyledPdfViewerContainer>

@@ -29,12 +29,12 @@ export const AutoMigrateDescriptionEffect = ({
 
       setMigrating(true);
 
-      // Check if there's a description to migrate and no descriptionv2 content yet
+      // Check if there's a description to migrate and no descriptionV2 content yet
       if (
         record.description &&
-        (!record.descriptionv2 ||
-          !record.descriptionv2.blocknote ||
-          record.descriptionv2.blocknote === '')
+        (!record.descriptionV2 ||
+          !record.descriptionV2.blocknote ||
+          record.descriptionV2.blocknote === '')
       ) {
         try {
           // Create the rich text structure
@@ -44,7 +44,7 @@ export const AutoMigrateDescriptionEffect = ({
           await updateOneRecord({
             idToUpdate: record.id,
             updateOneRecordInput: {
-              descriptionv2: richTextDescription,
+              descriptionV2: richTextDescription,
               description: null, // Clear the old description to prevent re-running migration
             },
           });
@@ -53,8 +53,6 @@ export const AutoMigrateDescriptionEffect = ({
         } catch (error) {
           onMigrationComplete?.(false);
         }
-      } else {
-        console.log('migration not needed because no description to migrate');
       }
       setMigrating(false);
       setMigrationAttempted(true);

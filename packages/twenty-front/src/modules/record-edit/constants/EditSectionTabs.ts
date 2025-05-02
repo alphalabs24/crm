@@ -12,12 +12,12 @@ export const EDIT_SECTIONS_TABS: Section[] = [
     Icon: IconHome,
     content: OVERVIEW_SECTION_CONTENT,
   },
-  {
+  /* {
     id: 'property-location',
     title: 'Location',
     Icon: IconMap,
     content: LOCATION_SECTION_CONTENT,
-  },
+  }, */
   {
     id: 'property-emails',
     title: 'Emails',

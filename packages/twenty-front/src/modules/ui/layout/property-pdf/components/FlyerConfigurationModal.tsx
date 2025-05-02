@@ -82,6 +82,7 @@ export const FlyerConfigurationModal = forwardRef<
 
   const { generatePdf, isLoading: pdfLoading } = usePropertyPdfGenerator({
     record: property,
+    type: 'PropertyFlyer',
   });
 
   const [localIsGenerating, setLocalIsGenerating] = useState(false);
@@ -216,7 +217,7 @@ export const FlyerConfigurationModal = forwardRef<
         selectedFields: [...config.selectedFields],
       };
 
-      const result = await generatePdf('PropertyFlyer', configCopy);
+      const result = await generatePdf(configCopy);
       await onGenerate(result);
       // Close the modal after successful generation
       onClose();
@@ -225,7 +226,7 @@ export const FlyerConfigurationModal = forwardRef<
     } finally {
       setLocalIsGenerating(false);
     }
-  }, [config, onGenerate, onClose]);
+  }, [config, generatePdf, onGenerate, onClose]);
 
   // Render fields selection section
   const renderFieldsSection = () => {

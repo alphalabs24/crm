@@ -34,19 +34,19 @@ export const StyledModalContent = styled(motion.div)<{
   }
 
   &::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.05);
+    background: ${({ theme }) => theme.scrollBar.track.background};
     border-radius: 10px;
   }
 
   &::-webkit-scrollbar-thumb {
     border: none;
     border-radius: 10px;
-    background: rgba(0, 0, 0, 0.2);
+    background: ${({ theme }) => theme.scrollBar.thumb.background};
     transition: background 0.2s ease;
   }
 
   &::-webkit-scrollbar-thumb:hover {
-    background: rgba(0, 0, 0, 0.3);
+    background: ${({ theme }) => theme.scrollBar.thumb.hover};
   }
 
   @media only screen and (min-width: ${MOBILE_VIEWPORT}px) {

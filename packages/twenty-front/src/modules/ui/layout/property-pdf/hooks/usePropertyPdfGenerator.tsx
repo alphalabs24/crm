@@ -24,6 +24,7 @@ import { CATEGORY_SUBTYPES } from '@/record-edit/constants/CategorySubtypes';
 import { useSubcategoryByCategory } from '@/object-record/record-show/hooks/useSubcategoryByCategory';
 import { useAttachments } from '@/activities/files/hooks/useAttachments';
 import { Attachment } from '@/activities/files/types/Attachment';
+import { useLocalizedStaticTexts } from './useLocalizedStaticTexts';
 
 // Fields to show on PDF
 const fieldsToShowOnPdf = [
@@ -58,17 +59,18 @@ export type PropertyPdfGeneratorProps = {
   record: ObjectRecord;
   template?: PropertyPdfTemplate;
   theme?: PdfTheme;
+  type?: PropertyPdfType;
 };
 
 export const usePropertyPdfGenerator = ({
   record,
   template = DefaultPropertyPdfTemplate,
+  type = 'PropertyDocumentation',
 }: PropertyPdfGeneratorProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [pdfFile, setPdfFile] = useState<PropertyPdfResult | null>(null);
   const PropertyDocumentTemplate = template;
   const pdfPreviewModalRef = useRef<ModalRefType>(null);
-  const [currentWorkspace] = useRecoilState(currentWorkspaceState);
 
   const { objectMetadataItem } = useObjectMetadataItem({
     objectNameSingular: CoreObjectNameSingular.Property,
@@ -108,9 +110,12 @@ export const usePropertyPdfGenerator = ({
     }
   }, [record?.id]);
 
+  const localizedStaticTexts = useLocalizedStaticTexts({
+    type,
+  });
+
   const generatePdf = useCallback(
     async (
-      type: PropertyPdfType,
       orientationOrConfig?: 'portrait' | 'landscape' | ConfigurationType,
     ) => {
       if (!record) return null;
@@ -219,6 +224,7 @@ export const usePropertyPdfGenerator = ({
             orientation={config.orientation || 'portrait'}
             agencyLogo={agencyLogo?.fullPath}
             configuration={config}
+            localizedStaticTexts={localizedStaticTexts}
           />,
         ).toBlob();
 
@@ -249,18 +255,19 @@ export const usePropertyPdfGenerator = ({
       record,
       propertyImages,
       PropertyDocumentTemplate,
+      type,
+      agencyLogo?.fullPath,
+      localizedStaticTexts,
+      objectMetadataItem.fields,
       formatField,
-      objectMetadataItem,
-      currentWorkspace?.logo,
     ],
   );
 
   const downloadPdf = useCallback(
     async (
-      type: PropertyPdfType,
       orientationOrConfig?: 'portrait' | 'landscape' | ConfigurationType,
     ) => {
-      const result = await generatePdf(type, orientationOrConfig);
+      const result = await generatePdf(orientationOrConfig);
       if (result) {
         saveAs(result.blob, result.fileName);
         return result;

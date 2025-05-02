@@ -68,7 +68,6 @@ export const StyledShowPageSummaryCard = styled.div<{
   gap: ${({ theme, isMobile }) =>
     isMobile ? theme.spacing(2) : theme.spacing(3)};
   justify-content: center;
-  padding-bottom: ${({ theme }) => theme.spacing(4)};
   box-sizing: border-box;
   flex: 1;
 `;
@@ -129,6 +128,7 @@ const StyledRichTextContent = styled.div`
   line-height: 1.5;
   gap: ${({ theme }) => theme.spacing(1)};
   margin-bottom: ${({ theme }) => theme.spacing(2)};
+  color: ${({ theme }) => theme.font.color.secondary};
 `;
 
 const StyledFullRichTextContent = styled.div`
@@ -138,12 +138,26 @@ const StyledFullRichTextContent = styled.div`
   line-height: 1.5;
   gap: ${({ theme }) => theme.spacing(1)};
   flex: 1;
+  color: ${({ theme }) => theme.font.color.secondary};
 `;
 
 const StyledParagraph = styled.p<{ textAlign?: string }>`
   margin: 0;
   padding: 0;
   text-align: ${({ textAlign }) => textAlign || 'left'};
+`;
+
+const StyledBulletListItem = styled.p<{ textAlign?: string }>`
+  margin: 0;
+  padding: 0 0 0 ${({ theme }) => theme.spacing(4)};
+  text-align: ${({ textAlign }) => textAlign || 'left'};
+  position: relative;
+
+  &::before {
+    content: '•';
+    position: absolute;
+    left: ${({ theme }) => theme.spacing(2)};
+  }
 `;
 
 const StyledBold = styled.span`
@@ -166,6 +180,7 @@ const StyledDescriptionContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  width: 100%;
 `;
 
 const StyledShowPageSummaryCardSkeletonLoader = () => {
@@ -205,7 +220,14 @@ const renderBlockNoteContent = (blocknoteJSON: string, fullView = false) => {
     return (
       <ContentContainer>
         {displayBlocks.map((block) => {
+          // Handle paragraph blocks
           if (block.type === 'paragraph') {
+            // Empty paragraph - render as a line break
+            if (!block.content || block.content.length === 0) {
+              return <StyledParagraph key={block.id}>&nbsp;</StyledParagraph>;
+            }
+
+            // Regular paragraph with content
             return (
               <StyledParagraph
                 key={block.id}
@@ -222,6 +244,26 @@ const renderBlockNoteContent = (blocknoteJSON: string, fullView = false) => {
               </StyledParagraph>
             );
           }
+
+          // Handle bullet list items
+          if (block.type === 'bulletListItem') {
+            return (
+              <StyledBulletListItem
+                key={block.id}
+                textAlign={block.props.textAlignment}
+              >
+                {block.content.map((contentItem, index) => {
+                  if (contentItem.styles?.bold) {
+                    return (
+                      <StyledBold key={index}>{contentItem.text}</StyledBold>
+                    );
+                  }
+                  return contentItem.text;
+                })}
+              </StyledBulletListItem>
+            );
+          }
+
           return null;
         })}
         {hasMoreContent && <StyledParagraph>...</StyledParagraph>}

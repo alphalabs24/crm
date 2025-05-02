@@ -80,7 +80,7 @@ export const DescriptionFormRichTextEditor = ({
   // Process the initial content with proper paragraph-only structure
   const getInitialContent = () => {
     try {
-      const blocknote = record?.descriptionv2?.blocknote;
+      const blocknote = record?.descriptionV2?.blocknote;
 
       if (
         isDefined(record) &&
@@ -89,11 +89,11 @@ export const DescriptionFormRichTextEditor = ({
       ) {
         const parsedBody = JSON.parse(blocknote);
 
-        // If we have content, ensure it only contains paragraphs
+        // If we have content, preserve paragraphs and bullet list items
         if (isArray(parsedBody)) {
-          const paragraphsOnly = parsedBody.map((block: any) => {
-            // If it's already a paragraph, keep it
-            if (block.type === 'paragraph') {
+          const formattedBlocks = parsedBody.map((block: any) => {
+            // Preserve paragraph (including empty ones) and bullet list items
+            if (block.type === 'paragraph' || block.type === 'bulletListItem') {
               return block;
             }
 
@@ -110,8 +110,8 @@ export const DescriptionFormRichTextEditor = ({
             };
           });
 
-          if (paragraphsOnly.length > 0) {
-            return paragraphsOnly;
+          if (formattedBlocks.length > 0) {
+            return formattedBlocks;
           }
         }
       }

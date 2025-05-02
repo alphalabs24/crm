@@ -21,6 +21,7 @@ export type MapPageProps = Pick<
   | 'Footer'
   | 'addressMapUrl'
   | 'Header'
+  | 'localizedStaticTexts'
 >;
 
 export const MapPage = ({
@@ -30,6 +31,7 @@ export const MapPage = ({
   Footer,
   addressMapUrl,
   Header,
+  localizedStaticTexts,
 }: MapPageProps) => {
   // Format the property address for display
   const formattedAddress = useMemo(() => {
@@ -64,7 +66,9 @@ export const MapPage = ({
       <Section height="85%">
         <Row>
           <Col width="100%">
-            <H2 style={{ marginBottom: 12 }}>Standort & Umgebung</H2>
+            <H2 style={{ marginBottom: 12 }}>
+              {localizedStaticTexts?.locationTitle || 'Standort & Umgebung'}
+            </H2>
 
             <View style={PROPERTY_DETAILS_STYLES.mapPageContainer}>
               <Text style={PROPERTY_DETAILS_STYLES.mapPageAddress}>

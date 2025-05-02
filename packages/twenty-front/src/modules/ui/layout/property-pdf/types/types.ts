@@ -21,6 +21,22 @@ type PropertyFieldType = {
   value?: string;
   key?: string;
 };
+
+export type LocalizedStaticPdfTextsType = {
+  descriptionTitle?: string;
+  fieldsTitle?: string;
+  tableOfContentsTitle?: string;
+  locationTitle?: string;
+  featuresTitle?: string;
+  priceTitle?: string;
+  spaceTitle?: string;
+  furtherDetailsTitle?: string;
+  propertyDetailsTitle?: string;
+  galleryTitle?: string;
+  floorplanTitle?: string;
+  additionalDocumentsTitle?: string;
+};
+
 // Props for the main document component
 export type PropertyPdfProps = {
   property: ObjectRecord;
@@ -36,6 +52,7 @@ export type PropertyPdfProps = {
   showPublisherEmail?: boolean;
   showPublisherPhone?: boolean;
   configuration?: ConfigurationType;
+  localizedStaticTexts?: LocalizedStaticPdfTextsType;
 };
 
 export type DefaultDocumentationTemplateProps = PropertyPdfProps & {

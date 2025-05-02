@@ -385,6 +385,7 @@ export const DocumentationConfigurationModal = forwardRef<
 
   const { generatePdf } = usePropertyPdfGenerator({
     record: property,
+    type: 'PropertyDocumentation',
   });
 
   const images = usePropertyImages({
@@ -498,7 +499,7 @@ export const DocumentationConfigurationModal = forwardRef<
         selectedFields: [...config.selectedFields],
       };
 
-      const result = await generatePdf('PropertyDocumentation', configCopy);
+      const result = await generatePdf(configCopy);
       await onGenerate(result);
       // Close the modal after successful generation
       onClose();
@@ -507,7 +508,7 @@ export const DocumentationConfigurationModal = forwardRef<
     } finally {
       setLocalIsGenerating(false);
     }
-  }, [config, onGenerate, onClose]);
+  }, [config, generatePdf, onGenerate, onClose]);
 
   return (
     <Modal

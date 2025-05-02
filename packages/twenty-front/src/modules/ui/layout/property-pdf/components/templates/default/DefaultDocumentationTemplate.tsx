@@ -22,6 +22,7 @@ export const DefaultDocumentationTemplate = ({
   propertyFeatures,
   // Publisher configuration options with defaults
   configuration,
+  localizedStaticTexts,
 }: DefaultDocumentationTemplateProps) => {
   // Get all images except the first one (which is used as hero image)
   const additionalImages = useMemo(() => {
@@ -44,8 +45,8 @@ export const DefaultDocumentationTemplate = ({
 
   // Check if there's a description to show
   const hasDescription =
-    !!property.descriptionv2 &&
-    property.descriptionv2.blocknote &&
+    !!property.descriptionV2 &&
+    property.descriptionV2.blocknote &&
     configuration?.showDescription;
 
   // Create footer component for reuse
@@ -84,6 +85,7 @@ export const DefaultDocumentationTemplate = ({
         hasDescription={hasDescription}
         configuration={configuration}
         Header={headerComponent}
+        localizedStaticTexts={localizedStaticTexts}
       />
 
       {/* Add the description page if a description exists */}
@@ -100,6 +102,7 @@ export const DefaultDocumentationTemplate = ({
           agencyLogo={agencyLogo}
           Footer={footerComponent}
           Header={headerComponent}
+          localizedStaticTexts={localizedStaticTexts}
         />
       )}
 
@@ -112,6 +115,7 @@ export const DefaultDocumentationTemplate = ({
           addressMapUrl={configuration.addressMapUrl}
           Footer={footerComponent}
           Header={headerComponent}
+          localizedStaticTexts={localizedStaticTexts}
         />
       )}
 
@@ -127,6 +131,7 @@ export const DefaultDocumentationTemplate = ({
         propertyFeatures={propertyFeatures}
         Footer={footerComponent}
         Header={headerComponent}
+        localizedStaticTexts={localizedStaticTexts}
       />
 
       {configuration?.showAllImages &&
@@ -137,6 +142,7 @@ export const DefaultDocumentationTemplate = ({
             imagesSubset={imagesSubset}
             pageIndex={pageIndex}
             Footer={footerComponent}
+            localizedStaticTexts={localizedStaticTexts}
           />
         ))}
     </>

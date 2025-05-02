@@ -2,7 +2,6 @@
 import { Document } from '@react-pdf/renderer';
 import {
   DefaultDocumentationTemplateProps,
-  PropertyPdfProps,
   PropertyPdfType,
 } from '../../../types/types';
 import { DefaultFlyerTemplate } from './DefaultFlyerTemplate';
@@ -24,6 +23,7 @@ export const DefaultPropertyPdfTemplate = ({
   propertyFeatures,
   agencyLogo,
   configuration,
+  localizedStaticTexts,
 }: DefaultPropertyPdfTemplateProps) => {
   return (
     <Document>
@@ -38,6 +38,7 @@ export const DefaultPropertyPdfTemplate = ({
           propertyFeatures={propertyFeatures}
           agencyLogo={agencyLogo}
           configuration={configuration}
+          localizedStaticTexts={localizedStaticTexts}
         />
       ) : (
         <DefaultDocumentationTemplate
@@ -50,6 +51,7 @@ export const DefaultPropertyPdfTemplate = ({
           propertyFeatures={propertyFeatures}
           agencyLogo={agencyLogo}
           configuration={configuration}
+          localizedStaticTexts={localizedStaticTexts}
         />
       )}
     </Document>

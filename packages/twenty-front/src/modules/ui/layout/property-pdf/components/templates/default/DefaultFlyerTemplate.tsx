@@ -56,6 +56,7 @@ export const DefaultFlyerTemplate = ({
   fields,
   propertyFeatures,
   configuration,
+  localizedStaticTexts,
 }: DefaultFlyerTemplateProps) => {
   const firstImage = useMemo(() => {
     if (!propertyImages || propertyImages.length === 0) return null;
@@ -80,21 +81,21 @@ export const DefaultFlyerTemplate = ({
 
   // Process rich text content
   const descriptionBlocks = useMemo(() => {
-    if (!property.descriptionv2?.blocknote) {
+    if (!property.descriptionV2?.blocknote) {
       return [];
     }
 
     try {
       // Parse the blocknote JSON string
       const blocks = JSON.parse(
-        property.descriptionv2.blocknote,
+        property.descriptionV2.blocknote,
       ) as BlockNode[];
       return blocks;
     } catch (error) {
       console.error('Error parsing rich text:', error);
       return [];
     }
-  }, [property.descriptionv2?.blocknote]);
+  }, [property.descriptionV2?.blocknote]);
 
   // Extract blocks to display based on total character count limit
   const visibleBlocks = useMemo(() => {
@@ -103,13 +104,26 @@ export const DefaultFlyerTemplate = ({
     const blocksToShow = [];
 
     for (const block of descriptionBlocks) {
-      // Skip empty blocks
-      if (!block.content || block.content.length === 0) continue;
+      // For empty paragraphs, add them as line breaks but count them as 1 character
+      if (
+        block.type === 'paragraph' &&
+        (!block.content || block.content.length === 0)
+      ) {
+        // If adding this empty paragraph would exceed the limit, stop
+        if (totalChars + 1 > MAX_CHARS) {
+          break;
+        }
 
-      // Calculate block's text length including prefix
+        // Add the empty paragraph and count it as 1 character
+        blocksToShow.push(block);
+        totalChars += 1;
+        continue;
+      }
+
+      // For non-empty blocks, calculate text length including prefix
       const prefix = block.type === 'bulletListItem' ? '• ' : '';
       const blockText =
-        prefix + block.content.map((item) => item.text).join('');
+        prefix + (block.content?.map((item) => item.text).join('') || '');
       const blockLength = blockText.length;
 
       // If this block would exceed the limit, stop adding blocks
@@ -191,12 +205,19 @@ export const DefaultFlyerTemplate = ({
       <Section height={contentHeight}>
         <Row gap={4}>
           <Col width="66%">
-            <H1 uppercase>Über das Objekt</H1>
+            <H1 uppercase>
+              {localizedStaticTexts?.descriptionTitle || 'Über das Objekt'}
+            </H1>
             {visibleBlocks.length > 0 && (
               <View>
                 {visibleBlocks.map((block, blockIndex) => {
-                  // Skip empty blocks (should be already filtered out but checking anyway)
-                  if (!block.content || block.content.length === 0) return null;
+                  // Handle empty paragraph blocks (line breaks)
+                  if (
+                    block.type === 'paragraph' &&
+                    (!block.content || block.content.length === 0)
+                  ) {
+                    return <Body key={blockIndex}>&nbsp;</Body>;
+                  }
 
                   // For bullet lists, add a bullet point
                   const prefix = block.type === 'bulletListItem' ? '• ' : '';
@@ -283,7 +304,9 @@ export const DefaultFlyerTemplate = ({
             </View>
           </Col>
           <Col width="33%">
-            <H2 uppercase>Eigenschaften</H2>
+            <H2 uppercase>
+              {localizedStaticTexts?.fieldsTitle || 'Eigenschaften'}
+            </H2>
             {fields.map(
               (field) =>
                 field.label &&

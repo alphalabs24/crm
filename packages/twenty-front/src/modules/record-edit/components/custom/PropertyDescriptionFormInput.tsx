@@ -5,7 +5,6 @@ import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 
 import { DescriptionFormRichTextEditor } from '@/activities/components/DescriptionFormRichTextEditor';
 import { useRecordEdit } from '@/record-edit/contexts/RecordEditContext';
-import { SKELETON_LOADER_HEIGHT_SIZES } from '@/activities/components/SkeletonLoader';
 
 const StyledContainer = styled.div`
   display: flex;
@@ -50,7 +49,7 @@ export const PropertyDescriptionFormInput = ({
   }) => {
     // Log changes to console for now
     updateField({
-      fieldName: 'descriptionv2',
+      fieldName: 'descriptionV2',
       value: input.bodyV2,
     });
   };

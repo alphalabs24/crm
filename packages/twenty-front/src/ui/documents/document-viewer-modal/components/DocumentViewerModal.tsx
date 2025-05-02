@@ -1,6 +1,12 @@
 import { Modal, ModalRefType } from '@/ui/layout/modal/components/Modal';
 import styled from '@emotion/styled';
-import { IconButton, IconDownload, IconFileText, IconX } from 'twenty-ui';
+import {
+  IconButton,
+  IconDownload,
+  IconFileText,
+  IconX,
+  MOBILE_VIEWPORT,
+} from 'twenty-ui';
 import {
   forwardRef,
   useImperativeHandle,
@@ -21,11 +27,19 @@ const StyledHeader = styled.div`
   align-items: center;
   display: flex;
   justify-content: space-between;
-  width: 100%;
-  padding: ${({ theme }) => theme.spacing(3, 0)};
+
+  padding: ${({ theme }) => theme.spacing(3)};
   row-gap: ${({ theme }) => theme.spacing(2)};
   flex-wrap: wrap;
-  position: relative;
+
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: ${({ theme }) => theme.background.primary};
+
+  @media (min-width: ${MOBILE_VIEWPORT}px) {
+    padding: ${({ theme }) => theme.spacing(4)};
+  }
 `;
 
 const StyledModalTitle = styled.span`
@@ -115,7 +129,7 @@ export const DocumentViewerModal = forwardRef<
   }
 
   return (
-    <Modal size="large" isClosable onClose={handleClose} portal>
+    <Modal size="large" isClosable onClose={handleClose} portal padding="none">
       <StyledHeader>
         <StyledModalTitle>
           <IconFileText size={20} />

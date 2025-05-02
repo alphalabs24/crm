@@ -42,21 +42,21 @@ export const PropertyDescriptionPage = ({
 }: PropertyDescriptionPageProps) => {
   // Process rich text content
   const descriptionBlocks = useMemo(() => {
-    if (!property.descriptionv2?.blocknote) {
+    if (!property.descriptionV2?.blocknote) {
       return [];
     }
 
     try {
       // Parse the blocknote JSON string
       const blocks = JSON.parse(
-        property.descriptionv2.blocknote,
+        property.descriptionV2.blocknote,
       ) as BlockNode[];
       return blocks;
     } catch (error) {
       console.error('Error parsing rich text:', error);
       return [];
     }
-  }, [property.descriptionv2?.blocknote]);
+  }, [property.descriptionV2?.blocknote]);
 
   // Render a block based on its type and content
   const renderBlock = (
@@ -73,6 +73,16 @@ export const PropertyDescriptionPage = ({
     // Handle different block types
     switch (block.type) {
       case 'paragraph':
+        // Handle empty paragraph (line break)
+        if (!block.content || block.content.length === 0) {
+          return (
+            <Text key={block.id} style={paragraphStyle}>
+              &nbsp;
+            </Text>
+          );
+        }
+
+        // Handle regular paragraph with content
         return (
           <Text key={block.id} style={paragraphStyle}>
             {block.content.map((contentItem, contentIndex) => {

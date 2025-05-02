@@ -1,6 +1,7 @@
 import { FinancialOverviewGroup } from '@/record-edit/constants/snippets/FinancialOverviewGroup';
 import { PropertyCategoryGroup } from '@/record-edit/constants/snippets/PropertyCategoryGroup';
 import { SectionContent } from '@/record-edit/types/EditSectionTypes';
+import { Trans } from '@lingui/react/macro';
 
 // TODO use graphql types of standard entities to reference the field names!
 // Field will use inline fields and input will use form inputs
@@ -118,6 +119,31 @@ export const OVERVIEW_SECTION_CONTENT: SectionContent[] = [
     ],
   },
   {
+    title: 'Location',
+    width: 'half',
+    description: (
+      <Trans>
+        The location of the property. These fields are <strong>required</strong>{' '}
+        in order to publish. (Except for the secondary address field)
+      </Trans>
+    ),
+    groups: [
+      {
+        fields: [{ name: 'address', type: 'input', hideLabel: true }],
+      },
+    ],
+  },
+
+  {
+    title: 'Property Features',
+    width: 'half',
+    groups: [
+      {
+        fields: [{ name: 'features', type: 'field' }],
+      },
+    ],
+  },
+  {
     title: 'Stakeholders',
     width: 'half',
     omitForPublications: true,
@@ -129,15 +155,6 @@ export const OVERVIEW_SECTION_CONTENT: SectionContent[] = [
           { name: 'agency', type: 'field' },
           { name: 'assignee', type: 'field', omitForPublication: true },
         ],
-      },
-    ],
-  },
-  {
-    title: 'Property Features',
-    width: 'half',
-    groups: [
-      {
-        fields: [{ name: 'features', type: 'field' }],
       },
     ],
   },
