@@ -85,23 +85,6 @@ const StyledAddress = styled.div<{ isMobile: boolean }>`
   word-break: break-word;
 `;
 
-const StyledAvatarWrapper = styled.div<{ isAvatarEditable: boolean }>`
-  cursor: ${({ isAvatarEditable }) =>
-    isAvatarEditable ? 'pointer' : 'default'};
-`;
-
-const StyledFileInput = styled.input`
-  display: none;
-`;
-
-const StyledSubSkeleton = styled.div`
-  align-items: center;
-  display: flex;
-  height: 37px;
-  justify-content: center;
-  width: 108px;
-`;
-
 const StyledShowPageSummaryCardSkeletonLoader = () => {
   const theme = useTheme();
   return (
