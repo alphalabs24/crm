@@ -431,6 +431,11 @@ export const PropertyDetails = ({
                       {
                         id: targetableObject.id,
                       },
+                      {
+                        searchParams: {
+                          configModal: 'flyer',
+                        },
+                      },
                     )}#marketingSuite`,
                   );
                 },
@@ -444,6 +449,11 @@ export const PropertyDetails = ({
                       targetableObject.targetObjectNameSingular,
                       {
                         id: targetableObject.id,
+                      },
+                      {
+                        searchParams: {
+                          configModal: 'expose',
+                        },
                       },
                     )}#marketingSuite`,
                   );
