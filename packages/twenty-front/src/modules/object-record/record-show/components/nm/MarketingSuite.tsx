@@ -142,11 +142,9 @@ const StyledEmptyStateText = styled.div`
 `;
 
 const StyledHeader = styled.div`
-  align-items: center;
   display: flex;
-  justify-content: space-between;
-  width: 100%;
-  padding: ${({ theme }) => theme.spacing(3, 0)};
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(0.5)};
 `;
 
 const StyledLoadingContainer = styled.div`

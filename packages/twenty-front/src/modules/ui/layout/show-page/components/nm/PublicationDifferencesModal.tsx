@@ -28,7 +28,6 @@ import {
   IconExchange,
   IconFile,
   IconFileText,
-  IconLoader,
   IconPhoto,
   IconUpload,
   IconX,

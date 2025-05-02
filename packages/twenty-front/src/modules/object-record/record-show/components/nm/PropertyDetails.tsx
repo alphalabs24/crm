@@ -30,15 +30,17 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Trans, useLingui } from '@lingui/react/macro';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { capitalize } from 'twenty-shared';
 import {
   Button,
   IconCheck,
   IconCopy,
+  IconFile,
   IconPencil,
   IconRefresh,
   IconTrash,
+  IconUpload,
   LARGE_DESKTOP_VIEWPORT,
   MOBILE_VIEWPORT,
   useIsMobile,
@@ -205,6 +207,7 @@ export const PropertyDetails = ({
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const differencesModalRef = useRef<ModalRefType>(null);
 
+  const navigate = useNavigate();
   const [isCopied, setIsCopied] = useState(false);
 
   const dropdownId = `property-details-dropdown-${targetableObject.id}`;
@@ -387,6 +390,24 @@ export const PropertyDetails = ({
             </StyledLinkWrapper>
           )}
 
+          {property && !property.deletedAt && (
+            <StyledLinkWrapper
+              to={`${getLinkToShowPage(
+                targetableObject.targetObjectNameSingular,
+                {
+                  id: targetableObject.id,
+                },
+              )}#publications`}
+            >
+              <Button
+                title={t`Publish`}
+                Icon={IconUpload}
+                size="small"
+                accent="blue"
+              />
+            </StyledLinkWrapper>
+          )}
+
           <ActionDropdown
             dropdownId={dropdownId}
             actions={[
@@ -400,6 +421,34 @@ export const PropertyDetails = ({
                     },
                   ]
                 : []),
+              {
+                title: 'Generate Flyer',
+                Icon: IconFile,
+                onClick: () => {
+                  navigate(
+                    `${getLinkToShowPage(
+                      targetableObject.targetObjectNameSingular,
+                      {
+                        id: targetableObject.id,
+                      },
+                    )}#marketingSuite`,
+                  );
+                },
+              },
+              {
+                title: 'Generate Documentation',
+                Icon: IconFile,
+                onClick: () => {
+                  navigate(
+                    `${getLinkToShowPage(
+                      targetableObject.targetObjectNameSingular,
+                      {
+                        id: targetableObject.id,
+                      },
+                    )}#marketingSuite`,
+                  );
+                },
+              },
               ...(showDeleteButton
                 ? [
                     {
