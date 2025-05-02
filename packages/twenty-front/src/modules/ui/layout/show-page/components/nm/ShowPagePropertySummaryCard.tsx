@@ -1,4 +1,3 @@
-import { DescriptionFormRichTextEditor } from '@/activities/components/DescriptionFormRichTextEditor';
 import { SKELETON_LOADER_HEIGHT_SIZES } from '@/activities/components/SkeletonLoader';
 import { Modal, ModalRefType } from '@/ui/layout/modal/components/Modal';
 import { ModalHotkeyScope } from '@/ui/layout/modal/components/types/ModalHotkeyScope';
@@ -12,8 +11,7 @@ import {
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { motion } from 'framer-motion';
-import { ReactNode, useMemo, useRef, useState } from 'react';
+import { ReactNode, useMemo, useRef } from 'react';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import {
   AppTooltip,
