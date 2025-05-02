@@ -165,6 +165,18 @@ const StyledRemoveButton = styled.button<{ show: boolean }>`
   }
 `;
 
+const StyledSkeletonGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 12px;
+`;
+
+const StyledSkeletonItem = styled(Skeleton)`
+  border-radius: ${({ theme }) => theme.border.radius.sm};
+  height: 120px;
+  width: 100%;
+`;
+
 // Custom overlay for the image grid that has additional information
 const CustomImageControls = ({
   image,
@@ -346,14 +358,20 @@ export const PropertyImageFormInput = ({ loading }: { loading?: boolean }) => {
   });
 
   const renderContent = () => {
-    if (!hasRefreshed) {
+    // Show loading skeleton when explicitly loading or while refreshing URLs
+    if (loading || !hasRefreshed) {
       return (
-        <Skeleton
-          height={200}
-          width={'100%'}
-          baseColor={theme.background.secondary}
-          highlightColor={theme.background.transparent.lighter}
-        />
+        <StyledSkeletonGrid>
+          {Array(propertyImages.length)
+            .fill(0)
+            .map((_, index) => (
+              <StyledSkeletonItem
+                key={index}
+                baseColor={theme.background.secondary}
+                highlightColor={theme.background.transparent.lighter}
+              />
+            ))}
+        </StyledSkeletonGrid>
       );
     }
 
