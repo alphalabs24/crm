@@ -27,8 +27,6 @@ import {
   IconHome,
   IconHomeShare,
   IconNotes,
-  IconPencil,
-  IconRefresh,
   IconUpload,
   IconX,
   MOBILE_VIEWPORT,
@@ -664,14 +662,6 @@ export const PropertyDifferencesModal = forwardRef<
                 }
               />
             )}
-            <StyledModalWarningText>
-              <IconAlertCircle size={12} />
-              <Trans>
-                Keep in mind that only nestermind drafts will be synchronized.
-                You will need to publish the drafts manually after
-                synchronization.
-              </Trans>
-            </StyledModalWarningText>
           </StyledModalContent>
         </StyledModalContainer>
       </Modal>

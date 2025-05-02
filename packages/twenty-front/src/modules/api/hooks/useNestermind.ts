@@ -372,7 +372,8 @@ export const useNestermind = () => {
       toEmail: string;
     }) => {
       return api.post(
-        `/email-sender/test-autoresponse?publicationId=${publicationId}&email=${toEmail}`,
+        `/email-sender/test-autoresponse?publicationId=${publicationId}`,
+        { email: toEmail },
       );
     },
     [api],
@@ -394,7 +395,8 @@ export const useNestermind = () => {
       toEmail: string;
     }) => {
       return api.post(
-        `/email-sender/test-autoresponse?propertyId=${propertyId}&email=${toEmail}`,
+        `/email-sender/test-autoresponse?propertyId=${propertyId}`,
+        { email: toEmail },
       );
     },
     [api],
@@ -459,6 +461,26 @@ export const useNestermind = () => {
     });
   };
 
+  // PDF routes
+  const generatePdf = useCallback(
+    async ({ html }: { html: string }) => {
+      const response = await api.post(
+        '/pdf/generate',
+        { html },
+        { responseType: 'blob' },
+      );
+      return response.data;
+    },
+    [api],
+  );
+
+  const useGeneratePdf = (options = {}) => {
+    return useMutation({
+      mutationFn: generatePdf,
+      ...options,
+    });
+  };
+
   // Just return the object directly without useMemo
   return {
     api,
@@ -492,6 +514,9 @@ export const useNestermind = () => {
       calculatePublicationMetrics,
       calculatePropertyMetricsByPlatform,
     },
+    pdfApi: {
+      generate: generatePdf,
+    },
     // Tanstack Query hooks: Always use these if you don't know what you're doing
     useQueries: {
       useHealthCheck,
@@ -514,6 +539,7 @@ export const useNestermind = () => {
       useUnpublishPublication,
       useSendTestEmailPublication,
       useSendTestEmailProperty,
+      useGeneratePdf,
     },
   };
 };

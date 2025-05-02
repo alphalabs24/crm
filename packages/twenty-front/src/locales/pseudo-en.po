@@ -40,6 +40,11 @@ msgstr ""
 #~ msgid "(Updated)"
 #~ msgstr ""
 
+#: src/modules/object-record/record-show/components/nm/MarketingSuite.tsx
+#: src/modules/object-record/record-show/components/nm/MarketingSuite.tsx
+#~ msgid "{0}"
+#~ msgstr ""
+
 #: src/modules/object-record/record-show/components/nm/PropertyDetails.tsx
 #~ msgid "{0} deleted successfully"
 #~ msgstr ""
@@ -78,6 +83,7 @@ msgid "{name}"
 msgstr ""
 
 #: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+#: src/modules/object-record/record-table/components/nm/RecordList.tsx
 #: src/modules/object-record/record-show/components/nm/PropertyDetails.tsx
 msgid "{objectNameSingular} deleted successfully"
 msgstr ""
@@ -219,8 +225,8 @@ msgid "Add any other documents that should be included in the publication."
 msgstr ""
 
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
-msgid "Add documents related to your property that will be visible in the publication."
-msgstr ""
+#~ msgid "Add documents related to your property that will be visible in the publication."
+#~ msgstr ""
 
 #: src/modules/settings/data-model/object-details/components/tabs/ObjectFields.tsx
 msgid "Add Field"
@@ -277,7 +283,6 @@ msgid "Added {beautifiedCreatedAt}"
 msgstr ""
 
 #: src/modules/ui/layout/show-page/components/nm/PublicationDifferencesModal.tsx
-#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 #: src/modules/object-record/record-show/components/nm/cards/PropertyDocumentsCard.tsx
 msgid "Additional Documents"
 msgstr ""
@@ -287,6 +292,7 @@ msgid "Additional post settings"
 msgstr ""
 
 #: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
+#: src/modules/ui/layout/property-pdf/components/DocumentationConfigurationModal.tsx
 msgid "Address"
 msgstr ""
 
@@ -326,12 +332,20 @@ msgstr ""
 #~ msgid "Afrikaans"
 #~ msgstr ""
 
+#: src/modules/ui/layout/property-pdf/components/shared/PdfConfigurationUtils.tsx
+msgid "Agency Branding"
+msgstr ""
+
 #: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
 #~ msgid "Agency Credentials"
 #~ msgstr ""
 
 #: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
 msgid "Agriculture Subtype"
+msgstr ""
+
+#: src/modules/object-record/record-show/hooks/useRecordShowContainerTabs.ts
+msgid "AI Suite"
 msgstr ""
 
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationShortLabel.ts
@@ -438,11 +452,23 @@ msgid "Are you sure you want to assign this role?"
 msgstr ""
 
 #: src/modules/action-menu/actions/record-actions/single-record/hooks/useDeleteMessage.tsx
-msgid "Are you sure you want to delete this {objectNameSingularCapitalized}?"
+msgid "Are you sure you want to delete this {label}?"
 msgstr ""
 
 #: src/modules/action-menu/actions/record-actions/single-record/hooks/useDeleteMessage.tsx
-msgid "Are you sure you want to delete this {objectNameSingularCapitalized}? <0>All it's publications will be deleted as well.</0>"
+msgid "Are you sure you want to delete this {label}? <0>All it's publications will be deleted as well.</0>"
+msgstr ""
+
+#: src/modules/action-menu/actions/record-actions/single-record/hooks/useDeleteMessage.tsx
+#~ msgid "Are you sure you want to delete this {objectNameSingularCapitalized}?"
+#~ msgstr ""
+
+#: src/modules/action-menu/actions/record-actions/single-record/hooks/useDeleteMessage.tsx
+#~ msgid "Are you sure you want to delete this {objectNameSingularCapitalized}? <0>All it's publications will be deleted as well.</0>"
+#~ msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/MarketingSuite.tsx
+msgid "Are you sure you want to delete this document? This action cannot be undone."
 msgstr ""
 
 #: src/pages/settings/email-templates/components/SettingsEmailTemplatesContent.tsx
@@ -592,6 +618,8 @@ msgid "Calculate"
 msgstr ""
 
 #: src/modules/settings/accounts/components/SettingsAccountsSettingsSection.tsx
+#: src/modules/object-record/record-show/hooks/useRecordShowContainerTabs.ts
+#: src/modules/object-record/record-show/hooks/useRecordShowContainerTabs.ts
 msgid "Calendar"
 msgstr ""
 
@@ -606,6 +634,8 @@ msgstr ""
 #: src/modules/ui/layout/show-page/components/nm/PublishDraftModal.tsx
 #: src/modules/ui/layout/show-page/components/nm/PublicationDifferencesModal.tsx
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
+#: src/modules/ui/layout/property-pdf/components/FlyerConfigurationModal.tsx
+#: src/modules/ui/layout/property-pdf/components/DocumentationConfigurationModal.tsx
 #: src/modules/ui/layout/modal/components/ConfirmationModal.tsx
 #: src/modules/settings/components/SaveAndCancelButtons/CancelButton.tsx
 #: src/modules/record-edit/contexts/UnsavedChangesContext.tsx
@@ -728,7 +758,12 @@ msgid "Completed"
 msgstr ""
 
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
-msgid "Concise property information overview sent to clients through the auto responder."
+#: src/modules/object-record/record-show/components/nm/MarketingSuite.tsx
+#~ msgid "Concise property information overview sent to clients through the auto responder."
+#~ msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/MarketingSuite.tsx
+msgid "Concise property information overview that can be sent to clients through the auto responder."
 msgstr ""
 
 #: src/pages/settings/security/SettingsSecurity.tsx
@@ -789,6 +824,20 @@ msgstr ""
 
 #: src/modules/settings/accounts/components/SettingsAccountsMessageChannelDetails.tsx
 msgid "Contact auto-creation"
+msgstr ""
+
+#: src/modules/ui/layout/property-pdf/components/shared/PdfConfigurationUtils.tsx
+#~ msgid "Contact Email"
+#~ msgstr ""
+
+#: src/modules/ui/layout/property-pdf/components/shared/PdfConfigurationUtils.tsx
+#~ msgid "Contact Phone"
+#~ msgstr ""
+
+#: src/modules/ui/layout/property-pdf/components/DocumentationConfigurationModal.tsx
+#: src/modules/ui/layout/property-pdf/components/shared/PdfConfigurationUtils.tsx
+#: src/modules/ui/layout/property-pdf/components/shared/PdfConfigurationUtils.tsx
+msgid "Content Options"
 msgstr ""
 
 #: src/modules/command-menu/components/CommandMenu.tsx
@@ -865,6 +914,10 @@ msgstr ""
 msgid "Create"
 msgstr ""
 
+#: src/modules/object-record/record-show/components/nm/MarketingSuite.tsx
+#~ msgid "Create a detailed property exposé to showcase all the features and details."
+#~ msgstr ""
+
 #: src/pages/settings/email-templates/SettingsEmailTemplateNew.tsx
 #~ msgid "Create a new email template."
 #~ msgstr ""
@@ -875,6 +928,10 @@ msgstr ""
 
 #: src/modules/object-record/record-table/empty-state/utils/getEmptyStateSubTitle.ts
 msgid "Create a workflow and return here to view its versions"
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/MarketingSuite.tsx
+msgid "Create and manage your property marketing documents."
 msgstr ""
 
 #: src/pages/settings/developers/SettingsDevelopers.tsx
@@ -1057,7 +1114,10 @@ msgstr ""
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+#: src/modules/object-record/record-table/components/nm/RecordList.tsx
 #: src/modules/object-record/record-show/components/nm/PropertyDetails.tsx
+#: src/modules/object-record/record-show/components/nm/MarketingSuite.tsx
+#: src/modules/object-record/record-show/components/nm/MarketingSuite.tsx
 #: src/modules/object-record/record-show/components/nm/publication/PublicationDetailPage.tsx
 #: src/modules/object-record/record-show/components/nm/publication/PublicationDetailPage.tsx
 #: src/modules/inquiries/components/InquiryItem.tsx
@@ -1076,11 +1136,16 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
-#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
-#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
 #: src/modules/object-record/record-show/components/nm/PropertyDetails.tsx
 #: src/modules/object-record/record-show/components/nm/PropertyDetails.tsx
 msgid "Delete {capitalizedObjectNameSingular}"
+msgstr ""
+
+#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySubContainer.tsx
+#: src/modules/object-record/record-table/components/nm/RecordList.tsx
+#: src/modules/object-record/record-table/components/nm/RecordList.tsx
+msgid "Delete {label}"
 msgstr ""
 
 #: src/pages/settings/SettingsWorkspaceMembers.tsx
@@ -1095,6 +1160,10 @@ msgstr ""
 
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
 msgid "Delete API key"
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/MarketingSuite.tsx
+msgid "Delete Document"
 msgstr ""
 
 #: src/pages/settings/email-templates/components/SettingsEmailTemplatesContent.tsx
@@ -1163,6 +1232,7 @@ msgstr ""
 #: src/pages/settings/data-model/SettingsObjectFieldEdit.tsx
 #: src/pages/settings/data-model/SettingsObjectNewField/SettingsObjectNewFieldConfigure.tsx
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/ContentCustomize.tsx
+#: src/modules/ui/layout/property-pdf/components/DocumentationConfigurationModal.tsx
 msgid "Description"
 msgstr ""
 
@@ -1174,7 +1244,12 @@ msgid "Destroy"
 msgstr ""
 
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
-msgid "Detailed property presentation document sent to potential buyers through the auto responder."
+#: src/modules/object-record/record-show/components/nm/MarketingSuite.tsx
+#~ msgid "Detailed property presentation document sent to potential buyers through the auto responder."
+#~ msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/MarketingSuite.tsx
+msgid "Detailed property presentation document that can be sent to potential buyers through the auto responder."
 msgstr ""
 
 #: src/modules/object-record/record-show/components/nm/cards/PropertyDetailsCard.tsx
@@ -1241,7 +1316,7 @@ msgid "Done"
 msgstr ""
 
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
-#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+#: src/modules/object-record/record-show/components/nm/MarketingSuite.tsx
 #: src/modules/object-record/record-show/components/nm/cards/PropertyDocumentsCard.tsx
 msgid "Download"
 msgstr ""
@@ -1265,6 +1340,10 @@ msgstr ""
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 msgid "Drop images here"
+msgstr ""
+
+#: src/modules/publishers/components/PublisherLogoUpload.tsx
+msgid "Drop logo here"
 msgstr ""
 
 #: src/modules/object-record/record-show/components/nm/ObjectOverview.tsx
@@ -1307,7 +1386,6 @@ msgstr ""
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/Publishing.tsx
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
-#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 #: src/modules/object-record/record-table/components/nm/RecordListItem.tsx
 #: src/modules/object-record/record-table/components/nm/RecordList.tsx
 #: src/modules/object-record/record-show/components/nm/PropertyDetails.tsx
@@ -1402,6 +1480,9 @@ msgstr ""
 #: src/pages/settings/accounts/SettingsAccountsEmails.tsx
 #: src/modules/settings/hooks/useSettingsNavigationItems.tsx
 #: src/modules/settings/accounts/components/SettingsAccountsSettingsSection.tsx
+#: src/modules/object-record/record-show/hooks/useRecordShowContainerTabs.ts
+#: src/modules/object-record/record-show/hooks/useRecordShowContainerTabs.ts
+#: src/modules/object-record/record-show/hooks/useRecordShowContainerTabs.ts
 msgid "Emails"
 msgstr ""
 
@@ -1478,6 +1559,14 @@ msgstr ""
 msgid "Error deleting publisher"
 msgstr ""
 
+#: src/modules/object-record/record-show/components/nm/PdfPreview.tsx
+#~ msgid "Error loading document"
+#~ msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/PdfPreview.tsx
+msgid "Error loading PDF"
+msgstr ""
+
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
 msgid "Error regenerating api key: {err}"
 msgstr ""
@@ -1517,6 +1606,39 @@ msgstr ""
 
 #: src/modules/settings/accounts/components/SettingsAccountsBlocklistSection.tsx
 msgid "Exclude the following people and domains from my email sync. Internal conversations will not be imported"
+msgstr ""
+
+#: src/modules/ui/layout/property-pdf/components/shared/PdfConfigurationUtils.tsx
+msgid "Excluding agency branding"
+msgstr ""
+
+#: src/modules/ui/layout/property-pdf/components/shared/PdfConfigurationUtils.tsx
+#~ msgid "Excluding email contact details"
+#~ msgstr ""
+
+#: src/modules/ui/layout/property-pdf/components/shared/PdfConfigurationUtils.tsx
+msgid "Excluding location map"
+msgstr ""
+
+#: src/modules/ui/layout/property-pdf/components/shared/PdfConfigurationUtils.tsx
+#~ msgid "Excluding phone contact details"
+#~ msgstr ""
+
+#: src/modules/ui/layout/property-pdf/components/DocumentationConfigurationModal.tsx
+msgid "Excluding property description"
+msgstr ""
+
+#: src/modules/ui/layout/property-pdf/components/shared/PdfConfigurationUtils.tsx
+msgid "Excluding property documents"
+msgstr ""
+
+#: src/modules/ui/layout/property-pdf/components/DocumentationConfigurationModal.tsx
+#: src/modules/ui/layout/property-pdf/components/shared/PdfConfigurationUtils.tsx
+msgid "Excluding property features"
+msgstr ""
+
+#: src/modules/ui/layout/property-pdf/components/DocumentationConfigurationModal.tsx
+msgid "Excluding property location"
 msgstr ""
 
 #: src/pages/settings/data-model/SettingsObjects.tsx
@@ -1587,6 +1709,14 @@ msgstr ""
 msgid "Export Workflows"
 msgstr ""
 
+#: src/modules/object-record/record-show/hooks/useRecordShowContainerTabs.ts
+msgid "Exposé & Flyer"
+msgstr ""
+
+#: src/modules/ui/layout/property-pdf/components/DocumentationConfigurationModal.tsx
+msgid "Exposé Configuration"
+msgstr ""
+
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
 #: src/modules/object-record/record-show/components/ui/NewPublicationCard.tsx
 msgid "Failed to create draft"
@@ -1643,6 +1773,7 @@ msgstr ""
 msgid "Favorites"
 msgstr ""
 
+#: src/modules/ui/layout/property-pdf/components/DocumentationConfigurationModal.tsx
 #: src/modules/object-record/record-show/components/nm/cards/PropertyDetailsCard.tsx
 msgid "Features"
 msgstr ""
@@ -1655,11 +1786,20 @@ msgstr ""
 #: src/pages/settings/data-model/SettingsObjectDetailPage.tsx
 #: src/pages/settings/data-model/constants/SettingsObjectTableMetadata.ts
 #: src/modules/settings/data-model/object-details/components/tabs/ObjectFields.tsx
+#: src/modules/object-record/record-show/hooks/useRecordShowContainerTabs.ts
 msgid "Fields"
 msgstr ""
 
 #: src/testing/mock-data/tableData.ts
 msgid "Fields Count"
+msgstr ""
+
+#: src/modules/ui/layout/property-pdf/components/FlyerConfigurationModal.tsx
+msgid "Fields to Display"
+msgstr ""
+
+#: src/modules/object-record/record-show/hooks/useRecordShowContainerTabs.ts
+msgid "Files"
 msgstr ""
 
 #: src/modules/object-record/record-table/record-table-header/components/RecordTableColumnHeadDropdownMenu.tsx
@@ -1692,6 +1832,16 @@ msgstr ""
 #: src/modules/onboarding-tutorial/components/TutorialPageHeader.tsx
 #: src/modules/onboarding-tutorial/components/OnboardingSteps.tsx
 msgid "First steps on nestermind"
+msgstr ""
+
+#: src/modules/object-record/record-show/hooks/useRecordShowContainerTabs.ts
+#: src/modules/object-record/record-show/hooks/useRecordShowContainerTabs.ts
+#: src/modules/object-record/record-show/hooks/useRecordShowContainerTabs.ts
+msgid "Flow"
+msgstr ""
+
+#: src/modules/ui/layout/property-pdf/components/FlyerConfigurationModal.tsx
+msgid "Flyer Configuration"
 msgstr ""
 
 #: src/modules/object-record/hooks/useFormattedPropertyFields.ts
@@ -1738,9 +1888,16 @@ msgid "General"
 msgstr ""
 
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/ContentCustomize.tsx
-#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+#: src/modules/ui/layout/property-pdf/components/FlyerConfigurationModal.tsx
+#: src/modules/ui/layout/property-pdf/components/DocumentationConfigurationModal.tsx
+#: src/modules/object-record/record-show/components/nm/MarketingSuite.tsx
+#: src/modules/object-record/record-show/components/nm/MarketingSuite.tsx
 msgid "Generate"
 msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/MarketingSuite.tsx
+#~ msgid "Generate a concise property flyer for quick overview."
+#~ msgstr ""
 
 #: src/modules/object-record/record-show/components/nm/AISuite.tsx
 msgid "Generate Analysis"
@@ -1748,6 +1905,14 @@ msgstr ""
 
 #: src/modules/object-record/record-show/components/nm/AISuite.tsx
 msgid "Generate Insights"
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/MarketingSuite.tsx
+msgid "Generate or upload a property exposé to showcase all the features and details."
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/MarketingSuite.tsx
+msgid "Generate or upload a property flyer for quick overview."
 msgstr ""
 
 #: src/modules/object-record/record-show/components/nm/AISuite.tsx
@@ -1793,6 +1958,10 @@ msgstr ""
 
 #: src/pages/onboarding/ChooseYourPlan.tsx
 msgid "Get your subscription"
+msgstr ""
+
+#: src/modules/ui/navigation/navigation-drawer/components/Feedback.tsx
+msgid "Give us feedback"
 msgstr ""
 
 #: src/modules/command-menu/components/CommandMenu.tsx
@@ -1865,6 +2034,10 @@ msgstr ""
 msgid "If you’ve lost this key, you can regenerate it, but be aware that any script using this key will need to be updated. Please type\"{confirmationValue}\" to confirm."
 msgstr ""
 
+#: src/modules/ui/layout/property-pdf/components/DocumentationConfigurationModal.tsx
+msgid "Image Gallery"
+msgstr ""
+
 #: src/modules/object-record/record-show/components/nm/cards/PropertyImagesCard.tsx
 msgid "Images"
 msgstr ""
@@ -1884,6 +2057,43 @@ msgstr ""
 #: src/pages/settings/data-model/SettingsObjects.tsx
 #: src/pages/settings/data-model/SettingsObjectFieldTable.tsx
 msgid "Inactive"
+msgstr ""
+
+#: src/modules/ui/layout/property-pdf/components/shared/PdfConfigurationUtils.tsx
+msgid "Include Documents"
+msgstr ""
+
+#: src/modules/ui/layout/property-pdf/components/shared/PdfConfigurationUtils.tsx
+#~ msgid "Including agency email address"
+#~ msgstr ""
+
+#: src/modules/ui/layout/property-pdf/components/shared/PdfConfigurationUtils.tsx
+msgid "Including agency logo and name"
+msgstr ""
+
+#: src/modules/ui/layout/property-pdf/components/shared/PdfConfigurationUtils.tsx
+#~ msgid "Including agency phone number"
+#~ msgstr ""
+
+#: src/modules/ui/layout/property-pdf/components/shared/PdfConfigurationUtils.tsx
+msgid "Including location map"
+msgstr ""
+
+#: src/modules/ui/layout/property-pdf/components/DocumentationConfigurationModal.tsx
+msgid "Including property description"
+msgstr ""
+
+#: src/modules/ui/layout/property-pdf/components/shared/PdfConfigurationUtils.tsx
+msgid "Including property documents"
+msgstr ""
+
+#: src/modules/ui/layout/property-pdf/components/DocumentationConfigurationModal.tsx
+#: src/modules/ui/layout/property-pdf/components/shared/PdfConfigurationUtils.tsx
+msgid "Including property features"
+msgstr ""
+
+#: src/modules/ui/layout/property-pdf/components/DocumentationConfigurationModal.tsx
+msgid "Including property location"
 msgstr ""
 
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
@@ -1911,6 +2121,7 @@ msgid "Input must be in camel case and cannot start with a number"
 msgstr ""
 
 #: src/modules/onboarding-tutorial/components/modals/InquiryTutorialModal.tsx
+#: src/modules/object-record/record-show/hooks/useRecordShowContainerTabs.ts
 #: src/modules/object-record/record-show/components/nm/publication/ContactsByStageChart.tsx
 #: src/modules/object-record/record-show/components/nm/property/ContactsByPlatformChart.tsx
 msgid "Inquiries"
@@ -2009,8 +2220,8 @@ msgstr ""
 #~ msgstr ""
 
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
-msgid "Keep in mind that only nestermind drafts will be synchronized. You will need to publish the drafts manually after synchronization."
-msgstr ""
+#~ msgid "Keep in mind that only nestermind drafts will be synchronized. You will need to publish the drafts manually after synchronization."
+#~ msgstr ""
 
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
 #~ msgid "Keep in mind that only nestermind drafts will be synchronized. You will need to publish the drafts manually again after synchronization."
@@ -2111,6 +2322,11 @@ msgstr ""
 msgid "Listings"
 msgstr ""
 
+#: src/modules/object-record/record-show/components/nm/PdfPreview.tsx
+#: src/modules/object-record/record-show/components/nm/PdfPreview.tsx
+msgid "Loading document..."
+msgstr ""
+
 #: src/pages/settings/publishers/components/PublishersListCard.tsx
 #: src/pages/settings/email-templates/components/EmailTemplatesListCard.tsx
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
@@ -2173,6 +2389,10 @@ msgstr ""
 msgid "Market Analysis"
 msgstr ""
 
+#: src/modules/object-record/record-show/components/nm/MarketingSuite.tsx
+msgid "Marketing Suite"
+msgstr ""
+
 #: src/modules/object-record/record-show/components/nm/AISuite.tsx
 msgid "Marketing Video"
 msgstr ""
@@ -2212,6 +2432,10 @@ msgstr ""
 msgid "More"
 msgstr ""
 
+#: src/modules/object-record/record-show/components/nm/MarketingSuite.tsx
+msgid "More actions"
+msgstr ""
+
 #: src/modules/object-record/record-table/record-table-footer/components/RecordTableColumnAggregateFooterDropdownContent.tsx
 #: src/modules/object-record/record-board/record-board-column/components/RecordBoardColumnHeaderAggregateDropdownMenuContent.tsx
 msgid "More options"
@@ -2223,6 +2447,10 @@ msgstr ""
 
 #: src/modules/object-record/record-table/record-table-header/components/RecordTableColumnHeadDropdownMenu.tsx
 msgid "Move right"
+msgstr ""
+
+#: src/modules/ui/layout/property-pdf/components/shared/PdfConfigurationUtils.tsx
+msgid "Multiple Property Images"
 msgstr ""
 
 #: src/testing/mock-data/tableData.ts
@@ -2376,6 +2604,10 @@ msgstr ""
 msgid "No"
 msgstr ""
 
+#: src/modules/ui/layout/property-pdf/components/shared/PdfConfigurationUtils.tsx
+msgid "No agency details available"
+msgstr ""
+
 #: src/modules/settings/accounts/components/SettingsAccountsListEmptyStateCard.tsx
 msgid "No connected account"
 msgstr ""
@@ -2391,13 +2623,20 @@ msgstr ""
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
-#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "No description"
+msgstr ""
+
+#: src/modules/ui/layout/property-pdf/components/DocumentationConfigurationModal.tsx
+msgid "No description available"
 msgstr ""
 
 #: src/modules/object-record/record-show/components/nm/cards/PropertyDocumentsCard.tsx
 msgid "No documents available"
 msgstr ""
+
+#: src/modules/ui/layout/property-pdf/components/shared/PdfConfigurationUtils.tsx
+#~ msgid "No email contact available"
+#~ msgstr ""
 
 #: src/pages/settings/email-templates/components/EmailTemplatesListCard.tsx
 msgid "No email templates configured yet"
@@ -2414,6 +2653,14 @@ msgstr ""
 
 #: src/modules/inquiries/components/InquiriesList.tsx
 msgid "No inquiries yet"
+msgstr ""
+
+#: src/modules/ui/layout/property-pdf/components/DocumentationConfigurationModal.tsx
+msgid "No location data available"
+msgstr ""
+
+#: src/modules/publishers/components/PublisherLogoUpload.tsx
+msgid "No logo"
 msgstr ""
 
 #: src/modules/object-record/record-show/components/nm/cards/PropertyAddressCard.tsx
@@ -2443,6 +2690,10 @@ msgstr ""
 #: src/pages/settings/roles/components/RoleAssignment.tsx
 msgid "No more members to assign"
 msgstr ""
+
+#: src/modules/ui/layout/property-pdf/components/shared/PdfConfigurationUtils.tsx
+#~ msgid "No phone contact available"
+#~ msgstr ""
 
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/PlatformSelect.tsx
 msgid "No platform selected"
@@ -2514,6 +2765,20 @@ msgstr ""
 msgid "Not empty"
 msgstr ""
 
+#: src/modules/ui/layout/property-pdf/components/DocumentationConfigurationModal.tsx
+#: src/modules/ui/layout/property-pdf/components/shared/PdfConfigurationUtils.tsx
+msgid "Not enough images available"
+msgstr ""
+
+#: src/modules/object-record/record-show/hooks/useRecordShowContainerTabs.ts
+#: src/modules/object-record/record-show/hooks/useRecordShowContainerTabs.ts
+msgid "Note"
+msgstr ""
+
+#: src/modules/object-record/record-show/hooks/useRecordShowContainerTabs.ts
+msgid "Notes"
+msgstr ""
+
 #: src/modules/command-menu/components/CommandMenu.tsx
 msgid "Object"
 msgstr ""
@@ -2560,6 +2825,7 @@ msgid "Only the timestamp & participants will be shared with your team."
 msgstr ""
 
 #: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+#: src/modules/object-record/record-show/components/nm/MarketingSuite.tsx
 #: src/modules/object-record/record-show/components/nm/cards/PropertyDocumentsCard.tsx
 #: src/modules/inquiries/components/sidebar/PropertyDetails.tsx
 msgid "Open"
@@ -2594,6 +2860,10 @@ msgstr ""
 #: src/pages/settings/admin-panel/SettingsAdmin.tsx
 #: src/modules/settings/hooks/useSettingsNavigationItems.tsx
 msgid "Other"
+msgstr ""
+
+#: src/modules/object-record/record-show/hooks/useRecordShowContainerTabs.ts
+msgid "Output"
 msgstr ""
 
 #: src/modules/object-record/record-show/components/nm/cards/PropertyBasicInfoCard.tsx
@@ -2755,6 +3025,8 @@ msgid "Prefill Property"
 msgstr ""
 
 #: src/pages/settings/email-templates/components/EmailTemplatesListCard.tsx
+#: src/modules/ui/layout/property-pdf/components/FlyerConfigurationModal.tsx
+#: src/modules/ui/layout/property-pdf/components/DocumentationConfigurationModal.tsx
 #: src/modules/settings/data-model/objects/forms/components/SettingsDataModelObjectSettingsFormCard.tsx
 #: src/modules/settings/data-model/components/SettingsDataModelPreviewFormCard.tsx
 msgid "Preview"
@@ -2778,9 +3050,9 @@ msgstr ""
 msgid "Profile"
 msgstr ""
 
-#: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
-#~ msgid "Property"
-#~ msgstr ""
+#: src/modules/object-record/record-show/hooks/useRecordShowContainerTabs.ts
+msgid "Property"
+msgstr ""
 
 #: src/modules/onboarding-tutorial/constants/onboarding-steps.tsx
 msgid "Property created successfully"
@@ -2797,13 +3069,17 @@ msgid "Property Documents"
 msgstr ""
 
 #: src/modules/ui/layout/show-page/components/nm/PublicationDifferencesModal.tsx
-#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+#: src/modules/object-record/record-show/components/nm/MarketingSuite.tsx
 #: src/modules/object-record/record-show/components/nm/cards/PropertyDocumentsCard.tsx
 msgid "Property Exposé"
 msgstr ""
 
+#: src/modules/ui/layout/property-pdf/components/shared/PdfConfigurationUtils.tsx
+msgid "Property Features"
+msgstr ""
+
 #: src/modules/ui/layout/show-page/components/nm/PublicationDifferencesModal.tsx
-#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+#: src/modules/object-record/record-show/components/nm/MarketingSuite.tsx
 #: src/modules/object-record/record-show/components/nm/cards/PropertyDocumentsCard.tsx
 msgid "Property Flyer"
 msgstr ""
@@ -2876,6 +3152,7 @@ msgstr ""
 msgid "Publication unpublished successfully"
 msgstr ""
 
+#: src/modules/object-record/record-show/hooks/useRecordShowContainerTabs.ts
 #: src/modules/object-record/record-show/components/nm/publication/PublicationBreadcrumb.tsx
 #: src/modules/object-record/record-show/components/nm/cards/PropertyPublicationsCard.tsx
 msgid "Publications"
@@ -2923,6 +3200,15 @@ msgstr ""
 msgid "Publisher Details"
 msgstr ""
 
+#: src/modules/ui/layout/property-pdf/components/DocumentationConfigurationModal.tsx
+#: src/modules/ui/layout/property-pdf/components/shared/PdfConfigurationUtils.tsx
+msgid "Publisher Information"
+msgstr ""
+
+#: src/modules/publishers/components/PublisherLogoUpload.tsx
+msgid "Publisher Logo"
+msgstr ""
+
 #: src/pages/settings/publishers/SettingsPublishers.tsx
 msgid "Publishers"
 msgstr ""
@@ -2963,6 +3249,10 @@ msgstr ""
 msgid "Reference Property"
 msgstr ""
 
+#: src/modules/object-record/record-show/components/nm/MarketingSuite.tsx
+msgid "Regenerate"
+msgstr ""
+
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
 #: src/pages/settings/developers/api-keys/SettingsDevelopersApiKeyDetail.tsx
 msgid "Regenerate an API key"
@@ -2985,7 +3275,6 @@ msgstr ""
 #: src/pages/settings/roles/components/RoleAssignmentTableRow.tsx
 #: src/pages/settings/roles/components/RoleAssignmentConfirmationModal.tsx
 #: src/modules/ui/input/components/ImageInput.tsx
-#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
 msgid "Remove"
 msgstr ""
 
@@ -3003,6 +3292,10 @@ msgstr ""
 #: src/modules/action-menu/actions/record-actions/constants/DefaultActionsConfigV2.ts
 #: src/modules/action-menu/actions/record-actions/constants/DefaultActionsConfigV1.ts
 msgid "Remove from favorites"
+msgstr ""
+
+#: src/modules/object-record/record-show/components/nm/MarketingSuite.tsx
+msgid "Replace"
 msgstr ""
 
 #: src/modules/inquiries/components/sidebar/ConversationMessageItem.tsx
@@ -3287,6 +3580,10 @@ msgstr ""
 msgid "Should changing an object's label also change the API?"
 msgstr ""
 
+#: src/modules/ui/layout/property-pdf/components/shared/PdfConfigurationUtils.tsx
+msgid "Show Address Map"
+msgstr ""
+
 #: src/modules/object-record/record-table/components/nm/RecordListItem.tsx
 #: src/modules/object-record/record-table/components/nm/RecordList.tsx
 msgid "Show Details"
@@ -3298,6 +3595,16 @@ msgstr ""
 
 #: src/modules/inquiries/components/sidebar/PropertyDetails.tsx
 msgid "Show more details"
+msgstr ""
+
+#: src/modules/ui/layout/property-pdf/components/DocumentationConfigurationModal.tsx
+#: src/modules/ui/layout/property-pdf/components/shared/PdfConfigurationUtils.tsx
+msgid "Showing all property images"
+msgstr ""
+
+#: src/modules/ui/layout/property-pdf/components/DocumentationConfigurationModal.tsx
+#: src/modules/ui/layout/property-pdf/components/shared/PdfConfigurationUtils.tsx
+msgid "Showing only the main image"
 msgstr ""
 
 #: src/modules/auth/sign-in-up/components/SignInUpWithCredentials.tsx
@@ -3486,6 +3793,10 @@ msgstr ""
 msgid "System Settings - {systemTimeFormatLabel}"
 msgstr ""
 
+#: src/modules/object-record/record-show/hooks/useRecordShowContainerTabs.ts
+msgid "Tasks"
+msgstr ""
+
 #: src/pages/onboarding/CreateProfile.tsx
 msgid "terms of service"
 msgstr ""
@@ -3611,6 +3922,10 @@ msgstr ""
 msgid "Time format"
 msgstr ""
 
+#: src/modules/object-record/record-show/hooks/useRecordShowContainerTabs.ts
+msgid "Timeline"
+msgstr ""
+
 #: src/modules/settings/accounts/components/SettingsAccountsMessageVisibilityCard.tsx
 msgid "Timestamp and participants will be shared with your team."
 msgstr ""
@@ -3693,7 +4008,8 @@ msgstr ""
 #~ msgstr ""
 
 #: src/modules/ui/input/components/ImageInput.tsx
-#: src/modules/record-edit/components/custom/PropertyDocumentFormInput.tsx
+#: src/modules/object-record/record-show/components/nm/MarketingSuite.tsx
+#: src/modules/object-record/record-show/components/nm/MarketingSuite.tsx
 msgid "Upload"
 msgstr ""
 
@@ -3707,6 +4023,14 @@ msgstr ""
 
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 msgid "Upload Images"
+msgstr ""
+
+#: src/modules/publishers/components/PublisherLogoUpload.tsx
+msgid "Upload Logo"
+msgstr ""
+
+#: src/modules/publishers/components/PublisherLogoUpload.tsx
+msgid "Upload your publisher logo that will be used in PDFs, documentation and flyers. A square logo with <0>256x256px</0> size is recommended."
 msgstr ""
 
 #: src/pages/settings/developers/webhooks/components/SettingsDevelopersWebhookDetail.tsx

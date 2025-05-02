@@ -1,8 +1,5 @@
 import { ActivityTargetableObject } from '@/activities/types/ActivityTargetableEntity';
-import {
-  DocumentViewer,
-  PREVIEWABLE_EXTENSIONS,
-} from '@/activities/files/components/DocumentViewer';
+import { PREVIEWABLE_EXTENSIONS } from '@/activities/files/components/DocumentViewer';
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { Section } from '@/object-record/record-show/components/ui/PropertyDetailsCardComponents';
 import { usePropertyDocuments } from '@/ui/layout/show-page/hooks/usePropertyDocuments';
@@ -10,22 +7,26 @@ import { useDropdown } from '@/ui/layout/dropdown/hooks/useDropdown';
 import { Dropdown } from '@/ui/layout/dropdown/components/Dropdown';
 import { DropdownMenuItemsContainer } from '@/ui/layout/dropdown/components/DropdownMenuItemsContainer';
 import { Modal } from '@/ui/layout/modal/components/Modal';
-import { css, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { useCallback, useRef, useState, Suspense, lazy } from 'react';
+import { useCallback, useState, Suspense, lazy } from 'react';
 import {
   IconFile,
   IconFileText,
   IconDownload,
   IconExternalLink,
   MOBILE_VIEWPORT,
-  useIsMobile,
   IconDotsVertical,
   IconX,
   MenuItem,
   IconButton,
 } from 'twenty-ui';
+
+const DocumentViewer = lazy(() =>
+  import('@/activities/files/components/DocumentViewer').then((module) => ({
+    default: module.DocumentViewer,
+  })),
+);
 
 const StyledContent = styled.div`
   display: flex;
@@ -123,8 +124,7 @@ const StyledHeader = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
-  padding: ${({ theme }) => theme.spacing(3)};
-  border-bottom: 1px solid ${({ theme }) => theme.border.color.light};
+  padding: ${({ theme }) => theme.spacing(3, 0)};
 `;
 
 const StyledLoadingContainer = styled.div`

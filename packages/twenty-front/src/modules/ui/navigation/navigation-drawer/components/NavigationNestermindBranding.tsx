@@ -2,6 +2,8 @@ import { useColorScheme } from '@/ui/theme/hooks/useColorScheme';
 import { useSystemColorScheme } from '@/ui/theme/hooks/useSystemColorScheme';
 import { Theme } from '@emotion/react';
 import styled from '@emotion/styled';
+import { useRecoilValue } from 'recoil';
+import { isNavigationDrawerExpandedState } from '../../states/isNavigationDrawerExpanded';
 
 const StyledContainer = styled.div<{
   alignment: 'flex-start' | 'center' | 'flex-end';
@@ -47,6 +49,13 @@ const NestermindBranding = ({
   const systemColorScheme = useSystemColorScheme();
   const colorSchemeToUse =
     colorScheme === 'System' ? systemColorScheme : colorScheme;
+  const isNavigationDrawerExpanded = useRecoilValue(
+    isNavigationDrawerExpandedState,
+  );
+
+  if (!isNavigationDrawerExpanded) {
+    return null;
+  }
   return (
     <StyledContainer alignment={alignment}>
       <StyledImage
