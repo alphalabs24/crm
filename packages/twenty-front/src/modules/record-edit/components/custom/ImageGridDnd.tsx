@@ -14,7 +14,6 @@ import {
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import styled from '@emotion/styled';
-import { TooltipDelay } from '@ui/display/tooltip/AppTooltip';
 import { useCallback, useState, ReactNode, useEffect } from 'react';
 import { AppTooltip } from 'twenty-ui';
 
@@ -30,7 +29,7 @@ const StyledGridItemWrapper = styled.div`
   border-radius: ${({ theme }) => theme.border.radius.sm};
   cursor: grab;
   height: 120px;
-  overflow: hidden;
+
   position: relative;
   width: 100%;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
@@ -67,6 +66,7 @@ const StyledImage = styled.img`
   -webkit-user-drag: none;
   user-select: none;
   width: 100%;
+  border-radius: ${({ theme }) => theme.border.radius.sm};
 `;
 
 const StyledControlsWrapper = styled.div`
@@ -82,7 +82,7 @@ const SortableImage = ({
   image,
   renderControls,
 }: {
-  image: { id: string; previewUrl: string };
+  image: { id: string; previewUrl: string; tooltipContent?: string };
   renderControls?: (imageId: string, isHovering?: boolean) => ReactNode;
 }) => {
   const {
@@ -111,15 +111,19 @@ const SortableImage = ({
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
       {...attributes}
+      id={`image-container-${image.id}`}
     >
-      <AppTooltip
-        anchorSelect={`#image-${image.id}`}
-        content={`No description`}
-        place="bottom"
-        noArrow
-        delay={TooltipDelay.noDelay}
-        isOpen={isHovering}
-      />
+      {/* Tooltip with explicit control to ensure it's visible */}
+      {isHovering && (
+        <AppTooltip
+          anchorSelect={`#image-container-${image.id}`}
+          content={image.tooltipContent || 'No description'}
+          place="top"
+          isOpen={true}
+          width="200px"
+        />
+      )}
+
       {/* Dedicated drag handle that covers the whole image but not controls */}
       <div
         {...listeners}
@@ -135,7 +139,6 @@ const SortableImage = ({
       <StyledImage
         src={image.previewUrl}
         alt="preview"
-        id={`image-${image.id}`}
         draggable={false}
         style={{ position: 'relative', zIndex: 0 }}
       />
@@ -158,8 +161,10 @@ export const ImageGridDnd = ({
   onReorder,
   renderControls,
 }: {
-  images: { id: string; previewUrl: string }[];
-  onReorder: (newOrder: { id: string; previewUrl: string }[]) => void;
+  images: { id: string; previewUrl: string; tooltipContent?: string }[];
+  onReorder: (
+    newOrder: { id: string; previewUrl: string; tooltipContent?: string }[],
+  ) => void;
   renderControls?: (imageId: string, isHovering?: boolean) => ReactNode;
 }) => {
   const [items, setItems] = useState(images);

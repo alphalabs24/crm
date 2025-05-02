@@ -324,7 +324,9 @@ export const PropertyImageFormInput = ({ loading }: { loading?: boolean }) => {
     updatePropertyImage(image.id, { description });
   };
 
-  const onReorder = (newOrder: { id: string; previewUrl: string }[]) => {
+  const onReorder = (
+    newOrder: { id: string; previewUrl: string; tooltipContent?: string }[],
+  ) => {
     // Map the simplified image objects back to the full RecordEditPropertyImage objects
     const reorderedImages = newOrder.map(
       (item) => propertyImages.find((img) => img.id === item.id)!,
@@ -389,9 +391,11 @@ export const PropertyImageFormInput = ({ loading }: { loading?: boolean }) => {
     }
 
     // Convert property images to the format expected by ImageGridDnd
+    // Include the description for the tooltip
     const simplifiedImages = propertyImages.map((image) => ({
       id: image.id,
       previewUrl: image.previewUrl,
+      tooltipContent: image.description || t`No description`, // Pass description for tooltip
     }));
 
     // Render controls for a specific image ID
