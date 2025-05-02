@@ -8,12 +8,15 @@ import { useRecordEdit } from '@/record-edit/contexts/RecordEditContext';
 import { useUnsavedChanges } from '@/record-edit/contexts/UnsavedChangesContext';
 import { SnackBarVariant } from '@/ui/feedback/snack-bar-manager/components/SnackBar';
 import { useSnackBar } from '@/ui/feedback/snack-bar-manager/hooks/useSnackBar';
+import { Alert } from '~/ui/feedback/alert/components/Alert';
 import { TextInputV2 } from '@/ui/input/components/TextInputV2';
 import { useLingui } from '@lingui/react/macro';
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Button, IconSend } from 'twenty-ui';
+import { Button, IconBolt, IconSend } from 'twenty-ui';
 import { EmailTemplateSelect } from '~/pages/settings/email-templates/components/EmailTemplateSelect';
+import { useAttachments } from '@/activities/files/hooks/useAttachments';
+import { getLinkToShowPage } from '@/object-metadata/utils/getLinkToShowPage';
 
 const StyledContainer = styled.div`
   display: flex;
@@ -38,14 +41,94 @@ const StyledTestEmailContainer = styled.div`
   margin-top: ${({ theme }) => theme.spacing(2)};
 `;
 
+const FLYER_TAG = '{{link_to_flyer}}';
+const DOCUMENTATION_TAG = '{{link_to_documentation}}';
+
 export const PropertyEmailsFormInput = ({ loading }: { loading?: boolean }) => {
-  const { setEmailTemplate, emailTemplate, isDirty, saveRecord } =
-    useRecordEdit();
+  const {
+    setEmailTemplate,
+    emailTemplate,
+    isDirty,
+    saveRecord,
+    initialRecord,
+  } = useRecordEdit();
   const { openActionModal } = useUnsavedChanges();
   const { objectRecordId, objectNameSingular } = useParams();
   const [testEmail, setTestEmail] = useState('');
   const [emailError, setEmailError] = useState('');
   const { t } = useLingui();
+
+  const { attachments, loading: attachmentsLoading } = useAttachments({
+    id: objectRecordId ?? '',
+    targetObjectNameSingular: objectNameSingular ?? '',
+  });
+
+  const propertyDocumentation = attachments?.find(
+    (attachment) => attachment.type === 'PropertyDocumentation',
+  );
+
+  const propertyFlyer = attachments?.find(
+    (attachment) => attachment.type === 'PropertyFlyer',
+  );
+
+  const hasNoFlyerButReferencesFlyer = useMemo(() => {
+    if (attachmentsLoading) return false;
+    return (
+      emailTemplate?.bodyV2?.blocknote?.includes(FLYER_TAG) && !propertyFlyer
+    );
+  }, [attachmentsLoading, emailTemplate?.bodyV2?.blocknote, propertyFlyer]);
+
+  const hasNoDocumentationButReferencesDocumentation = useMemo(() => {
+    if (attachmentsLoading) return false;
+    return (
+      emailTemplate?.bodyV2?.blocknote?.includes(DOCUMENTATION_TAG) &&
+      !propertyDocumentation
+    );
+  }, [
+    attachmentsLoading,
+    emailTemplate?.bodyV2?.blocknote,
+    propertyDocumentation,
+  ]);
+
+  const getMissingDocumentsAlertTitle = useMemo(() => {
+    if (
+      hasNoFlyerButReferencesFlyer &&
+      hasNoDocumentationButReferencesDocumentation
+    ) {
+      return t`Missing flyer and documentation`;
+    }
+    if (hasNoFlyerButReferencesFlyer) {
+      return t`Missing flyer`;
+    }
+    if (hasNoDocumentationButReferencesDocumentation) {
+      return t`Missing documentation`;
+    }
+    return '';
+  }, [
+    hasNoFlyerButReferencesFlyer,
+    hasNoDocumentationButReferencesDocumentation,
+    t,
+  ]);
+
+  const getMissingDocumentsAlertContent = useMemo(() => {
+    if (
+      hasNoFlyerButReferencesFlyer &&
+      hasNoDocumentationButReferencesDocumentation
+    ) {
+      return t`This template references a flyer and documentation, but neither has been uploaded for this property.`;
+    }
+    if (hasNoFlyerButReferencesFlyer) {
+      return t`This template references a flyer, but none has been uploaded for this property.`;
+    }
+    if (hasNoDocumentationButReferencesDocumentation) {
+      return t`This template references documentation, but none has been uploaded for this property.`;
+    }
+    return '';
+  }, [
+    hasNoFlyerButReferencesFlyer,
+    hasNoDocumentationButReferencesDocumentation,
+    t,
+  ]);
 
   const { useMutations } = useNestermind();
   const { enqueueSnackBar } = useSnackBar();
@@ -159,6 +242,29 @@ export const PropertyEmailsFormInput = ({ loading }: { loading?: boolean }) => {
       />
       {emailTemplate && (
         <>
+          {(hasNoFlyerButReferencesFlyer ||
+            hasNoDocumentationButReferencesDocumentation) && (
+            <Alert
+              type="warning"
+              title={getMissingDocumentsAlertTitle}
+              linkTo={
+                objectNameSingular && initialRecord
+                  ? `${getLinkToShowPage(objectNameSingular, initialRecord)}#marketingSuite`
+                  : undefined
+              }
+              linkText={
+                hasNoFlyerButReferencesFlyer &&
+                hasNoDocumentationButReferencesDocumentation
+                  ? t`Generate documents`
+                  : hasNoFlyerButReferencesFlyer
+                    ? t`Generate flyer`
+                    : t`Generate documentation`
+              }
+              LinkIcon={IconBolt}
+            >
+              {getMissingDocumentsAlertContent}
+            </Alert>
+          )}
           <StyledTestEmailContainer>
             <TextInputV2
               value={testEmail}

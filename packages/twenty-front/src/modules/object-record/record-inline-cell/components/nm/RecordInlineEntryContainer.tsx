@@ -14,6 +14,8 @@ const StyledValueContainer = styled.div`
   display: flex;
   align-items: center;
   padding: ${({ theme }) => theme.spacing(1)};
+  gap: ${({ theme }) => theme.spacing(1)};
+  flex-wrap: wrap;
 `;
 
 const StyledGridEntryLabelContainer = styled.div`

@@ -36,6 +36,10 @@ import { DocumentTypeIcon } from './DocumentTypeIcon';
 import { ConfirmationModal } from '@/ui/layout/modal/components/ConfirmationModal';
 import { downloadFile } from '@/activities/files/utils/downloadFile';
 import Skeleton from 'react-loading-skeleton';
+import {
+  DocumentViewerModal,
+  DocumentViewerModalRef,
+} from '~/ui/documents/document-viewer-modal/components/DocumentViewerModal';
 
 const DocumentViewer = lazy(() =>
   import('@/activities/files/components/DocumentViewer').then((module) => ({
@@ -142,41 +146,11 @@ const StyledEmptyStateText = styled.div`
 `;
 
 const StyledHeader = styled.div`
-  align-items: center;
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   width: 100%;
-  padding: ${({ theme }) => theme.spacing(3, 0)};
-`;
-
-const StyledLoadingContainer = styled.div`
-  align-items: center;
-  background: ${({ theme }) => theme.background.primary};
-  display: flex;
-  height: 80vh;
-  justify-content: center;
-  width: 100%;
-`;
-
-const StyledLoadingText = styled.div`
-  color: ${({ theme }) => theme.font.color.secondary};
-  font-size: ${({ theme }) => theme.font.size.lg};
-  font-weight: ${({ theme }) => theme.font.weight.medium};
-`;
-
-const StyledModalTitle = styled.span`
-  color: ${({ theme }) => theme.font.color.primary};
-  font-size: ${({ theme }) => theme.font.size.lg};
-  font-weight: ${({ theme }) => theme.font.weight.medium};
-  display: flex;
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing(2)};
-`;
-
-const StyledButtonContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: ${({ theme }) => theme.spacing(1)};
+  gap: ${({ theme }) => theme.spacing(0.5)};
 `;
 
 const StyledPreviewActions = styled.div`
@@ -300,8 +274,8 @@ export const MarketingSuite = ({ targetableObject }: MarketingSuiteProps) => {
   const [documentToDelete, setDocumentToDelete] =
     useState<DocumentAttachment | null>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [selectedDocument, setSelectedDocument] =
-    useState<DocumentAttachment | null>(null);
+
+  const documentViewerModalRef = useRef<DocumentViewerModalRef>(null);
 
   const { attachments, loading: isLoading } = useAttachments(targetableObject);
 
@@ -423,12 +397,10 @@ export const MarketingSuite = ({ targetableObject }: MarketingSuiteProps) => {
 
   // Open document viewer
   const openDocumentViewer = (doc: DocumentAttachment) => {
-    setSelectedDocument(doc);
-  };
-
-  // Close document viewer
-  const closeDocumentViewer = () => {
-    setSelectedDocument(null);
+    documentViewerModalRef.current?.open({
+      name: doc.name,
+      url: doc.fullPath,
+    });
   };
 
   const getDropdownForType = (type: PropertyPdfType) => {
@@ -749,43 +721,7 @@ export const MarketingSuite = ({ targetableObject }: MarketingSuiteProps) => {
       )}
 
       {/* Document Viewer Modal */}
-      {selectedDocument && (
-        <Modal size="large" isClosable onClose={closeDocumentViewer}>
-          <StyledHeader>
-            <StyledModalTitle>
-              <IconFileText size={20} />
-              {selectedDocument.name || 'Document'}
-            </StyledModalTitle>
-            <StyledButtonContainer>
-              <IconButton
-                Icon={IconDownload}
-                onClick={() => handleDownload(selectedDocument)}
-                size="small"
-              />
-              <IconButton
-                Icon={IconX}
-                onClick={closeDocumentViewer}
-                size="small"
-              />
-            </StyledButtonContainer>
-          </StyledHeader>
-
-          <Suspense
-            fallback={
-              <StyledLoadingContainer>
-                <StyledLoadingText>
-                  Loading document viewer...
-                </StyledLoadingText>
-              </StyledLoadingContainer>
-            }
-          >
-            <DocumentViewer
-              documentName={selectedDocument.name || 'Document'}
-              documentUrl={selectedDocument.fullPath}
-            />
-          </Suspense>
-        </Modal>
-      )}
+      <DocumentViewerModal ref={documentViewerModalRef} />
     </StyledContainer>
   );
 };

@@ -6,10 +6,10 @@ import { usePropertyDocuments } from '@/ui/layout/show-page/hooks/usePropertyDoc
 import { useDropdown } from '@/ui/layout/dropdown/hooks/useDropdown';
 import { Dropdown } from '@/ui/layout/dropdown/components/Dropdown';
 import { DropdownMenuItemsContainer } from '@/ui/layout/dropdown/components/DropdownMenuItemsContainer';
-import { Modal } from '@/ui/layout/modal/components/Modal';
+
 import styled from '@emotion/styled';
 import { Trans, useLingui } from '@lingui/react/macro';
-import { useCallback, useState, Suspense, lazy } from 'react';
+import { useCallback, useRef } from 'react';
 import {
   IconFile,
   IconFileText,
@@ -17,16 +17,13 @@ import {
   IconExternalLink,
   MOBILE_VIEWPORT,
   IconDotsVertical,
-  IconX,
   MenuItem,
-  IconButton,
 } from 'twenty-ui';
-
-const DocumentViewer = lazy(() =>
-  import('@/activities/files/components/DocumentViewer').then((module) => ({
-    default: module.DocumentViewer,
-  })),
-);
+import {
+  DocumentViewerModal,
+  DocumentViewerModalRef,
+} from '~/ui/documents/document-viewer-modal/components/DocumentViewerModal';
+import { downloadFile } from '@/activities/files/utils/downloadFile';
 
 const StyledContent = styled.div`
   display: flex;
@@ -119,38 +116,6 @@ const StyledActionButton = styled.button`
   }
 `;
 
-const StyledHeader = styled.div`
-  align-items: center;
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  padding: ${({ theme }) => theme.spacing(3, 0)};
-`;
-
-const StyledLoadingContainer = styled.div`
-  align-items: center;
-  background: ${({ theme }) => theme.background.primary};
-  display: flex;
-  height: 80vh;
-  justify-content: center;
-  width: 100%;
-`;
-
-const StyledLoadingText = styled.div`
-  color: ${({ theme }) => theme.font.color.secondary};
-  font-size: ${({ theme }) => theme.font.size.lg};
-  font-weight: ${({ theme }) => theme.font.weight.medium};
-`;
-
-const StyledModalTitle = styled.span`
-  color: ${({ theme }) => theme.font.color.primary};
-  font-size: ${({ theme }) => theme.font.size.lg};
-  font-weight: ${({ theme }) => theme.font.weight.medium};
-  display: flex;
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing(2)};
-`;
-
 const StyledNoDocuments = styled.div`
   align-items: center;
   border-radius: ${({ theme }) => theme.border.radius.sm};
@@ -168,12 +133,6 @@ const StyledNoDocuments = styled.div`
   }
 `;
 
-const StyledButtonContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: ${({ theme }) => theme.spacing(1)};
-`;
-
 type PropertyDocumentsCardProps = {
   targetableObject: Pick<
     ActivityTargetableObject,
@@ -187,7 +146,7 @@ export const PropertyDocumentsCard = ({
   loading = false,
 }: PropertyDocumentsCardProps) => {
   const { t } = useLingui();
-  const [selectedDocument, setSelectedDocument] = useState<any | null>(null);
+  const documentViewerModalRef = useRef<DocumentViewerModalRef>(null);
 
   const { allDocuments, documentsByType } = usePropertyDocuments({
     id: targetableObject.id,
@@ -222,27 +181,10 @@ export const PropertyDocumentsCard = ({
 
   // Open document viewer
   const openDocumentViewer = (doc: any) => {
-    setSelectedDocument(doc);
-  };
-
-  // Close document viewer
-  const closeDocumentViewer = () => {
-    setSelectedDocument(null);
-  };
-
-  // Handle document download
-  const handleDownload = () => {
-    if (!selectedDocument) return;
-
-    if (selectedDocument.fullPath) {
-      const downloadLink = window.document.createElement('a');
-      downloadLink.href = selectedDocument.fullPath;
-      downloadLink.download =
-        selectedDocument.fileName || selectedDocument.name || 'document';
-      window.document.body.appendChild(downloadLink);
-      downloadLink.click();
-      window.document.body.removeChild(downloadLink);
-    }
+    documentViewerModalRef.current?.open({
+      name: doc.fileName || doc.name || 'Document',
+      url: doc.fullPath,
+    });
   };
 
   const DocumentItem = ({ document: doc }: { document: any }) => {
@@ -260,17 +202,11 @@ export const PropertyDocumentsCard = ({
       closeDropdown();
     }, [doc, isViewable, closeDropdown]);
 
-    const handleDownloadDocument = useCallback(() => {
-      if (doc.fullPath) {
-        const downloadLink = window.document.createElement('a');
-        downloadLink.href = doc.fullPath;
-        downloadLink.download = documentName;
-        window.document.body.appendChild(downloadLink);
-        downloadLink.click();
-        window.document.body.removeChild(downloadLink);
-      }
-      closeDropdown();
-    }, [doc, documentName, closeDropdown]);
+    const handleDownload = (fullPath: string, name: string) => {
+      if (!fullPath) return;
+
+      downloadFile(fullPath, name);
+    };
 
     return (
       <StyledDocumentItem onClick={handleOpenDocument}>
@@ -299,7 +235,7 @@ export const PropertyDocumentsCard = ({
               <MenuItem
                 text={t`Download`}
                 LeftIcon={IconDownload}
-                onClick={handleDownloadDocument}
+                onClick={() => handleDownload(doc.fullPath, documentName)}
               />
             </DropdownMenuItemsContainer>
           }
@@ -353,45 +289,7 @@ export const PropertyDocumentsCard = ({
       </Section>
 
       {/* Document Viewer Modal */}
-      {selectedDocument && (
-        <Modal size="large" isClosable onClose={closeDocumentViewer}>
-          <StyledHeader>
-            <StyledModalTitle>
-              <IconFileText size={20} />
-              {selectedDocument.fileName || selectedDocument.name || 'Document'}
-            </StyledModalTitle>
-            <StyledButtonContainer>
-              <IconButton
-                Icon={IconDownload}
-                onClick={handleDownload}
-                size="small"
-              />
-              <IconButton
-                Icon={IconX}
-                onClick={closeDocumentViewer}
-                size="small"
-              />
-            </StyledButtonContainer>
-          </StyledHeader>
-
-          <Suspense
-            fallback={
-              <StyledLoadingContainer>
-                <StyledLoadingText>
-                  Loading document viewer...
-                </StyledLoadingText>
-              </StyledLoadingContainer>
-            }
-          >
-            <DocumentViewer
-              documentName={
-                selectedDocument.fileName || selectedDocument.name || 'Document'
-              }
-              documentUrl={selectedDocument.fullPath}
-            />
-          </Suspense>
-        </Modal>
-      )}
+      <DocumentViewerModal ref={documentViewerModalRef} />
     </>
   );
 };

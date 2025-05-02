@@ -70,6 +70,7 @@ export const StyledShowPageSummaryCard = styled.div<{
   justify-content: center;
   padding-bottom: ${({ theme }) => theme.spacing(4)};
   box-sizing: border-box;
+  flex: 1;
 `;
 
 const StyledAddressAndDateContainer = styled.div<{ isMobile: boolean }>`
@@ -95,6 +96,7 @@ const StyledInfoContainer = styled.div<{ isMobile: boolean }>`
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(2)};
   width: 100%;
+  flex: 1;
 `;
 
 const StyledDate = styled.div<{ isMobile: boolean }>`
@@ -123,7 +125,6 @@ const StyledRichTextContent = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-height: 200px; // Shorter for the card view
   overflow-y: auto;
   line-height: 1.5;
   gap: ${({ theme }) => theme.spacing(1)};
@@ -136,6 +137,7 @@ const StyledFullRichTextContent = styled.div`
   width: 100%;
   line-height: 1.5;
   gap: ${({ theme }) => theme.spacing(1)};
+  flex: 1;
 `;
 
 const StyledParagraph = styled.p<{ textAlign?: string }>`
@@ -157,6 +159,13 @@ const StyledAddress = styled.div<{ isMobile: boolean }>`
 const StyledShowMoreButton = styled(Button)`
   align-self: flex-end;
   margin-top: ${({ theme }) => theme.spacing(2)};
+`;
+
+const StyledDescriptionContainer = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 `;
 
 const StyledShowPageSummaryCardSkeletonLoader = () => {
@@ -292,23 +301,24 @@ export const ShowPagePropertySummaryCard = ({
 
         <StyledTitle isMobile={isMobile}>{title}</StyledTitle>
 
-        {/* Display rich text content if available, otherwise fall back to plain description */}
-        {renderedRichText || (
-          <StyledDescription isMobile={isMobile}>
-            {description}
-          </StyledDescription>
-        )}
+        <StyledDescriptionContainer>
+          {/* Display rich text content if available, otherwise fall back to plain description */}
+          {renderedRichText || (
+            <StyledDescription isMobile={isMobile}>
+              {description}
+            </StyledDescription>
+          )}
 
-        {/* Show 'See full description' button if we have more content */}
-        {hasMoreContent && (
-          <StyledShowMoreButton
-            title={t`See full description`}
-            variant="tertiary"
-            onClick={handleShowFullDescription}
-            Icon={IconArrowRight}
-          />
-        )}
-
+          {/* Show 'See full description' button if we have more content */}
+          {hasMoreContent && (
+            <StyledShowMoreButton
+              title={t`See full description`}
+              variant="tertiary"
+              onClick={handleShowFullDescription}
+              Icon={IconArrowRight}
+            />
+          )}
+        </StyledDescriptionContainer>
         <Modal
           ref={fullDescriptionModalRef}
           size="large"
