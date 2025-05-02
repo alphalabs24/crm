@@ -147,62 +147,67 @@ const StyledDragOverlay = styled.div<{
   }
 `;
 
+const StyledRemoveButton = styled.button<{ show: boolean }>`
+  background: ${({ theme }) => theme.background.primary};
+  border: 1px solid ${({ theme }) => theme.border.color.medium};
+  border-radius: ${({ theme }) => theme.border.radius.sm};
+  padding: ${({ theme }) => theme.spacing(0.5)};
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: ${({ show }) => (show ? 1 : 0)};
+  transition: opacity 0.15s ease;
+
+  &:hover {
+    background: ${({ theme }) => theme.background.secondary};
+    opacity: 1;
+  }
+`;
+
 // Custom overlay for the image grid that has additional information
 const CustomImageControls = ({
   image,
   onRemove,
   onSaveEdit,
   isNew,
+  isHovering,
 }: {
   image: RecordEditPropertyImage;
   onRemove: (image: RecordEditPropertyImage) => void;
   onSaveEdit: (image: RecordEditPropertyImage, description: string) => void;
   isNew?: boolean;
+  isHovering: boolean;
 }) => {
-  const [hovering, setHovering] = useState(false);
+  const [tooltipVisible, setTooltipVisible] = useState(false);
   const { t } = useLingui();
   const dropdownId = `image-${image.id}-dropdown`;
   const { closeDropdown } = useDropdown(dropdownId);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const theme = useTheme();
 
-  const handleDelete = () => {
-    onRemove(image);
-    closeDropdown();
-  };
-
-  const handleEdit = () => {
-    setIsEditModalOpen(true);
-    setHovering(false);
-    closeDropdown();
-  };
-
-  const handleSaveEdit = (newDescription: string) => {
-    onSaveEdit(image, newDescription);
-  };
-
   return (
     <>
-      <StyledDropdownButtonContainer>
-        <AppTooltip
-          anchorSelect={`#image-${image.id}`}
-          content={image.description || t`No description`}
-          place="bottom"
-          noArrow
-          delay={TooltipDelay.noDelay}
-          isOpen={hovering}
-          clickable
-        />
+      <AppTooltip
+        anchorSelect={`#image-${image.id}`}
+        content={image.description || t`No description`}
+        place="bottom"
+        noArrow
+        delay={TooltipDelay.noDelay}
+        isOpen={tooltipVisible}
+        clickable
+      />
+      <StyledDropdownButtonContainer className="no-drag">
         <Dropdown
           dropdownId={dropdownId}
           clickableComponent={
-            <Button
-              variant="tertiary"
-              size="small"
-              Icon={IconDotsVertical}
-              onMouseEnter={() => setHovering(true)}
-              onMouseLeave={() => setHovering(false)}
-            />
+            <StyledRemoveButton
+              show={isHovering}
+              onMouseEnter={() => setTooltipVisible(true)}
+              onMouseLeave={() => setTooltipVisible(false)}
+            >
+              <IconDotsVertical size={14} color={theme.font.color.primary} />
+            </StyledRemoveButton>
           }
           dropdownMenuWidth={160}
           dropdownComponents={
@@ -210,13 +215,20 @@ const CustomImageControls = ({
               <MenuItem
                 text={t`Edit Description`}
                 LeftIcon={IconEdit}
-                onClick={handleEdit}
+                onClick={() => {
+                  setIsEditModalOpen(true);
+                  setTooltipVisible(false);
+                  closeDropdown();
+                }}
               />
               <MenuItem
                 text={t`Delete`}
                 accent="danger"
                 LeftIcon={IconTrash}
-                onClick={handleDelete}
+                onClick={() => {
+                  onRemove(image);
+                  closeDropdown();
+                }}
               />
             </DropdownMenuItemsContainer>
           }
@@ -227,7 +239,7 @@ const CustomImageControls = ({
         <ImageEditModal
           image={image}
           onClose={() => setIsEditModalOpen(false)}
-          onSave={handleSaveEdit}
+          onSave={(description) => onSaveEdit(image, description)}
         />
       )}
       {isNew && (
@@ -376,7 +388,7 @@ export const PropertyImageFormInput = ({ loading }: { loading?: boolean }) => {
     }));
 
     // Render controls for a specific image ID
-    const renderControls = (imageId: string) => {
+    const renderControls = (imageId: string, isHovering = false) => {
       const image = propertyImages.find((img) => img.id === imageId);
       if (!image) return null;
 
@@ -386,6 +398,7 @@ export const PropertyImageFormInput = ({ loading }: { loading?: boolean }) => {
           onRemove={onRemove}
           onSaveEdit={onSaveEdit}
           isNew={newImageIds.has(image.id)}
+          isHovering={isHovering}
         />
       );
     };

@@ -19,18 +19,24 @@ import { useCallback, useState, ReactNode, useEffect } from 'react';
 // --- Styled Grid Layout ---
 const StyledGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, 120px);
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
   gap: 12px;
 `;
 
 const StyledGridItemWrapper = styled.div`
-  background: ${({ theme }) => theme.background.tertiary};
+  background: ${({ theme }) => theme.background.secondary};
   border-radius: ${({ theme }) => theme.border.radius.sm};
   cursor: grab;
   height: 120px;
   overflow: hidden;
   position: relative;
-  width: 120px;
+  width: 100%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+
+  &:hover {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
+  }
 
   .highlight-new {
     animation: highlightNew 1.5s ease-out;
@@ -63,18 +69,19 @@ const StyledImage = styled.img`
 
 const StyledControlsWrapper = styled.div`
   position: absolute;
-  right: 0;
-  top: 0;
+  right: 4px;
+  top: 4px;
   z-index: 10;
 `;
 
 // --- Sortable Item Component ---
+/* eslint-disable react/jsx-props-no-spreading */
 const SortableImage = ({
   image,
   renderControls,
 }: {
   image: { id: string; previewUrl: string };
-  renderControls?: (imageId: string) => ReactNode;
+  renderControls?: (imageId: string, isHovering?: boolean) => ReactNode;
 }) => {
   const {
     attributes,
@@ -84,6 +91,8 @@ const SortableImage = ({
     transition,
     isDragging,
   } = useSortable({ id: image.id });
+
+  const [isHovering, setIsHovering] = useState(false);
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -95,20 +104,38 @@ const SortableImage = ({
     <StyledGridItemWrapper
       ref={setNodeRef}
       style={style}
-      // Using data attributes to avoid prop spreading while maintaining functionality
       data-handler-id={image.id}
+      className={isHovering ? 'is-hovering' : ''}
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseLeave={() => setIsHovering(false)}
       {...attributes}
-      {...listeners}
     >
+      {/* Dedicated drag handle that covers the whole image but not controls */}
+      <div
+        {...listeners}
+        style={{
+          position: 'absolute',
+          inset: 0,
+          zIndex: 1,
+          cursor: 'grab',
+        }}
+        className="drag-handle"
+      />
+
       <StyledImage
         src={image.previewUrl}
         alt="preview"
         draggable={false}
         id={`image-${image.id}`}
+        style={{ position: 'relative', zIndex: 0 }}
       />
+
+      {/* Controls rendered in a container with higher z-index */}
       {renderControls && (
-        <StyledControlsWrapper>
-          {renderControls(image.id)}
+        <StyledControlsWrapper className="no-drag">
+          {typeof renderControls === 'function'
+            ? renderControls(image.id, isHovering)
+            : renderControls}
         </StyledControlsWrapper>
       )}
     </StyledGridItemWrapper>
@@ -123,7 +150,7 @@ export const ImageGridDnd = ({
 }: {
   images: { id: string; previewUrl: string }[];
   onReorder: (newOrder: { id: string; previewUrl: string }[]) => void;
-  renderControls?: (imageId: string) => ReactNode;
+  renderControls?: (imageId: string, isHovering?: boolean) => ReactNode;
 }) => {
   const [items, setItems] = useState(images);
 
