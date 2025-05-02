@@ -8,12 +8,6 @@ import { DropdownMenuItemsContainer } from '@/ui/layout/dropdown/components/Drop
 import { useDropdown } from '@/ui/layout/dropdown/hooks/useDropdown';
 import { css, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
-import {
-  DragDropContext,
-  Draggable,
-  Droppable,
-  DropResult,
-} from '@hello-pangea/dnd';
 import { useLingui } from '@lingui/react/macro';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
@@ -33,6 +27,8 @@ import {
   TooltipDelay,
 } from 'twenty-ui';
 import { ImageEditModal } from './ImageEditModal';
+import RGL, { WidthProvider } from 'react-grid-layout';
+const ReactGridLayout = WidthProvider(RGL);
 
 const StyledContainer = styled.div`
   display: flex;
@@ -312,60 +308,48 @@ const DraggableImageItem = ({
         isOpen={hovering}
         clickable
       />
-      <Draggable key={image.id} draggableId={image.id} index={index}>
-        {(provided, snapshot) => (
-          <StyledImageWrapper
-            ref={provided.innerRef}
-            {...provided.draggableProps}
-            {...provided.dragHandleProps}
-            style={getItemStyle(
-              snapshot.isDragging,
-              provided.draggableProps.style,
-            )}
-            className={isNew ? 'highlight-new' : ''}
-            onMouseEnter={() => setHovering(true)}
-            onMouseLeave={() => setHovering(false)}
-          >
-            <StyledImage
-              src={image.previewUrl}
-              alt=""
-              loading="lazy"
-              id={`image-${image.id}`}
-            />
 
-            <StyledDropdownButtonContainer>
-              <Dropdown
-                dropdownId={dropdownId}
-                clickableComponent={
-                  <StyledRemoveButton show={hovering}>
-                    <IconDotsVertical
-                      size={14}
-                      color={theme.font.color.primary}
-                    />
-                  </StyledRemoveButton>
-                }
-                dropdownMenuWidth={160}
-                dropdownComponents={
-                  <DropdownMenuItemsContainer>
-                    <MenuItem
-                      text={t`Edit Description`}
-                      LeftIcon={IconEdit}
-                      onClick={handleEdit}
-                    />
-                    <MenuItem
-                      text={t`Delete`}
-                      accent="danger"
-                      LeftIcon={IconTrash}
-                      onClick={handleDelete}
-                    />
-                  </DropdownMenuItemsContainer>
-                }
-                dropdownHotkeyScope={{ scope: dropdownId }}
-              />
-            </StyledDropdownButtonContainer>
-          </StyledImageWrapper>
-        )}
-      </Draggable>
+      <StyledImageWrapper
+        className={isNew ? 'highlight-new' : ''}
+        onMouseEnter={() => setHovering(true)}
+        onMouseLeave={() => setHovering(false)}
+      >
+        <StyledImage
+          src={image.previewUrl}
+          alt=""
+          loading="lazy"
+          id={`image-${image.id}`}
+        />
+
+        <StyledDropdownButtonContainer>
+          <Dropdown
+            dropdownId={dropdownId}
+            clickableComponent={
+              <StyledRemoveButton show={hovering}>
+                <IconDotsVertical size={14} color={theme.font.color.primary} />
+              </StyledRemoveButton>
+            }
+            dropdownMenuWidth={160}
+            dropdownComponents={
+              <DropdownMenuItemsContainer>
+                <MenuItem
+                  text={t`Edit Description`}
+                  LeftIcon={IconEdit}
+                  onClick={handleEdit}
+                />
+                <MenuItem
+                  text={t`Delete`}
+                  accent="danger"
+                  LeftIcon={IconTrash}
+                  onClick={handleDelete}
+                />
+              </DropdownMenuItemsContainer>
+            }
+            dropdownHotkeyScope={{ scope: dropdownId }}
+          />
+        </StyledDropdownButtonContainer>
+      </StyledImageWrapper>
+
       {isEditModalOpen && (
         <ImageEditModal
           image={image}
@@ -467,26 +451,7 @@ export const PropertyImageFormInput = ({ loading }: { loading?: boolean }) => {
     noDragEventsBubbling: true,
   });
 
-  const onDragEnd = (result: DropResult) => {
-    const { destination, source } = result;
-
-    if (!destination || destination.index === source.index) {
-      return;
-    }
-
-    const updatedImages = reorderImages(
-      propertyImages,
-      source.index,
-      destination.index,
-    );
-
-    updatePropertyImageOrder(updatedImages);
-  };
-
   const gridRef = useRef<HTMLDivElement | null>(null);
-  const [showScrollButtons, setShowScrollButtons] = useState(false);
-  const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [canScrollRight, setCanScrollRight] = useState(false);
 
   const checkScrollability = useCallback(() => {
     if (isDefined(gridRef.current)) {
@@ -576,69 +541,60 @@ export const PropertyImageFormInput = ({ loading }: { loading?: boolean }) => {
 
     return (
       <>
-        <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId="property-images" direction="horizontal">
-            {(provided, snapshot) => (
-              <StyledImageGridContainer>
-                {showScrollButtons && (
-                  <>
-                    {canScrollLeft && (
-                      <StyledScrollButton
-                        direction="left"
-                        onClick={() => scroll('left')}
-                        aria-label={t`Scroll left`}
-                      >
-                        <IconChevronLeft size={16} />
-                      </StyledScrollButton>
-                    )}
-                    {canScrollRight && (
-                      <StyledScrollButton
-                        direction="right"
-                        onClick={() => scroll('right')}
-                        aria-label={t`Scroll right`}
-                      >
-                        <IconChevronRight size={16} />
-                      </StyledScrollButton>
-                    )}
-                  </>
+        <ReactGridLayout
+          className="layout"
+          cols={4}
+          rowHeight={140}
+          width={800}
+          margin={[12, 12]}
+          isResizable={false}
+          compactType={'horizontal'} // disables automatic vertical compaction
+          onDragStop={(layout) => {
+            // Sort by y then x to get the new visual order
+            const sorted = [...layout].sort((a, b) =>
+              a.y === b.y ? a.x - b.x : a.y - b.y,
+            );
+
+            const newOrder = sorted
+              .map((l) => propertyImages.find((img) => img.id === l.i))
+              .filter(Boolean) as RecordEditPropertyImage[];
+
+            updatePropertyImageOrder(newOrder);
+          }}
+        >
+          {propertyImages.map((image, index) => {
+            const gridItem = {
+              i: image.id,
+              x: index % 4, // 4 columns
+              y: Math.floor(index / 4),
+              w: 1,
+              h: 1,
+              static: false,
+            };
+
+            return (
+              <div key={image.id} data-grid={gridItem}>
+                {!loading && hasRefreshed ? (
+                  <DraggableImageItem
+                    image={image}
+                    index={index}
+                    onRemove={onRemove}
+                    onSaveEdit={onSaveEdit}
+                    isNew={newImageIds.has(image.id)}
+                  />
+                ) : (
+                  <StyledSkeletonLoader
+                    height={120}
+                    width={120}
+                    borderRadius={theme.border.radius.sm}
+                    highlightColor={theme.background.transparent.medium}
+                    baseColor={theme.background.transparent.lighter}
+                  />
                 )}
-                <StyledImageGrid
-                  ref={(el) => {
-                    (
-                      gridRef as React.MutableRefObject<HTMLDivElement | null>
-                    ).current = el;
-                    provided.innerRef(el);
-                  }}
-                  {...provided.droppableProps}
-                  isDraggingOver={snapshot.isDraggingOver}
-                >
-                  {propertyImages.map((image, index) =>
-                    !loading && hasRefreshed ? (
-                      <DraggableImageItem
-                        key={image.id}
-                        image={image}
-                        index={index}
-                        onRemove={onRemove}
-                        onSaveEdit={onSaveEdit}
-                        isNew={newImageIds.has(image.id)}
-                      />
-                    ) : (
-                      <StyledSkeletonLoader
-                        key={index}
-                        height={120}
-                        width={120}
-                        borderRadius={theme.border.radius.sm}
-                        highlightColor={theme.background.transparent.medium}
-                        baseColor={theme.background.transparent.lighter}
-                      />
-                    ),
-                  )}
-                  {provided.placeholder}
-                </StyledImageGrid>
-              </StyledImageGridContainer>
-            )}
-          </Droppable>
-        </DragDropContext>
+              </div>
+            );
+          })}
+        </ReactGridLayout>
       </>
     );
   };
