@@ -76,21 +76,66 @@ const StyledImageGrid = styled.div<{ isDraggingOver?: boolean }>`
   -webkit-overflow-scrolling: touch;
 `;
 
+const StyledGridItem = styled.div`
+  height: 100%;
+  position: relative;
+  transition: transform 0.2s ease;
+  user-select: none;
+  -webkit-user-drag: none;
+  width: 100%;
+
+  &:hover {
+    transform: scale(1.02);
+  }
+`;
+
+const StyledGridLayout = styled(ReactGridLayout)`
+  width: 100% !important;
+  position: relative;
+
+  .react-grid-item {
+    transition: all 0.2s ease;
+    transition-property: transform, left, top, width, height;
+
+    &.react-grid-placeholder {
+      background: ${({ theme }) => theme.background.transparent.lighter};
+      border-radius: ${({ theme }) => theme.border.radius.sm};
+      opacity: 0.4;
+      z-index: 2;
+    }
+
+    &.react-draggable-dragging {
+      transition: none;
+      z-index: 3;
+      will-change: transform;
+      cursor: grabbing;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+  }
+`;
+
 const StyledSkeletonLoader = styled(Skeleton)`
   display: inline-block;
   flex: 0 0 120px;
   margin: 0 8px 0 0; /* Add this to respect white-space: nowrap */
+  height: 120px;
+  width: 120px;
+  border-radius: ${({ theme }) => theme.border.radius.sm};
 `;
 
 const StyledImageWrapper = styled.div`
   position: relative;
-  flex: 0 0 120px; /* Fixed width, no growing or shrinking */
   height: 120px;
+  width: 120px;
   border-radius: ${({ theme }) => theme.border.radius.sm};
   overflow: hidden;
-  cursor: move;
+  cursor: grab;
   will-change: transform;
   display: inline-block; /* Add this to respect white-space: nowrap */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  /* Prevent browser's default drag */
+  -webkit-user-drag: none;
+  user-select: none;
 
   &:hover {
     border-color: ${({ theme }) => theme.border.color.strong};
@@ -122,6 +167,9 @@ const StyledImageWrapper = styled.div`
 const StyledImage = styled.img`
   height: 100%;
   object-fit: cover;
+  pointer-events: none;
+  -webkit-user-drag: none;
+  user-select: none;
   width: 100%;
 `;
 
@@ -295,6 +343,12 @@ const DraggableImageItem = ({
     onSaveEdit(image, newDescription);
   };
 
+  // Prevent browser's default drag behavior
+  const handleDragStart = (e: React.DragEvent) => {
+    e.preventDefault();
+    return false;
+  };
+
   const theme = useTheme();
 
   return (
@@ -308,17 +362,19 @@ const DraggableImageItem = ({
         isOpen={hovering}
         clickable
       />
-
       <StyledImageWrapper
         className={isNew ? 'highlight-new' : ''}
         onMouseEnter={() => setHovering(true)}
         onMouseLeave={() => setHovering(false)}
+        onDragStart={handleDragStart}
       >
         <StyledImage
           src={image.previewUrl}
           alt=""
           loading="lazy"
           id={`image-${image.id}`}
+          onDragStart={handleDragStart}
+          draggable="false"
         />
 
         <StyledDropdownButtonContainer>
@@ -349,7 +405,6 @@ const DraggableImageItem = ({
           />
         </StyledDropdownButtonContainer>
       </StyledImageWrapper>
-
       {isEditModalOpen && (
         <ImageEditModal
           image={image}
@@ -365,6 +420,9 @@ export const PropertyImageFormInput = ({ loading }: { loading?: boolean }) => {
   const [hasRefreshed, setHasRefreshed] = useState(false);
   const { t } = useLingui();
   const theme = useTheme();
+  const [showScrollButtons, setShowScrollButtons] = useState(false);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
 
   const {
     propertyImages,
@@ -412,7 +470,7 @@ export const PropertyImageFormInput = ({ loading }: { loading?: boolean }) => {
     // Clear highlight after 2.5 seconds
     setTimeout(() => {
       setNewImageIds(new Set());
-    }, 1500);
+    }, 2500);
 
     newPreviewFiles.forEach((file) => {
       addPropertyImage({
@@ -420,16 +478,6 @@ export const PropertyImageFormInput = ({ loading }: { loading?: boolean }) => {
         description: '',
       });
     });
-
-    // Scroll to end after adding images
-    setTimeout(() => {
-      if (isDefined(gridRef.current)) {
-        gridRef.current.scrollTo({
-          left: gridRef.current.scrollWidth,
-          behavior: 'smooth',
-        });
-      }
-    }, 100);
   };
 
   const onRemove = (propertyImage: RecordEditPropertyImage) => {
@@ -461,34 +509,6 @@ export const PropertyImageFormInput = ({ loading }: { loading?: boolean }) => {
       setShowScrollButtons(scrollWidth > clientWidth);
     }
   }, []);
-
-  useEffect(() => {
-    // Check on mount and when images change
-    checkScrollability();
-
-    // Check on scroll
-    const gridElement = gridRef.current;
-    if (isDefined(gridElement)) {
-      gridElement.addEventListener('scroll', checkScrollability);
-    }
-
-    // Check on window resize
-    window.addEventListener('resize', checkScrollability);
-
-    // Check after images load
-    const observer = new ResizeObserver(checkScrollability);
-    if (gridElement) {
-      observer.observe(gridElement);
-    }
-
-    return () => {
-      if (isDefined(gridElement)) {
-        gridElement.removeEventListener('scroll', checkScrollability);
-      }
-      window.removeEventListener('resize', checkScrollability);
-      observer.disconnect();
-    };
-  }, [checkScrollability, propertyImages]);
 
   const scroll = (direction: 'left' | 'right') => {
     if (isDefined(gridRef.current)) {
@@ -539,41 +559,85 @@ export const PropertyImageFormInput = ({ loading }: { loading?: boolean }) => {
       );
     }
 
+    // Calculate optimal number of columns based on viewport
+    const calculateCols = () => {
+      const viewportWidth = window.innerWidth;
+      if (viewportWidth < 768) return 2;
+      if (viewportWidth < 1024) return 3;
+      if (viewportWidth < 1440) return 4;
+      return 5;
+    };
+
+    const cols = calculateCols();
+
     return (
       <>
-        <ReactGridLayout
+        <StyledGridLayout
           className="layout"
-          cols={4}
+          cols={cols}
           rowHeight={140}
-          width={800}
-          margin={[12, 12]}
+          compactType="horizontal"
           isResizable={false}
-          compactType={'horizontal'} // disables automatic vertical compaction
-          onDragStop={(layout) => {
-            // Sort by y then x to get the new visual order
-            const sorted = [...layout].sort((a, b) =>
-              a.y === b.y ? a.x - b.x : a.y - b.y,
-            );
+          margin={[12, 12]}
+          verticalCompact={true}
+          preventCollision={false}
+          onLayoutChange={(layout) => {
+            // Ensure the correct order is maintained in the layout
+            const normalizedLayout = [...layout].sort((a, b) => {
+              if (a.y !== b.y) return a.y - b.y;
+              return a.x - b.x;
+            });
 
-            const newOrder = sorted
+            // Update x and y values to maintain consistent left-to-right, top-to-bottom ordering
+            for (let i = 0; i < normalizedLayout.length; i++) {
+              const row = Math.floor(i / cols);
+              const col = i % cols;
+              normalizedLayout[i].x = col;
+              normalizedLayout[i].y = row;
+            }
+          }}
+          onDragStop={(layout) => {
+            // Create a copy of the layout to avoid mutating the original
+            const newLayout = [...layout];
+
+            // Sort by position (row first, then column)
+            newLayout.sort((a, b) => {
+              if (a.y !== b.y) return a.y - b.y;
+              return a.x - b.x;
+            });
+
+            // Get the images in the new order
+            const newOrder = newLayout
               .map((l) => propertyImages.find((img) => img.id === l.i))
               .filter(Boolean) as RecordEditPropertyImage[];
 
-            updatePropertyImageOrder(newOrder);
+            // Only update if there's a change
+            const hasChanged = newOrder.some(
+              (img, idx) => img.id !== propertyImages[idx]?.id,
+            );
+
+            if (hasChanged) {
+              updatePropertyImageOrder(newOrder);
+            }
           }}
+          draggableHandle=".drag-handle"
         >
           {propertyImages.map((image, index) => {
             const gridItem = {
               i: image.id,
-              x: index % 4, // 4 columns
-              y: Math.floor(index / 4),
+              x: index % cols,
+              y: Math.floor(index / cols),
               w: 1,
               h: 1,
               static: false,
             };
 
             return (
-              <div key={image.id} data-grid={gridItem}>
+              <StyledGridItem
+                key={image.id}
+                data-grid={gridItem}
+                className="drag-handle"
+              >
                 {!loading && hasRefreshed ? (
                   <DraggableImageItem
                     image={image}
@@ -591,10 +655,10 @@ export const PropertyImageFormInput = ({ loading }: { loading?: boolean }) => {
                     baseColor={theme.background.transparent.lighter}
                   />
                 )}
-              </div>
+              </StyledGridItem>
             );
           })}
-        </ReactGridLayout>
+        </StyledGridLayout>
       </>
     );
   };
