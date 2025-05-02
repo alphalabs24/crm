@@ -7,6 +7,7 @@ import { FieldMetadataItem } from '@/object-metadata/types/FieldMetadataItem';
 import { ObjectMetadataItem } from '@/object-metadata/types/ObjectMetadataItem';
 import { RecordFieldValueSelectorContextProvider } from '@/object-record/record-store/contexts/RecordFieldValueSelectorContext';
 import { Trans } from '@lingui/react/macro';
+import { isFieldUuid } from '@/object-record/record-field/types/guards/isFieldUuid';
 
 type EventFieldDiffProps = {
   diffRecord: Record<string, any>;
@@ -56,7 +57,8 @@ export const EventFieldDiff = ({
   return (
     <RecordFieldValueSelectorContextProvider>
       <StyledEventFieldDiffContainer>
-        <EventFieldDiffLabel fieldMetadataItem={fieldMetadataItem} />→
+        <EventFieldDiffLabel fieldMetadataItem={fieldMetadataItem} />
+        {isFieldUuid({ type: fieldMetadataItem.type }) ? '' : '→'}
         {isUpdatedToEmpty ? (
           <StyledEmptyValue>
             <Trans>Empty</Trans>
@@ -69,11 +71,15 @@ export const EventFieldDiff = ({
               fieldMetadataItem={fieldMetadataItem}
               diffRecord={diffRecord}
             />
-            <EventFieldDiffValue
-              diffArtificialRecordStoreId={diffArtificialRecordStoreId}
-              mainObjectMetadataItem={mainObjectMetadataItem}
-              fieldMetadataItem={fieldMetadataItem}
-            />
+            {/* Don't show internal ids */}
+            {fieldMetadataItem &&
+            isFieldUuid({ type: fieldMetadataItem.type }) ? null : (
+              <EventFieldDiffValue
+                diffArtificialRecordStoreId={diffArtificialRecordStoreId}
+                mainObjectMetadataItem={mainObjectMetadataItem}
+                fieldMetadataItem={fieldMetadataItem}
+              />
+            )}
           </>
         )}
       </StyledEventFieldDiffContainer>
