@@ -4,8 +4,8 @@ import { PropertyAttachmentType } from '@/activities/files/types/Attachment';
 import { PropertyPdfType } from '@/ui/layout/property-pdf/types/types';
 import { DocumentationConfigurationModal } from '@/ui/layout/property-pdf/components/DocumentationConfigurationModal';
 import { FlyerConfigurationModal } from '@/ui/layout/property-pdf/components/FlyerConfigurationModal';
-import { Modal, ModalRefType } from '@/ui/layout/modal/components/Modal';
-import { useRef, useState, Suspense, lazy } from 'react';
+import { ModalRefType } from '@/ui/layout/modal/components/Modal';
+import { useRef, useState, lazy } from 'react';
 import { Trans, useLingui } from '@lingui/react/macro';
 import styled from '@emotion/styled';
 import { useTheme } from '@emotion/react';
@@ -23,7 +23,6 @@ import {
   IconButton,
   IconUpload,
   IconBolt,
-  IconX,
 } from 'twenty-ui';
 import { useFindOneRecord } from '@/object-record/hooks/useFindOneRecord';
 import { useAttachments } from '@/activities/files/hooks/useAttachments';
@@ -40,12 +39,6 @@ import {
   DocumentViewerModal,
   DocumentViewerModalRef,
 } from '~/ui/documents/document-viewer-modal/components/DocumentViewerModal';
-
-const DocumentViewer = lazy(() =>
-  import('@/activities/files/components/DocumentViewer').then((module) => ({
-    default: module.DocumentViewer,
-  })),
-);
 
 // Styled components sorted alphabetically
 const StyledContainer = styled.div`

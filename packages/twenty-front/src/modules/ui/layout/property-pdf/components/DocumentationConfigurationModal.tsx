@@ -383,7 +383,7 @@ export const DocumentationConfigurationModal = forwardRef<
   const [currentWorkspace] = useRecoilState(currentWorkspaceState);
   const mapboxAccessToken = useRecoilValue(mapboxAccessTokenState);
 
-  const { generatePdf, isLoading: pdfLoading } = usePropertyPdfGenerator({
+  const { generatePdf } = usePropertyPdfGenerator({
     record: property,
   });
 

@@ -44,8 +44,8 @@ export const DefaultDocumentationTemplate = ({
 
   // Check if there's a description to show
   const hasDescription =
-    !!property.description &&
-    property.description.trim().length > 0 &&
+    !!property.descriptionv2 &&
+    property.descriptionv2.blocknote &&
     configuration?.showDescription;
 
   // Create footer component for reuse

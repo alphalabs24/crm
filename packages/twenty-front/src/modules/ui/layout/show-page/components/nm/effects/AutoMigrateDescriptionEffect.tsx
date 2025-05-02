@@ -23,11 +23,7 @@ export const AutoMigrateDescriptionEffect = ({
 
   useEffect(() => {
     const migrateDescription = async () => {
-      console.log('attempting migration');
       if (!record || migrationAttempted || migrating) {
-        console.log(
-          'migration not needed because no record or migration already attempted',
-        );
         return;
       }
 
