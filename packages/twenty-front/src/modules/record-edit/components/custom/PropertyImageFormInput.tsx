@@ -191,7 +191,6 @@ const CustomImageControls = ({
   isNew?: boolean;
   isHovering: boolean;
 }) => {
-  const [tooltipVisible, setTooltipVisible] = useState(false);
   const { t } = useLingui();
   const dropdownId = `image-${image.id}-dropdown`;
   const { closeDropdown } = useDropdown(dropdownId);
@@ -200,28 +199,14 @@ const CustomImageControls = ({
 
   return (
     <>
-      <AppTooltip
-        anchorSelect={`#image-${image.id}`}
-        content={image.description || t`No description`}
-        place="bottom"
-        noArrow
-        delay={TooltipDelay.noDelay}
-        isOpen={tooltipVisible}
-        clickable
-      />
       <StyledDropdownButtonContainer className="no-drag">
         <Dropdown
           dropdownId={dropdownId}
           clickableComponent={
-            <StyledRemoveButton
-              show={isHovering}
-              onMouseEnter={() => setTooltipVisible(true)}
-              onMouseLeave={() => setTooltipVisible(false)}
-            >
+            <StyledRemoveButton show={isHovering}>
               <IconDotsVertical size={14} color={theme.font.color.primary} />
             </StyledRemoveButton>
           }
-          dropdownMenuWidth={160}
           dropdownComponents={
             <DropdownMenuItemsContainer>
               <MenuItem
@@ -229,7 +214,6 @@ const CustomImageControls = ({
                 LeftIcon={IconEdit}
                 onClick={() => {
                   setIsEditModalOpen(true);
-                  setTooltipVisible(false);
                   closeDropdown();
                 }}
               />
@@ -360,9 +344,14 @@ export const PropertyImageFormInput = ({ loading }: { loading?: boolean }) => {
   const renderContent = () => {
     // Show loading skeleton when explicitly loading or while refreshing URLs
     if (loading || !hasRefreshed) {
+      // Determine number of skeleton items to show
+      // If we have existing images, match that count, otherwise show at least 4
+      const skeletonCount =
+        propertyImages.length > 0 ? propertyImages.length : 4;
+
       return (
         <StyledSkeletonGrid>
-          {Array(propertyImages.length)
+          {Array(skeletonCount)
             .fill(0)
             .map((_, index) => (
               <StyledSkeletonItem

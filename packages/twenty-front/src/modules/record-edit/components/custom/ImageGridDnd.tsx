@@ -14,7 +14,9 @@ import {
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import styled from '@emotion/styled';
+import { TooltipDelay } from '@ui/display/tooltip/AppTooltip';
 import { useCallback, useState, ReactNode, useEffect } from 'react';
+import { AppTooltip } from 'twenty-ui';
 
 // --- Styled Grid Layout ---
 const StyledGrid = styled.div`
@@ -110,6 +112,14 @@ const SortableImage = ({
       onMouseLeave={() => setIsHovering(false)}
       {...attributes}
     >
+      <AppTooltip
+        anchorSelect={`#image-${image.id}`}
+        content={`No description`}
+        place="bottom"
+        noArrow
+        delay={TooltipDelay.noDelay}
+        isOpen={isHovering}
+      />
       {/* Dedicated drag handle that covers the whole image but not controls */}
       <div
         {...listeners}
@@ -125,8 +135,8 @@ const SortableImage = ({
       <StyledImage
         src={image.previewUrl}
         alt="preview"
-        draggable={false}
         id={`image-${image.id}`}
+        draggable={false}
         style={{ position: 'relative', zIndex: 0 }}
       />
 
