@@ -155,6 +155,11 @@ export const PropertyDocumentsCard = ({
       CoreObjectNameSingular.Property,
   });
 
+  const documentsToShow = allDocuments?.filter(
+    (doc) =>
+      doc.type !== 'PropertyDocumentation' && doc.type !== 'PropertyFlyer',
+  );
+
   if (loading) {
     return null;
   }
@@ -246,7 +251,7 @@ export const PropertyDocumentsCard = ({
   };
 
   // If no documents, show empty state
-  if (!allDocuments || allDocuments.length === 0) {
+  if (!documentsToShow || documentsToShow.length === 0) {
     return (
       <Section title={t`Documents`} icon={<IconFileText size={16} />}>
         <StyledNoDocuments>
