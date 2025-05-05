@@ -40,6 +40,8 @@ import {
   DocumentViewerModal,
   DocumentViewerModalRef,
 } from '~/ui/documents/document-viewer-modal/components/DocumentViewerModal';
+import { useSnackBar } from '@/ui/feedback/snack-bar-manager/hooks/useSnackBar';
+import { SnackBarVariant } from '@/ui/feedback/snack-bar-manager/components/SnackBar';
 
 // Styled components sorted alphabetically
 const StyledContainer = styled.div`
@@ -143,36 +145,6 @@ const StyledHeader = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(0.5)};
-`;
-
-const StyledLoadingContainer = styled.div`
-  align-items: center;
-  background: ${({ theme }) => theme.background.primary};
-  display: flex;
-  height: 80vh;
-  justify-content: center;
-  width: 100%;
-`;
-
-const StyledLoadingText = styled.div`
-  color: ${({ theme }) => theme.font.color.secondary};
-  font-size: ${({ theme }) => theme.font.size.lg};
-  font-weight: ${({ theme }) => theme.font.weight.medium};
-`;
-
-const StyledModalTitle = styled.span`
-  color: ${({ theme }) => theme.font.color.primary};
-  font-size: ${({ theme }) => theme.font.size.lg};
-  font-weight: ${({ theme }) => theme.font.weight.medium};
-  display: flex;
-  align-items: center;
-  gap: ${({ theme }) => theme.spacing(2)};
-`;
-
-const StyledButtonContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: ${({ theme }) => theme.spacing(1)};
 `;
 
 const StyledPreviewActions = styled.div`
@@ -300,6 +272,7 @@ export const MarketingSuite = ({ targetableObject }: MarketingSuiteProps) => {
 
   const documentViewerModalRef = useRef<DocumentViewerModalRef>(null);
 
+  const { enqueueSnackBar } = useSnackBar();
   const { attachments, loading: isLoading } = useAttachments(targetableObject);
 
   const propertyDocumentation = attachments.find(
@@ -383,7 +356,9 @@ export const MarketingSuite = ({ targetableObject }: MarketingSuiteProps) => {
       setIsDeleteModalOpen(false);
       setDocumentToDelete(null);
     } catch (error) {
-      console.error('Error removing attachment:', error);
+      enqueueSnackBar(t`Failed to delete document`, {
+        variant: SnackBarVariant.Error,
+      });
     }
   };
 
@@ -556,21 +531,6 @@ export const MarketingSuite = ({ targetableObject }: MarketingSuiteProps) => {
         ))}
       </StyledDocumentGrid>
     );
-  };
-
-  // Helper function to open a modal via URL parameters
-  const openModalViaUrl = (modalType: 'expose' | 'flyer') => {
-    const newSearchParams = new URLSearchParams(searchParams);
-    newSearchParams.set('configModal', modalType);
-
-    // Get current URL and extract hash part if it exists
-    const currentUrl = window.location.href;
-    const hashPart = currentUrl.includes('#')
-      ? `#${currentUrl.split('#')[1]}`
-      : '';
-
-    // Apply new search params while preserving hash
-    setSearchParams(newSearchParams, { replace: true });
   };
 
   return (
