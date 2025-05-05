@@ -69,6 +69,7 @@ export const ImageEditModal = ({
       isClosable
       hotkeyScope={ModalHotkeyScope.Default}
       padding="none"
+      portal
     >
       <StyledModalHeader>
         <StyledModalTitle>{t`Edit Image`}</StyledModalTitle>

@@ -5,7 +5,7 @@ import { PropertyPdfType } from '@/ui/layout/property-pdf/types/types';
 import { DocumentationConfigurationModal } from '@/ui/layout/property-pdf/components/DocumentationConfigurationModal';
 import { FlyerConfigurationModal } from '@/ui/layout/property-pdf/components/FlyerConfigurationModal';
 import { ModalRefType } from '@/ui/layout/modal/components/Modal';
-import { useRef, useState, lazy } from 'react';
+import { useRef, useState, lazy, useEffect } from 'react';
 import { Trans, useLingui } from '@lingui/react/macro';
 import styled from '@emotion/styled';
 import { useTheme } from '@emotion/react';
@@ -35,6 +35,7 @@ import { DocumentTypeIcon } from './DocumentTypeIcon';
 import { ConfirmationModal } from '@/ui/layout/modal/components/ConfirmationModal';
 import { downloadFile } from '@/activities/files/utils/downloadFile';
 import Skeleton from 'react-loading-skeleton';
+import { useSearchParams } from 'react-router-dom';
 import {
   DocumentViewerModal,
   DocumentViewerModalRef,
@@ -141,9 +142,37 @@ const StyledEmptyStateText = styled.div`
 const StyledHeader = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  width: 100%;
   gap: ${({ theme }) => theme.spacing(0.5)};
+`;
+
+const StyledLoadingContainer = styled.div`
+  align-items: center;
+  background: ${({ theme }) => theme.background.primary};
+  display: flex;
+  height: 80vh;
+  justify-content: center;
+  width: 100%;
+`;
+
+const StyledLoadingText = styled.div`
+  color: ${({ theme }) => theme.font.color.secondary};
+  font-size: ${({ theme }) => theme.font.size.lg};
+  font-weight: ${({ theme }) => theme.font.weight.medium};
+`;
+
+const StyledModalTitle = styled.span`
+  color: ${({ theme }) => theme.font.color.primary};
+  font-size: ${({ theme }) => theme.font.size.lg};
+  font-weight: ${({ theme }) => theme.font.weight.medium};
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing(2)};
+`;
+
+const StyledButtonContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: ${({ theme }) => theme.spacing(1)};
 `;
 
 const StyledPreviewActions = styled.div`
@@ -257,6 +286,7 @@ export const MarketingSuite = ({ targetableObject }: MarketingSuiteProps) => {
   const { uploadAttachmentFile } = useUploadAttachmentFile();
   const { t } = useLingui();
   const theme = useTheme();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   // Create dropdown instances for each document type
   const exposeDropdownId = 'document-dropdown-PropertyDocumentation';
@@ -291,6 +321,34 @@ export const MarketingSuite = ({ targetableObject }: MarketingSuiteProps) => {
   const exposePdfConfigModalRef = useRef<ModalRefType>(null);
   const flyerPdfConfigModalRef = useRef<ModalRefType>(null);
 
+  // Handle URL params to open specific modals
+  useEffect(() => {
+    const configModal = searchParams.get('configModal');
+
+    if (configModal && record) {
+      if (configModal === 'expose') {
+        exposePdfConfigModalRef.current?.open();
+      } else if (configModal === 'flyer') {
+        flyerPdfConfigModalRef.current?.open();
+      }
+
+      // Clear the parameter after opening the modal
+      const newSearchParams = new URLSearchParams(searchParams);
+      newSearchParams.delete('configModal');
+
+      // Apply new search params while preserving hash
+      setSearchParams(newSearchParams, { replace: true });
+    }
+  }, [searchParams, record, setSearchParams]);
+
+  const handleManualOpenModal = (modalType: 'expose' | 'flyer') => {
+    if (modalType === 'expose') {
+      exposePdfConfigModalRef.current?.open();
+    } else if (modalType === 'flyer') {
+      flyerPdfConfigModalRef.current?.open();
+    }
+  };
+
   const handleConfiguredPdfGeneration = async (
     result: {
       blob: Blob;
@@ -315,18 +373,6 @@ export const MarketingSuite = ({ targetableObject }: MarketingSuiteProps) => {
       '',
       true,
     );
-  };
-
-  const handleGenerateDocument = async (type: PropertyPdfType) => {
-    if (!record) return;
-
-    if (type === 'PropertyDocumentation' || type === 'PropertyFlyer') {
-      if (type === 'PropertyDocumentation') {
-        exposePdfConfigModalRef.current?.open();
-      } else {
-        flyerPdfConfigModalRef.current?.open();
-      }
-    }
   };
 
   const handleConfirmDeleteAttachment = async () => {
@@ -406,6 +452,30 @@ export const MarketingSuite = ({ targetableObject }: MarketingSuiteProps) => {
     return type === 'PropertyDocumentation'
       ? exposeDropdownId
       : flyerDropdownId;
+  };
+
+  const handleUploadDocument = (type: PropertyPdfType) => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.pdf,.doc,.docx';
+    input.onchange = async (e) => {
+      const files = (e.target as HTMLInputElement).files;
+      if (files?.[0]) {
+        await uploadAttachmentFile(
+          files[0],
+          {
+            id: targetableObject.id,
+            targetObjectNameSingular: targetableObject.targetObjectNameSingular,
+          },
+          type,
+          0,
+          files[0].name,
+          '',
+          true,
+        );
+      }
+    };
+    input.click();
   };
 
   const specialDocuments: SpecialDocument[] = [
@@ -488,6 +558,21 @@ export const MarketingSuite = ({ targetableObject }: MarketingSuiteProps) => {
     );
   };
 
+  // Helper function to open a modal via URL parameters
+  const openModalViaUrl = (modalType: 'expose' | 'flyer') => {
+    const newSearchParams = new URLSearchParams(searchParams);
+    newSearchParams.set('configModal', modalType);
+
+    // Get current URL and extract hash part if it exists
+    const currentUrl = window.location.href;
+    const hashPart = currentUrl.includes('#')
+      ? `#${currentUrl.split('#')[1]}`
+      : '';
+
+    // Apply new search params while preserving hash
+    setSearchParams(newSearchParams, { replace: true });
+  };
+
   return (
     <StyledContainer>
       <StyledSection>
@@ -508,6 +593,8 @@ export const MarketingSuite = ({ targetableObject }: MarketingSuiteProps) => {
             {specialDocuments.map((doc) => {
               const dropdownId = getDropdownIdForType(doc.type);
               const closeDropdown = getDropdownForType(doc.type);
+              const modalType =
+                doc.type === 'PropertyDocumentation' ? 'expose' : 'flyer';
 
               return (
                 <StyledDocumentCard key={doc.type}>
@@ -532,7 +619,7 @@ export const MarketingSuite = ({ targetableObject }: MarketingSuiteProps) => {
                           size="small"
                           Icon={IconRefresh}
                           title={t`Regenerate`}
-                          onClick={() => handleGenerateDocument(doc.type)}
+                          onClick={() => handleManualOpenModal(modalType)}
                         />
                         <Button
                           variant="secondary"
@@ -615,7 +702,7 @@ export const MarketingSuite = ({ targetableObject }: MarketingSuiteProps) => {
                             Icon={IconBolt}
                             title={t`Generate`}
                             disabled={!record}
-                            onClick={() => handleGenerateDocument(doc.type)}
+                            onClick={() => handleManualOpenModal(modalType)}
                           >
                             {t`Generate`}
                           </Button>
@@ -624,31 +711,7 @@ export const MarketingSuite = ({ targetableObject }: MarketingSuiteProps) => {
                             size="small"
                             Icon={IconFileText}
                             title={t`Upload`}
-                            onClick={() => {
-                              const input = document.createElement('input');
-                              input.type = 'file';
-                              input.accept = '.pdf,.doc,.docx';
-                              input.onchange = async (e) => {
-                                const files = (e.target as HTMLInputElement)
-                                  .files;
-                                if (files?.[0]) {
-                                  await uploadAttachmentFile(
-                                    files[0],
-                                    {
-                                      id: targetableObject.id,
-                                      targetObjectNameSingular:
-                                        targetableObject.targetObjectNameSingular,
-                                    },
-                                    doc.type,
-                                    0,
-                                    files[0].name,
-                                    '',
-                                    true,
-                                  );
-                                }
-                              };
-                              input.click();
-                            }}
+                            onClick={() => handleUploadDocument(doc.type)}
                           >
                             {t`Upload`}
                           </Button>
@@ -684,7 +747,15 @@ export const MarketingSuite = ({ targetableObject }: MarketingSuiteProps) => {
           <DocumentationConfigurationModal
             ref={exposePdfConfigModalRef}
             property={record}
-            onClose={() => exposePdfConfigModalRef.current?.close()}
+            onClose={() => {
+              exposePdfConfigModalRef.current?.close();
+              // Clear URL param on close if it exists
+              if (searchParams.get('configModal') === 'expose') {
+                const newSearchParams = new URLSearchParams(searchParams);
+                newSearchParams.delete('configModal');
+                setSearchParams(newSearchParams, { replace: true });
+              }
+            }}
             onGenerate={async (result) => {
               if (result) {
                 if (propertyDocumentation) {
@@ -700,7 +771,15 @@ export const MarketingSuite = ({ targetableObject }: MarketingSuiteProps) => {
           <FlyerConfigurationModal
             ref={flyerPdfConfigModalRef}
             property={record}
-            onClose={() => flyerPdfConfigModalRef.current?.close()}
+            onClose={() => {
+              flyerPdfConfigModalRef.current?.close();
+              // Clear URL param on close if it exists
+              if (searchParams.get('configModal') === 'flyer') {
+                const newSearchParams = new URLSearchParams(searchParams);
+                newSearchParams.delete('configModal');
+                setSearchParams(newSearchParams, { replace: true });
+              }
+            }}
             onGenerate={async (result) => {
               if (result) {
                 if (propertyFlyer) {

@@ -60,6 +60,7 @@ export const ActionDropdown = ({
     return (
       <Dropdown
         dropdownId={dropdownId}
+        dropdownMenuWidth={260}
         clickableComponent={
           <Button
             title={t`More`}
@@ -105,6 +106,7 @@ export const ActionDropdown = ({
       {actions.length > 0 && (
         <Dropdown
           dropdownId={dropdownId}
+          dropdownMenuWidth={260}
           clickableComponent={
             <StyledIconButton
               Icon={IconChevronDown}
