@@ -13,6 +13,7 @@ import {
   rectSortingStrategy,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { css, keyframes, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useCallback, useState, ReactNode, useEffect } from 'react';
 import { AppTooltip } from 'twenty-ui';
@@ -24,12 +25,30 @@ const StyledGrid = styled.div`
   gap: 12px;
 `;
 
-const StyledGridItemWrapper = styled.div`
+// Define keyframes for the highlight animation dynamically with theme colors
+const createHighlightPulse = (color: string) => keyframes`
+  0% {
+    box-shadow: 0 0 0 0 ${color};
+  }
+   30% {
+    box-shadow: 0 0 0 4px ${color};
+  }
+  80% {
+    box-shadow: 0 0 0 4px ${color};
+  }
+  100% {
+    box-shadow: 0 0 0 0 ${color};
+  }
+`;
+
+const StyledGridItemWrapper = styled.div<{
+  isNew?: boolean;
+  highlightAnimation?: any;
+}>`
   background: ${({ theme }) => theme.background.secondary};
   border-radius: ${({ theme }) => theme.border.radius.sm};
   cursor: grab;
   height: 120px;
-
   position: relative;
   width: 100%;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
@@ -39,34 +58,22 @@ const StyledGridItemWrapper = styled.div`
     transform: translateY(-1px);
   }
 
-  .highlight-new {
-    animation: highlightNew 1.5s ease-out;
-  }
-
-  @keyframes highlightNew {
-    0% {
-      box-shadow: 0 0 0 3px ${({ theme }) => theme.color.blue};
-      opacity: 0.7;
-    }
-    75% {
-      box-shadow: 0 0 0 3px ${({ theme }) => theme.color.blue};
-      opacity: 0.7;
-    }
-    100% {
-      box-shadow: 0 0 0 0 transparent;
-      opacity: 0;
-    }
-  }
+  ${({ isNew, highlightAnimation }) =>
+    isNew &&
+    highlightAnimation &&
+    css`
+      animation: ${highlightAnimation} 2s ease-out;
+    `}
 `;
 
 const StyledImage = styled.img`
+  -webkit-user-drag: none;
+  border-radius: ${({ theme }) => theme.border.radius.sm};
   height: 100%;
   object-fit: cover;
   pointer-events: none;
-  -webkit-user-drag: none;
   user-select: none;
   width: 100%;
-  border-radius: ${({ theme }) => theme.border.radius.sm};
 `;
 
 const StyledControlsWrapper = styled.div`
@@ -81,9 +88,11 @@ const StyledControlsWrapper = styled.div`
 const SortableImage = ({
   image,
   renderControls,
+  isNew,
 }: {
   image: { id: string; previewUrl: string; tooltipContent?: string };
   renderControls?: (imageId: string, isHovering?: boolean) => ReactNode;
+  isNew?: boolean;
 }) => {
   const {
     attributes,
@@ -95,6 +104,8 @@ const SortableImage = ({
   } = useSortable({ id: image.id });
 
   const [isHovering, setIsHovering] = useState(false);
+  const theme = useTheme();
+  const highlightAnimation = createHighlightPulse(theme.color.blue);
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -112,6 +123,8 @@ const SortableImage = ({
       onMouseLeave={() => setIsHovering(false)}
       {...attributes}
       id={`image-container-${image.id}`}
+      isNew={isNew}
+      highlightAnimation={highlightAnimation}
     >
       {/* Tooltip with explicit control to ensure it's visible */}
       {isHovering && (
@@ -160,12 +173,14 @@ export const ImageGridDnd = ({
   images,
   onReorder,
   renderControls,
+  newImageIds,
 }: {
   images: { id: string; previewUrl: string; tooltipContent?: string }[];
   onReorder: (
     newOrder: { id: string; previewUrl: string; tooltipContent?: string }[],
   ) => void;
   renderControls?: (imageId: string, isHovering?: boolean) => ReactNode;
+  newImageIds?: Set<string>;
 }) => {
   const [items, setItems] = useState(images);
 
@@ -206,6 +221,7 @@ export const ImageGridDnd = ({
               key={image.id}
               image={image}
               renderControls={renderControls}
+              isNew={newImageIds?.has(image.id)}
             />
           ))}
         </StyledGrid>

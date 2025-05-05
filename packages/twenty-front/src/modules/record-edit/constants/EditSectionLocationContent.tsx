@@ -3,7 +3,8 @@ import { Trans } from '@lingui/react/macro';
 
 export const LOCATION_SECTION_CONTENT: SectionContent[] = [
   {
-    title: 'Key Distances',
+    key: 'key-distances',
+    title: <Trans>Key Distances</Trans>,
     groups: [
       // TODO: Add distances
     ],

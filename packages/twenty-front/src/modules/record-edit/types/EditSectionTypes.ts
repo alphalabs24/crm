@@ -30,16 +30,18 @@ export type EditSectionContentWidth =
   | 'twoThirds';
 
 export type SectionContent = {
-  title: string;
+  title: string | ReactNode;
   groups: FieldGroup[];
   width?: EditSectionContentWidth;
   omitForPublications?: boolean;
   description?: ReactNode;
+  // Unique identifier for the section
+  key: string;
 };
 
 export type Section = {
   id: string;
-  title: string;
+  title: string | ReactNode;
   content: SectionContent[];
   Icon?: IconComponent;
 };

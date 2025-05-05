@@ -2,6 +2,7 @@ import { SectionContent } from '@/record-edit/types/EditSectionTypes';
 
 export const DOCUMENTS_SECTION_CONTENT: SectionContent[] = [
   {
+    key: 'documents',
     title: 'Documents',
     width: 'half',
     groups: [
@@ -11,6 +12,7 @@ export const DOCUMENTS_SECTION_CONTENT: SectionContent[] = [
     ],
   },
   {
+    key: 'external-links',
     title: 'External Links',
     width: 'half',
     groups: [

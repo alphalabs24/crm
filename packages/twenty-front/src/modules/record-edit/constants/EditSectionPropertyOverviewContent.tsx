@@ -7,7 +7,8 @@ import { Trans } from '@lingui/react/macro';
 // Field will use inline fields and input will use form inputs
 export const OVERVIEW_SECTION_CONTENT: SectionContent[] = [
   {
-    title: 'Media',
+    key: 'media',
+    title: <Trans>Media</Trans>,
     width: 'half',
     groups: [
       {
@@ -19,7 +20,8 @@ export const OVERVIEW_SECTION_CONTENT: SectionContent[] = [
     ],
   },
   {
-    title: 'Basic Information',
+    key: 'basic-information',
+    title: <Trans>Basic Information</Trans>,
     width: 'half',
     groups: [
       {
@@ -38,7 +40,8 @@ export const OVERVIEW_SECTION_CONTENT: SectionContent[] = [
     ],
   },
   {
-    title: 'Building Details',
+    key: 'building-details',
+    title: <Trans>Building Details</Trans>,
     width: 'twoThirds',
     groups: [
       PropertyCategoryGroup,
@@ -95,7 +98,8 @@ export const OVERVIEW_SECTION_CONTENT: SectionContent[] = [
   },
 
   {
-    title: 'Technical Specifications',
+    key: 'technical-specifications',
+    title: <Trans>Technical Specifications</Trans>,
     width: 'third',
     groups: [
       {
@@ -108,7 +112,8 @@ export const OVERVIEW_SECTION_CONTENT: SectionContent[] = [
     ],
   },
   {
-    title: 'Financial Details',
+    key: 'financial-details',
+    title: <Trans>Financial Details</Trans>,
     width: 'half',
     groups: [
       FinancialOverviewGroup,
@@ -119,7 +124,8 @@ export const OVERVIEW_SECTION_CONTENT: SectionContent[] = [
     ],
   },
   {
-    title: 'Location',
+    key: 'location',
+    title: <Trans>Location</Trans>,
     width: 'half',
     description: (
       <Trans>
@@ -135,7 +141,8 @@ export const OVERVIEW_SECTION_CONTENT: SectionContent[] = [
   },
 
   {
-    title: 'Property Features',
+    key: 'property-features',
+    title: <Trans>Property Features</Trans>,
     width: 'half',
     groups: [
       {
@@ -144,7 +151,8 @@ export const OVERVIEW_SECTION_CONTENT: SectionContent[] = [
     ],
   },
   {
-    title: 'Stakeholders',
+    key: 'stakeholders',
+    title: <Trans>Stakeholders</Trans>,
     width: 'half',
     omitForPublications: true,
     groups: [

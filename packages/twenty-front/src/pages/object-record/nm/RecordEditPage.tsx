@@ -12,7 +12,6 @@ import { RecordSortsComponentInstanceContext } from '@/object-record/record-sort
 import { RecordValueSetterEffect } from '@/object-record/record-store/components/RecordValueSetterEffect';
 import { RecordFieldValueSelectorContextProvider } from '@/object-record/record-store/contexts/RecordFieldValueSelectorContext';
 import { RecordEditContainer } from '@/record-edit/components/RecordEditContainer';
-import { EDIT_SECTIONS_TABS } from '@/record-edit/constants/EditSectionTabs';
 import { RecordEditProvider } from '@/record-edit/contexts/RecordEditContext';
 import { UnsavedChangesProvider } from '@/record-edit/contexts/UnsavedChangesContext';
 import { PageBody } from '@/ui/layout/page/components/PageBody';
@@ -20,6 +19,7 @@ import { PageContainer } from '@/ui/layout/page/components/PageContainer';
 import { PAGE_BAR_MIN_HEIGHT } from '@/ui/layout/page/components/PageHeader';
 import { PageTitle } from '@/ui/utilities/page-title/components/PageTitle';
 import styled from '@emotion/styled';
+import { useEditSectionTabs } from '@/record-edit/hooks/useEditSectionTabs';
 
 const StyledHeader = styled.div`
   align-items: center;
@@ -58,6 +58,8 @@ export const RecordEditPage = () => {
     parameters.objectNameSingular ?? '',
     parameters.objectRecordId ?? '',
   );
+
+  const editSectionTabs = useEditSectionTabs();
 
   const { labelIdentifierFieldMetadataItem } =
     getObjectMetadataIdentifierFields({ objectMetadataItem });
@@ -108,7 +110,7 @@ export const RecordEditPage = () => {
                         <RecordEditContainer
                           objectNameSingular={objectNameSingular}
                           recordId={objectRecordId}
-                          tabs={EDIT_SECTIONS_TABS}
+                          tabs={editSectionTabs}
                         />
                       </TimelineActivityContext.Provider>
                     </PageBody>

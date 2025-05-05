@@ -13,7 +13,7 @@ import { SnackBarVariant } from '@/ui/feedback/snack-bar-manager/components/Snac
 import { useSnackBar } from '@/ui/feedback/snack-bar-manager/hooks/useSnackBar';
 import { SingleTabProps, TabList } from '@/ui/layout/tab/components/TabList';
 import { useTabList } from '@/ui/layout/tab/hooks/useTabList';
-import { useLingui } from '@lingui/react/macro';
+import { Trans, useLingui } from '@lingui/react/macro';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { isDefined } from 'twenty-shared';
@@ -355,7 +355,7 @@ export const RecordEditContainer = ({
       }
       return (
         <StyledSection
-          key={section.title}
+          key={section.key}
           width={section.width ?? 385}
           height={500}
         >
@@ -402,13 +402,20 @@ export const RecordEditContainer = ({
                           fieldsByName[conditionFieldName],
                       );
 
+                      const updatedFields = getUpdatedFields();
+
                       // Handles if field should show or not
                       const shouldRender =
                         conditionFields?.every((conditionField) => {
                           const conditionFieldValue = String(
-                            getUpdatedFields()[conditionField?.name] ??
-                              record?.[conditionField?.name] ??
-                              '',
+                            updatedFields[conditionField?.name]
+                              ? updatedFields[conditionField?.name]
+                              : // TODO Only check this if updated fields isn't explicitly set
+                                !Object.keys(updatedFields).includes(
+                                    conditionField?.name,
+                                  ) && record?.[conditionField?.name]
+                                ? record?.[conditionField?.name]
+                                : '',
                           ).toLowerCase();
 
                           if (

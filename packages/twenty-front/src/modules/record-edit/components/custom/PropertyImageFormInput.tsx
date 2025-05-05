@@ -14,7 +14,6 @@ import { useDropzone } from 'react-dropzone';
 import Skeleton from 'react-loading-skeleton';
 import { isDefined } from 'twenty-shared';
 import {
-  AppTooltip,
   Button,
   IconDotsVertical,
   IconEdit,
@@ -22,7 +21,6 @@ import {
   IconTrash,
   IconUpload,
   MenuItem,
-  TooltipDelay,
 } from 'twenty-ui';
 import { ImageEditModal } from './ImageEditModal';
 import { ImageGridDnd } from './ImageGridDnd';
@@ -51,43 +49,6 @@ const StyledDescription = styled.p`
   color: ${({ theme }) => theme.font.color.tertiary};
   font-size: ${({ theme }) => theme.font.size.sm};
   margin: 0;
-`;
-
-const StyledImageWrapper = styled.div`
-  position: relative;
-  height: 120px;
-  width: 120px;
-  border-radius: ${({ theme }) => theme.border.radius.sm};
-  overflow: hidden;
-  cursor: grab;
-  will-change: transform;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-
-  &:hover {
-    border-color: ${({ theme }) => theme.border.color.strong};
-  }
-
-  &.highlight-new {
-    animation: highlightNew 1.5s ease-out;
-  }
-
-  @keyframes highlightNew {
-    0% {
-      scale: 0;
-      opacity: 0;
-      box-shadow: 0 0 0 3px ${({ theme }) => theme.color.blue};
-    }
-    15% {
-      scale: 1;
-      opacity: 1;
-    }
-    75% {
-      box-shadow: 0 0 0 3px ${({ theme }) => theme.color.blue};
-    }
-    100% {
-      box-shadow: 0 0 0 0 transparent;
-    }
-  }
 `;
 
 const StyledDropdownButtonContainer = styled.div`
@@ -182,13 +143,11 @@ const CustomImageControls = ({
   image,
   onRemove,
   onSaveEdit,
-  isNew,
   isHovering,
 }: {
   image: RecordEditPropertyImage;
   onRemove: (image: RecordEditPropertyImage) => void;
   onSaveEdit: (image: RecordEditPropertyImage, description: string) => void;
-  isNew?: boolean;
   isHovering: boolean;
 }) => {
   const { t } = useLingui();
@@ -236,17 +195,6 @@ const CustomImageControls = ({
           image={image}
           onClose={() => setIsEditModalOpen(false)}
           onSave={(description) => onSaveEdit(image, description)}
-        />
-      )}
-      {isNew && (
-        <div
-          className="highlight-new"
-          style={{
-            position: 'absolute',
-            inset: 0,
-            borderRadius: theme.border.radius.sm,
-            pointerEvents: 'none',
-          }}
         />
       )}
     </>
@@ -328,15 +276,19 @@ export const PropertyImageFormInput = ({ loading }: { loading?: boolean }) => {
     newOrder: { id: string; previewUrl: string; tooltipContent?: string }[],
   ) => {
     // Map the simplified image objects back to the full RecordEditPropertyImage objects
-    const reorderedImages = newOrder.map(
-      (item) => propertyImages.find((img) => img.id === item.id)!,
+    const reorderedImages = newOrder.map((item) =>
+      propertyImages.find((img) => img.id === item.id),
     );
-    updatePropertyImageOrder(reorderedImages);
+    // If any image is not found, return
+    if (reorderedImages.some((image) => !image)) {
+      return;
+    }
+    updatePropertyImageOrder(reorderedImages as RecordEditPropertyImage[]);
   };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: {
-      'image/*': ['.png', '.jpg', '.jpeg', '.gif'],
+      'image/*': ['.png', '.jpg', '.jpeg'],
     },
     onDrop: onAdd,
     noClick: true,
@@ -408,7 +360,6 @@ export const PropertyImageFormInput = ({ loading }: { loading?: boolean }) => {
           image={image}
           onRemove={onRemove}
           onSaveEdit={onSaveEdit}
-          isNew={newImageIds.has(image.id)}
           isHovering={isHovering}
         />
       );
@@ -420,6 +371,7 @@ export const PropertyImageFormInput = ({ loading }: { loading?: boolean }) => {
           images={simplifiedImages}
           onReorder={onReorder}
           renderControls={renderControls}
+          newImageIds={newImageIds}
         />
       </div>
     );

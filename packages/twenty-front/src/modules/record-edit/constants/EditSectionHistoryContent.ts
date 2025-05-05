@@ -2,6 +2,7 @@ import { SectionContent } from '@/record-edit/types/EditSectionTypes';
 
 export const HISTORY_SECTION_CONTENT: SectionContent[] = [
   {
+    key: 'creation-information',
     title: 'Creation Information',
     groups: [
       {
@@ -14,6 +15,7 @@ export const HISTORY_SECTION_CONTENT: SectionContent[] = [
     ],
   },
   {
+    key: 'last-update',
     title: 'Last Update',
     groups: [
       {
@@ -23,6 +25,7 @@ export const HISTORY_SECTION_CONTENT: SectionContent[] = [
     ],
   },
   {
+    key: 'reference-information',
     title: 'Reference Information',
     groups: [
       {
@@ -32,6 +35,7 @@ export const HISTORY_SECTION_CONTENT: SectionContent[] = [
     ],
   },
   {
+    key: 'status',
     title: 'Status',
     groups: [
       {

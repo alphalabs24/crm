@@ -23,6 +23,7 @@ import { PropertyEmailsFormInput } from './custom/PropertyEmailsFormInput';
 import { PropertyImageFormInput } from './custom/PropertyImageFormInput';
 import { PropertyMoviesFormInput } from './custom/PropertyMoviesFormInput';
 import { PropertyDescriptionFormInput } from './custom/PropertyDescriptionFormInput';
+import { useLingui } from '@lingui/react/macro';
 
 const StyledFieldContainer = styled.div<{ isHorizontal?: boolean }>`
   display: flex;
@@ -32,11 +33,31 @@ const StyledFieldContainer = styled.div<{ isHorizontal?: boolean }>`
   min-width: ${({ isHorizontal }) => (isHorizontal ? '160px' : 'unset')};
 `;
 
-const StyledFieldName = styled.div`
+const StyledFieldName = styled.div<{ isRequired?: boolean; isEmpty?: boolean }>`
   color: ${({ theme }) => theme.font.color.primary};
   display: flex;
   align-items: center;
   gap: ${({ theme }) => theme.spacing(0.5)};
+  position: relative;
+
+  ${({ isRequired, isEmpty, theme }) =>
+    isRequired &&
+    isEmpty &&
+    `
+      &::after {
+        content: 'required';
+        color: ${theme.color.blue};
+        margin-left: ${theme.spacing(0.5)};
+        font-size: ${theme.font.size.xs};
+        font-weight: ${theme.font.weight.regular};
+        display: inline-flex;
+        align-items: center;
+      }
+    `}
+`;
+
+const StyledLabelText = styled.span`
+  position: relative;
 `;
 
 const StyledInfoIcon = styled.div`
@@ -91,6 +112,8 @@ export const RecordEditField = ({
     recordFromStore: record ?? null,
   });
 
+  const { t } = useLingui();
+
   const isMultiPublisherEnabled = useIsFeatureEnabled(
     FeatureFlagKey.IsMultiPublisherEnabled,
   );
@@ -125,6 +148,23 @@ export const RecordEditField = ({
     (Array.isArray(updatedFields) && updatedFields.length === 0) ||
     updatedFields === '';
 
+  // Determine if field is empty (either from updated fields or original record)
+  const isFieldEmpty = useMemo(() => {
+    // Check updated fields first
+    if (updatedFields !== undefined) {
+      return isEmpty || isNull(updatedFields);
+    }
+
+    // Otherwise check original record
+    const recordValue = record?.[field.name];
+    return (
+      recordValue === undefined ||
+      recordValue === null ||
+      recordValue === '' ||
+      (Array.isArray(recordValue) && recordValue.length === 0)
+    );
+  }, [updatedFields, isEmpty, record, field.name]);
+
   // Manually override the isFieldEmpty value to false if the field is not empty
   const overrideIsFieldEmpty =
     updatedFields && !isEmpty
@@ -145,10 +185,8 @@ export const RecordEditField = ({
   return (
     <StyledFieldContainer>
       {showLabel && type !== 'custom' && (
-        <StyledFieldName>
-          <span>
-            {field.label} {isRequired ? '*' : ''}
-          </span>
+        <StyledFieldName isRequired={isRequired} isEmpty={isFieldEmpty}>
+          <StyledLabelText>{field.label}</StyledLabelText>
           {showDescription && fieldMetadataItem?.description && (
             <>
               <StyledInfoIcon id={`field-${field.id}-info`}>
