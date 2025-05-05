@@ -31,6 +31,7 @@ export type AvailabilityChecks = {
   hasAgencyPhone: boolean;
   hasWorkspaceLogo: boolean;
   hasMultipleImages: boolean;
+  hasDescription: boolean;
 };
 
 export const useAvailabilityChecks = (
@@ -45,8 +46,16 @@ export const useAvailabilityChecks = (
       hasAgencyPhone: !!property?.agency?.phone?.primaryPhone,
       hasWorkspaceLogo: !!workspaceLogo,
       hasMultipleImages: imagesLength > 1,
+      hasDescription: !!property?.descriptionV2,
     }),
-    [property?.agency, workspaceLogo, imagesLength],
+    [
+      property?.agency?.name,
+      property?.agency?.email?.primaryEmail,
+      property?.agency?.phone?.primaryPhone,
+      property?.descriptionV2,
+      workspaceLogo,
+      imagesLength,
+    ],
   );
 };
 

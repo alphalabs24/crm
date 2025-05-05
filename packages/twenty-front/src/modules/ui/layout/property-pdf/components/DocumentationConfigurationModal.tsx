@@ -16,24 +16,19 @@ import {
 } from '@/ui/layout/show-page/components/nm/modal-components/ModalComponents';
 import {
   Button,
-  IconFile,
   IconMap,
   IconBook2,
   IconPhoto,
   IconListCheck,
   IconFileDescription,
-  IconLayoutGrid,
   IconCheck,
   useIsMobile,
-  IconRefresh,
   IconBolt,
 } from 'twenty-ui';
 import { useSubcategoryByCategory } from '@/object-record/record-show/hooks/useSubcategoryByCategory';
 import { CATEGORY_SUBTYPES } from '@/record-edit/constants/CategorySubtypes';
 import { currentWorkspaceState } from '@/auth/states/currentWorkspaceState';
 import { mapboxAccessTokenState } from '@/client-config/states/mapboxAccessTokenState';
-import { useColorScheme } from '@/ui/theme/hooks/useColorScheme';
-import { useSystemColorScheme } from '@/ui/theme/hooks/useSystemColorScheme';
 
 import {
   PropertyPdfPreview,
@@ -43,7 +38,6 @@ import {
   ConfigurationType,
   PdfDocumentationConfiguration,
 } from '../types/types';
-import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadataItem';
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { usePropertyImages } from '../../show-page/hooks/usePropertyImages';
 
@@ -52,11 +46,6 @@ import {
   StyledModalLayout,
   StyledSectionDivider,
   StyledSectionTitle,
-  StyledFieldsGrid,
-  StyledFieldCard,
-  StyledFieldLabelContainer,
-  StyledFieldLabel,
-  StyledSelectionOrder,
   StyledOptionsGroup,
   StyledOptionsPanel,
   StyledPreviewContainer,
@@ -134,7 +123,6 @@ export const DocumentationContentOptions = ({
 
   // Calculate available data
   const hasMapData = !!mapUrl;
-  const hasDescription = !!property.description;
   const hasFloorplan =
     !!property.floorplanUrl ||
     (property.attachments && property.attachments.length > 0);
@@ -204,38 +192,35 @@ export const DocumentationContentOptions = ({
         <StyledOptionCard
           isSelected={config.showDescription}
           onClick={() =>
-            hasDescription
+            availability.hasDescription
               ? setConfig((prev) => ({
                   ...prev,
                   showDescription: !prev.showDescription,
                 }))
               : null
           }
-          style={{
-            opacity: hasDescription ? 1 : 0.5,
-            cursor: hasDescription ? 'pointer' : 'not-allowed',
-          }}
+          isDisabled={!availability.hasDescription}
         >
           <StyledOptionIcon
-            isSelected={config.showDescription && hasDescription}
+            isSelected={config.showDescription && availability.hasDescription}
           >
             <IconFileDescription size={18} />
           </StyledOptionIcon>
           <StyledOptionContent>
             <StyledOptionLabel
-              isSelected={config.showDescription && hasDescription}
+              isSelected={config.showDescription && availability.hasDescription}
             >
               {t`Description`}
             </StyledOptionLabel>
             <StyledOptionDescription>
-              {!hasDescription
+              {!availability.hasDescription
                 ? t`No description available`
                 : config.showDescription
                   ? t`Including property description`
                   : t`Excluding property description`}
             </StyledOptionDescription>
           </StyledOptionContent>
-          {config.showDescription && hasDescription && (
+          {config.showDescription && availability.hasDescription && (
             <IconCheck size={16} color="blue" />
           )}
         </StyledOptionCard>
@@ -277,10 +262,7 @@ export const DocumentationContentOptions = ({
                 }))
               : null
           }
-          style={{
-            opacity: hasMapData ? 1 : 0.5,
-            cursor: hasMapData ? 'pointer' : 'not-allowed',
-          }}
+          isDisabled={!hasMapData}
         >
           <StyledOptionIcon isSelected={config.showAddressMap && hasMapData}>
             <IconMap size={18} />
@@ -459,8 +441,13 @@ export const DocumentationConfigurationModal = forwardRef<
 
   // Disable publisher options when related data is not available
   useEffect(() => {
-    const { hasAgencyName, hasAgencyEmail, hasAgencyPhone, hasWorkspaceLogo } =
-      availability;
+    const {
+      hasAgencyName,
+      hasAgencyEmail,
+      hasAgencyPhone,
+      hasWorkspaceLogo,
+      hasDescription,
+    } = availability;
 
     const updates: Partial<PdfDocumentationConfiguration> = {};
 
@@ -476,6 +463,10 @@ export const DocumentationConfigurationModal = forwardRef<
       updates.showPublisherPhone = false;
     }
 
+    if (!hasDescription && config.showDescription) {
+      updates.showDescription = false;
+    }
+
     if (Object.keys(updates).length > 0) {
       setConfig((prev) => ({
         ...prev,
@@ -484,6 +475,7 @@ export const DocumentationConfigurationModal = forwardRef<
     }
   }, [
     availability,
+    config.showDescription,
     config.showPublisherBranding,
     config.showPublisherEmail,
     config.showPublisherPhone,

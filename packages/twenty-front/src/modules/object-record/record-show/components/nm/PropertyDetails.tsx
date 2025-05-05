@@ -1,6 +1,5 @@
 import { useDeleteMessage } from '@/action-menu/actions/record-actions/single-record/hooks/useDeleteMessage';
 import { ActivityTargetableObject } from '@/activities/types/ActivityTargetableEntity';
-import { useNestermind } from '@/api/hooks/useNestermind';
 import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadataItem';
 import { getLinkToShowPage } from '@/object-metadata/utils/getLinkToShowPage';
 import { useDeleteOneRecord } from '@/object-record/hooks/useDeleteOneRecord';
