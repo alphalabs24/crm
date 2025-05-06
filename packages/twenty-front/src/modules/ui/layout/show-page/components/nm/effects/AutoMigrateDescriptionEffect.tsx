@@ -51,6 +51,7 @@ export const AutoMigrateDescriptionEffect = ({
 
           onMigrationComplete?.(true);
         } catch (error) {
+          console.error('error', error);
           onMigrationComplete?.(false);
         }
       }
