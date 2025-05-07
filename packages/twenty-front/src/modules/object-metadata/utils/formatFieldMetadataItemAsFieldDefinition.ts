@@ -10,6 +10,7 @@ export type FieldMetadataItemAsFieldDefinitionProps = {
   objectMetadataItem: ObjectMetadataItem;
   showLabel?: boolean;
   labelWidth?: number;
+  layout?: 'column' | 'row';
 };
 
 export const formatFieldMetadataItemAsFieldDefinition = ({
@@ -17,6 +18,7 @@ export const formatFieldMetadataItemAsFieldDefinition = ({
   objectMetadataItem,
   showLabel,
   labelWidth,
+  layout,
 }: FieldMetadataItemAsFieldDefinitionProps): FieldDefinition<FieldMetadata> => {
   const relationObjectMetadataItem =
     field.relationDefinition?.targetObjectMetadata;
@@ -54,5 +56,6 @@ export const formatFieldMetadataItemAsFieldDefinition = ({
       metadata: fieldDefintionMetadata,
       type: field.type,
     }),
+    layout,
   };
 };

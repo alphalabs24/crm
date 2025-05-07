@@ -56,6 +56,7 @@ const StyledLabelContainer = styled.div<{ width?: number }>`
 
 const StyledInlineCellBaseContainer = styled.div<{
   isDisplayModeFixHeight?: boolean;
+  layout?: 'column' | 'row';
 }>`
   align-items: flex-start;
   box-sizing: border-box;
@@ -64,6 +65,7 @@ const StyledInlineCellBaseContainer = styled.div<{
     isDisplayModeFixHeight ? `24px` : `18px`};
   gap: ${({ theme }) => theme.spacing(1)};
   user-select: none;
+  flex-direction: ${({ layout }) => layout};
   justify-content: center;
 `;
 
@@ -110,6 +112,7 @@ export const RecordInlineCellContainer = () => {
   return (
     <StyledInlineCellBaseContainer
       isDisplayModeFixHeight={isDisplayModeFixHeight}
+      layout={fieldDefinition?.layout ?? 'row'}
       onMouseEnter={handleContainerMouseEnter}
       onMouseLeave={handleContainerMouseLeave}
     >

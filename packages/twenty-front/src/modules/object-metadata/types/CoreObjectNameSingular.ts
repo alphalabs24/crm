@@ -25,6 +25,7 @@ export enum CoreObjectNameSingular {
   Person = 'person',
   Property = 'property',
   Publication = 'publication',
+  SearchProfile = 'searchProfile',
   Task = 'task',
   TaskTarget = 'taskTarget',
   View = 'view',

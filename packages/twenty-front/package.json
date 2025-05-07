@@ -34,6 +34,7 @@
     "@blocknote/xl-pdf-exporter": "^0.22.0",
     "@cyntler/react-doc-viewer": "^1.17.0",
     "@lingui/detect-locale": "^5.2.0",
+    "@mapbox/mapbox-gl-draw": "^1.5.0",
     "@nivo/calendar": "^0.87.0",
     "@nivo/core": "^0.87.0",
     "@nivo/line": "^0.87.0",
@@ -51,12 +52,14 @@
     "buffer": "^6.0.3",
     "docx": "^9.1.0",
     "file-saver": "^2.0.5",
+    "mapbox-gl": "^3.11.1",
     "react-confetti-explosion": "^2.1.2",
     "recoil-sync": "^0.2.0",
     "transliteration": "^2.3.5",
     "twenty-shared": "workspace:*"
   },
   "devDependencies": {
-    "@types/file-saver": "^2"
+    "@types/file-saver": "^2",
+    "@types/mapbox__mapbox-gl-draw": "^1"
   }
 }

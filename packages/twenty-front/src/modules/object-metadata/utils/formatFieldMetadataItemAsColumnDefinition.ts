@@ -16,6 +16,7 @@ export const formatFieldMetadataItemAsColumnDefinition = ({
   objectMetadataItem,
   showLabel,
   labelWidth,
+  layout,
 }: FieldMetadataItemAsColumnDefinitionProps): ColumnDefinition<FieldMetadata> => {
   const isLabelIdentifier = isLabelIdentifierField({
     fieldMetadataItem: field,
@@ -28,6 +29,7 @@ export const formatFieldMetadataItemAsColumnDefinition = ({
       objectMetadataItem,
       showLabel,
       labelWidth,
+      layout,
     }),
     position: isLabelIdentifier ? 0 : position,
     size: 100,

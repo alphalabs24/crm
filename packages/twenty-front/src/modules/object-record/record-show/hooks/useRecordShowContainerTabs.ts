@@ -21,6 +21,7 @@ import {
   IconNotes,
   IconPaperclip,
   IconPrinter,
+  IconHomeSearch,
   IconSettings,
   IconSparkles,
   IconTimelineEvent,
@@ -234,6 +235,20 @@ export const useRecordShowContainerTabs = (
           position: 700,
           Icon: IconCalendarEvent,
           cards: [{ type: CardType.CalendarCard }],
+          hide: {
+            ifMobile: false,
+            ifDesktop: false,
+            ifInRightDrawer: false,
+            ifFeaturesDisabled: [],
+            ifRequiredObjectsInactive: [],
+            ifRelationsMissing: [],
+          },
+        },
+        searchProfile: {
+          title: t`Search Profile`,
+          position: 0,
+          Icon: IconHomeSearch,
+          cards: [{ type: CardType.SearchProfileCard }],
           hide: {
             ifMobile: false,
             ifDesktop: false,

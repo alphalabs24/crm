@@ -293,6 +293,7 @@ export {
   IconWand,
   IconWorld,
   IconX,
+  IconHomeSearch,
 } from '@tabler/icons-react';
 
 export type { TablerIconsProps } from '@tabler/icons-react';

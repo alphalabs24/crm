@@ -23,6 +23,7 @@ import { WorkflowVisualizer } from '@/workflow/workflow-diagram/components/Workf
 import { WorkflowVisualizerEffect } from '@/workflow/workflow-diagram/components/WorkflowVisualizerEffect';
 import styled from '@emotion/styled';
 import { MarketingSuite } from './nm/MarketingSuite';
+import { SearchProfile } from './nm/SearchProfile';
 
 const StyledGreyBox = styled.div<{ isInRightDrawer?: boolean }>`
   background: ${({ theme, isInRightDrawer }) =>
@@ -145,6 +146,10 @@ export const CardComponents: Record<CardType, CardComponentType> = {
       targetableObject={targetableObject}
       isInRightDrawer={isInRightDrawer}
     />
+  ),
+
+  [CardType.SearchProfileCard]: ({ targetableObject }) => (
+    <SearchProfile targetableObject={targetableObject} />
   ),
 
   [CardType.MarketingSuiteCard]: ({ targetableObject }) =>
