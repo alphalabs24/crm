@@ -65,7 +65,7 @@ const StyledContentContainer = styled.div<{ isInRightDrawer?: boolean }>`
 const StyledMapContainer = styled.div<{ isInRightDrawer?: boolean }>`
   display: flex;
   flex-direction: column;
-  flex: 0.75;
+  flex: 1;
   min-width: min(550px, 100%);
   border: 1px solid ${({ theme }) => theme.border.color};
   border-radius: ${({ theme }) => theme.border.radius};

@@ -16,6 +16,7 @@ import { useTheme } from '@emotion/react';
 import { useSafeColorScheme } from '@/ui/theme/hooks/useSafeColorScheme';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import { isNavigationDrawerExpandedState } from '@/ui/navigation/states/isNavigationDrawerExpanded';
+import { GeoJsonFeatureList } from './GeoJsonFeatureList';
 
 const StyledLoadingIndicator = styled.div`
   align-items: center;
@@ -49,6 +50,35 @@ const StyledMap = styled.div`
 
   @media (min-width: ${MOBILE_VIEWPORT}px) {
     min-height: 400px;
+  }
+`;
+
+const StyledMapWithListContainer = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100%;
+
+  min-height: 250px;
+  position: relative;
+
+  @media (min-width: ${MOBILE_VIEWPORT}px) {
+    min-height: 400px;
+  }
+`;
+
+const StyledMapWrapper = styled.div`
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+`;
+
+const StyledFeatureListWrapper = styled.div`
+  display: flex;
+  flex-shrink: 0;
+  height: 100%;
+
+  @media (max-width: ${MOBILE_VIEWPORT}px) {
+    display: none;
   }
 `;
 
@@ -360,11 +390,13 @@ export const SearchProfileMap = ({
   );
 
   const isMobile = useIsMobile();
-  const [localGeoJson, setLocalGeoJson] = useState<GeoJSON.FeatureCollection>({
-    type: 'FeatureCollection',
-    features: [],
-  });
-  console.log(localGeoJson);
+  const [localGeoJson, setLocalGeoJson] = useState<GeoJSON.FeatureCollection>(
+    initialGeoJson || {
+      type: 'FeatureCollection',
+      features: [],
+    },
+  );
+
   const { updateOneRecord } = useUpdateOneRecord({
     objectNameSingular: CoreObjectNameSingular.SearchProfile,
   });
@@ -393,11 +425,26 @@ export const SearchProfileMap = ({
         map.current.fitBounds(bounds, {
           padding: 50,
           maxZoom: 15,
-          duration: 0,
+          duration: 500,
         });
       }
     },
     [],
+  );
+
+  const fitMapToFeature = useCallback(
+    (feature: GeoJSON.Feature) => {
+      if (!map.current) return;
+
+      // Create a temporary FeatureCollection with just this feature
+      const tempFeatureCollection = {
+        type: 'FeatureCollection',
+        features: [feature],
+      } as GeoJSON.FeatureCollection;
+
+      fitMapToFeatures(tempFeatureCollection);
+    },
+    [fitMapToFeatures],
   );
 
   const handleAreaSelect = useCallback(
@@ -413,6 +460,14 @@ export const SearchProfileMap = ({
         if (allFeatures.features.length > 0) {
           setLocalGeoJson(allFeatures);
 
+          // Save to database
+          await updateOneRecord({
+            idToUpdate: searchProfileId,
+            updateOneRecordInput: {
+              geoJson: allFeatures,
+            },
+          });
+
           // Fit map to show all features
           fitMapToFeatures(allFeatures);
         }
@@ -420,7 +475,29 @@ export const SearchProfileMap = ({
         console.error('Error adding area to map:', error);
       }
     },
-    [draw, fitMapToFeatures],
+    [draw, fitMapToFeatures, searchProfileId, updateOneRecord],
+  );
+
+  const handleFeatureDelete = useCallback(
+    async (featureId: string) => {
+      if (!draw.current) return;
+
+      // Delete the feature from the draw control
+      draw.current.delete(featureId);
+
+      // Get the updated features
+      const updatedFeatures = draw.current.getAll();
+      setLocalGeoJson(updatedFeatures);
+
+      // Save to database
+      await updateOneRecord({
+        idToUpdate: searchProfileId,
+        updateOneRecordInput: {
+          geoJson: updatedFeatures,
+        },
+      });
+    },
+    [draw, searchProfileId, updateOneRecord],
   );
 
   useEffect(() => {
@@ -464,30 +541,56 @@ export const SearchProfileMap = ({
     // Load initial GeoJSON if provided
     if (initialGeoJson && draw.current) {
       draw.current.add(initialGeoJson);
+      setLocalGeoJson(initialGeoJson);
       fitMapToFeatures(initialGeoJson);
     }
 
     // Handle draw events
-    map.current.on('draw.create', () => {
+    map.current.on('draw.create', async () => {
       if (!draw.current) return;
       const features = draw.current.getAll();
       if (features.features.length > 0) {
         setLocalGeoJson(features);
+
+        // Save to database
+        await updateOneRecord({
+          idToUpdate: searchProfileId,
+          updateOneRecordInput: {
+            geoJson: features,
+          },
+        });
+
         fitMapToFeatures(features);
       }
     });
 
-    map.current.on('draw.update', () => {
+    map.current.on('draw.update', async () => {
       if (!draw.current) return;
       const features = draw.current.getAll();
       setLocalGeoJson(features);
+
+      // Save to database
+      await updateOneRecord({
+        idToUpdate: searchProfileId,
+        updateOneRecordInput: {
+          geoJson: features,
+        },
+      });
+
       fitMapToFeatures(features);
     });
 
-    map.current.on('draw.delete', () => {
-      setLocalGeoJson({
-        type: 'FeatureCollection',
-        features: [],
+    map.current.on('draw.delete', async () => {
+      if (!draw.current) return;
+      const features = draw.current.getAll();
+      setLocalGeoJson(features);
+
+      // Save to database
+      await updateOneRecord({
+        idToUpdate: searchProfileId,
+        updateOneRecordInput: {
+          geoJson: features,
+        },
       });
     });
 
@@ -501,6 +604,7 @@ export const SearchProfileMap = ({
     fitMapToFeatures,
     colorScheme,
     initialized,
+    updateOneRecord,
   ]);
 
   // Wait for drawer animation to finish before initializing map
@@ -526,7 +630,18 @@ export const SearchProfileMap = ({
 
       <StyledMapContainer>
         {initialized ? (
-          <StyledMap ref={mapContainer} />
+          <StyledMapWithListContainer>
+            <StyledMapWrapper>
+              <StyledMap ref={mapContainer} />
+            </StyledMapWrapper>
+            <StyledFeatureListWrapper>
+              <GeoJsonFeatureList
+                geoJson={localGeoJson}
+                onFeatureDelete={handleFeatureDelete}
+                onFeatureSelect={fitMapToFeature}
+              />
+            </StyledFeatureListWrapper>
+          </StyledMapWithListContainer>
         ) : (
           <SkeletonTheme
             baseColor={theme.background.tertiary}
