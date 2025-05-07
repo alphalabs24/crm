@@ -18,7 +18,11 @@ export const useSearchProfiles = (
     objectNameSingular: CoreObjectNameSingular.SearchProfile,
   });
 
-  const { records: searchProfiles } = useFindManyRecords({
+  const {
+    records: searchProfiles,
+    loading,
+    refetch,
+  } = useFindManyRecords({
     objectNameSingular: CoreObjectNameSingular.SearchProfile,
     filter: {
       [targetableObjectFieldIdName]: {
@@ -27,5 +31,5 @@ export const useSearchProfiles = (
     },
   });
 
-  return { searchProfiles, objectMetadataItem };
+  return { searchProfiles, objectMetadataItem, loading, refetch };
 };

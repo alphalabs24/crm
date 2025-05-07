@@ -12,31 +12,128 @@ import { isFieldCellSupported } from '@/object-record/utils/isFieldCellSupported
 import { useRecordShowContainerData } from '../../hooks/useRecordShowContainerData';
 import { FieldMetadataType } from '~/generated/graphql';
 import { SearchProfileMap } from '@/search-profile/components/SearchProfileMap';
+import { useMemo, useState } from 'react';
+import { useCreateOneRecord } from '@/object-record/hooks/useCreateOneRecord';
+import { EmptySearchProfile } from '@/search-profile/components/EmptySearchProfile';
+import { FieldMetadataItem } from '@/object-metadata/types/FieldMetadataItem';
 
-const StyledSearchProfileContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: ${({ theme }) => theme.spacing(2)};
-  padding: ${({ theme }) => theme.spacing(2)};
-`;
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
+import { css, useTheme } from '@emotion/react';
+import {
+  MOBILE_VIEWPORT,
+  IconHome,
+  IconCurrencyDollar,
+  IconInfoCircle,
+  LARGE_DESKTOP_VIEWPORT,
+} from 'twenty-ui';
 
-const StyledMapContainer = styled.div`
+const StyledSearchProfileContainer = styled.div<{ isInRightDrawer?: boolean }>`
   display: flex;
   flex-direction: column;
-  flex: 0.5;
-  gap: ${({ theme }) => theme.spacing(2)};
+  gap: ${({ theme }) => theme.spacing(4)};
   padding: ${({ theme }) => theme.spacing(2)};
+
+  ${({ isInRightDrawer }) =>
+    isInRightDrawer &&
+    css`
+      padding: 0;
+    `}
+
+  @media (min-width: ${LARGE_DESKTOP_VIEWPORT}px) {
+    flex-wrap: wrap;
+  }
+`;
+
+const StyledContentContainer = styled.div<{ isInRightDrawer?: boolean }>`
+  display: flex;
+  flex-direction: row;
+  gap: ${({ theme }) => theme.spacing(4)};
+  width: 100%;
+  flex-wrap: wrap;
+  ${({ isInRightDrawer }) =>
+    isInRightDrawer &&
+    css`
+      flex-direction: column;
+      gap: 0;
+    `}
+
+  @media (max-width: ${MOBILE_VIEWPORT}px) {
+    flex-direction: column;
+  }
+`;
+
+const StyledMapContainer = styled.div<{ isInRightDrawer?: boolean }>`
+  display: flex;
+  flex-direction: column;
+  flex: 0.75;
+  min-width: min(550px, 100%);
+  border: 1px solid ${({ theme }) => theme.border.color};
+  border-radius: ${({ theme }) => theme.border.radius};
+  overflow: hidden;
+  padding: ${({ theme, isInRightDrawer }) =>
+    isInRightDrawer ? theme.spacing(2) : 0};
+`;
+
+const StyledFormContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: min(550px, 100%);
+  gap: ${({ theme }) => theme.spacing(3)};
 `;
 
 const StyledInlineCellContainer = styled.div`
-  background-color: ${({ theme }) => theme.background.secondary};
-  border: 1px solid ${({ theme }) => theme.border.color};
-  border-radius: ${({ theme }) => theme.border.radius};
+  border: 1px solid ${({ theme }) => theme.border.color.light};
+  border-radius: ${({ theme }) => theme.border.radius.sm};
+  padding: ${({ theme }) => theme.spacing(3)};
   display: flex;
-  flex-wrap: wrap;
-  gap: ${({ theme }) => theme.spacing(2)};
-  padding: ${({ theme }) => theme.spacing(2)};
-  flex: 1;
+  gap: ${({ theme }) => theme.spacing(4)};
+  flex-direction: column;
+  height: 100%;
+`;
+
+const StyledFieldGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+`;
+
+const StyledGroupTitle = styled.div`
+  align-items: center;
+  border-bottom: 1px solid ${({ theme }) => theme.border.color.light};
+  color: ${({ theme }) => theme.font.color.primary};
+  display: flex;
+  font-size: ${({ theme }) => theme.font.size.sm};
+  font-weight: ${({ theme }) => theme.font.weight.medium};
+  gap: ${({ theme }) => theme.spacing(1)};
+  margin-bottom: ${({ theme }) => theme.spacing(2)};
+  padding-bottom: ${({ theme }) => theme.spacing(2)};
+`;
+
+const StyledGroupIcon = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: ${({ theme }) => theme.font.color.tertiary};
+  margin-right: ${({ theme }) => theme.spacing(1)};
+`;
+
+const StyledFieldsGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: ${({ theme }) => theme.spacing(4)};
+`;
+
+const StyledMapPlaceholder = styled.div`
+  align-items: center;
+  background-color: ${({ theme }) => theme.background.tertiary};
+  border-radius: ${({ theme }) => theme.border.radius};
+  color: ${({ theme }) => theme.font.color.tertiary};
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  min-height: 450px;
+  width: 100%;
 `;
 
 type SearchProfileProps = {
@@ -44,12 +141,77 @@ type SearchProfileProps = {
     ActivityTargetableObject,
     'id' | 'targetObjectNameSingular'
   >;
+  isInRightDrawer?: boolean;
 };
 
-export const SearchProfile = ({ targetableObject }: SearchProfileProps) => {
-  const { searchProfiles, objectMetadataItem } =
+// Fields that should not be displayed to users
+const EXCLUDED_FIELD_NAMES = [
+  'geoJson', // Managed through map
+  'polygon', // Managed through map
+  'createdBy', // System field
+  'updatedAt', // System field
+  'createdAt', // System field
+  'deletedAt', // System field
+];
+
+// Define field groups and their sort order
+const FIELD_GROUPS: Record<
+  string,
+  {
+    fields: string[];
+    icon: React.ReactNode;
+  }
+> = {
+  'Core Information': {
+    fields: ['marketingMethod', 'status'],
+    icon: <IconInfoCircle size={16} />,
+  },
+  'Price Range': {
+    fields: ['priceMin', 'priceMax'],
+    icon: <IconCurrencyDollar size={16} />,
+  },
+  'Property Specifications': {
+    fields: [
+      'roomsMin',
+      'roomsMax',
+      'livingAreaMin',
+      'livingAreaMax',
+      'floorspaceMin',
+      'floorspaceMax',
+      'propertyLandMin',
+      'propertyLandMax',
+    ],
+    icon: <IconHome size={16} />,
+  },
+};
+
+export const SearchProfile = ({
+  targetableObject,
+  isInRightDrawer,
+}: SearchProfileProps) => {
+  const { searchProfiles, objectMetadataItem, loading, refetch } =
     useSearchProfiles(targetableObject);
   const searchProfile = searchProfiles[0];
+  const [isCreatingSearchProfile, setIsCreatingSearchProfile] = useState(false);
+  const theme = useTheme();
+  const { createOneRecord } = useCreateOneRecord({
+    objectNameSingular: CoreObjectNameSingular.SearchProfile,
+  });
+
+  const handleCreateSearchProfile = async () => {
+    setIsCreatingSearchProfile(true);
+    try {
+      await createOneRecord({
+        name: `${targetableObject.targetObjectNameSingular} Search Profile`,
+        [`${targetableObject.targetObjectNameSingular}Id`]: targetableObject.id,
+      });
+      refetch();
+    } catch (error) {
+      console.error('Error creating search profile:', error);
+    } finally {
+      setIsCreatingSearchProfile(false);
+    }
+  };
 
   const { labelIdentifierFieldMetadataItem, objectMetadataItems } =
     useRecordShowContainerData({
@@ -63,64 +225,151 @@ export const SearchProfile = ({ targetableObject }: SearchProfileProps) => {
     recordFromStore: searchProfile ?? null,
   });
 
-  const availableFieldMetadataItems = objectMetadataItem.fields
-    .filter(
-      (fieldMetadataItem) =>
-        isFieldCellSupported(fieldMetadataItem, objectMetadataItems) &&
-        fieldMetadataItem.id !== labelIdentifierFieldMetadataItem?.id,
-    )
-    .sort((fieldMetadataItemA, fieldMetadataItemB) =>
-      fieldMetadataItemA.name.localeCompare(fieldMetadataItemB.name),
-    );
-
-  const { inlineFieldMetadataItems, relationFieldMetadataItems } = groupBy(
-    availableFieldMetadataItems.filter(
-      (fieldMetadataItem) =>
-        fieldMetadataItem.name !== 'createdAt' &&
-        fieldMetadataItem.name !== 'deletedAt',
-    ),
-    (fieldMetadataItem) =>
-      fieldMetadataItem.type === FieldMetadataType.RELATION
-        ? 'relationFieldMetadataItems'
-        : 'inlineFieldMetadataItems',
+  const availableFieldMetadataItems = useMemo(
+    () =>
+      objectMetadataItem?.fields
+        .filter(
+          (fieldMetadataItem) =>
+            isFieldCellSupported(fieldMetadataItem, objectMetadataItems) &&
+            fieldMetadataItem.id !== labelIdentifierFieldMetadataItem?.id &&
+            !EXCLUDED_FIELD_NAMES.includes(fieldMetadataItem.name),
+        )
+        .sort((fieldMetadataItemA, fieldMetadataItemB) =>
+          fieldMetadataItemA.name.localeCompare(fieldMetadataItemB.name),
+        ) || [],
+    [
+      objectMetadataItem?.fields,
+      objectMetadataItems,
+      labelIdentifierFieldMetadataItem?.id,
+    ],
   );
 
+  // Group fields by category for better organization - memoized to prevent unnecessary re-renders
+  const groupedFields = useMemo(() => {
+    const result: Record<string, FieldMetadataItem[]> = {};
+
+    // Initialize groups
+    Object.keys(FIELD_GROUPS).forEach((groupName) => {
+      result[groupName] = [];
+    });
+
+    // Add "Other" group
+    result['Other'] = [];
+
+    // Organize fields into their respective groups
+    availableFieldMetadataItems.forEach((field) => {
+      let assigned = false;
+
+      Object.entries(FIELD_GROUPS).forEach(([groupName, groupConfig]) => {
+        if (groupConfig.fields.includes(field.name)) {
+          result[groupName].push(field);
+          assigned = true;
+        }
+      });
+
+      // If a field doesn't belong to any group, add it to "Other"
+      if (!assigned) {
+        result['Other'].push(field);
+      }
+    });
+
+    // Sort fields within each group according to the defined order
+    Object.entries(FIELD_GROUPS).forEach(([groupName, groupConfig]) => {
+      if (result[groupName]) {
+        result[groupName].sort((a, b) => {
+          return (
+            groupConfig.fields.indexOf(a.name) -
+            groupConfig.fields.indexOf(b.name)
+          );
+        });
+      }
+    });
+
+    return result;
+  }, [availableFieldMetadataItems]);
+
+  if (isCreatingSearchProfile || loading) {
+    return (
+      <SkeletonTheme
+        baseColor={theme.background.tertiary}
+        highlightColor={theme.background.primary}
+      >
+        <Skeleton height={400} />
+      </SkeletonTheme>
+    );
+  }
+
   return (
-    <StyledSearchProfileContainer>
-      <StyledMapContainer>
-        {searchProfile && (
-          <SearchProfileMap
-            searchProfileId={searchProfile.id}
-            initialGeoJson={searchProfile.geoJson}
-          />
-        )}
-      </StyledMapContainer>
-      <StyledInlineCellContainer>
-        {searchProfile &&
-          inlineFieldMetadataItems.map((field, index) => (
-            <FieldContext.Provider
-              key={searchProfile.id + field.id}
-              value={{
-                recordId: searchProfile.id,
-                maxWidth: 200,
-                recoilScopeId: searchProfile.id + field.id,
-                isLabelIdentifier: false,
-                fieldDefinition: formatFieldMetadataItemAsColumnDefinition({
-                  field: field,
-                  position: index,
-                  objectMetadataItem,
-                  showLabel: true,
-                  labelWidth: 190,
-                  layout: 'column',
-                }),
-                useUpdateRecord: useUpdateOneObjectRecordMutation,
-                hotkeyScope: InlineCellHotkeyScope.InlineCell,
-              }}
-            >
-              <RecordInlineCell loading={false} />
-            </FieldContext.Provider>
-          ))}
-      </StyledInlineCellContainer>
+    <StyledSearchProfileContainer isInRightDrawer={isInRightDrawer}>
+      {searchProfile ? (
+        <>
+          <StyledContentContainer isInRightDrawer={isInRightDrawer}>
+            <StyledMapContainer isInRightDrawer={isInRightDrawer}>
+              <SearchProfileMap
+                searchProfileId={searchProfile.id}
+                initialGeoJson={searchProfile.geoJson}
+              />
+            </StyledMapContainer>
+            <StyledFormContainer>
+              <StyledInlineCellContainer>
+                {Object.entries(groupedFields).map(([groupName, fields]) =>
+                  fields.length > 0 ? (
+                    <StyledFieldGroup key={groupName}>
+                      <StyledGroupTitle>
+                        <StyledGroupIcon>
+                          {FIELD_GROUPS[groupName]?.icon || (
+                            <IconInfoCircle size={16} />
+                          )}
+                        </StyledGroupIcon>
+                        {groupName}
+                      </StyledGroupTitle>
+                      <StyledFieldsGrid>
+                        {fields.map((field, index) => (
+                          <FieldContext.Provider
+                            key={searchProfile.id + field.id}
+                            value={{
+                              recordId: searchProfile.id,
+                              maxWidth: 200,
+                              recoilScopeId: searchProfile.id + field.id,
+                              isLabelIdentifier: false,
+                              fieldDefinition:
+                                formatFieldMetadataItemAsColumnDefinition({
+                                  field: field,
+                                  position: index,
+                                  objectMetadataItem,
+                                  showLabel: true,
+                                  labelWidth: 190,
+                                  layout: 'column',
+                                }),
+                              useUpdateRecord: useUpdateOneObjectRecordMutation,
+                              hotkeyScope: InlineCellHotkeyScope.InlineCell,
+                            }}
+                          >
+                            <RecordInlineCell loading={false} />
+                          </FieldContext.Provider>
+                        ))}
+                      </StyledFieldsGrid>
+                    </StyledFieldGroup>
+                  ) : null,
+                )}
+              </StyledInlineCellContainer>
+            </StyledFormContainer>
+          </StyledContentContainer>
+        </>
+      ) : (
+        <StyledContentContainer isInRightDrawer={isInRightDrawer}>
+          <StyledMapContainer isInRightDrawer={isInRightDrawer}>
+            <StyledMapPlaceholder>Map will appear here</StyledMapPlaceholder>
+          </StyledMapContainer>
+          <StyledFormContainer>
+            <StyledInlineCellContainer>
+              <EmptySearchProfile
+                onCreateSearchProfile={handleCreateSearchProfile}
+              />
+            </StyledInlineCellContainer>
+          </StyledFormContainer>
+        </StyledContentContainer>
+      )}
     </StyledSearchProfileContainer>
   );
 };

@@ -148,8 +148,11 @@ export const CardComponents: Record<CardType, CardComponentType> = {
     />
   ),
 
-  [CardType.SearchProfileCard]: ({ targetableObject }) => (
-    <SearchProfile targetableObject={targetableObject} />
+  [CardType.SearchProfileCard]: ({ targetableObject, isInRightDrawer }) => (
+    <SearchProfile
+      targetableObject={targetableObject}
+      isInRightDrawer={isInRightDrawer}
+    />
   ),
 
   [CardType.MarketingSuiteCard]: ({ targetableObject }) =>
