@@ -500,6 +500,7 @@ export const SearchProfileMap = ({
     [draw, searchProfileId, updateOneRecord],
   );
 
+  // Initialize Map and Draw Control
   useEffect(() => {
     if (!mapContainer.current || !mapboxAccessToken || !initialized) return;
 
@@ -516,18 +517,6 @@ export const SearchProfileMap = ({
       renderWorldCopies: false,
     });
 
-    // Disable map animations
-    map.current.on('load', () => {
-      if (map.current) {
-        map.current.dragRotate.disable();
-        map.current.touchZoomRotate.disableRotation();
-        map.current.doubleClickZoom.disable();
-      }
-    });
-
-    // Add navigation controls
-    map.current.addControl(new mapboxgl.NavigationControl());
-
     // Initialize draw control
     draw.current = new MapboxDraw({
       displayControlsDefault: false,
@@ -536,19 +525,62 @@ export const SearchProfileMap = ({
         trash: true,
       },
     });
-    map.current.addControl(draw.current);
 
-    // Load initial GeoJSON if provided
-    if (initialGeoJson && draw.current) {
-      draw.current.add(initialGeoJson);
-      setLocalGeoJson(initialGeoJson);
-      fitMapToFeatures(initialGeoJson);
+    const mapInstance = map.current;
+
+    // Clean up function
+    return () => {
+      if (mapInstance) {
+        mapInstance.remove();
+      }
+      map.current = null;
+      draw.current = null;
+    };
+  }, [colorScheme, initialized, mapboxAccessToken]);
+
+  useEffect(() => {
+    if (!initialized || !map.current || !draw.current) return;
+
+    const mapInstance = map.current;
+    const drawInstance = draw.current;
+
+    // Setup once map is loaded
+    const setupMap = () => {
+      if (!mapInstance || !drawInstance) return;
+
+      // Disable map animations
+      mapInstance.dragRotate.disable();
+      mapInstance.touchZoomRotate.disableRotation();
+      mapInstance.doubleClickZoom.disable();
+
+      // Add navigation controls
+      mapInstance.addControl(new mapboxgl.NavigationControl());
+
+      // Only add draw control if it hasn't been added yet
+      if (!mapInstance.hasControl(drawInstance)) {
+        mapInstance.addControl(drawInstance);
+      }
+
+      // Load initial GeoJSON if provided
+      if (initialGeoJson) {
+        drawInstance.add(initialGeoJson);
+        setLocalGeoJson(initialGeoJson);
+        fitMapToFeatures(initialGeoJson);
+      }
+    };
+
+    // If map is already loaded, setup immediately
+    if (mapInstance.loaded()) {
+      setupMap();
+    } else {
+      // Otherwise wait for load event
+      mapInstance.once('load', setupMap);
     }
 
     // Handle draw events
-    map.current.on('draw.create', async () => {
-      if (!draw.current) return;
-      const features = draw.current.getAll();
+    const createHandler = async () => {
+      if (!drawInstance) return;
+      const features = drawInstance.getAll();
       if (features.features.length > 0) {
         setLocalGeoJson(features);
 
@@ -562,11 +594,11 @@ export const SearchProfileMap = ({
 
         fitMapToFeatures(features);
       }
-    });
+    };
 
-    map.current.on('draw.update', async () => {
-      if (!draw.current) return;
-      const features = draw.current.getAll();
+    const updateHandler = async () => {
+      if (!drawInstance) return;
+      const features = drawInstance.getAll();
       setLocalGeoJson(features);
 
       // Save to database
@@ -578,11 +610,11 @@ export const SearchProfileMap = ({
       });
 
       fitMapToFeatures(features);
-    });
+    };
 
-    map.current.on('draw.delete', async () => {
-      if (!draw.current) return;
-      const features = draw.current.getAll();
+    const deleteHandler = async () => {
+      if (!drawInstance) return;
+      const features = drawInstance.getAll();
       setLocalGeoJson(features);
 
       // Save to database
@@ -592,18 +624,25 @@ export const SearchProfileMap = ({
           geoJson: features,
         },
       });
-    });
+    };
 
+    mapInstance.on('draw.create', createHandler);
+    mapInstance.on('draw.update', updateHandler);
+    mapInstance.on('draw.delete', deleteHandler);
+
+    // Cleanup function
     return () => {
-      map.current?.remove();
+      if (mapInstance) {
+        mapInstance.off('draw.create', createHandler);
+        mapInstance.off('draw.update', updateHandler);
+        mapInstance.off('draw.delete', deleteHandler);
+      }
     };
   }, [
-    searchProfileId,
-    initialGeoJson,
-    mapboxAccessToken,
     fitMapToFeatures,
-    colorScheme,
+    initialGeoJson,
     initialized,
+    searchProfileId,
     updateOneRecord,
   ]);
 
