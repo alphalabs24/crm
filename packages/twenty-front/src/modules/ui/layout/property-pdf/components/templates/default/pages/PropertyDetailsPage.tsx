@@ -28,6 +28,7 @@ export const PropertyDetailsPage = ({
   propertyFeatures = [],
   Footer,
   Header,
+  localizedStaticTexts,
 }: PropertyDetailsPageProps) => {
   // Group fields into categories
   const groupedFields = useMemo(() => {
@@ -109,12 +110,15 @@ export const PropertyDetailsPage = ({
       <Section height="85%">
         <Row>
           <Col width="100%">
-            <H2 style={{ marginBottom: 12 }}>Liegenschaftsdaten</H2>
+            <H2 style={{ marginBottom: 12 }}>
+              {localizedStaticTexts?.propertyDetailsTitle ||
+                'Liegenschaftsdaten'}
+            </H2>
 
             {/* Primary Details Section */}
             <View style={PROPERTY_DETAILS_STYLES.detailsSection}>
               <H3 style={PROPERTY_DETAILS_STYLES.sectionTitle}>
-                Objektinformationen
+                {localizedStaticTexts?.fieldsTitle || 'Objektinformationen'}
               </H3>
 
               <View style={PROPERTY_DETAILS_STYLES.table}>
@@ -142,7 +146,7 @@ export const PropertyDetailsPage = ({
             {groupedFields.financial.length > 0 && (
               <View style={PROPERTY_DETAILS_STYLES.detailsSection}>
                 <H3 style={PROPERTY_DETAILS_STYLES.sectionTitle}>
-                  Preisangaben
+                  {localizedStaticTexts?.priceTitle || 'Preisangaben'}
                 </H3>
 
                 <View style={PROPERTY_DETAILS_STYLES.financialContainer}>
@@ -167,7 +171,8 @@ export const PropertyDetailsPage = ({
             {propertyFeatures.length > 0 && (
               <View style={PROPERTY_DETAILS_STYLES.detailsSection}>
                 <H3 style={PROPERTY_DETAILS_STYLES.sectionTitle}>
-                  Ausstattung & Eigenschaften
+                  {localizedStaticTexts?.featuresTitle ||
+                    'Ausstattung & Eigenschaften'}
                 </H3>
 
                 <View style={PROPERTY_DETAILS_STYLES.featuresContainer}>
@@ -191,7 +196,7 @@ export const PropertyDetailsPage = ({
               {groupedFields.measurements.length > 0 && (
                 <View style={PROPERTY_DETAILS_STYLES.column}>
                   <H3 style={PROPERTY_DETAILS_STYLES.sectionTitle}>
-                    Flächen & Masse
+                    {localizedStaticTexts?.spaceTitle || 'Flächen & Masse'}
                   </H3>
 
                   <View style={PROPERTY_DETAILS_STYLES.table}>
@@ -220,7 +225,8 @@ export const PropertyDetailsPage = ({
               {groupedFields.other.length > 0 && (
                 <View style={PROPERTY_DETAILS_STYLES.column}>
                   <H3 style={PROPERTY_DETAILS_STYLES.sectionTitle}>
-                    Weitere Informationen
+                    {localizedStaticTexts?.furtherDetailsTitle ||
+                      'Weitere Informationen'}
                   </H3>
 
                   <View style={PROPERTY_DETAILS_STYLES.table}>

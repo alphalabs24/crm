@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { Icon123, useIcons } from 'twenty-ui';
 
 import { FieldMetadataItem } from '@/object-metadata/types/FieldMetadataItem';
+import { isFieldUuid } from '@/object-record/record-field/types/guards/isFieldUuid';
 
 type EventFieldDiffLabelProps = {
   fieldMetadataItem: FieldMetadataItem;
@@ -31,12 +32,16 @@ export const EventFieldDiffLabel = ({
     ? getIcon(fieldMetadataItem?.icon)
     : Icon123;
 
+  const isUUID = isFieldUuid({ type: fieldMetadataItem.type });
+
   return (
     <StyledUpdatedFieldContainer>
       <StyledUpdatedFieldIconContainer>
         <IconComponent />
       </StyledUpdatedFieldIconContainer>
-      {fieldMetadataItem.label}
+      {isUUID
+        ? fieldMetadataItem.label.split('Foreign Key')[0]
+        : fieldMetadataItem.label}
     </StyledUpdatedFieldContainer>
   );
 };

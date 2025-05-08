@@ -18,6 +18,8 @@ import {
 } from '../types/types';
 import { useAttachments } from '@/activities/files/hooks/useAttachments';
 import { isArray } from 'util';
+import { useLocalizedStaticTexts } from '../hooks/useLocalizedStaticTexts';
+import { Attachment } from '@/activities/files/types/Attachment';
 
 const StyledPdfViewerContainer = styled.div`
   align-items: center;
@@ -73,25 +75,22 @@ export type PropertyPdfPreviewProps = {
   property: ObjectRecord;
   isFlyer?: boolean;
   configuration?: ConfigurationType;
+  agencyLogo?: Attachment;
 };
 
 export const PropertyPdfPreview = ({
   property,
   isFlyer = false,
   configuration,
+  agencyLogo,
 }: PropertyPdfPreviewProps) => {
   const { objectMetadataItem } = useObjectMetadataItem({
     objectNameSingular: CoreObjectNameSingular.Property,
   });
 
-  const { attachments } = useAttachments({
-    id: property.agency?.id,
-    targetObjectNameSingular: CoreObjectNameSingular.Agency,
+  const localizedStaticTexts = useLocalizedStaticTexts({
+    type: isFlyer ? 'PropertyFlyer' : 'PropertyDocumentation',
   });
-
-  const agencyLogo = useMemo(() => {
-    return attachments?.find((a) => a.type === 'PublisherLogo');
-  }, [attachments]);
 
   const { formatField } = useFormattedPropertyFields({
     objectMetadataItem,
@@ -113,8 +112,6 @@ export const PropertyPdfPreview = ({
     property,
     configuration?.selectedFields,
   ]);
-
-  const [currentWorkspace] = useRecoilState(currentWorkspaceState);
 
   // Format the address for display
   const formattedAddress = useMemo(() => {
@@ -207,6 +204,7 @@ export const PropertyPdfPreview = ({
           orientation={orientation}
           agencyLogo={agencyLogo?.fullPath}
           configuration={configuration}
+          localizedStaticTexts={localizedStaticTexts}
         />
       </StyledPDFViewer>
     </StyledPdfViewerContainer>

@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { lazy, ReactElement, Suspense, useState } from 'react';
+import { lazy, ReactElement, Suspense, useRef, useState } from 'react';
 import { IconButton, IconDownload, IconX } from 'twenty-ui';
 
 import { DropZone } from '@/activities/files/components/DropZone';
@@ -13,12 +13,10 @@ import { useRecoilValue } from 'recoil';
 
 import { ActivityList } from '@/activities/components/ActivityList';
 import { AttachmentRow } from './AttachmentRow';
-
-const DocumentViewer = lazy(() =>
-  import('@/activities/files/components/DocumentViewer').then((module) => ({
-    default: module.DocumentViewer,
-  })),
-);
+import {
+  DocumentViewerModal,
+  DocumentViewerModalRef,
+} from '~/ui/documents/document-viewer-modal/components/DocumentViewerModal';
 
 type AttachmentListProps = {
   targetableObject: ActivityTargetableObject;
@@ -63,47 +61,6 @@ const StyledDropZoneContainer = styled.div`
   overflow: auto;
 `;
 
-const StyledLoadingContainer = styled.div`
-  align-items: center;
-  background: ${({ theme }) => theme.background.primary};
-  display: flex;
-  height: 80vh;
-  justify-content: center;
-  width: 100%;
-`;
-
-const StyledLoadingText = styled.div`
-  color: ${({ theme }) => theme.font.color.secondary};
-  font-size: ${({ theme }) => theme.font.size.lg};
-  font-weight: ${({ theme }) => theme.font.weight.medium};
-`;
-
-const StyledHeader = styled.div`
-  align-items: center;
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-`;
-
-const StyledModalTitle = styled.span`
-  color: ${({ theme }) => theme.font.color.primary};
-`;
-
-const StyledModalHeader = styled(Modal.Header)`
-  padding: 0;
-`;
-
-const StyledModalContent = styled(Modal.Content)`
-  padding-left: 0;
-  padding-right: 0;
-`;
-
-const StyledButtonContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: ${({ theme }) => theme.spacing(1)};
-`;
-
 export const AttachmentList = ({
   targetableObject,
   title,
@@ -112,11 +69,11 @@ export const AttachmentList = ({
 }: AttachmentListProps) => {
   const { uploadAttachmentFile } = useUploadAttachmentFile();
   const [isDraggingFile, setIsDraggingFile] = useState(false);
-  const [previewedAttachment, setPreviewedAttachment] =
-    useState<Attachment | null>(null);
+
   const isAttachmentPreviewEnabled = useRecoilValue(
     isAttachmentPreviewEnabledState,
   );
+  const documentViewerModalRef = useRef<DocumentViewerModalRef>(null);
 
   const onUploadFile = async (file: File) => {
     await uploadAttachmentFile(file, targetableObject);
@@ -124,16 +81,10 @@ export const AttachmentList = ({
 
   const handlePreview = (attachment: Attachment) => {
     if (!isAttachmentPreviewEnabled) return;
-    setPreviewedAttachment(attachment);
-  };
-
-  const handleClosePreview = () => {
-    setPreviewedAttachment(null);
-  };
-
-  const handleDownload = () => {
-    if (!previewedAttachment) return;
-    downloadFile(previewedAttachment.fullPath, previewedAttachment.name);
+    documentViewerModalRef.current?.open({
+      name: attachment.name,
+      url: attachment.fullPath,
+    });
   };
 
   return (
@@ -168,42 +119,8 @@ export const AttachmentList = ({
           </StyledDropZoneContainer>
         </StyledContainer>
       )}
-      {previewedAttachment && isAttachmentPreviewEnabled && (
-        <Modal size="large" isClosable onClose={handleClosePreview}>
-          <StyledModalHeader>
-            <StyledHeader>
-              <StyledModalTitle>{previewedAttachment.name}</StyledModalTitle>
-              <StyledButtonContainer>
-                <IconButton
-                  Icon={IconDownload}
-                  onClick={handleDownload}
-                  size="small"
-                />
-                <IconButton
-                  Icon={IconX}
-                  onClick={handleClosePreview}
-                  size="small"
-                />
-              </StyledButtonContainer>
-            </StyledHeader>
-          </StyledModalHeader>
-          <StyledModalContent>
-            <Suspense
-              fallback={
-                <StyledLoadingContainer>
-                  <StyledLoadingText>
-                    Loading document viewer...
-                  </StyledLoadingText>
-                </StyledLoadingContainer>
-              }
-            >
-              <DocumentViewer
-                documentName={previewedAttachment.name}
-                documentUrl={previewedAttachment.fullPath}
-              />
-            </Suspense>
-          </StyledModalContent>
-        </Modal>
+      {isAttachmentPreviewEnabled && (
+        <DocumentViewerModal ref={documentViewerModalRef} />
       )}
     </>
   );

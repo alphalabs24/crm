@@ -61,6 +61,7 @@ export const ActionDropdown = ({
       <Dropdown
         dropdownId={dropdownId}
         dropdownMenuWidth={260}
+        dropdownOffset={{ y: 8 }}
         clickableComponent={
           <Button
             title={t`More`}
@@ -107,6 +108,7 @@ export const ActionDropdown = ({
         <Dropdown
           dropdownId={dropdownId}
           dropdownMenuWidth={260}
+          dropdownOffset={{ y: 8 }}
           clickableComponent={
             <StyledIconButton
               Icon={IconChevronDown}

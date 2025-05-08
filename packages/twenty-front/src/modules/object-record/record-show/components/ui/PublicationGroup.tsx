@@ -9,7 +9,7 @@ import {
 import { useDraftPublishedDifferences } from '@/ui/layout/show-page/hooks/useDraftPublishedDifferences';
 import styled from '@emotion/styled';
 import { useLingui } from '@lingui/react/macro';
-import { IconButton, IconEdit } from 'twenty-ui';
+import { IconEdit, useIsMobile } from 'twenty-ui';
 
 const StyledPublicationGroupContainer = styled.button`
   background-color: ${({ theme }) => theme.background.primary};
@@ -92,7 +92,7 @@ export const PublicationGroup = ({
     draftRecord,
     publishedRecord,
   );
-
+  const isMobile = useIsMobile();
   const { t } = useLingui();
 
   return (
@@ -113,7 +113,7 @@ export const PublicationGroup = ({
         <StyledPublicationGroupHeaderRight>
           {hasDifferences ? (
             <StyledDifferenceBadge>
-              <IconEdit size={12} />
+              {isMobile ? null : <IconEdit size={12} />}
               <StyledDifferenceText>
                 {totalDifferenceCount === 1
                   ? t`1 unpublished change`

@@ -1,5 +1,4 @@
 /* eslint-disable @nx/workspace-no-hardcoded-colors */
-import { ActivityTargetableObject } from '@/activities/types/ActivityTargetableEntity';
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { ObjectRecord } from '@/object-record/types/ObjectRecord';
 import { ModalRefType } from '@/ui/layout/modal/components/Modal';
@@ -7,7 +6,6 @@ import { DefaultPropertyPdfTemplate } from '@/ui/layout/property-pdf/components/
 import { PdfTheme } from '@/ui/layout/property-pdf/constants/defaultTheme';
 import {
   ConfigurationType,
-  PdfFlyerConfiguration,
   PropertyPdfResult,
   PropertyPdfTemplate,
   PropertyPdfType,
@@ -16,14 +14,12 @@ import { usePropertyImages } from '@/ui/layout/show-page/hooks/usePropertyImages
 import * as ReactPDF from '@react-pdf/renderer';
 import { saveAs } from 'file-saver';
 import { useCallback, useMemo, useRef, useState } from 'react';
-import { useRecoilState } from 'recoil';
-import { currentWorkspaceState } from '@/auth/states/currentWorkspaceState';
 import { useObjectMetadataItem } from '@/object-metadata/hooks/useObjectMetadataItem';
 import { useFormattedPropertyFields } from '@/object-record/hooks/useFormattedPropertyFields';
 import { CATEGORY_SUBTYPES } from '@/record-edit/constants/CategorySubtypes';
 import { useSubcategoryByCategory } from '@/object-record/record-show/hooks/useSubcategoryByCategory';
-import { useAttachments } from '@/activities/files/hooks/useAttachments';
 import { Attachment } from '@/activities/files/types/Attachment';
+import { useLocalizedStaticTexts } from './useLocalizedStaticTexts';
 
 // Fields to show on PDF
 const fieldsToShowOnPdf = [
@@ -58,17 +54,20 @@ export type PropertyPdfGeneratorProps = {
   record: ObjectRecord;
   template?: PropertyPdfTemplate;
   theme?: PdfTheme;
+  type?: PropertyPdfType;
+  agencyLogo?: Attachment;
 };
 
 export const usePropertyPdfGenerator = ({
   record,
   template = DefaultPropertyPdfTemplate,
+  type = 'PropertyDocumentation',
+  agencyLogo,
 }: PropertyPdfGeneratorProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [pdfFile, setPdfFile] = useState<PropertyPdfResult | null>(null);
   const PropertyDocumentTemplate = template;
   const pdfPreviewModalRef = useRef<ModalRefType>(null);
-  const [currentWorkspace] = useRecoilState(currentWorkspaceState);
 
   const { objectMetadataItem } = useObjectMetadataItem({
     objectNameSingular: CoreObjectNameSingular.Property,
@@ -77,15 +76,6 @@ export const usePropertyPdfGenerator = ({
   const { formatField } = useFormattedPropertyFields({
     objectMetadataItem,
   });
-
-  const { attachments } = useAttachments({
-    id: record?.agency?.id,
-    targetObjectNameSingular: CoreObjectNameSingular.Agency,
-  });
-
-  const agencyLogo = useMemo(() => {
-    return attachments?.find((a) => a.type === 'PublisherLogo');
-  }, [attachments]);
 
   // Get the subcategory field based on the property's category
   const subcategoryField = useSubcategoryByCategory(record?.category);
@@ -108,9 +98,12 @@ export const usePropertyPdfGenerator = ({
     }
   }, [record?.id]);
 
+  const localizedStaticTexts = useLocalizedStaticTexts({
+    type,
+  });
+
   const generatePdf = useCallback(
     async (
-      type: PropertyPdfType,
       orientationOrConfig?: 'portrait' | 'landscape' | ConfigurationType,
     ) => {
       if (!record) return null;
@@ -219,6 +212,7 @@ export const usePropertyPdfGenerator = ({
             orientation={config.orientation || 'portrait'}
             agencyLogo={agencyLogo?.fullPath}
             configuration={config}
+            localizedStaticTexts={localizedStaticTexts}
           />,
         ).toBlob();
 
@@ -249,18 +243,19 @@ export const usePropertyPdfGenerator = ({
       record,
       propertyImages,
       PropertyDocumentTemplate,
+      type,
+      agencyLogo?.fullPath,
+      localizedStaticTexts,
+      objectMetadataItem.fields,
       formatField,
-      objectMetadataItem,
-      currentWorkspace?.logo,
     ],
   );
 
   const downloadPdf = useCallback(
     async (
-      type: PropertyPdfType,
       orientationOrConfig?: 'portrait' | 'landscape' | ConfigurationType,
     ) => {
-      const result = await generatePdf(type, orientationOrConfig);
+      const result = await generatePdf(orientationOrConfig);
       if (result) {
         saveAs(result.blob, result.fileName);
         return result;

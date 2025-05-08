@@ -22,6 +22,30 @@ export type DefaultFlyerTemplateProps = PropertyPdfProps & {
   showPublisherPhone?: boolean;
 };
 
+interface BlockContent {
+  type: string;
+  text: string;
+  styles?: {
+    bold?: boolean;
+    italic?: boolean;
+    underline?: boolean;
+  };
+}
+
+interface BlockNode {
+  id: string;
+  type: string;
+  props: {
+    textColor: string;
+    backgroundColor: string;
+    textAlignment: string;
+  };
+  content: BlockContent[];
+  children: any[];
+  truncated?: boolean;
+  truncateAt?: number;
+}
+
 export const DefaultFlyerTemplate = ({
   property,
   propertyPrice,
@@ -32,6 +56,7 @@ export const DefaultFlyerTemplate = ({
   fields,
   propertyFeatures,
   configuration,
+  localizedStaticTexts,
 }: DefaultFlyerTemplateProps) => {
   const firstImage = useMemo(() => {
     if (!propertyImages || propertyImages.length === 0) return null;
@@ -54,15 +79,89 @@ export const DefaultFlyerTemplate = ({
     return propertyFeatures.length - 6;
   }, [propertyFeatures]);
 
-  const truncatedDescription = useMemo(() => {
-    if (!property?.description) return '';
-
-    if (property.description.length <= 750) {
-      return property.description;
+  // Process rich text content
+  const descriptionBlocks = useMemo(() => {
+    if (!property.descriptionV2?.blocknote) {
+      return [];
     }
 
-    return property.description.substring(0, 750) + '...';
-  }, [property?.description]);
+    try {
+      // Parse the blocknote JSON string
+      const blocks = JSON.parse(
+        property.descriptionV2.blocknote,
+      ) as BlockNode[];
+      return blocks;
+    } catch (error) {
+      console.error('Error parsing rich text:', error);
+      return [];
+    }
+  }, [property.descriptionV2?.blocknote]);
+
+  // Extract blocks to display based on total character count limit
+  const visibleBlocks = useMemo(() => {
+    const MAX_CHARS = 750;
+    let totalChars = 0;
+    const blocksToShow = [];
+
+    for (const block of descriptionBlocks) {
+      // For empty paragraphs, add them as line breaks but count them as 1 character
+      if (
+        block.type === 'paragraph' &&
+        (!block.content || block.content.length === 0)
+      ) {
+        // If adding this empty paragraph would exceed the limit, stop
+        if (totalChars + 1 > MAX_CHARS) {
+          break;
+        }
+
+        // Add the empty paragraph and count it as 1 character
+        blocksToShow.push(block);
+        totalChars += 1;
+        continue;
+      }
+
+      // For non-empty blocks, calculate text length including prefix
+      const prefix = block.type === 'bulletListItem' ? '• ' : '';
+      const blockText =
+        prefix + (block.content?.map((item) => item.text).join('') || '');
+      const blockLength = blockText.length;
+
+      // If this block would exceed the limit, stop adding blocks
+      if (totalChars + blockLength > MAX_CHARS) {
+        // If we're close to the limit and this is the first block, include a truncated version
+        if (blocksToShow.length === 0) {
+          const remainingChars = MAX_CHARS - totalChars;
+          if (remainingChars > 20) {
+            // Only if we can show a meaningful amount
+            blocksToShow.push({
+              ...block,
+              truncated: true,
+              truncateAt: remainingChars - 3, // Account for ellipsis
+            });
+          }
+        }
+        break;
+      }
+
+      // Otherwise add the block and update character count
+      blocksToShow.push(block);
+      totalChars += blockLength;
+
+      // Add newline character count for each block except the first
+      if (blocksToShow.length > 1) {
+        totalChars += 1; // Count for the newline between blocks
+      }
+    }
+
+    return blocksToShow;
+  }, [descriptionBlocks]);
+
+  // Check if we need to show ellipsis (if there are more blocks than we're showing)
+  const showEllipsis =
+    visibleBlocks.length <
+    descriptionBlocks.filter(
+      (block) => block.content && block.content.length > 0,
+    ).length;
 
   // Determine if we need to show the footer based on publisher settings
   const shouldShowFooter =
@@ -106,8 +205,93 @@ export const DefaultFlyerTemplate = ({
       <Section height={contentHeight}>
         <Row gap={4}>
           <Col width="66%">
-            <H1 uppercase>Über das Objekt</H1>
-            {property?.description && <Body>{truncatedDescription}</Body>}
+            <H1 uppercase>
+              {localizedStaticTexts?.descriptionTitle || 'Über das Objekt'}
+            </H1>
+            {visibleBlocks.length > 0 && (
+              <View>
+                {visibleBlocks.map((block, blockIndex) => {
+                  // Handle empty paragraph blocks (line breaks)
+                  if (
+                    block.type === 'paragraph' &&
+                    (!block.content || block.content.length === 0)
+                  ) {
+                    return <Body key={blockIndex}>&nbsp;</Body>;
+                  }
+
+                  // For bullet lists, add a bullet point
+                  const prefix = block.type === 'bulletListItem' ? '• ' : '';
+
+                  return (
+                    <Body key={blockIndex}>
+                      {prefix}
+                      {block.truncated
+                        ? block.content.map((contentItem, contentIndex) => {
+                            // Truncate the last content item if needed
+                            if (contentIndex === block.content.length - 1) {
+                              const truncateAt = block.truncateAt || 0;
+                              const truncatedText =
+                                contentItem.text.substring(
+                                  0,
+                                  truncateAt -
+                                    (prefix.length +
+                                      block.content
+                                        .slice(0, contentIndex)
+                                        .reduce(
+                                          (sum, item) => sum + item.text.length,
+                                          0,
+                                        )),
+                                ) + '...';
+
+                              return (
+                                <Text
+                                  key={`content-${contentIndex}`}
+                                  style={{
+                                    ...(contentItem.styles?.bold && {
+                                      fontWeight: 'bold' as const,
+                                    }),
+                                  }}
+                                >
+                                  {truncatedText}
+                                </Text>
+                              );
+                            }
+
+                            // Non-truncated content items
+                            return (
+                              <Text
+                                key={`content-${contentIndex}`}
+                                style={{
+                                  ...(contentItem.styles?.bold && {
+                                    fontWeight: 'bold' as const,
+                                  }),
+                                }}
+                              >
+                                {contentItem.text}
+                              </Text>
+                            );
+                          })
+                        : block.content.map((contentItem, contentIndex) => (
+                            <Text
+                              key={`content-${contentIndex}`}
+                              style={{
+                                ...(contentItem.styles?.bold && {
+                                  fontWeight: 'bold' as const,
+                                }),
+                              }}
+                            >
+                              {contentItem.text}
+                            </Text>
+                          ))}
+                    </Body>
+                  );
+                })}
+                {showEllipsis &&
+                  !visibleBlocks[visibleBlocks.length - 1]?.truncated && (
+                    <Body>...</Body>
+                  )}
+              </View>
+            )}
             <View style={PDF_STYLES.tagContainer}>
               {featuresForDisplay.map((feature, index) => (
                 <Text key={index} style={PDF_STYLES.tag}>
@@ -120,7 +304,9 @@ export const DefaultFlyerTemplate = ({
             </View>
           </Col>
           <Col width="33%">
-            <H2 uppercase>Eigenschaften</H2>
+            <H2 uppercase>
+              {localizedStaticTexts?.fieldsTitle || 'Eigenschaften'}
+            </H2>
             {fields.map(
               (field) =>
                 field.label &&

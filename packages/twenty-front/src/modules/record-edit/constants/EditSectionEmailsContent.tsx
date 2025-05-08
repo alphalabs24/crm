@@ -3,6 +3,7 @@ import { Trans } from '@lingui/react/macro';
 
 export const EMAILS_SECTION_CONTENT: SectionContent[] = [
   {
+    key: 'emails',
     title: 'Emails',
     width: 'half',
     description: (

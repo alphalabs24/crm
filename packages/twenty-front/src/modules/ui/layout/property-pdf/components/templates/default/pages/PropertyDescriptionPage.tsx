@@ -6,11 +6,33 @@ import {
 import { H2 } from '@/ui/layout/property-pdf/components/snippets/typography';
 import { PDF_STYLES } from '@/ui/layout/property-pdf/components/templates/default/styles';
 import { PROPERTY_DETAILS_STYLES } from '@/ui/layout/property-pdf/components/templates/default/pages/property-details-styles';
-import { DEFAULT_THEME } from '@/ui/layout/property-pdf/constants/defaultTheme';
 import { DefaultDocumentationTemplateProps } from '@/ui/layout/property-pdf/types/types';
 import { Page, Text, View } from '@react-pdf/renderer';
+import { useMemo } from 'react';
 
 export type PropertyDescriptionPageProps = DefaultDocumentationTemplateProps;
+
+interface BlockContent {
+  type: string;
+  text: string;
+  styles?: {
+    bold?: boolean;
+    italic?: boolean;
+    underline?: boolean;
+  };
+}
+
+interface BlockNode {
+  id: string;
+  type: string;
+  props: {
+    textColor: string;
+    backgroundColor: string;
+    textAlignment: string;
+  };
+  content: BlockContent[];
+  children: any[];
+}
 
 export const PropertyDescriptionPage = ({
   property,
@@ -18,11 +40,96 @@ export const PropertyDescriptionPage = ({
   Footer,
   Header,
 }: PropertyDescriptionPageProps) => {
-  // Default text if no description is available
-  const description = property.description || 'Keine Beschreibung verfügbar';
-  const paragraphs = description
-    .split('\n')
-    .filter((p: string) => p.trim().length > 0);
+  // Process rich text content
+  const descriptionBlocks = useMemo(() => {
+    if (!property.descriptionV2?.blocknote) {
+      return [];
+    }
+
+    try {
+      // Parse the blocknote JSON string
+      const blocks = JSON.parse(
+        property.descriptionV2.blocknote,
+      ) as BlockNode[];
+      return blocks;
+    } catch (error) {
+      console.error('Error parsing rich text:', error);
+      return [];
+    }
+  }, [property.descriptionV2?.blocknote]);
+
+  // Render a block based on its type and content
+  const renderBlock = (
+    block: BlockNode,
+    index: number,
+    totalBlocks: number,
+  ) => {
+    // Style for the last paragraph (no margin bottom)
+    const isLastBlock = index === totalBlocks - 1;
+    const paragraphStyle = isLastBlock
+      ? PROPERTY_DETAILS_STYLES.descriptionParagraphLast
+      : PROPERTY_DETAILS_STYLES.descriptionParagraph;
+
+    // Handle different block types
+    switch (block.type) {
+      case 'paragraph':
+        // Handle empty paragraph (line break)
+        if (!block.content || block.content.length === 0) {
+          return (
+            <Text key={block.id} style={paragraphStyle}>
+              &nbsp;
+            </Text>
+          );
+        }
+
+        // Handle regular paragraph with content
+        return (
+          <Text key={block.id} style={paragraphStyle}>
+            {block.content.map((contentItem, contentIndex) => {
+              // Apply text styles
+              const textStyle = {
+                ...(contentItem.styles?.bold && {
+                  fontWeight: 'bold' as const,
+                }),
+              };
+
+              return (
+                <Text key={`${block.id}-${contentIndex}`} style={textStyle}>
+                  {contentItem.text}
+                </Text>
+              );
+            })}
+          </Text>
+        );
+
+      case 'bulletListItem':
+        return (
+          <Text key={block.id} style={paragraphStyle}>
+            •{' '}
+            {block.content.map((contentItem, contentIndex) => {
+              // Apply text styles for list items
+              const textStyle = {
+                ...(contentItem.styles?.bold && {
+                  fontWeight: 'bold' as const,
+                }),
+              };
+
+              return (
+                <Text key={`${block.id}-${contentIndex}`} style={textStyle}>
+                  {contentItem.text}
+                </Text>
+              );
+            })}
+          </Text>
+        );
+
+      default:
+        return null;
+    }
+  };
+
+  // If no description, show a default message
+  const hasDescription = descriptionBlocks.length > 0;
 
   return (
     <Page
@@ -38,23 +145,13 @@ export const PropertyDescriptionPage = ({
             <H2 style={{ marginBottom: 10 }}>Über die Liegenschaft</H2>
 
             <View style={PROPERTY_DETAILS_STYLES.detailsSection}>
-              {/* Property description with paragraphs */}
+              {/* Property description with blocks */}
               <View style={PROPERTY_DETAILS_STYLES.descriptionContainer}>
-                {paragraphs.map((paragraph: string, index: number) => (
-                  <Text
-                    key={index}
-                    style={
-                      index < paragraphs.length - 1
-                        ? PROPERTY_DETAILS_STYLES.descriptionParagraph
-                        : PROPERTY_DETAILS_STYLES.descriptionParagraphLast
-                    }
-                  >
-                    {paragraph}
-                  </Text>
-                ))}
-
-                {/* If no paragraphs, show a default message */}
-                {paragraphs.length === 0 && (
+                {hasDescription ? (
+                  descriptionBlocks.map((block, index) =>
+                    renderBlock(block, index, descriptionBlocks.length),
+                  )
+                ) : (
                   <Text style={PROPERTY_DETAILS_STYLES.descriptionParagraph}>
                     Keine detaillierte Beschreibung verfügbar.
                   </Text>

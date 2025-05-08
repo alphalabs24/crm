@@ -48,7 +48,7 @@ const StyledExposeTextBlock = styled.div`
 `;
 
 const StyledDocumentIconContainer = styled.div`
-  background: ${({ theme }) => theme.background.tertiary};
+  background: ${({ theme }) => theme.border.color.light};
   border-radius: ${({ theme }) => theme.border.radius.sm};
   padding: ${({ theme }) => theme.spacing(0.5)};
   display: flex;

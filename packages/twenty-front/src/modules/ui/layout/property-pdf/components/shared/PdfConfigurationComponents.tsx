@@ -53,7 +53,10 @@ export const StyledSelectionOrder = styled.div`
 `;
 
 // Option Card Components
-export const StyledOptionCard = styled.div<{ isSelected?: boolean }>`
+export const StyledOptionCard = styled.div<{
+  isSelected?: boolean;
+  isDisabled?: boolean;
+}>`
   align-items: center;
   background: ${({ theme, isSelected }) =>
     isSelected ? theme.background.tertiary : theme.background.secondary};
@@ -64,6 +67,9 @@ export const StyledOptionCard = styled.div<{ isSelected?: boolean }>`
   gap: ${({ theme }) => theme.spacing(2)};
   padding: ${({ theme }) => theme.spacing(2)};
   transition: all 0.2s ease;
+
+  opacity: ${({ isDisabled }) => (isDisabled ? 0.5 : 1)};
+  cursor: ${({ isDisabled }) => (isDisabled ? 'not-allowed' : 'pointer')};
 
   &:hover {
     background: ${({ theme }) => theme.background.tertiary};

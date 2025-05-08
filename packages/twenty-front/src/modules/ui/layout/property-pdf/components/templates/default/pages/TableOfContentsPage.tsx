@@ -17,6 +17,7 @@ export const TableOfContentsPage = ({
   hasGallery,
   hasDescription = false,
   configuration,
+  localizedStaticTexts,
 }: TableOfContentsPageProps) => {
   // Calculate page numbers based on what content is available
   let currentPage = 3; // First page + TOC page + 1
@@ -41,7 +42,9 @@ export const TableOfContentsPage = ({
     >
       {Header && Header}
       <Section height="75%">
-        <H1 style={{ marginBottom: 10 }}>Inhaltsverzeichnis</H1>
+        <H1 style={{ marginBottom: 10 }}>
+          {localizedStaticTexts?.tableOfContentsTitle || 'Inhaltsverzeichnis'}
+        </H1>
 
         <View style={PDF_STYLES.tocContainer}>
           {/* Update the TOC links to reflect the new page order */}
@@ -49,7 +52,8 @@ export const TableOfContentsPage = ({
             <Link src="#propertyDescription" style={PDF_STYLES.tocLink}>
               <View style={PDF_STYLES.tocItem}>
                 <Text style={PDF_STYLES.tocItemText}>
-                  Über die Liegenschaft
+                  {localizedStaticTexts?.descriptionTitle ||
+                    'Über die Liegenschaft'}
                 </Text>
                 <Text style={PDF_STYLES.tocItemPage}>
                   {descriptionPageNumber}
@@ -61,7 +65,9 @@ export const TableOfContentsPage = ({
           {configuration?.showAddressMap && (
             <Link src="#location" style={PDF_STYLES.tocLink}>
               <View style={PDF_STYLES.tocItem}>
-                <Text style={PDF_STYLES.tocItemText}>Standort & Umgebung</Text>
+                <Text style={PDF_STYLES.tocItemText}>
+                  {localizedStaticTexts?.locationTitle || 'Standort & Umgebung'}
+                </Text>
                 <Text style={PDF_STYLES.tocItemPage}>{mapPageNumber}</Text>
               </View>
             </Link>
@@ -69,7 +75,10 @@ export const TableOfContentsPage = ({
 
           <Link src="#propertyDetails" style={PDF_STYLES.tocLink}>
             <View style={PDF_STYLES.tocItem}>
-              <Text style={PDF_STYLES.tocItemText}>Liegenschaftsdaten</Text>
+              <Text style={PDF_STYLES.tocItemText}>
+                {localizedStaticTexts?.propertyDetailsTitle ||
+                  'Liegenschaftsdaten'}
+              </Text>
               <Text style={PDF_STYLES.tocItemPage}>{detailsPageNumber}</Text>
             </View>
           </Link>
@@ -77,7 +86,9 @@ export const TableOfContentsPage = ({
           {hasGallery && (
             <Link src="#gallery" style={PDF_STYLES.tocLink}>
               <View style={PDF_STYLES.tocItem}>
-                <Text style={PDF_STYLES.tocItemText}>Bildergalerie</Text>
+                <Text style={PDF_STYLES.tocItemText}>
+                  {localizedStaticTexts?.galleryTitle || 'Bildergalerie'}
+                </Text>
                 <Text style={PDF_STYLES.tocItemPage}>{galleryPageNumber}</Text>
               </View>
             </Link>

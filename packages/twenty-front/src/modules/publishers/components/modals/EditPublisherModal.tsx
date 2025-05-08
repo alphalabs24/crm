@@ -264,6 +264,7 @@ export const EditPublisherModal = forwardRef<ModalRefType, Props>(
             updateOneRecordInput: {
               email: {
                 primaryEmail: email,
+                additionalEmails: [],
               },
               name,
             },
@@ -273,8 +274,10 @@ export const EditPublisherModal = forwardRef<ModalRefType, Props>(
             name,
             email: {
               primaryEmail: email,
+              additionalEmails: [],
             },
           });
+          // TODO check if id is returned since its undefined when trying to create attachment
           publisherIdToUse = newPublisher.id;
         }
 
@@ -313,16 +316,13 @@ export const EditPublisherModal = forwardRef<ModalRefType, Props>(
 
         // Save logo changes if needed
         if (hasLogoChanges && publisherLogoRef.current) {
-          // For a new publisher, we need to make sure the new ID is used
-          if (!publisherId && publisherIdToUse) {
-            // We need to wait for the refetch to complete to get the latest data
+          if (publisherId) {
+            // Refetch Data
             await refetchAgencyRecord();
           }
-          // Now save the logo changes
-          await publisherLogoRef.current.saveChanges();
+          // Save the logo changes
+          await publisherLogoRef.current.saveChanges(publisherIdToUse);
         }
-
-        refetchAgencyRecord();
 
         enqueueSnackBar(t`Credentials saved successfully`, {
           variant: SnackBarVariant.Success,
@@ -443,7 +443,7 @@ export const EditPublisherModal = forwardRef<ModalRefType, Props>(
           <StyledSection>
             <PublisherLogoUpload
               ref={publisherLogoRef}
-              publisherId={publisherId || ''}
+              initialPublisherId={publisherId}
               onImageChange={setHasLogoChanges}
             />
           </StyledSection>

@@ -10,6 +10,7 @@ import { CODE_LIGHT } from './CodeLight';
 import { FONT_LIGHT } from './FontLight';
 import { TAG_LIGHT } from './TagLight';
 import { THEME_COMMON } from './ThemeCommon';
+import { SCROLL_BAR_LIGHT } from './ScrollBarLight';
 
 export const THEME_LIGHT = {
   ...THEME_COMMON,
@@ -21,6 +22,7 @@ export const THEME_LIGHT = {
     boxShadow: BOX_SHADOW_LIGHT,
     font: FONT_LIGHT,
     name: 'light',
+    scrollBar: SCROLL_BAR_LIGHT,
     snackBar: SNACK_BAR_LIGHT,
     tag: TAG_LIGHT,
     code: CODE_LIGHT,

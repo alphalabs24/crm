@@ -1,12 +1,14 @@
 import { FinancialOverviewGroup } from '@/record-edit/constants/snippets/FinancialOverviewGroup';
 import { PropertyCategoryGroup } from '@/record-edit/constants/snippets/PropertyCategoryGroup';
 import { SectionContent } from '@/record-edit/types/EditSectionTypes';
+import { Trans } from '@lingui/react/macro';
 
 // TODO use graphql types of standard entities to reference the field names!
 // Field will use inline fields and input will use form inputs
 export const OVERVIEW_SECTION_CONTENT: SectionContent[] = [
   {
-    title: 'Media',
+    key: 'media',
+    title: <Trans>Media</Trans>,
     width: 'half',
     groups: [
       {
@@ -18,13 +20,14 @@ export const OVERVIEW_SECTION_CONTENT: SectionContent[] = [
     ],
   },
   {
-    title: 'Basic Information',
+    key: 'basic-information',
+    title: <Trans>Basic Information</Trans>,
     width: 'half',
     groups: [
       {
         fields: [
           { name: 'name', type: 'input', fieldWidth: 0, required: true },
-          { name: 'description', type: 'multiLine', fieldWidth: 0 },
+          { name: 'description', type: 'custom', fieldWidth: 0 },
         ],
       },
       {
@@ -37,7 +40,8 @@ export const OVERVIEW_SECTION_CONTENT: SectionContent[] = [
     ],
   },
   {
-    title: 'Building Details',
+    key: 'building-details',
+    title: <Trans>Building Details</Trans>,
     width: 'twoThirds',
     groups: [
       PropertyCategoryGroup,
@@ -94,7 +98,8 @@ export const OVERVIEW_SECTION_CONTENT: SectionContent[] = [
   },
 
   {
-    title: 'Technical Specifications',
+    key: 'technical-specifications',
+    title: <Trans>Technical Specifications</Trans>,
     width: 'third',
     groups: [
       {
@@ -107,7 +112,8 @@ export const OVERVIEW_SECTION_CONTENT: SectionContent[] = [
     ],
   },
   {
-    title: 'Financial Details',
+    key: 'financial-details',
+    title: <Trans>Financial Details</Trans>,
     width: 'half',
     groups: [
       FinancialOverviewGroup,
@@ -118,7 +124,35 @@ export const OVERVIEW_SECTION_CONTENT: SectionContent[] = [
     ],
   },
   {
-    title: 'Stakeholders',
+    key: 'location',
+    title: <Trans>Location</Trans>,
+    width: 'half',
+    description: (
+      <Trans>
+        The location of the property. These fields are <strong>required</strong>{' '}
+        in order to publish. (Except for the secondary address field)
+      </Trans>
+    ),
+    groups: [
+      {
+        fields: [{ name: 'address', type: 'input', hideLabel: true }],
+      },
+    ],
+  },
+
+  {
+    key: 'property-features',
+    title: <Trans>Property Features</Trans>,
+    width: 'half',
+    groups: [
+      {
+        fields: [{ name: 'features', type: 'field' }],
+      },
+    ],
+  },
+  {
+    key: 'stakeholders',
+    title: <Trans>Stakeholders</Trans>,
     width: 'half',
     omitForPublications: true,
     groups: [
@@ -129,15 +163,6 @@ export const OVERVIEW_SECTION_CONTENT: SectionContent[] = [
           { name: 'agency', type: 'field' },
           { name: 'assignee', type: 'field', omitForPublication: true },
         ],
-      },
-    ],
-  },
-  {
-    title: 'Property Features',
-    width: 'half',
-    groups: [
-      {
-        fields: [{ name: 'features', type: 'field' }],
       },
     ],
   },

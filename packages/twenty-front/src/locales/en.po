@@ -161,6 +161,11 @@ msgstr "Abort"
 msgid "About"
 msgstr "About"
 
+#: src/modules/ui/layout/property-pdf/hooks/useLocalizedStaticTexts.ts
+#: src/modules/ui/layout/property-pdf/hooks/useLocalizedStaticTexts.ts
+msgid "About the property"
+msgstr "About the property"
+
 #: src/pages/settings/accounts/SettingsAccounts.tsx
 #: src/pages/settings/accounts/SettingsAccounts.tsx
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/ContentCustomize.tsx
@@ -282,7 +287,12 @@ msgstr "Add your {objectLabel}"
 msgid "Added {beautifiedCreatedAt}"
 msgstr "Added {beautifiedCreatedAt}"
 
+#: src/modules/ui/layout/property-pdf/hooks/useLocalizedStaticTexts.ts
+msgid "Additional Details"
+msgstr "Additional Details"
+
 #: src/modules/ui/layout/show-page/components/nm/PublicationDifferencesModal.tsx
+#: src/modules/ui/layout/property-pdf/hooks/useLocalizedStaticTexts.ts
 #: src/modules/object-record/record-show/components/nm/cards/PropertyDocumentsCard.tsx
 msgid "Additional Documents"
 msgstr "Additional Documents"
@@ -504,6 +514,10 @@ msgstr "Are you sure you want to revert all changes? This will delete the draft 
 msgid "Are you sure you want to unpublish this publication? This will remove it from the published platform and make it unavailable to potential clients. You can always publish it again later."
 msgstr "Are you sure you want to unpublish this publication? This will remove it from the published platform and make it unavailable to potential clients. You can always publish it again later."
 
+#: src/modules/ui/layout/property-pdf/hooks/useLocalizedStaticTexts.ts
+msgid "Area & Masses"
+msgstr "Area & Masses"
+
 #: src/modules/ui/layout/show-page/components/nm/PropertyDifferencesModal.tsx
 msgid "As Drafts"
 msgstr "As Drafts"
@@ -587,6 +601,10 @@ msgstr "Back to content"
 msgid "Basement {absoluteValue}"
 msgstr "Basement {absoluteValue}"
 
+#: src/modules/record-edit/constants/EditSectionPropertyOverviewContent.tsx
+msgid "Basic Information"
+msgstr "Basic Information"
+
 #: src/pages/settings/SettingsBilling.tsx
 #: src/pages/settings/SettingsBilling.tsx
 #: src/modules/settings/hooks/useSettingsNavigationItems.tsx
@@ -604,6 +622,10 @@ msgstr "Body"
 #: src/pages/onboarding/ChooseYourPlan.tsx
 msgid "Book a Call"
 msgstr "Book a Call"
+
+#: src/modules/record-edit/constants/EditSectionPropertyOverviewContent.tsx
+msgid "Building Details"
+msgstr "Building Details"
 
 #: src/modules/auth/sign-in-up/components/FooterNote.tsx
 msgid "By using nestermind, you agree to the"
@@ -679,6 +701,10 @@ msgstr "Change {to}"
 msgid "Change Password"
 msgstr "Change Password"
 
+#: src/modules/ui/layout/property-pdf/hooks/useLocalizedStaticTexts.ts
+msgid "Characteristics"
+msgstr "Characteristics"
+
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 #~ msgid "Chinese — Simplified"
 #~ msgstr "Chinese — Simplified"
@@ -715,6 +741,7 @@ msgstr "Clear filter"
 #~ msgid "Click to select files"
 #~ msgstr "Click to select files"
 
+#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySummaryCard.tsx
 #: src/modules/onboarding-tutorial/components/modals/TutorialModal.tsx
 msgid "Close"
 msgstr "Close"
@@ -1233,6 +1260,8 @@ msgstr "Descending"
 #: src/pages/settings/data-model/SettingsObjectNewField/SettingsObjectNewFieldConfigure.tsx
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/ContentCustomize.tsx
 #: src/modules/ui/layout/property-pdf/components/DocumentationConfigurationModal.tsx
+#: src/modules/record-edit/components/custom/PropertyDescriptionFormInput.tsx
+#: src/modules/record-edit/components/custom/PropertyDescriptionFormInput.tsx
 msgid "Description"
 msgstr "Description"
 
@@ -1291,6 +1320,10 @@ msgstr "Display as relative date"
 #: src/modules/object-record/record-show/components/nm/cards/PropertyDocumentsCard.tsx
 msgid "Documents"
 msgstr "Documents"
+
+#: src/modules/record-edit/hooks/useEditSectionTabs.ts
+msgid "Documents & Links"
+msgstr "Documents & Links"
 
 #: src/pages/settings/SettingsWorkspace.tsx
 #: src/pages/settings/workspace/SettingsDomain.tsx
@@ -1480,6 +1513,7 @@ msgstr "Email Templates"
 #: src/pages/settings/accounts/SettingsAccountsEmails.tsx
 #: src/modules/settings/hooks/useSettingsNavigationItems.tsx
 #: src/modules/settings/accounts/components/SettingsAccountsSettingsSection.tsx
+#: src/modules/record-edit/hooks/useEditSectionTabs.ts
 #: src/modules/object-record/record-show/hooks/useRecordShowContainerTabs.ts
 #: src/modules/object-record/record-show/hooks/useRecordShowContainerTabs.ts
 #: src/modules/object-record/record-show/hooks/useRecordShowContainerTabs.ts
@@ -1710,6 +1744,7 @@ msgid "Export Workflows"
 msgstr "Export Workflows"
 
 #: src/modules/object-record/record-show/hooks/useRecordShowContainerTabs.ts
+#: src/modules/object-record/record-show/components/nm/MarketingSuite.tsx
 msgid "Exposé & Flyer"
 msgstr "Exposé & Flyer"
 
@@ -1733,6 +1768,10 @@ msgstr "Failed to create workspace"
 #: src/modules/object-record/record-show/components/nm/publication/PublicationDetailPage.tsx
 msgid "Failed to delete changes"
 msgstr "Failed to delete changes"
+
+#: src/modules/object-record/record-show/components/nm/MarketingSuite.tsx
+msgid "Failed to delete document"
+msgstr "Failed to delete document"
 
 #: src/modules/ui/layout/show-page/hooks/useDeleteProperty.ts
 msgid "Failed to delete property"
@@ -1778,6 +1817,10 @@ msgstr "Favorites"
 msgid "Features"
 msgstr "Features"
 
+#: src/modules/ui/layout/property-pdf/hooks/useLocalizedStaticTexts.ts
+msgid "Features and amenities"
+msgstr "Features and amenities"
+
 #: src/pages/settings/data-model/SettingsObjectFieldTable.tsx
 msgid "Field type"
 msgstr "Field type"
@@ -1820,6 +1863,10 @@ msgstr "Filters"
 msgid "Financial"
 msgstr "Financial"
 
+#: src/modules/record-edit/constants/EditSectionPropertyOverviewContent.tsx
+msgid "Financial Details"
+msgstr "Financial Details"
+
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 #~ msgid "Finnish"
 #~ msgstr "Finnish"
@@ -1833,6 +1880,10 @@ msgstr "First Name"
 #: src/modules/onboarding-tutorial/components/OnboardingSteps.tsx
 msgid "First steps on nestermind"
 msgstr "First steps on nestermind"
+
+#: src/modules/ui/layout/property-pdf/hooks/useLocalizedStaticTexts.ts
+msgid "Floorplan"
+msgstr "Floorplan"
 
 #: src/modules/object-record/record-show/hooks/useRecordShowContainerTabs.ts
 #: src/modules/object-record/record-show/hooks/useRecordShowContainerTabs.ts
@@ -1876,6 +1927,10 @@ msgstr "Full access"
 msgid "Functions"
 msgstr "Functions"
 
+#: src/modules/ui/layout/property-pdf/hooks/useLocalizedStaticTexts.ts
+msgid "Gallery"
+msgstr "Gallery"
+
 #: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
 msgid "Gastronomy Subtype"
 msgstr "Gastronomy Subtype"
@@ -1902,6 +1957,18 @@ msgstr "Generate"
 #: src/modules/object-record/record-show/components/nm/AISuite.tsx
 msgid "Generate Analysis"
 msgstr "Generate Analysis"
+
+#: src/modules/record-edit/components/custom/PropertyEmailsFormInput.tsx
+msgid "Generate documentation"
+msgstr "Generate documentation"
+
+#: src/modules/record-edit/components/custom/PropertyEmailsFormInput.tsx
+msgid "Generate documents"
+msgstr "Generate documents"
+
+#: src/modules/record-edit/components/custom/PropertyEmailsFormInput.tsx
+msgid "Generate flyer"
+msgstr "Generate flyer"
 
 #: src/modules/object-record/record-show/components/nm/AISuite.tsx
 msgid "Generate Insights"
@@ -2045,6 +2112,10 @@ msgstr "Images"
 #: src/modules/object-record/object-options-dropdown/components/ObjectOptionsDropdownMenuContent.tsx
 msgid "Import"
 msgstr "Import"
+
+#: src/modules/ui/layout/show-page/components/nm/PublicationDifferencesModal.tsx
+msgid "Important"
+msgstr "Important"
 
 #: src/pages/onboarding/tutorial.tsx
 msgid "In progress"
@@ -2234,6 +2305,10 @@ msgstr "Italian"
 msgid "Key Details"
 msgstr "Key Details"
 
+#: src/modules/record-edit/constants/EditSectionLocationContent.tsx
+msgid "Key Distances"
+msgstr "Key Distances"
+
 #: src/pages/settings/profile/appearance/components/LocalePicker.tsx
 #~ msgid "Korean"
 #~ msgstr "Korean"
@@ -2339,9 +2414,14 @@ msgstr "Loading document..."
 msgid "Loading..."
 msgstr "Loading..."
 
+#: src/modules/record-edit/constants/EditSectionPropertyOverviewContent.tsx
 #: src/modules/object-record/record-show/components/nm/cards/PropertyAddressCard.tsx
 msgid "Location"
 msgstr "Location"
+
+#: src/modules/ui/layout/property-pdf/hooks/useLocalizedStaticTexts.ts
+msgid "Location & surroundings"
+msgstr "Location & surroundings"
 
 #: src/pages/onboarding/ChooseYourPlan.tsx
 msgid "Log out"
@@ -2393,8 +2473,8 @@ msgid "Market Analysis"
 msgstr "Market Analysis"
 
 #: src/modules/object-record/record-show/components/nm/MarketingSuite.tsx
-msgid "Marketing Suite"
-msgstr "Marketing Suite"
+#~ msgid "Marketing Suite"
+#~ msgstr "Marketing Suite"
 
 #: src/modules/object-record/record-show/components/nm/AISuite.tsx
 msgid "Marketing Video"
@@ -2408,6 +2488,10 @@ msgstr "Max"
 #: src/modules/ui/layout/show-page/components/nm/types/Platform.tsx
 msgid "Maximum reach through social media! Advertise your property directly on Facebook and Instagram. Create targeted ads and track performance in real-time."
 msgstr "Maximum reach through social media! Advertise your property directly on Facebook and Instagram. Create targeted ads and track performance in real-time."
+
+#: src/modules/record-edit/constants/EditSectionPropertyOverviewContent.tsx
+msgid "Media"
+msgstr "Media"
 
 #: src/pages/settings/SettingsWorkspaceMembers.tsx
 #: src/pages/settings/SettingsWorkspaceMembers.tsx
@@ -2424,6 +2508,18 @@ msgstr "Metadata"
 #: src/modules/object-record/record-board/record-board-column/utils/getAggregateOperationLabel.ts
 msgid "Min"
 msgstr "Min"
+
+#: src/modules/record-edit/components/custom/PropertyEmailsFormInput.tsx
+msgid "Missing documentation"
+msgstr "Missing documentation"
+
+#: src/modules/record-edit/components/custom/PropertyEmailsFormInput.tsx
+msgid "Missing flyer"
+msgstr "Missing flyer"
+
+#: src/modules/record-edit/components/custom/PropertyEmailsFormInput.tsx
+msgid "Missing flyer and documentation"
+msgstr "Missing flyer and documentation"
 
 #: src/modules/ui/layout/show-page/hooks/usePublicationValidation.tsx
 msgid "Missing required fields: {missingFieldsString}"
@@ -2869,6 +2965,7 @@ msgstr "Other"
 msgid "Output"
 msgstr "Output"
 
+#: src/modules/record-edit/hooks/useEditSectionTabs.ts
 #: src/modules/object-record/record-show/components/nm/cards/PropertyBasicInfoCard.tsx
 msgid "Overview"
 msgstr "Overview"
@@ -3035,6 +3132,10 @@ msgstr "Prefill Property"
 msgid "Preview"
 msgstr "Preview"
 
+#: src/modules/ui/layout/property-pdf/hooks/useLocalizedStaticTexts.ts
+msgid "Price details"
+msgstr "Price details"
+
 #: src/modules/object-record/record-show/components/nm/PublicationDetails.tsx
 #~ msgid "Price History"
 #~ msgstr "Price History"
@@ -3061,6 +3162,12 @@ msgstr "Property"
 msgid "Property created successfully"
 msgstr "Property created successfully"
 
+#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySummaryCard.tsx
+msgid "Property Description"
+msgstr "Property Description"
+
+#: src/modules/ui/layout/property-pdf/hooks/useLocalizedStaticTexts.ts
+#: src/modules/ui/layout/property-pdf/hooks/useLocalizedStaticTexts.ts
 #: src/modules/inquiries/components/sidebar/PropertyDetails.tsx
 #: src/modules/inquiries/components/sidebar/PropertyDetails.tsx
 msgid "Property Details"
@@ -3078,6 +3185,7 @@ msgid "Property Exposé"
 msgstr "Property Exposé"
 
 #: src/modules/ui/layout/property-pdf/components/shared/PdfConfigurationUtils.tsx
+#: src/modules/record-edit/constants/EditSectionPropertyOverviewContent.tsx
 msgid "Property Features"
 msgstr "Property Features"
 
@@ -3162,6 +3270,7 @@ msgid "Publications"
 msgstr "Publications"
 
 #: src/modules/ui/layout/show-page/components/nm/modal-pages/Publishing.tsx
+#: src/modules/object-record/record-show/components/nm/PropertyDetails.tsx
 #: src/modules/object-record/record-show/components/nm/publication/PublicationDetailPage.tsx
 #: src/modules/object-record/record-show/components/nm/publication/PublicationDetailPage.tsx
 msgid "Publish"
@@ -3386,12 +3495,12 @@ msgid "Save and send"
 msgstr "Save and send"
 
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
-msgid "Scroll left"
-msgstr "Scroll left"
+#~ msgid "Scroll left"
+#~ msgstr "Scroll left"
 
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
-msgid "Scroll right"
-msgstr "Scroll right"
+#~ msgid "Scroll right"
+#~ msgstr "Scroll right"
 
 #: src/modules/sign-in-background-mock/components/SignInAppNavigationDrawerMock.tsx
 #: src/modules/navigation/components/MainNavigationDrawerItems.tsx
@@ -3444,6 +3553,10 @@ msgstr "Security"
 #: src/modules/action-menu/actions/record-actions/constants/WorkflowActionsConfig.ts
 msgid "See active version"
 msgstr "See active version"
+
+#: src/modules/ui/layout/show-page/components/nm/ShowPagePropertySummaryCard.tsx
+msgid "See full description"
+msgstr "See full description"
 
 #: src/modules/action-menu/actions/record-actions/constants/WorkflowVersionsActionsConfig.ts
 #: src/modules/action-menu/actions/record-actions/constants/WorkflowVersionsActionsConfig.ts
@@ -3651,6 +3764,7 @@ msgstr "Space Details"
 msgid "SSO"
 msgstr "SSO"
 
+#: src/modules/record-edit/constants/EditSectionPropertyOverviewContent.tsx
 #: src/modules/object-record/record-show/components/nm/cards/PropertyRelationsCard.tsx
 msgid "Stakeholders"
 msgstr "Stakeholders"
@@ -3796,9 +3910,17 @@ msgstr "System settings - {systemDateFormatLabel}"
 msgid "System Settings - {systemTimeFormatLabel}"
 msgstr "System Settings - {systemTimeFormatLabel}"
 
+#: src/modules/ui/layout/property-pdf/hooks/useLocalizedStaticTexts.ts
+msgid "Table of Contents"
+msgstr "Table of Contents"
+
 #: src/modules/object-record/record-show/hooks/useRecordShowContainerTabs.ts
 msgid "Tasks"
 msgstr "Tasks"
+
+#: src/modules/record-edit/constants/EditSectionPropertyOverviewContent.tsx
+msgid "Technical Specifications"
+msgstr "Technical Specifications"
 
 #: src/pages/onboarding/CreateProfile.tsx
 msgid "terms of service"
@@ -3835,7 +3957,7 @@ msgstr "The email associated to your account"
 #~ msgid "The location of the property. These fields are <0>required</0> in order to publish."
 #~ msgstr "The location of the property. These fields are <0>required</0> in order to publish."
 
-#: src/modules/record-edit/constants/EditSectionLocationContent.tsx
+#: src/modules/record-edit/constants/EditSectionPropertyOverviewContent.tsx
 msgid "The location of the property. These fields are <0>required</0> in order to publish. (Except for the secondary address field)"
 msgstr "The location of the property. These fields are <0>required</0> in order to publish. (Except for the secondary address field)"
 
@@ -3920,6 +4042,18 @@ msgstr "This permission is required for nestermind's automation and AI features 
 #: src/pages/settings/roles/components/RoleAssignment.tsx
 msgid "This role is assigned to these workspace members."
 msgstr "This role is assigned to these workspace members."
+
+#: src/modules/record-edit/components/custom/PropertyEmailsFormInput.tsx
+msgid "This template references a flyer and documentation, but neither has been uploaded for this property."
+msgstr "This template references a flyer and documentation, but neither has been uploaded for this property."
+
+#: src/modules/record-edit/components/custom/PropertyEmailsFormInput.tsx
+msgid "This template references a flyer, but none has been uploaded for this property."
+msgstr "This template references a flyer, but none has been uploaded for this property."
+
+#: src/modules/record-edit/components/custom/PropertyEmailsFormInput.tsx
+msgid "This template references documentation, but none has been uploaded for this property."
+msgstr "This template references documentation, but none has been uploaded for this property."
 
 #: src/pages/settings/profile/appearance/components/DateTimeSettingsTimeFormatSelect.tsx
 msgid "Time format"

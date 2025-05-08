@@ -10,6 +10,7 @@ import { CODE_DARK } from './CodeDark';
 import { FONT_DARK } from './FontDark';
 import { TAG_DARK } from './TagDark';
 import { THEME_COMMON } from './ThemeCommon';
+import { SCROLL_BAR_DARK } from './ScrollBarDark';
 
 export const THEME_DARK: ThemeType = {
   ...THEME_COMMON,
@@ -21,6 +22,7 @@ export const THEME_DARK: ThemeType = {
     boxShadow: BOX_SHADOW_DARK,
     font: FONT_DARK,
     name: 'dark',
+    scrollBar: SCROLL_BAR_DARK,
     snackBar: SNACK_BAR_DARK,
     tag: TAG_DARK,
     code: CODE_DARK,

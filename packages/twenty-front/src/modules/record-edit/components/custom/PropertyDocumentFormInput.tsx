@@ -39,33 +39,16 @@ import {
 } from 'twenty-ui';
 import { DocumentEditModal } from './DocumentEditModal';
 import { downloadFile } from '@/activities/files/utils/downloadFile';
+import {
+  DocumentViewerModal,
+  DocumentViewerModalRef,
+} from '~/ui/documents/document-viewer-modal/components/DocumentViewerModal';
 
 const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(4)};
   width: 100%;
-`;
-
-const StyledTitleContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing(1)};
-  min-width: 0;
-  flex: 1;
-`;
-
-const StyledTitle = styled.h3`
-  color: ${({ theme }) => theme.font.color.primary};
-  font-size: ${({ theme }) => theme.font.size.md};
-  font-weight: ${({ theme }) => theme.font.weight.regular};
-  margin: 0;
-`;
-
-const StyledDescription = styled.p`
-  color: ${({ theme }) => theme.font.color.tertiary};
-  font-size: ${({ theme }) => theme.font.size.sm};
-  margin: 0;
 `;
 
 const StyledDocumentList = styled.div<{ isDraggingOver?: boolean }>`
@@ -221,6 +204,7 @@ const DraggableDocumentItem = ({
   const dropdownId = `document-${document.id}-dropdown`;
   const { closeDropdown } = useDropdown(dropdownId);
   const modalRef = useRef<ModalRefType>(null);
+  const documentViewerModalRef = useRef<DocumentViewerModalRef>(null);
 
   const handleDelete = () => {
     onRemove(document);
@@ -253,12 +237,30 @@ const DraggableDocumentItem = ({
   };
 
   const handleOpen = () => {
-    window.open(document.previewUrl, '_blank');
+    if (document.attachment) {
+      // For attachments, use DocumentViewerModal
+      documentViewerModalRef.current?.open({
+        name: document.fileName || document.attachment.name,
+        url: document.attachment.fullPath,
+      });
+    } else {
+      // For local files, open in new tab as before
+      window.open(document.previewUrl, '_blank');
+    }
     closeDropdown();
   };
 
   const handleFileNameClick = () => {
-    window.open(document.previewUrl, '_blank');
+    if (document.attachment) {
+      // For attachments, use DocumentViewerModal
+      documentViewerModalRef.current?.open({
+        name: document.fileName || document.attachment.name,
+        url: document.attachment.fullPath,
+      });
+    } else {
+      // For local files, open in new tab as before
+      window.open(document.previewUrl, '_blank');
+    }
   };
 
   return (
@@ -288,7 +290,7 @@ const DraggableDocumentItem = ({
             id={`document-${document.id}`}
           >
             <StyledFileIcon>
-              {getFileIcon(document.file?.name || '')}
+              {getFileIcon(document.file?.name || document.fileName || '')}
             </StyledFileIcon>
             <StyledFileInfo>
               <StyledFileName onClick={handleFileNameClick}>
@@ -343,6 +345,9 @@ const DraggableDocumentItem = ({
         onClose={() => modalRef.current?.close()}
         onSave={(updates) => handleSaveEdit(document, updates)}
       />
+
+      {/* Add DocumentViewerModal */}
+      <DocumentViewerModal ref={documentViewerModalRef} />
     </>
   );
 };

@@ -29,6 +29,8 @@ export * from './constants/MainColors';
 export * from './constants/MobileViewport';
 export * from './constants/Modal';
 export * from './constants/Rgba';
+export * from './constants/ScrollBarDark';
+export * from './constants/ScrollBarLight';
 export * from './constants/SecondaryColors';
 export * from './constants/SnackBarCommon';
 export * from './constants/SnackBarDark';

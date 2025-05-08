@@ -1,7 +1,9 @@
+import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { LinkedPropertyCard } from '@/object-record/record-show/components/nm/cards/LinkedPropertyCard';
 import { PlatformBadge } from '@/object-record/record-show/components/nm/publication/PlatformBadge';
 import { Section } from '@/object-record/record-show/components/ui/PropertyDetailsCardComponents';
 import { ObjectRecord } from '@/object-record/types/ObjectRecord';
+import { AutoMigrateDescriptionEffect } from '@/ui/layout/show-page/components/nm/effects/AutoMigrateDescriptionEffect';
 import { ShowPagePropertySummaryCard } from '@/ui/layout/show-page/components/nm/ShowPagePropertySummaryCard';
 import { PlatformId } from '@/ui/layout/show-page/components/nm/types/Platform';
 import { useIsMobile } from '@/ui/utilities/responsive/hooks/useIsMobile';
@@ -83,11 +85,20 @@ export const PropertyBasicInfoCard = ({
       }
     >
       <StyledContent>
+        <AutoMigrateDescriptionEffect
+          record={record}
+          objectNameSingular={
+            isPublication
+              ? CoreObjectNameSingular.Publication
+              : CoreObjectNameSingular.Property
+          }
+        />
         <ShowPagePropertySummaryCard
           date={record.createdAt ?? ''}
           loading={loading}
           title={record.name?.firstName ? record.name.firstName : record.name}
           description={record.description}
+          descriptionV2={record.descriptionV2}
           address={
             record.address &&
             (record.address.addressStreet1 || record.address.addressCity)

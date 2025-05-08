@@ -12,6 +12,7 @@ import { RecordFieldValueSelectorContextProvider } from '@/object-record/record-
 import { recordStoreFamilyState } from '@/object-record/record-store/states/recordStoreFamilyState';
 import { SnackBarVariant } from '@/ui/feedback/snack-bar-manager/components/SnackBar';
 import { useSnackBar } from '@/ui/feedback/snack-bar-manager/hooks/useSnackBar';
+import { Alert } from '~/ui/feedback/alert/components/Alert';
 import { Modal, ModalRefType } from '@/ui/layout/modal/components/Modal';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
@@ -125,15 +126,6 @@ const StyledModalDescription = styled.div`
   padding: ${({ theme }) => `0 ${theme.spacing(2)} ${theme.spacing(4)}`};
 `;
 
-const StyledModalWarningText = styled.div`
-  align-items: center;
-  color: ${({ theme }) => theme.font.color.warning};
-  display: flex;
-  font-size: ${({ theme }) => theme.font.size.sm};
-  gap: ${({ theme }) => theme.spacing(1.5)};
-  padding: 0 ${({ theme }) => theme.spacing(2)};
-`;
-
 const StyledModalTopTitle = styled.div`
   align-items: center;
   display: flex;
@@ -191,6 +183,7 @@ const StyledDiffViewContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing(4)};
+  margin-bottom: ${({ theme }) => theme.spacing(2)};
 `;
 
 const StyledPlatformBadgeContainer = styled.div`
@@ -986,13 +979,12 @@ export const PublicationDifferencesModal = forwardRef<
                 })}
             </StyledDiffViewContainer>
 
-            <StyledModalWarningText>
-              <IconAlertCircle size={12} />
+            <Alert type="info" title={t`Important`}>
               <Trans>
                 These changes will update your published listing immediately.
                 Make sure all details are correct before proceeding.
               </Trans>
-            </StyledModalWarningText>
+            </Alert>
           </StyledModalContent>
         </StyledModalContainer>
       </Modal>
