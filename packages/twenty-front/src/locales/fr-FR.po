@@ -8,7 +8,7 @@ msgstr ""
 "Language: fr\n"
 "Project-Id-Version: nestermind-crm\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-04-30 07:57\n"
+"PO-Revision-Date: 2025-05-08 13:16\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
@@ -2476,7 +2476,7 @@ msgstr ""
 
 #: src/modules/object-record/record-show/components/nm/MarketingSuite.tsx
 #~ msgid "Marketing Suite"
-#~ msgstr ""
+#~ msgstr "Marketing Suite"
 
 #: src/modules/object-record/record-show/components/nm/AISuite.tsx
 msgid "Marketing Video"
@@ -3498,11 +3498,11 @@ msgstr ""
 
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 #~ msgid "Scroll left"
-#~ msgstr ""
+#~ msgstr "Scroll left"
 
 #: src/modules/record-edit/components/custom/PropertyImageFormInput.tsx
 #~ msgid "Scroll right"
-#~ msgstr ""
+#~ msgstr "Scroll right"
 
 #: src/modules/sign-in-background-mock/components/SignInAppNavigationDrawerMock.tsx
 #: src/modules/navigation/components/MainNavigationDrawerItems.tsx

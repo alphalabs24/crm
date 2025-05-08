@@ -83,7 +83,7 @@ export const PublisherInformationSection = <T extends PdfBaseConfiguration>({
   const { hasAgencyName, hasAgencyEmail, hasAgencyPhone, hasWorkspaceLogo } =
     availability;
 
-  const isAgencyBrandingAvailable = hasAgencyName || hasWorkspaceLogo;
+  const isAgencyBrandingAvailable = hasAgencyName;
 
   return (
     <>

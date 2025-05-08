@@ -316,12 +316,11 @@ export const EditPublisherModal = forwardRef<ModalRefType, Props>(
 
         // Save logo changes if needed
         if (hasLogoChanges && publisherLogoRef.current) {
-          // For a new publisher, we need to make sure the new ID is used
           if (publisherId) {
-            // We need to wait for the refetch to complete to get the latest data
+            // Refetch Data
             await refetchAgencyRecord();
           }
-          // Now save the logo changes
+          // Save the logo changes
           await publisherLogoRef.current.saveChanges();
         }
 
