@@ -7,10 +7,8 @@ import { useRecordShowContainerActions } from '../../hooks/useRecordShowContaine
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { RecordInlineCell } from '@/object-record/record-inline-cell/components/RecordInlineCell';
 import styled from '@emotion/styled';
-import groupBy from 'lodash.groupby';
 import { isFieldCellSupported } from '@/object-record/utils/isFieldCellSupported';
 import { useRecordShowContainerData } from '../../hooks/useRecordShowContainerData';
-import { FieldMetadataType } from '~/generated/graphql';
 import { SearchProfileMap } from '@/search-profile/components/SearchProfileMap';
 import { useMemo, useState } from 'react';
 import { useCreateOneRecord } from '@/object-record/hooks/useCreateOneRecord';
@@ -26,6 +24,7 @@ import {
   IconInfoCircle,
   LARGE_DESKTOP_VIEWPORT,
 } from 'twenty-ui';
+import { Trans } from '@lingui/react/macro';
 
 const StyledSearchProfileContainer = styled.div<{ isInRightDrawer?: boolean }>`
   display: flex;
@@ -44,12 +43,35 @@ const StyledSearchProfileContainer = styled.div<{ isInRightDrawer?: boolean }>`
   }
 `;
 
+const StyledSectionTitle = styled.div`
+  align-items: center;
+  color: ${({ theme }) => theme.font.color.primary};
+  display: flex;
+  font-size: ${({ theme }) => theme.font.size.md};
+  font-weight: ${({ theme }) => theme.font.weight.medium};
+`;
+
+const StyledSectionDescription = styled.div`
+  color: ${({ theme }) => theme.font.color.tertiary};
+  font-size: ${({ theme }) => theme.font.size.sm};
+`;
+
+const StyledSectionHeader = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing(0.5)};
+  padding-bottom: ${({ theme }) => theme.spacing(2)};
+`;
+
 const StyledContentContainer = styled.div<{ isInRightDrawer?: boolean }>`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   gap: ${({ theme }) => theme.spacing(4)};
-  width: 100%;
   flex-wrap: wrap;
+  border: 1px solid ${({ theme }) => theme.border.color.light};
+  border-radius: ${({ theme }) => theme.border.radius.sm};
+  padding: ${({ theme }) => theme.spacing(3)};
+
   ${({ isInRightDrawer }) =>
     isInRightDrawer &&
     css`
@@ -60,13 +82,15 @@ const StyledContentContainer = styled.div<{ isInRightDrawer?: boolean }>`
   @media (max-width: ${MOBILE_VIEWPORT}px) {
     flex-direction: column;
   }
+
+  @media (min-width: ${LARGE_DESKTOP_VIEWPORT}px) {
+    max-width: 1250px;
+  }
 `;
 
 const StyledMapContainer = styled.div<{ isInRightDrawer?: boolean }>`
   display: flex;
   flex-direction: column;
-  flex: 1;
-  min-width: min(550px, 100%);
   border: 1px solid ${({ theme }) => theme.border.color};
   border-radius: ${({ theme }) => theme.border.radius};
   overflow: hidden;
@@ -74,22 +98,17 @@ const StyledMapContainer = styled.div<{ isInRightDrawer?: boolean }>`
     isInRightDrawer ? theme.spacing(2) : 0};
 `;
 
-const StyledFormContainer = styled.div`
+const StyledFormContainer = styled.div<{ isInRightDrawer?: boolean }>`
   display: flex;
   flex-direction: column;
-  flex: 1;
-  min-width: min(550px, 100%);
   gap: ${({ theme }) => theme.spacing(3)};
+  height: fit-content;
 `;
 
 const StyledInlineCellContainer = styled.div`
-  border: 1px solid ${({ theme }) => theme.border.color.light};
-  border-radius: ${({ theme }) => theme.border.radius.sm};
-  padding: ${({ theme }) => theme.spacing(3)};
   display: flex;
   gap: ${({ theme }) => theme.spacing(4)};
   flex-direction: column;
-  height: 100%;
 `;
 
 const StyledFieldGroup = styled.div`
@@ -152,6 +171,8 @@ const EXCLUDED_FIELD_NAMES = [
   'updatedAt', // System field
   'createdAt', // System field
   'deletedAt', // System field
+  'person', // Internal Relation
+  'buyerLeads', // Internal Relation
 ];
 
 // Define field groups and their sort order
@@ -166,10 +187,7 @@ const FIELD_GROUPS: Record<
     fields: ['marketingMethod', 'status'],
     icon: <IconInfoCircle size={16} />,
   },
-  'Price Range': {
-    fields: ['priceMin', 'priceMax'],
-    icon: <IconCurrencyDollar size={16} />,
-  },
+
   'Property Specifications': {
     fields: [
       'roomsMin',
@@ -182,6 +200,10 @@ const FIELD_GROUPS: Record<
       'propertyLandMax',
     ],
     icon: <IconHome size={16} />,
+  },
+  'Price Range': {
+    fields: ['priceMin', 'priceMax'],
+    icon: <IconCurrencyDollar size={16} />,
   },
 };
 
@@ -304,6 +326,16 @@ export const SearchProfile = ({
       {searchProfile ? (
         <>
           <StyledContentContainer isInRightDrawer={isInRightDrawer}>
+            <StyledSectionHeader>
+              <StyledSectionTitle>Search Profile</StyledSectionTitle>
+              <StyledSectionDescription>
+                <Trans>
+                  This search profile will be used to find properties that match
+                  the criteria you've set in order to identify potential
+                  opportunities.
+                </Trans>
+              </StyledSectionDescription>
+            </StyledSectionHeader>
             <StyledMapContainer isInRightDrawer={isInRightDrawer}>
               <SearchProfileMap
                 searchProfileId={searchProfile.id}
@@ -358,10 +390,7 @@ export const SearchProfile = ({
         </>
       ) : (
         <StyledContentContainer isInRightDrawer={isInRightDrawer}>
-          <StyledMapContainer isInRightDrawer={isInRightDrawer}>
-            <StyledMapPlaceholder>Map will appear here</StyledMapPlaceholder>
-          </StyledMapContainer>
-          <StyledFormContainer>
+          <StyledFormContainer isInRightDrawer={isInRightDrawer}>
             <StyledInlineCellContainer>
               <EmptySearchProfile
                 onCreateSearchProfile={handleCreateSearchProfile}

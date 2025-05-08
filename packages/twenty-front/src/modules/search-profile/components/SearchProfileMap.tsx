@@ -29,7 +29,6 @@ const StyledLoadingIndicator = styled.div`
 `;
 
 const StyledMapContainer = styled.div`
-  width: 100%;
   height: 100%;
   min-height: 250px;
   border-radius: ${({ theme }) => theme.border.radius};
@@ -55,8 +54,10 @@ const StyledMap = styled.div`
 
 const StyledMapWithListContainer = styled.div`
   display: flex;
-  width: 100%;
   height: 100%;
+  border: 1px solid ${({ theme }) => theme.border.color.light};
+  border-radius: ${({ theme }) => theme.border.radius.sm};
+  overflow: hidden;
 
   min-height: 250px;
   position: relative;
@@ -74,8 +75,7 @@ const StyledMapWrapper = styled.div`
 
 const StyledFeatureListWrapper = styled.div`
   display: flex;
-  flex-shrink: 0;
-  height: 100%;
+  width: 250px;
 
   @media (max-width: ${MOBILE_VIEWPORT}px) {
     display: none;
@@ -88,6 +88,7 @@ const StyledSearchContainer = styled.div`
   gap: ${({ theme }) => theme.spacing(2)};
   margin-bottom: ${({ theme }) => theme.spacing(2)};
   position: relative;
+  max-width: 500px;
 `;
 
 const StyledMapLoader = styled.div`
@@ -150,7 +151,6 @@ const fetchOsmBoundary = async (
 ): Promise<GeoJSON.FeatureCollection | null> => {
   // Clean and encode the place name
   const cleanPlaceName = placeName.split(',')[0].trim();
-  console.log('cleanPlaceName', cleanPlaceName);
 
   // Create Overpass API query for administrative boundary using the correct format
   const overpassQuery = `
@@ -176,10 +176,6 @@ const fetchOsmBoundary = async (
 
     const osmData = await response.json();
     const geojson = osmtogeojson(osmData);
-    console.log('geojson', geojson);
-
-    // Log the result for debugging
-    console.log('OpenStreetMap boundary result:', geojson);
 
     return geojson;
   } catch (error) {
@@ -480,14 +476,28 @@ export const SearchProfileMap = ({
 
   const handleFeatureDelete = useCallback(
     async (featureId: string) => {
-      if (!draw.current) return;
+      if (!draw.current || !map.current) return;
 
-      // Delete the feature from the draw control
-      draw.current.delete(featureId);
+      // Delete the feature from the local state first
+      setLocalGeoJson((prev) => ({
+        ...prev,
+        features: prev.features.filter((f) => f.id !== featureId),
+      }));
 
-      // Get the updated features
-      const updatedFeatures = draw.current.getAll();
-      setLocalGeoJson(updatedFeatures);
+      // Force draw control to sync with our updated state
+      draw.current.deleteAll();
+
+      // Get all features except the deleted one and re-add them
+      const updatedFeatures = {
+        type: 'FeatureCollection',
+        features: localGeoJson.features.filter((f) => f.id !== featureId),
+      } as GeoJSON.FeatureCollection;
+
+      // Add remaining features back to the map
+      draw.current.add(updatedFeatures);
+
+      // Force a render update of the map
+      map.current.triggerRepaint();
 
       // Save to database
       await updateOneRecord({
@@ -497,7 +507,7 @@ export const SearchProfileMap = ({
         },
       });
     },
-    [draw, searchProfileId, updateOneRecord],
+    [draw, map, searchProfileId, updateOneRecord, localGeoJson],
   );
 
   // Initialize Map and Draw Control
@@ -553,8 +563,13 @@ export const SearchProfileMap = ({
       mapInstance.touchZoomRotate.disableRotation();
       mapInstance.doubleClickZoom.disable();
 
-      // Add navigation controls
-      mapInstance.addControl(new mapboxgl.NavigationControl());
+      // Add navigation controls ONLY ONCE
+      if (!(mapInstance as any)._navigationControl) {
+        const navControl = new mapboxgl.NavigationControl();
+        mapInstance.addControl(navControl);
+        // Mark that we've added the control
+        (mapInstance as any)._navigationControl = navControl;
+      }
 
       // Only add draw control if it hasn't been added yet
       if (!mapInstance.hasControl(drawInstance)) {
@@ -563,6 +578,7 @@ export const SearchProfileMap = ({
 
       // Load initial GeoJSON if provided
       if (initialGeoJson) {
+        drawInstance.deleteAll(); // Clear first
         drawInstance.add(initialGeoJson);
         setLocalGeoJson(initialGeoJson);
         fitMapToFeatures(initialGeoJson);

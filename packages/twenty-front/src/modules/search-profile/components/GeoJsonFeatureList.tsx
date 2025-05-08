@@ -1,7 +1,8 @@
 import styled from '@emotion/styled';
 import { IconButton, IconTrash } from 'twenty-ui';
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { Trans } from '@lingui/react/macro';
 
 const StyledContainer = styled.div`
   border-left: 1px solid ${({ theme }) => theme.border.color.light};
@@ -9,6 +10,7 @@ const StyledContainer = styled.div`
   flex-direction: column;
   height: 100%;
   overflow: hidden;
+  width: 100%;
 `;
 
 const StyledHeader = styled.div`
@@ -35,19 +37,18 @@ const StyledFeaturesList = styled.div`
 `;
 
 const StyledFeatureItem = styled(motion.div)`
-  display: flex;
   align-items: center;
+  background-color: ${({ theme }) => theme.background.secondary};
+  border: 1px solid ${({ theme }) => theme.border.color.light};
+  border-radius: ${({ theme }) => theme.border.radius.sm};
+  cursor: pointer;
+  display: flex;
   justify-content: space-between;
   padding: ${({ theme }) => theme.spacing(2)};
-  border-radius: ${({ theme }) => theme.border.radius.sm};
-  border: 1px solid ${({ theme }) => theme.border.color.light};
-  background-color: ${({ theme }) => theme.background.secondary};
-  cursor: pointer;
-  transition: all 0.1s ease-in-out;
 
   &:hover {
-    border-color: ${({ theme }) => theme.border.color.medium};
     background-color: ${({ theme }) => theme.background.tertiary};
+    border-color: ${({ theme }) => theme.border.color.medium};
   }
 `;
 
@@ -105,10 +106,17 @@ export const GeoJsonFeatureList = ({
     [onFeatureDelete],
   );
 
+  const areaCount = useMemo(
+    () => geoJson.features.length,
+    [geoJson.features.length],
+  );
+
   return (
     <StyledContainer>
       <StyledHeader>
-        <StyledTitle>Areas ({geoJson.features.length})</StyledTitle>
+        <StyledTitle>
+          <Trans>Areas ({areaCount})</Trans>
+        </StyledTitle>
       </StyledHeader>
       {geoJson.features.length > 0 ? (
         <StyledFeaturesList>
@@ -141,8 +149,10 @@ export const GeoJsonFeatureList = ({
         </StyledFeaturesList>
       ) : (
         <StyledEmptyState>
-          Search for areas or draw polygons on the map to add them to your
-          search profile
+          <Trans>
+            Search for areas or draw polygons on the map to add them to your
+            search profile
+          </Trans>
         </StyledEmptyState>
       )}
     </StyledContainer>
