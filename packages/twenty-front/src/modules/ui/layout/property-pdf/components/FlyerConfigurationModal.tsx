@@ -320,6 +320,7 @@ export const FlyerConfigurationModal = forwardRef<
                     config={config}
                     setConfig={setConfig}
                     availability={availability}
+                    hasAgencyLogo={!!agencyLogo}
                   />
 
                   <StyledSectionDivider />

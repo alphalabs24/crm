@@ -70,6 +70,7 @@ type PublisherInformationSectionProps<T extends PdfBaseConfiguration> = {
   setConfig: ConfigUpdateFunction<T>;
   availability: AvailabilityChecks;
   hideTitle?: boolean;
+  hasAgencyLogo?: boolean;
 };
 
 // Component for publisher information section
@@ -77,13 +78,11 @@ export const PublisherInformationSection = <T extends PdfBaseConfiguration>({
   config,
   setConfig,
   availability,
+  hasAgencyLogo,
   hideTitle = false,
 }: PublisherInformationSectionProps<T>) => {
   const { t } = useLingui();
-  const { hasAgencyName, hasAgencyEmail, hasAgencyPhone, hasWorkspaceLogo } =
-    availability;
-
-  const isAgencyBrandingAvailable = hasAgencyName;
+  const { hasAgencyName } = availability;
 
   return (
     <>
@@ -93,7 +92,7 @@ export const PublisherInformationSection = <T extends PdfBaseConfiguration>({
       <StyledOptionsGroup>
         <PublisherOption
           isSelected={config.showPublisherBranding}
-          isAvailable={isAgencyBrandingAvailable}
+          isAvailable={hasAgencyName && hasAgencyLogo}
           onClick={() =>
             setConfig((prev) => ({
               ...prev,

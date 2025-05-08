@@ -321,7 +321,7 @@ export const EditPublisherModal = forwardRef<ModalRefType, Props>(
             await refetchAgencyRecord();
           }
           // Save the logo changes
-          await publisherLogoRef.current.saveChanges();
+          await publisherLogoRef.current.saveChanges(publisherIdToUse);
         }
 
         enqueueSnackBar(t`Credentials saved successfully`, {
@@ -443,7 +443,7 @@ export const EditPublisherModal = forwardRef<ModalRefType, Props>(
           <StyledSection>
             <PublisherLogoUpload
               ref={publisherLogoRef}
-              publisherId={publisherId || ''}
+              initialPublisherId={publisherId}
               onImageChange={setHasLogoChanges}
             />
           </StyledSection>

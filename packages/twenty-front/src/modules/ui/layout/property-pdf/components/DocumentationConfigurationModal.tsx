@@ -560,6 +560,7 @@ export const DocumentationConfigurationModal = forwardRef<
                       setConfig={setConfig}
                       availability={availability}
                       hideTitle={true}
+                      hasAgencyLogo={!!agencyLogo}
                     />
                   </CollapsibleSection>
 

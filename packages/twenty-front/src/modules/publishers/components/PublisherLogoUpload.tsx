@@ -170,11 +170,11 @@ const StyledDragOverlay = styled(motion.div)<{ isDragActive?: boolean }>`
 `;
 
 export type PublisherLogoUploadHandle = {
-  saveChanges: () => Promise<void>;
+  saveChanges: (publisherId?: string) => Promise<void>;
 };
 
 type PublisherLogoUploadProps = {
-  publisherId: string;
+  initialPublisherId?: string;
   onImageChange?: (hasChanges: boolean) => void;
 };
 
@@ -205,7 +205,7 @@ const dragOverlayVariants = {
 export const PublisherLogoUpload = forwardRef<
   PublisherLogoUploadHandle,
   PublisherLogoUploadProps
->(({ publisherId, onImageChange }, ref) => {
+>(({ initialPublisherId, onImageChange }, ref) => {
   const { t } = useLingui();
   const theme = useTheme();
   const [isHighlighted, setIsHighlighted] = useState(false);
@@ -226,7 +226,7 @@ export const PublisherLogoUpload = forwardRef<
 
   // Expose the save function through the imperative handle
   useImperativeHandle(ref, () => ({
-    saveChanges: async () => {
+    saveChanges: async (publisherId?: string) => {
       if (!publisherId) {
         console.warn('Cannot save logo: no publisher ID available yet');
         return;
@@ -366,9 +366,9 @@ export const PublisherLogoUpload = forwardRef<
 
   return (
     <StyledContainer>
-      {publisherId ? (
+      {initialPublisherId ? (
         <AgencyLogoEffect
-          agencyId={publisherId}
+          agencyId={initialPublisherId}
           setAgencyLogo={setLogoAttachment}
           setLoading={setLoadingLogo}
         />
