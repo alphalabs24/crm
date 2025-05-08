@@ -64,6 +64,8 @@ import {
   PublisherInformationSection,
 } from './shared/PdfConfigurationUtils';
 import { usePropertyPdfGenerator } from '../hooks/usePropertyPdfGenerator';
+import { Attachment } from '@/activities/files/types/Attachment';
+import { AgencyLogoEffect } from './effects/AgencyLogoEffect';
 
 // Extended modal container with minimum height
 const StyledModalContainer = styled(BaseModalContainer)`
@@ -364,10 +366,12 @@ export const DocumentationConfigurationModal = forwardRef<
   // TODO Refactor this to never use workspace logo but use the agency logo once available
   const [currentWorkspace] = useRecoilState(currentWorkspaceState);
   const mapboxAccessToken = useRecoilValue(mapboxAccessTokenState);
+  const [agencyLogo, setAgencyLogo] = useState<Attachment>();
 
   const { generatePdf } = usePropertyPdfGenerator({
     record: property,
     type: 'PropertyDocumentation',
+    agencyLogo,
   });
 
   const images = usePropertyImages({
@@ -386,7 +390,7 @@ export const DocumentationConfigurationModal = forwardRef<
   const effectiveIsGenerating = isGenerating || localIsGenerating;
 
   // Get the category from property to filter relevant fields
-  const propertyCategory = property?.category as string | undefined;
+  const propertyCategory = property.category as string | undefined;
   const subcategory = useSubcategoryByCategory(propertyCategory);
 
   // Filter fields based on property category and subtype
@@ -441,17 +445,12 @@ export const DocumentationConfigurationModal = forwardRef<
 
   // Disable publisher options when related data is not available
   useEffect(() => {
-    const {
-      hasAgencyName,
-      hasAgencyEmail,
-      hasAgencyPhone,
-      hasWorkspaceLogo,
-      hasDescription,
-    } = availability;
+    const { hasAgencyName, hasAgencyEmail, hasAgencyPhone, hasDescription } =
+      availability;
 
     const updates: Partial<PdfDocumentationConfiguration> = {};
 
-    if ((!hasAgencyName || !hasWorkspaceLogo) && config.showPublisherBranding) {
+    if (!hasAgencyName && config.showPublisherBranding) {
       updates.showPublisherBranding = false;
     }
 
@@ -503,81 +502,90 @@ export const DocumentationConfigurationModal = forwardRef<
   }, [config, generatePdf, onGenerate, onClose]);
 
   return (
-    <Modal
-      ref={ref}
-      size="extraLarge"
-      isClosable
-      onClose={onClose}
-      closedOnMount
-      hotkeyScope={ModalHotkeyScope.Default}
-      padding="none"
-      portal
-    >
-      <StyledModalContainer adaptiveHeight>
-        <StyledModalHeader>
-          <StyledModalTitleContainer>
-            <IconBook2 size={16} />
-            <StyledModalTitle>{t`Exposé Configuration`}</StyledModalTitle>
-          </StyledModalTitleContainer>
-          <StyledModalHeaderButtons>
-            <Button variant="tertiary" title={t`Cancel`} onClick={onClose} />
-            <Button
-              variant="primary"
-              title={t`Generate`}
-              Icon={IconBolt}
-              accent="blue"
-              onClick={handleGeneratePdf}
-              loading={effectiveIsGenerating}
-            />
-          </StyledModalHeaderButtons>
-        </StyledModalHeader>
+    <>
+      {property.agency && (
+        <AgencyLogoEffect
+          agencyId={property.agency.id}
+          setAgencyLogo={setAgencyLogo}
+        />
+      )}
+      <Modal
+        ref={ref}
+        size="extraLarge"
+        isClosable
+        onClose={onClose}
+        closedOnMount
+        hotkeyScope={ModalHotkeyScope.Default}
+        padding="none"
+        portal
+      >
+        <StyledModalContainer adaptiveHeight>
+          <StyledModalHeader>
+            <StyledModalTitleContainer>
+              <IconBook2 size={16} />
+              <StyledModalTitle>{t`Exposé Configuration`}</StyledModalTitle>
+            </StyledModalTitleContainer>
+            <StyledModalHeaderButtons>
+              <Button variant="tertiary" title={t`Cancel`} onClick={onClose} />
+              <Button
+                variant="primary"
+                title={t`Generate`}
+                Icon={IconBolt}
+                accent="blue"
+                onClick={handleGeneratePdf}
+                loading={effectiveIsGenerating}
+              />
+            </StyledModalHeaderButtons>
+          </StyledModalHeader>
 
-        <StyledModalContent>
-          <StyledModalLayout>
-            <StyledOptionsPanel>
-              <StyledOptionsGroup>
-                <DocumentationContentOptions
-                  config={config}
-                  setConfig={setConfig}
-                  availability={availability}
-                  property={property}
-                  mapboxAccessToken={mapboxAccessToken ?? undefined}
-                  colorSchemeToUse={'light'}
-                />
-
-                <StyledSectionDivider />
-
-                <CollapsibleSection title={t`Publisher Information`}>
-                  <PublisherInformationSection
-                    property={property}
+          <StyledModalContent>
+            <StyledModalLayout>
+              <StyledOptionsPanel>
+                <StyledOptionsGroup>
+                  <DocumentationContentOptions
                     config={config}
                     setConfig={setConfig}
                     availability={availability}
-                    hideTitle={true}
-                  />
-                </CollapsibleSection>
-
-                {/* Keep the state and props for fields but don't render the UI */}
-                {/* renderFieldsSection() */}
-              </StyledOptionsGroup>
-            </StyledOptionsPanel>
-
-            {isMobile ? null : (
-              <StyledPreviewPanel>
-                <StyledSectionTitle>{t`Preview`}</StyledSectionTitle>
-                <StyledPreviewContainer>
-                  <PropertyPdfPreview
                     property={property}
-                    isFlyer={false}
-                    configuration={config}
+                    mapboxAccessToken={mapboxAccessToken ?? undefined}
+                    colorSchemeToUse={'light'}
                   />
-                </StyledPreviewContainer>
-              </StyledPreviewPanel>
-            )}
-          </StyledModalLayout>
-        </StyledModalContent>
-      </StyledModalContainer>
-    </Modal>
+
+                  <StyledSectionDivider />
+
+                  <CollapsibleSection title={t`Publisher Information`}>
+                    <PublisherInformationSection
+                      property={property}
+                      config={config}
+                      setConfig={setConfig}
+                      availability={availability}
+                      hideTitle={true}
+                    />
+                  </CollapsibleSection>
+
+                  {/* Keep the state and props for fields but don't render the UI */}
+                  {/* renderFieldsSection() */}
+                </StyledOptionsGroup>
+              </StyledOptionsPanel>
+
+              {isMobile ? null : (
+                <StyledPreviewPanel>
+                  <StyledSectionTitle>{t`Preview`}</StyledSectionTitle>
+                  <StyledPreviewContainer>
+                    <PropertyPdfPreview
+                      property={property}
+                      isFlyer={false}
+                      configuration={config}
+                      agencyLogo={agencyLogo}
+                    />
+                  </StyledPreviewContainer>
+                </StyledPreviewPanel>
+              )}
+            </StyledModalLayout>
+          </StyledModalContent>
+        </StyledModalContainer>
+      </Modal>
+    </>
   );
 });
 

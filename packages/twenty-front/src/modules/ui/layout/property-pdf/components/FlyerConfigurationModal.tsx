@@ -55,6 +55,8 @@ import {
   FlyerContentOptions,
 } from './shared/PdfConfigurationUtils';
 import { usePropertyPdfGenerator } from '../hooks/usePropertyPdfGenerator';
+import { Attachment } from '@/activities/files/types/Attachment';
+import { AgencyLogoEffect } from './effects/AgencyLogoEffect';
 
 // Extended modal container with minimum height
 const StyledModalContainer = styled(BaseModalContainer)`
@@ -80,9 +82,12 @@ export const FlyerConfigurationModal = forwardRef<
 >(({ property, onClose, onGenerate, isGenerating = false }, ref) => {
   const { t } = useLingui();
 
+  const [agencyLogo, setAgencyLogo] = useState<Attachment>();
+
   const { generatePdf, isLoading: pdfLoading } = usePropertyPdfGenerator({
     record: property,
     type: 'PropertyFlyer',
+    agencyLogo,
   });
 
   const [localIsGenerating, setLocalIsGenerating] = useState(false);
@@ -262,76 +267,85 @@ export const FlyerConfigurationModal = forwardRef<
   };
 
   return (
-    <Modal
-      ref={ref}
-      size="extraLarge"
-      isClosable
-      onClose={onClose}
-      closedOnMount
-      portal
-      hotkeyScope={ModalHotkeyScope.Default}
-      padding="none"
-    >
-      <StyledModalContainer adaptiveHeight>
-        <StyledModalHeader>
-          <StyledModalTitleContainer>
-            <IconSettings size={16} />
-            <StyledModalTitle>{t`Flyer Configuration`}</StyledModalTitle>
-          </StyledModalTitleContainer>
-          <StyledModalHeaderButtons>
-            <Button variant="tertiary" title={t`Cancel`} onClick={onClose} />
-            <Button
-              accent="blue"
-              variant="primary"
-              title={t`Generate`}
-              Icon={IconBolt}
-              loading={effectiveIsGenerating}
-              onClick={handleGeneratePdf}
-            />
-          </StyledModalHeaderButtons>
-        </StyledModalHeader>
+    <>
+      {property.agency && (
+        <AgencyLogoEffect
+          agencyId={property.agency.id}
+          setAgencyLogo={setAgencyLogo}
+        />
+      )}
+      <Modal
+        ref={ref}
+        size="extraLarge"
+        isClosable
+        onClose={onClose}
+        closedOnMount
+        portal
+        hotkeyScope={ModalHotkeyScope.Default}
+        padding="none"
+      >
+        <StyledModalContainer adaptiveHeight>
+          <StyledModalHeader>
+            <StyledModalTitleContainer>
+              <IconSettings size={16} />
+              <StyledModalTitle>{t`Flyer Configuration`}</StyledModalTitle>
+            </StyledModalTitleContainer>
+            <StyledModalHeaderButtons>
+              <Button variant="tertiary" title={t`Cancel`} onClick={onClose} />
+              <Button
+                accent="blue"
+                variant="primary"
+                title={t`Generate`}
+                Icon={IconBolt}
+                loading={effectiveIsGenerating}
+                onClick={handleGeneratePdf}
+              />
+            </StyledModalHeaderButtons>
+          </StyledModalHeader>
 
-        <StyledModalContent>
-          <StyledModalLayout>
-            <StyledOptionsPanel>
-              <StyledOptionsGroup>
-                <FlyerContentOptions
-                  config={config}
-                  setConfig={setConfig}
-                  availability={availability}
-                />
-
-                <StyledSectionDivider />
-
-                <PublisherInformationSection
-                  property={property}
-                  config={config}
-                  setConfig={setConfig}
-                  availability={availability}
-                />
-
-                <StyledSectionDivider />
-
-                {renderFieldsSection()}
-              </StyledOptionsGroup>
-            </StyledOptionsPanel>
-
-            {isMobile ? null : (
-              <StyledPreviewPanel>
-                <StyledSectionTitle>{t`Preview`}</StyledSectionTitle>
-                <StyledPreviewContainer>
-                  <PropertyPdfPreview
-                    property={property}
-                    isFlyer
-                    configuration={config}
+          <StyledModalContent>
+            <StyledModalLayout>
+              <StyledOptionsPanel>
+                <StyledOptionsGroup>
+                  <FlyerContentOptions
+                    config={config}
+                    setConfig={setConfig}
+                    availability={availability}
                   />
-                </StyledPreviewContainer>
-              </StyledPreviewPanel>
-            )}
-          </StyledModalLayout>
-        </StyledModalContent>
-      </StyledModalContainer>
-    </Modal>
+
+                  <StyledSectionDivider />
+
+                  <PublisherInformationSection
+                    property={property}
+                    config={config}
+                    setConfig={setConfig}
+                    availability={availability}
+                  />
+
+                  <StyledSectionDivider />
+
+                  {renderFieldsSection()}
+                </StyledOptionsGroup>
+              </StyledOptionsPanel>
+
+              {isMobile ? null : (
+                <StyledPreviewPanel>
+                  <StyledSectionTitle>{t`Preview`}</StyledSectionTitle>
+                  <StyledPreviewContainer>
+                    <PropertyPdfPreview
+                      property={property}
+                      isFlyer
+                      configuration={config}
+                      agencyLogo={agencyLogo}
+                    />
+                  </StyledPreviewContainer>
+                </StyledPreviewPanel>
+              )}
+            </StyledModalLayout>
+          </StyledModalContent>
+        </StyledModalContainer>
+      </Modal>
+    </>
   );
 });
 

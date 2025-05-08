@@ -17,6 +17,8 @@ import {
 } from 'twenty-ui';
 import Skeleton from 'react-loading-skeleton';
 import { motion } from 'framer-motion';
+import { Attachment } from '@/activities/files/types/Attachment';
+import { AgencyLogoEffect } from '@/ui/layout/property-pdf/components/effects/AgencyLogoEffect';
 
 const StyledContainer = styled.div`
   display: flex;
@@ -213,23 +215,14 @@ export const PublisherLogoUpload = forwardRef<
   const [hasChanges, setHasChanges] = useState(false);
   const [isAttachmentMarkedForDeletion, setIsAttachmentMarkedForDeletion] =
     useState(false);
+  const [loadingLogo, setLoadingLogo] = useState(false);
 
-  const targetableObject: ActivityTargetableObject = {
-    id: publisherId,
-    targetObjectNameSingular: CoreObjectNameSingular.Agency,
-  };
+  const [logoAttachment, setLogoAttachment] = useState<Attachment | null>(null);
 
-  const { attachments, loading } = useAttachments(
-    publisherId ? targetableObject : (undefined as any),
-  );
   const { uploadAttachmentFile } = useUploadAttachmentFile();
   const { deleteOneRecord } = useDeleteOneRecord({
     objectNameSingular: CoreObjectNameSingular.Attachment,
   });
-
-  const logoAttachment = attachments?.find(
-    (attachment) => attachment.type === 'PublisherLogo',
-  );
 
   // Expose the save function through the imperative handle
   useImperativeHandle(ref, () => ({
@@ -373,6 +366,13 @@ export const PublisherLogoUpload = forwardRef<
 
   return (
     <StyledContainer>
+      {publisherId ? (
+        <AgencyLogoEffect
+          agencyId={publisherId}
+          setAgencyLogo={setLogoAttachment}
+          setLoading={setLoadingLogo}
+        />
+      ) : null}
       <StyledHeaderContainer>
         <StyledTitle>
           <Trans>Publisher Logo</Trans>
@@ -393,7 +393,7 @@ export const PublisherLogoUpload = forwardRef<
           onDrop={handleDrop}
         >
           <StyledImageWrapper className={isHighlighted ? 'highlight-new' : ''}>
-            {loading ? (
+            {loadingLogo ? (
               <Skeleton
                 height={120}
                 width={120}

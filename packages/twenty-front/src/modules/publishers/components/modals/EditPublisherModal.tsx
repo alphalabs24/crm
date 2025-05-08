@@ -273,6 +273,7 @@ export const EditPublisherModal = forwardRef<ModalRefType, Props>(
             name,
             email: {
               primaryEmail: email,
+              additionalEmails: [],
             },
           });
           publisherIdToUse = newPublisher.id;

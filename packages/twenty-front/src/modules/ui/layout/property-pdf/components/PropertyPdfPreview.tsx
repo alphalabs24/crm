@@ -19,6 +19,7 @@ import {
 import { useAttachments } from '@/activities/files/hooks/useAttachments';
 import { isArray } from 'util';
 import { useLocalizedStaticTexts } from '../hooks/useLocalizedStaticTexts';
+import { Attachment } from '@/activities/files/types/Attachment';
 
 const StyledPdfViewerContainer = styled.div`
   align-items: center;
@@ -74,12 +75,14 @@ export type PropertyPdfPreviewProps = {
   property: ObjectRecord;
   isFlyer?: boolean;
   configuration?: ConfigurationType;
+  agencyLogo?: Attachment;
 };
 
 export const PropertyPdfPreview = ({
   property,
   isFlyer = false,
   configuration,
+  agencyLogo,
 }: PropertyPdfPreviewProps) => {
   const { objectMetadataItem } = useObjectMetadataItem({
     objectNameSingular: CoreObjectNameSingular.Property,
@@ -88,15 +91,6 @@ export const PropertyPdfPreview = ({
   const localizedStaticTexts = useLocalizedStaticTexts({
     type: isFlyer ? 'PropertyFlyer' : 'PropertyDocumentation',
   });
-
-  const { attachments } = useAttachments({
-    id: property.agency?.id,
-    targetObjectNameSingular: CoreObjectNameSingular.Agency,
-  });
-
-  const agencyLogo = useMemo(() => {
-    return attachments?.find((a) => a.type === 'PublisherLogo');
-  }, [attachments]);
 
   const { formatField } = useFormattedPropertyFields({
     objectMetadataItem,
