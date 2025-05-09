@@ -4,7 +4,6 @@ import { scrollWrapperInstanceComponentState } from '@/ui/utilities/scroll/state
 import styled from '@emotion/styled';
 import { Trans } from '@lingui/react/macro';
 import { useCallback, useEffect } from 'react';
-import { useRecoilValue } from 'recoil';
 import {
   Avatar,
   Button,
@@ -17,10 +16,7 @@ import {
 } from 'twenty-ui';
 import { useInquiryPage } from '../../contexts/InquiryPageContext';
 
-import { ConnectedAccount } from '@/accounts/types/ConnectedAccount';
-import { currentWorkspaceMembersState } from '@/auth/states/currentWorkspaceMembersStates';
 import { CollapsedPropertyPreview } from '@/inquiries/components/sidebar/CollapsedPropertyPreview';
-import { useConnectedAccounts } from '@/inquiries/hooks/useConnectedAccounts';
 import { CoreObjectNameSingular } from '@/object-metadata/types/CoreObjectNameSingular';
 import { getLinkToShowPage } from '@/object-metadata/utils/getLinkToShowPage';
 import { useColorScheme } from '@/ui/theme/hooks/useColorScheme';
@@ -30,9 +26,10 @@ import { useTheme } from '@emotion/react';
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { Link } from 'react-router-dom';
-import { WorkspaceMember } from '~/generated/graphql';
 import { ConversationMessageItem } from './ConversationMessageItem';
 import { ReplyEditor } from './ReplyEditor';
+import { useRecoilValue } from 'recoil';
+import { currentWorkspaceMemberState } from '@/auth/states/currentWorkspaceMemberState';
 
 const StyledConversationSection = styled.div`
   background: ${({ theme }) => theme.background.primary};
@@ -266,8 +263,8 @@ export const ConversationSection = ({
   isPropertyDetailsExpanded,
 }: ConversationSectionProps) => {
   const { messages, thread, isLoadingMessages } = useInquiryPage();
-  const { accounts } = useConnectedAccounts();
 
+  const currentWorkspaceMember = useRecoilValue(currentWorkspaceMemberState);
   const [scrollInstance] = useRecoilComponentStateV2(
     scrollWrapperInstanceComponentState,
     CONVERSATION_SCROLL_WRAPPER_ID,
@@ -280,20 +277,14 @@ export const ConversationSection = ({
     }
   }, [isLoadingMessages, messages?.length, scrollInstance]);
 
-  const currentWorkspaceMembers = useRecoilValue(currentWorkspaceMembersState);
-  const workspaceMember = currentWorkspaceMembers[0] as WorkspaceMember;
-
   const fullName = `${inquiry.person.name.firstName} ${inquiry.person.name.lastName}`;
-  const workspaceMemberName = `${workspaceMember.name.firstName} ${workspaceMember.name.lastName}`;
 
   // Helper to determine if a message is from the current user
-  const isCurrentUser = (message: any) => {
-    const sender =
-      message.messageParticipants.find((participant: any) => {
-        return participant.role === 'from';
-      }) ?? message.sender;
-    return sender?.handle === (accounts?.[0] as ConnectedAccount)?.handle;
-  };
+  const isCurrentUser = useCallback(
+    (message: any) =>
+      message.sender.workspaceMember?.id === currentWorkspaceMember?.id,
+    [currentWorkspaceMember?.id],
+  );
 
   const senderEmail = inquiry.person.emails.primaryEmail;
 
@@ -371,7 +362,7 @@ export const ConversationSection = ({
                 key={message.id}
                 message={message}
                 linkToPerson={
-                  isCurrentUser(message)
+                  message.sender.workspaceMember
                     ? undefined
                     : getLinkToShowPage(
                         CoreObjectNameSingular.Person,
@@ -380,7 +371,9 @@ export const ConversationSection = ({
                 }
                 senderEmail={senderEmail}
                 senderName={
-                  isCurrentUser(message) ? workspaceMemberName : fullName
+                  message.sender.workspaceMember
+                    ? `${message.sender.workspaceMember.name.firstName} ${message.sender.workspaceMember.name.lastName}`
+                    : fullName
                 }
                 isCurrentUser={isCurrentUser(message)}
               />
