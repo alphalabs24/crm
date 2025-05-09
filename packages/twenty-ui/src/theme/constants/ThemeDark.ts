@@ -1,7 +1,7 @@
 import { ADAPTIVE_COLORS_DARK } from '@ui/theme/constants/AdaptiveColorsDark';
 import { BLUR_DARK } from '@ui/theme/constants/BlurDark';
 import { ILLUSTRATION_ICON_DARK } from '@ui/theme/constants/IllustrationIconDark';
-import { SNACK_BAR_DARK, ThemeType } from '..';
+import { SNACK_BAR_DARK, ThemeType, WORKSPACE_TIER_DARK } from '..';
 import { ACCENT_DARK } from './AccentDark';
 import { BACKGROUND_DARK } from './BackgroundDark';
 import { BORDER_DARK } from './BorderDark';
@@ -28,5 +28,6 @@ export const THEME_DARK: ThemeType = {
     code: CODE_DARK,
     IllustrationIcon: ILLUSTRATION_ICON_DARK,
     adaptiveColors: ADAPTIVE_COLORS_DARK,
+    workspaceTier: WORKSPACE_TIER_DARK,
   },
 };

@@ -11,6 +11,7 @@ import { FONT_LIGHT } from './FontLight';
 import { TAG_LIGHT } from './TagLight';
 import { THEME_COMMON } from './ThemeCommon';
 import { SCROLL_BAR_LIGHT } from './ScrollBarLight';
+import { WORKSPACE_TIER_LIGHT } from './WorkspaceTierLight';
 
 export const THEME_LIGHT = {
   ...THEME_COMMON,
@@ -28,5 +29,6 @@ export const THEME_LIGHT = {
     code: CODE_LIGHT,
     IllustrationIcon: ILLUSTRATION_ICON_LIGHT,
     adaptiveColors: ADAPTIVE_COLORS_LIGHT,
+    workspaceTier: WORKSPACE_TIER_LIGHT,
   },
 };

@@ -4,6 +4,9 @@ import { Theme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useRecoilValue } from 'recoil';
 import { isNavigationDrawerExpandedState } from '../../states/isNavigationDrawerExpanded';
+import { useKeyValueStore } from '@/onboarding/hooks/useKeyValueStore';
+import { NestermindWorkspaceTier } from './nm/NestermindWorkspaceTier';
+import { WorkspaceTier } from '../types/WorkspaceTierType';
 
 const StyledContainer = styled.div<{
   alignment: 'flex-start' | 'center' | 'flex-end';
@@ -21,29 +24,34 @@ const StyledImage = styled.img<{ size: number }>`
   width: ${({ size }) => size}px;
 `;
 
-// eslint-disable-next-line @nx/workspace-no-hardcoded-colors
-const bg = '#fffbeb';
-// eslint-disable-next-line @nx/workspace-no-hardcoded-colors
-const border = '#fee685';
-const StyledBoosterTag = styled.div`
-  background: ${bg};
-  border: 1px solid ${border};
-  border-radius: ${({ theme }: { theme: Theme }) => theme.border.radius.sm};
-  padding: 2px 5px;
-  font-size: ${({ theme }: { theme: Theme }) => theme.font.size.sm};
-  font-weight: ${({ theme }: { theme: Theme }) => theme.font.weight.semiBold};
-`;
-
 type NestermindBrandingProps = {
   size?: number;
   alignment?: 'flex-start' | 'center' | 'flex-end';
-  showBooster?: boolean;
+  showTier?: boolean;
+};
+
+// Make sure we only pass a valid workspace tier since key value pairs are untyped
+const getSafeWorkspaceTier = (
+  workspaceTier: string | number | boolean,
+): WorkspaceTier => {
+  switch (workspaceTier) {
+    case WorkspaceTier.Booster:
+      return WorkspaceTier.Booster;
+    case WorkspaceTier.Pro:
+      return WorkspaceTier.Pro;
+    case WorkspaceTier.Premium:
+      return WorkspaceTier.Premium;
+    case WorkspaceTier.Starter:
+      return WorkspaceTier.Starter;
+    default:
+      return WorkspaceTier.Booster;
+  }
 };
 
 const NestermindBranding = ({
   size = 50,
   alignment = 'center',
-  showBooster = true,
+  showTier = true,
 }: NestermindBrandingProps) => {
   const { colorScheme } = useColorScheme();
   const systemColorScheme = useSystemColorScheme();
@@ -52,6 +60,9 @@ const NestermindBranding = ({
   const isNavigationDrawerExpanded = useRecoilValue(
     isNavigationDrawerExpandedState,
   );
+
+  const { getValueByKey } = useKeyValueStore();
+  const workspaceTier = getValueByKey('WorkspaceTier');
 
   if (!isNavigationDrawerExpanded) {
     return null;
@@ -65,7 +76,9 @@ const NestermindBranding = ({
         alt="Nestermind logo"
         size={size}
       />
-      {showBooster && <StyledBoosterTag>Booster</StyledBoosterTag>}
+      {showTier && (
+        <NestermindWorkspaceTier tier={getSafeWorkspaceTier(workspaceTier)} />
+      )}
     </StyledContainer>
   );
 };
