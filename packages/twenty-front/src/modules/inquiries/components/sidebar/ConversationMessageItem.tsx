@@ -76,7 +76,9 @@ const StyledMessageContent = styled.div<{
         : theme.color.blue60
       : hasWorkspaceMember
         ? theme.background.tertiary
-        : theme.color.turquoise70};
+        : colorScheme === 'Light'
+          ? theme.color.turquoise20
+          : theme.color.turquoise70};
   border-radius: ${({ theme }) => theme.border.radius.md};
   padding: ${({ theme }) => theme.spacing(2)};
   font-size: ${({ theme }) => theme.font.size.sm};
