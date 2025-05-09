@@ -481,6 +481,37 @@ export const useNestermind = () => {
     });
   };
 
+  const sendRichTextEmail = useCallback(
+    async ({
+      body,
+    }: {
+      body: {
+        content: string;
+        email: string;
+        subject: string;
+        senderId: string;
+      };
+    }) => {
+      const response = await api.post(`email-sender/send-rich-text`, { body });
+      return response.data;
+    },
+    [api],
+  );
+
+  const useSendRichTextEmail = (
+    {
+      body,
+    }: {
+      body: any;
+    },
+    options = {},
+  ) => {
+    return useMutation({
+      mutationFn: () => sendRichTextEmail({ body }),
+      ...options,
+    });
+  };
+
   // Just return the object directly without useMemo
   return {
     api,
@@ -517,6 +548,9 @@ export const useNestermind = () => {
     pdfApi: {
       generate: generatePdf,
     },
+    emailApi: {
+      sendRichTextEmail,
+    },
     // Tanstack Query hooks: Always use these if you don't know what you're doing
     useQueries: {
       useHealthCheck,
@@ -540,6 +574,7 @@ export const useNestermind = () => {
       useSendTestEmailPublication,
       useSendTestEmailProperty,
       useGeneratePdf,
+      useSendRichTextEmail,
     },
   };
 };

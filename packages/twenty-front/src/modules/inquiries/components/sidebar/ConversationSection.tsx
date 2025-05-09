@@ -33,6 +33,7 @@ import { Link } from 'react-router-dom';
 import { WorkspaceMember } from '~/generated/graphql';
 import { ConversationMessageItem } from './ConversationMessageItem';
 import { ReplyEditor } from './ReplyEditor';
+import { useNestermind } from '@/api/hooks/useNestermind';
 
 const StyledConversationSection = styled.div`
   background: ${({ theme }) => theme.background.primary};
@@ -267,6 +268,9 @@ export const ConversationSection = ({
 }: ConversationSectionProps) => {
   const { messages, thread, isLoadingMessages } = useInquiryPage();
   const { accounts } = useConnectedAccounts();
+  const {
+    emailApi: { sendRichTextEmail },
+  } = useNestermind();
 
   const [scrollInstance] = useRecoilComponentStateV2(
     scrollWrapperInstanceComponentState,
@@ -397,9 +401,15 @@ export const ConversationSection = ({
         subject={`Re: ${thread?.subject || 'Inquiry'}`}
         recipientName={`${inquiry.person.name.firstName} ${inquiry.person.name.lastName}`}
         recipientEmail={inquiry.person.emails?.primaryEmail || ''}
-        comingSoon={true}
         onSend={(content) => {
-          // TODO add reply fuctionality
+          sendRichTextEmail({
+            body: {
+              content: content,
+              email: inquiry.person.emails?.primaryEmail || '',
+              subject: `Re: ${thread?.subject || 'Inquiry'}`,
+              senderId: accounts[0].id,
+            },
+          });
         }}
       />
     </StyledConversationSection>

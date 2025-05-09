@@ -1,5 +1,4 @@
 import { BLOCK_SCHEMA } from '@/activities/blocks/constants/Schema';
-import { getSlashMenu } from '@/activities/blocks/utils/getSlashMenu';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { filterSuggestionItems } from '@blocknote/core';
@@ -9,6 +8,7 @@ import {
 } from '@blocknote/react';
 import { ClipboardEvent } from 'react';
 import { ReplySlashMenu, SuggestionItem } from './ReplySlashMenu';
+import { getSimpleSlashMenu } from '@/activities/blocks/utils/getSimpleSlashMenu';
 
 interface CustomBlockEditorProps {
   editor: typeof BLOCK_SCHEMA.BlockNoteEditor;
@@ -160,7 +160,10 @@ export const CustomBlockEditor = ({
         <SuggestionMenuController
           triggerCharacter="/"
           getItems={async (query) =>
-            filterSuggestionItems<SuggestionItem>(getSlashMenu(editor), query)
+            filterSuggestionItems<SuggestionItem>(
+              getSimpleSlashMenu(editor),
+              query,
+            )
           }
           suggestionMenuComponent={ReplySlashMenu}
         />
