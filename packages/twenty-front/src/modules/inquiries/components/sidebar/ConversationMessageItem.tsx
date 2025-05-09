@@ -4,8 +4,7 @@ import { OptionalWrap } from '@/ui/layout/utilities/components/OptionalWrapWith'
 import { useColorScheme } from '@/ui/theme/hooks/useColorScheme';
 import { useSystemColorScheme } from '@/ui/theme/hooks/useSystemColorScheme';
 import styled from '@emotion/styled';
-import { Trans, useLingui } from '@lingui/react/macro';
-import { format } from 'date-fns';
+import { useLingui } from '@lingui/react/macro';
 import { de, enUS, es, fr, it } from 'date-fns/locale';
 import DOMPurify from 'dompurify';
 import { useCallback, useMemo } from 'react';
@@ -58,18 +57,6 @@ const StyledMessageTime = styled.div`
   display: flex;
   font-size: ${({ theme }) => theme.font.size.xs};
   gap: ${({ theme }) => theme.spacing(1)};
-`;
-
-const StyledAutoTag = styled.div`
-  align-items: center;
-  background-color: ${({ theme }) => theme.background.secondary};
-  border: 1px solid ${({ theme }) => theme.border.color.light};
-  border-radius: ${({ theme }) => theme.border.radius.xs};
-  color: ${({ theme }) => theme.font.color.tertiary};
-  display: flex;
-  font-size: ${({ theme }) => theme.font.size.xs};
-  justify-content: center;
-  padding: ${({ theme }) => theme.spacing(0.5, 1)};
 `;
 
 const StyledMessageContent = styled.div<{
