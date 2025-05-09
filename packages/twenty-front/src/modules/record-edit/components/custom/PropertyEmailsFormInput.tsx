@@ -285,6 +285,7 @@ export const PropertyEmailsFormInput = ({ loading }: { loading?: boolean }) => {
           </StyledTestEmailContainer>
           <StyledEmailPreviewContainer>
             <EmailFormRichTextEditor
+              key={emailTemplate.id}
               activityToSet={emailTemplate}
               activityObjectNameSingular={CoreObjectNameSingular.Note}
               activityId={emailTemplate.id}

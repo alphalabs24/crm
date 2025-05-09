@@ -144,6 +144,7 @@ export const EmailTemplatesListCard = ({
           <StyledTableBody>
             {emailTemplates.map((template) => (
               <Link
+                key={template.id}
                 to={getSettingsPath(SettingsPath.EmailTemplateEdit, {
                   emailTemplateId: template.id,
                 })}
