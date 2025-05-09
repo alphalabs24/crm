@@ -1,5 +1,4 @@
 import { useSubcategoryByCategory } from '@/object-record/record-show/hooks/useSubcategoryByCategory';
-import { useLingui } from '@lingui/react/macro';
 import { useMemo } from 'react';
 
 type FieldGroup = {
@@ -8,7 +7,6 @@ type FieldGroup = {
 
 export const usePropertyDetailsFields = (record: any) => {
   const subType = useSubcategoryByCategory(record?.category);
-  const { t } = useLingui();
   return useMemo(() => {
     const finances = [];
 
@@ -70,5 +68,5 @@ export const usePropertyDetailsFields = (record: any) => {
     );
 
     return filteredGroups;
-  }, [record?.priceUnit, subType, t]);
+  }, [record?.priceUnit, subType]);
 };
