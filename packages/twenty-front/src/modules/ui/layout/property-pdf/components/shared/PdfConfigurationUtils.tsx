@@ -92,7 +92,7 @@ export const PublisherInformationSection = <T extends PdfBaseConfiguration>({
       <StyledOptionsGroup>
         <PublisherOption
           isSelected={config.showPublisherBranding}
-          isAvailable={hasAgencyName && hasAgencyLogo}
+          isAvailable={Boolean(hasAgencyName && hasAgencyLogo)}
           onClick={() =>
             setConfig((prev) => ({
               ...prev,
