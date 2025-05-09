@@ -195,12 +195,6 @@ const StyledDocumentName = styled.div`
 
 export const requiredPublicationFields = ['agency', 'platform', 'category'];
 
-// Careful: Don't use this for anything else than the overview UI. This contains subtypes which should not be defined for validation purposes.
-const requiredPublicationFieldsAndSubtypes = [
-  ...requiredPublicationFields,
-  ...Object.values(CATEGORY_SUBTYPES),
-];
-
 type ObjectOverviewProps = {
   targetableObject: Pick<
     ActivityTargetableObject,

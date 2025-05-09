@@ -7,5 +7,5 @@ export const CATEGORY_SUBTYPES = {
   AGRICULTURE: 'agricultureSubtype',
   INDUSTRIAL_OBJECTS: 'industrialSubtype',
   PROPERTY: 'propertySubtype',
-  PARKING: 'parkingSubtype',
+  PARKING_SPACE: 'parkingSubtype',
 } as const;
