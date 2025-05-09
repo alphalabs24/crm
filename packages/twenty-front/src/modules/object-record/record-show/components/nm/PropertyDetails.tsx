@@ -499,8 +499,12 @@ export const PropertyDetails = ({
             <PropertyBasicInfoCard
               record={property}
               loading={recordLoading}
-              platforms={publicationGroups.all[PublicationStage.Published].map(
-                (publication) => publication.platform,
+              platforms={Array.from(
+                new Set(
+                  publicationGroups.all[PublicationStage.Published].map(
+                    (publication) => publication.platform,
+                  ),
+                ),
               )}
             />
             <PropertyDetailsCard
