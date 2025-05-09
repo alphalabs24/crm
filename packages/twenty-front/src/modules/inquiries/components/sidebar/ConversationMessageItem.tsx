@@ -90,6 +90,7 @@ const StyledMessageContent = styled.div<{
       : hasWorkspaceMember
         ? theme.background.tertiary
         : theme.background.secondary};
+          : theme.color.turquoise70};
   border-radius: ${({ theme }) => theme.border.radius.md};
   padding: ${({ theme }) => theme.spacing(2)};
   font-size: ${({ theme }) => theme.font.size.sm};
@@ -133,7 +134,7 @@ export const ConversationMessageItem = ({
   );
 
   const hasWorkspaceMember = useMemo(() => {
-    return message.sender.workspaceMember !== null;
+    return Boolean(message.sender.workspaceMember);
   }, [message.sender.workspaceMember]);
 
   // Map lingui locale to date-fns locale
@@ -234,12 +235,14 @@ export const ConversationMessageItem = ({
         <StyledMessageContent
           isCurrentUser={isCurrentUser}
           colorScheme={colorSchemeToUse}
+          hasWorkspaceMember={hasWorkspaceMember}
           dangerouslySetInnerHTML={{ __html: sanitizedBody }}
         />
       ) : (
         <StyledMessageContent
           isCurrentUser={isCurrentUser}
           colorScheme={colorSchemeToUse}
+          hasWorkspaceMember={hasWorkspaceMember}
         >
           {formattedBody.split('\n').map((paragraph: string, index: number) => (
             <p key={index}>{paragraph}</p>
