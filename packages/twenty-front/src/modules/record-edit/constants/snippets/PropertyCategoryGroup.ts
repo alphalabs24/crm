@@ -48,11 +48,11 @@ export const PropertyCategoryGroup: FieldGroup = {
       conditionValues: ['agriculture'],
     },
     {
-      name: CATEGORY_SUBTYPES.INDUSTRIAL_OBJECTS,
+      name: CATEGORY_SUBTYPES.PARKING,
       type: 'field',
       required: true,
       conditionFields: ['category'],
-      conditionValues: ['parking'],
+      conditionValues: ['parking_space'],
     },
     {
       name: CATEGORY_SUBTYPES.SECONDARY_ROOMS,

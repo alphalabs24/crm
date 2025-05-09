@@ -30,6 +30,9 @@ export const useSubcategoryByCategory = (category?: string) => {
       case 'industrialObjects':
         setSubType(CATEGORY_SUBTYPES.INDUSTRIAL_OBJECTS);
         break;
+      case 'parkingSpace':
+        setSubType(CATEGORY_SUBTYPES.PARKING);
+        break;
       default:
         break;
     }
