@@ -192,7 +192,9 @@ export const DefaultFlyerTemplate = ({
       </Section>
 
       <Section height="50%">
-        <Image src={firstImage?.fullPath} style={PDF_STYLES.heroImage} />
+        {firstImage && (
+          <Image src={firstImage?.fullPath} style={PDF_STYLES.heroImage} />
+        )}
         <Row height="auto" style={PDF_STYLES.flyerGallery}>
           {additionalImages.map((image, index) => (
             <Col key={index} width="33%" style={PDF_STYLES.flyerGalleryItem}>
