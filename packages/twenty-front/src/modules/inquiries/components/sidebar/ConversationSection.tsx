@@ -264,7 +264,6 @@ export const ConversationSection = ({
 }: ConversationSectionProps) => {
   const { messages, thread, isLoadingMessages } = useInquiryPage();
 
-  const currentWorkspaceMember = useRecoilValue(currentWorkspaceMemberState);
   const [scrollInstance] = useRecoilComponentStateV2(
     scrollWrapperInstanceComponentState,
     CONVERSATION_SCROLL_WRAPPER_ID,
@@ -278,13 +277,6 @@ export const ConversationSection = ({
   }, [isLoadingMessages, messages?.length, scrollInstance]);
 
   const fullName = `${inquiry.person.name.firstName} ${inquiry.person.name.lastName}`;
-
-  // Helper to determine if a message is from the current user
-  const isCurrentUser = useCallback(
-    (message: any) =>
-      message.sender.workspaceMember?.id === currentWorkspaceMember?.id,
-    [currentWorkspaceMember?.id],
-  );
 
   const senderEmail = inquiry.person.emails.primaryEmail;
 
@@ -375,7 +367,6 @@ export const ConversationSection = ({
                     ? `${message.sender.workspaceMember.name.firstName} ${message.sender.workspaceMember.name.lastName}`
                     : fullName
                 }
-                isCurrentUser={isCurrentUser(message)}
               />
             ))
           ) : (

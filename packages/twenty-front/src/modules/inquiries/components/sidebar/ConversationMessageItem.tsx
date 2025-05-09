@@ -1,3 +1,4 @@
+import { currentWorkspaceMemberState } from '@/auth/states/currentWorkspaceMemberState';
 import { ObjectRecord } from '@/object-record/types/ObjectRecord';
 import { OptionalWrap } from '@/ui/layout/utilities/components/OptionalWrapWith';
 import { useColorScheme } from '@/ui/theme/hooks/useColorScheme';
@@ -9,6 +10,7 @@ import { de, enUS, es, fr, it } from 'date-fns/locale';
 import DOMPurify from 'dompurify';
 import { useCallback, useMemo } from 'react';
 import { Link, To } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 import { isDefined } from 'twenty-shared';
 import { Button, ColorScheme, IconMessage } from 'twenty-ui';
 import { beautifyPastDateRelativeToNow } from '~/utils/date-utils';
@@ -73,13 +75,21 @@ const StyledAutoTag = styled.div`
 const StyledMessageContent = styled.div<{
   isCurrentUser?: boolean;
   colorScheme: ColorScheme;
+  hasWorkspaceMember?: boolean;
 }>`
-  background-color: ${({ theme, isCurrentUser, colorScheme }) =>
+  background-color: ${({
+    theme,
+    isCurrentUser,
+    colorScheme,
+    hasWorkspaceMember,
+  }) =>
     isCurrentUser
       ? colorScheme === 'Light'
         ? theme.color.blue10
         : theme.color.blue60
-      : theme.background.tertiary};
+      : hasWorkspaceMember
+        ? theme.background.tertiary
+        : theme.background.secondary};
   border-radius: ${({ theme }) => theme.border.radius.md};
   padding: ${({ theme }) => theme.spacing(2)};
   font-size: ${({ theme }) => theme.font.size.sm};
@@ -94,7 +104,6 @@ const StyledReplyButton = styled(Button)`
 
 type ConversationMessageItemProps = {
   message: ObjectRecord;
-  isCurrentUser: boolean;
   senderName: string;
   linkToPerson?: To;
   subject?: string;
@@ -103,7 +112,6 @@ type ConversationMessageItemProps = {
 
 export const ConversationMessageItem = ({
   message,
-  isCurrentUser,
   senderName,
   linkToPerson,
   subject = 'Your inquiry',
@@ -116,6 +124,17 @@ export const ConversationMessageItem = ({
     colorScheme === 'System' ? systemColorScheme : colorScheme;
   const isHtml = /<([a-z]+)[\s>]|&[a-z]+;/i.test(message.text);
   const purify = DOMPurify(window);
+
+  const currentWorkspaceMember = useRecoilValue(currentWorkspaceMemberState);
+  // Helper to determine if a message is from the current user
+  const isCurrentUser = useMemo(
+    () => message.sender.workspaceMember?.id === currentWorkspaceMember?.id,
+    [currentWorkspaceMember?.id, message.sender.workspaceMember?.id],
+  );
+
+  const hasWorkspaceMember = useMemo(() => {
+    return message.sender.workspaceMember !== null;
+  }, [message.sender.workspaceMember]);
 
   // Map lingui locale to date-fns locale
   const getDateFnsLocale = () => {
