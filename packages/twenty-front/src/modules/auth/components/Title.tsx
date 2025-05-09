@@ -18,6 +18,7 @@ const StyledTitle = styled.div<
     !noMarginBottom ? theme.spacing(4) : 0};
   margin-top: ${({ theme, noMarginTop }) =>
     !noMarginTop ? theme.spacing(4) : 0};
+  text-align: center;
 `;
 
 export const Title = ({

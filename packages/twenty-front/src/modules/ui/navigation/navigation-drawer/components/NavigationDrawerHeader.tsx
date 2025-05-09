@@ -21,6 +21,11 @@ const StyledContainer = styled.div`
 const StyledSingleWorkspaceContainer = styled(StyledContainer)`
   gap: ${({ theme }) => theme.spacing(2)};
   padding: ${({ theme }) => theme.spacing(1)};
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
 `;
 
 const StyledName = styled.div`
